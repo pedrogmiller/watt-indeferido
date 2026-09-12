@@ -1593,6 +1593,293 @@
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+
+  /* ── Mission chip on cards ── */
+  .mission-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .mission-chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: #0f172a;
+    border: 1px solid #0f172a;
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font);
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    transition: background 0.15s ease;
+  }
+  .btn-primary:hover { background: #1e293b; }
+
+  .mission-hint {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .action-status {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4338ca;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Dossier overlay ── */
+  .dossier-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: var(--bg-app);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .dossier-overlay.open {
+    display: flex;
+  }
+
+  .dossier-bar {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .dossier-back {
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+  }
+  .dossier-back:hover { background: var(--bg-app); }
+
+  .dossier-bar-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .dossier-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px;
+    max-width: 920px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .dossier-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+
+  .dossier-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .forecast-strip {
+    background: #f1f5f9;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .forecast-item-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  .forecast-item-value {
+    font-size: 14px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-main);
+  }
+
+  .forecast-note {
+    grid-column: 1 / -1;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .books-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .book-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .book-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  .book-value {
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    margin-top: 4px;
+  }
+
+  .dossier-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .inbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .letter-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .letter-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .letter-from {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .letter-status {
+    font-size: 11px;
+    font-weight: 600;
+    color: #b45309;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .letter-status.done {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+  }
+
+  .letter-subject {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .letter-body {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .month-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+
+  .month-actions button {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+  }
+  .month-actions button:hover { background: #f1f5f9; }
+  .month-actions button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 720px) {
+    .forecast-strip, .books-row { grid-template-columns: 1fr; }
+    .dossier-scroll { padding: 16px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1884,6 +2171,16 @@
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
 
+
+<!-- ═══ DOSSIER OVERLAY ═══ -->
+<div class="dossier-overlay" id="dossierOverlay" aria-hidden="true">
+  <div class="dossier-bar">
+    <button type="button" class="dossier-back" id="dossierBack">← Portfólio</button>
+    <span class="dossier-bar-title">Dossier do activo · PIP</span>
+  </div>
+  <div class="dossier-scroll" id="dossierBody"></div>
+</div>
+
 <div class="tooltip" id="tooltip" role="tooltip"></div>
 <div class="toast" id="toast"></div>
 
@@ -1898,11 +2195,28 @@
     caixa: 18.4,
     divida: 42.1,
     nav: 64.8,
+    cashAtRisk: 0,
     bondingFree: 6.2,
     bondingTotal: 16.0,
-    appliedActions: {}, // nodeId -> Set of action ids
+    missions: {}, // nodeId -> mission
     activeNodeId: null,
-    minimized: new Set(), // node ids minimized this session
+    activeDossierNodeId: null,
+    minimized: new Set(),
+  };
+
+  const DEV_ACTIONS = new Set(['sobre', 'bess', 'eolica']);
+
+  const KICKOFF = {
+    sobre:  { caixa: 0.08, risk: 0.12 },
+    bess:   { caixa: 0.12, risk: 0.25 },
+    eolica: { caixa: 0.15, risk: 0.40 },
+  };
+
+  const ACTION_SHORT = {
+    sobre: 'Sobreequipamento',
+    bess: 'BESS',
+    eolica: 'Eólica',
+    farm: 'Farm-down',
   };
 
   const NODE_SHORT = {
@@ -2000,7 +2314,21 @@
 
   /* ── Helpers ── */
   function fmtEur(n) {
-    return '€ ' + n.toFixed(1).replace('.', ',') + 'M';
+    return '€ ' + Number(n).toFixed(1).replace('.', ',') + 'M';
+  }
+
+  function fmtCashAtRisk(n) {
+    const v = Number(n) || 0;
+    if (v === 0) return '€ 0';
+    if (v < 1) {
+      const k = Math.round(v * 1000);
+      if (k < 1000) return '€ ' + k + 'k';
+    }
+    return '€ ' + v.toFixed(2).replace('.', ',') + 'M';
+  }
+
+  function actionDisplayTitle(title) {
+    return String(title || '').replace(/^\+\s*/, '');
   }
 
   function showToast(msg) {
@@ -2012,8 +2340,114 @@
 
   function flashPill(id) {
     const el = document.getElementById(id);
+    if (!el) return;
     el.classList.add('flash');
     setTimeout(() => el.classList.remove('flash'), 1200);
+  }
+
+  function getMission(nodeId) {
+    return state.missions[nodeId] || null;
+  }
+
+  function seedLetter(nodeId, actionId) {
+    const letters = {
+      ferreira: {
+        sobre: {
+          from: 'Câmara Municipal de Ferreira do Alentejo',
+          subject: 'Pedido de elementos — PIP / conformidade com o PDM',
+          body: 'No âmbito da análise preliminar do pedido de informação prévia, solicitamos elementos adicionais sobre a implantação do sobreequipamento solar. Indiquem a articulação com o PDM vigente e o enquadramento das áreas de proteção da rede. O processo fica suspenso até resposta.',
+        },
+        bess: {
+          from: 'E-REDES',
+          subject: 'Nota de hibridização BESS no mesmo TRC',
+          body: 'Recebemos a intenção de hibridizar armazenamento no ponto de ligação existente em Ferreira do Alentejo. Pedimos o diagrama unifilar atualizado e a confirmação de que a potência de injeção permanece dentro do TRC atribuído. Sem estes dados não avançamos o parecer técnico.',
+        },
+        eolica: {
+          from: 'ICNF',
+          subject: 'Parecer do corredor — hibridização eólica',
+          body: 'O ICNF analisa o corredor proposto para a componente eólica junto ao nó de Ferreira do Alentejo. Solicitamos cartografia das áreas sensíveis e medidas de mitigação de avifauna. O parecer fica pendente até receção dos elementos.',
+        },
+      },
+      pego: {
+        sobre: {
+          from: 'Câmara Municipal de Abrantes',
+          subject: 'Elementos urbanísticos para PIP de sobreequipamento',
+          body: 'A Câmara de Abrantes solicita planta de localização e memória descritiva do sobreequipamento solar no ponto SE Pego. Confirmem compatibilidade com condicionantes municipais antes da formalização do PIP. Sem resposta o processo não entra em análise.',
+        },
+        bess: {
+          from: 'DGEG',
+          subject: 'Enquadramento de hibridização BESS — SE Pego',
+          body: 'A DGEG regista a intenção de hibridizar BESS no TRC do Pego. Pedimos confirmação do regime aplicável ao abrigo do DL 15/2022 e o cronograma de licenciamento. Aguardar elementos antes de qualquer despacho.',
+        },
+        eolica: {
+          from: 'Câmara Municipal de Abrantes',
+          subject: 'Consulta prévia — corredor eólico junto ao Pego',
+          body: 'Para a componente eólica no mesmo TRC, a Câmara solicita nota sobre acesso, ruído e enquadramento paisagístico. O PIP só será admitido após esclarecimento destes pontos. Respondam por escrito a este ofício.',
+        },
+      },
+      evora: {
+        sobre: {
+          from: 'Câmara Municipal de Évora',
+          subject: 'Pedido de elementos do PIP — sobreequipamento solar',
+          body: 'A Câmara Municipal de Évora pede esclarecimentos sobre a área de implantação e a ligação ao ponto SE Évora. Indiquem se há sobreposição com zonas de salvaguarda. O processo de PIP fica à espera da vossa resposta.',
+        },
+        bess: {
+          from: 'ICNF',
+          subject: 'Parecer preliminar — armazenamento no TRC de Évora',
+          body: 'O ICNF analisa a proposta de BESS no nó de Évora. Solicitamos descrição das obras e eventuais impactes em habitats próximos. Sem estes elementos não emitimos parecer favorável ao PIP.',
+        },
+        eolica: {
+          from: 'Câmara Municipal de Évora',
+          subject: 'Elementos para PIP de hibridização eólica',
+          body: 'Para a hibridização eólica no SE Évora, pedimos planta do corredor e nota de compatibilidade com o PDM. A análise municipal só arranca após receção completa. Respondam a este pedido de elementos.',
+        },
+      },
+    };
+    const pack = (letters[nodeId] && letters[nodeId][actionId]) || {
+      from: 'DGEG',
+      subject: 'Pedido de elementos — PIP',
+      body: 'Solicitamos elementos adicionais para dar seguimento ao pedido de informação prévia. O processo permanece pendente até resposta.',
+    };
+    return {
+      id: 'L1',
+      from: pack.from,
+      subject: pack.subject,
+      body: pack.body,
+      status: 'Por responder',
+    };
+  }
+
+  function monthFollowUpLetter(mission) {
+    const pool = [
+      {
+        from: 'Câmara Municipal de Ferreira do Alentejo',
+        subject: 'Lembrete — elementos em falta no PIP',
+        body: 'Relembramos que o pedido de elementos continua sem resposta completa. Sem esclarecimentos sobre implantação e PDM, a análise do PIP não avança neste mês.',
+      },
+      {
+        from: 'ICNF',
+        subject: 'Pedido complementar de cartografia',
+        body: 'Junto enviamos pedido complementar de cartografia das áreas sensíveis. Tratamos isto como fase preparatória — ainda sem decisão sobre o PIP.',
+      },
+      {
+        from: 'E-REDES',
+        subject: 'Atualização técnica do ponto de ligação',
+        body: 'Pedimos confirmação dos dados de injeção no TRC após a última revisão. Isto não constitui aprovação do PIP; apenas mantém o processo técnico aberto.',
+      },
+      {
+        from: 'DGEG',
+        subject: 'Estado do processo — PIP ainda pendente',
+        body: 'Confirmamos que o PIP permanece em análise documental. Não há despacho favorável neste ciclo. Completem a caixa de entrada do dossier para acelerar a tramitação.',
+      },
+    ];
+    const pick = pool[(mission.month + mission.inbox.length) % pool.length];
+    return {
+      id: 'L' + (mission.inbox.length + 1),
+      from: pick.from,
+      subject: pick.subject,
+      body: pick.body,
+      status: 'Por responder',
+    };
   }
 
   /* ── Render nodes ── */
@@ -2093,12 +2527,20 @@
       const t = n.trc;
       const dscrVal = parseDscr(n.metrics.dscr);
       const riskDscr = dscrVal !== null && dscrVal < 1.25;
+      const mission = getMission(n.id);
       const classes = [
         'node-card',
         n.construction ? 'construction' : '',
         riskDscr ? 'risk-dscr' : '',
         activeId === n.id ? 'is-active' : '',
       ].filter(Boolean).join(' ');
+      const shortAct = mission ? (ACTION_SHORT[mission.actionId] || '') : '';
+      const chip = mission
+        ? `<div class="mission-chip"><span class="mission-chip-dot"></span>1 missão em curso${shortAct ? ' · ' + shortAct : ''}</div>`
+        : '';
+      const primary = mission
+        ? `<button class="btn-primary" type="button" data-dossier="${n.id}">Abrir dossier</button>`
+        : '';
       return `
         <article class="${classes}" data-node="${n.id}">
           <div class="window-titlebar">
@@ -2115,6 +2557,7 @@
             ${n.construction
               ? `<div class="status-pill"><span class="status-dot"></span> Em construção · reforço de rede</div>`
               : `<div class="node-status">${n.status}</div>`}
+            ${chip}
 
             <div class="trc-section">
               <div class="trc-label-row">
@@ -2160,7 +2603,10 @@
               </div>
             </div>
 
-            <button class="btn-secondary" type="button" data-open="${n.id}">Ver projectos neste TRC</button>
+            <div class="card-actions">
+              ${primary}
+              <button class="btn-secondary" type="button" data-open="${n.id}">Ver projectos neste TRC</button>
+            </div>
           </div>
         </article>`;
     }).join('');
@@ -2169,6 +2615,9 @@
 
     grid.querySelectorAll('[data-open]').forEach(btn => {
       btn.addEventListener('click', () => openDrawer(btn.getAttribute('data-open')));
+    });
+    grid.querySelectorAll('[data-dossier]').forEach(btn => {
+      btn.addEventListener('click', () => openDossier(btn.getAttribute('data-dossier')));
     });
     grid.querySelectorAll('[data-minimize]').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -2213,7 +2662,7 @@
   function openDrawer(nodeId) {
     const node = nodes.find(n => n.id === nodeId);
     if (!node) return;
-    const applied = state.appliedActions[nodeId] || new Set();
+    const mission = getMission(nodeId);
     document.getElementById('drawerTitle').textContent = node.name;
     document.getElementById('drawerSubtitle').textContent = node.capacity + ' · Ações ao abrigo do DL 15/2022';
 
@@ -2221,36 +2670,70 @@
     body.innerHTML = `
       <div class="drawer-section-label">Otimizações disponíveis</div>
       ${(actions[nodeId] || []).map(a => {
-        const done = applied.has(a.id);
+        const isDev = DEV_ACTIONS.has(a.id);
+        const isActive = mission && mission.actionId === a.id;
+        const queued = mission && isDev && !isActive;
+        let statusHtml = '';
+        let btnHtml = '';
+        let boxDone = false;
+
+        if (a.id === 'farm') {
+          boxDone = true;
+          if (mission) {
+            statusHtml = `<div class="action-status">Em fila</div>`;
+            btnHtml = `<button class="btn-confirm" type="button" disabled>Em fila</button>`;
+          } else {
+            statusHtml = `<div class="action-status">Disponível após COD</div>`;
+            btnHtml = `<button class="btn-confirm" type="button" disabled>Disponível após COD</button>`;
+          }
+        } else if (isActive) {
+          statusHtml = `<div class="action-status">Em curso</div>`;
+          btnHtml = `<button class="btn-confirm" type="button" data-open-dossier="${nodeId}">Abrir dossier</button>`;
+        } else if (queued) {
+          boxDone = true;
+          statusHtml = `<div class="action-status">Em fila</div>`;
+          btnHtml = `<button class="btn-confirm" type="button" disabled>Em fila</button>`;
+        } else {
+          btnHtml = `
+            <button class="btn-confirm" type="button" data-start="${nodeId}:${a.id}">Começar missão</button>
+            <div class="mission-hint">Não gasta o CAPEX. Abre o dossier e o relógio do PIP.</div>`;
+        }
+
         return `
-          <div class="action-box${done ? ' done' : ''}" data-action="${a.id}">
-            <div class="action-title">${a.title}${done ? ' ✓' : ''}</div>
+          <div class="action-box${boxDone ? ' done' : ''}" data-action="${a.id}">
+            ${statusHtml}
+            <div class="action-title">${a.title}</div>
             <div class="action-desc">${a.desc}</div>
             <div class="action-meta">
               <div class="action-meta-item">
-                <span class="action-meta-label">CAPEX</span>
+                <span class="action-meta-label">CAPEX previsto</span>
                 <span class="action-meta-value num">${a.capex}</span>
               </div>
               <div class="action-meta-item">
-                <span class="action-meta-label">Licenciamento</span>
+                <span class="action-meta-label">Licenciamento previsto</span>
                 <span class="action-meta-value">${a.tempo}</span>
               </div>
               <div class="action-meta-item">
-                <span class="action-meta-label">Impacto NAV</span>
+                <span class="action-meta-label">VAN se o PIP sair</span>
                 <span class="action-meta-value positive num">${a.nav}</span>
               </div>
             </div>
-            <button class="btn-confirm" type="button" data-confirm="${nodeId}:${a.id}" ${done ? 'disabled' : ''}>
-              ${done ? 'Já aplicado' : 'Confirmar ação'}
-            </button>
+            ${btnHtml}
           </div>`;
       }).join('')}
     `;
 
-    body.querySelectorAll('[data-confirm]').forEach(btn => {
+    body.querySelectorAll('[data-start]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const [nid, aid] = btn.getAttribute('data-confirm').split(':');
-        confirmAction(nid, aid);
+        const [nid, aid] = btn.getAttribute('data-start').split(':');
+        startMission(nid, aid);
+      });
+    });
+    body.querySelectorAll('[data-open-dossier]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const nid = btn.getAttribute('data-open-dossier');
+        closeDrawer();
+        openDossier(nid);
       });
     });
 
@@ -2272,52 +2755,225 @@
     document.getElementById('drawer').setAttribute('aria-hidden', 'true');
   }
 
-  function confirmAction(nodeId, actionId) {
-    if (!state.appliedActions[nodeId]) state.appliedActions[nodeId] = new Set();
-    if (state.appliedActions[nodeId].has(actionId)) return;
-    state.appliedActions[nodeId].add(actionId);
+  function startMission(nodeId, actionId) {
+    if (!DEV_ACTIONS.has(actionId)) return;
+    const existing = getMission(nodeId);
+    if (existing) {
+      closeDrawer();
+      openDossier(nodeId);
+      return;
+    }
 
     const act = (actions[nodeId] || []).find(a => a.id === actionId);
     const node = nodes.find(n => n.id === nodeId);
+    if (!act || !node) return;
 
-    // Light KPI mutation
-    if (actionId === 'farm') {
-      state.caixa += nodeId === 'evora' ? 8.4 : nodeId === 'alqueva' ? 6.9 : 4.2;
-      state.nav -= nodeId === 'evora' ? 4.0 : nodeId === 'alqueva' ? 3.2 : 2.0;
-      state.bondingFree += 1.5;
-    } else if (actionId === 'sobre') {
-      state.nav += nodeId === 'evora' ? 3.1 : nodeId === 'alqueva' ? 2.4 : 1.4;
-      state.caixa -= 1.2;
-      // bump solar on TRC slightly
-      if (node.trc.free >= 5) {
-        node.trc.solar += 5;
-        node.trc.free -= 5;
-      }
-    } else if (actionId === 'bess') {
-      state.nav += nodeId === 'evora' ? 4.6 : nodeId === 'alqueva' ? 3.5 : 3.8;
-      state.caixa -= 2.0;
-      if (node.trc.free >= 8) {
-        node.trc.bess += 8;
-        node.trc.free -= 8;
-      }
-    } else if (actionId === 'eolica') {
-      state.nav += nodeId === 'evora' ? 9.2 : nodeId === 'alqueva' ? 5.8 : 6.5;
-      state.caixa -= 3.5;
-      if (node.trc.free >= 10) {
-        node.trc.wind += 10;
-        node.trc.free -= 10;
-      }
-    }
+    const kick = KICKOFF[actionId];
+    // Do NOT change state.nav / TRC utilization
+    state.caixa = +(state.caixa - kick.caixa).toFixed(2);
+    state.cashAtRisk = +(state.cashAtRisk + kick.risk).toFixed(2);
 
-    updateHeaderMetrics(true);
+    state.missions[nodeId] = {
+      nodeId,
+      actionId,
+      title: act.title,
+      month: 1,
+      inbox: [seedLetter(nodeId, actionId)],
+      pipSubmitted: false,
+      letterAnswered: false,
+    };
+
+    closeDrawer();
+    updateHeaderMetrics(false);
+    flashPill('pillCaixa'); // caixa only — not NAV
     renderNodes();
+
     activities.unshift({
       time: 'Agora',
-      text: `Ação confirmada: ${act ? act.title : actionId} — ${node.name}`,
+      text: `Missão aberta: ${actionDisplayTitle(act.title)} · ${node.name} · PIP ainda não pedido`,
     });
     renderActivity();
-    openDrawer(nodeId); // refresh drawer state
-    showToast('Ação registada · KPIs atualizados');
+    showToast('Missão aberta · dossier do activo');
+    openDossier(nodeId);
+  }
+
+  /* ── Dossier ── */
+  function openDossier(nodeId) {
+    const mission = getMission(nodeId);
+    const node = nodes.find(n => n.id === nodeId);
+    if (!mission || !node) return;
+
+    state.activeDossierNodeId = nodeId;
+    const overlay = document.getElementById('dossierOverlay');
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    renderDossier();
+    syncFabMode();
+  }
+
+  function closeDossier() {
+    state.activeDossierNodeId = null;
+    const overlay = document.getElementById('dossierOverlay');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    syncFabMode();
+    renderNodes();
+  }
+
+  function renderDossier() {
+    const nodeId = state.activeDossierNodeId;
+    const mission = getMission(nodeId);
+    const node = nodes.find(n => n.id === nodeId);
+    if (!mission || !node) return;
+    const act = (actions[nodeId] || []).find(a => a.id === mission.actionId);
+    const body = document.getElementById('dossierBody');
+
+    const canSubmitPip = mission.month >= 2 || mission.letterAnswered;
+    const submitDisabled = mission.pipSubmitted || !canSubmitPip;
+
+    body.innerHTML = `
+      <div class="dossier-title">${actionDisplayTitle(mission.title)}</div>
+      <div class="dossier-subtitle" id="dossierSubtitle">
+        ${node.name} · ${node.capacity} · Objectivo: PIP favorável · Mês ${mission.month}
+      </div>
+
+      <div class="forecast-strip">
+        <div>
+          <div class="forecast-item-label">CAPEX previsto</div>
+          <div class="forecast-item-value num">${act ? act.capex : '—'}</div>
+        </div>
+        <div>
+          <div class="forecast-item-label">Licenciamento previsto</div>
+          <div class="forecast-item-value">${act ? act.tempo : '—'}</div>
+        </div>
+        <div>
+          <div class="forecast-item-label">VAN se o PIP sair</div>
+          <div class="forecast-item-value num">${act ? act.nav : '—'}</div>
+        </div>
+        <div class="forecast-note">Previsão — ainda não aplicada aos livros do portfólio.</div>
+      </div>
+
+      <div class="dossier-section-title">Livros da missão (actual)</div>
+      <div class="books-row">
+        <div class="book-card">
+          <div class="book-label">VAN</div>
+          <div class="book-value num">${fmtEur(state.nav)}</div>
+        </div>
+        <div class="book-card">
+          <div class="book-label">Cash at risk</div>
+          <div class="book-value num">${fmtCashAtRisk(state.cashAtRisk)}</div>
+        </div>
+        <div class="book-card">
+          <div class="book-label">Caixa</div>
+          <div class="book-value num">${fmtEur(state.caixa)}</div>
+        </div>
+      </div>
+
+      <div class="dossier-section-title">Inbox da missão</div>
+      <div class="inbox-list">
+        ${mission.inbox.map(letter => `
+          <div class="letter-card">
+            <div class="letter-top">
+              <div class="letter-from">${letter.from}</div>
+              <span class="letter-status${letter.status !== 'Por responder' ? ' done' : ''}">${letter.status}</span>
+            </div>
+            <div class="letter-subject">${letter.subject}</div>
+            <div class="letter-body">${letter.body}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="dossier-section-title">Ações do mês</div>
+      <div class="month-actions">
+        <button type="button" data-month-act="elementos">Pedir elementos</button>
+        <button type="button" data-month-act="reuniao">Marcar reunião</button>
+        <button type="button" data-month-act="pip" ${submitDisabled ? 'disabled' : ''}>Submeter PIP</button>
+      </div>
+    `;
+
+    body.querySelectorAll('[data-month-act]').forEach(btn => {
+      btn.addEventListener('click', () => handleMonthAction(btn.getAttribute('data-month-act')));
+    });
+  }
+
+  function handleMonthAction(kind) {
+    const nodeId = state.activeDossierNodeId;
+    const mission = getMission(nodeId);
+    if (!mission) return;
+
+    if (kind === 'elementos' || kind === 'reuniao') {
+      const pending = mission.inbox.find(l => l.status === 'Por responder');
+      if (pending) {
+        pending.status = kind === 'elementos' ? 'Elementos pedidos' : 'Reunião marcada';
+        mission.letterAnswered = true;
+      }
+      state.caixa = +(state.caixa - 0.02).toFixed(2);
+      updateHeaderMetrics(false);
+      flashPill('pillCaixa');
+      showToast(kind === 'elementos' ? 'Elementos pedidos · caixa −€ 0,02M' : 'Reunião marcada · caixa −€ 0,02M');
+      renderDossier();
+      return;
+    }
+
+    if (kind === 'pip') {
+      if (mission.pipSubmitted) return;
+      if (!(mission.month >= 2 || mission.letterAnswered)) {
+        showToast('Responda à carta ou avance um mês antes de submeter o PIP');
+        return;
+      }
+      mission.pipSubmitted = true;
+      const pending = mission.inbox.find(l => l.status === 'Por responder' || l.status === 'Elementos pedidos' || l.status === 'Reunião marcada');
+      if (pending) pending.status = 'PIP submetido · a aguardar';
+      else {
+        mission.inbox.unshift({
+          id: 'PIP',
+          from: 'DGEG',
+          subject: 'PIP submetido — a aguardar despacho',
+          body: 'O pedido de informação prévia foi registado. Ainda não há despacho favorável. O processo segue em análise documental.',
+          status: 'PIP submetido · a aguardar',
+        });
+      }
+      // Do NOT grant PIP / VAN
+      showToast('PIP submetido · a aguardar');
+      renderDossier();
+    }
+  }
+
+  function advanceMissionMonth() {
+    const nodeId = state.activeDossierNodeId;
+    const mission = getMission(nodeId);
+    if (!mission) return;
+
+    const btn = document.getElementById('btnNextQ');
+    if (btn.disabled) return;
+    btn.disabled = true;
+    btn.classList.add('loading');
+
+    setTimeout(() => {
+      mission.month += 1;
+      state.cashAtRisk = +(state.cashAtRisk + 0.03).toFixed(2);
+      // VAN unchanged
+      if (mission.month % 1 === 0) {
+        mission.inbox.unshift(monthFollowUpLetter(mission));
+      }
+      updateHeaderMetrics(false);
+      flashPill('pillCaixa');
+      renderDossier();
+      showToast(`Mês ${mission.month} · PIP ainda pendente`);
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }, 500);
+  }
+
+  function syncFabMode() {
+    const btn = document.getElementById('btnNextQ');
+    if (state.activeDossierNodeId) {
+      btn.setAttribute('aria-label', 'Correr o mês');
+      btn.setAttribute('title', 'Correr o mês');
+    } else {
+      btn.setAttribute('aria-label', 'Próximo Trimestre');
+      btn.setAttribute('title', 'Próximo Trimestre');
+    }
   }
 
   function updateHeaderMetrics(doFlash) {
@@ -2334,7 +2990,15 @@
     }
   }
 
-  /* ── Next Quarter ── */
+  /* ── Next Quarter (portfolio) / Correr o mês (dossier) ── */
+  function onFabClick() {
+    if (state.activeDossierNodeId) {
+      advanceMissionMonth();
+      return;
+    }
+    nextQuarter();
+  }
+
   function nextQuarter() {
     const btn = document.getElementById('btnNextQ');
     if (btn.disabled) return;
@@ -2347,7 +3011,6 @@
         state.quarter = 1;
         state.year += 1;
       }
-      // Soft KPI drift
       state.caixa = +(state.caixa + 1.8 + Math.random() * 0.6).toFixed(1);
       state.nav = +(state.nav + 2.1 + Math.random() * 0.8).toFixed(1);
       state.divida = +(state.divida - 0.4).toFixed(1);
@@ -2428,14 +3091,19 @@
     updateHeaderMetrics(false);
     initTabs();
     initActivity();
+    syncFabMode();
 
-    document.getElementById('btnNextQ').addEventListener('click', nextQuarter);
+    document.getElementById('btnNextQ').addEventListener('click', onFabClick);
     document.getElementById('drawerClose').addEventListener('click', closeDrawer);
     document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
+    document.getElementById('dossierBack').addEventListener('click', closeDossier);
     document.getElementById('btnMinimizeAll').addEventListener('click', minimizeAllNodes);
     document.getElementById('btnRestoreAll').addEventListener('click', restoreAllNodes);
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeDrawer();
+      if (e.key === 'Escape') {
+        if (state.activeDossierNodeId) closeDossier();
+        else closeDrawer();
+      }
     });
   }
 
