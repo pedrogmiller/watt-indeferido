@@ -1945,13 +1945,410 @@
     .dossier-scroll { padding: 16px; }
   }
 
+  /* ── Card face (CoS locked) ── */
+  .card-tensao {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+  .tone-red { color: var(--critical); }
+  .tone-amber { color: #b45309; }
+  .tone-green { color: var(--success); }
+
+  .card-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 2px 0 0;
+  }
+  .card-hero-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .card-hero-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .card-hero-value {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .card-hero-delta {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+  }
+  .card-hero-delta.tone-green { color: var(--success); }
+  .card-hero-delta.tone-red { color: var(--critical); }
+
+  .card-threat {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .threat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .threat-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .threat-value {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .mission-chip {
+    align-self: flex-start;
+    font-size: 10px;
+    font-weight: 600;
+    color: #075985;
+    background: rgba(224, 242, 254, 0.95);
+    border: 1px solid rgba(125, 211, 252, 0.55);
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  .trc-face {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .trc-face-meta {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .trc-pct-quiet {
+    font-size: 11px;
+    font-weight: 500;
+    color: #94a3b8;
+    font-variant-numeric: tabular-nums;
+  }
+
+
+  .card-threat .mission-chip {
+    display: inline-flex;
+    align-self: flex-start;
+    margin: 0;
+    font-size: 10px;
+    font-weight: 600;
+    color: #075985;
+    background: rgba(224, 242, 254, 0.95);
+    border: 1px solid rgba(125, 211, 252, 0.55);
+    padding: 2px 8px;
+  }
+
+  /* ── Onboarding (primeira visita) ── */
+  .header-help {
+    margin-left: auto;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 6px 10px;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .header-help:hover {
+    color: var(--text-main);
+    background: var(--bg-app);
+  }
+
+  .header-help:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+
+
+  /* ═══ WattCoach — TikTok-style coach card ═══ */
+  .watt-coach {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+  }
+
+  .watt-coach.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* With spotlight: root does not capture — veil hole lets clicks hit the real target */
+  .watt-coach.open.has-spotlight {
+    pointer-events: none;
+  }
+
+  .watt-coach-veil {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.52);
+    pointer-events: auto;
+  }
+
+  .watt-coach.has-spotlight .watt-coach-veil {
+    background: transparent;
+    pointer-events: auto;
+  }
+
+  .watt-coach-spotlight {
+    position: fixed;
+    z-index: 501;
+    border-radius: 12px;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.92),
+      0 0 0 6px rgba(14, 165, 233, 0.35),
+      0 0 0 9999px rgba(15, 23, 42, 0.55);
+    pointer-events: none;
+    transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+    opacity: 0;
+  }
+
+  .watt-coach-spotlight.is-soft {
+    border-radius: 16px;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.75),
+      0 0 0 10px rgba(14, 165, 233, 0.22),
+      0 0 0 9999px rgba(15, 23, 42, 0.48);
+  }
+
+  .watt-coach.has-spotlight .watt-coach-spotlight {
+    opacity: 1;
+  }
+
+  .watt-coach-card {
+    position: fixed;
+    z-index: 502;
+    width: min(300px, calc(100vw - 32px));
+    max-width: 320px;
+    background: #0f172a;
+    color: #f8fafc;
+    border-radius: 14px;
+    padding: 16px 16px 14px;
+    box-shadow:
+      0 18px 40px -10px rgba(15, 23, 42, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transform: translateY(6px) scale(0.98);
+    transition: transform 0.18s ease, opacity 0.18s ease, top 0.2s ease, left 0.2s ease;
+    font-family: var(--font);
+  }
+
+  .watt-coach.open .watt-coach-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .watt-coach-card.is-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+
+  .watt-coach.open .watt-coach-card.is-center {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* Caret pointing from card toward ui_target */
+  .watt-coach-caret {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .watt-coach-caret[hidden] {
+    display: none;
+  }
+
+  /* position = where the card sits relative to the target */
+  .watt-coach-card[data-caret="bottom"] .watt-coach-caret {
+    top: -10px;
+    left: var(--caret-pos, 50%);
+    transform: translateX(-50%);
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #0f172a transparent;
+  }
+
+  .watt-coach-card[data-caret="top"] .watt-coach-caret {
+    bottom: -10px;
+    left: var(--caret-pos, 50%);
+    transform: translateX(-50%);
+    border-width: 10px 10px 0 10px;
+    border-color: #0f172a transparent transparent transparent;
+  }
+
+  .watt-coach-card[data-caret="left"] .watt-coach-caret {
+    right: -10px;
+    top: var(--caret-pos, 50%);
+    transform: translateY(-50%);
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent #0f172a;
+  }
+
+  .watt-coach-card[data-caret="right"] .watt-coach-caret {
+    left: -10px;
+    top: var(--caret-pos, 50%);
+    transform: translateY(-50%);
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #0f172a transparent transparent;
+  }
+
+  .watt-coach-dismiss {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: rgba(248, 250, 252, 0.55);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 0;
+    z-index: 2;
+  }
+
+  .watt-coach-dismiss:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .watt-coach-title {
+    margin: 0 24px 0 0;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  .watt-coach-body {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: rgba(248, 250, 252, 0.88);
+  }
+
+  /* Long Storyteller body: shrink type so full text stays visible — never ellipsis-cut */
+  .watt-coach-body.clamp {
+    font-size: 12px;
+    line-height: 1.4;
+    overflow: visible;
+  }
+  .watt-coach-body.clamp-tight {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .watt-coach-hint {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(148, 163, 184, 0.95);
+    line-height: 1.35;
+  }
+
+  .watt-coach-hint[hidden] {
+    display: none;
+  }
+
+  .watt-coach-btn {
+    margin-top: 4px;
+    align-self: stretch;
+    background: #38bdf8;
+    color: #0f172a;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    transition: background 0.12s ease, transform 0.1s ease, color 0.12s ease, border-color 0.12s ease;
+  }
+
+  .watt-coach-btn:hover {
+    background: #7dd3fc;
+  }
+
+  .watt-coach-btn:active {
+    transform: scale(0.98);
+  }
+
+  .watt-coach-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  /* Secondary skip when a spotlight target is the primary advance */
+  .watt-coach-btn.is-skip {
+    background: transparent;
+    color: rgba(248, 250, 252, 0.78);
+    border-color: rgba(248, 250, 252, 0.22);
+    box-shadow: none;
+    font-weight: 600;
+  }
+
+  .watt-coach-btn.is-skip:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  /* Live target under spotlight — clickable above the dimmed veil hole */
+  .watt-coach-target-live {
+    cursor: pointer !important;
+    position: relative;
+    z-index: 403 !important;
+    pointer-events: auto !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .watt-coach,
+    .watt-coach-card,
+    .watt-coach-spotlight {
+      transition: none;
+    }
+  }
+
+
 </style>
 </head>
 <body>
 
 <!-- ═══ HEADER ═══ -->
 <header class="header">
-  <div class="brand">
+  <div class="brand" id="coach-brand">
     <div class="brand-logo" aria-hidden="true">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="14 5 64 108" width="64" height="108" role="img" aria-label="Watt Indeferido">
         <title>Watt Indeferido</title>
@@ -1983,7 +2380,7 @@
     </div>
   </div>
 
-  <div class="header-metrics">
+  <div class="header-metrics" id="coach-header-metrics">
     <div class="metric-pill" id="pillCaixa">
       <span class="metric-label">Caixa Disponível</span>
       <span class="metric-value num" id="valCaixa">€ 12,5M</span>
@@ -2008,11 +2405,13 @@
     </div>
   </div>
 
+  <button type="button" class="header-help" id="btnTutorial" title="Abrir tutorial">Tutorial</button>
+
 </header>
 
 <!-- ═══ TABS ═══ -->
 <nav class="tab-bar" role="tablist">
-  <button class="tab active" data-tab="portfolio" role="tab" aria-selected="true">Portfólio &amp; TRCs alcançados</button>
+  <button class="tab active" data-tab="portfolio" role="tab" aria-selected="true">Portfólio &amp; Nós de Rede</button>
   <button class="tab" data-tab="pipeline" role="tab" aria-selected="false">Pipeline de Originação (DL 15/2022)</button>
   <button class="tab" data-tab="mercado" role="tab" aria-selected="false">Mercado &amp; Curva de Preços</button>
   <button class="tab" data-tab="financas" role="tab" aria-selected="false">Financiamento &amp; Reciclagem</button>
@@ -2025,15 +2424,15 @@
   <div class="panel active" id="panel-portfolio" role="tabpanel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">TRCs alcançados</div>
-        <div class="panel-subtitle">1 TRC alcançado · só esta ligação</div>
+        <div class="panel-title">Nós de Rede</div>
+        <div class="panel-subtitle">1 TRC ganho · SE Ourique · Ferreira e Évora: prémios posteriores</div>
       </div>
       <div class="panel-actions">
         <button type="button" class="btn-panel-ghost" id="btnMinimizeAll" title="Minimizar todos os nós">Minimizar todos</button>
         <button type="button" class="btn-panel-ghost" id="btnRestoreAll" title="Restaurar todos os nós">Restaurar todos</button>
       </div>
     </div>
-    <div class="portfolio-workspace" id="portfolioWorkspace">
+    <div class="portfolio-workspace" id="coach-portfolio">
       <div class="asset-grid" id="assetGrid"></div>
       <div class="portfolio-empty" id="portfolioEmpty" aria-hidden="true">
         <svg class="portfolio-empty-icon" viewBox="0 0 56 56" fill="none" aria-hidden="true">
@@ -2239,6 +2638,20 @@
   <div class="dossier-scroll" id="dossierBody"></div>
 </div>
 
+<!-- ═══ WATT COACH ═══ -->
+<div class="watt-coach" id="wattCoach" aria-hidden="true">
+  <div class="watt-coach-veil" id="wattCoachVeil"></div>
+  <div class="watt-coach-spotlight" id="wattCoachSpotlight" hidden></div>
+  <div class="watt-coach-card" id="wattCoachCard" role="dialog" aria-modal="true" aria-labelledby="wattCoachTitle">
+    <div class="watt-coach-caret" id="wattCoachCaret" hidden aria-hidden="true"></div>
+    <button type="button" class="watt-coach-dismiss" id="wattCoachDismiss" aria-label="Fechar tutorial" title="Fechar">×</button>
+    <h2 class="watt-coach-title" id="wattCoachTitle"></h2>
+    <p class="watt-coach-body" id="wattCoachBody"></p>
+    <p class="watt-coach-hint" id="wattCoachHint" hidden></p>
+    <button type="button" class="watt-coach-btn" id="wattCoachBtn">Saltar</button>
+  </div>
+</div>
+
 <div class="tooltip" id="tooltip" role="tooltip"></div>
 <div class="toast" id="toast"></div>
 
@@ -2262,6 +2675,10 @@
     minimized: new Set(),
     pipelineUnlocked: false,
   };
+
+  // Declared early so FAB / Escape can close over them (WattCoach fills real values)
+  var coachActive = false;
+  var coachBlockFab = false;
 
   const DEV_ACTIONS = new Set(['sobre', 'bess', 'eolica']);
 
@@ -2291,7 +2708,8 @@
       badge: 'Leilão',
       badgeClass: 'a',
       construction: true,
-      tension: 'Offtake ~15 €/MWh · Câmara de Ourique aperta · o ponto sangra',
+      tension: 'Alentejo · Câmara hostil · sangra',
+      tensionTone: 'red',
       trc: { solar: 60, wind: 0, bess: 0, free: 40 },
       metrics: {
         capex: '€ 22M em obra',
@@ -2342,6 +2760,39 @@
       if (k < 1000) return '€ ' + k + 'k';
     }
     return '€ ' + v.toFixed(2).replace('.', ',') + 'M';
+  }
+
+  function fmtVan(n) {
+    const v = Number(n);
+    const sign = v < 0 ? '−' : '';
+    return sign + Math.abs(v).toFixed(1).replace('.', ',') + ' M€';
+  }
+
+  function vanTone(v) {
+    if (v <= 0) return 'red';
+    return 'amber';
+  }
+
+  function cashTone(m) {
+    if (m < 0.5) return 'green';
+    if (m < 1.5) return 'amber';
+    return 'red';
+  }
+
+  function faceVan(n) {
+    // Minute 1: the live book VAN is the Ourique TRC VAN
+    return n.id === 'ourique' ? state.nav : 0;
+  }
+
+  function threatFace(n) {
+    const mission = getMission(n.id);
+    if (mission) {
+      return { label: 'PIP · mês ' + mission.month, value: '', tone: 'amber' };
+    }
+    if (state.cashAtRisk > 0) {
+      return { label: 'Cash at risk', value: fmtCashAtRisk(state.cashAtRisk), tone: cashTone(state.cashAtRisk) };
+    }
+    return { label: 'Sem missão', value: '', tone: '' };
   }
 
   function actionDisplayTitle(title) {
@@ -2508,88 +2959,60 @@
 
     grid.innerHTML = expanded.map(n => {
       const t = n.trc;
-      const dscrVal = parseDscr(n.metrics.dscr);
-      const riskDscr = dscrVal !== null && dscrVal < 1.25;
+      const used = 100 - t.free;
       const mission = getMission(n.id);
+      const th = threatFace(n);
+      const van = faceVan(n);
+      const vTone = vanTone(van);
       const classes = [
         'node-card',
         n.construction ? 'construction' : '',
-        riskDscr ? 'risk-dscr' : '',
         activeId === n.id ? 'is-active' : '',
       ].filter(Boolean).join(' ');
-      const shortAct = mission ? (ACTION_SHORT[mission.actionId] || '') : '';
-      const chip = mission
-        ? `<div class="mission-chip"><span class="mission-chip-dot"></span>1 missão em curso${shortAct ? ' · ' + shortAct : ''}</div>`
-        : '';
       const primary = mission
         ? `<button class="btn-primary" type="button" data-dossier="${n.id}">Abrir dossier</button>`
         : '';
       return `
-        <article class="${classes}" data-node="${n.id}">
+        <article class="${classes}" id="card-${n.id}" data-node="${n.id}">
           <div class="window-titlebar">
             <button type="button" class="btn-minimize-node" data-minimize="${n.id}"
               aria-label="Minimizar nó" title="Minimizar nó"></button>
-            <div class="window-title">${n.name} · ${n.capacity}</div>
+            <div class="window-title">${n.name}</div>
             <div class="window-titlebar-end">
-              ${riskDscr ? `<span class="dscr-warn-pill" title="DSCR abaixo do covenant 1,25×">DSCR</span>` : ''}
               <span class="mod-badge ${n.badgeClass}">${n.badge}</span>
             </div>
           </div>
 
           <div class="window-body">
-            ${n.construction
-              ? `<div class="status-pill"><span class="status-dot"></span> Em construção · base solar Ourique</div>`
-              : `<div class="node-status">${n.status}</div>`}
-            ${n.tension ? `<div class="tension-line">${n.tension}</div>` : ''}
-            ${chip}
+            <div class="card-tensao tone-${n.tensionTone || 'red'}">${n.tension}</div>
 
-            <div class="trc-section">
-              <div class="trc-label-row">
-                <span class="trc-label">
-                  Fator de Utilização do TRC
-                  <span class="info-dot" data-tip="Fator de Utilização do TRC: percentagem da capacidade de ligação (Transformação / Rede de Consumo) atribuída a cada tecnologia. Capacidade livre permite sobreequipamento ou hibridização ao abrigo do DL 15/2022.">?</span>
-                </span>
-                <span class="trc-pct num">${100 - t.free}% utilizado</span>
-              </div>
-              <div class="trc-bar" aria-hidden="true">
-                <div class="trc-seg" style="width:${t.solar}%;background:var(--solar)"></div>
-                <div class="trc-seg" style="width:${t.wind}%;background:var(--wind)"></div>
-                <div class="trc-seg" style="width:${t.bess}%;background:var(--bess)"></div>
-                <div class="trc-seg" style="width:${t.free}%;background:#f1f5f9"></div>
-              </div>
-              <div class="trc-legend">
-                ${t.solar ? `<span class="trc-legend-item"><span class="trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</span>` : ''}
-                ${t.wind ? `<span class="trc-legend-item"><span class="trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</span>` : ''}
-                ${t.bess ? `<span class="trc-legend-item"><span class="trc-dot" style="background:var(--bess)"></span>BESS ${t.bess}%</span>` : ''}
-                <span class="trc-legend-item"><span class="trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</span>
+            <div class="card-hero">
+              <div class="card-hero-label">VAN</div>
+              <div class="card-hero-row">
+                <span class="card-hero-value tone-${vTone} num">${fmtVan(van)}</span>
               </div>
             </div>
 
-            <div class="metrics-table">
-              <div class="metric-cell">
-                <div class="metric-cell-label">VAN do ponto</div>
-                <div class="metric-cell-value num" style="color:var(--critical)">${n.metrics.van || '—'}</div>
+            <div class="card-threat">
+              <div class="threat-row">
+                <span class="threat-label">${th.label}</span>
+                ${th.value ? `<span class="threat-value tone-${th.tone} num">${th.value}</span>` : ''}
               </div>
-              <div class="metric-cell">
-                <div class="metric-cell-label">CAPEX / estado</div>
-                <div class="metric-cell-value num">${n.metrics.capex}</div>
+              ${mission ? `<span class="mission-chip">1 missão em curso</span>` : ''}
+            </div>
+
+            <div class="trc-face">
+              <div class="trc-bar" aria-hidden="true">
+                <div class="trc-seg" style="width:${used}%;background:#94a3b8"></div>
               </div>
-              <div class="metric-cell">
-                <div class="metric-cell-label">Preço Médio Capturado</div>
-                <div class="metric-cell-value num">${n.metrics.preco}</div>
-              </div>
-              <div class="metric-cell">
-                <div class="metric-cell-label">
-                  DSCR
-                  <span class="info-dot" data-tip="DSCR (Debt Service Coverage Ratio): rácio entre o cash-flow operacional e o serviço da dívida do período. Covenant típico: ≥ 1,25×.">?</span>
-                </div>
-                <div class="metric-cell-value num" style="color:var(--critical)">${n.metrics.dscr}</div>
+              <div class="trc-face-meta">
+                <span class="trc-pct-quiet num">${used}%</span>
               </div>
             </div>
 
             <div class="card-actions">
               ${primary}
-              <button class="btn-secondary" type="button" data-open="${n.id}">Ver projectos neste TRC</button>
+              <button class="btn-secondary" type="button" data-open="${n.id}">Gerir Otimizações</button>
             </div>
           </div>
         </article>`;
@@ -2612,6 +3035,9 @@
     bindTooltips(grid);
     renderEmptyState(expanded.length);
     renderDock();
+    if (coachActive && typeof repositionCoach === 'function') {
+      requestAnimationFrame(() => repositionCoach());
+    }
   }
 
   /* ── Pipeline ── */
@@ -2987,6 +3413,7 @@
 
   /* ── Next Quarter (portfolio) / Correr o mês (dossier) ── */
   function onFabClick() {
+    if (coachActive && coachBlockFab) return;
     if (state.activeDossierNodeId) {
       advanceMissionMonth();
       return;
@@ -2997,6 +3424,7 @@
   function nextQuarter() {
     const btn = document.getElementById('btnNextQ');
     if (btn.disabled) return;
+    if (coachActive && coachBlockFab) return;
     btn.disabled = true;
     btn.classList.add('loading');
 
@@ -3020,6 +3448,7 @@
       });
       renderActivity();
 
+      renderNodes();
       btn.classList.remove('loading');
       btn.disabled = false;
       showToast(`Avançado para ${state.year} · Q${state.quarter}`);
@@ -3078,6 +3507,553 @@
     syncFabClearance();
   }
 
+    /* ── WattCoach / Storyteller protocol ── */
+  const ONBOARDING_KEY = 'watt-indeferido-onboarding-done';
+  const COACH_GAP = 12;
+  const COACH_PAD = 16;
+  const DEFAULT_CLICK_HINT = 'Clica no ponto destacado';
+
+  const DEMO_STEPS = [
+    {
+      tutorial_step: 1,
+      ui_target: '#coach-brand',
+      position: 'bottom',
+      overlay_highlight: true,
+      soft_spotlight: true,
+      card_data: {
+        title: 'Já é teu',
+        body: 'Ganhaste a ligação. O preço que assinaste é mau — o projecto sangra. Ganhas quando te deixam construir o extra, sem queimares o dinheiro em risco.',
+        action_instruction: 'Clica no logo',
+        btn_label: 'Saltar'
+      }
+    },
+    {
+      tutorial_step: 2,
+      ui_target: '#card-ourique',
+      position: 'right',
+      overlay_highlight: true,
+      card_data: {
+        title: 'Esta sangra',
+        body: 'Pagaste este ponto. A luz sai barata demais e a câmara está contra. Abre o cartão e escolhe o extra.',
+        action_instruction: 'Clica no cartão',
+        btn_label: 'Saltar'
+      }
+    },
+    {
+      tutorial_step: 3,
+      ui_target: '#btnNextQ',
+      position: 'left',
+      overlay_highlight: true,
+      card_data: {
+        title: 'O mês corre',
+        body: 'Avançar o tempo não é saltar o jogo. É mais um mês à espera de cartas — câmara, floresta, rede.',
+        action_instruction: 'Clica no botão',
+        btn_label: 'Saltar'
+      }
+    },
+    {
+      tutorial_step: 4,
+      ui_target: '#coach-header-metrics',
+      position: 'bottom',
+      overlay_highlight: true,
+      card_data: {
+        title: 'Isto queima',
+        body: 'Os números em cima são o dinheiro que arriscas enquanto ninguém te deixa construir. Se rebentar, perdes.',
+        action_instruction: 'Clica em cima',
+        btn_label: 'Jogar'
+      }
+    }
+  ];
+
+  let coachQueue = [];
+  let coachIndex = 0;
+  coachActive = false;
+  let coachDemoMode = false;
+  let coachResizeBound = false;
+  let coachTargetEl = null;
+  let coachTargetHandler = null;
+  coachBlockFab = false;
+
+  function isOnboardingDone() {
+    try { return localStorage.getItem(ONBOARDING_KEY) === '1'; }
+    catch (_) { return false; }
+  }
+
+  function markOnboardingDone() {
+    try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+  }
+
+  function wordCount(str) {
+    return String(str || '').trim().split(/\s+/).filter(Boolean).length;
+  }
+
+  function clampTitle(title) {
+    const words = String(title || '').trim().split(/\s+/).filter(Boolean);
+    return words.slice(0, 4).join(' ') || 'Dica';
+  }
+
+  function normalizePayload(raw) {
+    const p = raw && typeof raw === 'object' ? raw : {};
+    const card = p.card_data && typeof p.card_data === 'object' ? p.card_data : {};
+    let position = String(p.position || 'center').toLowerCase();
+    if (!['bottom', 'top', 'left', 'right', 'center'].includes(position)) position = 'center';
+    const ui_target = typeof p.ui_target === 'string' && p.ui_target.trim()
+      ? p.ui_target.trim()
+      : null;
+    if (!ui_target) position = 'center';
+    const hasTarget = !!ui_target;
+    // With a target, btn is skip/dismiss (Saltar / Jogar); Storyteller btn_label is the skip label
+    let btn = String(card.btn_label || '').trim();
+    if (!btn) btn = hasTarget ? 'Saltar' : 'Seguinte';
+    else if (hasTarget && /^(seguinte|próximo|proximo|next|continuar)$/i.test(btn)) btn = 'Saltar';
+    return {
+      tutorial_step: Number(p.tutorial_step) || 0,
+      ui_target,
+      position,
+      overlay_highlight: p.overlay_highlight !== false,
+      soft_spotlight: !!p.soft_spotlight,
+      card_data: {
+        title: clampTitle(card.title),
+        body: String(card.body || '').trim(),
+        action_instruction: String(card.action_instruction || '').trim(),
+        btn_label: btn
+      }
+    };
+  }
+
+  function resolveTarget(selector) {
+    if (!selector) return null;
+    try {
+      return document.querySelector(selector);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function setVeilHole(hole) {
+    const veil = document.getElementById('wattCoachVeil');
+    if (!hole) {
+      veil.style.clipPath = '';
+      return;
+    }
+    const l = hole.left, t = hole.top, r = hole.left + hole.width, b = hole.top + hole.height;
+    // evenodd: full viewport minus spotlight rect — clicks pass through the hole
+    veil.style.clipPath = `polygon(evenodd, 0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%, ${l}px ${t}px, ${r}px ${t}px, ${r}px ${b}px, ${l}px ${b}px, ${l}px ${t}px)`;
+  }
+
+  function placeSpotlight(el, soft) {
+    const spot = document.getElementById('wattCoachSpotlight');
+    if (!el) {
+      spot.hidden = true;
+      spot.style.cssText = '';
+      spot.classList.remove('is-soft');
+      setVeilHole(null);
+      return null;
+    }
+    const r = el.getBoundingClientRect();
+    const pad = soft ? 12 : 6;
+    const hole = {
+      top: Math.max(0, r.top - pad),
+      left: Math.max(0, r.left - pad),
+      width: Math.min(window.innerWidth, r.width + pad * 2),
+      height: Math.min(window.innerHeight, r.height + pad * 2)
+    };
+    spot.hidden = false;
+    spot.classList.toggle('is-soft', !!soft);
+    spot.style.top = hole.top + 'px';
+    spot.style.left = hole.left + 'px';
+    spot.style.width = hole.width + 'px';
+    spot.style.height = hole.height + 'px';
+    setVeilHole(hole);
+    return hole;
+  }
+
+  function placeCaret(effectivePos, targetEl) {
+    const card = document.getElementById('wattCoachCard');
+    const caret = document.getElementById('wattCoachCaret');
+    if (!targetEl || !effectivePos || effectivePos === 'center') {
+      card.removeAttribute('data-caret');
+      card.style.removeProperty('--caret-pos');
+      caret.hidden = true;
+      return;
+    }
+    card.setAttribute('data-caret', effectivePos);
+    caret.hidden = false;
+    const cr = card.getBoundingClientRect();
+    const tr = targetEl.getBoundingClientRect();
+    const tx = tr.left + tr.width / 2;
+    const ty = tr.top + tr.height / 2;
+    if (effectivePos === 'bottom' || effectivePos === 'top') {
+      let x = tx - cr.left;
+      x = Math.max(18, Math.min(x, cr.width - 18));
+      card.style.setProperty('--caret-pos', x + 'px');
+    } else {
+      let y = ty - cr.top;
+      y = Math.max(18, Math.min(y, cr.height - 18));
+      card.style.setProperty('--caret-pos', y + 'px');
+    }
+  }
+
+  function activitySafeBottom() {
+    const el = document.getElementById('activityLog') || document.querySelector('.activity');
+    if (el) {
+      const h = el.getBoundingClientRect().height;
+      if (h > 0) return Math.max(72, Math.min(h + 8, 200));
+    }
+    return 96; // collapsed-strip fallback (~72–120px)
+  }
+
+  function placeCard(position, targetEl) {
+    const card = document.getElementById('wattCoachCard');
+    card.classList.toggle('is-center', position === 'center' || !targetEl);
+    card.style.top = '';
+    card.style.left = '';
+    card.style.right = '';
+    card.style.bottom = '';
+
+    if (position === 'center' || !targetEl) {
+      placeCaret(null, null);
+      return 'center';
+    }
+
+    const r = targetEl.getBoundingClientRect();
+    const cw = card.offsetWidth || 300;
+    const ch = card.offsetHeight || 160;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const safeBottom = activitySafeBottom();
+    const maxTop = vh - ch - Math.max(COACH_PAD, safeBottom);
+    let top, left;
+    let effective = position;
+
+    function coordsFor(pos) {
+      if (pos === 'bottom') {
+        return { top: r.bottom + COACH_GAP, left: r.left + r.width / 2 - cw / 2 };
+      }
+      if (pos === 'top') {
+        return { top: r.top - ch - COACH_GAP, left: r.left + r.width / 2 - cw / 2 };
+      }
+      if (pos === 'left') {
+        return { top: r.top + r.height / 2 - ch / 2, left: r.left - cw - COACH_GAP };
+      }
+      // right
+      return { top: r.top + r.height / 2 - ch / 2, left: r.right + COACH_GAP };
+    }
+
+    function fitsVertically(t) {
+      return t >= COACH_PAD && t <= maxTop;
+    }
+    function fitsHorizontally(l) {
+      return l >= COACH_PAD && l <= vw - cw - COACH_PAD;
+    }
+    function overlapsActivity(t) {
+      return t + ch > vh - safeBottom;
+    }
+
+    ({ top, left } = coordsFor(position));
+
+    // Flip before clamp so preferred side can escape activity / viewport overflow
+    if (position === 'bottom') {
+      const rawTop = r.bottom + COACH_GAP;
+      if (overlapsActivity(rawTop) && fitsVertically(r.top - ch - COACH_GAP)) {
+        top = r.top - ch - COACH_GAP;
+        left = r.left + r.width / 2 - cw / 2;
+        effective = 'top';
+      }
+    } else if (position === 'top') {
+      if (r.top - ch - COACH_GAP < COACH_PAD) {
+        const below = r.bottom + COACH_GAP;
+        if (fitsVertically(below) && !overlapsActivity(below)) {
+          top = below;
+          left = r.left + r.width / 2 - cw / 2;
+          effective = 'bottom';
+        }
+      }
+    } else if (position === 'left') {
+      if (r.left - cw - COACH_GAP < COACH_PAD && fitsHorizontally(r.right + COACH_GAP)) {
+        left = r.right + COACH_GAP;
+        effective = 'right';
+      }
+    } else if (position === 'right') {
+      if (r.right + COACH_GAP + cw > vw - COACH_PAD && fitsHorizontally(r.left - cw - COACH_GAP)) {
+        left = r.left - cw - COACH_GAP;
+        effective = 'left';
+      }
+    }
+
+    // Side placements that still sit on the activity strip → flip above target
+    if ((effective === 'left' || effective === 'right') && overlapsActivity(top)) {
+      const above = r.top - ch - COACH_GAP;
+      if (fitsVertically(above)) {
+        top = above;
+        left = r.left + r.width / 2 - cw / 2;
+        effective = 'top';
+      }
+    }
+
+    left = Math.max(COACH_PAD, Math.min(left, vw - cw - COACH_PAD));
+    top = Math.max(COACH_PAD, Math.min(top, maxTop));
+
+    card.style.top = top + 'px';
+    card.style.left = left + 'px';
+    placeCaret(effective, targetEl);
+    return effective;
+  }
+
+  function unbindTargetAdvance() {
+    if (coachTargetEl && coachTargetHandler) {
+      coachTargetEl.removeEventListener('click', coachTargetHandler, true);
+    }
+    if (coachTargetEl) {
+      coachTargetEl.classList.remove('watt-coach-target-live');
+    }
+    const hdr = document.querySelector('.header');
+    if (hdr && hdr.dataset.coachZ) {
+      hdr.style.zIndex = hdr.dataset.coachZ === 'auto' ? '' : hdr.dataset.coachZ;
+      delete hdr.dataset.coachZ;
+    }
+    coachTargetEl = null;
+    coachTargetHandler = null;
+    coachBlockFab = false;
+  }
+
+  function advanceFromTargetClick() {
+    // Click on spotlighted target = next step (or finish on last)
+    if (coachDemoMode || coachQueue.length > 1) {
+      nextCoach();
+    } else {
+      hideCoach({ persist: false, clearQueue: true });
+    }
+  }
+
+  function bindTargetAdvance(el) {
+    unbindTargetAdvance();
+    if (!el) return;
+    coachTargetEl = el;
+    coachBlockFab = el.id === 'btnNextQ';
+    el.classList.add('watt-coach-target-live');
+    // Header creates a stacking context at z-index 100 — bump so brand/metrics sit above the veil
+    const hdr = el.closest && el.closest('.header');
+    if (hdr && !hdr.dataset.coachZ) {
+      hdr.dataset.coachZ = hdr.style.zIndex || 'auto';
+      hdr.style.zIndex = '505';
+    }
+    coachTargetHandler = (e) => {
+      // Intercept once: advance coach; do not fire underlying action (e.g. End Turn / drawer)
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      advanceFromTargetClick();
+    };
+    el.addEventListener('click', coachTargetHandler, true);
+  }
+
+  function skipOrDismissCoach() {
+    // Saltar / Jogar with a target = end tutorial (not step-next)
+    hideCoach({ persist: coachDemoMode, clearQueue: true });
+  }
+
+  function renderCoach(payload) {
+    const root = document.getElementById('wattCoach');
+    const titleEl = document.getElementById('wattCoachTitle');
+    const bodyEl = document.getElementById('wattCoachBody');
+    const hintEl = document.getElementById('wattCoachHint');
+    const btnEl = document.getElementById('wattCoachBtn');
+
+    const data = normalizePayload(payload);
+    let target = resolveTarget(data.ui_target);
+    let position = data.position;
+    if (!target) {
+      position = 'center';
+      data.overlay_highlight = false;
+    }
+
+    titleEl.textContent = data.card_data.title;
+    bodyEl.textContent = data.card_data.body;
+    const words = wordCount(data.card_data.body);
+    bodyEl.classList.toggle('clamp', words > 20);
+    bodyEl.classList.toggle('clamp-tight', words > 36);
+    bodyEl.title = ''; // never rely on truncation tooltip
+
+    const hasTarget = !!target;
+    let hint = data.card_data.action_instruction;
+    if (hasTarget && !hint) hint = DEFAULT_CLICK_HINT;
+    if (hint) {
+      hintEl.textContent = hint;
+      hintEl.hidden = false;
+    } else {
+      hintEl.textContent = '';
+      hintEl.hidden = true;
+    }
+
+    btnEl.textContent = data.card_data.btn_label;
+    btnEl.classList.toggle('is-skip', hasTarget);
+
+    const useSpot = !!(target && data.overlay_highlight && position !== 'center');
+    // Soft spotlight allowed for intro even when position is bottom (not center)
+    const soft = !!(useSpot && data.soft_spotlight);
+    // Also soft-spotlight when highlighting brand-style anchors with soft flag;
+    // allow spotlight on non-center positions only (existing rule). Intro uses bottom+soft.
+    root.classList.toggle('has-spotlight', useSpot);
+
+    unbindTargetAdvance();
+    if (hasTarget) bindTargetAdvance(target);
+
+    if (useSpot) placeSpotlight(target, soft);
+    else {
+      document.getElementById('wattCoachSpotlight').hidden = true;
+      document.getElementById('wattCoachSpotlight').style.cssText = '';
+      document.getElementById('wattCoachSpotlight').classList.remove('is-soft');
+      setVeilHole(null);
+    }
+
+    // Keep coach above activity/inbox stacking & overflow; never a scroll descendant
+    if (root.parentElement !== document.body) {
+      document.body.appendChild(root);
+    }
+
+    // Show first so measurements work
+    root.classList.add('open');
+    root.setAttribute('aria-hidden', 'false');
+    coachActive = true;
+
+    // Two RAFs: layout then measure card
+    requestAnimationFrame(() => {
+      const eff = placeCard(position, target);
+      requestAnimationFrame(() => {
+        const eff2 = placeCard(position, target);
+        if (useSpot) placeSpotlight(target, soft);
+        root._coachLast = { data, target, position, useSpot, soft, effectivePos: eff2 || eff };
+        // Focus skip button only when no target; otherwise leave focus alone for tap UX
+        if (!hasTarget) btnEl.focus();
+      });
+    });
+
+    root._coachLast = { data, target, position, useSpot, soft, effectivePos: position };
+  }
+
+  function repositionCoach() {
+    const root = document.getElementById('wattCoach');
+    if (!coachActive || !root || !root._coachLast) return;
+    const { data, position, useSpot, soft } = root._coachLast;
+    const target = resolveTarget(data.ui_target);
+    root._coachLast.target = target;
+    if (useSpot && target) placeSpotlight(target, soft);
+    else setVeilHole(null);
+    const eff = placeCard(target ? position : 'center', target);
+    root._coachLast.effectivePos = eff;
+    // Keep target binding if element was re-created
+    if (target && target !== coachTargetEl) bindTargetAdvance(target);
+  }
+
+  function hideCoach(opts) {
+    opts = opts || {};
+    unbindTargetAdvance();
+    const root = document.getElementById('wattCoach');
+    root.classList.remove('open', 'has-spotlight');
+    root.setAttribute('aria-hidden', 'true');
+    document.getElementById('wattCoachSpotlight').hidden = true;
+    document.getElementById('wattCoachSpotlight').classList.remove('is-soft');
+    setVeilHole(null);
+    const caret = document.getElementById('wattCoachCaret');
+    caret.hidden = true;
+    document.getElementById('wattCoachCard').removeAttribute('data-caret');
+    coachActive = false;
+    root._coachLast = null;
+    if (opts.persist) markOnboardingDone();
+    if (opts.clearQueue) {
+      coachQueue = [];
+      coachIndex = 0;
+      coachDemoMode = false;
+    }
+  }
+
+  function showCoach(payload) {
+    // Single-step from Storyteller: replace queue with this step
+    coachQueue = [normalizePayload(payload)];
+    coachIndex = 0;
+    coachDemoMode = false;
+    renderCoach(coachQueue[0]);
+    return coachQueue[0];
+  }
+
+  function nextCoach() {
+    if (!coachQueue.length) {
+      hideCoach({ persist: coachDemoMode, clearQueue: true });
+      return null;
+    }
+    if (coachIndex >= coachQueue.length - 1) {
+      hideCoach({ persist: coachDemoMode, clearQueue: true });
+      return null;
+    }
+    coachIndex += 1;
+    renderCoach(coachQueue[coachIndex]);
+    return coachQueue[coachIndex];
+  }
+
+  function startDemoSequence() {
+    coachQueue = DEMO_STEPS.map(normalizePayload);
+    coachIndex = 0;
+    coachDemoMode = true;
+    // Ensure portfolio tab + Ourique card visible
+    const tab = document.querySelector('.tab[data-tab="portfolio"]');
+    if (tab && !tab.classList.contains('active')) tab.click();
+    if (state.minimized.has('ourique')) restoreNode('ourique');
+    renderCoach(coachQueue[0]);
+  }
+
+  window.WattCoach = {
+    show: showCoach,
+    hide: function () { hideCoach({ clearQueue: true }); },
+    next: nextCoach,
+    startDemo: startDemoSequence
+  };
+
+  function initCoach() {
+    document.getElementById('wattCoachBtn').addEventListener('click', () => {
+      const hasTarget = !!(coachTargetEl || (document.getElementById('wattCoach')._coachLast || {}).target);
+      if (hasTarget) {
+        // Secondary: Saltar / Jogar dismisses the whole tutorial
+        skipOrDismissCoach();
+      } else if (coachDemoMode || coachQueue.length > 1) {
+        nextCoach();
+      } else {
+        hideCoach({ persist: false, clearQueue: true });
+      }
+    });
+
+    document.getElementById('wattCoachDismiss').addEventListener('click', () => {
+      hideCoach({ persist: coachDemoMode, clearQueue: true });
+    });
+
+    document.getElementById('wattCoachVeil').addEventListener('click', () => {
+      // Don't dismiss on veil click during demo — only Escape / dismiss / Saltar / target
+    });
+
+    document.getElementById('btnTutorial').addEventListener('click', () => {
+      startDemoSequence();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!coachActive) return;
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        hideCoach({ persist: coachDemoMode, clearQueue: true });
+      }
+    }, true);
+
+    if (!coachResizeBound) {
+      window.addEventListener('resize', repositionCoach);
+      window.addEventListener('scroll', repositionCoach, true);
+      coachResizeBound = true;
+    }
+
+    if (!isOnboardingDone()) {
+      requestAnimationFrame(() => startDemoSequence());
+    }
+  }
+
+
   /* ── Init ── */
   function init() {
     renderNodes();
@@ -3087,6 +4063,7 @@
     initTabs();
     initActivity();
     syncFabMode();
+    initCoach();
 
     document.getElementById('btnNextQ').addEventListener('click', onFabClick);
     document.getElementById('drawerClose').addEventListener('click', closeDrawer);
@@ -3096,6 +4073,7 @@
     document.getElementById('btnRestoreAll').addEventListener('click', restoreAllNodes);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        if (coachActive) return;
         if (state.activeDossierNodeId) closeDossier();
         else closeDrawer();
       }
