@@ -3522,31 +3522,31 @@
   const DEMO_STEPS = [
     {
       tutorial_step: 1,
-      ui_target: '#coach-brand',
-      position: 'bottom',
+      kind: 'storytelling',
       overlay_highlight: true,
-      soft_spotlight: true,
       card_data: {
         title: 'Já é teu',
         body: 'Ganhaste a ligação. O preço que assinaste é mau — o projecto sangra. Ganhas quando te deixam construir o extra, sem queimares o dinheiro em risco.',
-        action_instruction: 'Clica no logo',
-        btn_label: 'Saltar'
+        action_instruction: '',
+        btn_label: 'Continuar'
       }
     },
     {
       tutorial_step: 2,
+      kind: 'tutorial',
       ui_target: '#card-ourique',
       position: 'right',
       overlay_highlight: true,
       card_data: {
-        title: 'Esta sangra',
-        body: 'Pagaste este ponto. A luz sai barata demais e a câmara está contra. Abre o cartão e escolhe o extra.',
+        title: 'A tua ligação',
+        body: 'Abre o cartão. Escolhe o extra antes que continue a sangrar.',
         action_instruction: 'Clica no cartão',
         btn_label: 'Saltar'
       }
     },
     {
       tutorial_step: 3,
+      kind: 'tutorial',
       ui_target: '#btnNextQ',
       position: 'left',
       overlay_highlight: true,
@@ -3559,6 +3559,7 @@
     },
     {
       tutorial_step: 4,
+      kind: 'tutorial',
       ui_target: '#coach-header-metrics',
       position: 'bottom',
       overlay_highlight: true,
@@ -3571,7 +3572,7 @@
     }
   ];
 
-  let coachQueue = [];
+  let coachQueue = [];  let coachQueue = [];
   let coachIndex = 0;
   coachActive = false;
   let coachDemoMode = false;
@@ -3598,26 +3599,52 @@
     return words.slice(0, 4).join(' ') || 'Dica';
   }
 
+  function normalizeKind(raw) {
+    const k = String(raw || '').toLowerCase().trim();
+    if (k === 'story' || k === 'storytelling') return 'storytelling';
+    if (k === 'tutorial') return 'tutorial';
+    return null;
+  }
+
   function normalizePayload(raw) {
     const p = raw && typeof raw === 'object' ? raw : {};
     const card = p.card_data && typeof p.card_data === 'object' ? p.card_data : {};
-    let position = String(p.position || 'center').toLowerCase();
-    if (!['bottom', 'top', 'left', 'right', 'center'].includes(position)) position = 'center';
-    const ui_target = typeof p.ui_target === 'string' && p.ui_target.trim()
+    let ui_target = typeof p.ui_target === 'string' && p.ui_target.trim()
       ? p.ui_target.trim()
       : null;
-    if (!ui_target) position = 'center';
-    const hasTarget = !!ui_target;
-    // With a target, btn is skip/dismiss (Saltar / Jogar); Storyteller btn_label is the skip label
+    let kind = normalizeKind(p.kind);
+    // Infer when Storyteller omits kind: target → tutorial, else storytelling
+    if (!kind) kind = ui_target ? 'tutorial' : 'storytelling';
+
+    let position;
+    let overlay_highlight = p.overlay_highlight !== false;
+    let soft_spotlight = false;
     let btn = String(card.btn_label || '').trim();
-    if (!btn) btn = hasTarget ? 'Saltar' : 'Seguinte';
-    else if (hasTarget && /^(seguinte|próximo|proximo|next|continuar)$/i.test(btn)) btn = 'Saltar';
+
+    if (kind === 'storytelling') {
+      // Narrative beat: always center, full blur+dim, no hole, no caret, button advances
+      ui_target = null;
+      position = 'center';
+      soft_spotlight = false;
+      if (!btn) btn = 'Continuar';
+    } else {
+      // Tutorial: anchored to ui_target; hole + caret; click target advances; btn = Saltar/Jogar
+      position = String(p.position || 'right').toLowerCase();
+      if (!['bottom', 'top', 'left', 'right'].includes(position)) position = 'right';
+      if (!ui_target) position = 'center';
+      soft_spotlight = !!p.soft_spotlight;
+      const hasTarget = !!ui_target;
+      if (!btn) btn = hasTarget ? 'Saltar' : 'Seguinte';
+      else if (hasTarget && /^(seguinte|próximo|proximo|next|continuar)$/i.test(btn)) btn = 'Saltar';
+    }
+
     return {
       tutorial_step: Number(p.tutorial_step) || 0,
+      kind,
       ui_target,
       position,
-      overlay_highlight: p.overlay_highlight !== false,
-      soft_spotlight: !!p.soft_spotlight,
+      overlay_highlight,
+      soft_spotlight,
       card_data: {
         title: clampTitle(card.title),
         body: String(card.body || '').trim(),
@@ -3627,7 +3654,7 @@
     };
   }
 
-  function resolveTarget(selector) {
+    function resolveTarget(selector) {
     if (!selector) return null;
     try {
       return document.querySelector(selector);
@@ -3860,11 +3887,11 @@
     const btnEl = document.getElementById('wattCoachBtn');
 
     const data = normalizePayload(payload);
-    let target = resolveTarget(data.ui_target);
+    const isStory = data.kind === 'storytelling';
+    let target = isStory ? null : resolveTarget(data.ui_target);
     let position = data.position;
-    if (!target) {
+    if (!isStory && !target) {
       position = 'center';
-      data.overlay_highlight = false;
     }
 
     titleEl.textContent = data.card_data.title;
@@ -3872,12 +3899,12 @@
     const words = wordCount(data.card_data.body);
     bodyEl.classList.toggle('clamp', words > 20);
     bodyEl.classList.toggle('clamp-tight', words > 36);
-    bodyEl.title = ''; // never rely on truncation tooltip
+    bodyEl.title = ''; // never rely on truncation tooltip — shrink type, show full text
 
-    const hasTarget = !!target;
+    const hasTarget = !!(!isStory && target);
     let hint = data.card_data.action_instruction;
     if (hasTarget && !hint) hint = DEFAULT_CLICK_HINT;
-    if (hint) {
+    if (!isStory && hint) {
       hintEl.textContent = hint;
       hintEl.hidden = false;
     } else {
@@ -3886,14 +3913,14 @@
     }
 
     btnEl.textContent = data.card_data.btn_label;
+    // Tutorial + target → secondary Saltar/Jogar; storytelling → primary Continuar
     btnEl.classList.toggle('is-skip', hasTarget);
 
-    const useSpot = !!(target && data.overlay_highlight && position !== 'center');
-    // Soft spotlight allowed for intro even when position is bottom (not center)
+    // Tutorial: hole on ui_target. Storytelling: full blur+dim, no hole, no caret.
+    const useSpot = !!(hasTarget && data.overlay_highlight && position !== 'center');
     const soft = !!(useSpot && data.soft_spotlight);
-    // Also soft-spotlight when highlighting brand-style anchors with soft flag;
-    // allow spotlight on non-center positions only (existing rule). Intro uses bottom+soft.
     root.classList.toggle('has-spotlight', useSpot);
+    root.dataset.kind = data.kind;
 
     unbindTargetAdvance();
     if (hasTarget) bindTargetAdvance(target);
@@ -3903,7 +3930,7 @@
       document.getElementById('wattCoachSpotlight').hidden = true;
       document.getElementById('wattCoachSpotlight').style.cssText = '';
       document.getElementById('wattCoachSpotlight').classList.remove('is-soft');
-      setVeilHole(null);
+      setVeilHole(null); // full-viewport blur+dim (storytelling / no-target)
     }
 
     // Always re-parent to body so coach paints above header/activity/dock/FAB/drawer
@@ -3916,20 +3943,22 @@
 
     // Two RAFs: layout then measure card
     requestAnimationFrame(() => {
-      const eff = placeCard(position, target);
+      const placeTarget = isStory ? null : target;
+      const placePos = isStory ? 'center' : position;
+      const eff = placeCard(placePos, placeTarget);
       requestAnimationFrame(() => {
-        const eff2 = placeCard(position, target);
+        const eff2 = placeCard(placePos, placeTarget);
         if (useSpot) placeSpotlight(target, soft);
-        root._coachLast = { data, target, position, useSpot, soft, effectivePos: eff2 || eff };
-        // Focus skip button only when no target; otherwise leave focus alone for tap UX
-        if (!hasTarget) btnEl.focus();
+        root._coachLast = { data, target: placeTarget, position: placePos, useSpot, soft, effectivePos: eff2 || eff };
+        // Storytelling: focus primary Continuar. Tutorial with target: leave focus for tap UX.
+        if (isStory || !hasTarget) btnEl.focus();
       });
     });
 
-    root._coachLast = { data, target, position, useSpot, soft, effectivePos: position };
+    root._coachLast = { data, target: isStory ? null : target, position: isStory ? 'center' : position, useSpot, soft, effectivePos: isStory ? 'center' : position };
   }
 
-  function repositionCoach() {
+    function repositionCoach() {
     const root = document.getElementById('wattCoach');
     if (!coachActive || !root || !root._coachLast) return;
     const { data, position, useSpot, soft } = root._coachLast;
@@ -3948,6 +3977,7 @@
     unbindTargetAdvance();
     const root = document.getElementById('wattCoach');
     root.classList.remove('open', 'has-spotlight');
+    delete root.dataset.kind;
     root.setAttribute('aria-hidden', 'true');
     document.getElementById('wattCoachSpotlight').hidden = true;
     document.getElementById('wattCoachSpotlight').classList.remove('is-soft');
@@ -4008,11 +4038,14 @@
 
   function initCoach() {
     document.getElementById('wattCoachBtn').addEventListener('click', () => {
-      const hasTarget = !!(coachTargetEl || (document.getElementById('wattCoach')._coachLast || {}).target);
-      if (hasTarget) {
-        // Secondary: Saltar / Jogar dismisses the whole tutorial
+      const last = (document.getElementById('wattCoach')._coachLast || {});
+      const kind = (last.data && last.data.kind) || (coachTargetEl ? 'tutorial' : 'storytelling');
+      const hasTarget = !!(coachTargetEl || last.target);
+      if (kind === 'tutorial' && hasTarget) {
+        // Tutorial secondary: Saltar / Jogar dismisses the whole sequence
         skipOrDismissCoach();
       } else if (coachDemoMode || coachQueue.length > 1) {
+        // Storytelling primary Continuar (or tutorial without target) → next step
         nextCoach();
       } else {
         hideCoach({ persist: false, clearQueue: true });
