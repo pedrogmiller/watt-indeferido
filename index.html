@@ -983,6 +983,71 @@
   .btn-confirm:hover { background: #1e293b; }
   .btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
 
+
+  .tension-line {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: #b45309;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+
+  .pipeline-lock-banner {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    margin-bottom: 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .pipeline-lock-banner strong {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .pipeline-lock-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: #e2e8f0;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .pipeline-card.locked {
+    opacity: 0.72;
+    filter: grayscale(0.35);
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .pipeline-card.locked:hover {
+    box-shadow: var(--shadow-card);
+    transform: none;
+  }
+
+  .urgency-tag.locked {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+
+  .metric-value.is-bleed {
+    color: var(--critical);
+  }
+
   /* ── Pipeline tab ── */
   .pipeline-list {
     display: flex;
@@ -1921,24 +1986,24 @@
   <div class="header-metrics">
     <div class="metric-pill" id="pillCaixa">
       <span class="metric-label">Caixa Disponível</span>
-      <span class="metric-value num" id="valCaixa">€ 18,4M</span>
+      <span class="metric-value num" id="valCaixa">€ 12,5M</span>
     </div>
     <div class="metric-pill" id="pillDivida">
       <span class="metric-label">Dívida Consolidada</span>
-      <span class="metric-value num" id="valDivida">€ 42,1M</span>
+      <span class="metric-value num" id="valDivida">€ 18,6M</span>
     </div>
     <div class="metric-pill" id="pillNav">
       <span class="metric-label">NAV Estimado</span>
-      <span class="metric-value num" id="valNav">€ 64,8M</span>
+      <span class="metric-value num is-bleed" id="valNav">−€ 3,8M</span>
     </div>
-    <div class="rating-badge">Tier 2 · Mid IPP</div>
+    <div class="rating-badge">Early · 1 TRC</div>
     <div class="bonding-pill">
       <div class="bonding-top">
         <span class="metric-label">Bonding Capacity</span>
-        <span class="metric-value num" style="font-size:12px" id="valBonding">€ 6,2M livres</span>
+        <span class="metric-value num" style="font-size:12px" id="valBonding">€ 3,4M livres</span>
       </div>
       <div class="bonding-bar">
-        <div class="bonding-fill" id="bondingFill" style="width:61%"></div>
+        <div class="bonding-fill" id="bondingFill" style="width:52%"></div>
       </div>
     </div>
   </div>
@@ -1961,7 +2026,7 @@
     <div class="panel-header">
       <div>
         <div class="panel-title">TRCs alcançados</div>
-        <div class="panel-subtitle">3 TRCs alcançados · só ligações tuas</div>
+        <div class="panel-subtitle">1 TRC alcançado · só esta ligação</div>
       </div>
       <div class="panel-actions">
         <button type="button" class="btn-panel-ghost" id="btnMinimizeAll" title="Minimizar todos os nós">Minimizar todos</button>
@@ -1990,7 +2055,7 @@
     <div class="panel-header">
       <div>
         <div class="panel-title">Pipeline de Originação</div>
-        <div class="panel-subtitle">Oportunidades ao abrigo do DL 15/2022 · Leilões DGEG e acordos E-REDES</div>
+        <div class="panel-subtitle">Bloqueado · faz Ourique pagar antes dos leilões</div>
       </div>
     </div>
     <div class="pipeline-list" id="pipelineList"></div>
@@ -2076,31 +2141,24 @@
         <h3>Estrutura de Dívida</h3>
         <div class="debt-row">
           <div>
-            <div class="debt-name">Project Finance — Évora Sul</div>
-            <div class="debt-detail">Banco BPI · Euribor 6M + 185 bps · Mat. 2038</div>
+            <div class="debt-name">Project Finance — SE Ourique (base solar)</div>
+            <div class="debt-detail">Banco BPI · Euribor 6M + 210 bps · Mat. 2041 · obra em curso</div>
           </div>
-          <div class="debt-amount num">€ 18,6M</div>
-        </div>
-        <div class="debt-row">
-          <div>
-            <div class="debt-name">Project Finance — Alqueva</div>
-            <div class="debt-detail">CGD + CaixaBank · Euribor 6M + 170 bps · Mat. 2040</div>
-          </div>
-          <div class="debt-amount num">€ 14,2M</div>
+          <div class="debt-amount num">€ 14,8M</div>
         </div>
         <div class="debt-row">
           <div>
             <div class="debt-name">Corporate Facility Revolving</div>
-            <div class="debt-detail">Sindicato 3 bancos · Disponível € 12M</div>
+            <div class="debt-detail">Linha curta · Disponível € 4M · só para custos de licensing</div>
           </div>
-          <div class="debt-amount num">€ 9,3M</div>
+          <div class="debt-amount num">€ 3,8M</div>
         </div>
         <div class="debt-row">
           <div>
             <div class="debt-name"><strong>Total Dívida Consolidada</strong></div>
-            <div class="debt-detail">LTV agregado 39,4%</div>
+            <div class="debt-detail">1 TRC · LTV elevado enquanto o ponto sangra</div>
           </div>
-          <div class="debt-amount num" style="font-size:15px">€ 42,1M</div>
+          <div class="debt-amount num" style="font-size:15px">€ 18,6M</div>
         </div>
       </div>
       <div class="finance-card">
@@ -2110,25 +2168,25 @@
             <div class="debt-name">Bonding Capacity Total</div>
             <div class="debt-detail">Garantias bancárias + surety bonds</div>
           </div>
-          <div class="debt-amount num">€ 16,0M</div>
+          <div class="debt-amount num">€ 7,0M</div>
         </div>
         <div class="debt-row">
           <div>
             <div class="debt-name">Utilizado</div>
-            <div class="debt-detail">Cauções DGEG + E-REDES</div>
+            <div class="debt-detail">Caução leilão Ourique + DGEG</div>
           </div>
-          <div class="debt-amount num">€ 9,8M</div>
+          <div class="debt-amount num">€ 3,6M</div>
         </div>
         <div class="debt-row">
           <div>
             <div class="debt-name">Livre</div>
-            <div class="debt-detail">Disponível para novos leilões</div>
+            <div class="debt-detail">Insuficiente para novos leilões enquanto Ourique sangra</div>
           </div>
-          <div class="debt-amount num" style="color:var(--success)">€ 6,2M</div>
+          <div class="debt-amount num" style="color:var(--success)">€ 3,4M</div>
         </div>
         <div class="farmdown-box">
-          <h4>Farm-Down Disponível</h4>
-          <p>Venda de até 49% do equity na Subestação Évora Sul. NAV estimado da parcela: € 8,4M. Liberta bonding e reduz exposição. Prazo típico de closing: 4–6 meses.</p>
+          <h4>Farm-Down</h4>
+          <p>Bloqueado até COD e PIP favorável em Ourique. Sem value-add, a base a ~15 €/MWh não justifica equity sale — o ponto ainda sangra.</p>
         </div>
       </div>
     </div>
@@ -2192,16 +2250,17 @@
   const state = {
     quarter: 3,
     year: 2026,
-    caixa: 18.4,
-    divida: 42.1,
-    nav: 64.8,
+    caixa: 12.5,
+    divida: 18.6,
+    nav: -3.8,
     cashAtRisk: 0,
-    bondingFree: 6.2,
-    bondingTotal: 16.0,
+    bondingFree: 3.4,
+    bondingTotal: 7.0,
     missions: {}, // nodeId -> mission
     activeNodeId: null,
     activeDossierNodeId: null,
     minimized: new Set(),
+    pipelineUnlocked: false,
   };
 
   const DEV_ACTIONS = new Set(['sobre', 'bess', 'eolica']);
@@ -2220,101 +2279,59 @@
   };
 
   const NODE_SHORT = {
-    pego: 'Pego',
-    ferreira: 'Ferreira',
-    evora: 'Évora',
+    ourique: 'Ourique',
   };
 
   const nodes = [
     {
-      id: 'pego',
-      name: 'SE Pego',
+      id: 'ourique',
+      name: 'SE Ourique',
       capacity: '400 / 150 kV',
       status: 'TRC alcançado',
       badge: 'Leilão',
       badgeClass: 'a',
       construction: true,
-      trc: { solar: 55, wind: 10, bess: 0, free: 35 },
+      tension: 'Offtake ~15 €/MWh · Câmara de Ourique aperta · o ponto sangra',
+      trc: { solar: 60, wind: 0, bess: 0, free: 40 },
       metrics: {
-        capex: '—',
+        capex: '€ 22M em obra',
         producao: 'em obra',
         preco: '~15 €/MWh',
-        dscr: '—',
-      },
-    },
-    {
-      id: 'ferreira',
-      name: 'SE Ferreira do Alentejo',
-      capacity: '400 / 150 kV',
-      status: 'TRC alcançado',
-      badge: 'Leilão',
-      badgeClass: 'a',
-      construction: false,
-      trc: { solar: 40, wind: 0, bess: 0, free: 60 },
-      metrics: {
-        capex: '—',
-        producao: '—',
-        preco: '—',
-        dscr: '—',
-      },
-    },
-    {
-      id: 'evora',
-      name: 'SE Évora',
-      capacity: '400 / 150 / 60 kV',
-      status: 'TRC alcançado',
-      badge: 'Acordo direto',
-      badgeClass: 'b',
-      construction: false,
-      trc: { solar: 25, wind: 15, bess: 10, free: 50 },
-      metrics: {
-        capex: '—',
-        producao: '—',
-        preco: '—',
-        dscr: '—',
+        dscr: '0,92×',
+        van: '−€ 3,8M',
       },
     },
   ];
 
   const actions = {
-    pego: [
-      { id: 'sobre', title: '+ Sobreequipamento Solar (+20% MWp)', desc: 'Acréscimo de potência solar no mesmo ponto de ligação, sem reforço de TRC. Enquadrado no Art. 47.º do DL 15/2022.', capex: '€ 4,8M', tempo: '8–10 meses', nav: '+ € 3,1M' },
-      { id: 'bess', title: '+ Hibridização com BESS', desc: 'Bateria de 20 MW / 40 MWh partilhando o TRC existente. Melhora capture rate e reduz curtailment.', capex: '€ 7,2M', tempo: '12–14 meses', nav: '+ € 4,6M' },
-      { id: 'eolica', title: '+ Hibridização Eólica Onshore', desc: 'Parque eólico de 25 MW no mesmo nó. Diversifica perfil de produção e melhora fator de utilização.', capex: '€ 28,0M', tempo: '18–24 meses', nav: '+ € 9,2M' },
-      { id: 'farm', title: 'Refinanciamento / Farm-Down (Venda de 49%)', desc: 'Cessão de 49% do equity a fundo de infraestruturas. Liberta caixa e bonding capacity.', capex: '—', tempo: '4–6 meses', nav: '€ 8,4M caixa' },
-    ],
-    evora: [
-      { id: 'sobre', title: '+ Sobreequipamento Solar (+20% MWp)', desc: 'Expansão solar aproveitando margem de TRC residual. Licensing simplificado sob DL 15/2022.', capex: '€ 3,6M', tempo: '7–9 meses', nav: '+ € 2,4M' },
-      { id: 'bess', title: '+ Hibridização com BESS', desc: 'Sistema de armazenamento 15 MW / 30 MWh. Mitiga curtailment eólico e captura arbitragem.', capex: '€ 5,4M', tempo: '11–13 meses', nav: '+ € 3,5M' },
-      { id: 'eolica', title: '+ Hibridização Eólica Onshore', desc: 'Já possui componente eólica elevada. Expansão adicional de 15 MW requer estudo de ligação.', capex: '€ 16,5M', tempo: '16–20 meses', nav: '+ € 5,8M' },
-      { id: 'farm', title: 'Refinanciamento / Farm-Down (Venda de 49%)', desc: 'Monetização parcial do equity. DSCR confortável permite refinanciamento a spreads mais baixos.', capex: '—', tempo: '4–6 meses', nav: '€ 6,9M caixa' },
-    ],
-    ferreira: [
-      { id: 'sobre', title: '+ Sobreequipamento Solar (+20% MWp)', desc: 'Reservar margem de sobreequipamento no desenho do projeto em construção. CAPEX incremental baixo.', capex: '€ 2,1M', tempo: 'Integrado', nav: '+ € 1,4M' },
-      { id: 'bess', title: '+ Hibridização com BESS', desc: 'Incluir BESS no projeto base antes do COD. Melhor timing de licenciamento conjunto.', capex: '€ 6,0M', tempo: 'Integrado', nav: '+ € 3,8M' },
-      { id: 'eolica', title: '+ Hibridização Eólica Onshore', desc: 'Pedido de ligação eólica adicional no mesmo TRC. Reforço de rede já em curso.', capex: '€ 20,0M', tempo: '20–26 meses', nav: '+ € 6,5M' },
-      { id: 'farm', title: 'Refinanciamento / Farm-Down (Venda de 49%)', desc: 'Disponível após COD. Pré-negociação com fundos possível nesta fase.', capex: '—', tempo: 'Pós-COD', nav: '€ 4,2M caixa' },
+    ourique: [
+      { id: 'sobre', title: '+ Sobreequipamento Solar (+20% MWp)', desc: 'Mais MWp no mesmo ponto REN Ourique (coleta solar Alentejo), sem novo TRC. Art. 47.º DL 15/2022 — o caminho mais rápido para o ponto deixar de sangrar.', capex: '€ 4,2M', tempo: '8–10 meses', nav: '+ € 2,8M' },
+      { id: 'bess', title: '+ Hibridização com BESS', desc: 'Bateria 20 MW / 40 MWh no TRC Ourique. Melhora capture rate do solar em obra e reduz curtailment nas horas de pico Alentejo.', capex: '€ 7,0M', tempo: '12–14 meses', nav: '+ € 4,1M' },
+      { id: 'eolica', title: '+ Hibridização Eólica Onshore', desc: 'Componente eólica no mesmo nó Ourique. Diversifica o perfil face ao contrato barato da base solar — herdade vizinha só como corredor, o título continua SE Ourique.', capex: '€ 24,0M', tempo: '18–24 meses', nav: '+ € 7,6M' },
+      { id: 'farm', title: 'Refinanciamento / Farm-Down (Venda de 49%)', desc: 'Só após COD e quando o ponto deixar de sangrar. Sem PIP / value-add, fundos não compram equity a ~15 €/MWh.', capex: '—', tempo: 'Pós-COD', nav: '€ 5,2M caixa' },
     ],
   };
 
   const pipeline = [
-    { title: 'Leilão Solar DGEG — Zona Sul', region: 'Alentejo', mw: '150 MWp', prazo: '15 Out 2026', urgency: 'soon', urgencyLabel: 'Fecha em 34 dias', modalidade: 'Mod. A' },
-    { title: 'Acordo Quadro E-REDES — Hibridização', region: 'Centro', mw: '80 MW', prazo: 'Aberto', urgency: 'open', urgencyLabel: 'Aberto', modalidade: 'Mod. B' },
-    { title: 'Leilão Eólico Offshore — Fase Pilot', region: 'Costa Oeste', mw: '500 MW', prazo: 'Mar 2027', urgency: 'open', urgencyLabel: 'Pré-qualificação', modalidade: 'Mod. A' },
-    { title: 'Leilão Solar DGEG — Zona Norte', region: 'Trás-os-Montes', mw: '100 MWp', prazo: 'Encerrado', urgency: 'closed', urgencyLabel: 'Encerrado', modalidade: 'Mod. A' },
+    { title: 'TRC · SE Ferreira do Alentejo', region: 'Alentejo', mw: '400 / 150 kV', prazo: 'Em breve', urgency: 'locked', urgencyLabel: 'Em breve', modalidade: 'Leilão', locked: true },
+    { title: 'TRC · SE Évora', region: 'Alentejo Central', mw: '400 / 150 / 60 kV', prazo: 'Em breve', urgency: 'locked', urgencyLabel: 'Em breve', modalidade: 'Acordo / leilão', locked: true },
+    { title: 'TRC · SE Pego', region: 'Tejo', mw: '400 / 150 kV', prazo: 'Em breve', urgency: 'locked', urgencyLabel: 'Em breve', modalidade: 'Leilão', locked: true },
+    { title: 'Leilão Solar DGEG — Zona Sul', region: 'Alentejo', mw: '150 MWp', prazo: 'Bloqueado', urgency: 'locked', urgencyLabel: 'Em breve', modalidade: 'Mod. A', locked: true },
   ];
 
   let activities = [
-    { time: '14:22', text: 'Operador de Rede aprovou estudo de ligação na Subestação Alqueva' },
-    { time: '11:05', text: 'Curtailment de 8% registado no pico solar deste trimestre — Évora Sul' },
-    { time: '09:40', text: 'DSCR do Project Finance Alqueva atualizado para 1,58× (acima do covenant 1,25×)' },
-    { time: 'Ontem', text: 'Pedido de sobreequipamento Solar submetido à DGEG — Ferreira do Alentejo' },
-    { time: '08 Set', text: 'Bonding capacity renovada junto do sindicato bancário — € 16,0M totais' },
+    { time: '14:22', text: 'REN confirma TRC no ponto SE Ourique (400 / 150 kV) — coleta solar Alentejo' },
+    { time: '11:05', text: 'Base solar Ourique em obra · offtake ~15 €/MWh — VAN do ponto ainda negativo' },
+    { time: '09:40', text: 'Câmara Municipal de Ourique pediu alinhamento prévio antes de qualquer PIP no município' },
+    { time: 'Ontem', text: 'Bonding da caução do leilão Ourique renovada — € 7,0M totais · € 3,4M livres' },
+    { time: '08 Set', text: 'Pipeline de novos TRCs bloqueado até Ourique deixar de sangrar' },
   ];
 
   /* ── Helpers ── */
   function fmtEur(n) {
-    return '€ ' + Number(n).toFixed(1).replace('.', ',') + 'M';
+    const v = Number(n);
+    const abs = Math.abs(v).toFixed(1).replace('.', ',');
+    return (v < 0 ? '−€ ' : '€ ') + abs + 'M';
   }
 
   function fmtCashAtRisk(n) {
@@ -2351,55 +2368,21 @@
 
   function seedLetter(nodeId, actionId) {
     const letters = {
-      ferreira: {
+      ourique: {
         sobre: {
-          from: 'Câmara Municipal de Ferreira do Alentejo',
+          from: 'Câmara Municipal de Ourique',
           subject: 'Pedido de elementos — PIP / conformidade com o PDM',
-          body: 'No âmbito da análise preliminar do pedido de informação prévia, solicitamos elementos adicionais sobre a implantação do sobreequipamento solar. Indiquem a articulação com o PDM vigente e o enquadramento das áreas de proteção da rede. O processo fica suspenso até resposta.',
+          body: 'A Câmara Municipal de Ourique solicita planta de localização e memória descritiva do sobreequipamento solar no ponto SE Ourique. Confirmem articulação com o PDM e condicionantes municipais. Sem resposta o PIP não entra em análise — e o ponto continua a sangrar.',
         },
         bess: {
           from: 'E-REDES',
-          subject: 'Nota de hibridização BESS no mesmo TRC',
-          body: 'Recebemos a intenção de hibridizar armazenamento no ponto de ligação existente em Ferreira do Alentejo. Pedimos o diagrama unifilar atualizado e a confirmação de que a potência de injeção permanece dentro do TRC atribuído. Sem estes dados não avançamos o parecer técnico.',
+          subject: 'Nota de hibridização BESS no mesmo TRC — Ourique',
+          body: 'Recebemos a intenção de hibridizar armazenamento no ponto de ligação REN Ourique (400 / 150 kV). Pedimos diagrama unifilar atualizado e confirmação de que a potência de injeção permanece dentro do TRC atribuído. Sem estes dados não avançamos o parecer técnico.',
         },
         eolica: {
           from: 'ICNF',
-          subject: 'Parecer do corredor — hibridização eólica',
-          body: 'O ICNF analisa o corredor proposto para a componente eólica junto ao nó de Ferreira do Alentejo. Solicitamos cartografia das áreas sensíveis e medidas de mitigação de avifauna. O parecer fica pendente até receção dos elementos.',
-        },
-      },
-      pego: {
-        sobre: {
-          from: 'Câmara Municipal de Abrantes',
-          subject: 'Elementos urbanísticos para PIP de sobreequipamento',
-          body: 'A Câmara de Abrantes solicita planta de localização e memória descritiva do sobreequipamento solar no ponto SE Pego. Confirmem compatibilidade com condicionantes municipais antes da formalização do PIP. Sem resposta o processo não entra em análise.',
-        },
-        bess: {
-          from: 'DGEG',
-          subject: 'Enquadramento de hibridização BESS — SE Pego',
-          body: 'A DGEG regista a intenção de hibridizar BESS no TRC do Pego. Pedimos confirmação do regime aplicável ao abrigo do DL 15/2022 e o cronograma de licenciamento. Aguardar elementos antes de qualquer despacho.',
-        },
-        eolica: {
-          from: 'Câmara Municipal de Abrantes',
-          subject: 'Consulta prévia — corredor eólico junto ao Pego',
-          body: 'Para a componente eólica no mesmo TRC, a Câmara solicita nota sobre acesso, ruído e enquadramento paisagístico. O PIP só será admitido após esclarecimento destes pontos. Respondam por escrito a este ofício.',
-        },
-      },
-      evora: {
-        sobre: {
-          from: 'Câmara Municipal de Évora',
-          subject: 'Pedido de elementos do PIP — sobreequipamento solar',
-          body: 'A Câmara Municipal de Évora pede esclarecimentos sobre a área de implantação e a ligação ao ponto SE Évora. Indiquem se há sobreposição com zonas de salvaguarda. O processo de PIP fica à espera da vossa resposta.',
-        },
-        bess: {
-          from: 'ICNF',
-          subject: 'Parecer preliminar — armazenamento no TRC de Évora',
-          body: 'O ICNF analisa a proposta de BESS no nó de Évora. Solicitamos descrição das obras e eventuais impactes em habitats próximos. Sem estes elementos não emitimos parecer favorável ao PIP.',
-        },
-        eolica: {
-          from: 'Câmara Municipal de Évora',
-          subject: 'Elementos para PIP de hibridização eólica',
-          body: 'Para a hibridização eólica no SE Évora, pedimos planta do corredor e nota de compatibilidade com o PDM. A análise municipal só arranca após receção completa. Respondam a este pedido de elementos.',
+          subject: 'Parecer do corredor — hibridização eólica Ourique',
+          body: 'O ICNF analisa o corredor proposto para a componente eólica junto ao nó de Ourique (incluindo acesso por herdade vizinha). Solicitamos cartografia das áreas sensíveis e medidas de mitigação de avifauna. O parecer fica pendente até receção dos elementos.',
         },
       },
     };
@@ -2420,24 +2403,24 @@
   function monthFollowUpLetter(mission) {
     const pool = [
       {
-        from: 'Câmara Municipal de Ferreira do Alentejo',
+        from: 'Câmara Municipal de Ourique',
         subject: 'Lembrete — elementos em falta no PIP',
-        body: 'Relembramos que o pedido de elementos continua sem resposta completa. Sem esclarecimentos sobre implantação e PDM, a análise do PIP não avança neste mês.',
+        body: 'A Câmara Municipal de Ourique relembra que o pedido de elementos continua sem resposta completa. Sem esclarecimentos sobre implantação e PDM no município, a análise do PIP não avança neste mês.',
       },
       {
         from: 'ICNF',
-        subject: 'Pedido complementar de cartografia',
-        body: 'Junto enviamos pedido complementar de cartografia das áreas sensíveis. Tratamos isto como fase preparatória — ainda sem decisão sobre o PIP.',
+        subject: 'Pedido complementar de cartografia — Ourique',
+        body: 'Junto enviamos pedido complementar de cartografia das áreas sensíveis no concelho de Ourique. Tratamos isto como fase preparatória — ainda sem decisão sobre o PIP.',
       },
       {
         from: 'E-REDES',
-        subject: 'Atualização técnica do ponto de ligação',
-        body: 'Pedimos confirmação dos dados de injeção no TRC após a última revisão. Isto não constitui aprovação do PIP; apenas mantém o processo técnico aberto.',
+        subject: 'Atualização técnica do ponto SE Ourique',
+        body: 'Pedimos confirmação dos dados de injeção no TRC Ourique após a última revisão. Isto não constitui aprovação do PIP; apenas mantém o processo técnico aberto.',
       },
       {
-        from: 'DGEG',
+        from: 'Câmara Municipal de Ourique',
         subject: 'Estado do processo — PIP ainda pendente',
-        body: 'Confirmamos que o PIP permanece em análise documental. Não há despacho favorável neste ciclo. Completem a caixa de entrada do dossier para acelerar a tramitação.',
+        body: 'Confirmamos que o PIP permanece em análise documental no município de Ourique. Não há despacho favorável neste ciclo. Completem a caixa de entrada do dossier para acelerar a tramitação.',
       },
     ];
     const pick = pool[(mission.month + mission.inbox.length) % pool.length];
@@ -2555,8 +2538,9 @@
 
           <div class="window-body">
             ${n.construction
-              ? `<div class="status-pill"><span class="status-dot"></span> Em construção · reforço de rede</div>`
+              ? `<div class="status-pill"><span class="status-dot"></span> Em construção · base solar Ourique</div>`
               : `<div class="node-status">${n.status}</div>`}
+            ${n.tension ? `<div class="tension-line">${n.tension}</div>` : ''}
             ${chip}
 
             <div class="trc-section">
@@ -2583,12 +2567,12 @@
 
             <div class="metrics-table">
               <div class="metric-cell">
-                <div class="metric-cell-label">CAPEX Investido</div>
-                <div class="metric-cell-value num">${n.metrics.capex}</div>
+                <div class="metric-cell-label">VAN do ponto</div>
+                <div class="metric-cell-value num" style="color:var(--critical)">${n.metrics.van || '—'}</div>
               </div>
               <div class="metric-cell">
-                <div class="metric-cell-label">Produção Trimestral</div>
-                <div class="metric-cell-value num">${n.metrics.producao}</div>
+                <div class="metric-cell-label">CAPEX / estado</div>
+                <div class="metric-cell-value num">${n.metrics.capex}</div>
               </div>
               <div class="metric-cell">
                 <div class="metric-cell-label">Preço Médio Capturado</div>
@@ -2599,7 +2583,7 @@
                   DSCR
                   <span class="info-dot" data-tip="DSCR (Debt Service Coverage Ratio): rácio entre o cash-flow operacional e o serviço da dívida do período. Covenant típico: ≥ 1,25×.">?</span>
                 </div>
-                <div class="metric-cell-value num">${n.metrics.dscr}</div>
+                <div class="metric-cell-value num" style="color:var(--critical)">${n.metrics.dscr}</div>
               </div>
             </div>
 
@@ -2632,8 +2616,17 @@
 
   /* ── Pipeline ── */
   function renderPipeline() {
-    document.getElementById('pipelineList').innerHTML = pipeline.map(p => `
-      <div class="pipeline-card">
+    const lockBanner = `
+      <div class="pipeline-lock-banner" role="status">
+        <div class="pipeline-lock-icon" aria-hidden="true">🔒</div>
+        <div>
+          <strong>Pipeline bloqueado.</strong>
+          Tens de fazer Ourique pagar (PIP favorável / ponto a deixar de sangrar) antes de abrirem leilões e novos TRCs.
+          As oportunidades abaixo estão <em>Em breve</em> — não jogáveis.
+        </div>
+      </div>`;
+    document.getElementById('pipelineList').innerHTML = lockBanner + pipeline.map(p => `
+      <div class="pipeline-card locked" aria-disabled="true">
         <div>
           <div style="font-weight:600;font-size:14px">${p.title}</div>
           <div class="pipeline-meta">
@@ -2643,7 +2636,7 @@
             <span>Prazo: <strong>${p.prazo}</strong></span>
           </div>
         </div>
-        <span class="urgency-tag ${p.urgency}">${p.urgencyLabel}</span>
+        <span class="urgency-tag locked">${p.urgencyLabel || 'Em breve'}</span>
       </div>
     `).join('');
   }
@@ -2979,7 +2972,9 @@
   function updateHeaderMetrics(doFlash) {
     document.getElementById('valCaixa').textContent = fmtEur(state.caixa);
     document.getElementById('valDivida').textContent = fmtEur(state.divida);
-    document.getElementById('valNav').textContent = fmtEur(state.nav);
+    const navEl = document.getElementById('valNav');
+    navEl.textContent = fmtEur(state.nav);
+    navEl.classList.toggle('is-bleed', state.nav < 2);
     document.getElementById('valBonding').textContent = fmtEur(state.bondingFree) + ' livres';
     const usedPct = ((state.bondingTotal - state.bondingFree) / state.bondingTotal) * 100;
     document.getElementById('bondingFill').style.width = Math.min(100, Math.max(0, usedPct)) + '%';
@@ -3011,17 +3006,17 @@
         state.quarter = 1;
         state.year += 1;
       }
-      state.caixa = +(state.caixa + 1.8 + Math.random() * 0.6).toFixed(1);
-      state.nav = +(state.nav + 2.1 + Math.random() * 0.8).toFixed(1);
-      state.divida = +(state.divida - 0.4).toFixed(1);
-      state.bondingFree = +(state.bondingFree + 0.3).toFixed(1);
+      // Base barata continua a sangrar até haver value-add / PIP
+      state.caixa = +(state.caixa - 0.35 - Math.random() * 0.25).toFixed(2);
+      state.nav = +(state.nav - 0.45 - Math.random() * 0.25).toFixed(2);
+      state.divida = +(state.divida + 0.15).toFixed(2);
 
       updateHeaderMetrics(true);
       flashPill('pillDivida');
 
       activities.unshift({
         time: 'Agora',
-        text: `Trimestre avançado para ${state.year} · Q${state.quarter} — caixa e NAV atualizados`,
+        text: `Trimestre avançado para ${state.year} · Q${state.quarter} — Ourique ainda sangra (VAN ${fmtEur(state.nav)})`,
       });
       renderActivity();
 
