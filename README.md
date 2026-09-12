@@ -1,3 +1,5 @@
 # Watt Indeferido
 
-Jogo IPP · Portugal · DL 15/2022. Abrir `index.html` ou o GitHub Pages do repo.
+Consola IPP — TRCs alcançados (Pego, Ferreira do Alentejo, Évora).
+
+https://pedrogmiller.github.io/watt-indeferido/
