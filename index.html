@@ -3572,7 +3572,7 @@
     }
   ];
 
-  let coachQueue = [];  let coachQueue = [];
+  let coachQueue = [];
   let coachIndex = 0;
   coachActive = false;
   let coachDemoMode = false;
@@ -4078,9 +4078,7 @@
       coachResizeBound = true;
     }
 
-    if (!isOnboardingDone()) {
-      requestAnimationFrame(() => startDemoSequence());
-    }
+    requestAnimationFrame(() => startDemoSequence());
   }
 
 
