@@ -2079,11 +2079,11 @@
   }
 
 
-  /* ═══ WattCoach — TikTok-style coach card ═══ */
+  /* ═══ WattCoach — TikTok-style coach card (layer above entire game) ═══ */
   .watt-coach {
     position: fixed;
     inset: 0;
-    z-index: 500;
+    z-index: 9990;
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
@@ -2101,26 +2101,30 @@
     pointer-events: none;
   }
 
+  /* Full-viewport blur + dim; clip-path hole (JS) keeps ui_target crisp & clickable */
   .watt-coach-veil {
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 42, 0.52);
+    z-index: 9991;
+    background: rgba(15, 23, 42, 0.48);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     pointer-events: auto;
   }
 
   .watt-coach.has-spotlight .watt-coach-veil {
-    background: transparent;
+    /* keep blur+dim; hole cut via clip-path in setVeilHole */
     pointer-events: auto;
   }
 
   .watt-coach-spotlight {
     position: fixed;
-    z-index: 501;
+    z-index: 9992;
     border-radius: 12px;
+    /* Ring only — dim/blur come from the veiled hole, not a 9999px shadow */
     box-shadow:
       0 0 0 2px rgba(255, 255, 255, 0.92),
-      0 0 0 6px rgba(14, 165, 233, 0.35),
-      0 0 0 9999px rgba(15, 23, 42, 0.55);
+      0 0 0 6px rgba(14, 165, 233, 0.35);
     pointer-events: none;
     transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease, opacity 0.18s ease, box-shadow 0.18s ease;
     opacity: 0;
@@ -2130,8 +2134,7 @@
     border-radius: 16px;
     box-shadow:
       0 0 0 2px rgba(255, 255, 255, 0.75),
-      0 0 0 10px rgba(14, 165, 233, 0.22),
-      0 0 0 9999px rgba(15, 23, 42, 0.48);
+      0 0 0 10px rgba(14, 165, 233, 0.22);
   }
 
   .watt-coach.has-spotlight .watt-coach-spotlight {
@@ -2140,7 +2143,7 @@
 
   .watt-coach-card {
     position: fixed;
-    z-index: 502;
+    z-index: 10000;
     width: min(300px, calc(100vw - 32px));
     max-width: 320px;
     background: #0f172a;
@@ -2325,11 +2328,9 @@
     color: #fff;
   }
 
-  /* Live target under spotlight — clickable above the dimmed veil hole */
+  /* Live target under spotlight — clickable via veil clip-path hole (not raised above coach) */
   .watt-coach-target-live {
     cursor: pointer !important;
-    position: relative;
-    z-index: 403 !important;
     pointer-events: auto !important;
   }
 
@@ -2338,6 +2339,11 @@
     .watt-coach-card,
     .watt-coach-spotlight {
       transition: none;
+    }
+    /* Keep dim; drop blur for motion-sensitive users */
+    .watt-coach-veil {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
     }
   }
 
@@ -3634,11 +3640,14 @@
     const veil = document.getElementById('wattCoachVeil');
     if (!hole) {
       veil.style.clipPath = '';
+      veil.style.webkitClipPath = '';
       return;
     }
     const l = hole.left, t = hole.top, r = hole.left + hole.width, b = hole.top + hole.height;
-    // evenodd: full viewport minus spotlight rect — clicks pass through the hole
-    veil.style.clipPath = `polygon(evenodd, 0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%, ${l}px ${t}px, ${r}px ${t}px, ${r}px ${b}px, ${l}px ${b}px, ${l}px ${t}px)`;
+    // evenodd: full viewport minus spotlight rect — cuts blur/dim AND lets clicks hit ui_target
+    const poly = `polygon(evenodd, 0% 0%, 0% 100%, 100% 100%, 100% 0%, 0% 0%, ${l}px ${t}px, ${r}px ${t}px, ${r}px ${b}px, ${l}px ${b}px, ${l}px ${t}px)`;
+    veil.style.clipPath = poly;
+    veil.style.webkitClipPath = poly;
   }
 
   function placeSpotlight(el, soft) {
@@ -3807,11 +3816,6 @@
     if (coachTargetEl) {
       coachTargetEl.classList.remove('watt-coach-target-live');
     }
-    const hdr = document.querySelector('.header');
-    if (hdr && hdr.dataset.coachZ) {
-      hdr.style.zIndex = hdr.dataset.coachZ === 'auto' ? '' : hdr.dataset.coachZ;
-      delete hdr.dataset.coachZ;
-    }
     coachTargetEl = null;
     coachTargetHandler = null;
     coachBlockFab = false;
@@ -3832,12 +3836,7 @@
     coachTargetEl = el;
     coachBlockFab = el.id === 'btnNextQ';
     el.classList.add('watt-coach-target-live');
-    // Header creates a stacking context at z-index 100 — bump so brand/metrics sit above the veil
-    const hdr = el.closest && el.closest('.header');
-    if (hdr && !hdr.dataset.coachZ) {
-      hdr.dataset.coachZ = hdr.style.zIndex || 'auto';
-      hdr.style.zIndex = '505';
-    }
+    // Do not raise header/chrome above the coach — blur veil stays on top; hole keeps target crisp+clickable
     coachTargetHandler = (e) => {
       // Intercept once: advance coach; do not fire underlying action (e.g. End Turn / drawer)
       e.preventDefault();
@@ -3907,10 +3906,8 @@
       setVeilHole(null);
     }
 
-    // Keep coach above activity/inbox stacking & overflow; never a scroll descendant
-    if (root.parentElement !== document.body) {
-      document.body.appendChild(root);
-    }
+    // Always re-parent to body so coach paints above header/activity/dock/FAB/drawer
+    document.body.appendChild(root);
 
     // Show first so measurements work
     root.classList.add('open');
