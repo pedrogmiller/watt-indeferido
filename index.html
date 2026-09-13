@@ -561,9 +561,57 @@
   }
   .coach-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
   .coach-card p { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+
+  /* First-visit arrive gate — first interaction, full viewport */
+  .arrive-gate {
+    position: fixed; inset: 0; z-index: 12000;
+    display: none; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .arrive-gate.open { display: flex; pointer-events: auto; }
+  .arrive-veil {
+    position: absolute; inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .arrive-card {
+    position: relative; z-index: 1;
+    width: min(320px, calc(100vw - 40px));
+    background: #0f172a; color: #f8fafc;
+    border-radius: 14px;
+    padding: 20px 18px 16px;
+    box-shadow: 0 18px 40px -10px rgba(15,23,42,.55), 0 0 0 1px rgba(255,255,255,.08);
+    font-family: var(--font);
+  }
+  .arrive-card h2 {
+    font-size: 17px; font-weight: 700; letter-spacing: -0.02em;
+    margin-bottom: 8px; color: #fff;
+  }
+  .arrive-card p {
+    font-size: 13px; line-height: 1.45; color: #cbd5e1; margin-bottom: 16px;
+  }
+  .arrive-card button {
+    width: 100%; border: 0; border-radius: 10px;
+    background: #38bdf8; color: #0f172a;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    padding: 10px 14px; cursor: pointer;
+  }
+  .arrive-card button:hover { background: #7dd3fc; }
+  body.arrive-lock .demo-dock,
+  body.arrive-lock .demo-reopen { display: none !important; }
 </style>
 </head>
-<body>
+<body class="arrive-lock">
+
+<div class="arrive-gate open" id="arriveGate" aria-hidden="false">
+  <div class="arrive-veil"></div>
+  <div class="arrive-card" role="dialog" aria-modal="true" aria-labelledby="arriveTitle">
+    <h2 id="arriveTitle">Não tens central</h2>
+    <p>És um IPP em Portugal. Não começas com um parque — licitas um ponto na rede. O preço que escreveres é o que ficas a receber. Barato ganha. Barato sangra.</p>
+    <button type="button" id="arriveBtn">Continuar</button>
+  </div>
+</div>
+
 <div class="app">
   <div class="draft-bar">
     <span class="tag">Draft · tensão</span>
@@ -1694,6 +1742,44 @@
     clockTimer = null;
   }
 
+
+  const ARRIVE_KEY = 'watt-indeferido-arrive-v1';
+  function isArriveDone() {
+    try {
+      if (new URLSearchParams(location.search).get('arrive') === '1') return false;
+      return localStorage.getItem(ARRIVE_KEY) === '1';
+    } catch (_) { return false; }
+  }
+  function markArriveDone() {
+    try { localStorage.setItem(ARRIVE_KEY, '1'); } catch (_) {}
+  }
+  function showArriveGate() {
+    const gate = document.getElementById('arriveGate');
+    if (!gate) return;
+    gate.classList.add('open');
+    gate.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('arrive-lock');
+    S.clockPaused = true;
+    S.coachOpen = true; // reuse pause path
+    renderClock();
+  }
+  function hideArriveGate() {
+    const gate = document.getElementById('arriveGate');
+    if (gate) {
+      gate.classList.remove('open');
+      gate.setAttribute('aria-hidden', 'true');
+    }
+    document.body.classList.remove('arrive-lock');
+    S.coachOpen = false;
+    if (!S.allLost && !(S.resolved && S.wonId) && S.screen === 'bid') S.clockPaused = false;
+    renderClock();
+  }
+  function dismissArriveGate() {
+    markArriveDone();
+    hideArriveGate();
+    if (!S.allLost && !(S.resolved && S.wonId)) startClock();
+  }
+
   /* ── Coach stub pause ── */
   function openCoach() {
     S.coachOpen = true;
@@ -1818,6 +1904,7 @@
     document.getElementById('demoReset').addEventListener('click', resetConcurso);
 
     document.addEventListener('keydown', (e) => {
+      if (document.body.classList.contains('arrive-lock')) return;
       if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
       if (e.key === '1') { e.preventDefault(); demoLoseAll(); }
       else if (e.key === '2') { e.preventDefault(); demoCheapTrap(); }
@@ -1841,8 +1928,17 @@
       setScreen('board');
     }
 
+    const arriveBtn = document.getElementById('arriveBtn');
+    if (arriveBtn) arriveBtn.addEventListener('click', dismissArriveGate);
+
     fullRender();
-    if (!S.allLost && !(S.resolved && S.wonId)) startClock();
+    if (isArriveDone()) {
+      hideArriveGate();
+      if (!S.allLost && !(S.resolved && S.wonId)) startClock();
+    } else {
+      showArriveGate();
+      // clock waits for Continuar — first click is this card
+    }
   }
 
   init();
