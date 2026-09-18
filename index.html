@@ -2086,6 +2086,13 @@
     cursor: pointer;
     white-space: nowrap;
     transition: background 0.15s ease, transform 0.12s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .header-auction-btn svg {
+    flex-shrink: 0;
+    display: block;
   }
   .header-auction-btn:hover { background: #1e293b; }
   .header-auction-btn:focus-visible {
@@ -2846,7 +2853,7 @@
     </div>
   </div>
 
-  <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Abrir mesa de leilão (sala)">Abrir mesa de leilão</button>
+  <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Abrir a mesa de Leilão" aria-label="Abrir a mesa de Leilão"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg><span>Abrir a mesa de Leilão</span></button>
   <button type="button" class="header-help" id="btnTutorial" title="Abrir tutorial">Tutorial</button>
 
 </header>
@@ -3901,8 +3908,8 @@
       position: 'right',
       overlay_highlight: true,
       card_data: {
-        title: 'Três ligações',
-        body: 'Três pontos. Só podes lutar num. O que não levares, os outros levam.',
+        title: '3 TRCs a leilão',
+        body: 'Só podes concorrer a um. Olha os prós e contras de cada — o que não levares, os outros levam.',
         action_instruction: 'Clica num lote',
         btn_label: 'Saltar'
       }
