@@ -2293,7 +2293,16 @@
     align-items: flex-start;
     gap: 8px;
   }
-  .auction-tutorial-btn {
+  
+  .auction-home-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 36px; padding-left: 10px; padding-right: 10px;
+  }
+  .auction-home-btn svg { display: block; }
+  .auction-home-rail svg { flex-shrink: 0; }
+  .auction-home-rail-label { font-size: 13px; font-weight: 600; }
+
+.auction-tutorial-btn {
     flex-shrink: 0;
     font-family: var(--font);
     font-size: 12px;
@@ -2966,11 +2975,11 @@
 
 <!-- ═══ FAB · Próximo Trimestre ═══ -->
 <button class="fab-nextq" id="btnNextQ" type="button"
-  aria-label="Próximo Trimestre" title="Próximo Trimestre">
-  <!-- advance-quarter metaphor: chevron-right in circle -->
+  aria-label="Play · avançar o mês" title="Play · avançar o mês">
+  <!-- universal Play triangle in circle -->
   <svg class="fab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/>
-    <path d="M10.5 8.5L15 12l-4.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor" stroke="none"/>
   </svg>
   <span class="spinner" aria-hidden="true"></span>
 </button>
@@ -3008,7 +3017,7 @@
       <div class="auction-left-head">
         <div class="auction-kicker" id="auctionWaveKicker">Concurso REN · onda 1</div>
         <div class="auction-left-title">Mesa de leilão</div>
-        <div class="auction-left-sub" id="auctionLeftSub">Master-detail · sala (não o jogo)</div>
+        <div class="auction-left-sub" id="auctionLeftSub">Concurso ao vivo · rivais limpam se hesitares</div>
         <div class="auction-clock-row" aria-live="polite">
           <div>
             <div class="auction-clock-label">Fase do concurso</div>
@@ -3020,7 +3029,7 @@
       <div class="auction-lot-list" id="auction-lot-list" role="listbox" aria-label="Lotes SE"></div>
       <div style="padding:10px 12px 14px;border-top:1px solid var(--border-subtle)">
         <div class="auction-leftover" id="auctionLeftoverNote" hidden></div>
-        <button type="button" class="btn-auction-ghost" id="auctionExitLots" title="Home / Consola" style="width:100%;margin-top:8px">Home / Consola</button>
+        <button type="button" class="btn-auction-ghost auction-home-rail" id="auctionExitLots" title="Home / Consola" aria-label="Home / Consola" style="width:100%;margin-top:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="auction-home-rail-label">Consola</span></button>
       </div>
     </aside>
 
@@ -3033,9 +3042,9 @@
         </div>
         <div class="auction-head-actions">
           <span class="auction-pay-pill">Pay-as-bid · adjudicação = tua oferta</span>
-          <button type="button" class="auction-tutorial-btn" id="btnAuctionHome" title="Home / Consola">Home</button>
+          <button type="button" class="auction-tutorial-btn auction-home-btn" id="btnAuctionHome" title="Home / Consola" aria-label="Home / Consola"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></button>
           <button type="button" class="auction-tutorial-btn" id="btnAuctionTutorial" title="Abrir tutorial">Tutorial</button>
-          <button type="button" class="auction-close" id="auctionClose" aria-label="Home / Consola" title="Home / Consola">
+          <button type="button" class="auction-close" id="auctionClose" aria-label="Fechar sala" title="Fechar">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -4263,6 +4272,11 @@
     root.classList.add('open');
     root.setAttribute('aria-hidden', 'false');
     coachActive = true;
+    // Pause concurso clock while coach blurs the mesa
+    if (typeof auctionState !== 'undefined' && auctionState.open) {
+      auctionState.clockPaused = true;
+      if (typeof renderAuctionClock === 'function') renderAuctionClock();
+    }
 
     // Two RAFs: layout then measure card
     requestAnimationFrame(() => {
@@ -4315,6 +4329,14 @@
       coachQueue = [];
       coachIndex = 0;
       coachDemoMode = false;
+    }
+    // Resume mesa clock so «Fase do concurso» is visible and real
+    if (typeof auctionState !== 'undefined' && auctionState.open) {
+      if (typeof syncAuctionClockPause === 'function') syncAuctionClockPause();
+      if (auctionState.screen === 'bid' && !auctionState.clockPaused) {
+        if (typeof startAuctionClock === 'function') startAuctionClock();
+      }
+      if (typeof renderAuctionClock === 'function') renderAuctionClock();
     }
   }
 
@@ -4527,17 +4549,27 @@
     return AUCTION_LOTS.filter((l) => !auctionState.taken[l.id]);
   }
 
+  function syncAuctionClockPause() {
+    // Pause: coach, abertura/result/fora, or no open lots. Bid + lots left → run even after a win.
+    const lotsLeft = typeof availableAuctionLots === 'function' ? availableAuctionLots().length : 0;
+    if (typeof coachActive !== 'undefined' && coachActive) {
+      auctionState.clockPaused = true;
+    } else if (auctionState.screen === 'abertura' || auctionState.screen === 'trap' || auctionState.screen === 'fora') {
+      auctionState.clockPaused = true;
+    } else if (auctionState.screen === 'bid' && auctionState.open && !auctionState.allLost && lotsLeft > 0) {
+      auctionState.clockPaused = false;
+    } else {
+      auctionState.clockPaused = true;
+    }
+    renderAuctionClock();
+  }
+
   function setAuctionScreen(name) {
     auctionState.screen = name;
     document.querySelectorAll('.auction-screen').forEach((el) => {
       el.classList.toggle('active', el.dataset.screen === name);
     });
-    if (name === 'abertura' || name === 'trap' || name === 'fora') {
-      auctionState.clockPaused = true;
-    } else if (name === 'bid' && !auctionState.allLost && !auctionState.wonId) {
-      auctionState.clockPaused = false;
-    }
-    renderAuctionClock();
+    syncAuctionClockPause();
   }
 
   function setAuctionRivalMode(rivalId, mode, label) {
@@ -4555,14 +4587,82 @@
     else if (auctionState.clockLeft <= 45) el.classList.add('warn');
   }
 
-  function stopAuctionClock() {
-    if (auctionClockTimer) clearInterval(auctionClockTimer);
-    auctionClockTimer = null;
+  let auctionPressureTimer = null;
+
+  function stopAuctionPressure() {
+    if (auctionPressureTimer) clearInterval(auctionPressureTimer);
+    auctionPressureTimer = null;
+  }
+
+  function startAuctionPressure() {
+    stopAuctionPressure();
+    // Rivais roubam lotes que ele NÃO está a licitar — enquanto hesita
+    auctionPressureTimer = setInterval(() => {
+      if (!auctionState.open || auctionState.clockPaused) return;
+      if (auctionState.screen !== 'bid') return;
+      if (typeof coachActive !== 'undefined' && coachActive) return;
+      tryRivalSteal();
+    }, 9000);
+  }
+
+  /** Steal an unresolved lot that is NOT the currently selected one (he didn't bid it). */
+  function tryRivalSteal() {
+    const left = availableAuctionLots().filter((l) => l.id !== auctionState.selectedId);
+    if (!left.length) return false;
+    // More aggressive as clock drops
+    const urgency = auctionState.clockLeft <= 45 ? 0.85 : auctionState.clockLeft <= 70 ? 0.55 : 0.35;
+    if (Math.random() > urgency) {
+      // Threat flash only — chips go hot on a random rival for an unbid lot
+      const threat = left[Math.floor(Math.random() * left.length)];
+      setAuctionRivalMode(threat.rivalId, 'hot');
+      renderAuctionRivals();
+      const leftover = document.getElementById('auctionLeftoverNote');
+      if (leftover) {
+        leftover.hidden = false;
+        leftover.textContent = threat.rival + ' a pressionar ' + threat.name + ' — se hesitares, levam.';
+      }
+      return false;
+    }
+    const lot = left[Math.floor(Math.random() * left.length)];
+    auctionState.taken[lot.id] = { bid: lot.npcFloor, van: null, irr: null, lost: true, stolen: true };
+    setAuctionRivalMode(lot.rivalId, 'flash', 'adjudicado ~' + lot.npcFloor);
+    showToast(lot.rival + ' limpou ' + lot.name + ' enquanto hesitavas');
+    activities.unshift({ time: 'Agora', text: lot.rival + ' adjudicou ' + lot.name + ' (~' + lot.npcFloor + ' €/MWh) — não licitas te' });
+    if (typeof renderActivity === 'function') renderActivity();
+    // If current selection was somehow taken, move on
+    if (auctionState.taken[auctionState.selectedId]) {
+      const next = availableAuctionLots()[0];
+      if (next) selectAuctionLot(next.id, { keepBid: true });
+    }
+    renderAuctionLots();
+    renderAuctionRivals();
+    const still = availableAuctionLots();
+    if (still.length === 0) {
+      stopAuctionPressure();
+      if (!auctionState.wonId && !(auctionState.wonLots && auctionState.wonLots.length)) {
+        enterAuctionFora('Rivais limparam os lotes enquanto hesitavas. Caixa intacta · 0 TRC.');
+      } else {
+        auctionState.clockPaused = true;
+        stopAuctionClock();
+        showToast('Concurso sem lotes em aberto — Home com o(s) teu(s) TRC');
+        syncAuctionExitGates();
+      }
+      return true;
+    }
+    const leftover = document.getElementById('auctionLeftoverNote');
+    if (leftover) {
+      leftover.hidden = false;
+      leftover.textContent = 'Roubado: ' + lot.name + ' · restam ' + still.length + ' — o relógio não para.';
+    }
+    return true;
   }
 
   function startAuctionClock() {
     stopAuctionClock();
+    syncAuctionClockPause();
+    startAuctionPressure();
     auctionClockTimer = setInterval(() => {
+      syncAuctionClockPause();
       if (auctionState.clockPaused || !auctionState.open) return;
       if (auctionState.screen !== 'bid') return;
       if (auctionState.allLost || availableAuctionLots().length === 0) return;
@@ -4573,16 +4673,38 @@
         autoLoseUnresolvedAuction();
         return;
       }
+      // Mid-clock steal chance every ~15s of hesitation (extra beyond pressure interval)
+      if (auctionState.clockLeft % 15 === 0 && auctionState.clockLeft < AUCTION_CLOCK_S) {
+        tryRivalSteal();
+      }
       renderAuctionClock();
     }, 1000);
   }
 
+  function stopAuctionClock() {
+    if (auctionClockTimer) clearInterval(auctionClockTimer);
+    auctionClockTimer = null;
+    // keep pressure tied to clock lifecycle when fully stopping from close
+  }
+
   function autoLoseUnresolvedAuction() {
-    availableAuctionLots().forEach((lot) => {
+    stopAuctionPressure();
+    const left = availableAuctionLots();
+    left.forEach((lot) => {
       auctionState.taken[lot.id] = { bid: lot.npcFloor, van: null, irr: null, lost: true, auto: true };
       setAuctionRivalMode(lot.rivalId, 'flash', 'adjudicado ~' + lot.npcFloor);
     });
-    if (!auctionState.wonId) enterAuctionFora('Tempo esgotado: lotes por resolver passaram aos rivais.');
+    renderAuctionLots();
+    renderAuctionRivals();
+    const hasWin = !!(auctionState.wonId || (auctionState.wonLots && auctionState.wonLots.length));
+    if (!hasWin) {
+      enterAuctionFora('Tempo esgotado: lotes por resolver passaram aos rivais.');
+    } else {
+      auctionState.clockPaused = true;
+      stopAuctionClock();
+      showToast('Tempo a 0 — rivais limparam o resto. O teu TRC fica na consola.');
+      syncAuctionExitGates();
+    }
   }
 
   function renderAuctionRivals() {
@@ -4641,10 +4763,10 @@
       let tension;
       if (taken) {
         tension = taken.lost
-          ? ('Perdido · ' + lot.rival + (taken.bid != null ? ' ~' + taken.bid + ' €' : ''))
+          ? ((taken.stolen ? 'Roubado · ' : taken.auto ? 'Tempo 0 · ' : 'Perdido · ') + lot.rival + (taken.bid != null ? ' ~' + taken.bid + ' €' : ''))
           : ('Adjudicado a ti · ' + taken.bid + ' €/MWh');
       } else {
-        tension = lot.risk + ' · ' + lot.mw;
+        tension = lot.risk + ' · ' + lot.mw + ' · em disputa';
       }
       return (
         '<button type="button" class="auction-se' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + '"' +
@@ -4829,13 +4951,25 @@
       goHomeWithTrc();
       return;
     }
+    // Keep leftover clock — do not freeze / reset to 1:45
+    if (auctionState.clockLeft <= 0) auctionState.clockLeft = Math.max(30, Math.floor(AUCTION_CLOCK_S / 3));
     selectAuctionLot(left[0].id);
-    setAuctionScreen('bid');
+    auctionState.screen = 'bid';
+    document.querySelectorAll('.auction-screen').forEach((el) => {
+      el.classList.toggle('active', el.dataset.screen === 'bid');
+    });
+    // Critical: unpause even when wonLots.length > 0
+    auctionState.clockPaused = false;
+    if (typeof coachActive !== 'undefined' && coachActive) {
+      try { hideCoach({ clearQueue: true }); } catch (e) {}
+    }
+    syncAuctionClockPause();
     startAuctionClock();
     renderAuctionLots();
     renderAuctionRivals();
     updateConsultant();
-    showToast('Continua a licitar · ' + left.length + ' lote(s) em aberto');
+    renderAuctionClock();
+    showToast('Continua · relógio a ' + auctionFmtClock(auctionState.clockLeft) + ' · ' + left.length + ' lote(s)');
   }
 
   function paintHonestEmptyHome(reason) {
@@ -5066,7 +5200,15 @@
       setAuctionScreen('bid');
     }
     syncAuctionExitGates();
-    if (!auctionState.allLost && availableAuctionLots().length > 0 && auctionState.screen === 'bid') startAuctionClock();
+    const kickerSub = document.getElementById('auctionLeftSub');
+    if (kickerSub) kickerSub.textContent = 'Concurso ao vivo · rivais limpam se hesitares';
+    if (opts.keepCoach || (typeof coachActive !== 'undefined' && coachActive)) {
+      auctionState.clockPaused = true;
+      renderAuctionClock();
+    } else if (!auctionState.allLost && availableAuctionLots().length > 0 && auctionState.screen === 'bid') {
+      auctionState.clockPaused = false;
+      startAuctionClock();
+    }
   }
 
   function syncAuctionExitGates() {
@@ -5077,13 +5219,16 @@
     if (exitLots) {
       exitLots.hidden = false;
       exitLots.disabled = false;
-      exitLots.title = 'Home / Consola';
-      exitLots.textContent = state.auctionWon ? 'Home · ver TRC' : 'Home / Consola';
+      exitLots.title = state.auctionWon ? 'Home · ver TRC' : 'Home / Consola';
+      exitLots.setAttribute('aria-label', exitLots.title);
+      const lab = exitLots.querySelector('.auction-home-rail-label');
+      if (lab) lab.textContent = state.auctionWon ? 'Ver TRC' : 'Consola';
     }
     if (closeBtn) {
       closeBtn.hidden = false;
       closeBtn.disabled = false;
-      closeBtn.title = 'Home / Consola';
+      closeBtn.title = 'Fechar';
+      closeBtn.setAttribute('aria-label', 'Fechar sala');
     }
     if (homeBtn) {
       homeBtn.hidden = false;
@@ -5095,6 +5240,7 @@
     // Always allowed — room, not the game
     clearTimeout(auctionAberturaTimer);
     clearInterval(auctionAberturaAnim);
+    stopAuctionPressure();
     stopAuctionClock();
     auctionState.open = false;
     auctionState.sealedPending = null;
