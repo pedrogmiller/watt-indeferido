@@ -3878,13 +3878,24 @@
       overlay_highlight: true,
       card_data: {
         title: 'Country Manager',
-        body: 'És o Country Manager de uma Empresa da Energia e os teus investidores querem-te no mercado Nacional.\nSem ponto de ligação, não há central — Numa rede congestionada, cada TRC é ouro em Portugal, não os paineis.\nOs primeiros TRC ganham-se em leilões da DGEG.',
+        body: 'És o Country Manager de uma Empresa da Energia e os teus investidores querem-te no mercado Nacional.',
         action_instruction: '',
         btn_label: 'Continuar'
       }
     },
     {
       tutorial_step: 2,
+      kind: 'storytelling',
+      overlay_highlight: true,
+      card_data: {
+        title: 'O ouro é o TRC',
+        body: 'Sem ponto de ligação, não há central — Numa rede congestionada, cada TRC é ouro em Portugal, não os paineis.\nOs primeiros TRC ganham-se em leilões da DGEG.',
+        action_instruction: '',
+        btn_label: 'Continuar'
+      }
+    },
+    {
+      tutorial_step: 3,
       kind: 'tutorial',
       ui_target: '#auction-lot-list',
       position: 'right',
@@ -3897,7 +3908,7 @@
       }
     },
     {
-      tutorial_step: 3,
+      tutorial_step: 4,
       kind: 'tutorial',
       ui_target: '#auction-bid-offer',
       position: 'right',
@@ -3910,7 +3921,7 @@
       }
     },
     {
-      tutorial_step: 4,
+      tutorial_step: 5,
       kind: 'tutorial',
       ui_target: '#auction-consultant',
       position: 'left',
@@ -3948,7 +3959,7 @@
 
   function clampTitle(title) {
     const words = String(title || '').trim().split(/\s+/).filter(Boolean);
-    return words.slice(0, 4).join(' ') || 'Dica';
+    return words.slice(0, 6).join(' ') || 'Dica';
   }
 
   function normalizeKind(raw) {
@@ -4464,9 +4475,10 @@
           skipOrDismissCoach();
         }
       } else if (coachDemoMode || coachQueue.length > 1) {
-        // Arrive storytelling Continuar → open mesa, then tutorial tips
-        if (coachDemoMode && coachIndex === 0 && kind === 'storytelling') {
-          openMesaAfterArrive();
+        // After last storytelling (A1b), open mesa before tutorial tips
+        if (coachDemoMode && kind === 'storytelling') {
+          const nxt = coachQueue[coachIndex + 1];
+          if (nxt && nxt.kind === 'tutorial') openMesaAfterArrive();
         }
         nextCoach();
       } else {
