@@ -2073,7 +2073,17 @@
 
 
   /* Mobile lot switcher — sticky chips under header */
-  .auction-mobile-sticky { display: contents; }
+  
+  .auction-swipe-surface {
+    touch-action: pan-y;
+  }
+  @media (max-width: 1000px) {
+    .auction-swipe-surface.is-swiping-x {
+      touch-action: none;
+    }
+  }
+
+.auction-mobile-sticky { display: contents; }
   .auction-lot-chips {
     display: none;
     gap: 8px;
@@ -3209,7 +3219,7 @@
       <div class="auction-body">
         <!-- Mesa: oferta + consultor -->
         <div class="auction-screen active" id="auctionScreenBid" data-screen="bid">
-          <div class="auction-bid-scroll">
+          <div class="auction-bid-scroll auction-swipe-surface" id="auctionBidSwipe">
           <div class="auction-offer" id="auction-bid-offer">
             <div class="auction-bid-huge num" id="auctionBidValue">40</div>
             <div class="auction-bid-unit">€/MWh · oferta proposta</div>
@@ -5544,11 +5554,104 @@
     sealAuctionOffer();
   }
 
+
+  function auctionLotOrderIndex(lotId) {
+    return AUCTION_LOTS.findIndex((l) => l.id === lotId);
+  }
+
+  function nextSwipeableLot(dir) {
+    // dir: -1 = previous (swipe right), +1 = next (swipe left)
+    if (!AUCTION_LOTS.length) return null;
+    const start = auctionLotOrderIndex(auctionState.selectedId);
+    if (start < 0) return availableAuctionLots()[0] || null;
+    const n = AUCTION_LOTS.length;
+    for (let step = 1; step <= n; step++) {
+      const lot = AUCTION_LOTS[(start + dir * step + n * 10) % n];
+      if (!auctionState.taken[lot.id]) return lot;
+    }
+    return null;
+  }
+
+  function initAuctionLotSwipe() {
+    const surface = document.getElementById('auctionBidSwipe');
+    if (!surface || surface.dataset.swipeBound === '1') return;
+    surface.dataset.swipeBound = '1';
+
+    const THRESH = 56;
+    const LOCK = 12;
+    let sx = 0, sy = 0, axis = null; // null | 'x' | 'y'
+    let tracking = false;
+
+    function narrow() {
+      return window.matchMedia && window.matchMedia('(max-width: 1000px)').matches;
+    }
+
+    function ignoreTarget(el) {
+      return !!(el && el.closest && el.closest('input, textarea, select, button, a, .auction-slider-wrap, .auction-actions'));
+    }
+
+    surface.addEventListener('touchstart', (e) => {
+      if (!narrow() || !auctionState.open || auctionState.screen !== 'bid') return;
+      if (auctionState.sealedPending || auctionState.screen === 'abertura') return;
+      if (!e.touches || e.touches.length !== 1) return;
+      if (ignoreTarget(e.target)) { tracking = false; return; }
+      const tch = e.touches[0];
+      sx = tch.clientX;
+      sy = tch.clientY;
+      axis = null;
+      tracking = true;
+      surface.classList.remove('is-swiping-x');
+    }, { passive: true });
+
+    surface.addEventListener('touchmove', (e) => {
+      if (!tracking || !narrow()) return;
+      if (!e.touches || e.touches.length !== 1) return;
+      const tch = e.touches[0];
+      const dx = tch.clientX - sx;
+      const dy = tch.clientY - sy;
+      if (!axis) {
+        if (Math.abs(dx) < LOCK && Math.abs(dy) < LOCK) return;
+        axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+        if (axis === 'x') surface.classList.add('is-swiping-x');
+      }
+      if (axis === 'x' && e.cancelable) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    function endSwipe(e) {
+      if (!tracking) return;
+      tracking = false;
+      surface.classList.remove('is-swiping-x');
+      if (!narrow() || axis !== 'x') { axis = null; return; }
+      const tch = (e.changedTouches && e.changedTouches[0]) || null;
+      if (!tch) { axis = null; return; }
+      const dx = tch.clientX - sx;
+      axis = null;
+      if (Math.abs(dx) < THRESH) return;
+      // swipe left → next lot; swipe right → previous
+      const lot = nextSwipeableLot(dx < 0 ? 1 : -1);
+      if (!lot) {
+        showToast('Sem outro lote disponível neste concurso.');
+        return;
+      }
+      selectAuctionLot(lot.id);
+    }
+
+    surface.addEventListener('touchend', endSwipe, { passive: true });
+    surface.addEventListener('touchcancel', () => {
+      tracking = false;
+      axis = null;
+      surface.classList.remove('is-swiping-x');
+    }, { passive: true });
+  }
+
   function initAuctionDraft() {
     const btn = document.getElementById('btnOpenAuction');
     if (!btn) return;
     applyPreAuctionPortfolio();
     renderNodes();
+    initAuctionLotSwipe();
 
     btn.addEventListener('click', () => openAuctionRoom());
     document.getElementById('auctionClose').addEventListener('click', () => {
