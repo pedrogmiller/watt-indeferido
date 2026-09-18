@@ -2071,6 +2071,66 @@
   }
 
 
+
+  /* Mobile lot switcher — sticky chips under header */
+  .auction-mobile-sticky { display: contents; }
+  .auction-lot-chips {
+    display: none;
+    gap: 8px;
+    padding: 8px 12px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    background: #fff;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .auction-lot-chips::-webkit-scrollbar { display: none; }
+  .auction-lot-chip {
+    flex: 0 0 auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 118px;
+    max-width: 160px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #0f172a;
+    font-family: var(--font);
+    cursor: pointer;
+    text-align: left;
+  }
+  .auction-lot-chip:hover { border-color: #cbd5e1; background: #fff; }
+  .auction-lot-chip.selected {
+    border-color: #0f172a;
+    background: #0f172a;
+    color: #fff;
+  }
+  .auction-lot-chip.taken {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .auction-lot-chip .chip-name {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+  .auction-lot-chip .chip-meta {
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.75;
+    white-space: nowrap;
+  }
+  .auction-lot-chip.selected .chip-meta { opacity: 0.85; }
+
   /* ═══ Opening auction draft — B2 mesa (master-detail) ═══ */
   .header-auction-btn {
     flex-shrink: 0;
@@ -2735,7 +2795,22 @@
       border-radius: 14px;
     }
     .auction-left {
-      display: none; /* lots stay available via desktop; phone uses header + bid flow */
+      display: none; /* replaced by sticky lot chips under header */
+    }
+    .auction-mobile-sticky {
+      display: block;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #fff;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .auction-lot-chips {
+      display: flex;
+      position: relative;
+      top: auto;
+      z-index: 1;
+      border-bottom: none;
     }
     .auction-right {
       overflow: visible;
@@ -2744,10 +2819,13 @@
       min-height: 0;
     }
     .auction-right-head {
-      position: sticky;
-      top: 0;
-      z-index: 5;
+      position: relative;
+      top: auto;
+      z-index: 1;
       background: #fff;
+    }
+    .auction-actions {
+      z-index: 6; /* above chips when sticky submit */
     }
     .auction-body {
       max-width: none;
@@ -3108,6 +3186,7 @@
     </aside>
 
     <div class="auction-right">
+      <div class="auction-mobile-sticky">
       <header class="auction-right-head">
         <div>
           <div class="auction-kicker">Lote seleccionado</div>
@@ -3123,6 +3202,9 @@
           </button>
         </div>
       </header>
+
+      <div class="auction-lot-chips" id="auction-lot-chips" role="listbox" aria-label="Lotes SE · telemóvel"></div>
+      </div>
 
       <div class="auction-body">
         <!-- Mesa: oferta + consultor -->
@@ -4028,6 +4110,12 @@
   function resolveTarget(selector) {
     if (!selector) return null;
     try {
+      // On phone the left lot list is hidden — coach Beat A2 targets chips instead
+      if (selector === '#auction-lot-list') {
+        const chips = document.getElementById('auction-lot-chips');
+        const narrow = window.matchMedia && window.matchMedia('(max-width: 1000px)').matches;
+        if (narrow && chips) return chips;
+      }
       return document.querySelector(selector);
     } catch (_) {
       return null;
@@ -4836,50 +4924,89 @@
     if (auctionState.screen !== 'trap' && auctionState.screen !== 'fora') setAuctionScreen('bid');
   }
 
+  function shortLotLabel(name) {
+    return String(name || '').replace(/^SE\s+/i, '');
+  }
+
   function renderAuctionLots() {
     const list = document.getElementById('auction-lot-list');
+    const chips = document.getElementById('auction-lot-chips');
     const leftover = document.getElementById('auctionLeftoverNote');
-    if (!list) return;
+    if (!list && !chips) return;
     const takenCount = Object.keys(auctionState.taken).length;
     const available = availableAuctionLots();
 
-    list.innerHTML = AUCTION_LOTS.map((lot) => {
+    function lotTension(lot) {
       const taken = auctionState.taken[lot.id];
-      const selected = auctionState.selectedId === lot.id;
-      const disabled = !!taken;
-      let tension;
       if (taken) {
-        tension = taken.lost
-          ? ((taken.stolen ? 'Roubado · ' : taken.auto ? 'Tempo 0 · ' : 'Perdido · ') + lot.rival + (taken.bid != null ? ' ~' + taken.bid + ' €' : ''))
-          : ('Adjudicado a ti · ' + taken.bid + ' €/MWh');
-      } else {
-        tension = lot.risk + ' · ' + lot.mw + ' · em disputa';
+        return taken.lost
+          ? ((taken.stolen ? 'Roubado' : taken.auto ? 'Tempo 0' : 'Perdido') + (taken.bid != null ? ' · ~' + taken.bid + '€' : ''))
+          : ('Teu · ' + taken.bid + '€');
       }
-      return (
-        '<button type="button" class="auction-se' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + '"' +
-        ' id="auction-lot-' + lot.id + '" data-lot="' + lot.id + '" role="option"' +
-        ' aria-selected="' + (selected ? 'true' : 'false') + '"' +
-        (disabled ? ' disabled' : '') + '>' +
-        '<div class="auction-se-top"><span class="auction-se-name">' + lot.name + '</span>' +
-        '<span class="auction-se-badge">' + lot.badge + '</span></div>' +
-        '<div class="auction-se-tension">' + tension + '</div>' +
-        '</button>'
-      );
-    }).join('');
+      return lot.mw || 'em disputa';
+    }
 
-    list.querySelectorAll('.auction-se:not(:disabled)').forEach((btn) => {
-      btn.addEventListener('click', () => selectAuctionLot(btn.dataset.lot));
-    });
+    if (list) {
+      list.innerHTML = AUCTION_LOTS.map((lot) => {
+        const taken = auctionState.taken[lot.id];
+        const selected = auctionState.selectedId === lot.id;
+        const disabled = !!taken;
+        let tension;
+        if (taken) {
+          tension = taken.lost
+            ? ((taken.stolen ? 'Roubado · ' : taken.auto ? 'Tempo 0 · ' : 'Perdido · ') + lot.rival + (taken.bid != null ? ' ~' + taken.bid + ' €' : ''))
+            : ('Adjudicado a ti · ' + taken.bid + ' €/MWh');
+        } else {
+          tension = lot.risk + ' · ' + lot.mw + ' · em disputa';
+        }
+        return (
+          '<button type="button" class="auction-se' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + '"' +
+          ' id="auction-lot-' + lot.id + '" data-lot="' + lot.id + '" role="option"' +
+          ' aria-selected="' + (selected ? 'true' : 'false') + '"' +
+          (disabled ? ' disabled' : '') + '>' +
+          '<div class="auction-se-top"><span class="auction-se-name">' + lot.name + '</span>' +
+          '<span class="auction-se-badge">' + lot.badge + '</span></div>' +
+          '<div class="auction-se-tension">' + tension + '</div>' +
+          '</button>'
+        );
+      }).join('');
 
-    if (takenCount > 0 && available.length === 1) {
-      leftover.hidden = false;
-      leftover.textContent = 'Último lote (' + available[0].name + '): rivais mais agressivos. A sala não é o jogo — podes sempre voltar à consola.';
-    } else if (available.length === 0 && !auctionState.wonId) {
-      leftover.hidden = false;
-      leftover.textContent = 'Concurso encerrado · nenhum lote teu.';
-    } else {
-      leftover.hidden = true;
-      leftover.textContent = '';
+      list.querySelectorAll('.auction-se:not(:disabled)').forEach((btn) => {
+        btn.addEventListener('click', () => selectAuctionLot(btn.dataset.lot));
+      });
+    }
+
+    // Mobile sticky chips — switch lots without left rail
+    if (chips) {
+      chips.innerHTML = AUCTION_LOTS.map((lot) => {
+        const taken = auctionState.taken[lot.id];
+        const selected = auctionState.selectedId === lot.id;
+        const disabled = !!taken;
+        return (
+          '<button type="button" class="auction-lot-chip' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + '"' +
+          ' data-lot="' + lot.id + '" role="option" aria-selected="' + (selected ? 'true' : 'false') + '"' +
+          (disabled ? ' disabled' : '') + '>' +
+          '<span class="chip-name">' + shortLotLabel(lot.name) + '</span>' +
+          '<span class="chip-meta">' + lotTension(lot) + '</span>' +
+          '</button>'
+        );
+      }).join('');
+      chips.querySelectorAll('.auction-lot-chip:not(:disabled)').forEach((btn) => {
+        btn.addEventListener('click', () => selectAuctionLot(btn.dataset.lot));
+      });
+    }
+
+    if (leftover) {
+      if (takenCount > 0 && available.length === 1) {
+        leftover.hidden = false;
+        leftover.textContent = 'Último lote (' + available[0].name + '): rivais mais agressivos. A sala não é o jogo — podes sempre voltar à consola.';
+      } else if (available.length === 0 && !auctionState.wonId) {
+        leftover.hidden = false;
+        leftover.textContent = 'Concurso encerrado · nenhum lote teu.';
+      } else {
+        leftover.hidden = true;
+        leftover.textContent = '';
+      }
     }
   }
 
