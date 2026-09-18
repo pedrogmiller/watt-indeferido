@@ -1467,6 +1467,7 @@
     font-weight: 400;
     line-height: 1.45;
     color: rgba(248, 250, 252, 0.88);
+    white-space: pre-line; /* Storyteller multi-line corpo */
   }
 
   /* Long Storyteller body: shrink type so full text stays visible — never ellipsis-cut */
@@ -2343,6 +2344,9 @@
     flex: 1;
     min-height: 0;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -2700,11 +2704,74 @@
   }
 
   @media (max-width: 1000px) {
-    .auction-shell { grid-template-columns: 1fr; height: auto; max-height: 100%; }
-    .auction-left { display: none; }
-    .auction-bid-huge { font-size: 56px; }
+    /* Phone: whole mesa scrolls — nested overflow:hidden was trapping touch scroll */
+    .auction-room {
+      padding: 10px 10px 16px;
+      align-items: flex-start;
+      justify-content: center;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    .auction-room.open {
+      display: block; /* not flex — let shell grow and room scroll */
+    }
+    .auction-shell {
+      grid-template-columns: 1fr;
+      width: 100%;
+      height: auto;
+      max-height: none;
+      min-height: 0;
+      margin: 0 auto;
+      overflow: visible;
+      border-radius: 14px;
+    }
+    .auction-left {
+      display: none; /* lots stay available via desktop; phone uses header + bid flow */
+    }
+    .auction-right {
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .auction-right-head {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #fff;
+    }
+    .auction-body {
+      max-width: none;
+      overflow: visible;
+      flex: none;
+      padding: 12px 16px 20px;
+    }
+    .auction-screen.active {
+      flex: none;
+      overflow: visible;
+      min-height: 0;
+    }
+    .auction-bid-scroll {
+      flex: none;
+      overflow: visible;
+      min-height: 0;
+    }
+    .auction-actions {
+      position: sticky;
+      bottom: 0;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+    .auction-bid-huge { font-size: 48px; }
     .auction-irony { grid-template-columns: 1fr; }
-    .auction-body { max-width: none; }
+  }
+
+  @media (max-width: 480px) {
+    .auction-room { padding: 6px 6px 12px; }
+    .auction-bid-huge { font-size: 42px; }
+    .auction-right-head { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
+    .auction-body { padding: 10px 12px 18px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -3810,8 +3877,8 @@
       kind: 'storytelling',
       overlay_highlight: true,
       card_data: {
-        title: 'Não tens central',
-        body: 'Ainda não tens ponto de ligação. O primeiro TRC vem do concurso REN — não de graça. Continua para a mesa.',
+        title: 'Country Manager',
+        body: 'És o Country Manager de uma Empresa da Energia e os teus investidores querem-te no mercado Nacional.\nSem ponto de ligação, não há central — Numa rede congestionada, cada TRC é ouro em Portugal, não os paineis.\nOs primeiros TRC ganham-se em leilões da DGEG.',
         action_instruction: '',
         btn_label: 'Continuar'
       }
