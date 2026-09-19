@@ -2913,7 +2913,6 @@
   .header-home-btn .header-home-label { font-size: 12px; font-weight: 600; }
 
 
-  .header-inbox-btn .inbox-btn-label { display: none !important; } /* icon-only chrome */
   .header-inbox-btn {
     position: relative;
     flex-shrink: 0;
@@ -2953,9 +2952,6 @@
     border-color: #fecaca;
     background: #fff7f7;
   }
-  .header-inbox-btn .inbox-btn-label {
-    display: inline;
-  }
   .inbox-badge {
     position: absolute;
     top: -3px;
@@ -2989,10 +2985,7 @@
   @media (max-width: 1000px) {
     .header-home-btn .header-home-label,
     .header-auction-btn .header-auction-label,
-    .header-inbox-btn .inbox-btn-label {
-      display: none;
-    }
-    .header-home-btn,
+      .header-home-btn,
     .header-inbox-btn {
       padding: 8px;
       min-width: 36px;
