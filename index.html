@@ -1261,7 +1261,7 @@
 
   /* ── Onboarding (primeira visita) ── */
   .header-help {
-    margin-left: auto;
+    margin-left: 0;
     flex-shrink: 0;
     background: none;
     border: none;
@@ -2144,7 +2144,7 @@
   /* ═══ Opening auction draft — B2 mesa (master-detail) ═══ */
   .header-auction-btn {
     flex-shrink: 0;
-    margin-left: 4px;
+    margin-left: auto;
     background: #0f172a;
     color: #fff;
     border: none;
@@ -2878,6 +2878,395 @@
     .auction-se { transition: none; }
   }
 
+
+  /* ═══ Correio / Inbox mock ═══ */
+
+  .header-home-btn {
+    flex-shrink: 0;
+    margin-left: 4px;
+    background: none;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    padding: 7px 9px;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .header-home-btn:hover {
+    color: var(--text-main);
+    background: var(--bg-app);
+    border-color: #cbd5e1;
+  }
+  .header-home-btn:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+  .header-home-btn svg { display: block; flex-shrink: 0; }
+  .header-home-btn .header-home-label { font-size: 12px; font-weight: 600; }
+
+  .header-inbox-btn {
+    position: relative;
+    flex-shrink: 0;
+    margin-left: 4px;
+    background: none;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    padding: 6px 11px;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .header-inbox-btn:hover {
+    color: var(--text-main);
+    background: var(--bg-app);
+    border-color: #cbd5e1;
+  }
+  .header-inbox-btn:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+  .header-inbox-btn svg {
+    flex-shrink: 0;
+    display: block;
+  }
+  .header-inbox-btn.has-unread {
+    color: var(--text-main);
+    border-color: #fecaca;
+    background: #fff7f7;
+  }
+  .header-inbox-btn .inbox-btn-label {
+    display: inline;
+  }
+  .inbox-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--critical);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    box-shadow: 0 0 0 2px var(--bg-surface);
+    pointer-events: none;
+  }
+  .inbox-badge[hidden] { display: none !important; }
+  .inbox-badge.pulse {
+    animation: inbox-badge-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes inbox-badge-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 2px var(--bg-surface); }
+    50% { transform: scale(1.12); opacity: 0.88; box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 5px rgba(220, 38, 38, 0.18); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .inbox-badge.pulse { animation: none; }
+  }
+
+  /* Narrow: icon-only chrome cluster — no label wrap fight */
+  @media (max-width: 1000px) {
+    .header-home-btn .header-home-label,
+    .header-auction-btn .header-auction-label,
+    .header-inbox-btn .inbox-btn-label {
+      display: none;
+    }
+    .header-home-btn,
+    .header-inbox-btn {
+      padding: 8px;
+      min-width: 36px;
+      justify-content: center;
+    }
+    .header-auction-btn {
+      padding: 8px;
+      min-width: 36px;
+      justify-content: center;
+      margin-left: 4px;
+    }
+    .header-help {
+      padding: 8px 10px;
+      font-size: 11px;
+    }
+  }
+  @media (max-width: 640px) {
+    .header {
+      flex-wrap: wrap;
+      align-items: center;
+      row-gap: 8px;
+    }
+    .header-metrics {
+      order: 3;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+    }
+    .header-home-btn { margin-left: auto; }
+    .header-help { margin-left: 0; }
+  }
+
+
+
+  .inbox-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+    z-index: 220;
+  }
+  .inbox-backdrop.open { opacity: 1; visibility: visible; }
+
+  .inbox-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(440px, 100vw);
+    height: 100%;
+    background: var(--bg-surface);
+    box-shadow: -8px 0 30px rgba(0,0,0,0.08);
+    transform: translateX(100%);
+    transition: transform 0.2s ease-out;
+    z-index: 230;
+    display: flex;
+    flex-direction: column;
+  }
+  .inbox-drawer.open { transform: translateX(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .inbox-backdrop, .inbox-drawer { transition: none; }
+  }
+  @media (max-width: 640px) {
+    .inbox-drawer { width: 100%; max-width: 100vw; box-shadow: none; }
+  }
+
+  .inbox-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .inbox-back {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #0f172a;
+    cursor: pointer;
+  }
+  .inbox-back:hover { background: #f1f5f9; }
+  .inbox-back:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+  .inbox-header-text {
+    min-width: 0;
+    flex: 1;
+  }
+  .inbox-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .inbox-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #0f172a;
+  }
+  .inbox-mock-chip {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #7c3aed;
+    background: #f5f3ff;
+    border: 1px solid #ddd6fe;
+    border-radius: 999px;
+    padding: 2px 7px;
+  }
+  .inbox-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .inbox-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .inbox-empty {
+    margin: 40px 12px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .inbox-empty strong {
+    display: block;
+    color: var(--text-main);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .mail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    text-align: left;
+    background: var(--bg-app);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    cursor: pointer;
+    font-family: var(--font);
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .mail-row:hover {
+    border-color: #cbd5e1;
+    box-shadow: var(--shadow-card);
+    background: #fff;
+  }
+  .mail-row:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+  .mail-row.unread {
+    background: #fff;
+    border-color: #e2e8f0;
+    box-shadow: inset 3px 0 0 var(--critical);
+  }
+  .mail-row.unread .mail-row-subject { font-weight: 700; color: var(--text-main); }
+  .mail-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .mail-type-chip {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 2px 7px;
+    border: 1px solid transparent;
+  }
+  .mail-type-chip.camara { color: #9a3412; background: #fff7ed; border-color: #fed7aa; }
+  .mail-type-chip.consultor { color: #1d4ed8; background: #eff6ff; border-color: #bfdbfe; }
+  .mail-type-chip.dica { color: #047857; background: #ecfdf5; border-color: #a7f3d0; }
+  .mail-type-chip.banco { color: #6d28d9; background: #f5f3ff; border-color: #ddd6fe; }
+  .mail-row-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .mail-row-subject {
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1.35;
+  }
+  .mail-row-sender {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .mail-detail { display: flex; flex-direction: column; gap: 14px; padding: 4px 4px 8px; }
+  .mail-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .mail-detail-subject {
+    font-size: 17px;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+  .mail-detail-from {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .mail-detail-from strong { color: var(--text-main); font-weight: 600; }
+  .mail-detail-body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #334155;
+    white-space: pre-wrap;
+  }
+  .mail-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .mail-cta-primary {
+    background: #0f172a;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .mail-cta-primary:hover { background: #1e293b; }
+  .mail-cta-secondary {
+    background: none;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .mail-cta-secondary:hover {
+    color: var(--text-main);
+    background: var(--bg-app);
+  }
+
+
 </style>
 </head>
 <body>
@@ -2941,7 +3330,13 @@
     </div>
   </div>
 
-  <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Abrir a mesa de Leilão" aria-label="Abrir a mesa de Leilão"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg><span>Abrir a mesa de Leilão</span></button>
+  <button type="button" class="header-home-btn" id="btnHeaderHome" title="Home / Consola" aria-label="Home / Consola"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="header-home-label">Home</span></button>
+  <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Abrir a mesa de Leilão" aria-label="Abrir a mesa de Leilão"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg><span class="header-auction-label">Abrir a mesa de Leilão</span></button>
+  <button type="button" class="header-inbox-btn" id="btnInbox" title="Correio" aria-label="Correio">
+    <span class="inbox-icon" id="inboxIcon" aria-hidden="true"></span>
+    <span class="inbox-btn-label">Correio</span>
+    <span class="inbox-badge pulse" id="inboxBadge" hidden>0</span>
+  </button>
   <button type="button" class="header-help" id="btnTutorial" title="Abrir tutorial">Tutorial</button>
 
 </header>
@@ -3170,7 +3565,23 @@
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
 
-
+<!-- ═══ CORREIO / INBOX (mock) ═══ -->
+<div class="inbox-backdrop" id="inboxBackdrop"></div>
+<aside class="inbox-drawer" id="inboxDrawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="inboxTitle">
+  <div class="inbox-header">
+    <button type="button" class="inbox-back" id="inboxBackBtn" title="Voltar" aria-label="Voltar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="inbox-header-text">
+      <div class="inbox-title-row">
+        <div class="inbox-title" id="inboxTitle">Correio</div>
+        <span class="inbox-mock-chip">Mock</span>
+      </div>
+      <div class="inbox-subtitle" id="inboxSubtitle">Cartas · Câmara · Consultor · Dicas</div>
+    </div>
+  </div>
+  <div class="inbox-body" id="inboxBody"></div>
+</aside>
 
 <!-- ═══ OPENING AUCTION DRAFT — B2 mesa ═══ -->
 <div class="auction-room" id="auctionRoom" aria-hidden="true">
@@ -4624,8 +5035,12 @@
     const draftAuction = new URLSearchParams(location.search);
     const screenshotAuctionOnly = draftAuction.get('auction') === '1' || draftAuction.get('draft') === 'auction';
     const forceArrive = draftAuction.get('arrive') === '1';
+    const inboxDemo = draftAuction.get('inbox') === '1' || draftAuction.get('inbox') === '0';
     // First paint: arrive card → mesa. ?arrive=1 forces arrive even after onboarding.
-    if (forceArrive) {
+    // ?inbox=1|0 skips coach so Correio mock can take the home board.
+    if (inboxDemo) {
+      try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+    } else if (forceArrive) {
       try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
       requestAnimationFrame(() => startDemoSequence());
     } else if (!isOnboardingDone() && !screenshotAuctionOnly) {
@@ -5702,7 +6117,7 @@
     syncAuctionExitGates();
 
     const params = new URLSearchParams(location.search);
-    if (params.get('auction') === '1' || params.get('draft') === 'auction') {
+    if ((params.get('auction') === '1' || params.get('draft') === 'auction') && params.get('inbox') !== '1' && params.get('inbox') !== '0') {
       setTimeout(() => openAuctionRoom(), 400);
     }
 
@@ -5724,6 +6139,414 @@
   }
 
 
+
+  /* ── Correio / Inbox mock ── */
+  const MAIL_KEY = 'watt-indeferido-mail-v1';
+  const SVG_ENVELOPE_CLOSED = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
+  const SVG_ENVELOPE_OPEN = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10l10-7 10 7"/><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M4 10l8 5 8-5"/></svg>';
+
+  let mailState = {
+    items: [],
+    view: 'list', // list | detail
+    activeId: null,
+    open: false
+  };
+
+  const MAIL_TYPE_LABEL = {
+    camara: 'Câmara',
+    consultor: 'Consultor',
+    dica: 'Dica',
+    banco: 'Banco'
+  };
+
+  function unreadMailCount() {
+    return mailState.items.filter((m) => !m.read).length;
+  }
+
+  function renderInboxBadge() {
+    const btn = document.getElementById('btnInbox');
+    const badge = document.getElementById('inboxBadge');
+    const icon = document.getElementById('inboxIcon');
+    if (!btn || !badge || !icon) return;
+    const n = unreadMailCount();
+    if (n > 0) {
+      badge.hidden = false;
+      badge.textContent = String(n);
+      badge.classList.add('pulse');
+      btn.classList.add('has-unread');
+      icon.innerHTML = SVG_ENVELOPE_CLOSED;
+      btn.setAttribute('aria-label', 'Correio · ' + n + ' por ler');
+    } else {
+      badge.hidden = true;
+      badge.textContent = '0';
+      badge.classList.remove('pulse');
+      btn.classList.remove('has-unread');
+      icon.innerHTML = SVG_ENVELOPE_OPEN;
+      btn.setAttribute('aria-label', 'Correio');
+    }
+  }
+
+  function markLetterRead(id) {
+    const letter = mailState.items.find((m) => m.id === id);
+    if (!letter || letter.read) {
+      renderInboxBadge();
+      return;
+    }
+    letter.read = true;
+    renderInboxBadge();
+  }
+
+  function isInboxReadingLetter() {
+    if (mailState.activeId) return true;
+    if (mailState.view === 'detail') return true;
+    const drawer = document.getElementById('inboxDrawer');
+    if (drawer && drawer.dataset.mailView === 'detail') return true;
+    return false;
+  }
+
+  function inboxHeaderBack(ev) {
+    // Letter → list only. List → close drawer (Home). Never skip the list step.
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    if (!mailState.open) return;
+    if (isInboxReadingLetter()) {
+      mailState.view = 'list';
+      mailState.activeId = null;
+      const drawer = document.getElementById('inboxDrawer');
+      if (drawer) drawer.dataset.mailView = 'list';
+      renderInboxBody();
+      return;
+    }
+    closeInbox();
+  }
+
+  function closeInbox() {
+    mailState.open = false;
+    mailState.view = 'list';
+    mailState.activeId = null;
+    const drawer = document.getElementById('inboxDrawer');
+    const backdrop = document.getElementById('inboxBackdrop');
+    if (drawer) {
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
+    if (backdrop) backdrop.classList.remove('open');
+  }
+
+  function openInbox(opts) {
+    opts = opts || {};
+    mailState.open = true;
+    if (!opts.keepDetail) {
+      mailState.view = 'list';
+      mailState.activeId = null;
+    }
+    const drawer = document.getElementById('inboxDrawer');
+    const backdrop = document.getElementById('inboxBackdrop');
+    if (drawer) {
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+    }
+    if (backdrop) backdrop.classList.add('open');
+    renderInboxBody();
+  }
+
+  function openLetter(id) {
+    const letter = mailState.items.find((m) => m.id === id);
+    if (!letter) return;
+    markLetterRead(id);
+    mailState.view = 'detail';
+    mailState.activeId = id;
+    const drawer = document.getElementById('inboxDrawer');
+    if (drawer) drawer.dataset.mailView = 'detail';
+    if (!mailState.open) openInbox({ keepDetail: true });
+    else renderInboxBody();
+  }
+
+  function renderInboxBody() {
+    const body = document.getElementById('inboxBody');
+    const sub = document.getElementById('inboxSubtitle');
+    if (!body) return;
+    const drawer = document.getElementById('inboxDrawer');
+    const reading = mailState.view === 'detail' && !!mailState.activeId;
+    if (drawer) drawer.dataset.mailView = reading ? 'detail' : 'list';
+    const n = unreadMailCount();
+    if (sub) {
+      sub.textContent = n
+        ? (n + ' por ler · ' + mailState.items.length + ' carta(s)')
+        : (mailState.items.length ? 'Tudo lido · ' + mailState.items.length + ' carta(s)' : 'Sem cartas');
+    }
+
+    if (mailState.view === 'detail' && mailState.activeId) {
+      const letter = mailState.items.find((m) => m.id === mailState.activeId);
+      if (!letter) {
+        mailState.view = 'list';
+      } else {
+        const typeLabel = MAIL_TYPE_LABEL[letter.type] || letter.type;
+        const ctaHtml = letter.cta
+          ? '<button type="button" class="mail-cta-primary" data-mail-cta="' + letter.id + '">' + escapeHtml(letter.cta) + '</button>'
+          : '';
+        body.innerHTML =
+          '<div class="mail-detail">' +
+            '<div class="mail-detail-meta">' +
+              '<span class="mail-type-chip ' + letter.type + '">' + escapeHtml(typeLabel) + '</span>' +
+              '<span class="mail-row-time">' + escapeHtml(letter.when) + '</span>' +
+            '</div>' +
+            '<div class="mail-detail-subject">' + escapeHtml(letter.subject) + '</div>' +
+            '<div class="mail-detail-from">De <strong>' + escapeHtml(letter.sender) + '</strong></div>' +
+            '<div class="mail-detail-body">' + escapeHtml(letter.body) + '</div>' +
+            '<div class="mail-detail-actions">' +
+              ctaHtml +
+              '<button type="button" class="mail-cta-secondary" data-mail-back="1">Voltar</button>' +
+              '<button type="button" class="mail-cta-secondary" data-mail-ignore="1">Ignorar por agora</button>' +
+            '</div>' +
+          '</div>';
+        return;
+      }
+    }
+
+    if (!mailState.items.length) {
+      body.innerHTML =
+        '<div class="inbox-empty"><strong>Caixa vazia</strong>Ainda não há cartas. Depois do leilão, a Câmara e o consultor escrevem-te aqui.</div>';
+      return;
+    }
+
+    body.innerHTML = mailState.items.map((m) => {
+      const typeLabel = MAIL_TYPE_LABEL[m.type] || m.type;
+      return (
+        '<button type="button" class="mail-row' + (m.read ? '' : ' unread') + '" data-mail-id="' + m.id + '">' +
+          '<div class="mail-row-top">' +
+            '<span class="mail-type-chip ' + m.type + '">' + escapeHtml(typeLabel) + '</span>' +
+            '<span class="mail-row-time">' + escapeHtml(m.when) + '</span>' +
+          '</div>' +
+          '<div class="mail-row-subject">' + escapeHtml(m.subject) + '</div>' +
+          '<div class="mail-row-sender">' + escapeHtml(m.sender) + '</div>' +
+        '</button>'
+      );
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function buildDemoLetters() {
+    return [
+      {
+        id: 'mail-camara-ourique',
+        type: 'camara',
+        subject: 'Pedido de esclarecimentos · reunião sobre o TRC Ourique',
+        sender: 'Câmara Municipal de Ourique',
+        when: 'Set · 09:12',
+        read: false,
+        cta: 'Agendar reunião',
+        body: 'Exmos. Senhores,\n\nNa sequência da adjudicação do Título de Reserva de Capacidade na SE Ourique, a Câmara solicita esclarecimentos sobre o calendário de PIP, impacto viário da obra e contacto local do promotor.\n\nPedimos agendamento de reunião técnica nas próximas duas semanas.\n\nCom os melhores cumprimentos,\nGabinete de Urbanismo'
+      },
+      {
+        id: 'mail-consultor-estudos',
+        type: 'consultor',
+        subject: 'Primeiros estudos de recurso · Ourique',
+        sender: 'Consultor · Watt Indeferido',
+        when: 'Set · 08:40',
+        read: false,
+        cta: 'Ler dossier',
+        body: 'Bom dia.\n\nJá temos um primeiro pacote de estudos de recurso solar e notas de curtailment para a SE Ourique. Nada de números de economia finais — só o enquadramento técnico para abrires o dossier do TRC.\n\nQuando quiseres, abre o dossier na consola e cruzamos com a tensão da Câmara.'
+      },
+      {
+        id: 'mail-dica-sangra',
+        type: 'dica',
+        subject: 'O teu TRC sangra até teres geração ou BESS',
+        sender: 'Coach · Dica',
+        when: 'Set · 08:05',
+        read: false,
+        cta: null,
+        body: 'Lembra-te: um TRC adjudicado sem capacidade a entrar em operação continua a sangrar caixa (PIP, bonding, prazos).\n\nPrioridade: desbloquear licenciamento, meter geração (ou BESS) a trabalhar, e só depois pensar em farm-down ou novos lotes.'
+      },
+      {
+        id: 'mail-banco-bonding',
+        type: 'banco',
+        subject: 'Lembrete · capacidade de bonding sob pressão',
+        sender: 'Banco · Relação IPP',
+        when: 'Ago · 17:20',
+        read: true,
+        cta: null,
+        body: 'Nota de acompanhamento: com o TRC Ourique em carteira, a linha de bonding fica mais apertada até haver geração ou garantias reforçadas.\n\nIsto é um lembrete mock — sem alteração automática aos KPIs da consola.'
+      }
+    ];
+  }
+
+  function forcePostWinOuriqueHome() {
+    // Reuse auction unlock path so portfolio shows SE Ourique TRC
+    try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+    if (typeof hideCoach === 'function') {
+      try { hideCoach({ persist: true, clearQueue: true }); } catch (_) {}
+    }
+    const lot = (typeof AUCTION_LOTS !== 'undefined' && AUCTION_LOTS.find((l) => l.id === 'ourique'))
+      || (typeof AUCTION_WAVES !== 'undefined' && AUCTION_WAVES[0] && AUCTION_WAVES[0][0])
+      || { id: 'ourique', name: 'SE Ourique', risk: 'Câmara hostil' };
+    const bid = 22;
+    const eco = (typeof auctionEconomics === 'function')
+      ? auctionEconomics(bid)
+      : { van: -0.8, irr: 0.042, tone: 'red' };
+    auctionState.resolved = true;
+    auctionState.allLost = false;
+    auctionState.lastResult = { lot: lot, bid: bid, eco: eco, lost: false, outcome: 'win' };
+    if (typeof unlockPortfolioFromAuction === 'function') {
+      unlockPortfolioFromAuction(lot, bid, eco);
+    } else {
+      state.auctionWon = true;
+      state.minimized.delete('ourique');
+      const node = nodes.find((n) => n.id === 'ourique');
+      if (node) {
+        node.badge = 'TRC';
+        node.badgeClass = 'a';
+        node.missionOpen = true;
+      }
+      renderNodes();
+    }
+    if (typeof closeAuctionRoom === 'function') closeAuctionRoom();
+    document.querySelectorAll('.tab').forEach((tb) => {
+      tb.classList.remove('active');
+      tb.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.panel').forEach((pn) => pn.classList.remove('active'));
+    const home = document.getElementById('panel-portfolio');
+    if (home) home.classList.add('active');
+    const tabPort = document.querySelector('.tab[data-tab="portfolio"]');
+    if (tabPort) {
+      tabPort.classList.add('active');
+      tabPort.setAttribute('aria-selected', 'true');
+    }
+  }
+
+
+  function goConsoleHome() {
+    // Always-available Home: close overlays and land on portfolio (refresh feel)
+    try { if (typeof closeInbox === 'function') closeInbox(); } catch (_) {}
+    try { if (typeof closeDrawer === 'function') closeDrawer(); } catch (_) {}
+    try {
+      if (auctionState && auctionState.open && typeof closeAuctionRoom === 'function') {
+        if (state.auctionWon && typeof goHomeWithTrc === 'function') goHomeWithTrc();
+        else closeAuctionRoom();
+      }
+    } catch (_) {}
+    const tabPort = document.querySelector('.tab[data-tab="portfolio"]');
+    if (tabPort) tabPort.click();
+    else {
+      document.querySelectorAll('.tab').forEach((tb) => {
+        const on = tb.getAttribute('data-tab') === 'portfolio';
+        tb.classList.toggle('active', on);
+        tb.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      document.querySelectorAll('.panel').forEach((pn) => {
+        pn.classList.toggle('active', pn.id === 'panel-portfolio');
+      });
+    }
+    try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+    try { if (typeof updateHeaderMetrics === 'function') updateHeaderMetrics(); } catch (_) {}
+    try { if (typeof renderDock === 'function') renderDock(); } catch (_) {}
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const main = document.querySelector('.main') || document.getElementById('panel-portfolio');
+    if (main && main.scrollTo) main.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function seedInboxDemo(opts) {
+    opts = opts || {};
+    forcePostWinOuriqueHome();
+    mailState.items = buildDemoLetters();
+    if (opts.allRead) {
+      mailState.items.forEach((m) => { m.read = true; });
+    }
+    mailState.view = 'list';
+    mailState.activeId = null;
+    renderInboxBadge();
+    return mailState;
+  }
+
+  function initInbox() {
+    const btn = document.getElementById('btnInbox');
+    const homeBtn = document.getElementById('btnHeaderHome');
+    let backBtn = document.getElementById('inboxBackBtn');
+    const backdrop = document.getElementById('inboxBackdrop');
+    const body = document.getElementById('inboxBody');
+
+    if (homeBtn) homeBtn.addEventListener('click', goConsoleHome);
+    if (btn) btn.addEventListener('click', () => openInbox());
+    if (backBtn && backBtn.parentNode) {
+      const fresh = backBtn.cloneNode(true);
+      backBtn.parentNode.replaceChild(fresh, backBtn);
+      backBtn = fresh;
+      backBtn.addEventListener('click', inboxHeaderBack);
+    }
+    if (backdrop) backdrop.addEventListener('click', (e) => {
+      // Backdrop always dismisses the whole drawer (not a letter step)
+      if (e.target === backdrop) closeInbox();
+    });
+
+    if (body) {
+      body.addEventListener('click', (e) => {
+        const row = e.target.closest('[data-mail-id]');
+        if (row) {
+          openLetter(row.getAttribute('data-mail-id'));
+          return;
+        }
+        if (e.target.closest('[data-mail-back]')) {
+          mailState.view = 'list';
+          mailState.activeId = null;
+          renderInboxBody();
+          return;
+        }
+        if (e.target.closest('[data-mail-ignore]')) {
+          closeInbox();
+          showToast('Ignorado por agora · carta fica no correio');
+          return;
+        }
+        const cta = e.target.closest('[data-mail-cta]');
+        if (cta) {
+          showToast('Mock — acção ainda stub');
+          return;
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (!mailState.open) return;
+      e.stopPropagation();
+      inboxHeaderBack();
+    }, true);
+
+    // Default idle icon (open envelope) until seed / mail arrives
+    renderInboxBadge();
+
+    const params = new URLSearchParams(location.search);
+    const inboxParam = params.get('inbox');
+    if (inboxParam === '1') {
+      seedInboxDemo();
+      setTimeout(() => openInbox(), 350);
+    } else if (inboxParam === '0') {
+      seedInboxDemo({ allRead: true });
+    }
+
+    window.WattInbox = {
+      home: goConsoleHome,
+      open: openInbox,
+      close: closeInbox,
+      back: inboxHeaderBack,
+      seed: seedInboxDemo,
+      openLetter: openLetter,
+      markRead: markLetterRead,
+      renderBadge: renderInboxBadge,
+      state: mailState
+    };
+  }
+
+
   /* ── Init ── */
   function init() {
     renderNodes();
@@ -5734,6 +6557,7 @@
     initActivity();
     initCoach();
     initAuctionDraft();
+    initInbox();
 
     document.getElementById('btnNextQ').addEventListener('click', nextQuarter);
     document.getElementById('drawerClose').addEventListener('click', closeDrawer);
@@ -5743,6 +6567,7 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (coachActive) return;
+        if (mailState.open) return; // inbox handler (capture) owns Escape
         if (auctionState.open) { closeAuctionRoom(); return; }
         closeDrawer();
       }
