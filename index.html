@@ -2143,6 +2143,7 @@
 
   /* ═══ Opening auction draft — B2 mesa (master-detail) ═══ */
   .header-auction-btn {
+    position: relative;
     flex-shrink: 0;
     margin-left: auto;
     background: #0f172a;
@@ -2911,6 +2912,8 @@
   .header-home-btn svg { display: block; flex-shrink: 0; }
   .header-home-btn .header-home-label { font-size: 12px; font-weight: 600; }
 
+
+  .header-inbox-btn .inbox-btn-label { display: none !important; } /* icon-only chrome */
   .header-inbox-btn {
     position: relative;
     flex-shrink: 0;
@@ -2918,7 +2921,9 @@
     background: none;
     border: 1px solid var(--border-subtle);
     color: var(--text-muted);
-    padding: 6px 11px;
+    padding: 8px;
+    min-width: 36px;
+    justify-content: center;
     font-family: var(--font);
     font-size: 12px;
     font-weight: 600;
@@ -3331,10 +3336,9 @@
   </div>
 
   <button type="button" class="header-home-btn" id="btnHeaderHome" title="Home / Consola" aria-label="Home / Consola"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="header-home-label">Home</span></button>
-  <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Abrir a mesa de Leilão" aria-label="Abrir a mesa de Leilão"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg><span class="header-auction-label">Abrir a mesa de Leilão</span></button>
+  <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Leilão" aria-label="Leilão"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg><span class="header-auction-label">Leilão</span><span class="inbox-badge pulse" id="auctionBadge" hidden>0</span></button>
   <button type="button" class="header-inbox-btn" id="btnInbox" title="Correio" aria-label="Correio">
     <span class="inbox-icon" id="inboxIcon" aria-hidden="true"></span>
-    <span class="inbox-btn-label">Correio</span>
     <span class="inbox-badge pulse" id="inboxBadge" hidden>0</span>
   </button>
   <button type="button" class="header-help" id="btnTutorial" title="Abrir tutorial">Tutorial</button>
@@ -5145,6 +5149,36 @@
     return bid <= lot.npcFloor + 1;
   }
 
+
+  function openAuctionLotCount() {
+    try {
+      if (typeof availableAuctionLots === 'function') return availableAuctionLots().length;
+    } catch (_) {}
+    return 0;
+  }
+
+  function renderAuctionBadge() {
+    const btn = document.getElementById('btnOpenAuction');
+    const badge = document.getElementById('auctionBadge');
+    if (!btn || !badge) return;
+    const n = openAuctionLotCount();
+    if (n > 0) {
+      badge.hidden = false;
+      badge.textContent = String(n);
+      badge.classList.add('pulse');
+      btn.classList.add('has-open-lots');
+      btn.setAttribute('aria-label', 'Leilão · ' + n + ' lote' + (n === 1 ? '' : 's') + ' aberto' + (n === 1 ? '' : 's'));
+      btn.title = 'Leilão · ' + n + ' aberto' + (n === 1 ? '' : 's');
+    } else {
+      badge.hidden = true;
+      badge.textContent = '0';
+      badge.classList.remove('pulse');
+      btn.classList.remove('has-open-lots');
+      btn.setAttribute('aria-label', 'Leilão');
+      btn.title = 'Leilão';
+    }
+  }
+
   function availableAuctionLots() {
     return AUCTION_LOTS.filter((l) => !auctionState.taken[l.id]);
   }
@@ -5433,6 +5467,7 @@
         leftover.textContent = '';
       }
     }
+    renderAuctionBadge();
   }
 
   function ensureBidSteps() {
@@ -5561,6 +5596,7 @@
     renderNodes();
     renderActivity();
     updateHeaderMetrics(false);
+    renderAuctionBadge();
   }
 
   function goHomeWithTrc() {
@@ -5848,6 +5884,7 @@
       auctionState.clockPaused = false;
       startAuctionClock();
     }
+    renderAuctionBadge();
   }
 
   function syncAuctionExitGates() {
@@ -5894,6 +5931,7 @@
       renderNodes();
     }
     syncPortfolioEmptyCta();
+    renderAuctionBadge();
   }
 
   function resetAuctionDraft(opts) {
@@ -5948,6 +5986,7 @@
     renderNodes();
     if (opts.fromFab || opts.open !== false) openAuctionRoom();
     showToast('Concurso REN · onda ' + (wave + 1));
+    renderAuctionBadge();
   }
 
   function applyPreAuctionPortfolio() {
@@ -5963,6 +6002,7 @@
       }
     }
     syncPortfolioEmptyCta();
+    renderAuctionBadge();
   }
 
   function confirmAuctionBid() {
@@ -6066,6 +6106,7 @@
     if (!btn) return;
     applyPreAuctionPortfolio();
     renderNodes();
+    renderAuctionBadge();
     initAuctionLotSwipe();
 
     btn.addEventListener('click', () => openAuctionRoom());
