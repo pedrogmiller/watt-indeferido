@@ -413,6 +413,7 @@
   }
 
   /* Portfolio workspace: grid + empty desktop + dock */
+
   .portfolio-workspace {
     position: relative;
     min-height: 420px;
@@ -434,10 +435,8 @@
     text-align: center;
     padding: 48px 24px 96px;
     min-height: 320px;
-    background:
-      radial-gradient(ellipse 60% 40% at 50% 42%, rgba(125, 211, 252, 0.08), transparent 70%),
-      var(--bg-app);
-    border: 1px dashed #e2e8f0;
+    background: transparent;
+    border: 1px dashed rgba(148, 163, 184, 0.35);
     border-radius: var(--radius-lg);
   }
 
@@ -3660,6 +3659,8 @@
 </head>
 <body>
 
+
+
 <!-- ═══ HEADER ═══ -->
 <header class="header">
   <div class="brand" id="coach-brand">
@@ -3914,7 +3915,7 @@
         </div>
         <div class="farmdown-box">
           <h4>Farm-Down Disponível</h4>
-          <p>Farm-down indisponível enquanto SE Ourique sangra (VAN ≤ 0). Ferreira e Évora são prémios posteriores no pipeline.</p>
+          <p>Farm-down indisponível enquanto SE Ourique sangra (NPV ≤ 0). Ferreira e Évora são prémios posteriores no pipeline.</p>
         </div>
       </div>
     </div>
@@ -4035,12 +4036,12 @@
 
           <div class="auction-consult" id="auction-consultant">
             <div class="auction-consultant-label">Consultor · economia por calibrar</div>
-            <div class="auction-consultant-line" id="auctionConsultantLine">Se fechares a 40 €/MWh → VAN +2,2 M€ · IRR 3,8%</div>
+            <div class="auction-consultant-line" id="auctionConsultantLine">Se fechares a 40 €/MWh → NPV +2,2 M€ · IRR 3,8%</div>
             <div class="auction-irony" aria-label="Ironia do clearing">
               <div class="auction-irony-good">
-                <div class="k">VAN indicativo</div>
+                <div class="k">NPV indicativo</div>
                 <div class="v anemic num" id="auctionVan">+2,2 M€</div>
-                <div class="sub" id="auctionVanSub">VAN no papel · IRR abaixo do hurdle 8%</div>
+                <div class="sub" id="auctionVanSub">NPV no papel · IRR abaixo do hurdle 8%</div>
               </div>
               <div class="auction-irony-trap">
                 <div class="k">Rivais a limpar</div>
@@ -4080,7 +4081,7 @@
             <p id="auctionTrapBody">A oferta baixa fechou o lote, mas o offtake implícito não cobre o risco. A primeira decisão já dói — o TRC vem daqui, não de graça.</p>
             <div class="auction-trap-stats" id="auctionTrapStats">
               <div><strong>Pay-as-bid</strong><span class="num" id="auctionTrapBid">18 €/MWh</span></div>
-              <div><strong>VAN</strong><span class="num" id="auctionTrapVan">−3,6 M€</span></div>
+              <div><strong>NPV</strong><span class="num" id="auctionTrapVan">−3,6 M€</span></div>
               <div><strong>IRR</strong><span class="num" id="auctionTrapIrr">−2,1%</span></div>
             </div>
             <p id="auctionTrapNote" style="font-size:12px;color:#94a3b8">Duas saídas: fica com o TRC na consola, ou continua a licitar o que falta.</p>
@@ -4217,7 +4218,7 @@
       { id: 'sobre', title: '+ Sobreequipamento Solar (+20% MWp)', desc: 'Acréscimo de potência solar no mesmo ponto de ligação, sem reforço de TRC.', capex: '€ 3,6M', tempo: '7–9 meses', nav: '+ € 2,4M' },
       { id: 'bess', title: '+ Hibridização com BESS', desc: 'Sistema de armazenamento 15 MW / 30 MWh. Mitiga curtailment e captura arbitragem.', capex: '€ 5,4M', tempo: '11–13 meses', nav: '+ € 3,5M' },
       { id: 'eolica', title: '+ Hibridização Eólica Onshore', desc: 'Parque eólico de 15 MW no mesmo nó. Diversifica o perfil de produção.', capex: '€ 16,5M', tempo: '16–20 meses', nav: '+ € 5,8M' },
-      { id: 'farm', title: 'Refinanciamento / Farm-Down (Venda de 49%)', desc: 'Cessão parcial do equity. Indisponível enquanto o projecto sangra.', capex: '—', tempo: 'Após VAN > 0', nav: '€ 6,9M caixa' },
+      { id: 'farm', title: 'Refinanciamento / Farm-Down (Venda de 49%)', desc: 'Cessão parcial do equity. Indisponível enquanto o projecto sangra.', capex: '—', tempo: 'Após NPV > 0', nav: '€ 6,9M caixa' },
     ],
   };
 
@@ -4444,7 +4445,7 @@
             <div class="card-tensao tone-${n.tensaoTone}">${n.tensao}</div>
 
             <div class="card-hero">
-              <div class="card-hero-label">VAN</div>
+              <div class="card-hero-label">NPV</div>
               <div class="card-hero-row">
                 <span class="card-hero-value tone-${vTone} num">${fmtVan(n.van)}</span>
                 ${delta ? `<span class="card-hero-delta tone-${vTone} num">${delta}</span>` : ''}
@@ -4558,7 +4559,7 @@
             <div class="dossier-value">${d.licenciamento || '—'}</div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">VAN se o PIP sair</div>
+            <div class="dossier-label">NPV se o PIP sair</div>
             <div class="dossier-value num">${d.vanPip || '—'}</div>
           </div>
           <div class="dossier-cell">
@@ -4626,7 +4627,7 @@
                 <span class="action-meta-value">${a.tempo}</span>
               </div>
               <div class="action-meta-item">
-                <span class="action-meta-label">Impacto VAN</span>
+                <span class="action-meta-label">Impacto NPV</span>
                 <span class="action-meta-value positive num">${a.nav}</span>
               </div>
             </div>
@@ -5591,7 +5592,7 @@
     else tone = 'good';
     let hint = 'Zona vermelha (~15–25): rivais limpam aqui — ganhar é sangrar.';
     if (tone === 'warn') hint = 'Meio da curva: números anémicos / âmbar. Pay-as-bid — recebes a tua oferta, não o clearing rival.';
-    if (tone === 'anemic') hint = 'VAN pode parecer ok, mas IRR < hurdle 8% — não pintes de verde. Rivais limpam a ~15–25.';
+    if (tone === 'anemic') hint = 'NPV pode parecer ok, mas IRR < hurdle 8% — não pintes de verde. Rivais limpam a ~15–25.';
     if (tone === 'good') hint = 'Acima do hurdle no papel — mas rivais limpam a banda ~15–25.';
     if (bid <= 22) hint = 'Armadilha clássica: clears fácil (pagas o preço que propões), offtake não cobre o risco.';
     return { van, irr, tone, hint };
@@ -5958,7 +5959,7 @@
     const line = document.getElementById('auctionConsultantLine');
     if (line) {
       line.innerHTML =
-        'Se fechares a <span class="num">' + bid + ' €/MWh</span> → VAN <span class="tone-' + eco.tone + ' num">' +
+        'Se fechares a <span class="num">' + bid + ' €/MWh</span> → NPV <span class="tone-' + eco.tone + ' num">' +
         auctionFmtVan(eco.van) + '</span> · IRR <span class="tone-' + eco.tone + ' num">' + auctionFmtIrr(eco.irr) + '</span>';
     }
     const vanEl = document.getElementById('auctionVan');
