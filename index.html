@@ -4381,17 +4381,43 @@
     });
   }
 
+  function awardedNodes() {
+    return nodes.filter((n) => isAwardedTrc(n.id));
+  }
+
   function renderEmptyState(expandedCount) {
     const empty = document.getElementById('portfolioEmpty');
+    const title = document.getElementById('portfolioEmptyTitle');
+    const sub = document.getElementById('portfolioEmptySub');
+    const awarded = awardedNodes();
     const show = expandedCount === 0;
     empty.classList.toggle('visible', show);
     empty.setAttribute('aria-hidden', show ? 'false' : 'true');
+    if (!show) return;
+
+    // Won TRCs but all minimized → dock hint, NEVER «Sem central»
+    if (state.auctionWon && awarded.length > 0) {
+      if (title) title.textContent = 'Centrais no dock';
+      if (sub) {
+        sub.textContent = awarded.length === 1
+          ? ('Toca em «' + shortNodeName(awarded[0]) + '» em baixo para restaurar a janela.')
+          : ('Tens ' + awarded.length + ' TRC no dock — toca num ícone em baixo para restaurar.');
+      }
+      const cta = document.getElementById('portfolioEmptyCta');
+      if (cta) cta.hidden = true;
+      return;
+    }
+
+    if (title) title.textContent = 'Sem central';
+    if (sub) sub.textContent = 'Ainda não tens TRC. Abre a mesa de leilão — o ponto não vem de graça.';
+    if (typeof syncPortfolioEmptyCta === 'function') syncPortfolioEmptyCta();
   }
 
   function renderNodes() {
     const grid = document.getElementById('assetGrid');
     const activeId = state.activeNodeId || null;
-    const expanded = nodes.filter(n => !state.minimized.has(n.id));
+    // Only awarded TRCs belong on the board (placeholders stay out)
+    const expanded = nodes.filter((n) => isAwardedTrc(n.id) && !state.minimized.has(n.id));
 
     grid.innerHTML = expanded.map(n => {
       const t = n.trc;
@@ -7354,6 +7380,19 @@
     }
     if (blob.flags && blob.flags.onboardingDone) {
       try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+    }
+    // After a win, never leave Home looking like «Sem central»: expand ≥1 awarded TRC
+    if (state.auctionWon) {
+      const won = (auctionState && auctionState.wonLots) ? auctionState.wonLots.slice() : [];
+      const ids = won.length ? won : nodes.map((n) => n.id);
+      const anyOpen = ids.some((id) => !state.minimized.has(id));
+      if (!anyOpen && ids.length) {
+        state.minimized.delete(ids[0]);
+      }
+      // Keep un-won placeholders collapsed
+      nodes.forEach((n) => {
+        if (won.length && won.indexOf(n.id) === -1) state.minimized.add(n.id);
+      });
     }
     _hydratedFromSave = true;
     return true;
