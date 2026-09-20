@@ -2880,6 +2880,205 @@
   }
 
 
+
+  /* ═══ Mobile footer mock (?footer=1) — Home / Correio / Play ═══ */
+  .mobile-tabbar {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 4px;
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(1.4) blur(16px);
+    -webkit-backdrop-filter: saturate(1.4) blur(16px);
+    border-top: 1px solid var(--border-subtle);
+    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.06);
+  }
+  body.footer-mock .mobile-tabbar { display: flex; }
+  body.footer-mock #btnHeaderHome,
+  body.footer-mock #btnInbox,
+  body.footer-mock #btnOpenAuction { display: none !important; }
+  /* v3: Play floats centered ABOVE footer; header keeps time only */
+  body.footer-mock #btnNextQ {
+    display: inline-flex !important;
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    transform: translateX(-50%);
+    width: 58px;
+    height: 58px;
+    z-index: 92;
+    margin: 0;
+    animation: footer-play-float 2.8s ease-in-out infinite;
+    box-shadow:
+      0 6px 18px rgba(0, 122, 255, 0.38),
+      0 0 0 4px rgba(255, 255, 255, 0.92),
+      0 0 0 5px rgba(0, 122, 255, 0.18);
+  }
+  body.footer-mock #btnNextQ.log-open {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    top: auto !important;
+  }
+  body.footer-mock #btnNextQ .fab-icon {
+    width: 26px;
+    height: 26px;
+  }
+  body.footer-mock #btnNextQ:active:not(:disabled) {
+    transform: translateX(-50%) scale(0.96);
+    animation: none;
+  }
+  @keyframes footer-play-float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body.footer-mock #btnNextQ { animation: none; }
+  }
+  body.footer-mock .header {
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  /* Hide metrics/tutorial clutter in mock — keep brand + period */
+  body.footer-mock .header-metrics,
+  body.footer-mock #btnTutorial {
+    display: none !important;
+  }
+  body.footer-mock .brand-meta,
+  body.footer-mock .period,
+  body.footer-mock #hdrPeriod,
+  body.footer-mock .header .period-chip {
+    /* period stays visible via brand block */
+  }
+  body.footer-mock .mobile-tabbar {
+    padding-top: 14px;
+  }
+  body.footer-mock .main {
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Logo LEFT edge · time RIGHT edge — never clustered center */
+  body.footer-mock .header {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0 !important;
+    width: 100%;
+  }
+  body.footer-mock #coach-brand {
+    flex: 0 1 auto !important;
+    min-width: 0;
+    max-width: 62%;
+    margin: 0 !important;
+    margin-right: auto !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+  }
+  body.footer-mock .brand-text {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  body.footer-mock .brand-name { font-size: 13px; }
+  body.footer-mock .brand-period {
+    display: none !important; /* use #footerMockPeriod on the right */
+  }
+  .footer-mock-period { display: none; }
+  body.footer-mock #footerMockPeriod {
+    display: inline-flex !important;
+    align-items: center;
+    flex: 0 0 auto !important;
+    margin: 0 0 0 auto !important;
+    order: 20;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font);
+  }
+  /* Keep metrics/tutorial/auction/home/inbox out of the row so space-between works */
+  body.footer-mock .header-metrics,
+  body.footer-mock #btnTutorial,
+  body.footer-mock #btnHeaderHome,
+  body.footer-mock #btnInbox,
+  body.footer-mock #btnOpenAuction {
+    display: none !important;
+  }
+
+  body.footer-mock .main {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+  .mobile-tabbar-btn {
+    flex: 1;
+    max-width: 120px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 52px;
+    padding: 6px 8px;
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+    color: #64748b;
+    font-family: var(--font);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+  }
+  .mobile-tabbar-btn:hover { color: #0f172a; background: #f1f5f9; }
+  .mobile-tabbar-btn:focus-visible { outline: 2px solid #007AFF; outline-offset: 2px; }
+  .mobile-tabbar-btn svg { display: block; }
+  .mobile-tabbar-btn.is-play {
+    color: #fff;
+    background: #007AFF;
+    box-shadow: 0 4px 14px rgba(0, 122, 255, 0.35);
+    max-width: 64px;
+    border-radius: 18px;
+    margin-top: -10px;
+    min-height: 56px;
+    padding-top: 10px;
+  }
+  .mobile-tabbar-btn.is-play:hover { background: #0066D6; color: #fff; }
+  .mobile-tabbar-btn .tab-badge {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 22px);
+  }
+  .mobile-tabbar-hint {
+    display: none;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    z-index: 89;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    pointer-events: none;
+  }
+  body.footer-mock .mobile-tabbar-hint { display: block; }
+
   /* ═══ Correio / Inbox mock ═══ */
 
   .header-home-btn {
@@ -3302,6 +3501,7 @@
       <span class="brand-period" id="periodLabel">2026 · Q3</span>
     </div>
   </div>
+  <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · Q3</span>
 
   <div class="header-metrics" id="coach-header-metrics">
     <div class="metric-pill" id="pillCaixa">
@@ -5170,6 +5370,7 @@
       btn.setAttribute('aria-label', 'Leilão');
       btn.title = 'Leilão';
     }
+      syncTabAuctionBadge();
   }
 
   function availableAuctionLots() {
@@ -6218,6 +6419,7 @@
       icon.innerHTML = SVG_ENVELOPE_OPEN;
       btn.setAttribute('aria-label', 'Correio');
     }
+      syncTabInboxBadge();
   }
 
   function markLetterRead(id) {
@@ -6501,6 +6703,124 @@
     return mailState;
   }
 
+
+  function syncTabInboxBadge() {
+    const tabBadge = document.getElementById('tabInboxBadge');
+    const tabBtn = document.getElementById('tabInbox');
+    if (!tabBadge) return;
+    const n = unreadMailCount();
+    if (n > 0) {
+      tabBadge.hidden = false;
+      tabBadge.textContent = String(n);
+      tabBadge.classList.add('pulse');
+      if (tabBtn) tabBtn.setAttribute('aria-label', 'Correio · ' + n + ' por ler');
+    } else {
+      tabBadge.hidden = true;
+      tabBadge.textContent = '0';
+      tabBadge.classList.remove('pulse');
+      if (tabBtn) tabBtn.setAttribute('aria-label', 'Correio');
+    }
+  }
+
+  function syncTabAuctionBadge() {
+    const tabBadge = document.getElementById('tabAuctionBadge');
+    const tabBtn = document.getElementById('tabAuction');
+    if (!tabBadge) return;
+    const n = typeof openAuctionLotCount === 'function' ? openAuctionLotCount() : 0;
+    if (n > 0) {
+      tabBadge.hidden = false;
+      tabBadge.textContent = String(n);
+      tabBadge.classList.add('pulse');
+      if (tabBtn) tabBtn.setAttribute('aria-label', 'Leilão · ' + n + ' aberto' + (n === 1 ? '' : 's'));
+    } else {
+      tabBadge.hidden = true;
+      tabBadge.textContent = '0';
+      tabBadge.classList.remove('pulse');
+      if (tabBtn) tabBtn.setAttribute('aria-label', 'Leilão');
+    }
+  }
+
+  function initMobileFooterMock() {
+    const params = new URLSearchParams(location.search);
+    const forceOn = params.get('footer') === '1';
+    const forceOff = params.get('footer') === '0';
+    const mq = window.matchMedia ? window.matchMedia('(max-width: 640px)') : null;
+    let wired = false;
+
+    function shouldEnable() {
+      if (forceOff) return false;
+      if (forceOn) return true;
+      return !!(mq && mq.matches);
+    }
+
+    function applyMobileChrome() {
+      document.body.classList.add('footer-mock');
+      const bar = document.getElementById('mobileTabbar');
+      if (bar) bar.hidden = false;
+      const hint = document.getElementById('mobileTabbarHint');
+      if (hint) hint.hidden = true;
+
+      const fmp = document.getElementById('footerMockPeriod');
+      const header = document.querySelector('header.header');
+      if (fmp) {
+        fmp.hidden = false;
+        fmp.removeAttribute('aria-hidden');
+        const pl = document.getElementById('periodLabel');
+        if (pl) fmp.textContent = pl.textContent;
+        if (header) header.appendChild(fmp);
+      }
+
+      const play = document.getElementById('btnNextQ');
+      if (play && play.parentElement && play.parentElement.matches && play.parentElement.matches('header.header')) {
+        const main = document.querySelector('main') || document.body;
+        main.parentNode.insertBefore(play, main.nextSibling);
+      }
+
+      if (!wired) {
+        wired = true;
+        const home = document.getElementById('tabHome');
+        const inbox = document.getElementById('tabInbox');
+        const auction = document.getElementById('tabAuction');
+        if (home) home.addEventListener('click', () => {
+          if (typeof goConsoleHome === 'function') goConsoleHome();
+        });
+        if (inbox) inbox.addEventListener('click', () => {
+          if (typeof openInbox === 'function') openInbox();
+        });
+        if (auction) auction.addEventListener('click', () => {
+          if (typeof openAuctionRoom === 'function') openAuctionRoom();
+          else {
+            const btn = document.getElementById('btnOpenAuction');
+            if (btn) btn.click();
+          }
+        });
+      }
+      syncTabInboxBadge();
+      syncTabAuctionBadge();
+    }
+
+    function clearMobileChrome() {
+      document.body.classList.remove('footer-mock');
+      const bar = document.getElementById('mobileTabbar');
+      if (bar) bar.hidden = true;
+      const fmp = document.getElementById('footerMockPeriod');
+      if (fmp) {
+        fmp.hidden = true;
+        fmp.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    function syncChrome() {
+      if (shouldEnable()) applyMobileChrome();
+      else clearMobileChrome();
+    }
+
+    syncChrome();
+    if (mq && mq.addEventListener) mq.addEventListener('change', syncChrome);
+    else if (mq && mq.addListener) mq.addListener(syncChrome);
+  }
+
+
   function initInbox() {
     const btn = document.getElementById('btnInbox');
     const homeBtn = document.getElementById('btnHeaderHome');
@@ -6583,6 +6903,7 @@
   /* ── Init ── */
   function init() {
     renderNodes();
+    initMobileFooterMock();
     renderPipeline();
     renderActivity();
     updateHeaderMetrics(false);
@@ -6610,5 +6931,25 @@
   init();
 })();
 </script>
+
+<!-- ═══ MOBILE FOOTER MOCK (?footer=1) ═══ -->
+<div class="mobile-tabbar-hint" id="mobileTabbarHint" hidden>Navegação móvel</div>
+<nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navegação móvel (mock)" hidden>
+  <button type="button" class="mobile-tabbar-btn" id="tabHome" title="Home / Consola" aria-label="Home / Consola">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
+    <span>Home</span>
+  </button>
+  <button type="button" class="mobile-tabbar-btn" id="tabInbox" title="Correio" aria-label="Correio">
+    <span class="inbox-badge pulse tab-badge" id="tabInboxBadge" hidden>0</span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+    <span>Correio</span>
+  </button>
+  <button type="button" class="mobile-tabbar-btn" id="tabAuction" title="Leilão" aria-label="Leilão">
+    <span class="inbox-badge pulse tab-badge" id="tabAuctionBadge" hidden>0</span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg>
+    <span>Leilão</span>
+  </button>
+</nav>
+
 </body>
 </html>
