@@ -3464,6 +3464,198 @@
   }
 
 
+
+  /* ═══ Definições / Save ═══ */
+  .header-settings-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    margin-left: 4px;
+    padding: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--bg-app);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .header-settings-btn:hover {
+    color: var(--text-main);
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+  .header-settings-btn:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+  .header-settings-btn svg { display: block; }
+  /* footer-mock: gear stays visible next to period chip */
+  body.footer-mock #btnSettings {
+    display: inline-flex !important;
+    order: 21;
+    margin-left: 8px;
+    margin-right: 4px;
+  }
+  body.footer-mock #footerMockPeriod { margin-left: auto !important; }
+
+  .settings-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+    z-index: 240;
+  }
+  .settings-backdrop.open { opacity: 1; visibility: visible; }
+
+  .settings-sheet {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(360px, 100vw);
+    height: 100%;
+    background: var(--bg-surface);
+    box-shadow: -8px 0 30px rgba(0,0,0,0.1);
+    transform: translateX(100%);
+    transition: transform 0.2s ease-out;
+    z-index: 250;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font);
+  }
+  .settings-sheet.open { transform: translateX(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .settings-backdrop, .settings-sheet { transition: none; }
+  }
+  @media (max-width: 640px) {
+    .settings-sheet { width: 100%; max-width: 100vw; box-shadow: none; }
+  }
+  .settings-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .settings-sheet-title {
+    font-size: 16px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+  }
+  .settings-sheet-close {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .settings-sheet-close:hover { background: var(--bg-app); color: var(--text-main); }
+  .settings-sheet-body {
+    padding: 16px 18px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .settings-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin-bottom: 4px;
+  }
+  .settings-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-app);
+    color: var(--text-main);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .settings-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+  .settings-btn:focus-visible { outline: 2px solid #0ea5e9; outline-offset: 2px; }
+  .settings-btn.danger {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #b91c1c;
+  }
+  .settings-btn.danger:hover { background: #fee2e2; border-color: #fca5a5; }
+  .settings-btn.primary {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #fff;
+  }
+  .settings-btn.primary:hover { background: #1e293b; }
+
+  .settings-confirm {
+    position: fixed;
+    inset: 0;
+    z-index: 260;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+  }
+  .settings-confirm.open { opacity: 1; visibility: visible; }
+  .settings-confirm-card {
+    width: min(360px, 100%);
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+    padding: 20px;
+    font-family: var(--font);
+  }
+  .settings-confirm-title {
+    font-size: 16px;
+    font-weight: 650;
+    margin-bottom: 8px;
+    color: var(--text-main);
+  }
+  .settings-confirm-body {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .settings-confirm-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  .settings-confirm-actions .settings-btn {
+    width: auto;
+    min-width: 110px;
+    min-height: 44px;
+    flex: 1 1 auto;
+  }
+
 </style>
 </head>
 <body>
@@ -3535,6 +3727,9 @@
     <span class="inbox-badge pulse" id="inboxBadge" hidden>0</span>
   </button>
   <button type="button" class="header-help" id="btnTutorial" title="Abrir tutorial">Tutorial</button>
+  <button type="button" class="header-settings-btn" id="btnSettings" title="Definições" aria-label="Definições">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+  </button>
 
 </header>
 
@@ -3933,6 +4128,33 @@
 <div class="tooltip" id="tooltip" role="tooltip"></div>
 <div class="toast" id="toast"></div>
 
+<!-- ═══ Definições / Save ═══ -->
+<div class="settings-backdrop" id="settingsBackdrop" hidden></div>
+<aside class="settings-sheet" id="settingsSheet" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="settings-sheet-header">
+    <h2 class="settings-sheet-title" id="settingsTitle">Definições</h2>
+    <button type="button" class="settings-sheet-close" id="settingsClose" title="Fechar" aria-label="Fechar">×</button>
+  </div>
+  <div class="settings-sheet-body">
+    <p class="settings-hint">Gravação automática no browser (Game Boy). Exporta ou importa um ficheiro JSON para mudar de dispositivo.</p>
+    <button type="button" class="settings-btn primary" id="btnExportSave">Exportar save</button>
+    <button type="button" class="settings-btn" id="btnImportSave">Importar save</button>
+    <input type="file" id="importSaveInput" accept="application/json,.json" hidden />
+    <button type="button" class="settings-btn danger" id="btnNewGame">Novo jogo</button>
+  </div>
+</aside>
+<div class="settings-confirm" id="settingsConfirm" hidden role="dialog" aria-modal="true" aria-labelledby="settingsConfirmTitle">
+  <div class="settings-confirm-card">
+    <div class="settings-confirm-title" id="settingsConfirmTitle">Novo jogo?</div>
+    <div class="settings-confirm-body" id="settingsConfirmBody">Isto apaga o save actual neste browser e reinicia a consola. Não se desfaz.</div>
+    <div class="settings-confirm-actions">
+      <button type="button" class="settings-btn" id="settingsConfirmCancel">Cancelar</button>
+      <button type="button" class="settings-btn danger" id="settingsConfirmOk">Novo jogo</button>
+    </div>
+  </div>
+</div>
+
+
 <script>
 (function () {
   'use strict';
@@ -4093,6 +4315,7 @@
     state.minimized.add(nodeId);
     if (state.activeNodeId === nodeId) closeDrawer();
     renderNodes();
+    scheduleSave('minimize');
   }
 
   function isAwardedTrc(nodeId) {
@@ -4109,12 +4332,14 @@
     }
     state.minimized.delete(nodeId);
     renderNodes();
+    scheduleSave('restore');
   }
 
   function minimizeAllNodes() {
     nodes.forEach(n => state.minimized.add(n.id));
     if (state.activeNodeId) closeDrawer();
     renderNodes();
+    scheduleSave('minimize-all');
   }
 
   function restoreAllNodes() {
@@ -4129,6 +4354,7 @@
       state.minimized.clear();
     }
     renderNodes();
+    scheduleSave('restore-all');
   }
 
   function renderDock() {
@@ -4460,6 +4686,7 @@
     renderActivity();
     openDrawer(nodeId); // refresh drawer state
     showToast('Ação registada · KPIs atualizados');
+    scheduleSave('confirm-action');
   }
 
   function updateHeaderMetrics(doFlash) {
@@ -4470,6 +4697,8 @@
     const usedPct = ((state.bondingTotal - state.bondingFree) / state.bondingTotal) * 100;
     document.getElementById('bondingFill').style.width = Math.min(100, Math.max(0, usedPct)) + '%';
     document.getElementById('periodLabel').textContent = state.year + ' · Q' + state.quarter;
+    const fmp = document.getElementById('footerMockPeriod');
+    if (fmp) fmp.textContent = state.year + ' · Q' + state.quarter;
     if (doFlash) {
       flashPill('pillCaixa');
       flashPill('pillNav');
@@ -4512,6 +4741,7 @@
       btn.classList.remove('loading');
       btn.disabled = false;
       showToast(`Avançado para ${state.year} · Q${state.quarter}`);
+      scheduleSave('next-quarter');
 
       // Next month/quarter: if no TRC (or after lose-all), open next REN concurso wave
       if (typeof startNextAuctionWave === 'function' && (!state.auctionWon || (typeof auctionState !== 'undefined' && auctionState.allLost))) {
@@ -5235,7 +5465,10 @@
     const inboxDemo = draftAuction.get('inbox') === '1' || draftAuction.get('inbox') === '0';
     // First paint: arrive card → mesa. ?arrive=1 forces arrive even after onboarding.
     // ?inbox=1|0 skips coach so Correio mock can take the home board.
-    if (inboxDemo) {
+    // Resumed save: skip wipe / skip demo (never wipe save on refresh).
+    if (_hydratedFromSave && !forceArrive && !inboxDemo && !screenshotAuctionOnly) {
+      try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+    } else if (inboxDemo) {
       try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
     } else if (forceArrive) {
       try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
@@ -5791,6 +6024,7 @@
     renderActivity();
     updateHeaderMetrics(false);
     renderAuctionBadge();
+    scheduleSave('unlock-trc');
   }
 
   function goHomeWithTrc() {
@@ -5889,6 +6123,7 @@
     renderAuctionLots();
     renderAuctionRivals();
     syncAuctionExitGates();
+    scheduleSave('auction-fora');
   }
 
   function sealAuctionOffer() {
@@ -5897,6 +6132,7 @@
     if (auctionState.bid < 14) return;
     const bid = auctionState.bid;
     auctionState.sealedPending = { lotId: lot.id, bid: bid };
+    scheduleSave('bid-submit');
     startAuctionAbertura(lot, bid);
   }
 
@@ -5954,6 +6190,7 @@
       renderAuctionLots();
       renderAuctionRivals();
       syncAuctionExitGates();
+      scheduleSave('auction-lose');
       return;
     }
 
@@ -5979,6 +6216,7 @@
     renderAuctionLots();
     renderAuctionRivals();
     syncAuctionExitGates();
+    scheduleSave('auction-resolve');
   }
 
   function paintAuctionResult(result, outcome) {
@@ -6042,6 +6280,7 @@
           : 'Sem lotes em aberto — Aceitar TRC e sair leva-te à Home com este TRC.';
       }
     }
+    scheduleSave('auction-result');
   }
 
   function openAuctionRoom(opts) {
@@ -6181,6 +6420,7 @@
     if (opts.fromFab || opts.open !== false) openAuctionRoom();
     showToast('Concurso REN · onda ' + (wave + 1));
     renderAuctionBadge();
+    scheduleSave('auction-wave');
   }
 
   function applyPreAuctionPortfolio() {
@@ -6430,6 +6670,7 @@
     }
     letter.read = true;
     renderInboxBadge();
+    scheduleSave('mail-read');
   }
 
   function isInboxReadingLetter() {
@@ -6900,18 +7141,435 @@
   }
 
 
+
+  /* ── Save system (Game Boy) ── */
+  const SAVE_KEY = 'watt.save.v1';
+  const SAVE_DEBOUNCE_MS = 400;
+  let _saveTimer = null;
+  let _hydratedFromSave = false;
+  let _saveOverrideActive = false;
+
+  function hasSaveOverrideQuery() {
+    const p = new URLSearchParams(location.search);
+    if (p.get('inbox') === '1' || p.get('inbox') === '0') return true;
+    if (p.get('arrive') === '1') return true;
+    if (p.get('auction') === '1' || p.get('draft') === 'auction') return true;
+    if (p.get('footer') === '1' || p.get('footer') === '0') return true;
+    return false;
+  }
+
+  function serializeAppliedActions(map) {
+    const out = {};
+    if (!map) return out;
+    Object.keys(map).forEach((k) => {
+      const v = map[k];
+      if (v && typeof v.forEach === 'function') out[k] = Array.from(v);
+      else if (Array.isArray(v)) out[k] = v.slice();
+      else if (v) out[k] = Object.keys(v);
+    });
+    return out;
+  }
+
+  function deserializeAppliedActions(raw) {
+    const out = {};
+    if (!raw || typeof raw !== 'object') return out;
+    Object.keys(raw).forEach((k) => {
+      const v = raw[k];
+      out[k] = new Set(Array.isArray(v) ? v : []);
+    });
+    return out;
+  }
+
+  function collectSaveBlob() {
+    const minimized = state.minimized instanceof Set
+      ? Array.from(state.minimized)
+      : (Array.isArray(state.minimized) ? state.minimized.slice() : []);
+    const stateCopy = {
+      quarter: state.quarter,
+      year: state.year,
+      caixa: state.caixa,
+      divida: state.divida,
+      nav: state.nav,
+      bondingFree: state.bondingFree,
+      bondingTotal: state.bondingTotal,
+      appliedActions: serializeAppliedActions(state.appliedActions),
+      activeNodeId: state.activeNodeId,
+      minimized: minimized,
+      auctionWon: !!state.auctionWon
+    };
+    let auctionCopy = null;
+    try {
+      auctionCopy = {
+        open: false, // never resume with room forced open
+        screen: auctionState.screen || 'bid',
+        selectedId: auctionState.selectedId,
+        bid: auctionState.bid,
+        taken: JSON.parse(JSON.stringify(auctionState.taken || {})),
+        lastResult: auctionState.lastResult
+          ? JSON.parse(JSON.stringify({
+              lot: auctionState.lastResult.lot,
+              bid: auctionState.lastResult.bid,
+              eco: auctionState.lastResult.eco,
+              lost: auctionState.lastResult.lost,
+              outcome: auctionState.lastResult.outcome
+            }))
+          : null,
+        resolved: !!auctionState.resolved,
+        wonId: auctionState.wonId,
+        wonLots: (auctionState.wonLots || []).slice(),
+        allLost: !!auctionState.allLost,
+        wave: auctionState.wave | 0,
+        clockLeft: auctionState.clockLeft,
+        clockPaused: true,
+        sealedPending: null,
+        rivalModes: JSON.parse(JSON.stringify(auctionState.rivalModes || {}))
+      };
+    } catch (_) {
+      auctionCopy = null;
+    }
+    let mailCopy = null;
+    try {
+      mailCopy = {
+        items: JSON.parse(JSON.stringify(mailState.items || [])),
+        view: 'list',
+        activeId: null,
+        open: false
+      };
+    } catch (_) {
+      mailCopy = { items: [], view: 'list', activeId: null, open: false };
+    }
+    let actionsCopy = null;
+    try {
+      actionsCopy = JSON.parse(JSON.stringify(actions));
+    } catch (_) {
+      actionsCopy = null;
+    }
+    let onboardingDone = false;
+    try { onboardingDone = localStorage.getItem(ONBOARDING_KEY) === '1'; } catch (_) {}
+    return {
+      v: 1,
+      savedAt: new Date().toISOString(),
+      state: stateCopy,
+      auctionState: auctionCopy,
+      mailState: mailCopy,
+      nodes: JSON.parse(JSON.stringify(nodes)),
+      activities: JSON.parse(JSON.stringify(activities)),
+      actions: actionsCopy,
+      flags: { onboardingDone: onboardingDone }
+    };
+  }
+
+  function persistSave(reason) {
+    if (_saveOverrideActive) return false;
+    try {
+      const blob = collectSaveBlob();
+      const json = JSON.stringify(blob);
+      localStorage.setItem(SAVE_KEY, json);
+      return true;
+    } catch (err) {
+      try { console.warn('[watt.save] persist failed', reason || '', err); } catch (_) {}
+      return false;
+    }
+  }
+
+  function scheduleSave(reason) {
+    if (_saveOverrideActive) return;
+    if (_saveTimer) clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(() => {
+      _saveTimer = null;
+      persistSave(reason || 'debounce');
+    }, SAVE_DEBOUNCE_MS);
+  }
+
+  function clearSave() {
+    if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
+    try { localStorage.removeItem(SAVE_KEY); } catch (_) {}
+  }
+
+  function readSaveBlob() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (!raw) return null;
+      const blob = JSON.parse(raw);
+      if (!blob || blob.v !== 1 || !blob.state) return null;
+      return blob;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function hydrateFromSave(blob) {
+    if (!blob || blob.v !== 1 || !blob.state) return false;
+    const s = blob.state;
+    state.quarter = s.quarter != null ? s.quarter : state.quarter;
+    state.year = s.year != null ? s.year : state.year;
+    state.caixa = s.caixa != null ? s.caixa : state.caixa;
+    state.divida = s.divida != null ? s.divida : state.divida;
+    state.nav = s.nav != null ? s.nav : state.nav;
+    state.bondingFree = s.bondingFree != null ? s.bondingFree : state.bondingFree;
+    state.bondingTotal = s.bondingTotal != null ? s.bondingTotal : state.bondingTotal;
+    state.activeNodeId = s.activeNodeId != null ? s.activeNodeId : null;
+    state.auctionWon = !!s.auctionWon;
+    state.appliedActions = deserializeAppliedActions(s.appliedActions);
+    state.minimized = new Set(Array.isArray(s.minimized) ? s.minimized : ['ourique']);
+
+    if (Array.isArray(blob.nodes) && blob.nodes.length) {
+      nodes.length = 0;
+      blob.nodes.forEach((n) => nodes.push(n));
+    }
+    if (Array.isArray(blob.activities)) {
+      activities.length = 0;
+      blob.activities.forEach((a) => activities.push(a));
+    }
+    if (blob.actions && typeof blob.actions === 'object') {
+      Object.keys(blob.actions).forEach((k) => {
+        actions[k] = blob.actions[k];
+      });
+    }
+    if (blob.auctionState && typeof auctionState !== 'undefined') {
+      const a = blob.auctionState;
+      const wave = Math.max(0, Math.min((a.wave | 0), AUCTION_WAVES.length - 1));
+      auctionState.wave = wave;
+      AUCTION_LOTS = AUCTION_WAVES[wave].slice();
+      auctionState.open = false;
+      auctionState.screen = a.screen || 'bid';
+      auctionState.selectedId = a.selectedId || (AUCTION_LOTS[0] && AUCTION_LOTS[0].id) || 'ourique';
+      auctionState.bid = a.bid != null ? a.bid : 40;
+      auctionState.taken = a.taken && typeof a.taken === 'object' ? a.taken : {};
+      auctionState.lastResult = a.lastResult || null;
+      auctionState.resolved = !!a.resolved;
+      auctionState.wonId = a.wonId || null;
+      auctionState.wonLots = Array.isArray(a.wonLots) ? a.wonLots.slice() : [];
+      auctionState.allLost = !!a.allLost;
+      auctionState.clockLeft = a.clockLeft != null ? a.clockLeft : AUCTION_CLOCK_S;
+      auctionState.clockPaused = true;
+      auctionState.sealedPending = null;
+      auctionState.rivalModes = a.rivalModes && typeof a.rivalModes === 'object' ? a.rivalModes : {};
+    }
+    if (blob.mailState && typeof mailState !== 'undefined') {
+      mailState.items = Array.isArray(blob.mailState.items) ? blob.mailState.items : [];
+      mailState.view = 'list';
+      mailState.activeId = null;
+      mailState.open = false;
+    }
+    if (blob.flags && blob.flags.onboardingDone) {
+      try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+    }
+    _hydratedFromSave = true;
+    return true;
+  }
+
+  function syncPeriodChrome() {
+    const label = state.year + ' · Q' + state.quarter;
+    const pl = document.getElementById('periodLabel');
+    if (pl) pl.textContent = label;
+    const fmp = document.getElementById('footerMockPeriod');
+    if (fmp) fmp.textContent = label;
+  }
+
+  function applyHydratedUi() {
+    try { updateHeaderMetrics(false); } catch (_) {}
+    syncPeriodChrome();
+    try { renderNodes(); } catch (_) {}
+    try { renderDock(); } catch (_) {}
+    try { renderActivity(); } catch (_) {}
+    try { renderPipeline(); } catch (_) {}
+    try { if (typeof syncPortfolioEmptyCta === 'function') syncPortfolioEmptyCta(); } catch (_) {}
+    try { if (typeof renderAuctionBadge === 'function') renderAuctionBadge(); } catch (_) {}
+    try { if (typeof renderInboxBadge === 'function') renderInboxBadge(); } catch (_) {}
+    try { if (typeof syncTabInboxBadge === 'function') syncTabInboxBadge(); } catch (_) {}
+    try { if (typeof syncTabAuctionBadge === 'function') syncTabAuctionBadge(); } catch (_) {}
+    const sub = document.getElementById('portfolioSubtitle');
+    if (sub && state.auctionWon && auctionState.wonLots && auctionState.wonLots.length) {
+      const lastId = auctionState.wonLots[auctionState.wonLots.length - 1];
+      const n = nodes.find((x) => x.id === lastId);
+      sub.textContent = 'Portfólio · ' + auctionState.wonLots.length + ' TRC' + (n ? (' · ' + n.name) : '');
+    }
+  }
+
+  function openSettingsSheet() {
+    const sheet = document.getElementById('settingsSheet');
+    const backdrop = document.getElementById('settingsBackdrop');
+    if (sheet) {
+      sheet.hidden = false;
+      sheet.classList.add('open');
+      sheet.setAttribute('aria-hidden', 'false');
+    }
+    if (backdrop) {
+      backdrop.hidden = false;
+      backdrop.classList.add('open');
+    }
+  }
+
+  function closeSettingsSheet() {
+    const sheet = document.getElementById('settingsSheet');
+    const backdrop = document.getElementById('settingsBackdrop');
+    if (sheet) {
+      sheet.classList.remove('open');
+      sheet.setAttribute('aria-hidden', 'true');
+    }
+    if (backdrop) backdrop.classList.remove('open');
+    closeSettingsConfirm();
+  }
+
+  function openSettingsConfirm() {
+    const el = document.getElementById('settingsConfirm');
+    if (!el) return;
+    el.hidden = false;
+    el.classList.add('open');
+  }
+
+  function closeSettingsConfirm() {
+    const el = document.getElementById('settingsConfirm');
+    if (!el) return;
+    el.classList.remove('open');
+    el.hidden = true;
+  }
+
+  function exportSaveFile() {
+    try {
+      // Flush pending debounce so export matches disk
+      if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
+      if (!_saveOverrideActive) persistSave('export');
+      const blob = collectSaveBlob();
+      const json = JSON.stringify(blob, null, 2);
+      const file = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'watt-indeferido-save.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+      showToast('Save exportado');
+    } catch (err) {
+      showToast('Falha ao exportar save');
+    }
+  }
+
+  function importSaveFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const blob = JSON.parse(String(reader.result || ''));
+        if (!blob || blob.v !== 1 || !blob.state) {
+          showToast('Save inválido (exige v: 1)');
+          return;
+        }
+        localStorage.setItem(SAVE_KEY, JSON.stringify(blob));
+        if (blob.flags && blob.flags.onboardingDone) {
+          try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+        }
+        showToast('Save importado · a recarregar…');
+        setTimeout(() => {
+          // Drop override queries so cold load hydrates the imported save
+          const url = location.pathname + location.hash;
+          location.replace(url || location.href.split('?')[0]);
+        }, 350);
+      } catch (_) {
+        showToast('Ficheiro JSON inválido');
+      }
+    };
+    reader.onerror = () => showToast('Não foi possível ler o ficheiro');
+    reader.readAsText(file);
+  }
+
+  function hardResetNewGame() {
+    clearSave();
+    // Keep onboarding flag cleared so arrive/demo can run fresh
+    try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
+    // Strip query mocks so cold load is a clean new game
+    const url = location.pathname + location.hash;
+    location.replace(url || location.href.split('?')[0]);
+  }
+
+  function initSettingsUi() {
+    const btn = document.getElementById('btnSettings');
+    const close = document.getElementById('settingsClose');
+    const backdrop = document.getElementById('settingsBackdrop');
+    const exportBtn = document.getElementById('btnExportSave');
+    const importBtn = document.getElementById('btnImportSave');
+    const importInput = document.getElementById('importSaveInput');
+    const newBtn = document.getElementById('btnNewGame');
+    const confirmCancel = document.getElementById('settingsConfirmCancel');
+    const confirmOk = document.getElementById('settingsConfirmOk');
+
+    if (btn) btn.addEventListener('click', openSettingsSheet);
+    if (close) close.addEventListener('click', closeSettingsSheet);
+    if (backdrop) backdrop.addEventListener('click', closeSettingsSheet);
+    if (exportBtn) exportBtn.addEventListener('click', exportSaveFile);
+    if (importBtn) importBtn.addEventListener('click', () => {
+      if (importInput) importInput.click();
+    });
+    if (importInput) importInput.addEventListener('change', () => {
+      const f = importInput.files && importInput.files[0];
+      importSaveFile(f);
+      importInput.value = '';
+    });
+    if (newBtn) newBtn.addEventListener('click', openSettingsConfirm);
+    if (confirmCancel) confirmCancel.addEventListener('click', closeSettingsConfirm);
+    if (confirmOk) confirmOk.addEventListener('click', () => {
+      closeSettingsConfirm();
+      hardResetNewGame();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const confirm = document.getElementById('settingsConfirm');
+      if (confirm && confirm.classList.contains('open')) {
+        e.stopPropagation();
+        closeSettingsConfirm();
+        return;
+      }
+      const sheet = document.getElementById('settingsSheet');
+      if (sheet && sheet.classList.contains('open')) {
+        e.stopPropagation();
+        closeSettingsSheet();
+      }
+    }, true);
+
+    window.WattSave = {
+      key: SAVE_KEY,
+      collect: collectSaveBlob,
+      persist: persistSave,
+      schedule: scheduleSave,
+      hydrate: hydrateFromSave,
+      clear: clearSave,
+      read: readSaveBlob,
+      overrideActive: function () { return _saveOverrideActive; }
+    };
+  }
+
+
   /* ── Init ── */
   function init() {
+    _saveOverrideActive = hasSaveOverrideQuery();
+    let resumed = false;
+    if (!_saveOverrideActive) {
+      const blob = readSaveBlob();
+      if (blob) {
+        resumed = hydrateFromSave(blob);
+      }
+    }
+    // Query mocks override save load; autosave stays paused while those params are present.
+
     renderNodes();
     initMobileFooterMock();
     renderPipeline();
     renderActivity();
     updateHeaderMetrics(false);
+    syncPeriodChrome();
     initTabs();
     initActivity();
+    initSettingsUi();
     initCoach();
     initAuctionDraft();
     initInbox();
+
+    if (resumed) {
+      applyHydratedUi();
+    }
 
     document.getElementById('btnNextQ').addEventListener('click', nextQuarter);
     document.getElementById('drawerClose').addEventListener('click', closeDrawer);
@@ -6923,6 +7581,8 @@
         if (coachActive) return;
         if (mailState.open) return; // inbox handler (capture) owns Escape
         if (auctionState.open) { closeAuctionRoom(); return; }
+        const sheet = document.getElementById('settingsSheet');
+        if (sheet && sheet.classList.contains('open')) return; // settings handler owns Escape
         closeDrawer();
       }
     });
@@ -6931,6 +7591,7 @@
   init();
 })();
 </script>
+
 
 <!-- ═══ MOBILE FOOTER MOCK (?footer=1) ═══ -->
 <div class="mobile-tabbar-hint" id="mobileTabbarHint" hidden>Navegação móvel</div>
