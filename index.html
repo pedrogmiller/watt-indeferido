@@ -2114,6 +2114,7 @@
     max-width: min(520px, calc(100vw - 32px));
     text-align: center;
     line-height: 1.35;
+    overflow-wrap: anywhere;
   }
 
   .toast.show {
@@ -8006,15 +8007,19 @@
     (effects || []).forEach((ef) => {
       const key = String(ef || '');
       if (!key || /^car_band_[sml]$/i.test(key)) return;
-      if (key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano') {
-        parts.push('Tag: ' + key);
-        return;
-      }
+      if (key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano') return;
       const gloss = EFFECT_GLOSS_PT[key];
       if (gloss) parts.push(gloss);
-      parts.push('Tag: ' + key);
     });
     return parts.join(' · ');
+  }
+
+  function mailEffectLogLine(effects, toast) {
+    const tags = (effects || []).filter(function (ef) {
+      return ef && !/^car_band_[sml]$/i.test(String(ef));
+    }).map(function (ef) { return 'Tag: ' + ef; });
+    const human = toast || 'Escolha registada';
+    return 'Correio · ' + human + (tags.length ? ' · ' + tags.join(' · ') : '');
   }
 
   function logMailOutcome(text) {
@@ -8912,7 +8917,7 @@
           if (letterId) markLetterRead(letterId);
           const msg = toastForMailEffects(effectList, before)
             || ((choice && choice.label) ? (choice.label + ' · registado') : 'Escolha registada');
-          logMailOutcome('Correio · ' + msg);
+          logMailOutcome(mailEffectLogLine(effectList, msg));
           scheduleSave('mail-choice');
           showToast(msg);
           renderInboxBody();
@@ -8941,7 +8946,7 @@
           }
           if (letterId) markLetterRead(letterId);
           const msg = toastForMailEffects(effectList, before) || ('Acção registada · ' + label);
-          logMailOutcome('Correio · ' + msg);
+          logMailOutcome(mailEffectLogLine(effectList, msg));
           scheduleSave('mail-cta');
           showToast(msg);
           renderInboxBody();
