@@ -1,0 +1,25 @@
+{
+  "id": "mail-rede-info-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 2,
+    "when_phase": [
+      "land",
+      "pip"
+    ]
+  },
+  "priority": "normal",
+  "from_type": "REDE",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Percebi",
+      "effects": [
+        "rede_calendar_seen"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem € nesta carta.",
+  "notes_for_ui": "from_type REN ou E-REDES via skin"
+}

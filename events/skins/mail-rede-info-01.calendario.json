@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-rede-info-01",
+  "skin_id": "calendario",
+  "from_name": "E-REDES — ligação",
+  "subject": "Calendário preliminar de ligação",
+  "body": "Com o TRC na SE Ourique, o reforço e a ligação seguem calendário de operador. Ainda sem números finais — mas o relógio já corre.",
+  "params": { "operator": "E-REDES" }
+}

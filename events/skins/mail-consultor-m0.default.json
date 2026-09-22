@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-consultor-m0",
+  "skin_id": "default",
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Ganhaste o ponto — agora desenvolve",
+  "body": "O TRC na {{se_name}} obriga-te a desenvolver o parque solar ({{mwp}} MWp). O ponto sozinho não se rentabiliza com solar puro: o caminho cedo é hibridizar e sobreequipar (eólico + BESS). Reequipamento (merchant/PPA) fica para mais tarde.",
+  "params": {}
+}

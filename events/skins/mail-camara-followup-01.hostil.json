@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-camara-followup-01",
+  "skin_id": "hostil",
+  "from_name": "Gabinete do Presidente — Câmara de Ourique",
+  "subject": "Segunda chamada — PIP",
+  "body": "Ignoraram a audiência. O executivo endurece: sem reunião, o PIP não anda. Última janela antes de formalizarmos atrasos.",
+  "params": { "tom": "pressao" }
+}

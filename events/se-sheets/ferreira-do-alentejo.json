@@ -1,0 +1,12 @@
+{
+  "se_id": "ferreira-do-alentejo",
+  "se_name": "SE Ferreira do Alentejo",
+  "ren_real": true,
+  "tags": {
+    "camara": "neutra",
+    "rede": "congestionada",
+    "ambiente": "leve",
+    "offtake": "normal"
+  },
+  "lot_blurb": "Rede congestionada · 100 MWp · em disputa"
+}

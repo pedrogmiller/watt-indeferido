@@ -1,0 +1,63 @@
+{
+  "id": "mail-joker-fa-bess-01",
+  "phase": "opportunity",
+  "trigger": {
+    "type": "joker",
+    "requires": [
+      "bess_dev_started",
+      "fa_aviso_rp_c21_i08_open"
+    ],
+    "when_phase": [
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao"
+    ],
+    "or_deadline": "fa_aviso"
+  },
+  "priority": "high",
+  "from_type": "FUNDO_AMBIENTAL",
+  "choices": [
+    {
+      "id": "apply",
+      "label": "Candidatar",
+      "effects": [
+        "fa_bess_apply"
+      ]
+    },
+    {
+      "id": "wait",
+      "label": "Preparar e esperar",
+      "effects": [
+        "fa_bess_wait"
+      ]
+    },
+    {
+      "id": "skip",
+      "label": "Ignorar",
+      "effects": [
+        "fa_bess_skip"
+      ]
+    }
+  ],
+  "ui_show_maturity_grid": true,
+  "maturity_bands": [
+    {
+      "id": "exploracao",
+      "label": "Licença de exploração",
+      "points_spirit": 20
+    },
+    {
+      "id": "producao",
+      "label": "Licença de produção",
+      "points_spirit": 10
+    },
+    {
+      "id": "trc_only",
+      "label": "Só TRC",
+      "points_spirit": 1
+    }
+  ],
+  "notes_for_economy": "Outcome/ranking — PEDIR_ECONOMY; base real RP-C21-I08",
+  "notes_for_ui": "Mostrar grelha como no aviso FA (não só jackpot opaco)"
+}

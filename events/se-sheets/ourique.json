@@ -1,0 +1,12 @@
+{
+  "se_id": "ourique",
+  "se_name": "SE Ourique",
+  "ren_real": true,
+  "tags": {
+    "camara": "hostil",
+    "rede": "normal",
+    "ambiente": "apa_first",
+    "offtake": "normal"
+  },
+  "lot_blurb": "Câmara hostil · 120 MWp · em disputa"
+}

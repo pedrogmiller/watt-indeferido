@@ -1,0 +1,41 @@
+{
+  "id": "mail-rede-prazo-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 6,
+    "when_phase": [
+      "aia",
+      "licenca_producao"
+    ]
+  },
+  "priority": "high",
+  "from_type": "REDE",
+  "choices": [
+    {
+      "id": "accept",
+      "label": "Aceitar acordo de reforço",
+      "effects": [
+        "capex_rede_flag",
+        "caducidade_risk_-1"
+      ]
+    },
+    {
+      "id": "defer",
+      "label": "Pedir adiamento",
+      "effects": [
+        "delay_ligacao_+1",
+        "caducidade_risk_+1"
+      ]
+    },
+    {
+      "id": "risk",
+      "label": "Arriscar o prazo",
+      "effects": [
+        "caducidade_risk_+2"
+      ]
+    }
+  ],
+  "notes_for_economy": "capex_rede = PEDIR_ECONOMY",
+  "notes_for_ui": "CTA pesado M6"
+}

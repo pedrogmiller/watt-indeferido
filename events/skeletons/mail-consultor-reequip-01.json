@@ -1,0 +1,32 @@
+{
+  "id": "mail-consultor-reequip-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 4,
+    "when_phase": [
+      "pip",
+      "aia"
+    ]
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "choices": [
+    {
+      "id": "study_reequip",
+      "label": "Estudar reequipamento",
+      "effects": [
+        "reequip_study"
+      ]
+    },
+    {
+      "id": "not_now",
+      "label": "Cedo demais",
+      "effects": [
+        "reequip_defer"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €",
+  "notes_for_ui": "Primeira menção merchant/PPA — não em M0"
+}

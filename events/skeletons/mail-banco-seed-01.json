@@ -1,0 +1,26 @@
+{
+  "id": "mail-banco-seed-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 5,
+    "when_phase": [
+      "pip",
+      "aia",
+      "licenca_producao"
+    ]
+  },
+  "priority": "normal",
+  "from_type": "BANCO",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Percebi",
+      "effects": [
+        "bank_seed_seen"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem term sheet",
+  "notes_for_ui": "Info only"
+}

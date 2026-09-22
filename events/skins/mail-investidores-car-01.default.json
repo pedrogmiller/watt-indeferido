@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-investidores-car-01",
+  "skin_id": "default",
+  "from_name": "Comité de investidores",
+  "subject": "Revisão de runway · ainda tens CAR?",
+  "body": "TRC adjudicado — isto é revisão de runway, não o primeiro mandato.\n\nConfirma se o Cash at Risk e o headroom de equity ainda cobrem a próxima etapa (PIP / terreno / prazos). Se o runway apertar, diz antes de sangrar caixa.\n\nHIPÓTESE mock — sem alteração automática aos KPIs.",
+  "params": {}
+}
