@@ -1,0 +1,9 @@
+{
+  "skeleton_id": "mail-camara-01",
+  "skin_id": "hostil",
+  "when": { "se_tags": { "camara": "hostil" } },
+  "from_name": "Gabinete do Presidente — {{camara_nome}}",
+  "subject": "PIP em risco",
+  "body": "O executivo marca audiência. Sem alinhamento político local, o PIP atrasa — e o calendário do TRC não espera.",
+  "params": { "tom": "pressao" }
+}

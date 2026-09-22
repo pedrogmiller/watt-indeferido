@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-terreno-01",
+  "skin_id": "parcela-b-servidao",
+  "from_name": "Maria do Céu Freitas",
+  "subject": "Hectares baratos, acesso duvidoso",
+  "body": "O preço é bom. O caminho de servidão passa pelo vizinho — o teu advogado vai querer ver o registo antes de assinares.",
+  "params": { "sinal": "baixo", "prazo_dias": 60, "servidao": "vizinho" }
+}

@@ -1,0 +1,350 @@
+{
+  "version": 2,
+  "se_id": "ourique",
+  "progress": "phase",
+  "caps": {
+    "relevant_per_landing": 3,
+    "relevant_per_month": 3,
+    "m0_all": true,
+    "max_jump_months": 6
+  },
+  "landings": {
+    "0": {
+      "label": "M0",
+      "when_phase": [
+        "trc_won"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-consultor-m0",
+          "skin": "default",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-investidores-car-01",
+          "skin": "default",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-dica-01",
+          "skin": "m0-dossier",
+          "relevant": false
+        }
+      ]
+    },
+    "1": {
+      "label": "M1",
+      "when_phase": [
+        "trc_won",
+        "land"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-terreno-01",
+          "skin": "parcela-a-cara",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-terreno-01",
+          "skin": "parcela-b-servidao",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-fyi-01",
+          "skin": "recurso-solar",
+          "relevant": false
+        }
+      ]
+    },
+    "2": {
+      "label": "M2",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-camara-01",
+          "skin": "hostil",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-advogado-dd-01",
+          "skin": "default",
+          "relevant": true,
+          "requires_any_effects": [
+            "land_option_open",
+            "land_talk_+1"
+          ]
+        },
+        {
+          "skeleton": "mail-rede-info-01",
+          "skin": "calendario",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-fyi-01",
+          "skin": "recurso-solar",
+          "relevant": false,
+          "requires_any_effects": [
+            "land_option_open"
+          ]
+        }
+      ]
+    },
+    "3": {
+      "label": "M3",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-consultor-valueadd-01",
+          "skin": "hibrido-bess",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-comunidade-01",
+          "skin": "ourique",
+          "relevant": true,
+          "mutex_group": "community_or_media"
+        },
+        {
+          "skeleton": "mail-media-01",
+          "skin": "ourique",
+          "relevant": true,
+          "mutex_group": "community_or_media"
+        },
+        {
+          "skeleton": "mail-camara-followup-01",
+          "skin": "hostil",
+          "relevant": true,
+          "requires_any_effects": [
+            "risk_camara_+1"
+          ]
+        }
+      ]
+    },
+    "4": {
+      "label": "M4",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-investidores-review-01",
+          "skin": "default",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-concorrente-01",
+          "skin": "terreno-ou-leilao",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-consultor-reequip-01",
+          "skin": "merchant-ppa",
+          "relevant": true
+        }
+      ]
+    },
+    "5": {
+      "label": "M5",
+      "when_phase": [
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-apa-01",
+          "skin": "default",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-banco-seed-01",
+          "skin": "default",
+          "relevant": true
+        }
+      ]
+    },
+    "6": {
+      "label": "M6",
+      "when_phase": [
+        "aia",
+        "licenca_producao"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-rede-prazo-01",
+          "skin": "acordo-ou-caducidade",
+          "relevant": true
+        },
+        {
+          "skeleton": "mail-dgeg-obrigacoes-01",
+          "skin": "default",
+          "relevant": true
+        }
+      ]
+    }
+  },
+  "joker": {
+    "skeleton": "mail-joker-fa-bess-01",
+    "skin": "default",
+    "when_phase": [
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao"
+    ],
+    "requires_any_effects": [
+      "bess_dev_started",
+      "bess_dev_flag",
+      "value_add_commit"
+    ],
+    "min_gap_months": 3,
+    "block_if_delivered_same_month_skeletons": [
+      "mail-rede-prazo-01",
+      "mail-camara-01",
+      "mail-camara-followup-01"
+    ]
+  },
+  "_comment": "v2 progress=phase. Landings 0..6 = old M0–M6 seed order. Eligibility = phase ∈ landing.when_phase (or skeleton.trigger.when_phase) + requires + not delivered. month/devMonth = pressure clock only.",
+  "_comment_apa": "APA/banco landing includes pip so letter can arrive; apa_track_start raises phase to aia. No auto obra/cod in MVP1.",
+  "_comment_caps": "relevant_per_landing=3 (alias relevant_per_month). Terreno pair exception still applies.",
+  "months": {
+    "0": [
+      {
+        "skeleton": "mail-consultor-m0",
+        "skin": "default",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-investidores-car-01",
+        "skin": "default",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-dica-01",
+        "skin": "m0-dossier",
+        "relevant": false
+      }
+    ],
+    "1": [
+      {
+        "skeleton": "mail-terreno-01",
+        "skin": "parcela-a-cara",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-terreno-01",
+        "skin": "parcela-b-servidao",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-fyi-01",
+        "skin": "recurso-solar",
+        "relevant": false
+      }
+    ],
+    "2": [
+      {
+        "skeleton": "mail-camara-01",
+        "skin": "hostil",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-advogado-dd-01",
+        "skin": "default",
+        "relevant": true,
+        "requires_any_effects": [
+          "land_option_open",
+          "land_talk_+1"
+        ]
+      },
+      {
+        "skeleton": "mail-rede-info-01",
+        "skin": "calendario",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-fyi-01",
+        "skin": "recurso-solar",
+        "relevant": false,
+        "requires_any_effects": [
+          "land_option_open"
+        ]
+      }
+    ],
+    "3": [
+      {
+        "skeleton": "mail-consultor-valueadd-01",
+        "skin": "hibrido-bess",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-comunidade-01",
+        "skin": "ourique",
+        "relevant": true,
+        "mutex_group": "community_or_media"
+      },
+      {
+        "skeleton": "mail-media-01",
+        "skin": "ourique",
+        "relevant": true,
+        "mutex_group": "community_or_media"
+      },
+      {
+        "skeleton": "mail-camara-followup-01",
+        "skin": "hostil",
+        "relevant": true,
+        "requires_any_effects": [
+          "risk_camara_+1"
+        ]
+      }
+    ],
+    "4": [
+      {
+        "skeleton": "mail-investidores-review-01",
+        "skin": "default",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-concorrente-01",
+        "skin": "terreno-ou-leilao",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-consultor-reequip-01",
+        "skin": "merchant-ppa",
+        "relevant": true
+      }
+    ],
+    "5": [
+      {
+        "skeleton": "mail-apa-01",
+        "skin": "default",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-banco-seed-01",
+        "skin": "default",
+        "relevant": true
+      }
+    ],
+    "6": [
+      {
+        "skeleton": "mail-rede-prazo-01",
+        "skin": "acordo-ou-caducidade",
+        "relevant": true
+      },
+      {
+        "skeleton": "mail-dgeg-obrigacoes-01",
+        "skin": "default",
+        "relevant": true
+      }
+    ]
+  }
+}

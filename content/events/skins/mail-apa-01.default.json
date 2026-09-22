@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-apa-01",
+  "skin_id": "default",
+  "from_name": "APA — expediente",
+  "subject": "AIA no radar",
+  "body": "Com o projecto a avançar, o procedimento de avaliação de impacte ambiental entra no caminho crítico. Preparar expediente agora evita corrida no fim.",
+  "params": { "note": "Verificar AIA/DIA exacto antes de copy final" }
+}

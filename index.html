@@ -370,6 +370,55 @@
     --win-titlebar-edge: #f5e6d0;
   }
 
+  /* Gate 1 — project phase + next critical date */
+  .hud-phase-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+  }
+  .hud-phase-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #0f172a;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+  .hud-phase-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #f59e0b;
+    flex-shrink: 0;
+  }
+  .hud-next-crit {
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .hud-next-crit strong {
+    color: #0f172a;
+    font-weight: 700;
+  }
+  .hud-drivers-line {
+    margin: 4px 0 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
+    font-variant-numeric: tabular-nums;
+  }
+  .hud-drivers-line strong {
+    font-weight: 600;
+    color: #475569;
+  }
+
   .window-titlebar {
     display: flex;
     align-items: center;
@@ -2283,6 +2332,203 @@
     opacity: 0.55;
     cursor: not-allowed;
   }
+
+  .auction-se.mandate-blocked {
+    opacity: .45;
+    filter: grayscale(.7);
+    cursor: not-allowed;
+  }
+  .auction-se.mandate-blocked.selected {
+    border-color: #94a3b8;
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+  }
+  .auction-se .mandate-reason {
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #b45309;
+    letter-spacing: 0.01em;
+  }
+  .auction-lot-chip.mandate-blocked {
+    opacity: .45;
+    filter: grayscale(.7);
+    cursor: not-allowed;
+  }
+  .auction-lot-chip.mandate-blocked .chip-meta {
+    color: #b45309;
+  }
+  .mandate-hud-pill {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    white-space: nowrap;
+  }
+  .mandate-hud-pill .metric-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+  .mandate-hud-pill .metric-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+  }
+  .mandate-hud-pill .mandate-hyp {
+    font-size: 9px;
+    font-weight: 500;
+    color: #94a3b8;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .mandate-auction-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    align-items: center;
+  }
+  .mandate-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+  }
+  .mandate-chip-band {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #475569;
+    font-weight: 500;
+  }
+  .mandate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+  }
+  .mandate-overlay.open {
+    display: flex;
+  }
+  .mandate-card {
+    width: min(440px, 100%);
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+    padding: 22px 22px 18px;
+    font-family: var(--font);
+  }
+  .mandate-card .mandate-kicker {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+  .mandate-card h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+  }
+  .mandate-card .mandate-club {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.45;
+  }
+  .mandate-card .mandate-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .mandate-card .mandate-cell {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .mandate-card .mandate-cell .k {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #94a3b8;
+  }
+  .mandate-card .mandate-cell .v {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-top: 2px;
+  }
+  .mandate-card .mandate-cell .h {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .mandate-card .mandate-note {
+    font-size: 11px;
+    color: #94a3b8;
+    margin: 0 0 14px;
+  }
+  .mandate-card .mandate-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .mandate-card .btn-mandate-primary {
+    flex: 1;
+    min-width: 140px;
+    border: none;
+    border-radius: 10px;
+    background: #0f172a;
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 14px;
+    cursor: pointer;
+  }
+  .mandate-card .btn-mandate-ghost {
+    flex: 1;
+    min-width: 140px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    color: #0f172a;
+    font: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 14px;
+    cursor: pointer;
+  }
+  .mandate-letter-body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #334155;
+    white-space: pre-wrap;
+    margin: 0 0 14px;
+    max-height: 40vh;
+    overflow: auto;
+  }
+
   .auction-se-top {
     display: flex;
     align-items: center;
@@ -3385,6 +3631,17 @@
   .mail-type-chip.consultor { color: #1d4ed8; background: #eff6ff; border-color: #bfdbfe; }
   .mail-type-chip.dica { color: #047857; background: #ecfdf5; border-color: #a7f3d0; }
   .mail-type-chip.banco { color: #6d28d9; background: #f5f3ff; border-color: #ddd6fe; }
+  .mail-type-chip.sistema { color: #047857; background: #ecfdf5; border-color: #a7f3d0; }
+  .mail-type-chip.advogado { color: #92400e; background: #fffbeb; border-color: #fde68a; }
+  .mail-type-chip.rede { color: #0e7490; background: #ecfeff; border-color: #a5f3fc; }
+  .mail-type-chip.comunidade { color: #be185d; background: #fdf2f8; border-color: #fbcfe8; }
+  .mail-type-chip.media { color: #b45309; background: #fffbeb; border-color: #fcd34d; }
+  .mail-type-chip.apa { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
+  .mail-type-chip.dgeg { color: #1e3a8a; background: #eff6ff; border-color: #bfdbfe; }
+  .mail-type-chip.concorrente { color: #9f1239; background: #fff1f2; border-color: #fecdd3; }
+  .mail-type-chip.proprietario { color: #365314; background: #f7fee7; border-color: #d9f99d; }
+  .mail-type-chip.investidores { color: #7c2d12; background: #fff7ed; border-color: #fed7aa; }
+  .mail-type-chip.fundo { color: #115e59; background: #f0fdfa; border-color: #99f6e4; }
   .mail-row-time {
     font-size: 11px;
     color: var(--text-muted);
@@ -3714,7 +3971,15 @@
       <div class="bonding-top">
         <span class="metric-label">Bonding Capacity</span>
         <span class="metric-value num" style="font-size:12px" id="valBonding">€ 6,2M livres</span>
-      </div>
+        <div class="mandate-hud-pill" id="pillMandateCar" title="HIPÓTESE · mandato">
+      <span class="metric-label">CAR <span class="mandate-hyp">· HIPÓTESE</span></span>
+      <span class="metric-value" id="valMandateCar">CAR · banda L</span>
+    </div>
+    <div class="mandate-hud-pill" id="pillMandateEquity" title="HIPÓTESE · mandato">
+      <span class="metric-label">Equity <span class="mandate-hyp">· HIPÓTESE</span></span>
+      <span class="metric-value" id="valMandateEquity">Equity · banda L</span>
+    </div>
+  </div>
       <div class="bonding-bar">
         <div class="bonding-fill" id="bondingFill" style="width:61%"></div>
       </div>
@@ -3984,6 +4249,11 @@
         <div class="auction-kicker" id="auctionWaveKicker">Concurso REN · onda 1</div>
         <div class="auction-left-title">Mesa de leilão</div>
         <div class="auction-left-sub" id="auctionLeftSub">Concurso ao vivo · rivais limpam se hesitares</div>
+        <div class="mandate-auction-strip" id="auctionMandateStrip" aria-label="Mandato">
+          <span class="mandate-chip" id="auctionMandateChip">Infra · Real Madrid</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">CAR · banda L</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Equity · banda L</span>
+        </div>
         <div class="auction-clock-row" aria-live="polite">
           <div>
             <div class="auction-clock-label">Fase do concurso</div>
@@ -4113,6 +4383,42 @@
 </div>
 
 <!-- ═══ WATT COACH ═══ -->
+
+<!-- ═══ Mandate briefing / investor letter (Gate 1 mock) ═══ -->
+<div class="mandate-overlay" id="mandateBriefing" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mandateBriefingTitle">
+  <div class="mandate-card">
+    <div class="mandate-kicker">Briefing · mandato</div>
+    <h2 id="mandateBriefingTitle">Boutique · Belenenses</h2>
+    <p class="mandate-club" id="mandateBriefingClub">Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.</p>
+    <div class="mandate-auction-strip" style="margin:0 0 14px" aria-hidden="true">
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">CAR · banda S</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Equity · banda S</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingBands">máx. 1 TRC</span>
+    </div>
+    <span id="mandateBriefingCarHint" hidden></span>
+    <span id="mandateBriefingEquityHint" hidden></span>
+    <span id="mandateBriefingTrcs" hidden>1</span>
+    <p class="mandate-note">HIPÓTESE · bandas S/M/L, sem finais em €. Hybrid MVP = boutique (sem selector de dificuldade).</p>
+    <div class="mandate-actions">
+      <button type="button" class="btn-mandate-ghost" id="mandateBriefingLetter">Ver carta dos investidores</button>
+      <button type="button" class="btn-mandate-primary" id="mandateBriefingMarket">Ir ao mercado</button>
+    </div>
+  </div>
+</div>
+
+<div class="mandate-overlay" id="mandateLetter" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mandateLetterTitle">
+  <div class="mandate-card">
+    <div class="mandate-kicker">Carta · investidores</div>
+    <h2 id="mandateLetterTitle">Mandato e purse — o que podes caçar</h2>
+    <p class="mandate-club" id="mandateLetterFrom">De: Comité de investidores</p>
+    <div class="mandate-letter-body" id="mandateLetterBody"></div>
+    <p class="mandate-note">HIPÓTESE · pre-market. A carta M0 pós-adjudicação passa a revisão de runway.</p>
+    <div class="mandate-actions">
+      <button type="button" class="btn-mandate-primary" id="mandateLetterOpenMarket">Abrir mercado</button>
+    </div>
+  </div>
+</div>
+
 <div class="watt-coach" id="wattCoach" aria-hidden="true">
   <div class="watt-coach-veil" id="wattCoachVeil"></div>
   <div class="watt-coach-spotlight" id="wattCoachSpotlight" hidden></div>
@@ -4430,6 +4736,25 @@
         'node-card',
         activeId === n.id ? 'is-active' : '',
       ].filter(Boolean).join(' ');
+      // Gate 1 HUD truth: phase + next critical date (when Correio loop active after TRC win)
+      let hudPhaseHtml = '';
+      if (typeof mailLoop !== 'undefined' && mailLoop.active && state.auctionWon) {
+        const phase = mailLoop.projectPhase || 'trc_won';
+        const phaseLbl = (typeof phaseLabelPt === 'function') ? phaseLabelPt(phase) : phase;
+        const nd = (typeof nearestDeadline === 'function') ? nearestDeadline(mailLoop) : null;
+        let nextCrit = '—';
+        if (nd) {
+          const clock = mailLoop.month | 0;
+          const deltaM = nd.atMonth - clock;
+          const when = deltaM === 0 ? 'este mês' : (deltaM > 0 ? ('M' + nd.atMonth + ' · em ' + deltaM + 'm') : ('M' + nd.atMonth + ' · passou'));
+          nextCrit = nd.label + ' · ' + when;
+        }
+        hudPhaseHtml = `
+            <div class="hud-phase-row">
+              <span class="hud-phase-pill"><span class="hud-phase-dot" aria-hidden="true"></span>${phaseLbl}</span>
+              <span class="hud-next-crit">Próxima: <strong>${nextCrit}</strong></span>
+            </div>`;
+      }
       return `
         <article class="${classes}" id="card-${n.id}" data-node="${n.id}">
           <div class="window-titlebar">
@@ -4443,6 +4768,7 @@
 
           <div class="window-body">
             <div class="card-tensao tone-${n.tensaoTone}">${n.tensao}</div>
+            ${hudPhaseHtml}
 
             <div class="card-hero">
               <div class="card-hero-label">NPV</div>
@@ -4450,6 +4776,7 @@
                 <span class="card-hero-value tone-${vTone} num">${fmtVan(n.van)}</span>
                 ${delta ? `<span class="card-hero-delta tone-${vTone} num">${delta}</span>` : ''}
               </div>
+              <div class="hud-drivers-line"><strong>Capex</strong> · P50 <span class="num">—</span> <span style="opacity:.7">(hipótese)</span></div>
             </div>
 
             <div class="card-threat">
@@ -4723,9 +5050,11 @@
     document.getElementById('valBonding').textContent = fmtEur(state.bondingFree) + ' livres';
     const usedPct = ((state.bondingTotal - state.bondingFree) / state.bondingTotal) * 100;
     document.getElementById('bondingFill').style.width = Math.min(100, Math.max(0, usedPct)) + '%';
-    document.getElementById('periodLabel').textContent = state.year + ' · Q' + state.quarter;
+    const periodTxt = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · Q' + state.quarter);
+    document.getElementById('periodLabel').textContent = periodTxt;
     const fmp = document.getElementById('footerMockPeriod');
-    if (fmp) fmp.textContent = state.year + ' · Q' + state.quarter;
+    if (fmp) fmp.textContent = periodTxt;
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
     if (doFlash) {
       flashPill('pillCaixa');
       flashPill('pillNav');
@@ -4744,35 +5073,109 @@
     btn.disabled = true;
     btn.classList.add('loading');
 
-    setTimeout(() => {
-      state.quarter += 1;
-      if (state.quarter > 4) {
-        state.quarter = 1;
-        state.year += 1;
-      }
-      // Soft KPI drift
-      state.caixa = +(state.caixa + 1.8 + Math.random() * 0.6).toFixed(1);
-      state.nav = +(state.nav + 2.1 + Math.random() * 0.8).toFixed(1);
-      state.divida = +(state.divida - 0.4).toFixed(1);
-      state.bondingFree = +(state.bondingFree + 0.3).toFixed(1);
+    setTimeout(async () => {
+      const mailActive = state.auctionWon && typeof mailLoop !== 'undefined' && mailLoop.active;
+      let mailDelivered = 0;
+      let cappedAtEnd = false;
 
-      updateHeaderMetrics(true);
-      flashPill('pillDivida');
+      if (mailActive) {
+        let jumpResult = null;
+        let scheduleMax = 6;
+        try {
+          const packEarly = await loadEventPack();
+          if (packEarly && packEarly.mvp_schedule) {
+            scheduleMax = scheduleMaxMonth(packEarly.mvp_schedule);
+          }
+        } catch (_) {}
 
-      activities.unshift({
-        time: 'Agora',
-        text: `Trimestre avançado para ${state.year} · Q${state.quarter} — caixa e NAV atualizados`,
-      });
-      renderActivity();
+        if (mailLoop.month >= scheduleMax) {
+          cappedAtEnd = true;
+        } else if ((typeof playPacing === 'function' ? playPacing() : 'event') === 'month') {
+          // Legacy QA pacing: advance play months blindly
+          const step = (typeof playStep === 'function') ? playStep() : 1;
+          for (let i = 0; i < step; i++) {
+            if (mailLoop.month >= scheduleMax) break;
+            mailLoop.month += 1;
+            if (typeof deliverMonthCandidates === 'function') {
+              mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
+            }
+          }
+        } else {
+          // Default: jump to next relevant Correio event (cap max_jump_months)
+          jumpResult = await findNextMailEventMonth(mailLoop.month);
+          mailLoop.month = jumpResult.month;
+          if (typeof deliverMonthCandidates === 'function') {
+            mailDelivered = (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
+          }
+          if (mailLoop.month >= scheduleMax && !jumpResult.hit && mailDelivered === 0) {
+            // landed on end with nothing — treat as fim on toast below
+          }
+        }
+        // Soft KPI drift once per Play
+        state.caixa = +(state.caixa + 1.8 + Math.random() * 0.6).toFixed(1);
+        state.nav = +(state.nav + 2.1 + Math.random() * 0.8).toFixed(1);
+        state.divida = +(state.divida - 0.4).toFixed(1);
+        state.bondingFree = +(state.bondingFree + 0.3).toFixed(1);
 
-      btn.classList.remove('loading');
-      btn.disabled = false;
-      showToast(`Avançado para ${state.year} · Q${state.quarter}`);
-      scheduleSave('next-quarter');
+        updateHeaderMetrics(true);
+        flashPill('pillDivida');
 
-      // Next month/quarter: if no TRC (or after lose-all), open next REN concurso wave
-      if (typeof startNextAuctionWave === 'function' && (!state.auctionWon || (typeof auctionState !== 'undefined' && auctionState.allLost))) {
-        startNextAuctionWave({ fromFab: true });
+        const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · M' + mailLoop.month);
+        const jumpNote = jumpResult ? (' (salto +' + jumpResult.jumped + ')') : '';
+        activities.unshift({
+          time: 'Agora',
+          text: 'Mês avançado para ' + label + jumpNote + (mailDelivered ? (' — ' + mailDelivered + ' carta(s)') : ''),
+        });
+        renderActivity();
+
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        if (cappedAtEnd) {
+          showToast('Fim do arco MVP M0–M6');
+        } else if (jumpResult) {
+          if (jumpResult.hit) {
+            showToast('Salto +' + jumpResult.jumped + ' → M' + jumpResult.month + ' · Correio · ' + mailDelivered + ' carta(s)');
+          } else if (jumpResult.month >= scheduleMax && mailDelivered === 0) {
+            showToast('Fim do arco MVP M0–M6');
+          } else {
+            showToast('Sem evento · +' + jumpResult.jumped + ' meses (teto)');
+          }
+        } else if (mailDelivered > 0) {
+          showToast('Avançado para ' + label + ' · Correio · ' + mailDelivered + ' carta(s)');
+        } else {
+          showToast('Avançado para ' + label);
+        }
+        scheduleSave('next-month-mail');
+      } else {
+        state.quarter += 1;
+        if (state.quarter > 4) {
+          state.quarter = 1;
+          state.year += 1;
+        }
+        // Soft KPI drift
+        state.caixa = +(state.caixa + 1.8 + Math.random() * 0.6).toFixed(1);
+        state.nav = +(state.nav + 2.1 + Math.random() * 0.8).toFixed(1);
+        state.divida = +(state.divida - 0.4).toFixed(1);
+        state.bondingFree = +(state.bondingFree + 0.3).toFixed(1);
+
+        updateHeaderMetrics(true);
+        flashPill('pillDivida');
+
+        activities.unshift({
+          time: 'Agora',
+          text: `Trimestre avançado para ${state.year} · Q${state.quarter} — caixa e NAV atualizados`,
+        });
+        renderActivity();
+
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        showToast(`Avançado para ${state.year} · Q${state.quarter}`);
+        scheduleSave('next-quarter');
+
+        // Next month/quarter: if no TRC (or after lose-all), open next REN concurso wave
+        if (typeof startNextAuctionWave === 'function' && (!state.auctionWon || (typeof auctionState !== 'undefined' && auctionState.allLost))) {
+          startNextAuctionWave({ fromFab: true });
+        }
       }
     }, 900);
   }
@@ -5490,12 +5893,13 @@
     const screenshotAuctionOnly = draftAuction.get('auction') === '1' || draftAuction.get('draft') === 'auction';
     const forceArrive = draftAuction.get('arrive') === '1';
     const inboxDemo = draftAuction.get('inbox') === '1' || draftAuction.get('inbox') === '0';
+    const mvpDemo = draftAuction.get('mvp') === '1';
     // First paint: arrive card → mesa. ?arrive=1 forces arrive even after onboarding.
-    // ?inbox=1|0 skips coach so Correio mock can take the home board.
+    // ?inbox=1|0 / ?mvp=1 skips coach so Correio mock can take the home board.
     // Resumed save: skip wipe / skip demo (never wipe save on refresh).
-    if (_hydratedFromSave && !forceArrive && !inboxDemo && !screenshotAuctionOnly) {
+    if (_hydratedFromSave && !forceArrive && !inboxDemo && !mvpDemo && !screenshotAuctionOnly) {
       try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
-    } else if (inboxDemo) {
+    } else if (inboxDemo || mvpDemo) {
       try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
     } else if (forceArrive) {
       try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
@@ -5507,6 +5911,283 @@
     }
     // After onboarding: stay on console (auction is a room). Empty CTA / FAB opens next wave.
   }
+
+
+
+  /* ── Gate 1 mandate mock (Belenenses vs Real Madrid) ── */
+  const BAND_RANK = { S: 1, M: 2, L: 3 };
+  const MANDATE_TIERS = {
+    boutique: {
+      id: 'boutique', label: 'Belenenses', tierLabel: 'Boutique',
+      clubLine: 'Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.',
+      car_band_max: 'S',
+      equity_band_max: 'S',
+      max_trcs: 1,
+      car_purse_label: 'CAR · banda S',
+      equity_headroom_label: 'Equity · banda S',
+      car_hint: '~runway FID curto',
+      equity_hint: 'gearing alto / little equity'
+    },
+    mid: {
+      id: 'mid', label: 'Meia-tabela', tierLabel: 'Mid',
+      clubLine: 'Mandato mid — runway médio, gearing controlado.',
+      car_band_max: 'M',
+      equity_band_max: 'M',
+      max_trcs: 2,
+      car_purse_label: 'CAR · banda M',
+      equity_headroom_label: 'Equity · banda M',
+      car_hint: '~runway até FID típico',
+      equity_hint: 'equity para 1–2 TRCs mid'
+    },
+    infra: {
+      id: 'infra', label: 'Real Madrid', tierLabel: 'Infra',
+      clubLine: 'Mandato alto (infra) — purse folgada tipo Real Madrid; o arco Ourique é jogável.',
+      car_band_max: 'L',
+      equity_band_max: 'L',
+      max_trcs: 4,
+      car_purse_label: 'CAR · banda L',
+      equity_headroom_label: 'Equity · banda L',
+      car_hint: 'runway longo / multi-FID',
+      equity_hint: 'equity para portfolio'
+    }
+  };
+
+  let mandateState = {
+    tier: 'boutique',
+    acknowledged: false,
+    letterRead: false,
+    skip: false,
+    pendingOpenOpts: null
+  };
+
+  function resolveMandateQuery() {
+    let p;
+    try { p = new URLSearchParams(location.search); } catch (_) { p = new URLSearchParams(); }
+    const raw = (p.get('mandate') || '').toLowerCase();
+    const forceSkip = raw === 'skip' || p.get('skipMandate') === '1';
+    // Hybrid MVP product path = boutique (Belenenses). mid|infra are QA / progression.
+    if (raw === 'mid' || raw === 'boutique' || raw === 'infra') {
+      mandateState.tier = raw;
+    } else if (raw === '1') {
+      mandateState.tier = 'boutique';
+      mandateState.acknowledged = false;
+      mandateState.letterRead = false;
+    } else if (raw !== 'skip') {
+      mandateState.tier = 'boutique';
+    }
+    if (!MANDATE_TIERS[mandateState.tier]) mandateState.tier = 'boutique';
+    if (forceSkip) {
+      mandateState.skip = true;
+      mandateState.acknowledged = true;
+      mandateState.letterRead = true;
+    }
+  }
+
+  function currentMandate() {
+    return MANDATE_TIERS[mandateState.tier] || MANDATE_TIERS.boutique;
+  }
+
+  function mandateSoftLockEnabled() {
+    // Hybrid MVP: soft-lock whenever bands don't fit (lotFitsMandate).
+    // boutique + mid grey higher lots; infra (L max) effectively unlocks all.
+    return true;
+  }
+
+  function lotFitsMandate(lot, mandate) {
+    const m = mandate || currentMandate();
+    if (!lot) return { ok: false, reason: 'lote inválido' };
+    if (!mandateSoftLockEnabled()) return { ok: true, reason: '' };
+    const car = lot.car_band || 'S';
+    const eq = lot.equity_capex_band || 'S';
+    if ((BAND_RANK[car] || 0) > (BAND_RANK[m.car_band_max] || 0)) {
+      return { ok: false, reason: 'fora do runway' };
+    }
+    if ((BAND_RANK[eq] || 0) > (BAND_RANK[m.equity_band_max] || 0)) {
+      return { ok: false, reason: 'equity acima do mandato' };
+    }
+    const won = (typeof auctionState !== 'undefined' && auctionState.wonLots) ? auctionState.wonLots.length : 0;
+    if (won >= m.max_trcs) {
+      return { ok: false, reason: 'máx. TRCs do mandato' };
+    }
+    return { ok: true, reason: '' };
+  }
+
+  function renderMandateHud() {
+    const m = currentMandate();
+    const car = document.getElementById('valMandateCar');
+    const eq = document.getElementById('valMandateEquity');
+    if (car) car.textContent = m.car_purse_label;
+    if (eq) eq.textContent = m.equity_headroom_label;
+    const chip = document.getElementById('auctionMandateChip');
+    const aCar = document.getElementById('auctionMandateCar');
+    const aEq = document.getElementById('auctionMandateEquity');
+    if (chip) chip.textContent = m.tierLabel + ' · ' + m.label;
+    if (aCar) aCar.textContent = m.car_purse_label;
+    if (aEq) aEq.textContent = m.equity_headroom_label;
+    const rating = document.querySelector('.rating-badge');
+    if (rating && !rating.dataset.mandateLocked) {
+      rating.textContent = m.tierLabel + ' · ' + m.label;
+    }
+  }
+
+  function fillMandateBriefing() {
+    const m = currentMandate();
+    const title = document.getElementById('mandateBriefingTitle');
+    const club = document.getElementById('mandateBriefingClub');
+    if (title) title.textContent = m.tierLabel + ' · ' + m.label;
+    // Hybrid MVP: one sentence — boutique (Belenenses). No difficulty selector.
+    if (club) {
+      club.textContent = (m.id === 'boutique')
+        ? 'Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.'
+        : m.clubLine;
+    }
+    const car = document.getElementById('mandateBriefingCar');
+    const eq = document.getElementById('mandateBriefingEquity');
+    const carH = document.getElementById('mandateBriefingCarHint');
+    const eqH = document.getElementById('mandateBriefingEquityHint');
+    const trcs = document.getElementById('mandateBriefingTrcs');
+    const bands = document.getElementById('mandateBriefingBands');
+    if (car) car.textContent = m.car_purse_label;
+    if (eq) eq.textContent = m.equity_headroom_label;
+    if (carH) carH.textContent = m.car_hint;
+    if (eqH) eqH.textContent = m.equity_hint;
+    if (trcs) trcs.textContent = String(m.max_trcs);
+    if (bands) bands.textContent = 'máx. ' + m.max_trcs + ' TRCs';
+  }
+
+  function fillMandateLetter() {
+    const m = currentMandate();
+    const body = document.getElementById('mandateLetterBody');
+    if (!body) return;
+    body.textContent =
+      'Antes de ires à mesa: mandato ' + m.tierLabel + ' (' + m.label + ').\n\n' +
+      '• Purse CAR: ' + m.car_purse_label + ' — ' + m.car_hint + '\n' +
+      '• Headroom equity: ' + m.equity_headroom_label + ' — ' + m.equity_hint + '\n' +
+      '• Máximo de TRCs neste mandato: ' + m.max_trcs + '\n\n' +
+      (m.id === 'boutique'
+        ? 'Boutique · banda S · máx. 1 TRC — joga Ourique; não caçes os cinzentos ainda. Joga bem e o mandato alarga.\n\n'
+        : m.id === 'mid'
+          ? 'Mid: S+M abertos; L ficam cinza («fora do runway» / «equity acima do mandato»).\n\n'
+          : 'Infra (QA): purse L — soft-lock activo mas bandas L desbloqueiam a onda.\n\n') +
+      'HIPÓTESE qualitativa — sem finais em €. Depois da adjudicação, a carta M0 passa a revisão de runway — não a primeira revelação.';
+  }
+
+  function showMandateOverlay(id, show) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (show) {
+      el.classList.add('open');
+      el.setAttribute('aria-hidden', 'false');
+    } else {
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function hideAllMandateOverlays() {
+    showMandateOverlay('mandateBriefing', false);
+    showMandateOverlay('mandateLetter', false);
+  }
+
+  function showMandateBriefing() {
+    fillMandateBriefing();
+    showMandateOverlay('mandateLetter', false);
+    showMandateOverlay('mandateBriefing', true);
+  }
+
+  function showMandateLetterPanel() {
+    mandateState.acknowledged = true;
+    fillMandateLetter();
+    showMandateOverlay('mandateBriefing', false);
+    showMandateOverlay('mandateLetter', true);
+  }
+
+  function finishMandateAndOpenMarket() {
+    mandateState.acknowledged = true;
+    mandateState.letterRead = true;
+    hideAllMandateOverlays();
+    const opts = mandateState.pendingOpenOpts || {};
+    mandateState.pendingOpenOpts = null;
+    try { if (typeof scheduleSave === 'function') scheduleSave('mandate-ack'); } catch (_) {}
+    openAuctionRoom(Object.assign({}, opts, { _mandateOk: true }));
+  }
+
+  function gateMandateBeforeAuction(opts) {
+    opts = opts || {};
+    if (opts._mandateOk || mandateState.skip) return true;
+    if (!mandateState.acknowledged) {
+      mandateState.pendingOpenOpts = opts;
+      showMandateBriefing();
+      return false;
+    }
+    if (!mandateState.letterRead) {
+      mandateState.pendingOpenOpts = opts;
+      showMandateLetterPanel();
+      return false;
+    }
+    return true;
+  }
+
+  function initMandateUi() {
+    resolveMandateQuery();
+    renderMandateHud();
+    const btnLetter = document.getElementById('mandateBriefingLetter');
+    const btnMarket = document.getElementById('mandateBriefingMarket');
+    const btnOpen = document.getElementById('mandateLetterOpenMarket');
+    if (btnLetter) btnLetter.addEventListener('click', () => {
+      mandateState.acknowledged = true;
+      showMandateLetterPanel();
+      try { scheduleSave('mandate-briefing'); } catch (_) {}
+    });
+    if (btnMarket) btnMarket.addEventListener('click', () => {
+      // Ir ao mercado still requires letter once — show letter if unread
+      mandateState.acknowledged = true;
+      if (!mandateState.letterRead) {
+        showMandateLetterPanel();
+      } else {
+        finishMandateAndOpenMarket();
+      }
+      try { scheduleSave('mandate-briefing'); } catch (_) {}
+    });
+    if (btnOpen) btnOpen.addEventListener('click', () => finishMandateAndOpenMarket());
+    // Cold start: if fresh mandate and not skip/mvp-only-home, briefing waits until auction open (gated).
+    // ?mandate=1 alone: show briefing soon if auction would open, else leave for first openAuctionRoom.
+    try {
+      const p = new URLSearchParams(location.search);
+      if (p.get('mandate') === '1' && !mandateState.skip && !mandateState.acknowledged) {
+        requestAnimationFrame(() => showMandateBriefing());
+      }
+    } catch (_) {}
+  }
+
+  /** Progression stub: play well → raise purse/tier → unlock greys (market "levels"). */
+  function maybePromoteMandate(reason) {
+    const cur = (mandateState && mandateState.tier) || 'boutique';
+    let next = null;
+    if (cur === 'boutique') next = 'mid';
+    else if (cur === 'mid') next = null; // mid → infra later optional
+    if (!next || !MANDATE_TIERS[next]) return false;
+    mandateState.tier = next;
+    try {
+      if (typeof showToast === 'function') {
+        showToast('Mandato alargado · ' + next + ' — novos lotes no próximo mercado');
+      }
+    } catch (_) {}
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
+    try { if (typeof renderAuctionLots === 'function') renderAuctionLots(); } catch (_) {}
+    try { if (typeof scheduleSave === 'function') scheduleSave('mandate-promote'); } catch (_) {}
+    try { console.info('[WattMandate] promote', cur, '→', next, reason || ''); } catch (_) {}
+    return true;
+  }
+
+  window.WattMandate = {
+    tiers: MANDATE_TIERS,
+    state: function () { return mandateState; },
+    current: currentMandate,
+    fits: lotFitsMandate,
+    renderHud: renderMandateHud,
+    maybePromote: maybePromoteMandate
+  };
 
 
   /* ── Opening auction draft — B2 mesa (room inside console) ── */
@@ -5522,19 +6203,19 @@
   /** Real REN SE names only — never invent substations. */
   const AUCTION_WAVES = [
     [
-      { id: 'ourique', name: 'SE Ourique', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 120 MWp · Câmara hostil', mw: '120 MWp', risk: 'Câmara hostil', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis' },
-      { id: 'ferreira', name: 'SE Ferreira do Alentejo', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 100 MWp · Rede congestionada', mw: '100 MWp', risk: 'Rede congestionada', npcFloor: 20, npcHi: 22, rival: 'IberVolt Energy', rivalId: 'ibervolt' },
-      { id: 'estremoz', name: 'SE Estremoz', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 90 MWp · Offtake fraco', mw: '90 MWp', risk: 'Offtake fraco', npcFloor: 22, npcHi: 24, rival: 'Alentejo Renew', rivalId: 'alentejo' }
+      { id: 'ourique', name: 'SE Ourique', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 120 MWp · Câmara hostil', mw: '120 MWp', risk: 'Câmara hostil', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
+      { id: 'ferreira', name: 'SE Ferreira do Alentejo', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 100 MWp · Rede congestionada', mw: '100 MWp', risk: 'Rede congestionada', npcFloor: 20, npcHi: 22, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
+      { id: 'estremoz', name: 'SE Estremoz', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 90 MWp · Offtake fraco', mw: '90 MWp', risk: 'Offtake fraco', npcFloor: 22, npcHi: 24, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
     ],
     [
-      { id: 'evora', name: 'SE Évora', badge: 'Leilão', tension: '400/150 · Alentejo', fullMeta: '400/150 · Alentejo · 110 MWp · Licenciamento tenso', mw: '110 MWp', risk: 'Licenciamento tenso', npcFloor: 19, npcHi: 23, rival: 'Solis Lusitania', rivalId: 'solis' },
-      { id: 'alqueva', name: 'SE Alqueva', badge: 'Leilão', tension: '400/150 · Alqueva', fullMeta: '400/150 · Alqueva · 95 MWp · Rede remota', mw: '95 MWp', risk: 'Rede remota', npcFloor: 21, npcHi: 24, rival: 'IberVolt Energy', rivalId: 'ibervolt' },
-      { id: 'falagueira', name: 'SE Falagueira', badge: 'Leilão', tension: '400/150 · Interior', fullMeta: '400/150 · Interior · 100 MWp · Curtailment', mw: '100 MWp', risk: 'Curtailment', npcFloor: 20, npcHi: 23, rival: 'Alentejo Renew', rivalId: 'alentejo' }
+      { id: 'evora', name: 'SE Évora', badge: 'Leilão', tension: '400/150 · Alentejo', fullMeta: '400/150 · Alentejo · 110 MWp · Licenciamento tenso', mw: '110 MWp', risk: 'Licenciamento tenso', npcFloor: 19, npcHi: 23, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
+      { id: 'alqueva', name: 'SE Alqueva', badge: 'Leilão', tension: '400/150 · Alqueva', fullMeta: '400/150 · Alqueva · 95 MWp · Rede remota', mw: '95 MWp', risk: 'Rede remota', npcFloor: 21, npcHi: 24, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
+      { id: 'falagueira', name: 'SE Falagueira', badge: 'Leilão', tension: '400/150 · Interior', fullMeta: '400/150 · Interior · 100 MWp · Curtailment', mw: '100 MWp', risk: 'Curtailment', npcFloor: 20, npcHi: 23, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
     ],
     [
-      { id: 'portimao', name: 'SE Portimão', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 · Algarve · 90 MWp · Pico de carga', mw: '90 MWp', risk: 'Pico de carga', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis' },
-      { id: 'tavira', name: 'SE Tavira', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 · Algarve · 80 MWp · Rede fina', mw: '80 MWp', risk: 'Rede fina', npcFloor: 20, npcHi: 23, rival: 'IberVolt Energy', rivalId: 'ibervolt' },
-      { id: 'ponte-sor', name: 'SE Ponte de Sor', badge: 'Leilão', tension: '400/150 · Alto Alentejo', fullMeta: '400/150 · Alto Alentejo · 100 MWp · Offtake fraco', mw: '100 MWp', risk: 'Offtake fraco', npcFloor: 22, npcHi: 25, rival: 'Alentejo Renew', rivalId: 'alentejo' }
+      { id: 'portimao', name: 'SE Portimão', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 · Algarve · 90 MWp · Pico de carga', mw: '90 MWp', risk: 'Pico de carga', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
+      { id: 'tavira', name: 'SE Tavira', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 · Algarve · 80 MWp · Rede fina', mw: '80 MWp', risk: 'Rede fina', npcFloor: 20, npcHi: 23, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
+      { id: 'ponte-sor', name: 'SE Ponte de Sor', badge: 'Leilão', tension: '400/150 · Alto Alentejo', fullMeta: '400/150 · Alto Alentejo · 100 MWp · Offtake fraco', mw: '100 MWp', risk: 'Offtake fraco', npcFloor: 22, npcHi: 25, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
     ]
   ];
 
@@ -5824,8 +6505,14 @@
       const slider = document.getElementById('auctionBidSlider');
       if (slider) slider.value = '40';
     }
+    const fit = (typeof lotFitsMandate === 'function') ? lotFitsMandate(lot) : { ok: true, reason: '' };
     document.getElementById('auctionTitle').textContent = lot.name + ' · Leilão';
-    document.getElementById('auctionSub').textContent = lot.fullMeta;
+    const subBits = [lot.fullMeta];
+    if (lot.car_band || lot.equity_capex_band) {
+      subBits.push('CAR ' + (lot.car_band || '?') + ' · Equity ' + (lot.equity_capex_band || '?'));
+    }
+    if (!fit.ok) subBits.push('⛔ ' + fit.reason);
+    document.getElementById('auctionSub').textContent = subBits.join(' · ');
     AUCTION_RIVALS.forEach((r) => {
       if ((auctionState.rivalModes[r.id] || {}).mode === 'flash') setAuctionRivalMode(r.id, 'idle');
     });
@@ -5863,23 +6550,30 @@
       list.innerHTML = AUCTION_LOTS.map((lot) => {
         const taken = auctionState.taken[lot.id];
         const selected = auctionState.selectedId === lot.id;
-        const disabled = !!taken;
+        const fit = (!taken && typeof lotFitsMandate === 'function') ? lotFitsMandate(lot) : { ok: true, reason: '' };
+        const blocked = !taken && !fit.ok;
+        const disabled = !!taken; // blocked stays selectable for detail + disabled bid
         let tension;
         if (taken) {
           tension = taken.lost
             ? ((taken.stolen ? 'Roubado · ' : taken.auto ? 'Tempo 0 · ' : 'Perdido · ') + lot.rival + (taken.bid != null ? ' ~' + taken.bid + ' €' : ''))
             : ('Adjudicado a ti · ' + taken.bid + ' €/MWh');
         } else {
-          tension = lot.risk + ' · ' + lot.mw + ' · em disputa';
+          tension = lot.risk + ' · ' + lot.mw + ' · CAR ' + (lot.car_band || '?') + '/' + (lot.equity_capex_band || '?');
         }
+        const reasonHtml = blocked
+          ? ('<div class="mandate-reason">' + fit.reason + '</div>')
+          : '';
         return (
-          '<button type="button" class="auction-se' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + '"' +
+          '<button type="button" class="auction-se' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + (blocked ? ' mandate-blocked' : '') + '"' +
           ' id="auction-lot-' + lot.id + '" data-lot="' + lot.id + '" role="option"' +
           ' aria-selected="' + (selected ? 'true' : 'false') + '"' +
+          (blocked ? ' data-mandate-blocked="1" title="' + fit.reason + '"' : '') +
           (disabled ? ' disabled' : '') + '>' +
           '<div class="auction-se-top"><span class="auction-se-name">' + lot.name + '</span>' +
           '<span class="auction-se-badge">' + lot.badge + '</span></div>' +
           '<div class="auction-se-tension">' + tension + '</div>' +
+          reasonHtml +
           '</button>'
         );
       }).join('');
@@ -5894,13 +6588,17 @@
       chips.innerHTML = AUCTION_LOTS.map((lot) => {
         const taken = auctionState.taken[lot.id];
         const selected = auctionState.selectedId === lot.id;
+        const fit = (!taken && typeof lotFitsMandate === 'function') ? lotFitsMandate(lot) : { ok: true, reason: '' };
+        const blocked = !taken && !fit.ok;
         const disabled = !!taken;
+        const meta = blocked ? fit.reason : lotTension(lot);
         return (
-          '<button type="button" class="auction-lot-chip' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + '"' +
+          '<button type="button" class="auction-lot-chip' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + (blocked ? ' mandate-blocked' : '') + '"' +
           ' data-lot="' + lot.id + '" role="option" aria-selected="' + (selected ? 'true' : 'false') + '"' +
+          (blocked ? ' data-mandate-blocked="1" title="' + fit.reason + '"' : '') +
           (disabled ? ' disabled' : '') + '>' +
           '<span class="chip-name">' + shortLotLabel(lot.name) + '</span>' +
-          '<span class="chip-meta">' + lotTension(lot) + '</span>' +
+          '<span class="chip-meta">' + meta + '</span>' +
           '</button>'
         );
       }).join('');
@@ -5991,9 +6689,12 @@
     if (hint) hint.textContent = eco.hint + ' · economia por calibrar.';
     const confirm = document.getElementById('auction-confirm');
     const softBlock = bid < 14;
+    const mandateBlock = !!(lot && typeof lotFitsMandate === 'function' && !lotFitsMandate(lot).ok);
     if (confirm) {
-      confirm.textContent = softBlock ? 'Oferta não credível' : 'Submeter ao concurso';
-      confirm.disabled = softBlock || !lot || !!auctionState.taken[lot.id] || auctionState.screen !== 'bid' || !!auctionState.allLost;
+      confirm.textContent = mandateBlock
+        ? ((lotFitsMandate(lot).reason) || 'Fora do mandato')
+        : (softBlock ? 'Oferta não credível' : 'Submeter ao concurso');
+      confirm.disabled = softBlock || mandateBlock || !lot || !!auctionState.taken[lot.id] || auctionState.screen !== 'bid' || !!auctionState.allLost;
     }
     document.querySelectorAll('.auction-step').forEach((s) => {
       s.classList.toggle('active', Number(s.dataset.bid) === bid);
@@ -6052,6 +6753,19 @@
     updateHeaderMetrics(false);
     renderAuctionBadge();
     scheduleSave('unlock-trc');
+    // MVP Correio: M0 on TRC win (Ourique). Skip under ?mvp/?inbox demos (they seed themselves).
+    try {
+      const skipDemo = (typeof _saveOverrideActive !== 'undefined' && _saveOverrideActive)
+        || (typeof hasSaveOverrideQuery === 'function' && hasSaveOverrideQuery());
+      const seForMail = (lot && lot.id === 'ourique') ? 'ourique' : null;
+      if (!skipDemo && seForMail && typeof startMailLoop === 'function') {
+        startMailLoop(seForMail).catch(function (err) {
+          console.warn('[WattMail] startMailLoop failed', err);
+        });
+      }
+    } catch (err) {
+      console.warn('[WattMail] unlock hook', err);
+    }
   }
 
   function goHomeWithTrc() {
@@ -6157,6 +6871,13 @@
     const lot = AUCTION_LOTS.find((l) => l.id === auctionState.selectedId);
     if (!lot || auctionState.taken[lot.id] || auctionState.screen !== 'bid') return;
     if (auctionState.bid < 14) return;
+    if (typeof lotFitsMandate === 'function') {
+      const fit = lotFitsMandate(lot);
+      if (!fit.ok) {
+        try { showToast(fit.reason || 'Fora do mandato'); } catch (_) {}
+        return;
+      }
+    }
     const bid = auctionState.bid;
     auctionState.sealedPending = { lotId: lot.id, bid: bid };
     scheduleSave('bid-submit');
@@ -6312,6 +7033,9 @@
 
   function openAuctionRoom(opts) {
     opts = opts || {};
+    if (typeof gateMandateBeforeAuction === 'function' && !gateMandateBeforeAuction(opts)) {
+      return;
+    }
     auctionState.open = true;
     if (!opts.keepCoach) {
       try { if (typeof hideCoach === 'function') hideCoach({ clearQueue: true }); } catch (e) {}
@@ -6320,10 +7044,16 @@
     document.getElementById('auctionRoom').setAttribute('aria-hidden', 'false');
     const kicker = document.getElementById('auctionWaveKicker');
     if (kicker) kicker.textContent = 'Concurso REN · onda ' + (auctionState.wave + 1);
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
     renderAuctionRivals();
     renderAuctionClock();
-    if (!auctionState.selectedId || auctionState.taken[auctionState.selectedId]) {
-      const first = availableAuctionLots()[0];
+    const curLot = AUCTION_LOTS.find((l) => l.id === auctionState.selectedId);
+    const curBlocked = curLot && !auctionState.taken[curLot.id] && typeof lotFitsMandate === 'function' && !lotFitsMandate(curLot).ok;
+    if (!auctionState.selectedId || auctionState.taken[auctionState.selectedId] || curBlocked) {
+      const firstFit = availableAuctionLots().find((l) => {
+        try { return lotFitsMandate(l).ok; } catch (_) { return true; }
+      });
+      const first = firstFit || availableAuctionLots()[0];
       auctionState.selectedId = first ? first.id : AUCTION_LOTS[0].id;
     }
     if (auctionState.screen === 'fora' && auctionState.allLost) {
@@ -6631,12 +7361,14 @@
         applyPreAuctionPortfolio();
         renderNodes();
         if (auctionState.open) {
-          selectAuctionLot(AUCTION_LOTS[0].id);
+          const prefer = AUCTION_LOTS.find((l) => lotFitsMandate(l).ok) || AUCTION_LOTS[0];
+          selectAuctionLot(prefer.id);
           setAuctionScreen('bid');
         }
       },
       nextWave: startNextAuctionWave,
-      waves: AUCTION_WAVES
+      waves: AUCTION_WAVES,
+      lotFitsMandate: lotFitsMandate
     };
   }
 
@@ -6658,8 +7390,775 @@
     camara: 'Câmara',
     consultor: 'Consultor',
     dica: 'Dica',
-    banco: 'Banco'
+    sistema: 'Sistema',
+    banco: 'Banco',
+    proprietario: 'Proprietário',
+    investidores: 'Investidores',
+    fundo: 'Fundo Ambiental',
+    advogado: 'Advogado',
+    rede: 'Rede',
+    comunidade: 'Comunidade',
+    media: 'Media',
+    apa: 'APA',
+    dgeg: 'DGEG',
+    concorrente: 'Concorrente'
   };
+
+  /* ── Offline content pack (licenca/events via content/events symlink) ── */
+  const EVENTS_BASE = 'content/events';
+  const FROM_TYPE_TO_MAIL = {
+    CAMARA: 'camara',
+    CONSULTOR: 'consultor',
+    PROPRIETARIO: 'proprietario',
+    INVESTIDORES: 'investidores',
+    FUNDO_AMBIENTAL: 'fundo',
+    SISTEMA: 'sistema',
+    ADVOGADO_DD: 'advogado',
+    REDE: 'rede',
+    COMUNIDADE: 'comunidade',
+    MEDIA: 'media',
+    APA: 'apa',
+    BANCO: 'banco',
+    DGEG: 'dgeg',
+    CONCORRENTE: 'concorrente'
+  };
+
+  async function loadEventPack() {
+    if (window.__wattEventPack) return window.__wattEventPack;
+    const base = EVENTS_BASE.replace(/\/$/, '');
+    const manRes = await fetch(base + '/manifest.json');
+    if (!manRes.ok) throw new Error('manifest ' + manRes.status);
+    const manifest = await manRes.json();
+    async function loadList(paths) {
+      const out = [];
+      for (const p of paths || []) {
+        const r = await fetch(base + '/' + p);
+        if (!r.ok) throw new Error(p + ' ' + r.status);
+        out.push(await r.json());
+      }
+      return out;
+    }
+    const pack = {
+      manifest: manifest,
+      skeletons: await loadList(manifest.skeletons),
+      skins: await loadList(manifest.skins),
+      se_sheets: await loadList(manifest.se_sheets),
+      mvp_schedule: null
+    };
+    if (manifest.mvp_schedule) {
+      const sr = await fetch(base + '/' + manifest.mvp_schedule);
+      if (!sr.ok) throw new Error(manifest.mvp_schedule + ' ' + sr.status);
+      pack.mvp_schedule = await sr.json();
+    }
+    window.__wattEventPack = pack;
+    return pack;
+  }
+
+  function getSeSheet(seId, pack) {
+    pack = pack || window.__wattEventPack;
+    if (!pack) return null;
+    return pack.se_sheets.find((s) => s.se_id === seId) || null;
+  }
+
+  function fillMailTemplate(str, ctx) {
+    if (str == null) return '';
+    ctx = ctx || {};
+    return String(str).replace(/\{\{(\w+)\}\}/g, function (_, key) {
+      return ctx[key] != null ? String(ctx[key]) : '';
+    });
+  }
+
+  function fromTypeToMailType(from_type) {
+    return FROM_TYPE_TO_MAIL[from_type] || String(from_type || '').toLowerCase();
+  }
+
+  function buildTemplateCtx(seSheet) {
+    const sheet = seSheet || {};
+    const seName = sheet.se_name || '';
+    let camara = 'Câmara Municipal';
+    const m = /^SE\s+(.+)$/i.exec(seName);
+    if (m) camara = 'Câmara Municipal de ' + m[1];
+    else if (seName) camara = 'Câmara Municipal de ' + seName;
+    const seId = sheet.se_id || '';
+    const mwp = seId === 'ourique' ? 120 : (seId === 'ferreira-do-alentejo' ? 100 : 100);
+    return { se_name: seName, camara_nome: camara, mwp: mwp };
+  }
+
+  function triggerWhenLabel(trigger) {
+    trigger = trigger || {};
+    const mo = trigger.month_offset != null ? Number(trigger.month_offset) : null;
+    if (trigger.immediate || mo === 0) return 'M0 · agora';
+    if (mo == null || Number.isNaN(mo)) return '—';
+    return 'M+' + mo;
+  }
+
+  function pickSkin(skeletonId, seTags, pack) {
+    pack = pack || window.__wattEventPack;
+    if (!pack) return null;
+    const skins = pack.skins.filter((s) => s.skeleton_id === skeletonId);
+    if (!skins.length) return null;
+    const tags = seTags || {};
+    const exact = skins.find((s) => {
+      const want = s.when && s.when.se_tags;
+      if (!want || typeof want !== 'object') return false;
+      return Object.keys(want).every((k) => tags[k] === want[k]);
+    });
+    if (exact) return exact;
+    const anyMatch = skins.find((s) => {
+      const want = s.when && s.when.se_tags_any;
+      if (!Array.isArray(want) || !want.length) return false;
+      return want.some((cond) => {
+        if (typeof cond === 'string') {
+          const parts = cond.split(':');
+          return tags[parts[0]] === parts.slice(1).join(':');
+        }
+        if (cond && typeof cond === 'object') {
+          return Object.keys(cond).every((k) => tags[k] === cond[k]);
+        }
+        return false;
+      });
+    });
+    if (anyMatch) return anyMatch;
+    const def = skins.find((s) => {
+      if (s.skin_id === 'default') return true;
+      if (!s.when) return true;
+      const hasExact = s.when.se_tags && Object.keys(s.when.se_tags).length;
+      const hasAny = Array.isArray(s.when.se_tags_any) && s.when.se_tags_any.length;
+      return !hasExact && !hasAny;
+    });
+    return def || skins[0];
+  }
+
+  function composeLetter(args) {
+    const skeleton = args.skeleton;
+    const skin = args.skin;
+    const seSheet = args.seSheet;
+    const opts = args.opts || {};
+    const ctx = Object.assign({}, buildTemplateCtx(seSheet), skin.params || {}, opts.ctx || {});
+    const choices = (skeleton.choices || []).map((c) => ({
+      id: c.id,
+      label: c.label,
+      effects: (c.effects || []).slice()
+    }));
+    const id = opts.id || (skin.skin_id && skin.skin_id !== 'default'
+      ? (skeleton.id + ':' + skin.skin_id)
+      : skeleton.id);
+    return {
+      id: id,
+      skeletonId: skeleton.id,
+      skinId: skin.skin_id,
+      type: fromTypeToMailType(skeleton.from_type),
+      subject: fillMailTemplate(skin.subject, ctx),
+      sender: fillMailTemplate(skin.from_name, ctx),
+      when: opts.when || triggerWhenLabel(skeleton.trigger),
+      read: !!opts.read,
+      body: fillMailTemplate(skin.body, ctx),
+      choices: choices,
+      cta: choices.length ? choices[0].label : null,
+      effects: choices.length ? (choices[0].effects || []).slice() : []
+    };
+  }
+
+  function buildLettersFromPack(seId, opts) {
+    opts = opts || {};
+    const pack = opts.pack || window.__wattEventPack;
+    if (!pack) throw new Error('event pack not loaded');
+    const seSheet = getSeSheet(seId, pack);
+    if (!seSheet) throw new Error('se sheet not found: ' + seId);
+    const seTags = seSheet.tags || {};
+    const letters = [];
+    pack.skeletons.forEach((sk) => {
+      const isPostWin = sk.phase === 'post_win';
+      const isJoker = opts.includeJoker && (sk.phase === 'opportunity' || (sk.trigger && sk.trigger.type === 'joker'));
+      if (!isPostWin && !isJoker) return;
+      if (sk.id === 'mail-terreno-01') {
+        const terrenoSkins = pack.skins.filter((s) => s.skeleton_id === sk.id);
+        const parcelas = terrenoSkins.filter((s) => String(s.skin_id).indexOf('parcela-') === 0);
+        const list = parcelas.length ? parcelas : terrenoSkins;
+        list.forEach((skin) => {
+          letters.push(composeLetter({
+            skeleton: sk,
+            skin: skin,
+            seSheet: seSheet,
+            opts: { id: sk.id + ':' + skin.skin_id }
+          }));
+        });
+        return;
+      }
+      const skin = pickSkin(sk.id, seTags, pack);
+      if (!skin) return;
+      letters.push(composeLetter({ skeleton: sk, skin: skin, seSheet: seSheet }));
+    });
+    const prioRank = { high: 0, medium: 1, normal: 2, low: 3 };
+    letters.sort((a, b) => {
+      const ska = pack.skeletons.find((s) => s.id === a.skeletonId) || {};
+      const skb = pack.skeletons.find((s) => s.id === b.skeletonId) || {};
+      const ta = ska.trigger || {};
+      const tb = skb.trigger || {};
+      const ia = ta.immediate ? 0 : 1;
+      const ib = tb.immediate ? 0 : 1;
+      if (ia !== ib) return ia - ib;
+      const ma = ta.month_offset != null ? Number(ta.month_offset) : 99;
+      const mb = tb.month_offset != null ? Number(tb.month_offset) : 99;
+      if (ma !== mb) return ma - mb;
+      const pa = prioRank[ska.priority] != null ? prioRank[ska.priority] : 9;
+      const pb = prioRank[skb.priority] != null ? prioRank[skb.priority] : 9;
+      if (pa !== pb) return pa - pb;
+      return String(a.id).localeCompare(String(b.id));
+    });
+    return letters;
+  }
+
+  /* ── MVP Correio loop (phase progress + pressure clock) ── */
+  const PROJECT_PHASES = ['trc_won', 'land', 'pip', 'aia', 'licenca_producao', 'obra', 'cod'];
+  const PHASE_LABEL_PT = {
+    trc_won: 'TRC',
+    land: 'Terreno',
+    pip: 'PIP',
+    aia: 'AIA',
+    licenca_producao: 'LP',
+    obra: 'Obra',
+    cod: 'COD'
+  };
+  /** Conservative MVP bumps — only from choices that clearly imply the milestone. No obra/cod auto-jump. */
+  const PHASE_BUMP = {
+    'land_option_open': 'land',
+    'land_talk_+1': 'land',
+    'dd_started': 'land',
+    'risk_camara_-1': 'pip',
+    'apa_track_start': 'aia'
+    // placeholders (Economy / later letters): value_add_commit=null; capex_rede_flag / lp_granted → licenca_producao (not wired in MVP1)
+  };
+
+  function seedDefaultDeadlines() {
+    return {
+      land_option: { label: 'Janela opção terreno', atMonth: 1 },
+      pip_camara: { label: 'PIP / Câmara', atMonth: 2 },
+      main_permit: { label: 'Licença principal (APA)', atMonth: 5 },
+      grid_agreement: { label: 'Acordo rede', atMonth: 6 }
+    };
+  }
+
+  let mailLoop = {
+    active: false,
+    seId: null,
+    month: -1,          // pressure clock (=devMonth); Play jumps this
+    projectPhase: 'trc_won',
+    deadlines: {},
+    firedDeadlines: {},
+    tags: {},
+    deliveredIds: {},
+    deliveredMonths: {},
+    lastJokerMonth: -99
+  };
+
+  function getDevMonth() {
+    return mailLoop.month | 0;
+  }
+
+  function setDevMonth(m) {
+    mailLoop.month = m;
+  }
+
+  function phaseIndex(phase) {
+    const i = PROJECT_PHASES.indexOf(phase);
+    return i < 0 ? 0 : i;
+  }
+
+  function phaseLabelPt(phase) {
+    return PHASE_LABEL_PT[phase] || phase || 'TRC';
+  }
+
+  function hasPassedPhase(phase, loop) {
+    loop = loop || mailLoop;
+    return phaseIndex(loop.projectPhase) >= phaseIndex(phase);
+  }
+
+  /** Only move forward along chain; obra requires LP + (aia OR pip+nao_sujeicao). */
+  function raiseProjectPhase(target) {
+    if (!target || PROJECT_PHASES.indexOf(target) < 0) return false;
+    const cur = mailLoop.projectPhase || 'trc_won';
+    const ti = phaseIndex(target);
+    const ci = phaseIndex(cur);
+    if (ti <= ci) return false;
+    for (let i = ci + 1; i <= ti; i++) {
+      const next = PROJECT_PHASES[i];
+      if (next === 'obra') {
+        const lpOk = phaseIndex(mailLoop.projectPhase) >= phaseIndex('licenca_producao');
+        const aiaOk = phaseIndex(mailLoop.projectPhase) >= phaseIndex('aia')
+          || (mailLoop.tags && (mailLoop.tags.nao_sujeicao || mailLoop.tags['nao_sujeicao']));
+        const pipNs = phaseIndex(mailLoop.projectPhase) >= phaseIndex('pip')
+          && mailLoop.tags && (mailLoop.tags.nao_sujeicao || mailLoop.tags['nao_sujeicao']);
+        if (!(lpOk && (aiaOk || pipNs))) {
+          console.warn('[WattMail] obra blocked — need licenca_producao + (aia|pip+nao_sujeicao)');
+          break;
+        }
+      }
+      mailLoop.projectPhase = next;
+    }
+    const raised = phaseIndex(mailLoop.projectPhase) > ci;
+    if (raised && (mailLoop.projectPhase === 'land' || mailLoop.projectPhase === 'pip')) {
+      try { if (typeof maybePromoteMandate === 'function') maybePromoteMandate('phase:' + mailLoop.projectPhase); } catch (_) {}
+    }
+    return raised;
+  }
+
+  function maybeRaisePhaseFromEffects(effects) {
+    if (!Array.isArray(effects) || !effects.length) return false;
+    let raised = false;
+    effects.forEach((ef) => {
+      const key = String(ef);
+      const target = PHASE_BUMP[key];
+      if (target && raiseProjectPhase(target)) raised = true;
+    });
+    // Soft deadline clears when related effects fire
+    if (effects.some((e) => e === 'land_option_open' || e === 'land_talk_+1' || e === 'dd_started')) {
+      if (mailLoop.deadlines && mailLoop.deadlines.land_option) {
+        mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+        mailLoop.firedDeadlines.land_option = true;
+      }
+    }
+    if (effects.some((e) => e === 'risk_camara_-1')) {
+      if (mailLoop.deadlines && mailLoop.deadlines.pip_camara) {
+        mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+        mailLoop.firedDeadlines.pip_camara = true;
+      }
+    }
+    if (effects.some((e) => e === 'apa_track_start')) {
+      if (mailLoop.deadlines && mailLoop.deadlines.main_permit) {
+        mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+        mailLoop.firedDeadlines.main_permit = true;
+      }
+    }
+    if (effects.some((e) => e === 'capex_rede_flag')) {
+      if (mailLoop.deadlines && mailLoop.deadlines.grid_agreement) {
+        mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+        mailLoop.firedDeadlines.grid_agreement = true;
+      }
+    }
+    return raised;
+  }
+
+  function nearestDeadline(loop) {
+    loop = loop || mailLoop;
+    const dls = loop.deadlines || {};
+    const fired = loop.firedDeadlines || {};
+    const clock = loop.month | 0;
+    let best = null;
+    Object.keys(dls).forEach((k) => {
+      if (fired[k]) return;
+      const d = dls[k];
+      if (!d || d.atMonth == null) return;
+      if (!best || d.atMonth < best.atMonth) {
+        best = { id: k, label: d.label || k, atMonth: d.atMonth };
+      }
+    });
+    return best;
+  }
+
+  function playPacing() {
+    try {
+      const p = new URLSearchParams(location.search);
+      return ((p.get('pacing') || 'event').toLowerCase() === 'month') ? 'month' : 'event';
+    } catch (_) {
+      return 'event';
+    }
+  }
+
+  /** Month pacing: months advanced per Play (1–6). Event pacing: max-jump override if ?play= set (1–12), else 0 = use schedule.caps.max_jump_months. */
+  function playStep() {
+    try {
+      const p = new URLSearchParams(location.search);
+      if (playPacing() === 'month') {
+        const raw = parseInt(p.get('play') || '1', 10);
+        if (Number.isNaN(raw)) return 1;
+        return Math.max(1, Math.min(6, raw));
+      }
+      if (!p.has('play')) return 0;
+      const raw = parseInt(p.get('play'), 10);
+      if (Number.isNaN(raw)) return 0;
+      return Math.max(1, Math.min(12, raw));
+    } catch (_) {
+      return playPacing() === 'month' ? 1 : 0;
+    }
+  }
+
+  function getScheduleLandings(schedule) {
+    if (!schedule) return {};
+    if (schedule.landings && typeof schedule.landings === 'object') return schedule.landings;
+    // Backward compat: synthesize landings from months
+    const out = {};
+    Object.keys(schedule.months || {}).forEach((k) => {
+      out[k] = { label: 'M' + k, when_phase: null, entries: schedule.months[k] };
+    });
+    return out;
+  }
+
+  function scheduleMaxMonth(schedule) {
+    const landings = getScheduleLandings(schedule);
+    const keys = Object.keys(landings)
+      .map((k) => parseInt(k, 10))
+      .filter((n) => !Number.isNaN(n));
+    if (keys.length) return Math.max.apply(null, keys);
+    const mkeys = Object.keys((schedule && schedule.months) || {})
+      .map((k) => parseInt(k, 10))
+      .filter((n) => !Number.isNaN(n));
+    return mkeys.length ? Math.max.apply(null, mkeys) : 6;
+  }
+
+  function applyMailEffects(effects) {
+    if (!Array.isArray(effects) || !effects.length) return;
+    effects.forEach((ef) => {
+      if (!ef) return;
+      const key = String(ef);
+      mailLoop.tags[key] = (mailLoop.tags[key] || 0) + 1;
+    });
+    // Joker eligibility aliases
+    if ((mailLoop.tags.value_add_commit || mailLoop.tags.bess_dev_flag) && !mailLoop.tags.bess_dev_started) {
+      mailLoop.tags.bess_dev_started = 1;
+    }
+    maybeRaisePhaseFromEffects(effects);
+    try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+    try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+  }
+
+  function getSkinById(skeletonId, skinId, pack) {
+    pack = pack || window.__wattEventPack;
+    if (!pack) return null;
+    return pack.skins.find((s) => s.skeleton_id === skeletonId && s.skin_id === skinId) || null;
+  }
+
+  function phaseEligible(whenPhase, loop) {
+    if (!whenPhase || !whenPhase.length) return true;
+    loop = loop || mailLoop;
+    const cur = loop.projectPhase || 'trc_won';
+    return whenPhase.indexOf(cur) !== -1;
+  }
+
+  /** Phase match: current ∈ landing.when_phase OR entry.when_phase OR skeleton.trigger.when_phase (any list that exists). */
+  function phaseOkForEntry(landing, entry, skeleton, loop) {
+    loop = loop || mailLoop;
+    const lists = [];
+    if (landing && landing.when_phase && landing.when_phase.length) lists.push(landing.when_phase);
+    if (entry && entry.when_phase && entry.when_phase.length) lists.push(entry.when_phase);
+    if (skeleton && skeleton.trigger && skeleton.trigger.when_phase && skeleton.trigger.when_phase.length) {
+      lists.push(skeleton.trigger.when_phase);
+    }
+    if (!lists.length) return true;
+    const cur = loop.projectPhase || 'trc_won';
+    return lists.some((list) => list.indexOf(cur) !== -1);
+  }
+
+  function letterEligible(entry, loop, skeleton, landing) {
+    loop = loop || mailLoop;
+    const req = entry && entry.requires_any_effects;
+    if (req && req.length) {
+      if (!req.some((k) => (loop.tags[k] || 0) > 0)) return false;
+    }
+    if (!phaseOkForEntry(landing, entry, skeleton, loop)) return false;
+    return true;
+  }
+
+  function landingPhaseOk(landing, loop) {
+    if (!landing || !landing.when_phase || !landing.when_phase.length) return true;
+    return phaseEligible(landing.when_phase, loop);
+  }
+
+  function composedLetterId(skeletonId, skinId) {
+    if (skinId && skinId !== 'default') return skeletonId + ':' + skinId;
+    return skeletonId;
+  }
+
+  function periodLabelText() {
+    if (mailLoop && mailLoop.active && mailLoop.month >= 0) {
+      const ph = phaseLabelPt(mailLoop.projectPhase || 'trc_won');
+      return 'M' + mailLoop.month + ' · ' + ph;
+    }
+    return state.year + ' · Q' + state.quarter;
+  }
+
+  /** Plan landing delivery without mutating mailState / deliveredIds / lastJokerMonth. */
+  async function planMonthDelivery(month) {
+    const empty = { letters: [], relevantCount: 0, skeletonIds: [], jokerIncluded: false };
+    const pack = await loadEventPack();
+    const schedule = pack.mvp_schedule;
+    if (!schedule) {
+      console.warn('[WattMail] no mvp_schedule');
+      return empty;
+    }
+    const seId = mailLoop.seId || schedule.se_id || 'ourique';
+    const seSheet = getSeSheet(seId, pack);
+    const monthKey = String(month);
+    const landings = getScheduleLandings(schedule);
+    const landing = landings[monthKey];
+    const entries = (landing && landing.entries)
+      || (schedule.months && schedule.months[monthKey])
+      || [];
+    const caps = schedule.caps || { relevant_per_month: 2, relevant_per_landing: 3, m0_all: true };
+
+    // Build eligible candidates not yet delivered (phase = landing OR skeleton when_phase)
+    const candidates = [];
+    entries.forEach((entry) => {
+      const sk = pack.skeletons.find((s) => s.id === entry.skeleton);
+      if (!sk) {
+        console.warn('[WattMail] missing skeleton', entry.skeleton);
+        return;
+      }
+      if (!letterEligible(entry, mailLoop, sk, landing)) return;
+      const skin = getSkinById(entry.skeleton, entry.skin, pack);
+      if (!skin) {
+        console.warn('[WattMail] missing skin', entry.skeleton, entry.skin);
+        return;
+      }
+      const id = composedLetterId(entry.skeleton, entry.skin);
+      if (mailLoop.deliveredIds[id]) return;
+      candidates.push({ entry: entry, skeleton: sk, skin: skin, id: id, relevant: !!entry.relevant });
+    });
+
+    // Mutex: prefer comunidade for Ourique among group
+    const byMutex = {};
+    const afterMutex = [];
+    candidates.forEach((c) => {
+      const g = c.entry.mutex_group;
+      if (!g) {
+        afterMutex.push(c);
+        return;
+      }
+      if (!byMutex[g]) byMutex[g] = [];
+      byMutex[g].push(c);
+    });
+    Object.keys(byMutex).forEach((g) => {
+      const group = byMutex[g];
+      let pick = group.find((c) => c.skeleton.id === 'mail-comunidade-01');
+      if (!pick) pick = group[Math.floor(Math.random() * group.length)];
+      if (pick) afterMutex.push(pick);
+    });
+
+    // Caps: M0 all; terreno pair exception; else max relevant then all FYIs that passed requires
+    let chosen = [];
+    const relevantCap = (caps.relevant_per_landing != null)
+      ? caps.relevant_per_landing
+      : (caps.relevant_per_month != null ? caps.relevant_per_month : 2);
+    if (month === 0 && caps.m0_all) {
+      chosen = afterMutex.slice();
+    } else {
+      const terrenos = afterMutex.filter((c) => c.skeleton.id === 'mail-terreno-01' && c.relevant);
+      const relevantOther = afterMutex.filter((c) => c.relevant && c.skeleton.id !== 'mail-terreno-01');
+      const fyis = afterMutex.filter((c) => !c.relevant);
+      const cap = relevantCap;
+      let relevantPicked = terrenos.slice();
+      const slotsLeft = Math.max(0, cap - Math.min(terrenos.length, cap));
+      if (terrenos.length < cap) {
+        relevantPicked = relevantPicked.concat(relevantOther.slice(0, slotsLeft));
+      } else if (!terrenos.length) {
+        relevantPicked = relevantOther.slice(0, cap);
+      }
+      chosen = relevantPicked.concat(fyis);
+    }
+
+    // Compose letters
+    const newLetters = chosen.map((c) => composeLetter({
+      skeleton: c.skeleton,
+      skin: c.skin,
+      seSheet: seSheet,
+      opts: { id: c.id, when: 'M' + month + ' · ' + phaseLabelPt(mailLoop.projectPhase) }
+    }));
+
+    let relevantCount = chosen.filter((c) => c.relevant).length;
+    let jokerIncluded = false;
+
+    // Joker (optional) — plan only; do not mutate lastJokerMonth
+    const joker = schedule.joker;
+    if (joker && month > 0) {
+      const gapOk = (month - (mailLoop.lastJokerMonth | 0)) >= (joker.min_gap_months || 3);
+      const jsk = pack.skeletons.find((s) => s.id === joker.skeleton);
+      const jokerElig = letterEligible(joker, mailLoop, jsk) && phaseEligible(joker.when_phase || (jsk && jsk.trigger && jsk.trigger.when_phase), mailLoop);
+      const monthSkels = (mailLoop.deliveredMonths[monthKey] || []).slice();
+      newLetters.forEach((L) => { if (monthSkels.indexOf(L.skeletonId) === -1) monthSkels.push(L.skeletonId); });
+      const blocked = (joker.block_if_delivered_same_month_skeletons || []).some((sid) => monthSkels.indexOf(sid) !== -1);
+      const jid = composedLetterId(joker.skeleton, joker.skin);
+      if (gapOk && jokerElig && !blocked && !mailLoop.deliveredIds[jid]) {
+        const jskin = getSkinById(joker.skeleton, joker.skin, pack);
+        if (jsk && jskin) {
+          newLetters.push(composeLetter({
+            skeleton: jsk,
+            skin: jskin,
+            seSheet: seSheet,
+            opts: { id: jid, when: 'M' + month + ' · joker' }
+          }));
+          jokerIncluded = true;
+          relevantCount += 1;
+        }
+      }
+    }
+
+    const skeletonIds = [];
+    newLetters.forEach((L) => {
+      if (skeletonIds.indexOf(L.skeletonId) === -1) skeletonIds.push(L.skeletonId);
+    });
+
+    return {
+      letters: newLetters,
+      relevantCount: relevantCount,
+      skeletonIds: skeletonIds,
+      jokerIncluded: jokerIncluded
+    };
+  }
+
+  async function monthHasRelevantEvent(month) {
+    const plan = await planMonthDelivery(month);
+    return plan.relevantCount > 0 || plan.jokerIncluded || plan.letters.some((L) => L && L.relevant);
+  }
+
+  /**
+   * Play = next interrupt: next landing with eligible undelivered relevant mail
+   * given current phase+tags, OR a deadline atMonth in range. Phase never auto-increments.
+   */
+  async function findNextMailEventMonth(fromMonth) {
+    const pack = await loadEventPack();
+    const schedule = pack.mvp_schedule;
+    if (!schedule) {
+      return { month: fromMonth, jumped: 0, hit: false, reason: 'no_schedule' };
+    }
+    const scheduleMax = scheduleMaxMonth(schedule);
+    let maxJump = (schedule.caps && schedule.caps.max_jump_months) || 6;
+    const override = (typeof playStep === 'function') ? playStep() : 0;
+    if (override > 0) maxJump = override;
+
+    const scanEnd = Math.min(fromMonth + maxJump, scheduleMax);
+    let bestLanding = null;
+    for (let m = fromMonth + 1; m <= scanEnd; m++) {
+      const plan = await planMonthDelivery(m);
+      if (plan.relevantCount > 0) {
+        bestLanding = { month: m, jumped: m - fromMonth, hit: true, reason: 'landing' };
+        break;
+      }
+    }
+
+    // Deadline interrupt: earliest unfired deadline with atMonth in (fromMonth, fromMonth+maxJump]
+    let bestDeadline = null;
+    const fired = mailLoop.firedDeadlines || {};
+    Object.keys(mailLoop.deadlines || {}).forEach((k) => {
+      if (fired[k]) return;
+      const d = mailLoop.deadlines[k];
+      if (!d || d.atMonth == null) return;
+      if (d.atMonth > fromMonth && d.atMonth <= fromMonth + maxJump) {
+        if (!bestDeadline || d.atMonth < bestDeadline.month) {
+          bestDeadline = {
+            month: d.atMonth,
+            jumped: d.atMonth - fromMonth,
+            hit: true,
+            reason: 'deadline',
+            deadlineId: k,
+            deadlineLabel: d.label
+          };
+        }
+      }
+    });
+
+    // Prefer whichever comes first; landing wins ties (mail to decide)
+    if (bestLanding && bestDeadline) {
+      if (bestDeadline.month < bestLanding.month) return bestDeadline;
+      return bestLanding;
+    }
+    if (bestLanding) return bestLanding;
+    if (bestDeadline) return bestDeadline;
+
+    const land = Math.min(fromMonth + maxJump, scheduleMax);
+    return { month: land, jumped: land - fromMonth, hit: false, reason: 'cap' };
+  }
+
+  async function deliverMonthCandidates(month, opts) {
+    opts = opts || {};
+    const plan = await planMonthDelivery(month);
+    const newLetters = plan.letters || [];
+    const monthKey = String(month);
+
+    const deliveredSkels = mailLoop.deliveredMonths[monthKey] || [];
+    newLetters.forEach((L) => {
+      mailLoop.deliveredIds[L.id] = true;
+      if (deliveredSkels.indexOf(L.skeletonId) === -1) deliveredSkels.push(L.skeletonId);
+    });
+    mailLoop.deliveredMonths[monthKey] = deliveredSkels;
+    if (plan.jokerIncluded) {
+      mailLoop.lastJokerMonth = month;
+    }
+
+    // Mark deadlines due at this clock month as fired when we land (soft)
+    Object.keys(mailLoop.deadlines || {}).forEach((k) => {
+      const d = mailLoop.deadlines[k];
+      if (d && d.atMonth === month) {
+        mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+        // do not auto-fire on land — only when effect clears or explicit; keep for HUD until cleared
+      }
+    });
+
+    if (newLetters.length) {
+      mailState.items = newLetters.concat(mailState.items);
+      renderInboxBadge();
+      if (!opts.silentToast) {
+        showToast('Correio · ' + newLetters.length + ' carta(s) · M' + month + ' · ' + phaseLabelPt(mailLoop.projectPhase));
+      }
+    }
+    scheduleSave('mail-deliver-M' + month);
+    try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+    return newLetters.length;
+  }
+
+  async function startMailLoop(seId) {
+    seId = seId || 'ourique';
+    const hasM0 = Object.keys(mailLoop.deliveredIds || {}).some((id) => {
+      const sk = id.split(':')[0];
+      return sk === 'mail-consultor-m0' || sk === 'mail-investidores-car-01' || sk === 'mail-dica-01';
+    });
+    if (mailLoop.active && mailLoop.seId === seId && mailLoop.month >= 0 && hasM0) {
+      return 0;
+    }
+    const fresh = !(mailLoop.active && mailLoop.seId === seId);
+    mailLoop.active = true;
+    mailLoop.seId = seId;
+    if (fresh || mailLoop.month < 0) {
+      mailLoop.month = 0;
+      mailLoop.projectPhase = 'trc_won';
+      mailLoop.deadlines = seedDefaultDeadlines();
+      mailLoop.firedDeadlines = {};
+      mailLoop.tags = {};
+      mailLoop.deliveredIds = {};
+      mailLoop.deliveredMonths = {};
+      mailLoop.lastJokerMonth = -99;
+    } else {
+      if (!mailLoop.projectPhase) mailLoop.projectPhase = 'trc_won';
+      if (!mailLoop.deadlines || !Object.keys(mailLoop.deadlines).length) {
+        mailLoop.deadlines = seedDefaultDeadlines();
+      }
+      mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+    }
+    const n = await deliverMonthCandidates(0);
+    try { updateHeaderMetrics(false); } catch (_) {}
+    try { syncPeriodChrome(); } catch (_) {}
+    try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+    scheduleSave('mail-loop-start');
+    return n;
+  }
+
+  async function seedMvpDemo() {
+    forcePostWinOuriqueHome();
+    mailLoop.active = false;
+    mailLoop.seId = null;
+    mailLoop.month = -1;
+    mailLoop.projectPhase = 'trc_won';
+    mailLoop.deadlines = {};
+    mailLoop.firedDeadlines = {};
+    mailLoop.tags = {};
+    mailLoop.deliveredIds = {};
+    mailLoop.deliveredMonths = {};
+    mailLoop.lastJokerMonth = -99;
+    mailState.items = [];
+    await startMailLoop('ourique');
+    renderInboxBadge();
+    try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+    return mailState;
+  }
 
   function unreadMailCount() {
     return mailState.items.filter((m) => !m.read).length;
@@ -6788,9 +8287,18 @@
         mailState.view = 'list';
       } else {
         const typeLabel = MAIL_TYPE_LABEL[letter.type] || letter.type;
-        const ctaHtml = letter.cta
-          ? '<button type="button" class="mail-cta-primary" data-mail-cta="' + letter.id + '">' + escapeHtml(letter.cta) + '</button>'
-          : '';
+        const choices = Array.isArray(letter.choices) ? letter.choices : [];
+        let actionsHtml = '';
+        if (choices.length) {
+          actionsHtml = choices.map((c, i) => {
+            const cls = i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary';
+            return '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(c.id) + '" data-mail-letter="' + escapeHtml(letter.id) + '">' + escapeHtml(c.label) + '</button>';
+          }).join('');
+        } else if (letter.cta) {
+          actionsHtml =
+            '<button type="button" class="mail-cta-primary" data-mail-cta="' + escapeHtml(letter.id) + '">' + escapeHtml(letter.cta) + '</button>' +
+            '<button type="button" class="mail-cta-secondary" data-mail-ignore="1">Ignorar por agora</button>';
+        }
         body.innerHTML =
           '<div class="mail-detail">' +
             '<div class="mail-detail-meta">' +
@@ -6800,10 +8308,7 @@
             '<div class="mail-detail-subject">' + escapeHtml(letter.subject) + '</div>' +
             '<div class="mail-detail-from">De <strong>' + escapeHtml(letter.sender) + '</strong></div>' +
             '<div class="mail-detail-body">' + escapeHtml(letter.body) + '</div>' +
-            '<div class="mail-detail-actions">' +
-              ctaHtml +
-              '<button type="button" class="mail-cta-secondary" data-mail-ignore="1">Ignorar por agora</button>' +
-            '</div>' +
+            (actionsHtml ? '<div class="mail-detail-actions">' + actionsHtml + '</div>' : '') +
           '</div>';
         return;
       }
@@ -6958,10 +8463,20 @@
     if (main && main.scrollTo) main.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function seedInboxDemo(opts) {
+  async function seedInboxDemo(opts) {
     opts = opts || {};
     forcePostWinOuriqueHome();
-    mailState.items = buildDemoLetters();
+    let letters = null;
+    try {
+      await loadEventPack();
+      letters = buildLettersFromPack('ourique', {
+        includeJoker: !!opts.includeJoker
+      });
+    } catch (err) {
+      console.warn('[WattInbox] event pack failed — fallback buildDemoLetters', err);
+      letters = buildDemoLetters();
+    }
+    mailState.items = letters || [];
     if (opts.allRead) {
       mailState.items.forEach((m) => { m.read = true; });
     }
@@ -7122,6 +8637,23 @@
           renderInboxBody();
           return;
         }
+        const choiceBtn = e.target.closest('[data-mail-choice]');
+        if (choiceBtn) {
+          const choiceId = choiceBtn.getAttribute('data-mail-choice');
+          const letterId = choiceBtn.getAttribute('data-mail-letter') || mailState.activeId;
+          const letter = mailState.items.find((m) => m.id === letterId);
+          const choice = letter && (letter.choices || []).find((c) => c.id === choiceId);
+          const effectList = (choice && choice.effects) ? choice.effects.slice() : [];
+          const effects = effectList.length ? effectList.join(', ') : '';
+          if (typeof applyMailEffects === 'function') applyMailEffects(effectList);
+          if (letterId) markLetterRead(letterId);
+          scheduleSave('mail-choice');
+          showToast('Escolha · ' + choiceId + (effects ? ' · ' + effects : ''));
+          renderInboxBody();
+          try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+          try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+          return;
+        }
         if (e.target.closest('[data-mail-ignore]')) {
           closeInbox();
           showToast('Ignorado por agora · carta fica no correio');
@@ -7147,11 +8679,23 @@
 
     const params = new URLSearchParams(location.search);
     const inboxParam = params.get('inbox');
-    if (inboxParam === '1') {
-      seedInboxDemo();
-      setTimeout(() => openInbox(), 350);
+    const mvpParam = params.get('mvp');
+    if (mvpParam === '1') {
+      seedMvpDemo().then(function () {
+        setTimeout(function () { openInbox(); }, 350);
+      }).catch(function (err) {
+        console.warn('[WattInbox] mvp seed failed', err);
+      });
+    } else if (inboxParam === '1') {
+      seedInboxDemo().then(function () {
+        setTimeout(function () { openInbox(); }, 350);
+      }).catch(function (err) {
+        console.warn('[WattInbox] seed failed', err);
+      });
     } else if (inboxParam === '0') {
-      seedInboxDemo({ allRead: true });
+      seedInboxDemo({ allRead: true }).catch(function (err) {
+        console.warn('[WattInbox] seed failed', err);
+      });
     }
 
     window.WattInbox = {
@@ -7160,10 +8704,26 @@
       close: closeInbox,
       back: inboxHeaderBack,
       seed: seedInboxDemo,
+      seedMvp: seedMvpDemo,
+      loadPack: loadEventPack,
+      buildFromPack: buildLettersFromPack,
       openLetter: openLetter,
       markRead: markLetterRead,
       renderBadge: renderInboxBadge,
-      state: mailState
+      startLoop: startMailLoop,
+      deliverMonth: deliverMonthCandidates,
+      planMonth: planMonthDelivery,
+      findNextMail: findNextMailEventMonth,
+      monthHasRelevant: monthHasRelevantEvent,
+      applyEffects: applyMailEffects,
+      raisePhase: raiseProjectPhase,
+      phaseBump: PHASE_BUMP,
+      phases: PROJECT_PHASES,
+      nearestDeadline: nearestDeadline,
+      playStep: playStep,
+      playPacing: playPacing,
+      state: mailState,
+      loop: mailLoop
     };
   }
 
@@ -7179,6 +8739,7 @@
   function hasSaveOverrideQuery() {
     const p = new URLSearchParams(location.search);
     if (p.get('inbox') === '1' || p.get('inbox') === '0') return true;
+    if (p.get('mvp') === '1') return true;
     if (p.get('arrive') === '1') return true;
     if (p.get('auction') === '1' || p.get('draft') === 'auction') return true;
     if (p.get('footer') === '1' || p.get('footer') === '0') return true;
@@ -7273,12 +8834,35 @@
     }
     let onboardingDone = false;
     try { onboardingDone = localStorage.getItem(ONBOARDING_KEY) === '1'; } catch (_) {}
+    let mailLoopCopy = null;
+    try {
+      mailLoopCopy = JSON.parse(JSON.stringify(mailLoop));
+    } catch (_) {
+      mailLoopCopy = {
+        active: false, seId: null, month: -1, projectPhase: 'trc_won',
+        deadlines: {}, firedDeadlines: {},
+        tags: {}, deliveredIds: {}, deliveredMonths: {}, lastJokerMonth: -99
+      };
+    }
+    let mandateCopy = null;
+    try {
+      mandateCopy = {
+        tier: (typeof mandateState !== 'undefined' && mandateState.tier) || 'boutique',
+        acknowledged: !!(typeof mandateState !== 'undefined' && mandateState.acknowledged),
+        letterRead: !!(typeof mandateState !== 'undefined' && mandateState.letterRead),
+        skip: !!(typeof mandateState !== 'undefined' && mandateState.skip)
+      };
+    } catch (_) {
+      mandateCopy = { tier: 'boutique', acknowledged: false, letterRead: false, skip: false };
+    }
     return {
       v: 1,
       savedAt: new Date().toISOString(),
       state: stateCopy,
       auctionState: auctionCopy,
       mailState: mailCopy,
+      mailLoop: mailLoopCopy,
+      mandateState: mandateCopy,
       nodes: JSON.parse(JSON.stringify(nodes)),
       activities: JSON.parse(JSON.stringify(activities)),
       actions: actionsCopy,
@@ -7379,6 +8963,34 @@
       mailState.activeId = null;
       mailState.open = false;
     }
+    if (blob.mandateState && typeof mandateState !== 'undefined') {
+      const ms = blob.mandateState;
+      if (ms.tier && MANDATE_TIERS[ms.tier]) mandateState.tier = ms.tier;
+      mandateState.acknowledged = !!ms.acknowledged;
+      mandateState.letterRead = !!ms.letterRead;
+      mandateState.skip = !!ms.skip;
+      // Query can still override tier / skip after hydrate via resolveMandateQuery in initMandateUi
+    }
+    if (blob.mailLoop && typeof mailLoop !== 'undefined') {
+      const ml = blob.mailLoop;
+      mailLoop.active = !!ml.active;
+      mailLoop.seId = ml.seId || null;
+      mailLoop.month = ml.month != null ? ml.month : -1;
+      mailLoop.projectPhase = ml.projectPhase || 'trc_won';
+      mailLoop.deadlines = (ml.deadlines && typeof ml.deadlines === 'object') ? ml.deadlines : {};
+      mailLoop.firedDeadlines = (ml.firedDeadlines && typeof ml.firedDeadlines === 'object') ? ml.firedDeadlines : {};
+      mailLoop.tags = (ml.tags && typeof ml.tags === 'object') ? ml.tags : {};
+      mailLoop.deliveredIds = (ml.deliveredIds && typeof ml.deliveredIds === 'object') ? ml.deliveredIds : {};
+      mailLoop.deliveredMonths = (ml.deliveredMonths && typeof ml.deliveredMonths === 'object') ? ml.deliveredMonths : {};
+      mailLoop.lastJokerMonth = ml.lastJokerMonth != null ? ml.lastJokerMonth : -99;
+      if (mailLoop.active && (!mailLoop.deadlines || !Object.keys(mailLoop.deadlines).length)) {
+        mailLoop.deadlines = (typeof seedDefaultDeadlines === 'function') ? seedDefaultDeadlines() : {};
+      }
+      // Do not re-fire months on hydrate
+    } else if (state.auctionWon && typeof mailLoop !== 'undefined') {
+      // Legacy save without mailLoop: leave inactive; Play won't advance mail until re-win / ?mvp=1
+      mailLoop.active = false;
+    }
     if (blob.flags && blob.flags.onboardingDone) {
       try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
     }
@@ -7400,7 +9012,7 @@
   }
 
   function syncPeriodChrome() {
-    const label = state.year + ' · Q' + state.quarter;
+    const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · Q' + state.quarter);
     const pl = document.getElementById('periodLabel');
     if (pl) pl.textContent = label;
     const fmp = document.getElementById('footerMockPeriod');
@@ -7409,6 +9021,7 @@
 
   function applyHydratedUi() {
     try { updateHeaderMetrics(false); } catch (_) {}
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
     syncPeriodChrome();
     try { renderNodes(); } catch (_) {}
     try { renderDock(); } catch (_) {}
@@ -7603,6 +9216,7 @@
     initTabs();
     initActivity();
     initSettingsUi();
+    try { if (typeof initMandateUi === 'function') initMandateUi(); } catch (_) {}
     initCoach();
     initAuctionDraft();
     initInbox();
@@ -7618,6 +9232,15 @@
     document.getElementById('btnRestoreAll').addEventListener('click', restoreAllNodes);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const briefing = document.getElementById('mandateBriefing');
+        const letter = document.getElementById('mandateLetter');
+        if (briefing && briefing.classList.contains('open')) {
+          // keep mandatory — ignore Escape on briefing
+          return;
+        }
+        if (letter && letter.classList.contains('open')) {
+          return;
+        }
         if (coachActive) return;
         if (mailState.open) return; // inbox handler (capture) owns Escape
         if (auctionState.open) { closeAuctionRoom(); return; }
