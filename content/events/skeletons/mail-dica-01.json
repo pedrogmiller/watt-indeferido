@@ -1,0 +1,25 @@
+{
+  "id": "mail-dica-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 0,
+    "immediate": true,
+    "when_phase": [
+      "trc_won"
+    ]
+  },
+  "priority": "low",
+  "from_type": "SISTEMA",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Ok",
+      "effects": [
+        "dica_ack"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €.",
+  "notes_for_ui": "priority low no UI se possível; M0 dica dossier"
+}

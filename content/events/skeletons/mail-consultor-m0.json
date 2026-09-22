@@ -1,0 +1,26 @@
+{
+  "id": "mail-consultor-m0",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 0,
+    "immediate": true,
+    "when_phase": [
+      "trc_won"
+    ]
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "choices": [
+    {
+      "id": "continue",
+      "label": "Continuar",
+      "effects": [
+        "hint_value_add",
+        "dossier_unlock"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €. Só flags de UI/estado.",
+  "notes_for_ui": "M0 sem Play; uma de três cartas ao ganhar TRC"
+}

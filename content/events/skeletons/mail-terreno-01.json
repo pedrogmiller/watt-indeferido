@@ -1,0 +1,41 @@
+{
+  "id": "mail-terreno-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 1,
+    "when_phase": [
+      "trc_won",
+      "land"
+    ]
+  },
+  "priority": "high",
+  "from_type": "PROPRIETARIO",
+  "choices": [
+    {
+      "id": "open_dd",
+      "label": "Abrir due diligence",
+      "effects": [
+        "land_option_open",
+        "cash_at_risk_+1"
+      ]
+    },
+    {
+      "id": "negotiate",
+      "label": "Negociar condições",
+      "effects": [
+        "land_talk_+1",
+        "delay_land_+1"
+      ]
+    },
+    {
+      "id": "pass",
+      "label": "Deixar passar",
+      "effects": [
+        "land_miss_+1"
+      ]
+    }
+  ],
+  "notes_for_economy": "cash_at_risk_+1 = sinal/opção — calibrar MEUR",
+  "notes_for_ui": "Pode disparar N vezes (N parcelas) com skins diferentes"
+}

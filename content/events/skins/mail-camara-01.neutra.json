@@ -1,0 +1,9 @@
+{
+  "skeleton_id": "mail-camara-01",
+  "skin_id": "neutra",
+  "when": { "se_tags": { "camara": "neutra" } },
+  "from_name": "Serviços de Urbanismo — {{camara_nome}}",
+  "subject": "Pedido de esclarecimentos",
+  "body": "Pedimos memória descritiva e planta de implantação. Prazo administrativo curto; tom de serviços, não de campanha.",
+  "params": { "tom": "admin" }
+}

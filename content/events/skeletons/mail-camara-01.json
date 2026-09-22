@@ -1,0 +1,33 @@
+{
+  "id": "mail-camara-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 2,
+    "when_phase": [
+      "land",
+      "pip"
+    ]
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "choices": [
+    {
+      "id": "meet",
+      "label": "Agendar reunião",
+      "effects": [
+        "risk_camara_-1"
+      ]
+    },
+    {
+      "id": "ignore",
+      "label": "Ignorar por agora",
+      "effects": [
+        "risk_camara_+1",
+        "delay_pip_+1"
+      ]
+    }
+  ],
+  "notes_for_economy": "delay_pip = meses; risk_camara = qualitativo até Gate 4",
+  "notes_for_ui": "Tom da skin conforme se-sheet.camara"
+}

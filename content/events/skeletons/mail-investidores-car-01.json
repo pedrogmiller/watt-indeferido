@@ -1,0 +1,33 @@
+{
+  "id": "mail-investidores-car-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 0,
+    "immediate": true,
+    "when_phase": [
+      "trc_won"
+    ]
+  },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "choices": [
+    {
+      "id": "send_brief",
+      "label": "Enviar comunicado Cash at Risk",
+      "effects": [
+        "car_brief_sent",
+        "cash_at_risk_request"
+      ]
+    },
+    {
+      "id": "delay",
+      "label": "Pedir mais tempo",
+      "effects": [
+        "investor_patience_-1"
+      ]
+    }
+  ],
+  "notes_for_economy": "cash_at_risk_request → Economy devolve MEUR do comunicado",
+  "notes_for_ui": "M0; CTA pesado"
+}

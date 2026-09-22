@@ -1,0 +1,24 @@
+{
+  "id": "mail-fyi-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 1,
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip"
+    ]
+  },
+  "priority": "low",
+  "from_type": "SISTEMA",
+  "choices": [
+    {
+      "id": "dismiss",
+      "label": "Arquivar",
+      "effects": []
+    }
+  ],
+  "notes_for_economy": "Sem €.",
+  "notes_for_ui": "FYI genérico; skins = vento/obra/spot"
+}
