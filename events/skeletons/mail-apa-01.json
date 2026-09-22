@@ -1,0 +1,10 @@
+{
+  "id": "mail-apa-01",
+  "phase": "post_win",
+  "trigger": { "after": "trc_awarded", "month_offset": 5 },
+  "priority": "high",
+  "from_type": "APA",
+  "choices": [{ "id": "prepare", "label": "Preparar expediente AIA", "effects": ["apa_track_start", "delay_env_+0"] }, { "id": "wait", "label": "Esperar", "effects": ["delay_env_+1"] }],
+  "notes_for_economy": "Sem inventar prazos €",
+  "notes_for_ui": "Ourique apa_first; verificar acrónimo AIA/DIA na skin"
+}

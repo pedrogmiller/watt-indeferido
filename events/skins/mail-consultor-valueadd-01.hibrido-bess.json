@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-consultor-valueadd-01",
+  "skin_id": "hibrido-bess",
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "O NPV não aguenta solar puro",
+  "body": "Hibridiza e sobreequipa (eólico + BESS) enquanto o ponto ainda é teu. Reequipamento merchant/PPA discutimos mais à frente — agora é capacidade no mesmo TRC.",
+  "params": {}
+}

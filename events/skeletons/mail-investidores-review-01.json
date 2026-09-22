@@ -1,0 +1,10 @@
+{
+  "id": "mail-investidores-review-01",
+  "phase": "post_win",
+  "trigger": { "after": "trc_awarded", "month_offset": 4 },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "choices": [{ "id": "send_plan", "label": "Enviar plano de progresso", "effects": ["investor_plan_sent"] }, { "id": "ask_more_car", "label": "Pedir mais Cash at Risk", "effects": ["cash_at_risk_request"] }, { "id": "stall", "label": "Adiar resposta", "effects": ["investor_patience_-2"] }],
+  "notes_for_economy": "PEDIR_ECONOMY para CAR",
+  "notes_for_ui": "CTA pesado M4"
+}

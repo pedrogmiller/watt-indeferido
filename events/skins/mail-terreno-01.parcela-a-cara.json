@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-terreno-01",
+  "skin_id": "parcela-a-cara",
+  "from_name": "António Lopes",
+  "subject": "Terreno junto à SE — janela de 30 dias",
+  "body": "Tenho hectares colados à subestação. Aceito opção, mas o sinal é alto e decido noutro comprador se não fecharmos em 30 dias.",
+  "params": { "sinal": "alto", "prazo_dias": 30, "servidao": "simples" }
+}

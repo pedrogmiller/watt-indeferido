@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skeletons": [
+    "skeletons/mail-camara-01.json",
+    "skeletons/mail-consultor-m0.json",
+    "skeletons/mail-investidores-car-01.json",
+    "skeletons/mail-joker-fa-bess-01.json",
+    "skeletons/mail-terreno-01.json"
+  ],
+  "skins": [
+    "skins/mail-camara-01.hostil.json",
+    "skins/mail-camara-01.neutra.json",
+    "skins/mail-consultor-m0.default.json",
+    "skins/mail-investidores-car-01.default.json",
+    "skins/mail-joker-fa-bess-01.default.json",
+    "skins/mail-terreno-01.parcela-a-cara.json",
+    "skins/mail-terreno-01.parcela-b-servidao.json"
+  ],
+  "se_sheets": [
+    "se-sheets/ourique.json",
+    "se-sheets/ferreira-do-alentejo.json"
+  ]
+}

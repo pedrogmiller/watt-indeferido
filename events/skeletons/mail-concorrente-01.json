@@ -1,0 +1,21 @@
+{
+  "id": "mail-concorrente-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 4
+  },
+  "priority": "normal",
+  "from_type": "CONCORRENTE",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Tomar nota",
+      "effects": [
+        "competitor_seen"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €",
+  "notes_for_ui": "Info; skin terreno vs leilão"
+}

@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-dica-01",
+  "skin_id": "m0-dossier",
+  "from_name": "Sistema",
+  "subject": "Próximo passo",
+  "body": "Abre o dossier do projecto e começa pelos terrenos — sem parcela, o TRC não anda.",
+  "params": {}
+}

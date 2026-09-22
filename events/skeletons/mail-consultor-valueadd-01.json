@@ -1,0 +1,10 @@
+{
+  "id": "mail-consultor-valueadd-01",
+  "phase": "post_win",
+  "trigger": { "after": "trc_awarded", "month_offset": 3 },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "choices": [{ "id": "start_hybrid", "label": "Priorizar híbrido/BESS", "effects": ["value_add_commit", "bess_dev_flag"] }, { "id": "later", "label": "Ainda não", "effects": ["value_add_delay_+1"] }],
+  "notes_for_economy": "Sem € directo; Economy reage a bess_dev_flag",
+  "notes_for_ui": "Sem reequipamento nesta carta"
+}

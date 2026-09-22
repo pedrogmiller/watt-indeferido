@@ -1,0 +1,10 @@
+{
+  "id": "mail-media-01",
+  "phase": "post_win",
+  "trigger": { "after": "trc_awarded", "month_offset": 3 },
+  "priority": "high",
+  "from_type": "MEDIA",
+  "choices": [{ "id": "respond", "label": "Responder à imprensa", "effects": ["risk_media_-1"] }, { "id": "silence", "label": "Não comentar", "effects": ["risk_media_+1"] }],
+  "notes_for_economy": "Qualitativo",
+  "notes_for_ui": "Alternar com comunidade"
+}

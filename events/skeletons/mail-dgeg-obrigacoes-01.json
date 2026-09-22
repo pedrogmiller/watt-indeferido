@@ -1,0 +1,21 @@
+{
+  "id": "mail-dgeg-obrigacoes-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 6
+  },
+  "priority": "normal",
+  "from_type": "DGEG",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Percebi",
+      "effects": [
+        "dgeg_obligations_seen"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €",
+  "notes_for_ui": "Info caducidade administrativa"
+}

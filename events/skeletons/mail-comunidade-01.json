@@ -1,0 +1,10 @@
+{
+  "id": "mail-comunidade-01",
+  "phase": "post_win",
+  "trigger": { "after": "trc_awarded", "month_offset": 3 },
+  "priority": "high",
+  "from_type": "COMUNIDADE",
+  "choices": [{ "id": "meet", "label": "Reunir com a associação", "effects": ["risk_community_-1"] }, { "id": "ignore", "label": "Ignorar", "effects": ["risk_community_+1"] }],
+  "notes_for_economy": "Qualitativo até Gate 4",
+  "notes_for_ui": "Alternar com mail-media-01 (só um)"
+}

@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-consultor-reequip-01",
+  "skin_id": "merchant-ppa",
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Reequipamento — merchant ou PPA",
+  "body": "Mais tarde no ciclo: reequipar e vender a preço de mercado ou fechar PPA. Não é o foco do dia 1 — mas o dossier já pode abrir a linha de estudo.",
+  "params": {}
+}

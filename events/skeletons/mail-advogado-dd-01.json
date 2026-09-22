@@ -1,0 +1,10 @@
+{
+  "id": "mail-advogado-dd-01",
+  "phase": "post_win",
+  "trigger": { "after": "land_option_open_or_talk", "month_offset": 1 },
+  "priority": "high",
+  "from_type": "ADVOGADO_DD",
+  "choices": [{ "id": "start_dd", "label": "Arrancar DD", "effects": ["dd_started", "cash_at_risk_+1"] }, { "id": "later", "label": "Mais tarde", "effects": ["dd_delay_+1"] }],
+  "notes_for_economy": "cash_at_risk DD legal — PEDIR_ECONOMY",
+  "notes_for_ui": "Trigger: após open_dd ou negotiate em mail-terreno-01"
+}

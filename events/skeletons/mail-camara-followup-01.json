@@ -1,0 +1,10 @@
+{
+  "id": "mail-camara-followup-01",
+  "phase": "post_win",
+  "trigger": { "after": "risk_camara_high", "month_offset": 3 },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "choices": [{ "id": "meet_now", "label": "Desbloquear agora", "effects": ["risk_camara_-1", "cash_at_risk_+1"] }, { "id": "ignore_again", "label": "Continuar a ignorar", "effects": ["risk_camara_+2", "delay_pip_+2"] }],
+  "notes_for_economy": "cash_at_risk se pagar taxa/acelerar — PEDIR_ECONOMY",
+  "notes_for_ui": "Só se ignorou mail-camara-01"
+}
