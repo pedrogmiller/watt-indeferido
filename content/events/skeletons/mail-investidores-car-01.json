@@ -13,11 +13,27 @@
   "from_type": "INVESTIDORES",
   "choices": [
     {
-      "id": "send_brief",
-      "label": "Enviar comunicado Cash at Risk",
+      "id": "ask_car_s",
+      "label": "Pedir Cash at Risk · banda S",
       "effects": [
-        "car_brief_sent",
-        "cash_at_risk_request"
+        "car_band_s",
+        "car_request_sent"
+      ]
+    },
+    {
+      "id": "ask_car_m",
+      "label": "Pedir Cash at Risk · banda M",
+      "effects": [
+        "car_band_m",
+        "car_request_sent"
+      ]
+    },
+    {
+      "id": "ask_car_l",
+      "label": "Pedir Cash at Risk · banda L",
+      "effects": [
+        "car_band_l",
+        "car_request_sent"
       ]
     },
     {
@@ -28,6 +44,6 @@
       ]
     }
   ],
-  "notes_for_economy": "cash_at_risk_request → Economy devolve MEUR do comunicado",
-  "notes_for_ui": "M0; CTA pesado"
+  "notes_for_economy": "Outcomes aceitar/cortar/plano por banda; M€ = PEDIR_ECONOMY / car-bands-boutique.md. Boutique: S cabe Ourique; L pode ser cortado.",
+  "notes_for_ui": "CTA: bandas S/M/L → HUD car_band + filtro lotes; toast do outcome. Sem metáforas de clube. Sem M€ até Gate €."
 }

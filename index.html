@@ -4250,7 +4250,7 @@
         <div class="auction-left-title">Mesa de leilão</div>
         <div class="auction-left-sub" id="auctionLeftSub">Concurso ao vivo · rivais limpam se hesitares</div>
         <div class="mandate-auction-strip" id="auctionMandateStrip" aria-label="Mandato">
-          <span class="mandate-chip" id="auctionMandateChip">Infra · Real Madrid</span>
+          <span class="mandate-chip" id="auctionMandateChip">Boutique</span>
           <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">CAR · banda L</span>
           <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Equity · banda L</span>
         </div>
@@ -4388,8 +4388,8 @@
 <div class="mandate-overlay" id="mandateBriefing" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mandateBriefingTitle">
   <div class="mandate-card">
     <div class="mandate-kicker">Briefing · mandato</div>
-    <h2 id="mandateBriefingTitle">Boutique · Belenenses</h2>
-    <p class="mandate-club" id="mandateBriefingClub">Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.</p>
+    <h2 id="mandateBriefingTitle">Boutique</h2>
+    <p class="mandate-club" id="mandateBriefingClub">Runway curto — um lote cabe no mandato; os outros ficam fora do runway.</p>
     <div class="mandate-auction-strip" style="margin:0 0 14px" aria-hidden="true">
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">CAR · banda S</span>
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Equity · banda S</span>
@@ -5914,12 +5914,12 @@
 
 
 
-  /* ── Gate 1 mandate mock (Belenenses vs Real Madrid) ── */
+  /* ── Gate 1 mandate mock (tiers boutique / mid / infra) ── */
   const BAND_RANK = { S: 1, M: 2, L: 3 };
   const MANDATE_TIERS = {
     boutique: {
-      id: 'boutique', label: 'Belenenses', tierLabel: 'Boutique',
-      clubLine: 'Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.',
+      id: 'boutique', label: 'Boutique', tierLabel: 'Boutique',
+      clubLine: 'Runway curto — um lote cabe no mandato; os outros ficam fora do runway.',
       car_band_max: 'S',
       equity_band_max: 'S',
       max_trcs: 1,
@@ -5940,8 +5940,8 @@
       equity_hint: 'equity para 1–2 TRCs mid'
     },
     infra: {
-      id: 'infra', label: 'Real Madrid', tierLabel: 'Infra',
-      clubLine: 'Mandato alto (infra) — purse folgada tipo Real Madrid; o arco Ourique é jogável.',
+      id: 'infra', label: 'Infra', tierLabel: 'Infra',
+      clubLine: 'Mandato alto (infra) — purse folgada; o arco Ourique é jogável.',
       car_band_max: 'L',
       equity_band_max: 'L',
       max_trcs: 4,
@@ -5965,7 +5965,7 @@
     try { p = new URLSearchParams(location.search); } catch (_) { p = new URLSearchParams(); }
     const raw = (p.get('mandate') || '').toLowerCase();
     const forceSkip = raw === 'skip' || p.get('skipMandate') === '1';
-    // Hybrid MVP product path = boutique (Belenenses). mid|infra are QA / progression.
+    // Hybrid MVP product path = boutique. mid|infra are QA / progression.
     if (raw === 'mid' || raw === 'boutique' || raw === 'infra') {
       mandateState.tier = raw;
     } else if (raw === '1') {
@@ -6021,12 +6021,12 @@
     const chip = document.getElementById('auctionMandateChip');
     const aCar = document.getElementById('auctionMandateCar');
     const aEq = document.getElementById('auctionMandateEquity');
-    if (chip) chip.textContent = m.tierLabel + ' · ' + m.label;
+    if (chip) chip.textContent = (m.label === m.tierLabel) ? m.tierLabel : (m.tierLabel + ' · ' + m.label);
     if (aCar) aCar.textContent = m.car_purse_label;
     if (aEq) aEq.textContent = m.equity_headroom_label;
     const rating = document.querySelector('.rating-badge');
     if (rating && !rating.dataset.mandateLocked) {
-      rating.textContent = m.tierLabel + ' · ' + m.label;
+      rating.textContent = (m.label === m.tierLabel) ? m.tierLabel : (m.tierLabel + ' · ' + m.label);
     }
   }
 
@@ -6034,11 +6034,11 @@
     const m = currentMandate();
     const title = document.getElementById('mandateBriefingTitle');
     const club = document.getElementById('mandateBriefingClub');
-    if (title) title.textContent = m.tierLabel + ' · ' + m.label;
-    // Hybrid MVP: one sentence — boutique (Belenenses). No difficulty selector.
+    if (title) title.textContent = (m.label === m.tierLabel) ? m.tierLabel : (m.tierLabel + ' · ' + m.label);
+    // Hybrid MVP: one sentence — boutique. No difficulty selector.
     if (club) {
       club.textContent = (m.id === 'boutique')
-        ? 'Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.'
+        ? 'Runway curto — um lote cabe no mandato; os outros ficam fora do runway.'
         : m.clubLine;
     }
     const car = document.getElementById('mandateBriefingCar');
@@ -6060,7 +6060,7 @@
     const body = document.getElementById('mandateLetterBody');
     if (!body) return;
     body.textContent =
-      'Antes de ires à mesa: mandato ' + m.tierLabel + ' (' + m.label + ').\n\n' +
+      'Antes de ires à mesa: mandato ' + m.tierLabel + '.\n\n' +
       '• Purse CAR: ' + m.car_purse_label + ' — ' + m.car_hint + '\n' +
       '• Headroom equity: ' + m.equity_headroom_label + ' — ' + m.equity_hint + '\n' +
       '• Máximo de TRCs neste mandato: ' + m.max_trcs + '\n\n' +
