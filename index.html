@@ -2111,6 +2111,9 @@
     z-index: 300;
     pointer-events: none;
     box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    max-width: min(520px, calc(100vw - 32px));
+    text-align: center;
+    line-height: 1.35;
   }
 
   .toast.show {
@@ -3718,6 +3721,30 @@
     color: var(--text-main);
     background: var(--bg-app);
   }
+  .mail-cta-band {
+    background: #f8fafc;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm);
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 650;
+    font-family: var(--font);
+    cursor: pointer;
+  }
+  .mail-cta-band:hover { border-color: #007AFF; color: #007AFF; }
+  .mail-cta-primary.is-chosen,
+  .mail-cta-band.is-chosen,
+  .mail-cta-secondary.is-chosen {
+    box-shadow: inset 0 0 0 2px #007AFF;
+  }
+  .mail-choice-note {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f172a;
+  }
 
 
 
@@ -3966,18 +3993,18 @@
       <span class="metric-label">NAV Estimado</span>
       <span class="metric-value num" id="valNav">€ 64,8M</span>
     </div>
-    <div class="rating-badge">Tier 2 · Mid IPP</div>
+    <div class="rating-badge">Boutique</div>
     <div class="bonding-pill">
       <div class="bonding-top">
         <span class="metric-label">Bonding Capacity</span>
         <span class="metric-value num" style="font-size:12px" id="valBonding">€ 6,2M livres</span>
         <div class="mandate-hud-pill" id="pillMandateCar" title="HIPÓTESE · mandato">
       <span class="metric-label">CAR <span class="mandate-hyp">· HIPÓTESE</span></span>
-      <span class="metric-value" id="valMandateCar">CAR · banda L</span>
+      <span class="metric-value" id="valMandateCar">CAR · banda S</span>
     </div>
     <div class="mandate-hud-pill" id="pillMandateEquity" title="HIPÓTESE · mandato">
       <span class="metric-label">Equity <span class="mandate-hyp">· HIPÓTESE</span></span>
-      <span class="metric-value" id="valMandateEquity">Equity · banda L</span>
+      <span class="metric-value" id="valMandateEquity">Equity · banda S</span>
     </div>
   </div>
       <div class="bonding-bar">
@@ -4250,9 +4277,9 @@
         <div class="auction-left-title">Mesa de leilão</div>
         <div class="auction-left-sub" id="auctionLeftSub">Concurso ao vivo · rivais limpam se hesitares</div>
         <div class="mandate-auction-strip" id="auctionMandateStrip" aria-label="Mandato">
-          <span class="mandate-chip" id="auctionMandateChip">Infra · Real Madrid</span>
-          <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">CAR · banda L</span>
-          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Equity · banda L</span>
+          <span class="mandate-chip" id="auctionMandateChip">Boutique</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">CAR · banda S</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Equity · banda S</span>
         </div>
         <div class="auction-clock-row" aria-live="polite">
           <div>
@@ -4388,8 +4415,8 @@
 <div class="mandate-overlay" id="mandateBriefing" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mandateBriefingTitle">
   <div class="mandate-card">
     <div class="mandate-kicker">Briefing · mandato</div>
-    <h2 id="mandateBriefingTitle">Boutique · Belenenses</h2>
-    <p class="mandate-club" id="mandateBriefingClub">Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.</p>
+    <h2 id="mandateBriefingTitle">Boutique</h2>
+    <p class="mandate-club" id="mandateBriefingClub">Runway curto — um lote cabe no mandato; os outros ficam fora do runway.</p>
     <div class="mandate-auction-strip" style="margin:0 0 14px" aria-hidden="true">
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">CAR · banda S</span>
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Equity · banda S</span>
@@ -5914,19 +5941,20 @@
 
 
 
-  /* ── Gate 1 mandate mock (Belenenses vs Real Madrid) ── */
+  /* ── Gate 1 mandate mock (boutique / mid / infra) ── */
   const BAND_RANK = { S: 1, M: 2, L: 3 };
+  const BAND_MAX_TRCS = { S: 1, M: 2, L: 4 };
   const MANDATE_TIERS = {
     boutique: {
-      id: 'boutique', label: 'Belenenses', tierLabel: 'Boutique',
-      clubLine: 'Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.',
+      id: 'boutique', label: 'Boutique', tierLabel: 'Boutique',
+      clubLine: 'Runway curto — um lote cabe no mandato; os outros ficam fora do runway.',
       car_band_max: 'S',
       equity_band_max: 'S',
       max_trcs: 1,
       car_purse_label: 'CAR · banda S',
       equity_headroom_label: 'Equity · banda S',
-      car_hint: '~runway FID curto',
-      equity_hint: 'gearing alto / little equity'
+      car_hint: 'runway curto',
+      equity_hint: 'gearing alto'
     },
     mid: {
       id: 'mid', label: 'Meia-tabela', tierLabel: 'Mid',
@@ -5936,24 +5964,25 @@
       max_trcs: 2,
       car_purse_label: 'CAR · banda M',
       equity_headroom_label: 'Equity · banda M',
-      car_hint: '~runway até FID típico',
-      equity_hint: 'equity para 1–2 TRCs mid'
+      car_hint: 'runway médio',
+      equity_hint: 'cabe 1–2 TRCs'
     },
     infra: {
-      id: 'infra', label: 'Real Madrid', tierLabel: 'Infra',
-      clubLine: 'Mandato alto (infra) — purse folgada tipo Real Madrid; o arco Ourique é jogável.',
+      id: 'infra', label: 'Infra', tierLabel: 'Infra',
+      clubLine: 'Mandato infra — purse larga; o arco Ourique é jogável.',
       car_band_max: 'L',
       equity_band_max: 'L',
       max_trcs: 4,
       car_purse_label: 'CAR · banda L',
       equity_headroom_label: 'Equity · banda L',
-      car_hint: 'runway longo / multi-FID',
-      equity_hint: 'equity para portfolio'
+      car_hint: 'runway longo',
+      equity_hint: 'cabe um portefólio'
     }
   };
 
   let mandateState = {
     tier: 'boutique',
+    carBand: null,
     acknowledged: false,
     letterRead: false,
     skip: false,
@@ -5965,11 +5994,13 @@
     try { p = new URLSearchParams(location.search); } catch (_) { p = new URLSearchParams(); }
     const raw = (p.get('mandate') || '').toLowerCase();
     const forceSkip = raw === 'skip' || p.get('skipMandate') === '1';
-    // Hybrid MVP product path = boutique (Belenenses). mid|infra are QA / progression.
+    // Hybrid MVP product path = boutique. mid|infra are QA / progression.
     if (raw === 'mid' || raw === 'boutique' || raw === 'infra') {
       mandateState.tier = raw;
+      mandateState.carBand = null;
     } else if (raw === '1') {
       mandateState.tier = 'boutique';
+      mandateState.carBand = null;
       mandateState.acknowledged = false;
       mandateState.letterRead = false;
     } else if (raw !== 'skip') {
@@ -5987,6 +6018,45 @@
     return MANDATE_TIERS[mandateState.tier] || MANDATE_TIERS.boutique;
   }
 
+  function mandateChipLabel(m) {
+    m = m || currentMandate();
+    if (!m) return 'Boutique';
+    if (m.id === 'mid') return 'Mid';
+    return m.tierLabel || 'Boutique';
+  }
+
+  /** Player CAR letter overrides the tier band. Null = use the tier. */
+  function effectiveCarBand() {
+    const chosen = mandateState && mandateState.carBand;
+    if (chosen && BAND_RANK[chosen]) return chosen;
+    return (currentMandate().car_band_max) || 'S';
+  }
+
+  /**
+   * Lots in this MVP carry matching CAR and equity bands.
+   * A confirmed CAR band is the runway ceiling for both, so choosing M/L
+   * actually opens those lots. No euro amounts — bands only.
+   */
+  function effectiveEquityBand() {
+    const chosen = mandateState && mandateState.carBand;
+    if (chosen && BAND_RANK[chosen]) return chosen;
+    return (currentMandate().equity_band_max) || 'S';
+  }
+
+  function effectiveMaxTrcs(m) {
+    const tierMax = (m || currentMandate()).max_trcs || 1;
+    const chosen = mandateState && mandateState.carBand;
+    if (chosen && BAND_MAX_TRCS[chosen]) return Math.max(tierMax, BAND_MAX_TRCS[chosen]);
+    return tierMax;
+  }
+
+  function carBandOutcomePhrase(band) {
+    if (band === 'S') return 'CAR · banda S — lotes acima de S ficam cinzentos';
+    if (band === 'M') return 'CAR · banda M — lotes até M abertos';
+    if (band === 'L') return 'CAR · banda L — lotes S, M e L abertos';
+    return 'CAR · banda ' + (band || 'S');
+  }
+
   function mandateSoftLockEnabled() {
     // Hybrid MVP: soft-lock whenever bands don't fit (lotFitsMandate).
     // boutique + mid grey higher lots; infra (L max) effectively unlocks all.
@@ -5999,14 +6069,16 @@
     if (!mandateSoftLockEnabled()) return { ok: true, reason: '' };
     const car = lot.car_band || 'S';
     const eq = lot.equity_capex_band || 'S';
-    if ((BAND_RANK[car] || 0) > (BAND_RANK[m.car_band_max] || 0)) {
+    const carMax = effectiveCarBand();
+    const eqMax = effectiveEquityBand();
+    if ((BAND_RANK[car] || 0) > (BAND_RANK[carMax] || 0)) {
       return { ok: false, reason: 'fora do runway' };
     }
-    if ((BAND_RANK[eq] || 0) > (BAND_RANK[m.equity_band_max] || 0)) {
+    if ((BAND_RANK[eq] || 0) > (BAND_RANK[eqMax] || 0)) {
       return { ok: false, reason: 'equity acima do mandato' };
     }
     const won = (typeof auctionState !== 'undefined' && auctionState.wonLots) ? auctionState.wonLots.length : 0;
-    if (won >= m.max_trcs) {
+    if (won >= effectiveMaxTrcs(m)) {
       return { ok: false, reason: 'máx. TRCs do mandato' };
     }
     return { ok: true, reason: '' };
@@ -6014,19 +6086,22 @@
 
   function renderMandateHud() {
     const m = currentMandate();
+    const carLabel = 'CAR · banda ' + effectiveCarBand();
+    const eqLabel = 'Equity · banda ' + effectiveEquityBand();
+    const chipLabel = mandateChipLabel(m);
     const car = document.getElementById('valMandateCar');
     const eq = document.getElementById('valMandateEquity');
-    if (car) car.textContent = m.car_purse_label;
-    if (eq) eq.textContent = m.equity_headroom_label;
+    if (car) car.textContent = carLabel;
+    if (eq) eq.textContent = eqLabel;
     const chip = document.getElementById('auctionMandateChip');
     const aCar = document.getElementById('auctionMandateCar');
     const aEq = document.getElementById('auctionMandateEquity');
-    if (chip) chip.textContent = m.tierLabel + ' · ' + m.label;
-    if (aCar) aCar.textContent = m.car_purse_label;
-    if (aEq) aEq.textContent = m.equity_headroom_label;
+    if (chip) chip.textContent = chipLabel;
+    if (aCar) aCar.textContent = carLabel;
+    if (aEq) aEq.textContent = eqLabel;
     const rating = document.querySelector('.rating-badge');
     if (rating && !rating.dataset.mandateLocked) {
-      rating.textContent = m.tierLabel + ' · ' + m.label;
+      rating.textContent = chipLabel;
     }
   }
 
@@ -6034,41 +6109,38 @@
     const m = currentMandate();
     const title = document.getElementById('mandateBriefingTitle');
     const club = document.getElementById('mandateBriefingClub');
-    if (title) title.textContent = m.tierLabel + ' · ' + m.label;
-    // Hybrid MVP: one sentence — boutique (Belenenses). No difficulty selector.
-    if (club) {
-      club.textContent = (m.id === 'boutique')
-        ? 'Runway curto (Belenenses) — um lote cabe no mandato; os outros ficam fora do runway.'
-        : m.clubLine;
-    }
+    if (title) title.textContent = mandateChipLabel(m);
+    if (club) club.textContent = m.clubLine;
     const car = document.getElementById('mandateBriefingCar');
     const eq = document.getElementById('mandateBriefingEquity');
     const carH = document.getElementById('mandateBriefingCarHint');
     const eqH = document.getElementById('mandateBriefingEquityHint');
     const trcs = document.getElementById('mandateBriefingTrcs');
     const bands = document.getElementById('mandateBriefingBands');
-    if (car) car.textContent = m.car_purse_label;
-    if (eq) eq.textContent = m.equity_headroom_label;
+    if (car) car.textContent = 'CAR · banda ' + effectiveCarBand();
+    if (eq) eq.textContent = 'Equity · banda ' + effectiveEquityBand();
     if (carH) carH.textContent = m.car_hint;
     if (eqH) eqH.textContent = m.equity_hint;
-    if (trcs) trcs.textContent = String(m.max_trcs);
-    if (bands) bands.textContent = 'máx. ' + m.max_trcs + ' TRCs';
+    const trcN = effectiveMaxTrcs(m);
+    if (trcs) trcs.textContent = String(trcN);
+    if (bands) bands.textContent = 'máx. ' + trcN + ' TRCs';
   }
 
   function fillMandateLetter() {
     const m = currentMandate();
     const body = document.getElementById('mandateLetterBody');
     if (!body) return;
+    const trcN = effectiveMaxTrcs(m);
     body.textContent =
-      'Antes de ires à mesa: mandato ' + m.tierLabel + ' (' + m.label + ').\n\n' +
-      '• Purse CAR: ' + m.car_purse_label + ' — ' + m.car_hint + '\n' +
-      '• Headroom equity: ' + m.equity_headroom_label + ' — ' + m.equity_hint + '\n' +
-      '• Máximo de TRCs neste mandato: ' + m.max_trcs + '\n\n' +
+      'Antes de ires à mesa: mandato ' + mandateChipLabel(m) + '.\n\n' +
+      '• Purse CAR: CAR · banda ' + effectiveCarBand() + ' — ' + m.car_hint + '\n' +
+      '• Headroom equity: Equity · banda ' + effectiveEquityBand() + ' — ' + m.equity_hint + '\n' +
+      '• Máximo de TRCs neste mandato: ' + trcN + '\n\n' +
       (m.id === 'boutique'
         ? 'Boutique · banda S · máx. 1 TRC — joga Ourique; não caçes os cinzentos ainda. Joga bem e o mandato alarga.\n\n'
         : m.id === 'mid'
-          ? 'Mid: S+M abertos; L ficam cinza («fora do runway» / «equity acima do mandato»).\n\n'
-          : 'Infra (QA): purse L — soft-lock activo mas bandas L desbloqueiam a onda.\n\n') +
+          ? 'Mid: S+M abertos; L ficam cinzentos («fora do runway» / «equity acima do mandato»).\n\n'
+          : 'Infra (QA): banda L — soft-lock activo, mas a banda L abre a onda.\n\n') +
       'HIPÓTESE qualitativa — sem finais em €. Depois da adjudicação, a carta M0 passa a revisão de runway — não a primeira revelação.';
   }
 
@@ -6161,15 +6233,20 @@
   }
 
   /** Progression stub: play well → raise purse/tier → unlock greys (market "levels"). */
-  function maybePromoteMandate(reason) {
+  function maybePromoteMandate(reason, opts) {
     const cur = (mandateState && mandateState.tier) || 'boutique';
     let next = null;
     if (cur === 'boutique') next = 'mid';
     else if (cur === 'mid') next = null; // mid → infra later optional
     if (!next || !MANDATE_TIERS[next]) return false;
     mandateState.tier = next;
+    const nextBand = MANDATE_TIERS[next].car_band_max;
+    if (mandateState.carBand && BAND_RANK[nextBand] > (BAND_RANK[mandateState.carBand] || 0)) {
+      mandateState.carBand = nextBand;
+    }
+    const silent = opts && opts.silent;
     try {
-      if (typeof showToast === 'function') {
+      if (!silent && typeof showToast === 'function') {
         showToast('Mandato alargado · ' + next + ' — novos lotes no próximo mercado');
       }
     } catch (_) {}
@@ -7675,7 +7752,7 @@
   }
 
   /** Only move forward along chain; obra requires LP + (aia OR pip+nao_sujeicao). */
-  function raiseProjectPhase(target) {
+  function raiseProjectPhase(target, opts) {
     if (!target || PROJECT_PHASES.indexOf(target) < 0) return false;
     const cur = mailLoop.projectPhase || 'trc_won';
     const ti = phaseIndex(target);
@@ -7698,18 +7775,18 @@
     }
     const raised = phaseIndex(mailLoop.projectPhase) > ci;
     if (raised && (mailLoop.projectPhase === 'land' || mailLoop.projectPhase === 'pip')) {
-      try { if (typeof maybePromoteMandate === 'function') maybePromoteMandate('phase:' + mailLoop.projectPhase); } catch (_) {}
+      try { if (typeof maybePromoteMandate === 'function') maybePromoteMandate('phase:' + mailLoop.projectPhase, opts); } catch (_) {}
     }
     return raised;
   }
 
-  function maybeRaisePhaseFromEffects(effects) {
+  function maybeRaisePhaseFromEffects(effects, opts) {
     if (!Array.isArray(effects) || !effects.length) return false;
     let raised = false;
     effects.forEach((ef) => {
       const key = String(ef);
       const target = PHASE_BUMP[key];
-      if (target && raiseProjectPhase(target)) raised = true;
+      if (target && raiseProjectPhase(target, opts)) raised = true;
     });
     // Soft deadline clears when related effects fire
     if (effects.some((e) => e === 'land_option_open' || e === 'land_talk_+1' || e === 'dd_started')) {
@@ -7806,20 +7883,136 @@
     return mkeys.length ? Math.max.apply(null, mkeys) : 6;
   }
 
+  function carBandFromEffect(key) {
+    const m = /^car_band_([sml])$/i.exec(String(key || ''));
+    return m ? m[1].toUpperCase() : null;
+  }
+
+  function snapshotMailUi() {
+    return {
+      phase: (typeof mailLoop !== 'undefined' && mailLoop.projectPhase) || 'trc_won',
+      tier: (typeof mandateState !== 'undefined' && mandateState.tier) || 'boutique',
+      carShown: (typeof effectiveCarBand === 'function') ? effectiveCarBand() : 'S'
+    };
+  }
+
+  const PHASE_OUTCOME_PT = {
+    trc_won: 'TRC',
+    land: 'terreno',
+    pip: 'PIP',
+    aia: 'AIA',
+    licenca_producao: 'licença de produção',
+    obra: 'obra',
+    cod: 'COD'
+  };
+
+  /** Plain pt-PT gloss. Tags stay visible; no euro amounts. */
+  const EFFECT_GLOSS_PT = {
+    car_brief_sent: 'Comunicado CAR enviado',
+    cash_at_risk_request: 'Pedido de Cash at Risk registado',
+    'investor_patience_-1': 'Paciência dos investidores −1',
+    'investor_patience_-2': 'Paciência dos investidores −2',
+    land_option_open: 'Opção de terreno aberta',
+    'land_talk_+1': 'Conversa de terreno em curso',
+    'land_miss_+1': 'Terreno deixado passar',
+    'delay_land_+1': 'Janela de terreno adiada',
+    dd_started: 'Due diligence aberta',
+    'dd_delay_+1': 'Due diligence adiada',
+    'cash_at_risk_+1': 'Cash at Risk marcado (sem € — por calibrar)',
+    'risk_camara_-1': 'Relação com a Câmara aliviada',
+    'risk_camara_+1': 'Tensão com a Câmara sobe',
+    'risk_camara_+2': 'Tensão com a Câmara sobe',
+    'delay_pip_+1': 'PIP adiado',
+    'delay_pip_+2': 'PIP adiado',
+    apa_track_start: 'Processo APA em marcha',
+    'delay_env_+0': 'Calendário ambiental mantido',
+    'delay_env_+1': 'Calendário ambiental adiado',
+    capex_rede_flag: 'Acordo de rede marcado (sem € — por calibrar)',
+    'caducidade_risk_-1': 'Risco de caducidade desce',
+    'caducidade_risk_+1': 'Risco de caducidade sobe',
+    'caducidade_risk_+2': 'Risco de caducidade sobe',
+    'delay_ligacao_+1': 'Ligação à rede adiada',
+    'risk_media_-1': 'Exposição mediática desce',
+    'risk_media_+1': 'Exposição mediática sobe',
+    'risk_community_-1': 'Tensão com a comunidade desce',
+    'risk_community_+1': 'Tensão com a comunidade sobe',
+    investor_plan_sent: 'Plano enviado aos investidores',
+    dica_ack: 'Dica lida',
+    dossier_unlock: 'Dossier marcado',
+    hint_value_add: 'Nota de value-add registada',
+    value_add_commit: 'Value-add assumido',
+    'value_add_delay_+1': 'Value-add adiado',
+    bess_dev_flag: 'BESS marcado para estudo',
+    rede_calendar_seen: 'Calendário de rede lido',
+    competitor_seen: 'Movimento do concorrente registado',
+    reequip_study: 'Estudo de reequipamento pedido',
+    reequip_defer: 'Reequipamento adiado',
+    dgeg_obligations_seen: 'Obrigações DGEG lidas',
+    bank_seed_seen: 'Nota do banco lida',
+    fa_bess_apply: 'Candidatura BESS registada',
+    fa_bess_wait: 'BESS em espera',
+    fa_bess_skip: 'BESS ignorado'
+  };
+
+  function toastForMailEffects(effects, before) {
+    before = before || {};
+    const parts = [];
+    const phaseNow = (mailLoop && mailLoop.projectPhase) || 'trc_won';
+    if (before.phase && before.phase !== phaseNow) {
+      parts.push('Fase → ' + (PHASE_OUTCOME_PT[phaseNow] || phaseLabelPt(phaseNow)));
+    }
+    if (before.tier && before.tier !== mandateState.tier) {
+      parts.push('Mandato → ' + mandateChipLabel());
+    }
+    const carNow = effectiveCarBand();
+    const askedBand = (effects || []).map(carBandFromEffect).filter(Boolean).pop();
+    if (askedBand) parts.push(carBandOutcomePhrase(askedBand));
+    else if (before.carShown && before.carShown !== carNow) parts.push(carBandOutcomePhrase(carNow));
+    (effects || []).forEach((ef) => {
+      const key = String(ef || '');
+      if (!key || /^car_band_[sml]$/i.test(key)) return;
+      const gloss = EFFECT_GLOSS_PT[key];
+      if (gloss) parts.push(gloss);
+      parts.push('Tag: ' + key);
+    });
+    return parts.join(' · ');
+  }
+
+  function logMailOutcome(text) {
+    try {
+      activities.unshift({ time: 'Agora', text: text });
+      if (typeof renderActivity === 'function') renderActivity();
+    } catch (_) {}
+  }
+
   function applyMailEffects(effects) {
-    if (!Array.isArray(effects) || !effects.length) return;
+    if (!Array.isArray(effects) || !effects.length) return { tags: [], carBand: null };
+    let bandSet = null;
+    const touched = [];
     effects.forEach((ef) => {
       if (!ef) return;
       const key = String(ef);
       mailLoop.tags[key] = (mailLoop.tags[key] || 0) + 1;
+      touched.push(key);
+      const band = carBandFromEffect(key);
+      if (band) {
+        mandateState.carBand = band;
+        bandSet = band;
+      }
     });
     // Joker eligibility aliases
     if ((mailLoop.tags.value_add_commit || mailLoop.tags.bess_dev_flag) && !mailLoop.tags.bess_dev_started) {
       mailLoop.tags.bess_dev_started = 1;
     }
-    maybeRaisePhaseFromEffects(effects);
+    maybeRaisePhaseFromEffects(effects, { silent: true });
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
+    if (bandSet) {
+      try { flashPill('pillMandateCar'); } catch (_) {}
+    }
+    try { if (typeof renderAuctionLots === 'function') renderAuctionLots(); } catch (_) {}
     try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
     try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+    return { tags: touched, carBand: bandSet };
   }
 
   function getSkinById(skeletonId, skinId, pack) {
@@ -8289,14 +8482,21 @@
         const typeLabel = MAIL_TYPE_LABEL[letter.type] || letter.type;
         const choices = Array.isArray(letter.choices) ? letter.choices : [];
         let actionsHtml = '';
+        const answered = letter.answeredChoice || '';
+        const noteHtml = answered
+          ? ('<p class="mail-choice-note">Escolha registada' + (letter.answeredLabel ? (': ' + escapeHtml(letter.answeredLabel)) : '') + '</p>')
+          : '';
         if (choices.length) {
-          actionsHtml = choices.map((c, i) => {
-            const cls = i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary';
+          actionsHtml = noteHtml + choices.map((c, i) => {
+            const isBand = String(c.id || '').indexOf('band_') === 0;
+            const cls = (isBand ? 'mail-cta-band' : (i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary'))
+              + (answered === c.id ? ' is-chosen' : '');
             return '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(c.id) + '" data-mail-letter="' + escapeHtml(letter.id) + '">' + escapeHtml(c.label) + '</button>';
           }).join('');
         } else if (letter.cta) {
-          actionsHtml =
-            '<button type="button" class="mail-cta-primary" data-mail-cta="' + escapeHtml(letter.id) + '">' + escapeHtml(letter.cta) + '</button>' +
+          const chosen = answered === 'cta' ? ' is-chosen' : '';
+          actionsHtml = noteHtml +
+            '<button type="button" class="mail-cta-primary' + chosen + '" data-mail-cta="' + escapeHtml(letter.id) + '">' + escapeHtml(letter.cta) + '</button>' +
             '<button type="button" class="mail-cta-secondary" data-mail-ignore="1">Ignorar por agora</button>';
         }
         body.innerHTML =
@@ -8644,14 +8844,23 @@
           const letter = mailState.items.find((m) => m.id === letterId);
           const choice = letter && (letter.choices || []).find((c) => c.id === choiceId);
           const effectList = (choice && choice.effects) ? choice.effects.slice() : [];
-          const effects = effectList.length ? effectList.join(', ') : '';
+          const before = snapshotMailUi();
           if (typeof applyMailEffects === 'function') applyMailEffects(effectList);
+          if (letter) {
+            letter.answeredChoice = choiceId;
+            letter.answeredLabel = choice ? choice.label : choiceId;
+          }
           if (letterId) markLetterRead(letterId);
+          const msg = toastForMailEffects(effectList, before)
+            || ((choice && choice.label) ? (choice.label + ' · registado') : 'Escolha registada');
+          logMailOutcome('Correio · ' + msg);
           scheduleSave('mail-choice');
-          showToast('Escolha · ' + choiceId + (effects ? ' · ' + effects : ''));
+          showToast(msg);
           renderInboxBody();
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+          try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
+          try { if (typeof renderAuctionLots === 'function') renderAuctionLots(); } catch (_) {}
           return;
         }
         if (e.target.closest('[data-mail-ignore]')) {
@@ -8661,7 +8870,25 @@
         }
         const cta = e.target.closest('[data-mail-cta]');
         if (cta) {
-          showToast('Mock — acção ainda stub');
+          const letterId = cta.getAttribute('data-mail-cta');
+          const letter = mailState.items.find((m) => m.id === letterId);
+          const effectList = (letter && Array.isArray(letter.effects)) ? letter.effects.slice() : [];
+          const before = snapshotMailUi();
+          if (effectList.length && typeof applyMailEffects === 'function') applyMailEffects(effectList);
+          const label = (cta.textContent || 'Acção').replace(/\s+/g, ' ').trim();
+          if (letter) {
+            letter.answeredChoice = 'cta';
+            letter.answeredLabel = label;
+          }
+          if (letterId) markLetterRead(letterId);
+          const msg = toastForMailEffects(effectList, before) || ('Acção registada · ' + label);
+          logMailOutcome('Correio · ' + msg);
+          scheduleSave('mail-cta');
+          showToast(msg);
+          renderInboxBody();
+          try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+          try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+          try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
           return;
         }
       });
@@ -8848,12 +9075,15 @@
     try {
       mandateCopy = {
         tier: (typeof mandateState !== 'undefined' && mandateState.tier) || 'boutique',
+        carBand: (typeof mandateState !== 'undefined' && mandateState.carBand && BAND_RANK[mandateState.carBand])
+          ? mandateState.carBand
+          : null,
         acknowledged: !!(typeof mandateState !== 'undefined' && mandateState.acknowledged),
         letterRead: !!(typeof mandateState !== 'undefined' && mandateState.letterRead),
         skip: !!(typeof mandateState !== 'undefined' && mandateState.skip)
       };
     } catch (_) {
-      mandateCopy = { tier: 'boutique', acknowledged: false, letterRead: false, skip: false };
+      mandateCopy = { tier: 'boutique', carBand: null, acknowledged: false, letterRead: false, skip: false };
     }
     return {
       v: 1,
@@ -8966,6 +9196,7 @@
     if (blob.mandateState && typeof mandateState !== 'undefined') {
       const ms = blob.mandateState;
       if (ms.tier && MANDATE_TIERS[ms.tier]) mandateState.tier = ms.tier;
+      mandateState.carBand = (ms.carBand && BAND_RANK[ms.carBand]) ? ms.carBand : null;
       mandateState.acknowledged = !!ms.acknowledged;
       mandateState.letterRead = !!ms.letterRead;
       mandateState.skip = !!ms.skip;

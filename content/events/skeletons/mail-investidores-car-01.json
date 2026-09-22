@@ -13,9 +13,28 @@
   "from_type": "INVESTIDORES",
   "choices": [
     {
-      "id": "send_brief",
-      "label": "Enviar comunicado Cash at Risk",
+      "id": "band_s",
+      "label": "Confirmar banda S",
       "effects": [
+        "car_band_s",
+        "car_brief_sent",
+        "cash_at_risk_request"
+      ]
+    },
+    {
+      "id": "band_m",
+      "label": "Pedir banda M",
+      "effects": [
+        "car_band_m",
+        "car_brief_sent",
+        "cash_at_risk_request"
+      ]
+    },
+    {
+      "id": "band_l",
+      "label": "Pedir banda L",
+      "effects": [
+        "car_band_l",
         "car_brief_sent",
         "cash_at_risk_request"
       ]
@@ -28,6 +47,6 @@
       ]
     }
   ],
-  "notes_for_economy": "cash_at_risk_request → Economy devolve MEUR do comunicado",
-  "notes_for_ui": "M0; CTA pesado"
+  "notes_for_economy": "PEDIR_ECONOMY — cash_at_risk_request ainda não devolve MEUR. Bandas S/M/L sem montantes até a Economia calibrar.",
+  "notes_for_ui": "M0; o jogador escolhe a banda CAR S/M/L. Sem euros. A banda actualiza o HUD e o filtro dos lotes."
 }

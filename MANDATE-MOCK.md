@@ -1,6 +1,6 @@
 # Gate 1 — Mandate mock (Contas iniciais) · hybrid MVP
 
-**MVP lock (2026-09-22):** product path = **`mandate_tier: boutique`** (Belenenses).  
+**MVP lock (2026-09-22):** product path = **`mandate_tier: boutique`**.  
 Soft-lock **ON** — bands that don’t fit go grey.  
 `?mandate=mid|infra` remain QA overrides. Progression stub can raise boutique → mid.
 
@@ -8,7 +8,7 @@ No € finals (bands S/M/L only). No Pages. No git push. No difficulty selector.
 
 ## Flow (order)
 
-1. **Briefing** — one sentence: runway curto (Belenenses); um lote cabe; outros fora do runway.
+1. **Briefing** — one sentence: «Runway curto — um lote cabe no mandato; os outros ficam fora do runway.»
 2. **Investor letter** — CAR purse banda S + equity S + máx 1 TRC; «não caçes os cinzentos ainda».
 3. **Market** — Ourique open; Ferreira/Estremoz grey («fora do runway» / equity).
 4. **Progression stub** — play well (phase → `land`/`pip`, e.g. terreno open_dd) → mandate → mid + toast; greys unlock on next market render.
@@ -16,11 +16,11 @@ No € finals (bands S/M/L only). No Pages. No git push. No difficulty selector.
 
 ## Tiers (`MANDATE_TIERS`)
 
-| id | Club analogy | CAR max | Equity max | max TRCs | MVP |
-|----|--------------|---------|------------|----------|-----|
-| `boutique` | Belenenses | S | S | 1 | **default / play** |
-| `mid` | Meia-tabela | M | M | 2 | unlock via progression / QA |
-| `infra` | Real Madrid | L | L | 4 | QA (`?mandate=infra`) |
+| id | Rótulo | CAR max | Equity max | max TRCs | MVP |
+|----|--------|---------|------------|----------|-----|
+| `boutique` | Boutique | S | S | 1 | **default / play** |
+| `mid` | Mid / Meia-tabela | M | M | 2 | unlock via progression / QA |
+| `infra` | Infra | L | L | 4 | QA (`?mandate=infra`) |
 
 `BAND_RANK = { S:1, M:2, L:3 }`
 
@@ -63,11 +63,13 @@ Triggered from `raiseProjectPhase` when phase becomes `land` or `pip` (e.g. afte
 
 ## HUD
 
-Quiet pills: `CAR · banda S` + `Equity · banda S` (HIPÓTESE). Auction chrome chip: `Boutique · Belenenses`.
+Quiet pills: `CAR · banda S` + `Equity · banda S` (HIPÓTESE). Auction chrome chip: `Boutique` (mid → `Mid`, infra → `Infra`).
+
+The M0 CAR letter (`mail-investidores-car-01`) lets the player confirm **S** or ask for **M** / **L** (no euro amounts). That sets `mandateState.carBand`, refreshes the CAR pill and the auction strip, and drives `lotFitsMandate` so lots above the band stay grey and lots within the band open. Delay still applies `investor_patience_-1`.
 
 ## Persist
 
-`mandateState: { tier, acknowledged, letterRead, skip }` in save blob (tier survives promote).
+`mandateState: { tier, carBand, acknowledged, letterRead, skip }` in save blob (tier survives promote; `carBand` is `S`/`M`/`L` or `null` to follow the tier).
 
 ## Still PEDIR_ECONOMY
 
