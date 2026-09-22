@@ -13,30 +13,45 @@
   "from_type": "INVESTIDORES",
   "choices": [
     {
-      "id": "band_s",
-      "label": "Confirmar banda S",
+      "id": "aceitar",
+      "label": "Aceitar banda do mandato",
       "effects": [
+        "car_aceitar",
+        "car_brief_sent"
+      ]
+    },
+    {
+      "id": "cortar",
+      "label": "Cortar uma banda",
+      "effects": [
+        "car_cortar"
+      ]
+    },
+    {
+      "id": "plano_s",
+      "label": "Plano · banda S",
+      "effects": [
+        "car_plano",
         "car_band_s",
-        "car_brief_sent",
-        "cash_at_risk_request"
+        "investor_plan_sent"
       ]
     },
     {
-      "id": "band_m",
-      "label": "Pedir banda M",
+      "id": "plano_m",
+      "label": "Plano · banda M",
       "effects": [
+        "car_plano",
         "car_band_m",
-        "car_brief_sent",
-        "cash_at_risk_request"
+        "investor_plan_sent"
       ]
     },
     {
-      "id": "band_l",
-      "label": "Pedir banda L",
+      "id": "plano_l",
+      "label": "Plano · banda L",
       "effects": [
+        "car_plano",
         "car_band_l",
-        "car_brief_sent",
-        "cash_at_risk_request"
+        "investor_plan_sent"
       ]
     },
     {
@@ -47,6 +62,6 @@
       ]
     }
   ],
-  "notes_for_economy": "PEDIR_ECONOMY — cash_at_risk_request ainda não devolve MEUR. Bandas S/M/L sem montantes até a Economia calibrar.",
-  "notes_for_ui": "M0; o jogador escolhe a banda CAR S/M/L. Sem euros. A banda actualiza o HUD e o filtro dos lotes."
+  "notes_for_economy": "PEDIR_ECONOMY — respostas aceitar / cortar / plano já existem. Bandas S/M/L apenas; sem montantes até calibração. car_aceitar fica na banda do mandato; car_cortar desce uma banda (mínimo S); car_plano fixa a banda nomeada.",
+  "notes_for_ui": "M0. CTAs: aceitar, cortar, plano S/M/L. Sem montantes. A banda actualiza o HUD e o filtro dos lotes."
 }

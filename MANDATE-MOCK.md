@@ -65,11 +65,11 @@ Triggered from `raiseProjectPhase` when phase becomes `land` or `pip` (e.g. afte
 
 Quiet pills: `CAR · banda S` + `Equity · banda S` (HIPÓTESE). Auction chrome chip: `Boutique` (mid → `Mid`, infra → `Infra`).
 
-The M0 CAR letter (`mail-investidores-car-01`) lets the player confirm **S** or ask for **M** / **L** (no euro amounts). That sets `mandateState.carBand`, refreshes the CAR pill and the auction strip, and drives `lotFitsMandate` so lots above the band stay grey and lots within the band open. Delay still applies `investor_patience_-1`.
+The M0 CAR letter (`mail-investidores-car-01`) answers in **aceitar / cortar / plano**, bands **S/M/L** only (no amounts). Aceitar keeps the mandate band. Cortar steps down one band (floor S). Plano names S, M, or L. That sets `mandateState.carBand` and `carOutcome`, refreshes the CAR pill (`CAR · banda M · plano`) and the auction strip, and drives `lotFitsMandate`. Delay still applies `investor_patience_-1`.
 
 ## Persist
 
-`mandateState: { tier, carBand, acknowledged, letterRead, skip }` in save blob (tier survives promote; `carBand` is `S`/`M`/`L` or `null` to follow the tier).
+`mandateState: { tier, carBand, carOutcome, acknowledged, letterRead, skip }` in save blob (tier survives promote; `carBand` is `S`/`M`/`L` or `null` to follow the tier; `carOutcome` is `aceitar` / `cortar` / `plano` or `null`).
 
 ## Still PEDIR_ECONOMY
 

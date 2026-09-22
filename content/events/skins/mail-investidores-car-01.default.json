@@ -2,7 +2,7 @@
   "skeleton_id": "mail-investidores-car-01",
   "skin_id": "default",
   "from_name": "Comité de investidores",
-  "subject": "Revisão de runway · que banda de CAR?",
-  "body": "TRC adjudicado — isto é revisão de runway, não o primeiro mandato.\n\nO Cash at Risk ainda não tem valor em euros; a Economia calibra depois. Escolhe só a banda:\n\n• S — runway curto. Lotes acima de S ficam cinzentos.\n• M — abre também os lotes de banda M.\n• L — abre lotes S, M e L.\n\nPedir mais tempo baixa a paciência do comité. Sem alteração de euros — só a banda no HUD e no filtro dos lotes.",
+  "subject": "Revisão de runway · aceitar, cortar ou plano?",
+  "body": "TRC adjudicado — isto é revisão de runway, não o primeiro mandato.\n\nO Cash at Risk do mandato boutique está fechado em bandas S, M e L. Sem montantes.\n\n• Aceitar — ficas na banda do mandato. No boutique é S; lotes acima ficam cinzentos.\n• Cortar — desce uma banda. O mínimo é S.\n• Plano — indicas a banda S, M ou L em que o plano assenta. Essa banda abre ou fecha lotes.\n\nPedir mais tempo baixa a paciência do comité.",
   "params": {}
 }

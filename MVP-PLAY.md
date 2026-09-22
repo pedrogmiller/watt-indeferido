@@ -19,7 +19,7 @@ python3 -m http.server 8765 --directory /workspace/ipp-console-light
 
 ## Gate 1 — Mandate (Contas iniciais) · hybrid MVP
 
-MVP = **`boutique`**. Briefing one-liner before first market: «Runway curto — um lote cabe…». Investor letter = purse banda S, máx 1 TRC, «não caçes os cinzentos ainda». Soft-lock **ON**: wave 0 = Ourique open + Ferreira/Estremoz grey. The M0 CAR letter sets the CAR band (S/M/L) on the HUD and in `lotFitsMandate`. Progression stub: phase → land/pip promotes boutique → mid. See [MANDATE-MOCK.md](./MANDATE-MOCK.md). QA: `?mandate=infra|mid`, `?mandate=skip`.
+MVP = **`boutique`**. Briefing one-liner before first market: «Runway curto — um lote cabe…». Investor letter = purse banda S, máx 1 TRC, «não caçes os cinzentos ainda». Soft-lock **ON**: wave 0 = Ourique open + Ferreira/Estremoz grey. The M0 CAR letter answers aceitar / cortar / plano on bands S/M/L (no amounts) and updates the HUD and `lotFitsMandate`. Progression stub: phase → land/pip promotes boutique → mid. See [MANDATE-MOCK.md](./MANDATE-MOCK.md). QA: `?mandate=infra|mid`, `?mandate=skip`.
 
 Phase only rises via choice `effects[]` → `PHASE_BUMP` (conservative MVP: land / pip / aia). **No auto obra/cod.**
 

@@ -5983,6 +5983,7 @@
   let mandateState = {
     tier: 'boutique',
     carBand: null,
+    carOutcome: null,
     acknowledged: false,
     letterRead: false,
     skip: false,
@@ -5998,9 +5999,11 @@
     if (raw === 'mid' || raw === 'boutique' || raw === 'infra') {
       mandateState.tier = raw;
       mandateState.carBand = null;
+      mandateState.carOutcome = null;
     } else if (raw === '1') {
       mandateState.tier = 'boutique';
       mandateState.carBand = null;
+      mandateState.carOutcome = null;
       mandateState.acknowledged = false;
       mandateState.letterRead = false;
     } else if (raw !== 'skip') {
@@ -6050,11 +6053,36 @@
     return tierMax;
   }
 
+  function stepDownCarBand(band) {
+    if (band === 'L') return 'M';
+    if (band === 'M') return 'S';
+    return 'S';
+  }
+
+  const CAR_OUTCOME_SUFFIX = { aceitar: ' · aceite', cortar: ' · corte', plano: ' · plano' };
+
+  function carHudLabel() {
+    const band = effectiveCarBand();
+    const outcome = mandateState && mandateState.carOutcome;
+    return 'CAR · banda ' + band + (CAR_OUTCOME_SUFFIX[outcome] || '');
+  }
+
   function carBandOutcomePhrase(band) {
     if (band === 'S') return 'CAR · banda S — lotes acima de S ficam cinzentos';
     if (band === 'M') return 'CAR · banda M — lotes até M abertos';
     if (band === 'L') return 'CAR · banda L — lotes S, M e L abertos';
     return 'CAR · banda ' + (band || 'S');
+  }
+
+  function carDecisionPhrase(outcome, band, beforeBand) {
+    const detail = carBandOutcomePhrase(band).replace(/^CAR · /, '');
+    if (outcome === 'aceitar') return 'CAR aceite · ' + detail;
+    if (outcome === 'cortar' && band === 'S' && beforeBand === 'S') {
+      return 'CAR cortado · banda S é o mínimo — lotes acima de S ficam cinzentos';
+    }
+    if (outcome === 'cortar') return 'CAR cortado · ' + detail;
+    if (outcome === 'plano') return 'Plano CAR · ' + detail;
+    return carBandOutcomePhrase(band);
   }
 
   function mandateSoftLockEnabled() {
@@ -6086,7 +6114,7 @@
 
   function renderMandateHud() {
     const m = currentMandate();
-    const carLabel = 'CAR · banda ' + effectiveCarBand();
+    const carLabel = carHudLabel();
     const eqLabel = 'Equity · banda ' + effectiveEquityBand();
     const chipLabel = mandateChipLabel(m);
     const car = document.getElementById('valMandateCar');
@@ -6117,7 +6145,7 @@
     const eqH = document.getElementById('mandateBriefingEquityHint');
     const trcs = document.getElementById('mandateBriefingTrcs');
     const bands = document.getElementById('mandateBriefingBands');
-    if (car) car.textContent = 'CAR · banda ' + effectiveCarBand();
+    if (car) car.textContent = carHudLabel();
     if (eq) eq.textContent = 'Equity · banda ' + effectiveEquityBand();
     if (carH) carH.textContent = m.car_hint;
     if (eqH) eqH.textContent = m.equity_hint;
@@ -6133,7 +6161,7 @@
     const trcN = effectiveMaxTrcs(m);
     body.textContent =
       'Antes de ires à mesa: mandato ' + mandateChipLabel(m) + '.\n\n' +
-      '• Purse CAR: CAR · banda ' + effectiveCarBand() + ' — ' + m.car_hint + '\n' +
+      '• Purse CAR: ' + carHudLabel() + ' — ' + m.car_hint + '\n' +
       '• Headroom equity: Equity · banda ' + effectiveEquityBand() + ' — ' + m.equity_hint + '\n' +
       '• Máximo de TRCs neste mandato: ' + trcN + '\n\n' +
       (m.id === 'boutique'
@@ -6141,7 +6169,7 @@
         : m.id === 'mid'
           ? 'Mid: S+M abertos; L ficam cinzentos («fora do runway» / «equity acima do mandato»).\n\n'
           : 'Infra (QA): banda L — soft-lock activo, mas a banda L abre a onda.\n\n') +
-      'HIPÓTESE qualitativa — sem finais em €. Depois da adjudicação, a carta M0 passa a revisão de runway — não a primeira revelação.';
+      'HIPÓTESE qualitativa — bandas S/M/L, sem montantes. Depois da adjudicação, a carta M0 passa a revisão de runway — não a primeira revelação.';
   }
 
   function showMandateOverlay(id, show) {
@@ -7909,6 +7937,9 @@
   /** Plain pt-PT gloss. Tags stay visible; no euro amounts. */
   const EFFECT_GLOSS_PT = {
     car_brief_sent: 'Comunicado CAR enviado',
+    car_aceitar: 'Resposta: aceitar',
+    car_cortar: 'Resposta: cortar',
+    car_plano: 'Resposta: plano',
     cash_at_risk_request: 'Pedido de Cash at Risk registado',
     'investor_patience_-1': 'Paciência dos investidores −1',
     'investor_patience_-2': 'Paciência dos investidores −2',
@@ -7918,7 +7949,7 @@
     'delay_land_+1': 'Janela de terreno adiada',
     dd_started: 'Due diligence aberta',
     'dd_delay_+1': 'Due diligence adiada',
-    'cash_at_risk_+1': 'Cash at Risk marcado (sem € — por calibrar)',
+    'cash_at_risk_+1': 'Cash at Risk marcado (banda, sem montante)',
     'risk_camara_-1': 'Relação com a Câmara aliviada',
     'risk_camara_+1': 'Tensão com a Câmara sobe',
     'risk_camara_+2': 'Tensão com a Câmara sobe',
@@ -7927,7 +7958,7 @@
     apa_track_start: 'Processo APA em marcha',
     'delay_env_+0': 'Calendário ambiental mantido',
     'delay_env_+1': 'Calendário ambiental adiado',
-    capex_rede_flag: 'Acordo de rede marcado (sem € — por calibrar)',
+    capex_rede_flag: 'Acordo de rede marcado (sem montante — por calibrar)',
     'caducidade_risk_-1': 'Risco de caducidade desce',
     'caducidade_risk_+1': 'Risco de caducidade sobe',
     'caducidade_risk_+2': 'Risco de caducidade sobe',
@@ -7966,11 +7997,19 @@
     }
     const carNow = effectiveCarBand();
     const askedBand = (effects || []).map(carBandFromEffect).filter(Boolean).pop();
-    if (askedBand) parts.push(carBandOutcomePhrase(askedBand));
+    const outcomeEf = (effects || []).map(function (ef) { return String(ef || ''); }).find(function (key) {
+      return key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano';
+    });
+    if (outcomeEf) parts.push(carDecisionPhrase(outcomeEf.replace(/^car_/, ''), carNow, before.carShown));
+    else if (askedBand) parts.push(carBandOutcomePhrase(askedBand));
     else if (before.carShown && before.carShown !== carNow) parts.push(carBandOutcomePhrase(carNow));
     (effects || []).forEach((ef) => {
       const key = String(ef || '');
       if (!key || /^car_band_[sml]$/i.test(key)) return;
+      if (key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano') {
+        parts.push('Tag: ' + key);
+        return;
+      }
       const gloss = EFFECT_GLOSS_PT[key];
       if (gloss) parts.push(gloss);
       parts.push('Tag: ' + key);
@@ -7988,18 +8027,37 @@
   function applyMailEffects(effects) {
     if (!Array.isArray(effects) || !effects.length) return { tags: [], carBand: null };
     let bandSet = null;
+    let explicitBand = null;
+    let outcome = null;
     const touched = [];
+    const bandBefore = effectiveCarBand();
     effects.forEach((ef) => {
       if (!ef) return;
       const key = String(ef);
       mailLoop.tags[key] = (mailLoop.tags[key] || 0) + 1;
       touched.push(key);
       const band = carBandFromEffect(key);
-      if (band) {
-        mandateState.carBand = band;
-        bandSet = band;
-      }
+      if (band) explicitBand = band;
+      if (key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano') outcome = key.replace(/^car_/, '');
     });
+    if (outcome === 'aceitar') {
+      mandateState.carOutcome = 'aceitar';
+      mandateState.carBand = (currentMandate().car_band_max) || 'S';
+      bandSet = mandateState.carBand;
+    } else if (outcome === 'cortar') {
+      mandateState.carOutcome = 'cortar';
+      mandateState.carBand = stepDownCarBand(bandBefore);
+      bandSet = mandateState.carBand;
+    } else if (outcome === 'plano') {
+      mandateState.carOutcome = 'plano';
+      if (explicitBand) {
+        mandateState.carBand = explicitBand;
+        bandSet = explicitBand;
+      }
+    } else if (explicitBand) {
+      mandateState.carBand = explicitBand;
+      bandSet = explicitBand;
+    }
     // Joker eligibility aliases
     if ((mailLoop.tags.value_add_commit || mailLoop.tags.bess_dev_flag) && !mailLoop.tags.bess_dev_started) {
       mailLoop.tags.bess_dev_started = 1;
@@ -8488,8 +8546,9 @@
           : '';
         if (choices.length) {
           actionsHtml = noteHtml + choices.map((c, i) => {
-            const isBand = String(c.id || '').indexOf('band_') === 0;
-            const cls = (isBand ? 'mail-cta-band' : (i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary'))
+            const cid = String(c.id || '');
+            const isBand = cid.indexOf('band_') === 0 || cid.indexOf('plano_') === 0;
+            const cls = (cid === 'aceitar' ? 'mail-cta-primary' : (isBand ? 'mail-cta-band' : (i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary')))
               + (answered === c.id ? ' is-chosen' : '');
             return '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(c.id) + '" data-mail-letter="' + escapeHtml(letter.id) + '">' + escapeHtml(c.label) + '</button>';
           }).join('');
@@ -9078,12 +9137,15 @@
         carBand: (typeof mandateState !== 'undefined' && mandateState.carBand && BAND_RANK[mandateState.carBand])
           ? mandateState.carBand
           : null,
+        carOutcome: (typeof mandateState !== 'undefined' && CAR_OUTCOME_SUFFIX[mandateState.carOutcome])
+          ? mandateState.carOutcome
+          : null,
         acknowledged: !!(typeof mandateState !== 'undefined' && mandateState.acknowledged),
         letterRead: !!(typeof mandateState !== 'undefined' && mandateState.letterRead),
         skip: !!(typeof mandateState !== 'undefined' && mandateState.skip)
       };
     } catch (_) {
-      mandateCopy = { tier: 'boutique', carBand: null, acknowledged: false, letterRead: false, skip: false };
+      mandateCopy = { tier: 'boutique', carBand: null, carOutcome: null, acknowledged: false, letterRead: false, skip: false };
     }
     return {
       v: 1,
@@ -9197,6 +9259,9 @@
       const ms = blob.mandateState;
       if (ms.tier && MANDATE_TIERS[ms.tier]) mandateState.tier = ms.tier;
       mandateState.carBand = (ms.carBand && BAND_RANK[ms.carBand]) ? ms.carBand : null;
+      mandateState.carOutcome = (ms.carOutcome === 'aceitar' || ms.carOutcome === 'cortar' || ms.carOutcome === 'plano')
+        ? ms.carOutcome
+        : null;
       mandateState.acknowledged = !!ms.acknowledged;
       mandateState.letterRead = !!ms.letterRead;
       mandateState.skip = !!ms.skip;
