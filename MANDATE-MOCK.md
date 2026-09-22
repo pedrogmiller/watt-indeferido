@@ -65,11 +65,11 @@ Triggered from `raiseProjectPhase` when phase becomes `land` or `pip` (e.g. afte
 
 Quiet pills: `CAR · banda S` + `Equity · banda S` (HIPÓTESE). Auction chrome chip: `Boutique` (mid → `Mid`, infra → `Infra`).
 
-The M0 CAR letter (`mail-investidores-car-01`) answers in **aceitar / cortar / plano**, bands **S/M/L** only (no amounts). Aceitar keeps the mandate band. Cortar steps down one band (floor S). Plano names S, M, or L. That sets `mandateState.carBand` and `carOutcome`, refreshes the CAR pill (`CAR · banda M · plano`) and the auction strip, and drives `lotFitsMandate`. Delay still applies `investor_patience_-1`.
+The M0 CAR letter (`mail-investidores-car-01`) answers **aceitar / cortar / plano** on bands **S/M/L** only (no amounts; pills say **HIPÓTESE**). Boutique lock: **S** aceitar locks CAR, cortar risks losing support, plano defers with a tag. **M** aceitar tightens the purse and opens M lots; cortar or plano is investor tension and does not open M. **L** is out of mandate — only cortar or plano, and neither raises the runway to L. `carBand`, `carOutcome`, and `carPosture` persist and drive the HUD plus `lotFitsMandate`.
 
 ## Persist
 
-`mandateState: { tier, carBand, carOutcome, acknowledged, letterRead, skip }` in save blob (tier survives promote; `carBand` is `S`/`M`/`L` or `null` to follow the tier; `carOutcome` is `aceitar` / `cortar` / `plano` or `null`).
+`mandateState: { tier, carBand, carOutcome, carPosture, carAsk, acknowledged, letterRead, skip }` in the save blob. `carBand` is the runway ceiling (`S`/`M`/`L` or `null`). `carAsk` is the band the letter was about. `carPosture` is `lock`, `support_risk`, `defer`, `purse_tight`, `tension`, `tension_plan`, `cut_l`, or `defer_l`.
 
 ## Still PEDIR_ECONOMY
 

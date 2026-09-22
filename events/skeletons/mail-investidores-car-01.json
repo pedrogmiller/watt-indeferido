@@ -13,55 +13,51 @@
   "from_type": "INVESTIDORES",
   "choices": [
     {
-      "id": "aceitar",
-      "label": "Aceitar banda do mandato",
-      "effects": [
-        "car_aceitar",
-        "car_brief_sent"
-      ]
+      "id": "aceitar_s",
+      "label": "Aceitar S · trancar CAR",
+      "effects": ["car_aceitar", "car_band_s", "car_lock"]
     },
     {
-      "id": "cortar",
-      "label": "Cortar uma banda",
-      "effects": [
-        "car_cortar"
-      ]
+      "id": "cortar_s",
+      "label": "Cortar S · risco de perder apoio",
+      "effects": ["car_cortar", "car_band_s", "investor_support_risk"]
     },
     {
       "id": "plano_s",
-      "label": "Plano · banda S",
-      "effects": [
-        "car_plano",
-        "car_band_s",
-        "investor_plan_sent"
-      ]
+      "label": "Plano S · adiar",
+      "effects": ["car_plano", "car_band_s", "car_plan_defer"]
+    },
+    {
+      "id": "aceitar_m",
+      "label": "Aceitar M · purse apertada",
+      "effects": ["car_aceitar", "car_band_m", "car_purse_apertada"]
+    },
+    {
+      "id": "cortar_m",
+      "label": "Cortar M · tensão",
+      "effects": ["car_cortar", "car_band_m", "investor_tension"]
     },
     {
       "id": "plano_m",
-      "label": "Plano · banda M",
-      "effects": [
-        "car_plano",
-        "car_band_m",
-        "investor_plan_sent"
-      ]
+      "label": "Plano M · tensão",
+      "effects": ["car_plano", "car_band_m", "investor_tension", "car_plan_defer"]
+    },
+    {
+      "id": "cortar_l",
+      "label": "Cortar L · fora do mandato",
+      "effects": ["car_cortar", "car_band_l", "investor_tension"]
     },
     {
       "id": "plano_l",
-      "label": "Plano · banda L",
-      "effects": [
-        "car_plano",
-        "car_band_l",
-        "investor_plan_sent"
-      ]
+      "label": "Plano L · fora do mandato",
+      "effects": ["car_plano", "car_band_l", "car_plan_defer", "investor_tension"]
     },
     {
       "id": "delay",
       "label": "Pedir mais tempo",
-      "effects": [
-        "investor_patience_-1"
-      ]
+      "effects": ["investor_patience_-1"]
     }
   ],
-  "notes_for_economy": "PEDIR_ECONOMY — respostas aceitar / cortar / plano já existem. Bandas S/M/L apenas; sem montantes até calibração. car_aceitar fica na banda do mandato; car_cortar desce uma banda (mínimo S); car_plano fixa a banda nomeada.",
-  "notes_for_ui": "M0. CTAs: aceitar, cortar, plano S/M/L. Sem montantes. A banda actualiza o HUD e o filtro dos lotes."
+  "notes_for_economy": "PEDIR_ECONOMY — sem montantes. S: aceitar tranca CAR; cortar = risco de perder apoio; plano adia com car_plan_defer. M: aceitar aperta a purse (banda M no filtro); cortar e plano = tensão, sem abrir M. L: acima do boutique, só cortar ou plano — não aceitar, e não sobe o runway a L.",
+  "notes_for_ui": "M0 boutique. Rótulos de banda são HIPÓTESE. Sem montantes. Aceitar M é o único CTA que abre lotes M."
 }

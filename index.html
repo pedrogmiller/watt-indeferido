@@ -4001,11 +4001,11 @@
         <span class="metric-value num" style="font-size:12px" id="valBonding">€ 6,2M livres</span>
         <div class="mandate-hud-pill" id="pillMandateCar" title="HIPÓTESE · mandato">
       <span class="metric-label">CAR <span class="mandate-hyp">· HIPÓTESE</span></span>
-      <span class="metric-value" id="valMandateCar">CAR · banda S</span>
+      <span class="metric-value" id="valMandateCar">CAR · banda S · HIPÓTESE</span>
     </div>
     <div class="mandate-hud-pill" id="pillMandateEquity" title="HIPÓTESE · mandato">
       <span class="metric-label">Equity <span class="mandate-hyp">· HIPÓTESE</span></span>
-      <span class="metric-value" id="valMandateEquity">Equity · banda S</span>
+      <span class="metric-value" id="valMandateEquity">Equity · banda S · HIPÓTESE</span>
     </div>
   </div>
       <div class="bonding-bar">
@@ -4279,8 +4279,8 @@
         <div class="auction-left-sub" id="auctionLeftSub">Concurso ao vivo · rivais limpam se hesitares</div>
         <div class="mandate-auction-strip" id="auctionMandateStrip" aria-label="Mandato">
           <span class="mandate-chip" id="auctionMandateChip">Boutique</span>
-          <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">CAR · banda S</span>
-          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Equity · banda S</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">CAR · banda S · HIPÓTESE</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Equity · banda S · HIPÓTESE</span>
         </div>
         <div class="auction-clock-row" aria-live="polite">
           <div>
@@ -4419,8 +4419,8 @@
     <h2 id="mandateBriefingTitle">Boutique</h2>
     <p class="mandate-club" id="mandateBriefingClub">Runway curto — um lote cabe no mandato; os outros ficam fora do runway.</p>
     <div class="mandate-auction-strip" style="margin:0 0 14px" aria-hidden="true">
-      <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">CAR · banda S</span>
-      <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Equity · banda S</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">CAR · banda S · HIPÓTESE</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Equity · banda S · HIPÓTESE</span>
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingBands">máx. 1 TRC</span>
     </div>
     <span id="mandateBriefingCarHint" hidden></span>
@@ -5985,6 +5985,8 @@
     tier: 'boutique',
     carBand: null,
     carOutcome: null,
+    carPosture: null,
+    carAsk: null,
     acknowledged: false,
     letterRead: false,
     skip: false,
@@ -6001,10 +6003,14 @@
       mandateState.tier = raw;
       mandateState.carBand = null;
       mandateState.carOutcome = null;
+      mandateState.carPosture = null;
+      mandateState.carAsk = null;
     } else if (raw === '1') {
       mandateState.tier = 'boutique';
       mandateState.carBand = null;
       mandateState.carOutcome = null;
+      mandateState.carPosture = null;
+      mandateState.carAsk = null;
       mandateState.acknowledged = false;
       mandateState.letterRead = false;
     } else if (raw !== 'skip') {
@@ -6060,30 +6066,48 @@
     return 'S';
   }
 
-  const CAR_OUTCOME_SUFFIX = { aceitar: ' · aceite', cortar: ' · corte', plano: ' · plano' };
+  const CAR_POSTURE_PT = {
+    lock: 'trancado',
+    support_risk: 'apoio em risco',
+    defer: 'adiado',
+    purse_tight: 'purse apertada',
+    tension: 'tensão',
+    tension_plan: 'plano em tensão',
+    cut_l: 'corte L',
+    defer_l: 'plano L adiado'
+  };
+
+  function bandHypothesisLabel(prefix, band) {
+    return prefix + ' · banda ' + band + ' · HIPÓTESE';
+  }
 
   function carHudLabel() {
     const band = effectiveCarBand();
-    const outcome = mandateState && mandateState.carOutcome;
-    return 'CAR · banda ' + band + (CAR_OUTCOME_SUFFIX[outcome] || '');
+    const posture = CAR_POSTURE_PT[mandateState && mandateState.carPosture];
+    let text = 'CAR · banda ' + band;
+    if (posture) text += ' · ' + posture;
+    return text + ' · HIPÓTESE';
   }
 
   function carBandOutcomePhrase(band) {
-    if (band === 'S') return 'CAR · banda S — lotes acima de S ficam cinzentos';
-    if (band === 'M') return 'CAR · banda M — lotes até M abertos';
-    if (band === 'L') return 'CAR · banda L — lotes S, M e L abertos';
-    return 'CAR · banda ' + (band || 'S');
+    if (band === 'S') return 'banda S — lotes acima de S ficam cinzentos';
+    if (band === 'M') return 'banda M — lotes até M abertos';
+    if (band === 'L') return 'banda L — lotes S, M e L abertos';
+    return 'banda ' + (band || 'S');
   }
 
-  function carDecisionPhrase(outcome, band, beforeBand) {
-    const detail = carBandOutcomePhrase(band).replace(/^CAR · /, '');
-    if (outcome === 'aceitar') return 'CAR aceite · ' + detail;
-    if (outcome === 'cortar' && band === 'S' && beforeBand === 'S') {
-      return 'CAR cortado · banda S é o mínimo — lotes acima de S ficam cinzentos';
-    }
-    if (outcome === 'cortar') return 'CAR cortado · ' + detail;
-    if (outcome === 'plano') return 'Plano CAR · ' + detail;
-    return carBandOutcomePhrase(band);
+  /** Boutique lock: posture, not a euro figure, is what the player reads. */
+  function carDecisionPhrase() {
+    const p = mandateState && mandateState.carPosture;
+    if (p === 'lock') return 'CAR trancado · ' + carBandOutcomePhrase('S');
+    if (p === 'support_risk') return 'Cortar em S — risco de perder o apoio. Lotes acima de S ficam cinzentos';
+    if (p === 'defer') return 'Plano em S adiado. O CAR não fica trancado. Lotes acima de S ficam cinzentos';
+    if (p === 'purse_tight') return 'Banda M aceite — a purse aperta. Lotes até M abertos';
+    if (p === 'tension') return 'Tensão com os investidores. Lotes acima de S ficam cinzentos';
+    if (p === 'tension_plan') return 'Plano M — tensão com os investidores. A banda M não abre lotes';
+    if (p === 'cut_l') return 'L fora do mandato. Corte registado — lotes L ficam cinzentos';
+    if (p === 'defer_l') return 'L fora do mandato. Plano adiado — lotes L ficam cinzentos';
+    return 'CAR · ' + carBandOutcomePhrase(effectiveCarBand());
   }
 
   function mandateSoftLockEnabled() {
@@ -6116,7 +6140,7 @@
   function renderMandateHud() {
     const m = currentMandate();
     const carLabel = carHudLabel();
-    const eqLabel = 'Equity · banda ' + effectiveEquityBand();
+    const eqLabel = bandHypothesisLabel('Equity', effectiveEquityBand());
     const chipLabel = mandateChipLabel(m);
     const car = document.getElementById('valMandateCar');
     const eq = document.getElementById('valMandateEquity');
@@ -6147,7 +6171,7 @@
     const trcs = document.getElementById('mandateBriefingTrcs');
     const bands = document.getElementById('mandateBriefingBands');
     if (car) car.textContent = carHudLabel();
-    if (eq) eq.textContent = 'Equity · banda ' + effectiveEquityBand();
+    if (eq) eq.textContent = bandHypothesisLabel('Equity', effectiveEquityBand());
     if (carH) carH.textContent = m.car_hint;
     if (eqH) eqH.textContent = m.equity_hint;
     const trcN = effectiveMaxTrcs(m);
@@ -6163,7 +6187,7 @@
     body.textContent =
       'Antes de ires à mesa: mandato ' + mandateChipLabel(m) + '.\n\n' +
       '• Purse CAR: ' + carHudLabel() + ' — ' + m.car_hint + '\n' +
-      '• Headroom equity: Equity · banda ' + effectiveEquityBand() + ' — ' + m.equity_hint + '\n' +
+      '• Headroom equity: ' + bandHypothesisLabel('Equity', effectiveEquityBand()) + ' — ' + m.equity_hint + '\n' +
       '• Máximo de TRCs neste mandato: ' + trcN + '\n\n' +
       (m.id === 'boutique'
         ? 'Boutique · banda S · máx. 1 TRC — joga Ourique; não caçes os cinzentos ainda. Joga bem e o mandato alarga.\n\n'
@@ -7941,6 +7965,11 @@
     car_aceitar: 'Resposta: aceitar',
     car_cortar: 'Resposta: cortar',
     car_plano: 'Resposta: plano',
+    car_lock: 'CAR trancado',
+    investor_support_risk: 'Risco de perder o apoio',
+    car_plan_defer: 'Plano adiado',
+    car_purse_apertada: 'Purse apertada',
+    investor_tension: 'Tensão com os investidores',
     cash_at_risk_request: 'Pedido de Cash at Risk registado',
     'investor_patience_-1': 'Paciência dos investidores −1',
     'investor_patience_-2': 'Paciência dos investidores −2',
@@ -7996,18 +8025,18 @@
     if (before.tier && before.tier !== mandateState.tier) {
       parts.push('Mandato → ' + mandateChipLabel());
     }
-    const carNow = effectiveCarBand();
     const askedBand = (effects || []).map(carBandFromEffect).filter(Boolean).pop();
     const outcomeEf = (effects || []).map(function (ef) { return String(ef || ''); }).find(function (key) {
       return key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano';
     });
-    if (outcomeEf) parts.push(carDecisionPhrase(outcomeEf.replace(/^car_/, ''), carNow, before.carShown));
+    if (outcomeEf) parts.push(carDecisionPhrase());
     else if (askedBand) parts.push(carBandOutcomePhrase(askedBand));
-    else if (before.carShown && before.carShown !== carNow) parts.push(carBandOutcomePhrase(carNow));
+    else if (before.carShown && before.carShown !== effectiveCarBand()) parts.push('CAR · ' + carBandOutcomePhrase(effectiveCarBand()));
     (effects || []).forEach((ef) => {
       const key = String(ef || '');
       if (!key || /^car_band_[sml]$/i.test(key)) return;
       if (key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano') return;
+      if (outcomeEf && (key === 'car_lock' || key === 'investor_support_risk' || key === 'car_plan_defer' || key === 'car_purse_apertada' || key === 'investor_tension')) return;
       const gloss = EFFECT_GLOSS_PT[key];
       if (gloss) parts.push(gloss);
     });
@@ -8035,7 +8064,6 @@
     let explicitBand = null;
     let outcome = null;
     const touched = [];
-    const bandBefore = effectiveCarBand();
     effects.forEach((ef) => {
       if (!ef) return;
       const key = String(ef);
@@ -8045,20 +8073,43 @@
       if (band) explicitBand = band;
       if (key === 'car_aceitar' || key === 'car_cortar' || key === 'car_plano') outcome = key.replace(/^car_/, '');
     });
-    if (outcome === 'aceitar') {
-      mandateState.carOutcome = 'aceitar';
-      mandateState.carBand = (currentMandate().car_band_max) || 'S';
-      bandSet = mandateState.carBand;
-    } else if (outcome === 'cortar') {
-      mandateState.carOutcome = 'cortar';
-      mandateState.carBand = stepDownCarBand(bandBefore);
-      bandSet = mandateState.carBand;
-    } else if (outcome === 'plano') {
-      mandateState.carOutcome = 'plano';
-      if (explicitBand) {
-        mandateState.carBand = explicitBand;
-        bandSet = explicitBand;
+    if (outcome) {
+      // Boutique lock: S locks / risks support / defers. M accept tightens the purse.
+      // Cortar or plano on M is tension and does not open M. L is out of mandate:
+      // only corte or plano, and neither raises the runway to L.
+      const ask = explicitBand || 'S';
+      mandateState.carOutcome = outcome;
+      mandateState.carAsk = ask;
+      let nextBand = 'S';
+      let posture = 'lock';
+      if (outcome === 'aceitar' && ask === 'M') {
+        nextBand = 'M';
+        posture = 'purse_tight';
+      } else if (outcome === 'aceitar') {
+        nextBand = 'S';
+        posture = 'lock';
+      } else if (outcome === 'cortar' && ask === 'S') {
+        nextBand = 'S';
+        posture = 'support_risk';
+      } else if (outcome === 'cortar' && ask === 'L') {
+        nextBand = 'S';
+        posture = 'cut_l';
+      } else if (outcome === 'cortar') {
+        nextBand = 'S';
+        posture = 'tension';
+      } else if (outcome === 'plano' && ask === 'S') {
+        nextBand = 'S';
+        posture = 'defer';
+      } else if (outcome === 'plano' && ask === 'L') {
+        nextBand = 'S';
+        posture = 'defer_l';
+      } else if (outcome === 'plano') {
+        nextBand = 'S';
+        posture = 'tension_plan';
       }
+      mandateState.carBand = nextBand;
+      mandateState.carPosture = posture;
+      bandSet = nextBand;
     } else if (explicitBand) {
       mandateState.carBand = explicitBand;
       bandSet = explicitBand;
@@ -8552,8 +8603,9 @@
         if (choices.length) {
           actionsHtml = noteHtml + choices.map((c, i) => {
             const cid = String(c.id || '');
-            const isBand = cid.indexOf('band_') === 0 || cid.indexOf('plano_') === 0;
-            const cls = (cid === 'aceitar' ? 'mail-cta-primary' : (isBand ? 'mail-cta-band' : (i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary')))
+            const isPlan = cid.indexOf('plano') === 0 || cid.indexOf('band_') === 0;
+            const isAccept = cid.indexOf('aceitar') === 0;
+            const cls = (isAccept ? 'mail-cta-primary' : (isPlan ? 'mail-cta-band' : (i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary')))
               + (answered === c.id ? ' is-chosen' : '');
             return '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(c.id) + '" data-mail-letter="' + escapeHtml(letter.id) + '">' + escapeHtml(c.label) + '</button>';
           }).join('');
@@ -9142,15 +9194,21 @@
         carBand: (typeof mandateState !== 'undefined' && mandateState.carBand && BAND_RANK[mandateState.carBand])
           ? mandateState.carBand
           : null,
-        carOutcome: (typeof mandateState !== 'undefined' && CAR_OUTCOME_SUFFIX[mandateState.carOutcome])
+        carOutcome: (typeof mandateState !== 'undefined' && (mandateState.carOutcome === 'aceitar' || mandateState.carOutcome === 'cortar' || mandateState.carOutcome === 'plano'))
           ? mandateState.carOutcome
+          : null,
+        carPosture: (typeof mandateState !== 'undefined' && CAR_POSTURE_PT[mandateState.carPosture])
+          ? mandateState.carPosture
+          : null,
+        carAsk: (typeof mandateState !== 'undefined' && BAND_RANK[mandateState.carAsk])
+          ? mandateState.carAsk
           : null,
         acknowledged: !!(typeof mandateState !== 'undefined' && mandateState.acknowledged),
         letterRead: !!(typeof mandateState !== 'undefined' && mandateState.letterRead),
         skip: !!(typeof mandateState !== 'undefined' && mandateState.skip)
       };
     } catch (_) {
-      mandateCopy = { tier: 'boutique', carBand: null, carOutcome: null, acknowledged: false, letterRead: false, skip: false };
+      mandateCopy = { tier: 'boutique', carBand: null, carOutcome: null, carPosture: null, carAsk: null, acknowledged: false, letterRead: false, skip: false };
     }
     return {
       v: 1,
@@ -9267,6 +9325,8 @@
       mandateState.carOutcome = (ms.carOutcome === 'aceitar' || ms.carOutcome === 'cortar' || ms.carOutcome === 'plano')
         ? ms.carOutcome
         : null;
+      mandateState.carPosture = CAR_POSTURE_PT[ms.carPosture] ? ms.carPosture : null;
+      mandateState.carAsk = BAND_RANK[ms.carAsk] ? ms.carAsk : null;
       mandateState.acknowledged = !!ms.acknowledged;
       mandateState.letterRead = !!ms.letterRead;
       mandateState.skip = !!ms.skip;
