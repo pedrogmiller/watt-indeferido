@@ -5957,7 +5957,8 @@
     acknowledged: false,
     letterRead: false,
     skip: false,
-    pendingOpenOpts: null
+    pendingOpenOpts: null,
+    car_band: null  // player CAR override from mail: 'S'|'M'|'L'|null
   };
 
   function resolveMandateQuery() {
@@ -5984,7 +5985,19 @@
   }
 
   function currentMandate() {
-    return MANDATE_TIERS[mandateState.tier] || MANDATE_TIERS.boutique;
+    const base = MANDATE_TIERS[mandateState.tier] || MANDATE_TIERS.boutique;
+    const ov = mandateState.car_band;
+    if (!ov || !BAND_RANK[ov]) return base;
+    // CAR mail request: HUD chip + soft-unlock lots at/under the requested band.
+    // equity_band_max follows so M/L lots (matched car+equity) actually unlock; equity HUD label stays tier.
+    const out = Object.assign({}, base, {
+      car_band_max: ov,
+      car_purse_label: 'CAR · banda ' + ov
+    });
+    if ((BAND_RANK[ov] || 0) > (BAND_RANK[base.equity_band_max] || 0)) {
+      out.equity_band_max = ov;
+    }
+    return out;
   }
 
   function mandateSoftLockEnabled() {
@@ -7806,13 +7819,111 @@
     return mkeys.length ? Math.max.apply(null, mkeys) : 6;
   }
 
+  const MAIL_EFFECT_LABEL_PT = {
+    car_band_s: 'CAR · banda S',
+    car_band_m: 'CAR · banda M',
+    car_band_l: 'CAR · banda L',
+    car_request_sent: 'Pedido CAR enviado aos investidores',
+    cash_at_risk_request: 'Pedido de Cash at Risk enviado',
+    'investor_patience_-1': 'Investidores · paciência -1',
+    'investor_patience_-2': 'Investidores · paciência -2',
+    investor_plan_sent: 'Plano enviado aos investidores',
+    land_option_open: 'Opção de terreno aberta',
+    'land_talk_+1': 'Negociação de terreno +1',
+    'land_miss_+1': 'Terreno · oportunidade perdida',
+    dd_started: 'Due diligence iniciada',
+    'dd_delay_+1': 'Due diligence · atraso +1',
+    dossier_unlock: 'Dossier desbloqueado',
+    'risk_camara_+1': 'Risco Câmara +1',
+    'risk_camara_+2': 'Risco Câmara +2',
+    'risk_camara_-1': 'Risco Câmara -1',
+    'risk_community_+1': 'Risco comunidade +1',
+    'risk_community_-1': 'Risco comunidade -1',
+    'risk_media_+1': 'Risco media +1',
+    'risk_media_-1': 'Risco media -1',
+    'delay_pip_+1': 'PIP · atraso +1',
+    'delay_pip_+2': 'PIP · atraso +2',
+    'delay_env_+1': 'Ambiente · atraso +1',
+    'delay_land_+1': 'Terreno · atraso +1',
+    'delay_ligacao_+1': 'Ligação · atraso +1',
+    'caducidade_risk_+1': 'Risco caducidade +1',
+    'caducidade_risk_+2': 'Risco caducidade +2',
+    'caducidade_risk_-1': 'Risco caducidade -1',
+    value_add_commit: 'Value-add confirmado',
+    'value_add_delay_+1': 'Value-add · atraso +1',
+    hint_value_add: 'Pista value-add',
+    reequip_study: 'Estudo de reequipamento',
+    reequip_defer: 'Reequipamento adiado',
+    bess_dev_flag: 'BESS em desenvolvimento',
+    fa_bess_apply: 'FA BESS · candidatura',
+    fa_bess_wait: 'FA BESS · aguardar',
+    fa_bess_skip: 'FA BESS · passar',
+    apa_track_start: 'APA · processo iniciado',
+    bank_seed_seen: 'Banco · seed visto',
+    dgeg_obligations_seen: 'DGEG · obrigações vistas',
+    rede_calendar_seen: 'Rede · calendário visto',
+    competitor_seen: 'Concorrente visto',
+    dica_ack: 'Dica registada',
+    capex_rede_flag: 'Capex rede assinalado',
+    'cash_at_risk_+1': 'Cash at Risk +1'
+  };
+
+  function mailEffectLabelPt(ef) {
+    const key = String(ef || '');
+    if (MAIL_EFFECT_LABEL_PT[key]) return MAIL_EFFECT_LABEL_PT[key];
+    // Heuristic: foo_+1 / foo_-1
+    const m = key.match(/^(.*?)_([+-]\d+)$/);
+    if (m) return m[1].replace(/_/g, ' ') + ' ' + m[2];
+    return key.replace(/_/g, ' ');
+  }
+
+  function toastForMailChoice(choice, effects) {
+    const id = choice && choice.id;
+    if (id === 'ask_car_s') return 'CAR · banda S — HUD e lotes actualizados';
+    if (id === 'ask_car_m') return 'CAR · banda M — HUD e lotes actualizados';
+    if (id === 'ask_car_l') return 'CAR · banda L — HUD e lotes actualizados';
+    if (id === 'delay') return 'Pedido de tempo — paciência dos investidores -1';
+    const list = Array.isArray(effects) ? effects : [];
+    if (list.indexOf('car_band_s') !== -1) return 'CAR · banda S — HUD e lotes actualizados';
+    if (list.indexOf('car_band_m') !== -1) return 'CAR · banda M — HUD e lotes actualizados';
+    if (list.indexOf('car_band_l') !== -1) return 'CAR · banda L — HUD e lotes actualizados';
+    if (list.indexOf('investor_patience_-1') !== -1) return 'Investidores · paciência -1';
+    if (list.indexOf('investor_patience_-2') !== -1) return 'Investidores · paciência -2';
+    if (list.indexOf('car_request_sent') !== -1) return 'Pedido CAR enviado aos investidores';
+    const labels = list.map(mailEffectLabelPt).filter(Boolean);
+    if (labels.length) return labels[0] + (labels.length > 1 ? ' · +' + (labels.length - 1) : '');
+    if (choice && choice.label) return choice.label;
+    return null;
+  }
+
+  function setCarBandOverride(band) {
+    if (!band || !BAND_RANK[band]) return false;
+    mandateState.car_band = band;
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
+    try { if (typeof renderAuctionLots === 'function') renderAuctionLots(); } catch (_) {}
+    try { if (typeof scheduleSave === 'function') scheduleSave('car-band'); } catch (_) {}
+    return true;
+  }
+
   function applyMailEffects(effects) {
-    if (!Array.isArray(effects) || !effects.length) return;
+    if (!Array.isArray(effects) || !effects.length) return { carBand: null, messages: [] };
+    const messages = [];
+    let carBand = null;
     effects.forEach((ef) => {
       if (!ef) return;
       const key = String(ef);
       mailLoop.tags[key] = (mailLoop.tags[key] || 0) + 1;
+      if (key === 'car_band_s') carBand = 'S';
+      else if (key === 'car_band_m') carBand = 'M';
+      else if (key === 'car_band_l') carBand = 'L';
+      else if (key === 'car_request_sent') messages.push(mailEffectLabelPt(key));
+      else if (key === 'investor_patience_-1' || key === 'investor_patience_-2') messages.push(mailEffectLabelPt(key));
+      else if (!/^car_band_[sml]$/.test(key)) {
+        const pt = mailEffectLabelPt(key);
+        if (pt) messages.push(pt);
+      }
     });
+    if (carBand) setCarBandOverride(carBand);
     // Joker eligibility aliases
     if ((mailLoop.tags.value_add_commit || mailLoop.tags.bess_dev_flag) && !mailLoop.tags.bess_dev_started) {
       mailLoop.tags.bess_dev_started = 1;
@@ -7820,6 +7931,7 @@
     maybeRaisePhaseFromEffects(effects);
     try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
     try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+    return { carBand: carBand, messages: messages };
   }
 
   function getSkinById(skeletonId, skinId, pack) {
@@ -8644,11 +8756,13 @@
           const letter = mailState.items.find((m) => m.id === letterId);
           const choice = letter && (letter.choices || []).find((c) => c.id === choiceId);
           const effectList = (choice && choice.effects) ? choice.effects.slice() : [];
-          const effects = effectList.length ? effectList.join(', ') : '';
           if (typeof applyMailEffects === 'function') applyMailEffects(effectList);
           if (letterId) markLetterRead(letterId);
           scheduleSave('mail-choice');
-          showToast('Escolha · ' + choiceId + (effects ? ' · ' + effects : ''));
+          const toastMsg = (typeof toastForMailChoice === 'function')
+            ? toastForMailChoice(choice, effectList)
+            : null;
+          showToast(toastMsg || ('Escolha · ' + (choiceId || 'ok')));
           renderInboxBody();
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
@@ -8661,7 +8775,26 @@
         }
         const cta = e.target.closest('[data-mail-cta]');
         if (cta) {
-          showToast('Mock — acção ainda stub');
+          const letterId = cta.getAttribute('data-mail-cta') || mailState.activeId;
+          const letter = mailState.items.find((m) => m.id === letterId);
+          let choice = null;
+          let effectList = [];
+          if (letter && Array.isArray(letter.choices) && letter.choices.length) {
+            choice = letter.choices[0];
+            effectList = (choice.effects || []).slice();
+          } else if (letter && Array.isArray(letter.effects) && letter.effects.length) {
+            effectList = letter.effects.slice();
+          }
+          if (effectList.length && typeof applyMailEffects === 'function') applyMailEffects(effectList);
+          if (letterId) markLetterRead(letterId);
+          scheduleSave('mail-cta');
+          const toastMsg = (typeof toastForMailChoice === 'function')
+            ? toastForMailChoice(choice, effectList)
+            : null;
+          showToast(toastMsg || (letter && letter.cta) || 'Acção aplicada');
+          renderInboxBody();
+          try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+          try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
           return;
         }
       });
@@ -8846,14 +8979,16 @@
     }
     let mandateCopy = null;
     try {
+      const carOv = (typeof mandateState !== 'undefined' && mandateState.car_band) || null;
       mandateCopy = {
         tier: (typeof mandateState !== 'undefined' && mandateState.tier) || 'boutique',
         acknowledged: !!(typeof mandateState !== 'undefined' && mandateState.acknowledged),
         letterRead: !!(typeof mandateState !== 'undefined' && mandateState.letterRead),
-        skip: !!(typeof mandateState !== 'undefined' && mandateState.skip)
+        skip: !!(typeof mandateState !== 'undefined' && mandateState.skip),
+        car_band: (carOv === 'S' || carOv === 'M' || carOv === 'L') ? carOv : null
       };
     } catch (_) {
-      mandateCopy = { tier: 'boutique', acknowledged: false, letterRead: false, skip: false };
+      mandateCopy = { tier: 'boutique', acknowledged: false, letterRead: false, skip: false, car_band: null };
     }
     return {
       v: 1,
@@ -8969,6 +9104,8 @@
       mandateState.acknowledged = !!ms.acknowledged;
       mandateState.letterRead = !!ms.letterRead;
       mandateState.skip = !!ms.skip;
+      const carOv = ms.car_band;
+      mandateState.car_band = (carOv === 'S' || carOv === 'M' || carOv === 'L') ? carOv : null;
       // Query can still override tier / skip after hydrate via resolveMandateQuery in initMandateUi
     }
     if (blob.mailLoop && typeof mailLoop !== 'undefined') {
