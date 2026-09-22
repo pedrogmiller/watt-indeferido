@@ -3912,6 +3912,366 @@
     flex: 1 1 auto;
   }
 
+
+  /* ═══ Sala do ativo ═══ */
+  .asset-room {
+    position: fixed;
+    inset: 0;
+    z-index: 8600;
+    display: none;
+    flex-direction: column;
+    background: #f1f5f9;
+    color: var(--text-main);
+  }
+  .asset-room.open { display: flex; }
+
+  .asset-room-chrome {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #e2e8f0;
+    border-bottom: 1px solid #cbd5e1;
+    color: #334155;
+  }
+  .asset-room-chrome-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .asset-room-chrome-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .asset-room-back {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .asset-room-back:hover { background: #f8fafc; color: #0f172a; }
+  .asset-room-close {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: #64748b;
+  }
+  .asset-room-close:hover { color: #0f172a; background: #f8fafc; }
+
+  .asset-room-scroll {
+    flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 16px 40px;
+  }
+  .asset-room-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .asset-zone {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+  .asset-zone-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  .asset-zone-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 4px;
+  }
+  .asset-tension {
+    font-size: 13px;
+    font-weight: 600;
+    color: #b91c1c;
+    margin: 6px 0 12px;
+    line-height: 1.35;
+  }
+  .asset-tension.tone-amber { color: #b45309; }
+  .asset-tension.tone-green { color: #15803d; }
+  .asset-tension.tone-red { color: #b91c1c; }
+
+  .asset-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 14px;
+  }
+  @media (min-width: 640px) {
+    .asset-meta-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  .asset-meta-cell .k {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 2px;
+  }
+  .asset-meta-cell .v {
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: #0f172a;
+  }
+
+  .asset-hyp {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #7c3aed;
+    background: #f5f3ff;
+    border: 1px solid #ddd6fe;
+    border-radius: 999px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .asset-vital-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  @media (min-width: 640px) {
+    .asset-vital-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  .asset-vital-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .asset-vital-card .k {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
+  .asset-vital-card .v {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .asset-vital-card .v.tone-red { color: #dc2626; }
+  .asset-vital-card .v.tone-amber { color: #d97706; }
+  .asset-vital-card .v.tone-green { color: #16a34a; }
+  .asset-vital-card .v.muted { color: #94a3b8; font-weight: 600; }
+  .asset-vital-card .sub {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  .asset-trc-bar {
+    display: flex;
+    height: 18px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+  }
+  .asset-trc-seg {
+    height: 100%;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+    min-width: 0;
+  }
+  .asset-trc-seg:hover { filter: brightness(1.08); }
+  .asset-trc-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #475569;
+  }
+  .asset-trc-legend button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .asset-trc-legend button:hover { color: #0f172a; }
+  .asset-trc-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .asset-cta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .asset-cta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    width: 100%;
+    font: inherit;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 14px;
+    cursor: pointer;
+    color: #007AFF;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  .asset-cta:hover:not(:disabled) {
+    border-color: rgba(0, 122, 255, 0.45);
+    background: #f0f7ff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+  }
+  .asset-cta:disabled {
+    cursor: not-allowed;
+    color: #94a3b8;
+    background: #f8fafc;
+  }
+  .asset-cta-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: inherit;
+  }
+  .asset-cta-sub {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .asset-cta:disabled .asset-cta-sub { color: #94a3b8; }
+  .asset-cta-chip {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 3px 8px;
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+  .asset-cta-chip.gated {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+  .asset-cta-chip.mission {
+    background: #ffedd5;
+    color: #c2410c;
+  }
+
+  .asset-opt-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .asset-opt-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #f8fafc;
+  }
+  .asset-opt-card.done { opacity: 0.72; }
+  .asset-opt-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .asset-opt-card p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0 0 8px;
+    line-height: 1.4;
+  }
+  .asset-opt-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .asset-opt-meta span { color: #64748b; }
+  .asset-opt-meta strong { color: #0f172a; font-weight: 700; }
+  .asset-opt-card .btn-confirm {
+    background: #007AFF;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .asset-opt-card .btn-confirm:disabled {
+    background: #cbd5e1;
+    color: #64748b;
+    cursor: not-allowed;
+  }
+
+  .asset-mail-stub {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  .node-card { cursor: pointer; }
+  .card-open-hint {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    text-align: center;
+    padding-top: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .asset-room-chrome { padding: 10px 12px; }
+    .asset-room-scroll { padding: 12px 10px 32px; }
+    .asset-zone { padding: 14px; }
+  }
+
 </style>
 </head>
 <body>
@@ -4382,6 +4742,27 @@
   </div>
 </div>
 
+<!-- ═══ Sala do ativo ═══ -->
+<div class="asset-room" id="assetRoom" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="assetRoomTitle">
+  <header class="asset-room-chrome">
+    <div class="asset-room-chrome-title" id="assetRoomTitle">SE Ourique</div>
+    <div class="asset-room-chrome-actions">
+      <button type="button" class="asset-room-back" id="assetRoomBack" aria-label="Voltar ao portefólio">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Voltar ao portefólio
+      </button>
+      <button type="button" class="asset-room-close" id="assetRoomClose" aria-label="Fechar sala do ativo" title="Fechar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="asset-room-scroll" id="assetRoomScroll">
+    <div class="asset-room-inner" id="assetRoomBody">
+      <!-- preenchido por renderAssetRoom -->
+    </div>
+  </div>
+</div>
+
 <!-- ═══ WATT COACH ═══ -->
 
 <!-- ═══ Mandate briefing / investor letter (Gate 1 mock) ═══ -->
@@ -4796,20 +5177,24 @@
               </div>
             </div>
 
-            <button class="btn-secondary" type="button" data-open="${n.id}">Gerir Otimizações</button>
+            <div class="card-open-hint">Abrir sala do ativo</div>
           </div>
         </article>`;
     }).join('');
 
     grid.style.display = expanded.length ? '' : 'none';
 
-    grid.querySelectorAll('[data-open]').forEach(btn => {
-      btn.addEventListener('click', () => openDrawer(btn.getAttribute('data-open')));
-    });
     grid.querySelectorAll('[data-minimize]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         minimizeNode(btn.getAttribute('data-minimize'));
+      });
+    });
+    grid.querySelectorAll('.node-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest && e.target.closest('[data-minimize]')) return;
+        const id = card.getAttribute('data-node');
+        if (id) openAssetRoom(id);
       });
     });
     bindTooltips(grid);
@@ -4990,6 +5375,300 @@
     document.getElementById('drawer').setAttribute('aria-hidden', 'true');
   }
 
+  /* ═══ Sala do ativo ═══ */
+  const assetRoomState = { open: false, nodeId: null, focus: null };
+
+  function assetOfftakeLabel(node) {
+    const lr = (typeof auctionState !== 'undefined') ? auctionState.lastResult : null;
+    if (lr && !lr.lost && lr.lot && lr.lot.id === node.id && lr.bid != null) {
+      return String(lr.bid).replace('.', ',') + ' €/MWh';
+    }
+    if (node.dossier && node.dossier.preco) {
+      return node.dossier.preco + ' <span class="asset-hyp">HIPÓTESE</span>';
+    }
+    return '— €/MWh <span class="asset-hyp">HIPÓTESE</span>';
+  }
+
+  function assetMwLabel(node) {
+    try {
+      if (typeof AUCTION_WAVES !== 'undefined') {
+        for (let w = 0; w < AUCTION_WAVES.length; w++) {
+          const lot = (AUCTION_WAVES[w] || []).find((l) => l.id === node.id);
+          if (lot && lot.mw) return lot.mw;
+        }
+      }
+    } catch (_) {}
+    return node.capacity || '—';
+  }
+
+  function assetCarBandLabel() {
+    try {
+      const m = (typeof currentMandate === 'function') ? currentMandate() : null;
+      if (m && m.car_band_max) return 'banda ' + m.car_band_max;
+    } catch (_) {}
+    return 'banda S';
+  }
+
+  function assetPhaseDeadline() {
+    if (typeof mailLoop === 'undefined' || !mailLoop.active || !state.auctionWon) {
+      return { phase: 'TRC', deadline: '—' };
+    }
+    const phase = mailLoop.projectPhase || 'trc_won';
+    const phaseLbl = (typeof phaseLabelPt === 'function') ? phaseLabelPt(phase) : phase;
+    const nearest = (typeof nearestDeadline === 'function') ? nearestDeadline(mailLoop) : null;
+    let deadline = '—';
+    if (nearest) {
+      const clock = mailLoop.month | 0;
+      const deltaM = nearest.atMonth - clock;
+      const when = deltaM === 0
+        ? 'este mês'
+        : (deltaM > 0
+          ? ('M' + nearest.atMonth + ' · em ' + deltaM + 'm')
+          : ('M' + nearest.atMonth + ' · passou'));
+      deadline = nearest.label + ' · ' + when;
+    }
+    return { phase: phaseLbl, deadline: deadline };
+  }
+
+  function assetTrcParts(node) {
+    const t = node.trc || { solar: 0, wind: 0, bess: 0, free: 100 };
+    const used = Math.max(0, 100 - (t.free | 0));
+    return { t: t, used: used, free: t.free | 0 };
+  }
+
+  function renderAssetRoomOptimizations(node) {
+    const nodeId = node.id;
+    const applied = state.appliedActions[nodeId] || new Set();
+    const list = actions[nodeId] || actions.ourique || [];
+    return list.map((a) => {
+      const done = applied.has(a.id);
+      const isFarm = a.id === 'farm';
+      const blockedFarm = isFarm && !(node.van > 0);
+      const disabled = done || blockedFarm;
+      let btnLabel = done ? 'Já aplicado' : 'Começar missão';
+      if (blockedFarm && !done) btnLabel = 'Bloqueado · NPV ≤ 0';
+      return `
+        <div class="asset-opt-card${done ? ' done' : ''}" data-asset-opt="${a.id}">
+          <h4>${a.title}${done ? ' ✓' : ''}</h4>
+          <p>${a.desc}</p>
+          <div class="asset-opt-meta">
+            <span>CAPEX <strong class="num">${a.capex}</strong></span>
+            <span>Licenciamento <strong>${a.tempo}</strong></span>
+            <span>Impacto NPV <strong class="num">${a.nav}</strong></span>
+          </div>
+          <button type="button" class="btn-confirm" data-asset-confirm="${nodeId}:${a.id}" ${disabled ? 'disabled' : ''}>${btnLabel}</button>
+        </div>`;
+    }).join('');
+  }
+
+  function focusAssetHybridizacao() {
+    const el = document.getElementById('assetZoneHibridizacao');
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.style.boxShadow = '0 0 0 3px rgba(0,122,255,0.28)';
+    setTimeout(() => { el.style.boxShadow = ''; }, 900);
+  }
+
+  function renderAssetRoom() {
+    const body = document.getElementById('assetRoomBody');
+    const titleEl = document.getElementById('assetRoomTitle');
+    if (!body || !assetRoomState.nodeId) return;
+    const node = nodes.find((n) => n.id === assetRoomState.nodeId);
+    if (!node) return;
+    if (titleEl) titleEl.textContent = node.name;
+
+    const tf = assetTrcParts(node);
+    const t = tf.t;
+    const pd = assetPhaseDeadline();
+    const offtake = assetOfftakeLabel(node);
+    const mw = assetMwLabel(node);
+    const vTone = (typeof vanTone === 'function') ? vanTone(node) : (node.van > 0 ? 'green' : 'red');
+    const tension = node.tensao || 'Barato no leilão · agora remenda';
+    const tensionTone = node.tensaoTone || 'red';
+    const npvStr = (typeof fmtVan === 'function') ? fmtVan(node.van) : (String(node.van).replace('.', ',') + ' M€');
+    const carBand = assetCarBandLabel();
+    const missionOpen = !!node.missionOpen;
+    const phase = (typeof mailLoop !== 'undefined' && mailLoop.active)
+      ? (mailLoop.projectPhase || 'trc_won')
+      : 'trc_won';
+    const phaseIdx = (typeof phaseIndex === 'function') ? phaseIndex(phase) : 0;
+
+    const cta = (id, title, sub, chip, chipClass, disabled, reason) => {
+      const chipHtml = chip
+        ? `<span class="asset-cta-chip ${chipClass || ''}">${chip}</span>`
+        : '';
+      const subText = disabled && reason ? reason : sub;
+      return `<button type="button" class="asset-cta" data-asset-cta="${id}" ${disabled ? 'disabled' : ''}>
+        <span><div class="asset-cta-title">${title}</div><div class="asset-cta-sub">${subText}</div></span>
+        ${chipHtml}
+      </button>`;
+    };
+
+    const landOpen = true;
+    const pipOpen = phaseIdx >= ((typeof phaseIndex === 'function') ? phaseIndex('land') : 1);
+    const offerOpen = phaseIdx >= ((typeof phaseIndex === 'function') ? phaseIndex('pip') : 2);
+    const farmOk = node.van > 0;
+
+    const ctas = [
+      cta('terrenos', 'Terrenos / promessas', 'Opções e DD de terreno',
+        missionOpen ? 'Missão' : 'Aberto', missionOpen ? 'mission' : '', !landOpen, 'Aguarda fase'),
+      cta('pip', 'PIP / ICNF / Câmara', 'Licenciamento e hostilidade local',
+        pipOpen ? 'Aberto' : 'Fase', pipOpen ? '' : 'gated', !pipOpen, 'Desbloqueia após terreno'),
+      cta('hibridizacao', 'Hibridização / BESS / sobreequip', 'Abrir otimizações deste TRC',
+        'Otimizar', '', false, ''),
+      cta('oferta', 'Oferta (PPA / merchant)', 'Captura e contrato de offtake',
+        offerOpen ? 'Aberto' : 'Fase', offerOpen ? '' : 'gated', !offerOpen, 'Desbloqueia mais tarde na fase'),
+      cta('farmdown', 'Farm-down / refinanciar',
+        farmOk ? 'Cessão parcial / refinanciamento' : 'Indisponível',
+        farmOk ? 'Aberto' : 'Bloqueado', farmOk ? '' : 'gated', !farmOk, 'Requer NPV > 0'),
+    ].join('');
+
+    body.innerHTML = `
+      <section class="asset-zone" id="assetZoneContrato" aria-label="Cabeçalho contrato">
+        <div class="asset-zone-kicker">Cabeçalho contrato</div>
+        <h2 class="asset-zone-title">${node.name}</h2>
+        <div class="asset-tension tone-${tensionTone}">${tension}</div>
+        <div class="asset-meta-grid">
+          <div class="asset-meta-cell"><div class="k">Potência / TRC</div><div class="v num">${mw} · ${tf.used}% usado · ${tf.free}% livre</div></div>
+          <div class="asset-meta-cell"><div class="k">Preço offtake</div><div class="v num">${offtake}</div></div>
+          <div class="asset-meta-cell"><div class="k">Fase do projecto</div><div class="v">${pd.phase}</div></div>
+          <div class="asset-meta-cell"><div class="k">Próximo prazo</div><div class="v">${pd.deadline}</div></div>
+        </div>
+      </section>
+
+      <section class="asset-zone" id="assetZoneVital" aria-label="Vitalidade">
+        <div class="asset-zone-kicker">Vitalidade <span class="asset-hyp">HIPÓTESE</span></div>
+        <div class="asset-vital-grid">
+          <div class="asset-vital-card">
+            <div class="k">NPV</div>
+            <div class="v tone-${vTone} num">${npvStr}</div>
+            <div class="sub">Indicativo · sem M€ finais inventados</div>
+          </div>
+          <div class="asset-vital-card">
+            <div class="k">Captura <span class="asset-hyp">HIPÓTESE</span></div>
+            <div class="v muted num">—</div>
+            <div class="sub">A calibrar</div>
+          </div>
+          <div class="asset-vital-card">
+            <div class="k">CAR deste ativo</div>
+            <div class="v">${carBand}</div>
+            <div class="sub">Mandato · banda</div>
+          </div>
+          <div class="asset-vital-card">
+            <div class="k">Dívida PF</div>
+            <div class="v muted num">${(node.dossier && node.dossier.dscr) ? ('DSCR ' + node.dossier.dscr) : '—'}</div>
+            <div class="sub">Se relevante</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="asset-zone" id="assetZoneTrc" aria-label="Mapa TRC">
+        <div class="asset-zone-kicker">Mapa TRC</div>
+        <div class="asset-trc-bar" role="img" aria-label="Segmentos TRC">
+          <div class="asset-trc-seg" data-trc-seg="solar" style="width:${t.solar}%;background:var(--solar)" title="Solar ${t.solar}%"></div>
+          <div class="asset-trc-seg" data-trc-seg="wind" style="width:${t.wind}%;background:var(--wind)" title="Eólico ${t.wind}%"></div>
+          <div class="asset-trc-seg" data-trc-seg="bess" style="width:${t.bess}%;background:var(--bess)" title="BESS ${t.bess}%"></div>
+          <div class="asset-trc-seg" data-trc-seg="free" style="width:${t.free}%;background:#e2e8f0" title="Livre ${t.free}%"></div>
+        </div>
+        <div class="asset-trc-legend">
+          <button type="button" data-trc-seg="solar"><span class="asset-trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</button>
+          <button type="button" data-trc-seg="wind"><span class="asset-trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</button>
+          <button type="button" data-trc-seg="bess"><span class="asset-trc-dot" style="background:var(--bess)"></span>BESS ${t.bess}%</button>
+          <button type="button" data-trc-seg="free"><span class="asset-trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</button>
+        </div>
+      </section>
+
+      <section class="asset-zone" id="assetZoneActos" aria-label="Actos">
+        <div class="asset-zone-kicker">Actos</div>
+        <div class="asset-cta-list">${ctas}</div>
+      </section>
+
+      <section class="asset-zone" id="assetZoneHibridizacao" aria-label="Hibridização BESS sobreequipamento">
+        <div class="asset-zone-kicker">Hibridização / BESS / sobreequip</div>
+        <p style="font-size:13px;color:#64748b;margin:0 0 4px;line-height:1.45">Otimizações deste TRC — o mesmo conteúdo do dossier antigo, agora na sala.</p>
+        <div class="asset-opt-list">${renderAssetRoomOptimizations(node)}</div>
+      </section>
+
+      <section class="asset-zone" id="assetZoneMail" aria-label="Correio deste ativo">
+        <div class="asset-zone-kicker">Correio deste ativo</div>
+        <p class="asset-mail-stub">Correio deste ativo · em breve</p>
+      </section>
+    `;
+
+    body.querySelectorAll('[data-trc-seg]').forEach((el) => {
+      el.addEventListener('click', () => focusAssetHybridizacao());
+    });
+    body.querySelectorAll('[data-asset-cta]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-asset-cta');
+        if (id === 'hibridizacao' || id === 'farmdown') {
+          focusAssetHybridizacao();
+          if (id === 'farmdown') {
+            const farm = body.querySelector('[data-asset-opt="farm"]');
+            if (farm) farm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else if (id === 'terrenos' || id === 'pip' || id === 'oferta') {
+          showToast('Em breve · acto de fase (mock)');
+        }
+      });
+    });
+    body.querySelectorAll('[data-asset-confirm]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const raw = btn.getAttribute('data-asset-confirm');
+        const parts = raw.split(':');
+        confirmAction(parts[0], parts[1]);
+      });
+    });
+
+    if (assetRoomState.focus === 'hibridizacao') {
+      requestAnimationFrame(() => focusAssetHybridizacao());
+      assetRoomState.focus = null;
+    }
+  }
+
+  function openAssetRoom(nodeId, opts) {
+    opts = opts || {};
+    const node = nodes.find((n) => n.id === nodeId);
+    if (!node) return;
+    if (typeof closeDrawer === 'function') closeDrawer();
+    assetRoomState.open = true;
+    assetRoomState.nodeId = nodeId;
+    assetRoomState.focus = opts.focus || null;
+    const room = document.getElementById('assetRoom');
+    if (room) {
+      room.classList.add('open');
+      room.setAttribute('aria-hidden', 'false');
+    }
+    renderAssetRoom();
+    const scroll = document.getElementById('assetRoomScroll');
+    if (scroll && !opts.focus) scroll.scrollTop = 0;
+  }
+
+  function closeAssetRoom() {
+    assetRoomState.open = false;
+    assetRoomState.nodeId = null;
+    assetRoomState.focus = null;
+    const room = document.getElementById('assetRoom');
+    if (room) {
+      room.classList.remove('open');
+      room.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function initAssetRoom() {
+    const back = document.getElementById('assetRoomBack');
+    const closeBtn = document.getElementById('assetRoomClose');
+    if (back) back.addEventListener('click', closeAssetRoom);
+    if (closeBtn) closeBtn.addEventListener('click', closeAssetRoom);
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (!assetRoomState.open) return;
+      e.stopPropagation();
+      closeAssetRoom();
+    }, true);
+  }
+
+
   function confirmAction(nodeId, actionId) {
     if (!state.appliedActions[nodeId]) state.appliedActions[nodeId] = new Set();
     if (state.appliedActions[nodeId].has(actionId)) return;
@@ -5038,7 +5717,11 @@
       text: `Ação confirmada: ${act ? act.title : actionId} — ${node.name}`,
     });
     renderActivity();
-    openDrawer(nodeId); // refresh drawer state
+    if (assetRoomState.open && assetRoomState.nodeId === nodeId) {
+      renderAssetRoom();
+    } else {
+      openDrawer(nodeId); // refresh drawer state
+    }
     showToast('Ação registada · KPIs atualizados');
     scheduleSave('confirm-action');
   }
@@ -9357,6 +10040,7 @@
     initCoach();
     initAuctionDraft();
     initInbox();
+    try { initAssetRoom(); } catch (_) {}
 
     if (resumed) {
       applyHydratedUi();
@@ -9380,6 +10064,7 @@
         }
         if (coachActive) return;
         if (mailState.open) return; // inbox handler (capture) owns Escape
+        if (assetRoomState.open) { closeAssetRoom(); return; }
         if (auctionState.open) { closeAuctionRoom(); return; }
         const sheet = document.getElementById('settingsSheet');
         if (sheet && sheet.classList.contains('open')) return; // settings handler owns Escape
