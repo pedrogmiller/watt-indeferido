@@ -48,3 +48,26 @@
   }
 }
 ```
+
+## Triggers (motor Gate 1+)
+
+Preferir **fase + deadline** a `month_offset` puro:
+
+```json
+"trigger": {
+  "when_phase": ["land", "pip"],
+  "or_deadline": "grid_agreement",
+  "month_offset": 1
+}
+```
+
+| Campo | Uso |
+|-------|-----|
+| `when_phase` | Lista de `project_phase` em que a carta pode aterrar |
+| `or_deadline` | Interrupt por data crítica (rede, TRC, CAR, joker) |
+| `month_offset` | Seed / fallback MVP; não é o motor de progresso |
+
+`project_phase` valores: `trc_won` · `land` · `pip` · `aia` · `licenca_producao` · `obra` · `cod`
+
+Fase sobe só via `effects[]` / tags (Economy + UI). Comunicação prévia / `obra` implica já `licenca_producao` + `aia` (ou PIP + não sujeição).
+

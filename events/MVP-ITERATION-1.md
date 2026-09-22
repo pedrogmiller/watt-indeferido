@@ -1,8 +1,14 @@
 # MVP iteração 1 — fluxo ↔ esqueletos (Ourique)
 
+
+## Motor (trancado 2026-09-22)
+
+- **Play** = salta ao próximo Correio / deadline (teto ~6 meses).
+- **Progresso** = `project_phase` do asset (`trc_won` → `land` → `pip` → `aia` → `licenca_producao` → `obra` → `cod`), não o mês civil.
+- M0–M6 abaixo = **seed de aterragens** para playtest; migrar triggers para `when_phase` + deadlines.
+
 Objectivo: **um loop jogável** do leilão ganho até ~M6, com pool mínimo de correio.  
 Analisa isto; depois cortamos / fundimos / acrescentamos.
-
 ## Como ler
 
 ```
@@ -154,3 +160,8 @@ Máx. 1 joker / ~3 meses; não no mesmo mês que `mail-rede-prazo-01` / Câmara 
 4. Reequipamento em M4 — cedo/tarde demais?  
 
 Depois da tua análise: cortamos o inventário e fechamos Gate 1 → polimos copy no Gate 2.
+
+## Implementação (console)
+
+- Schedule JSON: `mvp-schedule.json` — **advogado DD moved to M2** (M1 = terrenos + FYI only) so choice tags can unlock it on the next Play.
+- Play docs: `/workspace/ipp-console-light/MVP-PLAY.md`
