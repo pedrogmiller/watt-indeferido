@@ -6884,6 +6884,7 @@
   ];
 
   let coachQueue = [];
+  let coachWaitingForMesa = false; // tour parked while the € mandate gate is on screen
   let coachIndex = 0;
   coachActive = false;
   let coachDemoMode = false;
@@ -6974,9 +6975,31 @@
         const narrow = window.matchMedia && window.matchMedia('(max-width: 1000px)').matches;
         if (narrow && chips) return chips;
       }
-      return document.querySelector(selector);
+      const el = document.querySelector(selector);
+      return isCoachTargetVisible(el) ? el : null;
     } catch (_) {
       return null;
+    }
+  }
+
+  // A target inside a closed room (display:none) measures 0×0 at (0,0): treat it as missing,
+  // so the card centres instead of sitting in the top-left corner with a 12px spotlight.
+  function isCoachTargetVisible(el) {
+    if (!el || !el.isConnected) return false;
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    const cs = getComputedStyle(el);
+    if (cs.visibility === 'hidden' || cs.display === 'none') return false;
+    return true;
+  }
+
+  // Bring a live target into view (phone mesa scrolls) before measuring
+  function ensureCoachTargetInView(el) {
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (r.top < 0 || r.bottom > vh - 80) {
+      try { el.scrollIntoView({ block: 'center', inline: 'nearest' }); } catch (_) {}
     }
   }
 
@@ -7253,6 +7276,7 @@
     const data = normalizePayload(payload);
     const isStory = data.kind === 'storytelling';
     let target = isStory ? null : resolveTarget(data.ui_target);
+    if (target) ensureCoachTargetInView(target);
     let position = data.position;
     if (!isStory && !target) {
       position = 'center';
@@ -7356,6 +7380,7 @@
     document.getElementById('wattCoachCard').removeAttribute('data-caret');
     coachActive = false;
     root._coachLast = null;
+    if (opts.clearQueue) coachWaitingForMesa = false;
     if (opts.persist) markOnboardingDone();
     if (opts.clearQueue) {
       coachQueue = [];
@@ -7403,10 +7428,35 @@
     renderCoach(coachQueue[0]);
   }
 
+  // Returns true when the mesa is open. If the € mandate gate (briefing → letter) intercepts,
+  // the tour is parked (queue kept) and resumes from resumeCoachAfterMesaOpen().
   function openMesaAfterArrive() {
-    if (typeof openAuctionRoom === 'function') {
-      openAuctionRoom({ keepCoach: true });
-    }
+    if (typeof openAuctionRoom !== 'function') return true;
+    openAuctionRoom({ keepCoach: true });
+    if (typeof auctionState !== 'undefined' && auctionState.open) return true;
+    coachWaitingForMesa = true;
+    parkCoachForMandate();
+    return false;
+  }
+
+  function parkCoachForMandate() {
+    // Hide the coach so the briefing/letter (z 9200) is readable and clickable; keep the queue.
+    unbindTargetAdvance();
+    const root = document.getElementById('wattCoach');
+    root.classList.remove('open', 'has-spotlight');
+    root.setAttribute('aria-hidden', 'true');
+    document.getElementById('wattCoachSpotlight').hidden = true;
+    setVeilHole(null);
+    root._coachLast = null;
+    coachActive = false;
+  }
+
+  function resumeCoachAfterMesaOpen() {
+    if (!coachWaitingForMesa) return;
+    coachWaitingForMesa = false;
+    if (!coachQueue.length || coachIndex >= coachQueue.length) return;
+    // Wait for the mesa to lay out (lots / offer / consultant are rendered on open)
+    requestAnimationFrame(() => requestAnimationFrame(() => renderCoach(coachQueue[coachIndex])));
   }
 
   window.WattCoach = {
@@ -7432,7 +7482,11 @@
         // After last storytelling (A1b), open mesa before tutorial tips
         if (coachDemoMode && kind === 'storytelling') {
           const nxt = coachQueue[coachIndex + 1];
-          if (nxt && nxt.kind === 'tutorial') openMesaAfterArrive();
+          if (nxt && nxt.kind === 'tutorial' && !openMesaAfterArrive()) {
+            // Mandate briefing is up: advance the index, render once the mesa opens
+            coachIndex += 1;
+            return;
+          }
         }
         nextCoach();
       } else {
@@ -9189,6 +9243,7 @@
       startAuctionClock();
     }
     renderAuctionBadge();
+    try { if (typeof resumeCoachAfterMesaOpen === 'function') resumeCoachAfterMesaOpen(); } catch (_) {}
   }
 
   function syncAuctionExitGates() {
