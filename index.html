@@ -2889,6 +2889,9 @@
   .auction-clock-val.critical { color: #dc2626; animation: auctionPulse 1s ease infinite; }
   .auction-clock-val.paused { color: #64748b; }
   @keyframes auctionPulse { 50% { opacity: .55; } }
+  /* Compact clock for phone header (left rail with the full clock is hidden ≤1000px) */
+  .auction-kicker-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .auction-clock-mini { display: none; }
 
   .auction-abertura {
     flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -3081,6 +3084,13 @@
     .auction-left {
       display: none; /* replaced by sticky lot chips under header */
     }
+    .auction-clock-mini {
+      display: inline-flex; align-items: baseline; gap: 6px; flex: none;
+      padding: 2px 8px; border-radius: 999px;
+      background: #f8fafc; border: 1px solid var(--border-subtle);
+    }
+    .auction-clock-mini-label { font-size: 10px; font-weight: 500; color: var(--text-muted); }
+    .auction-clock-mini .auction-clock-val { font-size: 14px; line-height: 1.3; }
     .auction-mobile-sticky {
       display: block;
       position: sticky;
@@ -4834,7 +4844,7 @@
         <div class="auction-clock-row" aria-live="polite">
           <div>
             <div class="auction-clock-label">Tempo restante</div>
-            <div class="auction-clock-val" id="auctionClockVal">1:45</div>
+            <div class="auction-clock-val" id="auctionClockVal">2:00</div>
           </div>
         </div>
       </div>
@@ -4850,7 +4860,10 @@
       <div class="auction-mobile-sticky">
       <header class="auction-right-head">
         <div>
-          <div class="auction-kicker">Lote selecionado</div>
+          <div class="auction-kicker-row">
+            <div class="auction-kicker">Lote selecionado</div>
+            <div class="auction-clock-mini" id="auctionClockMini" role="timer" aria-label="Tempo restante"><span class="auction-clock-mini-label">Tempo restante</span><span class="auction-clock-val" id="auctionClockValMini">2:00</span></div>
+          </div>
           <div class="auction-title" id="auctionTitle">SE Ourique · Leilão</div>
           <div class="auction-sub" id="auctionSub" title="kV: tensão da subestação · MWp: potência máxima dos painéis">400/150 kV · zona de muito sol · 120 MWp · Câmara hostil</div>
         </div>
@@ -8100,7 +8113,7 @@
 
 
   /* ── Opening auction draft — B2 mesa (room inside console) ── */
-  const AUCTION_CLOCK_S = 105;
+  const AUCTION_CLOCK_S = 120; // 2:00 to decide which lot to bid on
   const AUCTION_ABERTURA_MS = 2800;
 
   const AUCTION_RIVALS = [
@@ -8364,14 +8377,17 @@
   }
 
   function renderAuctionClock() {
-    const el = document.getElementById('auctionClockVal');
-    if (!el) return;
-    el.textContent = auctionFmtClock(auctionState.clockLeft);
-    el.classList.remove('warn', 'critical', 'paused');
-    if (auctionState.clockPaused || auctionState.screen === 'abertura' || auctionState.screen === 'trap' || auctionState.screen === 'fora') {
-      el.classList.add('paused');
-    } else if (auctionState.clockLeft <= 20) el.classList.add('critical');
-    else if (auctionState.clockLeft <= 45) el.classList.add('warn');
+    // Desktop: left rail clock. Phone (≤1000px, left rail hidden): compact clock in the sticky header.
+    ['auctionClockVal', 'auctionClockValMini'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = auctionFmtClock(auctionState.clockLeft);
+      el.classList.remove('warn', 'critical', 'paused');
+      if (auctionState.clockPaused || auctionState.screen === 'abertura' || auctionState.screen === 'trap' || auctionState.screen === 'fora') {
+        el.classList.add('paused');
+      } else if (auctionState.clockLeft <= 20) el.classList.add('critical');
+      else if (auctionState.clockLeft <= 45) el.classList.add('warn');
+    });
   }
 
   let auctionPressureTimer = null;
@@ -8927,7 +8943,7 @@
       goHomeWithTrc();
       return;
     }
-    // Keep leftover clock — do not freeze / reset to 1:45
+    // Keep leftover clock — do not freeze / reset to 2:00
     if (auctionState.clockLeft <= 0) auctionState.clockLeft = Math.max(30, Math.floor(AUCTION_CLOCK_S / 3));
     selectAuctionLot(left[0].id);
     auctionState.screen = 'bid';
