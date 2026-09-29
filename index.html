@@ -3153,6 +3153,53 @@
     .auction-body { padding: 10px 12px 18px; }
   }
 
+  /* Phone mesa scroll containment: the card (not the room) scrolls.
+     Before: #auctionRoom was the scroller, and its 12px bottom padding plus the
+     gap above the footer let scrolled content show below/beside the sticky
+     «Enviar a oferta» bar. Now the shell fills the room down to the footer,
+     clips with rounded corners, and only .auction-body scrolls inside it. */
+  @media (max-width: 1000px) {
+    .auction-room { --auction-body-px: 16px; overflow: hidden; padding-bottom: 0; }
+    .auction-shell {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-height: 100%;
+      overflow: hidden;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+    .auction-right { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+    .auction-mobile-sticky { flex: none; position: relative; }
+    .auction-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      padding: 12px var(--auction-body-px) 0; /* no bottom padding: sticky bar sits flush */
+    }
+    .auction-screen.active { min-height: 100%; }
+    .auction-bid-scroll { flex: 1 0 auto; padding-bottom: 8px; }
+    #auctionScreenBid > .auction-actions {
+      position: sticky;
+      bottom: 0;
+      margin: auto calc(-1 * var(--auction-body-px)) 0;
+      padding: 10px var(--auction-body-px) 12px;
+      background: var(--bg-surface, #fff);
+      border-top: 1px solid var(--border-subtle);
+      box-shadow: 0 -6px 14px -10px rgba(15, 23, 42, 0.22);
+      z-index: 6;
+    }
+    /* Footer exactly as tall as the offset rooms use, so no strip opens above it */
+    body.footer-mock .mobile-tabbar { min-height: var(--mobile-tabbar-h); }
+  }
+  @media (max-width: 480px) {
+    .auction-room { --auction-body-px: 12px; padding: 6px 6px 0; }
+    .auction-body { padding-top: 10px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .auction-room {
       backdrop-filter: none;
@@ -7039,7 +7086,19 @@
       setVeilHole(null);
       return null;
     }
-    const r = el.getBoundingClientRect();
+    let r = el.getBoundingClientRect();
+    // Phone mesa: the card's .auction-body scrolls, so clip the hole to what is
+    // actually visible there (above the sticky «Enviar a oferta» bar).
+    const clipBox = el.closest && el.closest('.auction-body');
+    if (clipBox && /(auto|scroll)/.test(getComputedStyle(clipBox).overflowY)) {
+      const cb = clipBox.getBoundingClientRect();
+      let bottom = cb.bottom;
+      const bar = clipBox.querySelector('.auction-screen.active > .auction-actions');
+      if (bar && !bar.contains(el)) { const br = bar.getBoundingClientRect(); if (br.height > 0) bottom = Math.min(bottom, br.top); }
+      const top = Math.max(r.top, cb.top);
+      bottom = Math.min(r.bottom, bottom);
+      if (bottom - top > 8) r = { top: top, left: r.left, width: r.width, height: bottom - top, bottom: bottom, right: r.right };
+    }
     const pad = soft ? 12 : 6;
     const hole = {
       top: Math.max(0, r.top - pad),
