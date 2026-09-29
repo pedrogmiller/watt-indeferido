@@ -3352,6 +3352,24 @@
   }
   body.footer-mock .mobile-tabbar-hint { display: block; }
 
+  /* Mobile footer = real navigation: it must stay tappable above every room
+     (Correio 230 / 8620 over the sala, leilão 8500, sala 8600). Modals (mandato 9200,
+     tutorial 9990) still cover it on purpose. Rooms stop above the bar so nothing hides behind it. */
+  body.footer-mock { --mobile-tabbar-h: calc(76px + env(safe-area-inset-bottom, 0px)); }
+  body.footer-mock .mobile-tabbar { z-index: 9000; }
+  body.footer-mock .inbox-drawer { height: auto; bottom: var(--mobile-tabbar-h); }
+  body.footer-mock .asset-room,
+  body.footer-mock .auction-room { bottom: var(--mobile-tabbar-h); }
+  /* Floating Play belongs to Home only: over a room it would cover letter/sala buttons */
+  body.footer-mock:has(.inbox-drawer.open) #btnNextQ,
+  body.footer-mock:has(.asset-room.open) #btnNextQ,
+  body.footer-mock:has(.auction-room.open) #btnNextQ { display: none !important; }
+  .mobile-tabbar-btn.is-active { color: #007AFF; }
+  /* The dev hint must honour [hidden] (display:block above was beating it and it peeked out behind Play) */
+  body.footer-mock .mobile-tabbar-hint[hidden] { display: none !important; }
+  /* Toasts float above the Play button, not across it */
+  body.footer-mock .toast { bottom: calc(142px + env(safe-area-inset-bottom, 0px)); }
+
   /* ═══ Correio / Inbox mock ═══ */
 
   .header-home-btn {
@@ -5046,6 +5064,25 @@
   </div>
 </div>
 
+
+<!-- ═══ MOBILE FOOTER (must sit BEFORE the main <script>: init() runs synchronously and wires these buttons) ═══ -->
+<div class="mobile-tabbar-hint" id="mobileTabbarHint" hidden>Navegação móvel</div>
+<nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navegação" hidden>
+  <button type="button" class="mobile-tabbar-btn" id="tabHome" title="Início" aria-label="Início">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
+    <span>Início</span>
+  </button>
+  <button type="button" class="mobile-tabbar-btn" id="tabInbox" title="Correio" aria-label="Correio">
+    <span class="inbox-badge pulse tab-badge" id="tabInboxBadge" hidden>0</span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+    <span>Correio</span>
+  </button>
+  <button type="button" class="mobile-tabbar-btn" id="tabAuction" title="Leilão" aria-label="Leilão">
+    <span class="inbox-badge pulse tab-badge" id="tabAuctionBadge" hidden>0</span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg>
+    <span>Leilão</span>
+  </button>
+</nav>
 
 <script>
 (function () {
@@ -11032,6 +11069,17 @@
     }
   }
 
+  function syncTabActive() {
+    const on = (id) => { const el = document.getElementById(id); return !!(el && el.classList.contains('open')); };
+    const cur = on('inboxDrawer') ? 'tabInbox' : on('auctionRoom') ? 'tabAuction' : on('assetRoom') ? '' : 'tabHome';
+    ['tabHome', 'tabInbox', 'tabAuction'].forEach((id) => {
+      const b = document.getElementById(id);
+      if (!b) return;
+      b.classList.toggle('is-active', id === cur);
+      if (id === cur) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+  }
+
   function initMobileFooterMock() {
     const params = new URLSearchParams(location.search);
     const forceOn = params.get('footer') === '1';
@@ -11068,25 +11116,51 @@
         main.parentNode.insertBefore(play, main.nextSibling);
       }
 
-      if (!wired) {
+      if (!wired && document.getElementById('tabHome')) {
         wired = true;
         const home = document.getElementById('tabHome');
         const inbox = document.getElementById('tabInbox');
         const auction = document.getElementById('tabAuction');
+        // Tabs are exclusive navigation: each one closes the rooms it replaces,
+        // so nothing opens behind another layer and one tap is always enough.
+        const leaveAuction = () => {
+          if (!(auctionState && auctionState.open)) return;
+          const won = state.auctionWon || (typeof auctionHasPendingTrc === 'function' && auctionHasPendingTrc());
+          if (won && typeof goHomeWithTrc === 'function') goHomeWithTrc();
+          else closeAuctionRoom();
+        };
         if (home) home.addEventListener('click', () => {
+          try { if (assetRoomState.open) closeAssetRoom(); } catch (_) {}
           if (typeof goConsoleHome === 'function') goConsoleHome();
+          syncTabActive();
         });
         if (inbox) inbox.addEventListener('click', () => {
-          if (typeof openInbox === 'function') openInbox();
+          try { leaveAuction(); } catch (_) {}
+          // Correio sits above the sala (sala stays underneath, like the sala's own links)
+          if (mailState.open) {
+            if (isInboxReadingLetter()) inboxHeaderBack(); // tab tap while reading = back to the list
+          } else if (typeof openInbox === 'function') openInbox();
+          syncTabActive();
         });
         if (auction) auction.addEventListener('click', () => {
-          if (typeof openAuctionRoom === 'function') openAuctionRoom();
-          else {
-            const btn = document.getElementById('btnOpenAuction');
-            if (btn) btn.click();
+          try { if (mailState.open) closeInbox(); } catch (_) {}
+          try { if (assetRoomState.open) closeAssetRoom(); } catch (_) {}
+          if (!(auctionState && auctionState.open)) {
+            if (typeof openAuctionRoom === 'function') openAuctionRoom();
+            else {
+              const btn = document.getElementById('btnOpenAuction');
+              if (btn) btn.click();
+            }
           }
+          syncTabActive();
+        });
+        // Highlight the tab of whatever room is on top (rooms also open/close from inside the game)
+        ['inboxDrawer', 'assetRoom', 'auctionRoom'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el && window.MutationObserver) new MutationObserver(syncTabActive).observe(el, { attributes: true, attributeFilter: ['class'] });
         });
       }
+      syncTabActive();
       syncTabInboxBadge();
       syncTabAuctionBadge();
     }
@@ -11817,24 +11891,6 @@
 </script>
 
 
-<!-- ═══ MOBILE FOOTER MOCK (?footer=1) ═══ -->
-<div class="mobile-tabbar-hint" id="mobileTabbarHint" hidden>Navegação móvel</div>
-<nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navegação" hidden>
-  <button type="button" class="mobile-tabbar-btn" id="tabHome" title="Início" aria-label="Início">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
-    <span>Início</span>
-  </button>
-  <button type="button" class="mobile-tabbar-btn" id="tabInbox" title="Correio" aria-label="Correio">
-    <span class="inbox-badge pulse tab-badge" id="tabInboxBadge" hidden>0</span>
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
-    <span>Correio</span>
-  </button>
-  <button type="button" class="mobile-tabbar-btn" id="tabAuction" title="Leilão" aria-label="Leilão">
-    <span class="inbox-badge pulse tab-badge" id="tabAuctionBadge" hidden>0</span>
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg>
-    <span>Leilão</span>
-  </button>
-</nav>
 
 </body>
 </html>
