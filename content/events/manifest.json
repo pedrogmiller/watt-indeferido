@@ -214,5 +214,6 @@
     "env_routing_2026_09_29": "Via ambiental calculada (env_path) a partir de atributos do projecto; caso a caso decidido por CCDR/APA (não DGEG); removidos mail-dgeg-nao-sujeicao-01 e mail-dgeg-sujeicao-aia-01.",
     "icnf_2026_09_29": "ICNF / quercíneas (DL 169/2001), rev. Pedro: parecer só via PIP (Câmara reencaminha) e só em SE com quercineas_densidade alta (media = chance baixa); consulta prévia opcional (mail-icnf-consulta-01, resposta quase sempre vaga). Regras r-icnf-* em lp-cod-rules; from_type ICNF novo (UI). Via AIA (Pedro 15:53): ICNF dentro da Comissão de Avaliação (mail-apa-ca-quercineas-01, remetente APA) ou silêncio (mail-apa-ca-icnf-silencio-01: não oposição tácita, ou atraso em Rede Natura); icnf_binding em computed_tags; desfechos de compensação com skin 'aia'."
   },
-  "effect_labels": "effect-labels.pt.json"
+  "effect_labels": "effect-labels.pt.json",
+  "effects_economy": "effects-economy.json"
 }
