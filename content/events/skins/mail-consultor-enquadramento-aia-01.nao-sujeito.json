@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-consultor-enquadramento-aia-01",
+  "skin_id": "nao-sujeito",
+  "draft": true,
+  "when": {
+    "env_path": "nao_sujeito"
+  },
+  "from_name": "Consultor de licenciamento ambiental",
+  "subject": "Abaixo dos limiares — não sujeito a AIA",
+  "body": "A central e a linha ficam abaixo dos limiares: solar com menos de 100 ha de painéis, nenhuma linha aérea de 220 kV com mais de 15 km (nem de 110 kV com 20 km ou mais), e fora de áreas sensíveis. Não há AIA. O próximo passo é o PIP na Câmara, obrigatório nesta via, e o pedido de LP à DGEG. Atenção ao value-add: mais área de painéis, aerogeradores ou uma linha longa podem levar-nos de volta à AIA.",
+  "params": {
+    "env_path": "nao_sujeito",
+    "base_legal": "DL 151-B/2013 (RJAIA) Anexos I e II, alt. DL 11/2023; DL 99/2024"
+  }
+}

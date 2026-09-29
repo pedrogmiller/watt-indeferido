@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-rede-lp-parecer-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "REN — Ligações à RNT",
+  "subject": "Pronúncia à DGEG — condições de injecção na SE Ourique",
+  "body": "A DGEG pediu-nos pronúncia sobre o vosso centro. Ponto na SE Ourique confirmado, com painel novo e reforço do transformador a cargo do requerente; potência sem restrições só depois do reforço. Aceitar fixa o calendário da obra de rede. Pedir faseamento dá injecção parcial mais cedo, mas o parecer segue com restrições.",
+  "params": {
+    "base_legal": "DL 15/2022 art. 26.º",
+    "operator": "REN",
+    "nota_gm": "Pedro confirmar REN vs E-REDES para Ourique (skins M2 usam E-REDES)"
+  }
+}

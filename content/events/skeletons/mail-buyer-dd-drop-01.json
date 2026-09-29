@@ -1,0 +1,36 @@
+{
+  "id": "mail-buyer-dd-drop-01",
+  "phase": "mid_dev",
+  "trigger": {
+    "after": "buyer_dd_open",
+    "when_phase": [
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra",
+      "cod"
+    ]
+  },
+  "priority": "high",
+  "from_type": "COMPRADOR",
+  "choices": [
+    {
+      "id": "restart_search",
+      "label": "Voltar a procurar comprador",
+      "effects": [
+        "sale_pipeline_open",
+        "buyer_search_active"
+      ]
+    },
+    {
+      "id": "stop_search",
+      "label": "Parar a procura",
+      "effects": [
+        "sale_pipeline_clear"
+      ]
+    }
+  ],
+  "notes_for_economy": "Comprador saiu após DD; sem €.",
+  "notes_for_ui": "Toast aviso; limpar offer pendente."
+}

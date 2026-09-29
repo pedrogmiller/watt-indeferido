@@ -1,0 +1,48 @@
+{
+  "id": "mail-camara-pip-pedido-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM (Via B não-sujeição + PIP); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "nao_sujeicao",
+    "when_phase": [
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "nao_sujeicao"
+    ],
+    "month_offset": 6
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "choices": [
+    {
+      "id": "submit",
+      "label": "Submeter PIP",
+      "effects": [
+        "pip_request_submitted",
+        "cash_at_risk_+1"
+      ]
+    },
+    {
+      "id": "submit_benefits",
+      "label": "Submeter com proposta de benefícios locais",
+      "effects": [
+        "pip_request_submitted",
+        "pip_benefits_offer"
+      ]
+    },
+    {
+      "id": "hold",
+      "label": "Segurar mais um mês",
+      "effects": [
+        "pip_request_hold",
+        "delay_pip_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "cash_at_risk_+1 = peças do PIP/taxas; pip_benefits_offer = compromisso com a freguesia/concelho — PEDIR_ECONOMY.",
+  "notes_for_ui": "Via B: PIP aprovado é condição da LP. Cria deadline pip_decision. 'Segurar' re-arma (pip_request_hold). Skin reformulado re-entrega após indeferimento/condições. CTA pesado (Câmara)."
+}

@@ -1,0 +1,44 @@
+{
+  "id": "mail-dgeg-lp-atraso-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "deadline_missed:lp_decision",
+    "when_phase": [
+      "aia"
+    ],
+    "or_deadline": "lp_decision",
+    "month_offset": 19
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "deadline_ref": "lp_decision",
+  "choices": [
+    {
+      "id": "chase",
+      "label": "Insistir com o gestor do procedimento",
+      "effects": [
+        "lp_chase"
+      ]
+    },
+    {
+      "id": "escalate",
+      "label": "Escalar à tutela",
+      "effects": [
+        "lp_escalate",
+        "risk_dgeg_+1"
+      ]
+    },
+    {
+      "id": "wait",
+      "label": "Esperar",
+      "effects": [
+        "delay_lp_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "lp_chase / lp_escalate sobem odds da decisão LP no próximo Play (PEDIR_ECONOMY). risk_dgeg_+1 = qualitativo até Gate 4.",
+  "notes_for_ui": "Chega por on_miss do deadline lp_decision (DGEG fora do prazo legal de 1 ano; sem deferimento tácito com AIA, art. 14.º-B/2). O motor aplica dgeg_late (motivo não imputável → ajuda prorrogações futuras)."
+}

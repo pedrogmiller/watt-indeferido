@@ -1,0 +1,32 @@
+{
+  "id": "mail-apa-ca-icnf-silencio-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 (Pedro 15:53) — ICNF na via AIA (Comissão de Avaliação); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "apa_track_start",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "apa_track_start"
+    ],
+    "month_offset": 4
+  },
+  "priority": "low",
+  "from_type": "APA",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Percebi",
+      "hint": "É só informação: não tens de decidir nada.",
+      "effects": [
+        "icnf_silence_seen"
+      ]
+    }
+  ],
+  "notes_for_economy": "Odds do silêncio = PEDIR_ECONOMY. Tácito: DIA segue sem parecer ICNF. Rede Natura: delay_env_+1 (aplicado na entrega).",
+  "notes_for_ui": "FYI. Skin escolhida pela regra conforme se-sheet env_draft.rede_natura; tags do desfecho em on_deliver_effects.",
+  "nota_gm": "Simplex (DL 11/2023) / DL 99/2024: silêncio = não oposição, salvo pronúncia expressa exigida por diretiva UE (Rede Natura 2000: DL 140/99, Diretivas Aves/Habitats)."
+}

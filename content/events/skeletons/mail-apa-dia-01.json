@@ -1,0 +1,43 @@
+{
+  "id": "mail-apa-dia-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "apa_track_start",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "apa_track_start"
+    ],
+    "or_deadline": "main_permit",
+    "month_offset": 12
+  },
+  "priority": "high",
+  "from_type": "APA",
+  "choices": [
+    {
+      "id": "accept_conditions",
+      "label": "Aceitar condicionantes",
+      "effects": [
+        "dia_emitida",
+        "dia_conditions_accepted",
+        "env_mitigation_flag"
+      ]
+    },
+    {
+      "id": "contest",
+      "label": "Reclamar condicionantes",
+      "effects": [
+        "dia_emitida",
+        "dia_contest",
+        "delay_env_+1",
+        "risk_apa_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "env_mitigation_flag = condicionantes DIA no caderno EPC (Capex/Opex menor) — PEDIR_ECONOMY. delay_env_+1 = meses (tabela delay_*). Sem €.",
+  "notes_for_ui": "Fecha o ramo AIA. Não muda fase (fase sobe só com lp_granted). Regra r-dia em lp-cod-rules.draft.json. CTA pesado (Ambiente)."
+}

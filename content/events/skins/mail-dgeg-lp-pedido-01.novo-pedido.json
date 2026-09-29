@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-dgeg-lp-pedido-01",
+  "skin_id": "novo-pedido",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de licenciamento",
+  "subject": "Novo pedido de LP — segunda tentativa",
+  "body": "O primeiro pedido foi indeferido. O TRC continua vivo, mas os prazos não voltaram ao zero. Podemos reinstruir com o que falhou corrigido, ou entrar depressa e rezar. Os investidores estão a contar os meses.",
+  "params": {
+    "attempt": 2
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "mail-rede-ligacao-atraso-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ],
+    "requires": [
+      "construction_started"
+    ],
+    "requires_any": [
+      "grid_conditions_accepted",
+      "grid_phasing_request",
+      "capex_rede_flag"
+    ],
+    "month_offset": 26
+  },
+  "priority": "high",
+  "from_type": "REDE",
+  "deadline_ref": "grid_connection",
+  "choices": [
+    {
+      "id": "chase",
+      "label": "Exigir calendário formal",
+      "effects": [
+        "grid_chase",
+        "grid_slip_operator",
+        "delay_cod_+1"
+      ]
+    },
+    {
+      "id": "phased",
+      "label": "Pedir energização faseada",
+      "effects": [
+        "grid_phased_energisation",
+        "grid_slip_operator",
+        "injection_cap_restricted"
+      ]
+    },
+    {
+      "id": "accept",
+      "label": "Aceitar nova data",
+      "effects": [
+        "grid_slip_operator",
+        "delay_cod_+2"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "Odds PEDIR_ECONOMY (sobem com se-sheet rede=congestionada / grid_phasing_request). injection_cap_restricted temporário → P50 do 1º ano.",
+  "notes_for_ui": "grid_slip_operator = atraso imputável ao operador → re-ancora le_deadline (art. 14.º/3 b: LE até 90 dias após a infra da RESP) e empurra grid_connection. CTA pesado (Rede)."
+}

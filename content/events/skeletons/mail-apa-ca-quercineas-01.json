@@ -1,0 +1,75 @@
+{
+  "id": "mail-apa-ca-quercineas-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 (Pedro 15:53) — ICNF na via AIA (Comissão de Avaliação); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "apa_track_start",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "apa_track_start"
+    ],
+    "se_gate": {
+      "attr": "env_draft.quercineas_densidade",
+      "alta": "elegível",
+      "media": "chance baixa",
+      "baixa": "nunca"
+    },
+    "month_offset": 4
+  },
+  "priority": "high",
+  "from_type": "APA",
+  "heavy": true,
+  "choices": [
+    {
+      "id": "survey_full",
+      "label": "Fazer o levantamento completo das árvores",
+      "hint": "Precisas de mais dinheiro de desenvolvimento e a avaliação ambiental atrasa. Mas a Comissão fica com a informação de que precisa e o risco de a DIA ser desfavorável baixa.",
+      "effects": [
+        "icnf_survey_done",
+        "car_need_up",
+        "delay_env_+1",
+        "risk_icnf_-1",
+        "icnf_via_ca"
+      ]
+    },
+    {
+      "id": "redesign_trees",
+      "label": "Mudar o desenho para fugir às árvores",
+      "hint": "Tens de entregar um desenho novo, por isso a avaliação ambiental atrasa. Perdes área: cabem menos painéis e fica menos espaço para sobreequipar. Em troca, cortas poucas ou nenhumas árvores.",
+      "effects": [
+        "layout_trim_trees",
+        "reopen_tech_plan",
+        "delay_env_+1",
+        "risk_icnf_-1",
+        "icnf_via_ca"
+      ]
+    },
+    {
+      "id": "compensation_plan",
+      "label": "Propor um plano de compensação",
+      "hint": "Plantas sobreiros ou azinheiras noutro terreno e cuidas deles durante anos. Precisas de mais dinheiro de desenvolvimento, e a plantação fica como condição na DIA. O ICNF pode pedir mais.",
+      "effects": [
+        "icnf_compensation_plan",
+        "car_need_up",
+        "env_mitigation_flag",
+        "icnf_via_ca"
+      ]
+    },
+    {
+      "id": "minimal_reply",
+      "label": "Responder só com o essencial",
+      "hint": "Gastas pouco e a avaliação não atrasa por agora. Mas o ICNF pode dar parecer negativo. Se o projeto obrigar a cortar árvores protegidas, isso torna a DIA desfavorável e o projeto fica parado.",
+      "effects": [
+        "icnf_minimal_reply",
+        "risk_icnf_+1",
+        "icnf_via_ca"
+      ]
+    }
+  ],
+  "notes_for_economy": "car_need_up / layout_trim_trees como no PIP — PEDIR_ECONOMY. Efeito principal = odds do desfecho da DIA (r-dia.dia_outcome_odds). Com icnf_binding, icnf_minimal_reply sobe muito a DIA desfavorável.",
+  "notes_for_ui": "Remetente APA (autoridade de AIA; CCDR se a autoridade for regional — trocar from_name na skin). icnf_via_ca vai no fim de cada escolha só para encaminhar os desfechos (não usar no toast). Mostrar choice.hint.",
+  "nota_gm": "Circuito real (Pedro 2026-09-29): EIA entregue + conformidade → autoridade de AIA (APA ou CCDR) nomeia a Comissão de Avaliação (CA); ICNF convidado em quase todas as renováveis; comunicação via SILiAmb; ICNF emite parecer técnico ao presidente da CA no prazo de instrução; a autoridade consolida ICNF+DGEG+Câmaras+Turismo… num único Parecer da CA, que fixa condicionantes/mitigação e fundamenta a DIA (RJAIA, DL 151-B/2013). O promotor nunca recebe o parecer do ICNF diretamente. Vinculativo (veto) se Rede Natura 2000 (DL 140/99), área protegida, ou corte de sobreiro/azinheira (DL 169/2001, alt. DL 155/2004 e DL 11/2023): chumbo do ICNF → DIA desfavorável. Caso contrário consultivo (APA raramente contraria). Simplex (DL 11/2023) / DL 99/2024: silêncio do ICNF após o prazo legal = não oposição; a APA pode fechar e emitir DIA — exceto onde diretivas UE exigem pronúncia expressa (Rede Natura 2000). Ourique = vinculativo porque há corte de quercíneas (ver computed_tags.icnf_binding)."
+}

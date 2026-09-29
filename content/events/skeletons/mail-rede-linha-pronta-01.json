@@ -1,0 +1,31 @@
+{
+  "id": "mail-rede-linha-pronta-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "deadline_met:grid_connection",
+    "when_phase": [
+      "licenca_producao",
+      "obra"
+    ],
+    "or_deadline": "grid_connection",
+    "month_offset": 30
+  },
+  "priority": "normal",
+  "from_type": "REDE",
+  "deadline_ref": "grid_connection",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Percebido",
+      "effects": [
+        "line_ready",
+        "grid_energisation_ready"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Sem €. line_ready desbloqueia Keep the connection / Sell one park (com LP) — sell-modes-lock.",
+  "notes_for_ui": "Chega por on_meet de grid_connection (o motor também aplica line_ready, para não depender do clique). Info, não CTA pesado."
+}

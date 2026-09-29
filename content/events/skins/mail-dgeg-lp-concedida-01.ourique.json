@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-dgeg-lp-concedida-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "DGEG — Licenciamento de centros electroprodutores",
+  "subject": "Licença de produção atribuída — Ourique",
+  "body": "A DGEG atribuiu a licença de produção ao centro de Ourique, com a potência de injecção do TRC. A partir de hoje conta o prazo para a licença de exploração: um ano, salvo excepções de rede. Próximos passos: banco, EPC e decisão final de investimento.",
+  "params": {
+    "base_legal": "DL 15/2022 arts. 28.º, 29.º e 14.º/3"
+  }
+}

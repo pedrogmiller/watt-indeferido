@@ -1,0 +1,38 @@
+{
+  "id": "mail-dgeg-le-cod-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "commissioning_started",
+    "when_phase": [
+      "obra"
+    ],
+    "requires": [
+      "line_ready",
+      "mechanical_completion"
+    ],
+    "requires_any": [
+      "commissioning_started",
+      "punch_list_first"
+    ],
+    "or_deadline": "le_deadline",
+    "month_offset": 34
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "deadline_ref": "le_deadline",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Percebido — central em exploração",
+      "effects": [
+        "le_granted",
+        "cod_reached"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "cod_reached fixa cod_month real (gate5 cod_month). Receita começa. Sem €.",
+  "notes_for_ui": "PHASE_BUMP proposto: cod_reached → cod (gate: line_ready + le_granted). Cumpre le_deadline. Maturidade FA = 'exploracao'. Toast forte; não é CTA pesado."
+}

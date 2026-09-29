@@ -1,0 +1,16 @@
+{
+  "skeleton_id": "mail-consultor-enquadramento-aia-01",
+  "skin_id": "aia-obrigatoria-ourique",
+  "draft": true,
+  "when": {
+    "env_path": "aia_obrigatoria"
+  },
+  "from_name": "Consultor de licenciamento ambiental",
+  "subject": "Ourique vai para AIA — é o tamanho, não uma escolha",
+  "body": "A central solar de Ourique vai ocupar mais de 100 ha de painéis, e isso basta para a sujeição obrigatória a AIA, esteja ou não em área sensível. Não é o TRC nem a linha que decidem aqui: é a área. O caminho é AIA completa, com estudo de impacte ambiental, consulta pública e DIA. Começar já o EIA poupa meses; a APA volta a falar connosco de qualquer maneira.",
+  "params": {
+    "env_path": "aia_obrigatoria",
+    "base_legal": "DL 151-B/2013 (RJAIA) Anexos I e II, alt. DL 11/2023; DL 99/2024",
+    "hipotese": "connection_mva e area_ha do lote = HIPÓTESE (se-sheet env_draft)"
+  }
+}

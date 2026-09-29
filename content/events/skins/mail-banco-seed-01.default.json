@@ -1,8 +1,8 @@
 {
   "skeleton_id": "mail-banco-seed-01",
   "skin_id": "default",
-  "from_name": "Banco — project finance",
-  "subject": "Quando houver de-risk, falamos",
-  "body": "Ainda cedo para term sheet. Com PIP e terreno mais limpos, voltamos à mesa. Até lá, só monitorização.",
+  "from_name": "Banco — financiamento de projetos",
+  "subject": "Ainda é cedo para o empréstimo",
+  "body": "Ainda é cedo para te propormos condições de empréstimo. Quando o terreno e o PIP estiverem resolvidos, falamos. Até lá, vamos acompanhando o projeto.",
   "params": {}
 }

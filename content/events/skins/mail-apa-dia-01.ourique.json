@@ -1,0 +1,16 @@
+{
+  "skeleton_id": "mail-apa-dia-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_tags": {
+      "ambiente": "apa_first"
+    }
+  },
+  "from_name": "APA — Autoridade de AIA",
+  "subject": "DIA favorável condicionada — central de Ourique",
+  "body": "A Comissão de Avaliação fechou o parecer e a DIA sai favorável condicionada. As condicionantes mexem no layout: afastamento às linhas de água, faixa de protecção ao montado e monitorização de avifauna durante a obra. Aceitar é seguir para a licença de produção com estas regras no caderno do EPC. Reclamar pode aliviar o desenho, mas o relógio do TRC não pára.",
+  "params": {
+    "dia": "favoravel_condicionada"
+  }
+}

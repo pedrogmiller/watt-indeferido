@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-camara-pip-indeferido-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Gabinete do Presidente — Câmara Municipal de Ourique",
+  "subject": "PIP desfavorável",
+  "body": "O executivo emitiu informação prévia desfavorável: incompatibilidade com o PDM na mancha norte e oposição local. Sem PIP favorável não há LP por esta via. Podem reformular, pedir reapreciação ao executivo ou recorrer — o recurso é longo e azeda a relação.",
+  "params": {
+    "base_legal": "RJUE arts. 14.º e ss.; PDM Ourique (genérico)"
+  }
+}

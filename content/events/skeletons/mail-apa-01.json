@@ -15,7 +15,7 @@
   "choices": [
     {
       "id": "prepare",
-      "label": "Preparar expediente AIA",
+      "label": "Começar a preparar a AIA",
       "effects": [
         "apa_track_start",
         "delay_env_+0"

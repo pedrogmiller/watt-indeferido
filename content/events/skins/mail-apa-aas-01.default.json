@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-apa-aas-01",
+  "skin_id": "default",
+  "draft": true,
+  "when": {},
+  "from_name": "APA — Agência Portuguesa do Ambiente",
+  "subject": "Zonas de aceleração publicadas",
+  "body": "Foi publicado o mapeamento das zonas de aceleração de renováveis. Projectos novos estritamente dentro destas zonas têm presunção de não sujeição a AIA e seguem uma avaliação ambiental simplificada. Parte do teu lote pode caber lá dentro — ajustar a implantação muda a via.",
+  "params": {
+    "base_legal": "DL 99/2024 (RED III)",
+    "backlog": true
+  }
+}

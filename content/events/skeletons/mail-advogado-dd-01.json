@@ -14,7 +14,7 @@
   "choices": [
     {
       "id": "start_dd",
-      "label": "Arrancar DD",
+      "label": "Pedir a verificação do terreno",
       "effects": [
         "dd_started",
         "cash_at_risk_+1"

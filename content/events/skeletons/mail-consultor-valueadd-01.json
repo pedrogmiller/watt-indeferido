@@ -14,7 +14,7 @@
   "choices": [
     {
       "id": "start_hybrid",
-      "label": "Priorizar híbrido/BESS",
+      "label": "Dar prioridade ao eólico e às baterias",
       "effects": [
         "value_add_commit",
         "bess_dev_flag"

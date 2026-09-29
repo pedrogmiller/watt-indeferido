@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-consultor-nao-sujeicao-risco-01",
+  "skin_id": "limiar",
+  "draft": true,
+  "when": {},
+  "from_name": "Consultor de licenciamento ambiental",
+  "subject": "Este desenho passa o limiar de AIA",
+  "body": "O plano novo muda a via ambiental: {{env_trigger_label}}. Com isto saímos de {{env_path_from}} e vamos para {{env_path_to}}, com mais meses de licenciamento. No solar, o que conta é a área de painéis: 100 ha dá AIA, e em área sensível bastam 10 ha ou 20 MW. Sobreequipar dentro do mesmo TRC não mexe na potência de ligação; só pesa com eólico, a partir de 50 MW no total do TRC ou de 20 aerogeradores. A linha pesa se for aérea de 220 kV com mais de 15 km, ou de 110 kV com 20 km ou mais. Podes encolher o componente que passou, enterrar ou encurtar a linha, ou licenciar a base primeiro e ampliar depois como alteração.",
+  "params": {
+    "template": true,
+    "base_legal": "DL 151-B/2013 (RJAIA) Anexos I e II, alt. DL 11/2023; DL 99/2024",
+    "regra": "mista: MVA total do TRC; ha e aerogeradores por componente"
+  }
+}

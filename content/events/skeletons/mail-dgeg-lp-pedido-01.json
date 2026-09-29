@@ -1,0 +1,50 @@
+{
+  "id": "mail-dgeg-lp-pedido-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "apa_track_start|nao_sujeicao",
+    "when_phase": [
+      "aia"
+    ],
+    "or_deadline": "lp_request",
+    "month_offset": 7,
+    "requires_any": [
+      "apa_track_start",
+      "nao_sujeicao"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "deadline_ref": "lp_request",
+  "choices": [
+    {
+      "id": "submit_full",
+      "label": "Submeter dossier completo",
+      "effects": [
+        "lp_request_submitted",
+        "cash_at_risk_+1"
+      ]
+    },
+    {
+      "id": "submit_thin",
+      "label": "Submeter já, dossier mínimo",
+      "effects": [
+        "lp_request_submitted",
+        "lp_dossier_thin"
+      ]
+    },
+    {
+      "id": "hold",
+      "label": "Segurar mais um mês",
+      "effects": [
+        "lp_request_hold",
+        "delay_lp_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "cash_at_risk_+1 = instrução completa (estudos, peças, taxa DGEG) — PEDIR_ECONOMY. lp_dossier_thin sobe odds de aperfeiçoamento/audiência.",
+  "notes_for_ui": "Cumpre o deadline lp_request (DL 15/2022 art. 14.º/1). 'Segurar' re-arma a carta no Play seguinte (rearm_on_effects: lp_request_hold). Chip de prazo no cartão via deadline_ref. A decisão ambiental prévia (caso a caso, CCDR/APA) NÃO vai dentro do pedido de LP: vem antes, em carta própria. Via B: o pedido pode entrar em paralelo com o PIP; a decisão LP espera env_gate_ok."
+}

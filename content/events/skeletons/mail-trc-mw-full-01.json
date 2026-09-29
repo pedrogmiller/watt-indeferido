@@ -1,0 +1,44 @@
+{
+  "id": "mail-trc-mw-full-01",
+  "phase": "mid_dev",
+  "trigger": {
+    "after": "block_oversubscribe",
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra",
+      "cod"
+    ]
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "choices": [
+    {
+      "id": "shrink_design",
+      "label": "Fazer um plano mais pequeno",
+      "effects": [
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "wait_buyer_exit",
+      "label": "Esperar que um comprador liberte potência",
+      "effects": [
+        "delay_hybrid_+1",
+        "sale_pipeline_watch"
+      ]
+    },
+    {
+      "id": "cancel",
+      "label": "Cancelar este plano",
+      "effects": [
+        "hybrid_plan_cancel"
+      ]
+    }
+  ],
+  "notes_for_economy": "Gate duro: planned_mw > trc_mw_free. Copy = físico, não FiT vs mercado.",
+  "notes_for_ui": "Bloquear commit híbrido; toast + esta carta. Dossier Free MW / Own / On rent. NÃO oferecer 'vender mais em renda' como forma de libertar MW."
+}

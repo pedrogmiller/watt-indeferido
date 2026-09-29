@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-investidores-fid-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Comité de investidores",
+  "subject": "Decisão final de investimento — Ourique",
+  "body": "LP, term sheet e EPC estão na mesa. Aprovar a FID fecha o financiamento: o Cash at Risk deixa de queimar neste activo e a equity de Capex fica comprometida. Se a equity não couber no headroom, não aprovamos sem reforço. Vender o projecto pronto a construir também é uma saída.",
+  "params": {}
+}

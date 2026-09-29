@@ -1,0 +1,44 @@
+{
+  "id": "mail-camara-pip-condicionado-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM (Via B não-sujeição + PIP); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "pip_request_submitted",
+    "when_phase": [
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "pip_request_submitted",
+      "nao_sujeicao"
+    ],
+    "or_deadline": "pip_decision",
+    "month_offset": 8
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "deadline_ref": "pip_decision",
+  "choices": [
+    {
+      "id": "accept",
+      "label": "Aceitar condições",
+      "effects": [
+        "pip_aprovado",
+        "pip_conditions",
+        "env_mitigation_flag"
+      ]
+    },
+    {
+      "id": "reformulate",
+      "label": "Reformular para tirar condições",
+      "effects": [
+        "pip_reformulate",
+        "delay_pip_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "env_mitigation_flag / pip_conditions = faixas, acessos, integração paisagística — PEDIR_ECONOMY.",
+  "notes_for_ui": "mutex pip_outcome. pip_conditions sobe odds de LP condicionada. CTA pesado (Câmara)."
+}

@@ -1,0 +1,33 @@
+{
+  "id": "mail-icnf-compensacao-aprovada-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 (Pedro 15:53) — ICNF na via AIA (Comissão de Avaliação); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "icnf_compensation_plan",
+    "when_phase": [
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "icnf_compensation_plan"
+    ],
+    "month_offset": 1
+  },
+  "priority": "normal",
+  "from_type": "ICNF",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Percebi",
+      "hint": "O plano fica aprovado. Tens de cumprir a plantação.",
+      "effects": [
+        "icnf_compensation_approved"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €. Resultado favorável do plano de compensação.",
+  "notes_for_ui": "Info; mutex com mail-icnf-compensacao-exigente-01. Remetente real = Câmara (via PIP) ou APA/Comissão (via AIA): o promotor não recebe o ICNF diretamente — skin traz from_type_override (UI ligar).",
+  "nota_gm": "Condição de arborização + plano de gestão (DL 169/2001 art. 8.º)."
+}

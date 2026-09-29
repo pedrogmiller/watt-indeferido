@@ -1,0 +1,58 @@
+{
+  "id": "mail-obra-arranque-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "fid_reached",
+    "when_phase": [
+      "licenca_producao"
+    ],
+    "requires": [
+      "fid_reached"
+    ],
+    "month_offset": 18
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "meet_then_start",
+      "label": "Reunir com a Câmara e arrancar",
+      "effects": [
+        "construction_started",
+        "risk_camara_-1",
+        "delay_obra_+1"
+      ],
+      "when": {
+        "requires": [
+          "fid_reached"
+        ]
+      }
+    },
+    {
+      "id": "start_now",
+      "label": "Dar ordem de arranque já",
+      "effects": [
+        "construction_started",
+        "risk_camara_+1"
+      ],
+      "when": {
+        "requires": [
+          "fid_reached"
+        ]
+      }
+    },
+    {
+      "id": "defer",
+      "label": "Adiar arranque",
+      "effects": [
+        "obra_start_deferred",
+        "investor_patience_-1"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "delay_obra_+1 = meses (tabela delay_*). Sem €.",
+  "notes_for_ui": "PHASE_BUMP proposto: construction_started → obra (gate: fid_reached + LP + aia|pip+nao_sujeicao). Cria deadline epc_mechanical_completion. 'Adiar' re-arma (obra_start_deferred)."
+}

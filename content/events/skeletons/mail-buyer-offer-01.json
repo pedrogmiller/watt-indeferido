@@ -1,0 +1,102 @@
+{
+  "id": "mail-buyer-offer-01",
+  "phase": "mid_dev",
+  "trigger": {
+    "after": "buyer_search_active",
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra",
+      "cod"
+    ],
+    "requires_any": [
+      "sale_mode_full_exit_available"
+    ]
+  },
+  "priority": "high",
+  "from_type": "COMPRADOR",
+  "choices": [
+    {
+      "id": "accept_full_exit",
+      "label": "Vender o projeto todo",
+      "effects": [
+        "sale_full_exit",
+        "car_burn_stop",
+        "equity_capex_need_stop",
+        "mandate_slot_free",
+        "asset_removed",
+        "sale_pipeline_clear"
+      ],
+      "when": {
+        "sale_modes": [
+          "full_exit"
+        ]
+      }
+    },
+    {
+      "id": "accept_keep_connection",
+      "label": "Vender a central e ficar com a ligação",
+      "effects": [
+        "sale_keep_seat",
+        "grid_usage_rent_on",
+        "mw_reserved_by_buyer_up",
+        "trc_mw_free_down",
+        "plant_capex_forgone",
+        "offtake_profit_forgone",
+        "sale_pipeline_clear"
+      ],
+      "when": {
+        "sale_modes": [
+          "keep_connection"
+        ],
+        "min_phase": "licenca_producao",
+        "requires": [
+          "line_ready"
+        ]
+      }
+    },
+    {
+      "id": "accept_sell_one_park",
+      "label": "Vender só um parque",
+      "effects": [
+        "sale_partial_park",
+        "mw_reserved_by_buyer_up",
+        "trc_mw_free_down",
+        "grid_usage_rent_on",
+        "hybrid_slice_sold",
+        "sale_pipeline_clear"
+      ],
+      "when": {
+        "sale_modes": [
+          "sell_one_park"
+        ],
+        "min_phase": "licenca_producao",
+        "requires": [
+          "line_ready",
+          "hybrid_slice_available"
+        ]
+      }
+    },
+    {
+      "id": "hold",
+      "label": "Manter a proposta em aberto",
+      "effects": [
+        "sale_pipeline_open",
+        "buyer_patience_-1"
+      ]
+    },
+    {
+      "id": "walk_away",
+      "label": "Recusar a proposta",
+      "effects": [
+        "sale_pipeline_clear",
+        "buyer_interest_-1"
+      ]
+    }
+  ],
+  "notes_for_economy": "Preço/renda = PEDIR_ECONOMY. offer_band_thin|fair|rich na skin/params. MW: reserved_by_buyer; não liberta mw_free. Mandato: keep/partial NÃO libertam slot.",
+  "notes_for_ui": "Mostrar só CTAs cujo when passa. Toast: modo + Free MW. Dossier: Own / On rent / Free MW."
+}

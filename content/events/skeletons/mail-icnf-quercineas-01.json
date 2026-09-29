@@ -1,0 +1,72 @@
+{
+  "id": "mail-icnf-quercineas-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 (rev. Pedro 15:45) — ICNF só via PIP + consulta prévia opcional; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "pip_request_submitted",
+    "when_phase": [
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "pip_request_submitted"
+    ],
+    "se_gate": {
+      "attr": "env_draft.quercineas_densidade",
+      "alta": "elegível",
+      "media": "chance baixa",
+      "baixa": "nunca"
+    },
+    "month_offset": 1
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "heavy": true,
+  "choices": [
+    {
+      "id": "survey_full",
+      "label": "Fazer o levantamento completo das árvores",
+      "hint": "Precisas de mais dinheiro de desenvolvimento e o PIP atrasa. Mas o ICNF fica com a informação de que precisa e o risco de o PIP ser recusado baixa.",
+      "effects": [
+        "icnf_survey_done",
+        "car_need_up",
+        "delay_pip_+1",
+        "risk_icnf_-1"
+      ]
+    },
+    {
+      "id": "redesign_trees",
+      "label": "Mudar o desenho para fugir às árvores",
+      "hint": "Tens de entregar novas plantas, por isso o PIP atrasa. Perdes área: cabem menos painéis e fica menos espaço para sobreequipar. Em troca, quase não há árvores para compensar.",
+      "effects": [
+        "layout_trim_trees",
+        "reopen_tech_plan",
+        "delay_pip_+1",
+        "risk_icnf_-1"
+      ]
+    },
+    {
+      "id": "compensation_plan",
+      "label": "Propor um plano de compensação",
+      "hint": "Plantas sobreiros ou azinheiras noutro terreno e cuidas deles durante anos. Precisas de mais dinheiro de desenvolvimento, e a plantação fica como condição no PIP e na licença. O ICNF pode pedir mais.",
+      "effects": [
+        "icnf_compensation_plan",
+        "car_need_up",
+        "env_mitigation_flag"
+      ]
+    },
+    {
+      "id": "minimal_reply",
+      "label": "Responder só com o essencial",
+      "hint": "Gastas pouco e o PIP não atrasa por agora. Mas o ICNF pode dar parecer desfavorável, e a Câmara pode recusar o PIP ou aprová-lo com condições.",
+      "effects": [
+        "icnf_minimal_reply",
+        "risk_icnf_+1"
+      ]
+    }
+  ],
+  "notes_for_economy": "car_need_up = sobe o orçamento de desenvolvimento necessário (não é gasto imediato) — PEDIR_ECONOMY; interage com o esquema de orçamento do M0. layout_trim_trees = perde área/MWp instalável e margem de sobreequipamento — PEDIR_ECONOMY. Odds do desfecho do PIP ajustadas por risk_icnf_*/icnf_* (ver r-pip-*).",
+  "notes_for_ui": "Remetente = Câmara (reencaminha o parecer do ICNF). A Câmara só decide o PIP depois de o jogador responder (campo wait_for_answer_if_delivered nas regras r-pip-*). Mostrar choice.hint.",
+  "nota_gm": "Base real: DL 169/2001 (alt. DL 155/2004 e DL 11/2023) — corte/arranque de sobreiros e azinheiras, em povoamento ou isolados, carece de autorização; em povoamento, corte de conversão para empreendimento só com DIUP (imprescindível utilidade pública) ou relevante interesse para a economia local; medidas compensatórias (art. 8.º: arborização + plano de gestão, área ≥1,25× a afetada; prática ICNF atual pede mais; garantia bancária possível); corte ilegal inibe outro uso do solo 25 anos. Pedro 2026-09-29: o ICNF só se pronuncia porque a Câmara lhe pede parecer no âmbito do PIP (RJUE, consulta a entidades externas); consulta por iniciativa própria raramente dá resposta útil — 'o ICNF não gosta de se comprometer'. Só em SE com quercineas_densidade alta (media = chance baixa). Não oferecer 'cortar sem autorização' nem 'adiar' (com o PIP pendente, adiar = PIP parado)."
+}

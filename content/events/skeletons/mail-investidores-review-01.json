@@ -14,21 +14,21 @@
   "choices": [
     {
       "id": "send_plan",
-      "label": "Enviar plano de progresso",
+      "label": "Enviar o plano do projeto",
       "effects": [
         "investor_plan_sent"
       ]
     },
     {
       "id": "ask_more_car",
-      "label": "Pedir mais Cash at Risk",
+      "label": "Pedir mais orçamento",
       "effects": [
         "cash_at_risk_request"
       ]
     },
     {
       "id": "stall",
-      "label": "Adiar resposta",
+      "label": "Adiar a resposta",
       "effects": [
         "investor_patience_-2"
       ]

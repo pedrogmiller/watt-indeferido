@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-consultor-nao-sujeicao-01",
+  "skin_id": "estrutura",
+  "draft": true,
+  "when": {},
+  "from_name": "Consultor de licenciamento ambiental",
+  "subject": "Solar em estrutura — isento de AIA",
+  "body": "Central solar com armazenamento em estrutura artificial: isenta de AIA, excepto em plano de água artificial, edifício classificado e respectiva zona de protecção, ou zona relevante para a defesa ou segurança nacional. Segue para PIP e LP.",
+  "params": {
+    "base_legal": "DL 99/2024",
+    "scope": "novo",
+    "nota": "fora do MVP Ourique (lote em terreno)"
+  }
+}

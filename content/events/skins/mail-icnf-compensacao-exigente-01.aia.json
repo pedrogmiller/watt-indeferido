@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-icnf-compensacao-exigente-01",
+  "skin_id": "aia",
+  "draft": true,
+  "when": {
+    "route": "aia"
+  },
+  "from_name": "APA — Comissão de Avaliação",
+  "from_type_override": "APA",
+  "subject": "O ICNF quer uma compensação maior",
+  "body": "Na Comissão de Avaliação, o ICNF diz que o teu plano não chega. Pede uma área de plantação maior e uma garantia bancária: o banco compromete-se a pagar se a plantação não for feita. Podes aceitar, ou mudar o desenho para cortar menos árvores.",
+  "params": {}
+}

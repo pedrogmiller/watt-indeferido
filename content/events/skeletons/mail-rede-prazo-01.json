@@ -14,7 +14,7 @@
   "choices": [
     {
       "id": "accept",
-      "label": "Aceitar acordo de reforço",
+      "label": "Aceitar o acordo de reforço",
       "effects": [
         "capex_rede_flag",
         "caducidade_risk_-1"

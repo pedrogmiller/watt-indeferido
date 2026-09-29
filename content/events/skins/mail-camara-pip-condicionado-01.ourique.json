@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-camara-pip-condicionado-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Serviços de Urbanismo — Câmara Municipal de Ourique",
+  "subject": "PIP favorável condicionado",
+  "body": "Informação prévia favorável, com condições: afastamento às habitações dispersas, reperfilamento do acesso municipal e cortina arbórea no limite nascente. Aceitar leva estas condições para a LP e para o EPC. Reformular pode limpar o texto, mas custa uma volta inteira.",
+  "params": {
+    "base_legal": "RJUE arts. 14.º e ss."
+  }
+}

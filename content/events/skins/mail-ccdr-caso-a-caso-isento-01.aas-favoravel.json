@@ -1,0 +1,16 @@
+{
+  "skeleton_id": "mail-ccdr-caso-a-caso-isento-01",
+  "skin_id": "aas-favoravel",
+  "draft": true,
+  "when": {
+    "requires": [
+      "aas_submitted"
+    ]
+  },
+  "from_name": "APA — Avaliação Ambiental Simplificada",
+  "subject": "Avaliação simplificada favorável",
+  "body": "A avaliação ambiental simplificada confirma a presunção de não sujeição na área de aceleração, com as medidas de mitigação propostas. Seguem-se o PIP e a LP.",
+  "params": {
+    "base_legal": "DL 99/2024"
+  }
+}

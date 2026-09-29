@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-fyi-processo-01",
+  "skin_id": "obra-estaleiro",
+  "draft": true,
+  "when": {},
+  "from_name": "Direcção de obra",
+  "subject": "Obra — estaleiro montado",
+  "body": "Estaleiro montado, acessos abertos e topografia fechada. Cravação de estacas arranca na próxima quinzena. Só informativo.",
+  "params": {
+    "filler_for_phase": "obra",
+    "marco": "estaleiro"
+  }
+}

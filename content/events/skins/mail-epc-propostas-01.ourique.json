@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-epc-propostas-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de engenharia — concurso EPC",
+  "subject": "Propostas EPC — escolher o modelo",
+  "body": "Fechámos o concurso com duas vias. EPC chave-na-mão: preço fixo, penalidades por atraso, o banco gosta. Multi-contrato: módulos, estruturas, BOP e subestação em separado, mais barato no papel — mas os interfaces são nossos, e os atrasos também. Relançar dá melhor preço, talvez, e custa meses.",
+  "params": {}
+}

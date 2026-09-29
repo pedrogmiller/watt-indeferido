@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-no-buyer-01",
+  "skin_id": "default",
+  "when": {},
+  "from_name": "Equipa de desenvolvimento",
+  "subject": "Procura de comprador: sem interessados",
+  "body": "Desta vez, nenhum comprador fez uma proposta a sério. Quando o projeto ainda está no início, ou o preço de venda da energia é baixo, há poucos compradores. Podes continuar a procurar, mas isso leva tempo. Ou podes parar e concentrar-te no projeto."
+}

@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-ccdr-caso-a-caso-isento-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "CCDR Alentejo — Autoridade de AIA",
+  "subject": "Apreciação prévia: dispensado de AIA",
+  "body": "Analisados os elementos preliminares, a autoridade de AIA decide que o projecto não está sujeito a avaliação de impacte ambiental. Seguem-se o PIP da Câmara Municipal, obrigatório sem DIA, e o procedimento de LP na DGEG.",
+  "params": {
+    "base_legal": "RJAIA (DL 151-B/2013) alt. DL 11/2023 — apreciação prévia caso a caso",
+    "nota": "Ourique base = aia_obrigatoria; esta skin serve lotes/desenhos em caso_a_caso"
+  }
+}

@@ -1,0 +1,1943 @@
+{
+  "version": 0,
+  "status": "DRAFT 2026-09-29 — proposta GM (routing ambiental calculado); aguarda Gate Pedro (não trancado)",
+  "se_id": "ourique",
+  "progress": "phase+deadline",
+  "spec": "../deadlines-lp-cod-proposta.md",
+  "caps": {
+    "cards_per_landing": 5,
+    "heavy_cta_per_landing": 2,
+    "fyi_per_landing": 3,
+    "max_jump_months": 6,
+    "priority_order": [
+      "deadline_miss_mail",
+      "extension_response",
+      "heavy_rule",
+      "normal_rule",
+      "fyi"
+    ],
+    "overflow": "defer_to_next_month"
+  },
+  "_fields": {
+    "requires_all_effects": "todas as tags > 0",
+    "requires_any_effects": "pelo menos uma tag > 0 (igual ao schedule v2)",
+    "blocks_if_any_effects": "não entrega se alguma tag > 0",
+    "after_effect": "{tag, months, band, source}: elegível só a partir de (mês em que a tag disparou pela última vez + months). Precisa de mailLoop.tagMonth[tag].",
+    "odds": "{base, up_if_any, down_if_any}: sorteio (RNG com seed do save) no mês elegível; se falhar, a regra fica elegível de novo no Play seguinte só se reroll=true. Valores = PEDIR_ECONOMY.",
+    "mutex_group": "no mesmo grupo sai só uma carta, por ordem de 'pick' (primeira cuja odds passar).",
+    "rearm_on_effects": "quando uma destas tags dispara, a carta volta a poder sair (limpa deliveredIds dessa skin).",
+    "via_deadline": "carta entregue pelo motor de deadlines (on_miss_mail / on_meet_mail / warn / extension), não por varrimento.",
+    "meet_on_delivered": "(deadlines) prazo de autoridade cumpre-se quando a carta de decisão é entregue",
+    "requires_any_effects_2": "(obsoleto 2026-09-29, já não usado)",
+    "route": "A = AIA→DIA→LP; B = não sujeição→PIP→LP (informativo para QA)",
+    "se_gate": "{attr, alta, media, baixa}: elegibilidade pela SE (se-sheet). 'nunca' = não entrega; 'chance baixa' = odds reduzidas (PEDIR_ECONOMY).",
+    "on_deliver_effects": "tags que o motor aplica quando a carta é entregue (desfecho sorteado), independentemente da escolha.",
+    "wait_for_answer_if_delivered": "lista de esqueletos: se algum foi entregue e ainda não respondido, esta regra espera (não sorteia).",
+    "from_type_override": "(skin) remetente a usar em vez do from_type do esqueleto (mesmo desfecho, circuitos diferentes).",
+    "dia_outcome_odds": "(r-dia) proposta de desfecho da DIA: favorável / condicionada / desfavorável com modificadores; só 'condicionada' tem carta hoje (TODO).",
+    "se_requires": "(regra) condição sobre atributos da se-sheet; se falhar, a regra não entrega."
+  },
+  "rules": [
+    {
+      "id": "r-enq-aia",
+      "skeleton": "mail-consultor-enquadramento-aia-01",
+      "skin": "aia-obrigatoria-ourique",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "env_path_aia_obrigatoria"
+      ],
+      "route": "A",
+      "requires_any_effects": [
+        "land_option_open",
+        "dd_started"
+      ],
+      "blocks_if_any_effects": [
+        "apa_track_start",
+        "nao_sujeicao",
+        "caso_a_caso_request",
+        "aas_submitted"
+      ],
+      "after_effect": {
+        "tag": "land_option_open|dd_started",
+        "months": 1,
+        "band": "1-2",
+        "source": "antes de M5 (mail-apa-01)"
+      },
+      "rearm_on_effects": [
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "r-enq-nao-sujeito",
+      "skeleton": "mail-consultor-enquadramento-aia-01",
+      "skin": "nao-sujeito",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "env_path_nao_sujeito"
+      ],
+      "route": "B",
+      "requires_any_effects": [
+        "land_option_open",
+        "dd_started"
+      ],
+      "blocks_if_any_effects": [
+        "apa_track_start",
+        "nao_sujeicao",
+        "caso_a_caso_request",
+        "aas_submitted"
+      ],
+      "after_effect": {
+        "tag": "land_option_open|dd_started",
+        "months": 1,
+        "band": "1-2",
+        "source": "antes de M5 (mail-apa-01)"
+      },
+      "rearm_on_effects": [
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "r-enq-caso",
+      "skeleton": "mail-consultor-enquadramento-aia-01",
+      "skin": "caso-a-caso",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "env_path_caso_a_caso"
+      ],
+      "route": "B?",
+      "requires_any_effects": [
+        "land_option_open",
+        "dd_started"
+      ],
+      "blocks_if_any_effects": [
+        "apa_track_start",
+        "nao_sujeicao",
+        "caso_a_caso_request",
+        "aas_submitted"
+      ],
+      "after_effect": {
+        "tag": "land_option_open|dd_started",
+        "months": 1,
+        "band": "1-2",
+        "source": "antes de M5 (mail-apa-01)"
+      },
+      "rearm_on_effects": [
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "r-enq-aac",
+      "skeleton": "mail-consultor-enquadramento-aia-01",
+      "skin": "aac-simplificada",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "env_path_aac_simplificada"
+      ],
+      "route": "B (AAS)",
+      "status": "BACKLOG",
+      "requires_any_effects": [
+        "land_option_open",
+        "dd_started"
+      ],
+      "blocks_if_any_effects": [
+        "apa_track_start",
+        "nao_sujeicao",
+        "caso_a_caso_request",
+        "aas_submitted"
+      ],
+      "after_effect": {
+        "tag": "land_option_open|dd_started",
+        "months": 1,
+        "band": "1-2",
+        "source": "antes de M5 (mail-apa-01)"
+      },
+      "rearm_on_effects": [
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "r-caso-isento",
+      "skeleton": "mail-ccdr-caso-a-caso-isento-01",
+      "skin": "ourique",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "caso_a_caso_request"
+      ],
+      "blocks_if_any_effects": [
+        "nao_sujeicao",
+        "aia_sujeito"
+      ],
+      "after_effect": {
+        "tag": "caso_a_caso_request",
+        "months": 1,
+        "band": "1-2",
+        "source": "PEDIR_PEDRO"
+      },
+      "mutex_group": "env_screening",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "underground_cable",
+          "design_trim_threshold"
+        ],
+        "down_if_any": [
+          "value_add_commit",
+          "env_trigger_sensitive"
+        ]
+      },
+      "reroll": false,
+      "rearm_on_effects": [
+        "caso_a_caso_contest"
+      ],
+      "rearm_after_months": 2,
+      "route": "B"
+    },
+    {
+      "id": "r-caso-eia",
+      "skeleton": "mail-ccdr-caso-a-caso-eia-01",
+      "skin": "ourique",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "caso_a_caso_request"
+      ],
+      "blocks_if_any_effects": [
+        "nao_sujeicao",
+        "apa_track_start"
+      ],
+      "after_effect": {
+        "tag": "caso_a_caso_request",
+        "months": 1,
+        "band": "1-2",
+        "source": "PEDIR_PEDRO"
+      },
+      "mutex_group": "env_screening",
+      "pick": 2,
+      "odds": {
+        "base": "fallback do grupo"
+      },
+      "reroll": false,
+      "rearm_on_effects": [
+        "caso_a_caso_contest"
+      ],
+      "rearm_after_months": 2,
+      "route": "B→A"
+    },
+    {
+      "id": "r-aas-evento",
+      "skeleton": "mail-apa-aas-01",
+      "skin": "default",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "area_aceleracao"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted",
+        "aas_submitted"
+      ],
+      "after_effect": {
+        "tag": "world:mapeamento_zaer_publicado",
+        "months": 0,
+        "band": "0",
+        "source": "evento de mundo"
+      },
+      "status": "BACKLOG",
+      "route": "AAS"
+    },
+    {
+      "id": "r-aas-favoravel",
+      "skeleton": "mail-ccdr-caso-a-caso-isento-01",
+      "skin": "aas-favoravel",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "aas_submitted"
+      ],
+      "blocks_if_any_effects": [
+        "nao_sujeicao"
+      ],
+      "after_effect": {
+        "tag": "aas_submitted",
+        "months": 2,
+        "band": "1-3",
+        "source": "PEDIR_PEDRO"
+      },
+      "status": "BACKLOG",
+      "route": "AAS",
+      "note": "MVP: AAS sempre favorável (HIPÓTESE); desfavorável = backlog."
+    },
+    {
+      "id": "r-risco-limiar",
+      "skeleton": "mail-consultor-nao-sujeicao-risco-01",
+      "skin": "limiar",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "env_path_worsened_planned"
+      ],
+      "requires_any_effects": [
+        "project_kind_new"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted"
+      ],
+      "after_effect": {
+        "tag": "env_path_worsened_planned",
+        "months": 0,
+        "band": "0",
+        "source": "imediato (tripwire)"
+      },
+      "rearm_on_effects": [
+        "reopen_tech_plan",
+        "hybrid_plan_commit"
+      ],
+      "route": "qualquer",
+      "note": "Ourique base já é aia_obrigatoria (a mais pesada): este tripwire não dispara na base de Ourique; serve lotes/desenhos abaixo dos limiares."
+    },
+    {
+      "id": "r-nao-sujeicao-alteracao",
+      "skeleton": "mail-consultor-nao-sujeicao-01",
+      "skin": "alteracao-ourique",
+      "when_phase": [
+        "licenca_producao",
+        "obra",
+        "cod"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "value_add_post_lp",
+        "lp_granted",
+        "alteracao_nao_sujeicao_eligible"
+      ],
+      "blocks_if_any_effects": [
+        "nao_sujeicao_alteracao",
+        "aia_nao_sujeicao_lost"
+      ],
+      "after_effect": {
+        "tag": "lp_granted",
+        "months": 2,
+        "band": "1-6",
+        "source": "HIPÓTESE"
+      },
+      "note": "Licenciamento da alteração (PIP da alteração + licença para hibridização/sobreequipamento, DL 15/2022 arts. 24.º/4 e 35.º) = backlog."
+    },
+    {
+      "id": "r-risco-alteracao",
+      "skeleton": "mail-consultor-nao-sujeicao-risco-01",
+      "skin": "ourique-alteracao",
+      "when_phase": [
+        "licenca_producao",
+        "obra",
+        "cod"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "lp_granted",
+        "value_add_post_lp",
+        "env_path_worsened_planned"
+      ],
+      "blocks_if_any_effects": [
+        "aia_nao_sujeicao_lost",
+        "nao_sujeicao_alteracao"
+      ],
+      "after_effect": {
+        "tag": "hybrid_plan_commit|value_add_commit",
+        "months": 0,
+        "band": "0",
+        "source": "imediato (tripwire)"
+      },
+      "rearm_on_effects": [
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "r-pip-pedido",
+      "skeleton": "mail-camara-pip-pedido-01",
+      "skin": "ourique",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "nao_sujeicao"
+      ],
+      "blocks_if_any_effects": [
+        "pip_request_submitted",
+        "env_route_a",
+        "aia_sujeito"
+      ],
+      "after_effect": {
+        "tag": "nao_sujeicao",
+        "months": 0,
+        "band": "0-1",
+        "source": "HIPÓTESE"
+      },
+      "rearm_on_effects": [
+        "pip_request_hold"
+      ],
+      "rearm_after_months": 1
+    },
+    {
+      "id": "r-pip-reformulado",
+      "skeleton": "mail-camara-pip-pedido-01",
+      "skin": "reformulado",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "pip_reformulate"
+      ],
+      "blocks_if_any_effects": [
+        "pip_aprovado",
+        "env_route_a"
+      ],
+      "after_effect": {
+        "tag": "pip_reformulate",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "rearm_on_effects": [
+        "pip_reformulate"
+      ]
+    },
+    {
+      "id": "r-pip-indeferido",
+      "skeleton": "mail-camara-pip-indeferido-01",
+      "skin": "ourique",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "pip_request_submitted",
+        "nao_sujeicao"
+      ],
+      "blocks_if_any_effects": [
+        "pip_aprovado"
+      ],
+      "after_effect": {
+        "tag": "pip_request_submitted|pip_hearing|pip_appeal",
+        "months": 3,
+        "band": "2-4 (recurso 6-10)",
+        "source": "HIPÓTESE / PEDIR_PEDRO"
+      },
+      "mutex_group": "pip_outcome",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "se:camara=hostil",
+          "risk_camara_+1",
+          "risk_camara_+2",
+          "risk_community_+1",
+          "risk_icnf_+1",
+          "icnf_minimal_reply"
+        ],
+        "down_if_any": [
+          "risk_camara_-1",
+          "pip_benefits_offer",
+          "pip_hearing",
+          "icnf_survey_done",
+          "layout_trim_trees"
+        ]
+      },
+      "reroll": true,
+      "rearm_on_effects": [
+        "pip_reformulate",
+        "pip_hearing",
+        "pip_appeal"
+      ],
+      "wait_for_answer_if_delivered": [
+        "mail-icnf-quercineas-01",
+        "mail-icnf-compensacao-exigente-01",
+        "mail-icnf-compensacao-aprovada-01"
+      ]
+    },
+    {
+      "id": "r-pip-condicionado",
+      "skeleton": "mail-camara-pip-condicionado-01",
+      "skin": "ourique",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "pip_request_submitted",
+        "nao_sujeicao"
+      ],
+      "blocks_if_any_effects": [
+        "pip_aprovado"
+      ],
+      "after_effect": {
+        "tag": "pip_request_submitted|pip_hearing|pip_appeal",
+        "months": 3,
+        "band": "2-4",
+        "source": "HIPÓTESE / PEDIR_PEDRO"
+      },
+      "mutex_group": "pip_outcome",
+      "pick": 2,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "se:camara=hostil",
+          "pip_benefits_offer",
+          "icnf_compensation_plan",
+          "icnf_minimal_reply"
+        ],
+        "down_if_any": []
+      },
+      "reroll": true,
+      "rearm_on_effects": [
+        "pip_reformulate",
+        "pip_hearing",
+        "pip_appeal"
+      ],
+      "wait_for_answer_if_delivered": [
+        "mail-icnf-quercineas-01",
+        "mail-icnf-compensacao-exigente-01",
+        "mail-icnf-compensacao-aprovada-01"
+      ]
+    },
+    {
+      "id": "r-pip-aprovado",
+      "skeleton": "mail-camara-pip-aprovado-01",
+      "skin": "ourique",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "pip_request_submitted",
+        "nao_sujeicao"
+      ],
+      "blocks_if_any_effects": [
+        "pip_aprovado"
+      ],
+      "after_effect": {
+        "tag": "pip_request_submitted|pip_hearing|pip_appeal",
+        "months": 3,
+        "band": "2-4",
+        "source": "HIPÓTESE / PEDIR_PEDRO"
+      },
+      "mutex_group": "pip_outcome",
+      "pick": 3,
+      "odds": {
+        "base": "fallback do grupo"
+      },
+      "reroll": true,
+      "rearm_on_effects": [
+        "pip_reformulate",
+        "pip_hearing",
+        "pip_appeal"
+      ],
+      "wait_for_answer_if_delivered": [
+        "mail-icnf-quercineas-01",
+        "mail-icnf-compensacao-exigente-01",
+        "mail-icnf-compensacao-aprovada-01"
+      ]
+    },
+    {
+      "id": "r-dia",
+      "skeleton": "mail-apa-dia-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "apa_track_start"
+      ],
+      "blocks_if_any_effects": [
+        "dia_emitida"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start",
+        "months": 8,
+        "band": "6-12",
+        "source": "HIPÓTESE / PEDIR_PEDRO (duração AIA)"
+      },
+      "route": "A",
+      "wait_for_answer_if_delivered": [
+        "mail-apa-ca-quercineas-01",
+        "mail-icnf-compensacao-exigente-01",
+        "mail-icnf-compensacao-aprovada-01"
+      ],
+      "dia_outcome_odds": {
+        "status": "PROPOSTA — só existe carta para 'condicionada' (mail-apa-dia-01.ourique); TODO skins favorável e desfavorável",
+        "favoravel": {
+          "base": "PEDIR_ECONOMY",
+          "up_if_any": [
+            "icnf_survey_done",
+            "layout_trim_trees",
+            "icnf_tacit_non_opposition",
+            "icnf_compensation_approved"
+          ]
+        },
+        "condicionada": {
+          "base": "PEDIR_ECONOMY (default atual)",
+          "up_if_any": [
+            "icnf_compensation_plan",
+            "env_mitigation_flag",
+            "icnf_compensation_more"
+          ]
+        },
+        "desfavoravel": {
+          "base": "PEDIR_ECONOMY",
+          "up_if_any": [
+            "risk_icnf_+1",
+            "icnf_minimal_reply",
+            "risk_apa_+1"
+          ],
+          "strong_up_if_all": [
+            "icnf_binding",
+            "icnf_minimal_reply"
+          ],
+          "down_if_any": [
+            "icnf_survey_done",
+            "layout_trim_trees",
+            "icnf_compensation_approved"
+          ],
+          "note": "icnf_binding ∧ chumbo do ICNF → DIA desfavorável obrigatória (veto)."
+        }
+      }
+    },
+    {
+      "id": "r-lp-pedido",
+      "skeleton": "mail-dgeg-lp-pedido-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "blocks_if_any_effects": [
+        "lp_request_submitted"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start|nao_sujeicao",
+        "months": 1,
+        "band": "1-4",
+        "source": "HIPÓTESE"
+      },
+      "rearm_on_effects": [
+        "lp_request_hold"
+      ],
+      "rearm_after_months": 1,
+      "requires_any_effects": [
+        "apa_track_start",
+        "nao_sujeicao"
+      ],
+      "route": "A (+ lotes com isenção automática)"
+    },
+    {
+      "id": "r-lp-novo-pedido",
+      "skeleton": "mail-dgeg-lp-pedido-01",
+      "skin": "novo-pedido",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_indeferido"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "lp_indeferido",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "note": "Ao submeter de novo, o motor re-arma r-lp-aperfeicoamento, r-lp-audiencia e o mutex lp_outcome (attempt=2)."
+    },
+    {
+      "id": "r-lp-aperfeicoamento",
+      "skeleton": "mail-dgeg-lp-aperfeicoamento-01",
+      "skin": "ourique",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_request_submitted"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted",
+        "lp_elements_sent"
+      ],
+      "after_effect": {
+        "tag": "lp_request_submitted",
+        "months": 1,
+        "band": "1",
+        "source": "LEGAL art. 25.º/1 (10 dias) → próxima aterragem"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "lp_dossier_thin"
+        ],
+        "down_if_any": []
+      },
+      "reroll": false
+    },
+    {
+      "id": "r-rede-parecer",
+      "skeleton": "mail-rede-lp-parecer-01",
+      "skin": "ourique",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_request_submitted"
+      ],
+      "blocks_if_any_effects": [
+        "grid_conditions_accepted",
+        "grid_phasing_request"
+      ],
+      "after_effect": {
+        "tag": "lp_request_submitted",
+        "months": 2,
+        "band": "1-3",
+        "source": "LEGAL art. 26.º/2 (20 dias) + atraso real HIPÓTESE"
+      }
+    },
+    {
+      "id": "r-fyi-lp",
+      "skeleton": "mail-fyi-processo-01",
+      "skin": "lp-em-apreciacao",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_all_effects": [
+        "lp_request_submitted"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted"
+      ],
+      "after_effect": {
+        "tag": "lp_request_submitted",
+        "months": 5,
+        "band": "4-6",
+        "source": "filler"
+      },
+      "filler": true
+    },
+    {
+      "id": "r-lp-audiencia",
+      "skeleton": "mail-dgeg-lp-audiencia-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_request_submitted",
+        "env_gate_ok"
+      ],
+      "requires_any_effects": [
+        "lp_dossier_thin",
+        "lp_elements_missing",
+        "dia_contest",
+        "risk_camara_+2",
+        "grid_phasing_request",
+        "pip_conditions"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted",
+        "lp_hearing_reply",
+        "lp_indeferido"
+      ],
+      "after_effect": {
+        "tag": "lp_request_submitted",
+        "months": 4,
+        "band": "3-12",
+        "source": "HIPÓTESE (decisão ≤12 meses)"
+      },
+      "mutex_group": "lp_outcome",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "lp_elements_missing",
+          "dia_contest"
+        ],
+        "down_if_any": [
+          "dia_conditions_accepted"
+        ]
+      },
+      "reroll": true,
+      "rearm_on_effects": [
+        "lp_indeferido"
+      ]
+    },
+    {
+      "id": "r-lp-condicionada",
+      "skeleton": "mail-dgeg-lp-condicionada-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_request_submitted",
+        "env_gate_ok"
+      ],
+      "requires_any_effects": [
+        "grid_conditions_accepted",
+        "grid_phasing_request"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted",
+        "lp_indeferido"
+      ],
+      "after_effect": {
+        "tag": "lp_request_submitted",
+        "months": 4,
+        "band": "3-12",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "lp_outcome",
+      "pick": 2,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "grid_phasing_request",
+          "lp_hearing_reply",
+          "dia_contest",
+          "pip_conditions"
+        ],
+        "down_if_any": [
+          "lp_clean"
+        ]
+      },
+      "reroll": true,
+      "odds_boost_if_any": {
+        "lp_chase": "PEDIR_ECONOMY",
+        "lp_escalate": "PEDIR_ECONOMY"
+      },
+      "rearm_on_effects": [
+        "lp_indeferido"
+      ]
+    },
+    {
+      "id": "r-lp-concedida",
+      "skeleton": "mail-dgeg-lp-concedida-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_request_submitted",
+        "env_gate_ok"
+      ],
+      "requires_any_effects": [
+        "grid_conditions_accepted",
+        "grid_phasing_request"
+      ],
+      "blocks_if_any_effects": [
+        "lp_granted",
+        "lp_indeferido",
+        "lp_elements_missing"
+      ],
+      "after_effect": {
+        "tag": "lp_request_submitted",
+        "months": 4,
+        "band": "3-12",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "lp_outcome",
+      "pick": 3,
+      "odds": {
+        "base": "fallback do grupo (sai se nenhuma anterior passar)"
+      },
+      "reroll": true,
+      "odds_boost_if_any": {
+        "lp_chase": "PEDIR_ECONOMY",
+        "lp_escalate": "PEDIR_ECONOMY"
+      },
+      "rearm_on_effects": [
+        "lp_indeferido"
+      ],
+      "note": "lp_elements_missing só é ultrapassado com lp_hearing_reply (então sai condicionada ou concedida via re-arm)."
+    },
+    {
+      "id": "r-lp-atraso",
+      "skeleton": "mail-dgeg-lp-atraso-01",
+      "skin": "ourique",
+      "via_deadline": "lp_decision.on_miss_mail",
+      "heavy": true,
+      "relevant": true
+    },
+    {
+      "id": "r-term-sheet",
+      "skeleton": "mail-banco-term-sheet-01",
+      "skin": "ourique",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_granted"
+      ],
+      "blocks_if_any_effects": [
+        "term_sheet_signed",
+        "term_sheet_negotiate"
+      ],
+      "after_effect": {
+        "tag": "lp_granted",
+        "months": 1,
+        "band": "1-3",
+        "source": "HIPÓTESE"
+      },
+      "rearm_on_effects": [
+        "term_sheet_defer"
+      ],
+      "rearm_after_months": 2
+    },
+    {
+      "id": "r-epc",
+      "skeleton": "mail-epc-propostas-01",
+      "skin": "ourique",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_granted"
+      ],
+      "blocks_if_any_effects": [
+        "epc_selected"
+      ],
+      "after_effect": {
+        "tag": "lp_granted",
+        "months": 2,
+        "band": "1-4",
+        "source": "HIPÓTESE"
+      },
+      "rearm_on_effects": [
+        "epc_retender"
+      ],
+      "rearm_after_months": 2
+    },
+    {
+      "id": "r-fid",
+      "skeleton": "mail-investidores-fid-01",
+      "skin": "ourique",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_granted",
+        "term_sheet_signed",
+        "epc_selected"
+      ],
+      "blocks_if_any_effects": [
+        "fid_reached",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "epc_selected",
+        "months": 1,
+        "band": "0-2",
+        "source": "HIPÓTESE"
+      },
+      "rearm_on_effects": [
+        "fid_defer",
+        "equity_capex_request"
+      ],
+      "rearm_after_months": 2
+    },
+    {
+      "id": "r-fid-ultimato",
+      "skeleton": "mail-investidores-fid-01",
+      "skin": "ultimato",
+      "via_deadline": "fid_window.on_miss_mail",
+      "heavy": true,
+      "relevant": true
+    },
+    {
+      "id": "r-arranque",
+      "skeleton": "mail-obra-arranque-01",
+      "skin": "ourique",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "fid_reached"
+      ],
+      "blocks_if_any_effects": [
+        "construction_started"
+      ],
+      "after_effect": {
+        "tag": "fid_reached",
+        "months": 0,
+        "band": "0-1",
+        "source": "mesma aterragem ou seguinte"
+      },
+      "rearm_on_effects": [
+        "obra_start_deferred"
+      ],
+      "rearm_after_months": 1
+    },
+    {
+      "id": "r-fyi-obra-1",
+      "skeleton": "mail-fyi-processo-01",
+      "skin": "obra-estaleiro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 2,
+        "band": "1-3",
+        "source": "HIPÓTESE"
+      },
+      "filler": true
+    },
+    {
+      "id": "r-fyi-obra-2",
+      "skeleton": "mail-fyi-processo-01",
+      "skin": "obra-montagem",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 6,
+        "band": "5-8",
+        "source": "HIPÓTESE"
+      },
+      "filler": true
+    },
+    {
+      "id": "r-fyi-obra-3",
+      "skeleton": "mail-fyi-processo-01",
+      "skin": "obra-subestacao",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 9,
+        "band": "8-11",
+        "source": "HIPÓTESE"
+      },
+      "filler": true
+    },
+    {
+      "id": "r-epc-atraso",
+      "skeleton": "mail-epc-atraso-01",
+      "skin": "ourique",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "mechanical_completion"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 5,
+        "band": "4-8",
+        "source": "HIPÓTESE"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "epc_multi",
+          "epc_interface_risk_+1"
+        ],
+        "down_if_any": [
+          "epc_turnkey"
+        ]
+      },
+      "reroll": false,
+      "shifts_deadline": "epc_mechanical_completion"
+    },
+    {
+      "id": "r-grid-slip",
+      "skeleton": "mail-rede-ligacao-atraso-01",
+      "skin": "ourique",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "requires_any_effects": [
+        "grid_conditions_accepted",
+        "grid_phasing_request",
+        "capex_rede_flag"
+      ],
+      "blocks_if_any_effects": [
+        "line_ready"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 7,
+        "band": "5-10",
+        "source": "HIPÓTESE"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "se:rede=congestionada",
+          "grid_phasing_request"
+        ],
+        "down_if_any": [
+          "grid_chase"
+        ]
+      },
+      "reroll": false,
+      "shifts_deadline": "grid_connection",
+      "note": "Não no mesmo mês que r-epc-atraso (cap de CTA pesado 2, mas evitar duas crises juntas)."
+    },
+    {
+      "id": "r-linha-pronta",
+      "skeleton": "mail-rede-linha-pronta-01",
+      "skin": "ourique",
+      "via_deadline": "grid_connection.on_meet_mail",
+      "heavy": false,
+      "relevant": true
+    },
+    {
+      "id": "r-ensaios",
+      "skeleton": "mail-dgeg-ensaios-01",
+      "skin": "ourique",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "mechanical_completion",
+        "line_ready"
+      ],
+      "blocks_if_any_effects": [
+        "commissioning_started",
+        "punch_list_first"
+      ],
+      "after_effect": {
+        "tag": "mechanical_completion",
+        "months": 0,
+        "band": "0-1",
+        "source": "mesma aterragem"
+      }
+    },
+    {
+      "id": "r-le-cod",
+      "skeleton": "mail-dgeg-le-cod-01",
+      "skin": "ourique",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "mechanical_completion",
+        "line_ready"
+      ],
+      "requires_any_effects": [
+        "commissioning_started",
+        "punch_list_first"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached"
+      ],
+      "after_effect": {
+        "tag": "commissioning_started|punch_list_first",
+        "months": 2,
+        "band": "1-3",
+        "source": "LEGAL art. 34.º (vistoria ≤30 dias) + ensaios HIPÓTESE; vistoria_acreditada → -1"
+      }
+    },
+    {
+      "id": "r-aviso",
+      "skeleton": "mail-prazo-aviso-01",
+      "skin": "<por deadline>",
+      "via_deadline": "<deadline>.warn",
+      "heavy": false,
+      "relevant": false
+    },
+    {
+      "id": "r-prorrogacao",
+      "skeleton": "mail-prazo-prorrogacao-01",
+      "skin": "<por deadline>",
+      "via_deadline": "<deadline>.on_miss_mail",
+      "heavy": true,
+      "relevant": true
+    },
+    {
+      "id": "r-prorrogacao-sim",
+      "skeleton": "mail-prorrogacao-concedida-01",
+      "skin": "<por deadline>",
+      "via_deadline": "<deadline>.extension.granted_mail",
+      "heavy": false,
+      "relevant": true
+    },
+    {
+      "id": "r-prorrogacao-nao",
+      "skeleton": "mail-prorrogacao-recusada-01",
+      "skin": "<por deadline>",
+      "via_deadline": "<deadline>.extension.denied_mail",
+      "heavy": true,
+      "relevant": true
+    },
+    {
+      "id": "r-icnf-quercineas",
+      "skeleton": "mail-icnf-quercineas-01",
+      "skin": "ourique",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "pip_request_submitted"
+      ],
+      "se_gate": {
+        "attr": "env_draft.quercineas_densidade",
+        "alta": "elegível",
+        "media": "chance baixa",
+        "baixa": "nunca"
+      },
+      "blocks_if_any_effects": [
+        "pip_aprovado",
+        "pip_conditions",
+        "pip_indeferido",
+        "icnf_survey_done",
+        "icnf_compensation_plan",
+        "layout_trim_trees",
+        "icnf_minimal_reply"
+      ],
+      "after_effect": {
+        "tag": "pip_request_submitted",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE — parecer do ICNF chega durante a apreciação do PIP, antes da decisão (r-pip-* a 2–4 meses)"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY (alta: elevada; media: baixa)",
+        "up_if_any": [],
+        "down_if_any": [
+          "icnf_hint_useful"
+        ]
+      },
+      "reroll": false
+    },
+    {
+      "id": "r-icnf-exigente",
+      "skeleton": "mail-icnf-compensacao-exigente-01",
+      "skin": "ourique",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "icnf_compensation_plan"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_compensation_approved",
+        "icnf_via_ca"
+      ],
+      "after_effect": {
+        "tag": "icnf_compensation_plan",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_outcome",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "risk_icnf_+1"
+        ],
+        "down_if_any": [
+          "icnf_hint_useful"
+        ]
+      },
+      "reroll": true
+    },
+    {
+      "id": "r-icnf-aprovada",
+      "skeleton": "mail-icnf-compensacao-aprovada-01",
+      "skin": "ourique",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "icnf_compensation_plan"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_compensation_approved",
+        "icnf_via_ca"
+      ],
+      "after_effect": {
+        "tag": "icnf_compensation_plan",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_outcome",
+      "pick": 2,
+      "odds": {
+        "base": "fallback do grupo"
+      },
+      "reroll": true
+    },
+    {
+      "id": "r-icnf-consulta-util",
+      "skeleton": "mail-icnf-consulta-01",
+      "skin": "ourique-util",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "player_initiated": true,
+      "requires_all_effects": [
+        "icnf_consult_requested"
+      ],
+      "blocks_if_any_effects": [
+        "pip_request_submitted"
+      ],
+      "after_effect": {
+        "tag": "icnf_consult_requested",
+        "months": 1,
+        "band": "0-1",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_consulta",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY (rara)"
+      },
+      "on_deliver_effects": [
+        "icnf_hint_useful",
+        "risk_icnf_-1"
+      ],
+      "rearm_on_effects": [
+        "icnf_consult_requested"
+      ]
+    },
+    {
+      "id": "r-icnf-consulta-sem-resposta",
+      "skeleton": "mail-icnf-consulta-01",
+      "skin": "ourique-sem-resposta",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "player_initiated": true,
+      "requires_all_effects": [
+        "icnf_consult_requested"
+      ],
+      "blocks_if_any_effects": [
+        "pip_request_submitted"
+      ],
+      "after_effect": {
+        "tag": "icnf_consult_requested",
+        "months": 1,
+        "band": "0-1",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_consulta",
+      "pick": 2,
+      "odds": {
+        "base": "PEDIR_ECONOMY"
+      },
+      "on_deliver_effects": [
+        "icnf_no_reply"
+      ],
+      "rearm_on_effects": [
+        "icnf_consult_requested"
+      ]
+    },
+    {
+      "id": "r-icnf-consulta-vaga",
+      "skeleton": "mail-icnf-consulta-01",
+      "skin": "ourique-vaga",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "player_initiated": true,
+      "requires_all_effects": [
+        "icnf_consult_requested"
+      ],
+      "blocks_if_any_effects": [
+        "pip_request_submitted"
+      ],
+      "after_effect": {
+        "tag": "icnf_consult_requested",
+        "months": 1,
+        "band": "0-1",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_consulta",
+      "pick": 3,
+      "odds": {
+        "base": "fallback do grupo (mais provável)"
+      },
+      "on_deliver_effects": [
+        "icnf_hint_vague"
+      ],
+      "rearm_on_effects": [
+        "icnf_consult_requested"
+      ]
+    },
+    {
+      "id": "r-icnf-ca-quercineas",
+      "skeleton": "mail-apa-ca-quercineas-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "apa_track_start"
+      ],
+      "requires_any_effects": [
+        "env_path_aia_obrigatoria",
+        "aia_sujeito",
+        "env_route_a"
+      ],
+      "se_gate": {
+        "attr": "env_draft.quercineas_densidade",
+        "alta": "elegível",
+        "media": "chance baixa",
+        "baixa": "nunca"
+      },
+      "blocks_if_any_effects": [
+        "dia_emitida",
+        "icnf_via_ca",
+        "icnf_silence_seen"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start",
+        "months": 4,
+        "band": "3-6",
+        "source": "HIPÓTESE — EIA entregue + conformidade + instrução da CA, antes da DIA (r-dia 6–12). Sem tag de 'EIA aceite' no pacote: propor eia_conformidade."
+      },
+      "mutex_group": "icnf_ca",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY (alta: elevada; media: baixa)",
+        "up_if_any": [],
+        "down_if_any": [
+          "icnf_hint_useful"
+        ]
+      },
+      "reroll": false
+    },
+    {
+      "id": "r-icnf-ca-silencio-tacito",
+      "skeleton": "mail-apa-ca-icnf-silencio-01",
+      "skin": "tacito",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "apa_track_start"
+      ],
+      "requires_any_effects": [
+        "env_path_aia_obrigatoria",
+        "aia_sujeito",
+        "env_route_a"
+      ],
+      "se_requires": {
+        "env_draft.rede_natura": false
+      },
+      "blocks_if_any_effects": [
+        "dia_emitida",
+        "icnf_via_ca",
+        "icnf_silence_seen"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start",
+        "months": 4,
+        "band": "3-6",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_ca",
+      "pick": 2,
+      "odds": {
+        "base": "PEDIR_ECONOMY (silêncio do ICNF)"
+      },
+      "on_deliver_effects": [
+        "icnf_tacit_non_opposition"
+      ]
+    },
+    {
+      "id": "r-icnf-ca-silencio-natura",
+      "skeleton": "mail-apa-ca-icnf-silencio-01",
+      "skin": "rede-natura",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "apa_track_start"
+      ],
+      "requires_any_effects": [
+        "env_path_aia_obrigatoria",
+        "aia_sujeito",
+        "env_route_a"
+      ],
+      "se_requires": {
+        "env_draft.rede_natura": true
+      },
+      "blocks_if_any_effects": [
+        "dia_emitida",
+        "icnf_via_ca",
+        "icnf_silence_seen"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start",
+        "months": 4,
+        "band": "3-6",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_ca",
+      "pick": 2,
+      "odds": {
+        "base": "PEDIR_ECONOMY (silêncio do ICNF)"
+      },
+      "on_deliver_effects": [
+        "icnf_silence_natura",
+        "delay_env_+1"
+      ]
+    },
+    {
+      "id": "r-icnf-ca-exigente",
+      "skeleton": "mail-icnf-compensacao-exigente-01",
+      "skin": "aia",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "icnf_compensation_plan",
+        "icnf_via_ca"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_compensation_approved",
+        "dia_emitida"
+      ],
+      "after_effect": {
+        "tag": "icnf_compensation_plan",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_outcome_ca",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "risk_icnf_+1"
+        ],
+        "down_if_any": [
+          "icnf_hint_useful"
+        ]
+      },
+      "reroll": true
+    },
+    {
+      "id": "r-icnf-ca-aprovada",
+      "skeleton": "mail-icnf-compensacao-aprovada-01",
+      "skin": "aia",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "icnf_compensation_plan",
+        "icnf_via_ca"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_compensation_approved",
+        "dia_emitida"
+      ],
+      "after_effect": {
+        "tag": "icnf_compensation_plan",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_outcome_ca",
+      "pick": 2,
+      "odds": {
+        "base": "fallback do grupo"
+      },
+      "reroll": true
+    }
+  ],
+  "phase_bump_proposed": {
+    "lp_granted": {
+      "to": "licenca_producao",
+      "gate": [
+        "env_gate_ok"
+      ]
+    },
+    "construction_started": {
+      "to": "obra",
+      "gate": [
+        "fid_reached",
+        "lp_granted",
+        "env_gate_ok"
+      ]
+    },
+    "cod_reached": {
+      "to": "cod",
+      "gate": [
+        "line_ready",
+        "le_granted"
+      ]
+    },
+    "nao_sujeicao": {
+      "to": "aia",
+      "gate": [],
+      "note": "fase 'aia' = AIA ou declaração de não sujeição (MASTER-PLAN)"
+    }
+  },
+  "computed_tags": {
+    "land_secured": "land_option_open ∨ dd_started (MVP)",
+    "fid_ready": "lp_granted ∧ term_sheet_signed ∧ epc_selected ∧ land_secured ∧ equity_fit_ok ∧ ¬sale_full_exit",
+    "equity_fit_ok": "Economy: equity_capex_est ≤ purse_equity (gate5 §4.2)",
+    "equity_fit_short": "¬equity_fit_ok",
+    "env_gate_ok": "dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado)   (AAS/caso a caso favorável também põem nao_sujeicao)",
+    "project_kind": "new (até lp_granted) | alteration (value-add com value_add_post_lp) | reequipamento (reequip pós-COD)",
+    "ampliacao_le_20pct": "UI/Economy: ΔMW ≤ 20% da potência instalada base ∧ Δárea ≤ 20% da área base",
+    "ampliacao_gt_20pct_planned": "idem, calculado sobre o plano antes de confirmar",
+    "new_overhead_line_planned": "plano exige linha aérea nova até à SE (vs cabo enterrado / linha existente)",
+    "env_path": "ver env_routing; escreve UMA flag env_path_<nao_sujeito|caso_a_caso|aia_obrigatoria|aac_simplificada> = 1 (as outras 0)",
+    "env_path_planned": "mesmo cálculo sobre o plano em edição (antes de confirmar)",
+    "env_path_worsened_planned": "rank(env_path_planned) > rank(env_path)  ∨ (project_kind=alteration ∧ ¬alteracao_nao_sujeicao_eligible(plano))",
+    "env_trigger_mva|area|turbines|line|sensitive (+ _planned)": "que critério disparou: area = ha solar; mva = MW total do TRC (só com eólico); turbines = nº aerogeradores; line = Anexo I (≥220 kV >15 km) ou II (≥110 kV ≥20 km); sensitive = sub-limiar por componente",
+    "env_trim_possible (+ _planned)": "o atributo que dispara está a ≤ trim_margin acima do limiar (trim_margin HIPÓTESE 20%, PEDIR_PEDRO)",
+    "project_kind_new": "project_kind = new",
+    "alteracao_nao_sujeicao_eligible": "ver env_routing.alteracoes (substitui aia_nao_sujeicao_eligible para value-add pós-LP)",
+    "icnf_binding": "parecer do ICNF é vinculativo: env_draft.rede_natura ∨ env_draft.area_protegida ∨ (quercineas_densidade ∈ {alta, media} ∧ ¬layout_trim_trees). Ourique = true (corte de quercíneas)."
+  },
+  "schedule_patches_proposed": {
+    "status": "NÃO aplicado ao mvp-schedule.json (vivo). A UI aplica quando o Pedro aprovar.",
+    "landing_5": {
+      "skeleton": "mail-apa-01",
+      "add_blocks_if_any_effects": [
+        "env_path_nao_sujeito",
+        "env_path_caso_a_caso",
+        "env_path_aac_simplificada",
+        "nao_sujeicao",
+        "apa_track_start"
+      ],
+      "note": "mail-apa-01 só para env_path=aia_obrigatoria (ou EIA exigido) e se o EIA ainda não arrancou."
+    }
+  },
+  "env_routing": {
+    "status": "DRAFT 2026-09-29 (rev. tarde) — limiares solar e linha pela leitura do DL 11/2023 (Pedro); regra mista do híbrido mantida",
+    "inputs": {
+      "lot (se-sheet env_draft)": [
+        "connection_mva (→ total_trc_mw)",
+        "area_ha (área de painéis — definição PEDIR_PEDRO)",
+        "n_turbines",
+        "tech",
+        "line_overhead",
+        "line_kv",
+        "line_km",
+        "sensitive_area",
+        "area_aceleracao",
+        "solar_on_structure",
+        "structure_exception"
+      ],
+      "design (plano do dossier)": [
+        "total_trc_mw (não sobe com value-add no mesmo TRC — físico)",
+        "solar.area_ha",
+        "wind.n_turbines",
+        "component_mw (instalado/alocado, só para sub-limiar sensível — HIPÓTESE)",
+        "line choice (aérea/enterrada, kV, km)",
+        "layout_touches_sensitive (polígonos + traçado)"
+      ],
+      "missing_value": "usar engine_default da se-sheet e marcar HUD/dossier 'HIPÓTESE'"
+    },
+    "rank": [
+      "nao_sujeito",
+      "aac_simplificada",
+      "caso_a_caso",
+      "aia_obrigatoria"
+    ],
+    "thresholds": {
+      "source": "Pedro 2026-09-29 (via IPP Economy): leitura DL 11/2023 (alt. RJAIA DL 151-B/2013 Anexos I/II)",
+      "solar": {
+        "aia_obrigatoria": {
+          "area_ha": 100,
+          "note": "área de painéis ≥100 ha; SEM limiar eléctrico geral"
+        },
+        "sensitive_caso_a_caso": {
+          "area_ha": 10,
+          "component_mw": 20
+        }
+      },
+      "wind": {
+        "aia_obrigatoria": {
+          "total_trc_mw": 50,
+          "n_turbines": 20
+        },
+        "sensitive_caso_a_caso": {
+          "component_mw": 20,
+          "n_turbines": 10
+        },
+        "flag": "inalterado; não confirmado na mesma leitura (lei fala em MW, não MVA; possível critério de proximidade a outros parques) — só flag, PEDIR_PEDRO"
+      },
+      "line": {
+        "aia_obrigatoria_if": "line_overhead ∧ line_kv ≥ 220 ∧ line_km > 15 (Anexo I)",
+        "caso_a_caso_if": "line_overhead ∧ line_kv ≥ 110 ∧ line_km ≥ 20 (Anexo II)",
+        "note": "substitui '≥110 kV e ≥10 km força AIA'"
+      },
+      "comparison": "sujeito se valor ≥ limiar (Anexo I linha: > 15 km)",
+      "units": "lei em MW: MW eléctrico total do TRC ≈ potência de ligação (MVA≈MW, HIPÓTESE cos φ≈1); MW por componente = instalado/alocado (HIPÓTESE, só este detalhe)"
+    },
+    "algorithm": [
+      "1. solar_on_structure ∧ tech∈{solar,solar+bess} ∧ structure_exception ∉ {artificial_water_body, classified_building_or_zone, defence_security_zone} → nao_sujeito (DL 99/2024)",
+      "2. area_aceleracao ∧ projecto novo estritamente dentro → aac_simplificada (DL 99/2024; mesmo acima dos limiares)",
+      "3. aia_obrigatoria se QUALQUER: solar.area_ha ≥ 100 · (tem eólico ∧ total_trc_mw ≥ 50) · wind.n_turbines ≥ 20 · linha aérea ≥220 kV com >15 km — independente de área sensível",
+      "4. caso_a_caso se QUALQUER: linha aérea ≥110 kV com ≥20 km (Anexo II, com ou sem área sensível) · OU (algum polígono de componente ou traçado da linha toca área sensível ∧ UM componente ≥ sub-limiar: solar area_ha ≥ 10 ∨ component_mw ≥ 20; eólico component_mw ≥ 20 ∨ n_turbines ≥ 10)",
+      "5. em área sensível abaixo dos sub-limiares → nao_sujeito (HIPÓTESE)",
+      "6. senão → nao_sujeito (solar < 100 ha · eólico: TRC < 50 MW e < 20 aerogeradores · linha abaixo do Anexo I e II · fora de área sensível)",
+      "BESS sozinho sem limiar próprio (HIPÓTESE)"
+    ],
+    "alteracoes": {
+      "source": "RJAIA alt. DL 11/2023 (Simplex Ambiental) + DL 99/2024",
+      "applies_when": "project_kind ∈ {alteration, reequipamento} (value-add depois de lp_granted da base)",
+      "alteracao_nao_sujeicao_eligible": "(alteration ∧ ¬sensitive_area ∧ ¬layout_touches_sensitive ∧ ΔMW ≤ 20% ∧ Δárea ≤ 20% ∧ ¬nova linha aérea) ∨ (reequipamento ∧ tech∈{solar,wind})",
+      "else": "a alteração cai no algoritmo acima aplicado ao projecto total (HIPÓTESE)",
+      "tags": "ampliacao_le_20pct / ampliacao_gt_20pct_planned / new_overhead_line_planned mantêm-se"
+    },
+    "recompute_on": [
+      "hybrid/overequip plan edit (→ _planned)",
+      "plano confirmado",
+      "reopen_tech_plan",
+      "design_trim_threshold",
+      "underground_cable",
+      "caso_a_caso_redesign",
+      "area_aceleracao (evento)",
+      "lp_granted (project_kind muda)",
+      "se-sheet load"
+    ],
+    "ourique_mvp": {
+      "resolves_to": "aia_obrigatoria",
+      "cause": "area_ha solar ≥ 100 (HIPÓTESE / PEDIR_PEDRO)",
+      "why": "120 MWp × ~1,0–1,6 ha/MWp (área de implantação) ≈ 120–200 ha ≥ 100. Linha (150 kV, ~3 km) não dispara; sensitive_area default false não é necessário. Solar deixou de ter limiar eléctrico: os 100 MVA do TRC já não justificam AIA.",
+      "risk": "Se '100 ha de painéis' for a área projectada dos módulos (~0,4–0,6 ha/MWp) → ~50–70 ha < 100 → Ourique NÃO chegaria a AIA pelos atributos; manter AIA por decisão Pedro/Economy com area_ha como causa assumida.",
+      "route": "A",
+      "value_add_post_lp": "sobreequipamento ≤20% sem linha aérea nova → alteracao_nao_sujeicao_eligible"
+    },
+    "hybrid_rule": {
+      "status": "FECHADO Pedro 2026-09-29; unidades adaptadas à leitura DL 11/2023",
+      "electrical": "total do TRC (potência de ligação, MW) — só onde a lei tem limiar eléctrico geral: eólico 50 MW. Solar não tem limiar eléctrico geral.",
+      "physical": "por componente: solar ha (100); eólico nº aerogeradores (20)",
+      "sensitive": "sub-limiares por componente (solar 10 ha / 20 MW; eólico 20 MW / 10 aerogeradores); basta um",
+      "examples": [
+        "solar 45 + eólico 30 com TRC 75 MW → aia_obrigatoria (eólico presente, 75 ≥ 50 no total do TRC)",
+        "TRC 45 MW com sobreequipamento até 75 instalados mas injecção limitada a 45 → abaixo do limiar eléctrico; decidem ha solar, aerogeradores, linha, área sensível",
+        "solar puro 120 MWp num TRC de 100 MW com 90 ha de painéis, fora de área sensível, linha curta → nao_sujeito (sem limiar eléctrico solar)"
+      ]
+    },
+    "lots_2026_09_29": {
+      "ferreira-do-alentejo": {
+        "installed_mwp": "~180 (160–200) — opção A euro-fields-console §3",
+        "resolves_to": "aia_obrigatoria",
+        "cause": "area_ha ~180–290 (HIPÓTESE 1,0–1,6 ha/MWp; PEDIR_PEDRO)",
+        "note": "módulos projectados ~70–110 ha: mesmo nessa leitura fica perto/acima do limiar"
+      },
+      "estremoz": {
+        "installed_mwp": "~280 (250–300)",
+        "resolves_to": "aia_obrigatoria",
+        "cause": "area_ha ~280–450 (HIPÓTESE) e ligação 400 kV longa (~20 km, cenário euro-fields §3.2) ≥220 kV >15 km → Anexo I, dupla causa",
+        "note": "sem se-sheet no pacote; km PEDIR_PEDRO"
+      }
+    }
+  }
+}

@@ -172,6 +172,19 @@
     align-items: baseline;
     gap: 8px;
   }
+  .bonding-top { white-space: nowrap; }
+  .header-metrics > .metric-pill,
+  .header-metrics > .bonding-pill,
+  .header-metrics > .mandate-hud-pill,
+  .header-metrics > .rating-badge { flex-shrink: 0; }
+  .header-metrics > .metric-pill, .header-metrics > .rating-badge, .header-metrics > .bonding-pill { padding-left: 11px; padding-right: 11px; }
+  .header-metrics > .bonding-pill { min-width: 0; }
+  .header-metrics { gap: 6px; }
+  .header-metrics > .rating-badge { font-size: 11px; padding-left: 9px; padding-right: 9px; }
+  .header-metrics > .mandate-hud-pill { padding-left: 9px; padding-right: 9px; }
+  .header-metrics > .mandate-hud-pill .metric-label { letter-spacing: 0; }
+  .header-metrics > .bonding-pill { gap: 2px; padding-top: 4px; padding-bottom: 4px; }
+  .header-metrics > .bonding-pill .bonding-top { flex-direction: column; align-items: flex-start; gap: 0; }
 
   .bonding-bar {
     height: 3px;
@@ -3474,6 +3487,10 @@
     transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
     z-index: 220;
   }
+  /* Correio + toasts opened from the sala do ativo (z 8600) must sit above it */
+  body:has(.asset-room.open) .inbox-backdrop { z-index: 8610; }
+  body:has(.asset-room.open) .inbox-drawer { z-index: 8620; }
+  body:has(.asset-room.open) .toast { z-index: 8700; }
   .inbox-backdrop.open { opacity: 1; visibility: visible; }
 
   .inbox-drawer {
@@ -3717,6 +3734,29 @@
   .mail-cta-secondary:hover {
     color: var(--text-main);
     background: var(--bg-app);
+  }
+  .mail-detail-actions.has-hints {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .mail-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; max-width: 100%; }
+  .mail-choice-hint {
+    margin: 0;
+    font-size: 11.5px;
+    line-height: 1.4;
+    color: #94a3b8;
+    max-width: 46ch;
+  }
+  .mail-type-chip.icnf { color: #3f6212; background: #f7fee7; border-color: #d9f99d; }
+  .prov-mark {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    color: #94a3b8;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-left: 4px;
   }
 
 
@@ -4201,6 +4241,93 @@
     color: #c2410c;
   }
 
+  .asset-mw-hud {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+  @media (min-width: 720px) {
+    .asset-mw-hud { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .asset-mw-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: #f8fafc;
+  }
+  .asset-mw-card .k {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+  .asset-mw-card .v {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 2px;
+  }
+  .asset-mw-card .v.free { color: #16a34a; }
+  .asset-mw-card .v.rent { color: #d97706; }
+  .asset-mw-card .sub {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+  @media (max-width: 480px) {
+    .asset-mw-hud { gap: 6px; }
+    .asset-mw-card { padding: 8px; min-width: 0; }
+    .asset-mw-card .v { font-size: 13px; white-space: nowrap; }
+    .asset-mw-card .sub { font-size: 10px; overflow-wrap: anywhere; }
+  }
+  .asset-mw-note {
+    font-size: 11px;
+    color: #64748b;
+    margin: 8px 0 0;
+    line-height: 1.4;
+  }
+  .asset-sell-modes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .asset-sell-chip {
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 4px 10px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+  }
+  .asset-sell-chip.open {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #166534;
+  }
+  .asset-sell-chip.gated {
+    background: #f1f5f9;
+    color: #94a3b8;
+  }
+  .asset-sell-chip.active {
+    background: #dbeafe;
+    border-color: #93c5fd;
+    color: #1d4ed8;
+  }
+  .asset-cta-chip.search {
+    background: #ede9fe;
+    color: #6d28d9;
+  }
+  .asset-cta-chip.sell {
+    background: #dcfce7;
+    color: #166534;
+  }
+  .mail-type-chip.comprador { background: #ecfdf5; color: #047857; }
+  .mail-type-chip.equipa { background: #eff6ff; color: #1d4ed8; }
+
   .asset-opt-list {
     display: flex;
     flex-direction: column;
@@ -4308,10 +4435,10 @@
     </div>
     <div class="brand-text">
       <span class="brand-name">Watt Indeferido</span>
-      <span class="brand-period" id="periodLabel">2026 · Q3</span>
+      <span class="brand-period" id="periodLabel">2026 · T3</span>
     </div>
   </div>
-  <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · Q3</span>
+  <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · T3</span>
 
   <div class="header-metrics" id="coach-header-metrics">
     <div class="metric-pill" id="pillCaixa">
@@ -4319,34 +4446,34 @@
       <span class="metric-value num" id="valCaixa">€ 18,4M</span>
     </div>
     <div class="metric-pill" id="pillDivida">
-      <span class="metric-label">Dívida Consolidada</span>
+      <span class="metric-label">Dívida total</span>
       <span class="metric-value num" id="valDivida">€ 23,5M</span>
     </div>
     <div class="metric-pill" id="pillNav">
-      <span class="metric-label">NAV Estimado</span>
+      <span class="metric-label" title="Valor estimado da empresa">Valor da empresa</span>
       <span class="metric-value num" id="valNav">€ 64,8M</span>
     </div>
-    <div class="rating-badge">Tier 2 · Mid IPP</div>
+    <div class="rating-badge">Orçamento pequeno</div>
+    <div class="mandate-hud-pill" id="pillMandateCar" title="Dinheiro para desenvolver: o dinheiro que os investidores aceitam arriscar para preparares o projeto até decidires construir">
+      <span class="metric-label">Para desenvolver</span>
+      <span class="metric-value" id="valMandateCar">pouco</span>
+    </div>
+    <div class="mandate-hud-pill" id="pillMandateEquity" title="Capital próprio para construir: o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco">
+      <span class="metric-label">Para construir</span>
+      <span class="metric-value" id="valMandateEquity">pouco</span>
+    </div>
     <div class="bonding-pill">
       <div class="bonding-top">
-        <span class="metric-label">Bonding Capacity</span>
+        <span class="metric-label" title="Garantias bancárias: cauções que o banco emite por ti para concorreres e manteres TRC">Garantias</span>
         <span class="metric-value num" style="font-size:12px" id="valBonding">€ 6,2M livres</span>
-        <div class="mandate-hud-pill" id="pillMandateCar" title="HIPÓTESE · mandato">
-      <span class="metric-label">CAR <span class="mandate-hyp">· HIPÓTESE</span></span>
-      <span class="metric-value" id="valMandateCar">CAR · banda L</span>
-    </div>
-    <div class="mandate-hud-pill" id="pillMandateEquity" title="HIPÓTESE · mandato">
-      <span class="metric-label">Equity <span class="mandate-hyp">· HIPÓTESE</span></span>
-      <span class="metric-value" id="valMandateEquity">Equity · banda L</span>
-    </div>
-  </div>
+      </div>
       <div class="bonding-bar">
         <div class="bonding-fill" id="bondingFill" style="width:61%"></div>
       </div>
     </div>
   </div>
 
-  <button type="button" class="header-home-btn" id="btnHeaderHome" title="Home / Consola" aria-label="Home / Consola"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="header-home-label">Home</span></button>
+  <button type="button" class="header-home-btn" id="btnHeaderHome" title="Início" aria-label="Início"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="header-home-label">Início</span></button>
   <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Leilão" aria-label="Leilão"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg><span class="header-auction-label">Leilão</span><span class="inbox-badge pulse" id="auctionBadge" hidden>0</span></button>
   <button type="button" class="header-inbox-btn" id="btnInbox" title="Correio" aria-label="Correio">
     <span class="inbox-icon" id="inboxIcon" aria-hidden="true"></span>
@@ -4361,10 +4488,10 @@
 
 <!-- ═══ TABS ═══ -->
 <nav class="tab-bar" role="tablist">
-  <button class="tab active" data-tab="portfolio" role="tab" aria-selected="true">Portfólio &amp; Nós de Rede</button>
-  <button class="tab" data-tab="pipeline" role="tab" aria-selected="false">Pipeline de Originação (DL 15/2022)</button>
-  <button class="tab" data-tab="mercado" role="tab" aria-selected="false">Mercado &amp; Curva de Preços</button>
-  <button class="tab" data-tab="financas" role="tab" aria-selected="false">Financiamento &amp; Reciclagem</button>
+  <button class="tab active" data-tab="portfolio" role="tab" aria-selected="true">As tuas centrais</button>
+  <button class="tab" data-tab="pipeline" role="tab" aria-selected="false">Próximos concursos</button>
+  <button class="tab" data-tab="mercado" role="tab" aria-selected="false">Preços da eletricidade</button>
+  <button class="tab" data-tab="financas" role="tab" aria-selected="false">Financiamento</button>
 </nav>
 
 <!-- ═══ MAIN ═══ -->
@@ -4374,12 +4501,12 @@
   <div class="panel active" id="panel-portfolio" role="tabpanel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Nós de Rede</div>
-        <div class="panel-subtitle" id="portfolioSubtitle">TRC vem do leilão · sem Ourique de graça · Ferreira/Évora depois</div>
+        <div class="panel-title">As tuas centrais</div>
+        <div class="panel-subtitle" id="portfolioSubtitle">Os TRC ganham-se no leilão. Ferreira e Évora chegam mais tarde.</div>
       </div>
       <div class="panel-actions">
-        <button type="button" class="btn-panel-ghost" id="btnMinimizeAll" title="Minimizar todos os nós">Minimizar todos</button>
-        <button type="button" class="btn-panel-ghost" id="btnRestoreAll" title="Restaurar todos os nós">Restaurar todos</button>
+        <button type="button" class="btn-panel-ghost" id="btnMinimizeAll" title="Minimizar todas as centrais">Minimizar todas</button>
+        <button type="button" class="btn-panel-ghost" id="btnRestoreAll" title="Abrir todas as centrais">Abrir todas</button>
       </div>
     </div>
     <div class="portfolio-workspace" id="coach-portfolio">
@@ -4392,11 +4519,11 @@
           <path d="M20 30h16M24 36h8" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" opacity="0.45"/>
         </svg>
         <div class="portfolio-empty-title" id="portfolioEmptyTitle">Sem central</div>
-        <div class="portfolio-empty-sub" id="portfolioEmptySub">Ainda não tens TRC. Abre a mesa de leilão — o ponto não vem de graça.</div>
-        <button type="button" class="portfolio-empty-cta" id="portfolioEmptyCta" hidden>Abrir próximo concurso REN</button>
-        <div class="portfolio-empty-hint">Área de trabalho · Portfólio</div>
+        <div class="portfolio-empty-sub" id="portfolioEmptySub">Ainda não tens TRC. Abre o leilão para ganhar o primeiro.</div>
+        <button type="button" class="portfolio-empty-cta" id="portfolioEmptyCta" hidden>Abrir o próximo leilão</button>
+        <div class="portfolio-empty-hint">Portefólio</div>
       </div>
-      <div class="nodes-dock" id="nodesDock" role="toolbar" aria-label="Nós minimizados" aria-hidden="true"></div>
+      <div class="nodes-dock" id="nodesDock" role="toolbar" aria-label="Centrais minimizadas" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -4404,13 +4531,13 @@
   <div class="panel" id="panel-pipeline" role="tabpanel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Pipeline de Originação</div>
-        <div class="panel-subtitle" id="pipelineSubtitle">Bloqueado até Ourique ser rentável</div>
+        <div class="panel-title">Próximos concursos</div>
+        <div class="panel-subtitle" id="pipelineSubtitle">Bloqueado até Ourique dar lucro</div>
       </div>
     </div>
     <div class="pipeline-locked" id="pipelineLocked" role="status">
-      <p class="pipeline-locked-title">Pipeline bloqueado até Ourique ser rentável</p>
-      <p class="pipeline-locked-sub">SE Ferreira do Alentejo e SE Évora entram mais tarde — prémios de pipeline, não no arranque.</p>
+      <p class="pipeline-locked-title">Os próximos concursos abrem quando Ourique der lucro</p>
+      <p class="pipeline-locked-sub">As subestações de Ferreira do Alentejo e de Évora chegam mais tarde, como prémio.</p>
     </div>
     <div class="pipeline-list" id="pipelineList" hidden></div>
   </div>
@@ -4419,31 +4546,31 @@
   <div class="panel" id="panel-mercado" role="tabpanel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Mercado &amp; Curva de Preços</div>
-        <div class="panel-subtitle">MIBEL · Preços capturados vs. spot · Q3 2026</div>
+        <div class="panel-title">Preços da eletricidade</div>
+        <div class="panel-subtitle">Mercado ibérico · preço que as centrais recebem e preço médio de mercado · 3.º trimestre de 2026</div>
       </div>
     </div>
     <div class="price-card">
       <div class="price-stats">
         <div class="price-stat">
-          <span class="price-stat-label">Preço Médio Spot</span>
+          <span class="price-stat-label">Preço médio de mercado</span>
           <span class="price-stat-value num">€ 68,4</span>
         </div>
         <div class="price-stat">
-          <span class="price-stat-label">Preço Capturado Solar</span>
+          <span class="price-stat-label">Preço recebido pelo solar</span>
           <span class="price-stat-value num" style="color:var(--solar)">€ 61,2</span>
         </div>
         <div class="price-stat">
-          <span class="price-stat-label">Preço Capturado Eólico</span>
+          <span class="price-stat-label">Preço recebido pelo eólico</span>
           <span class="price-stat-value num" style="color:var(--wind)">€ 72,8</span>
         </div>
         <div class="price-stat">
-          <span class="price-stat-label">Capture Rate Médio</span>
+          <span class="price-stat-label">% do preço de mercado recebida</span>
           <span class="price-stat-value num">94,1%</span>
         </div>
       </div>
       <div class="chart-wrap">
-        <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" aria-label="Curva de preços MIBEL">
+        <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" aria-label="Preços da eletricidade no mercado ibérico">
           <!-- Grid lines -->
           <line x1="48" y1="20" x2="48" y2="180" stroke="#e2e8f0" stroke-width="1"/>
           <line x1="48" y1="180" x2="700" y2="180" stroke="#e2e8f0" stroke-width="1"/>
@@ -4475,9 +4602,9 @@
         </svg>
       </div>
       <div class="chart-legend">
-        <div class="trc-legend-item"><span class="trc-dot" style="background:var(--grid)"></span> Spot MIBEL</div>
-        <div class="trc-legend-item"><span class="trc-dot" style="background:var(--solar)"></span> Capturado Solar</div>
-        <div class="trc-legend-item"><span class="trc-dot" style="background:var(--wind)"></span> Capturado Eólico</div>
+        <div class="trc-legend-item"><span class="trc-dot" style="background:var(--grid)"></span> Preço de mercado</div>
+        <div class="trc-legend-item"><span class="trc-dot" style="background:var(--solar)"></span> Recebido pelo solar</div>
+        <div class="trc-legend-item"><span class="trc-dot" style="background:var(--wind)"></span> Recebido pelo eólico</div>
       </div>
     </div>
   </div>
@@ -4486,61 +4613,61 @@
   <div class="panel" id="panel-financas" role="tabpanel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Financiamento &amp; Reciclagem de Capital</div>
-        <div class="panel-subtitle">Estrutura de dívida · Farm-downs · Bonding capacity</div>
+        <div class="panel-title">Financiamento</div>
+        <div class="panel-subtitle">Dívida · venda de parte do projeto · garantias bancárias</div>
       </div>
     </div>
     <div class="finance-grid">
       <div class="finance-card">
-        <h3>Estrutura de Dívida</h3>
+        <h3>Dívida</h3>
         <div class="debt-row">
           <div>
-            <div class="debt-name">Project Finance — SE Ourique</div>
-            <div class="debt-detail">CGD + CaixaBank · Euribor 6M + 175 bps · Mat. 2040</div>
+            <div class="debt-name">Empréstimo do projeto — SE Ourique</div>
+            <div class="debt-detail">CGD + CaixaBank · juro Euribor a 6 meses + 175 pontos base · vence em 2040</div>
           </div>
           <div class="debt-amount num">€ 14,2M</div>
         </div>
         <div class="debt-row">
           <div>
-            <div class="debt-name">Corporate Facility Revolving</div>
-            <div class="debt-detail">Sindicato 3 bancos · Disponível € 12M</div>
+            <div class="debt-name">Linha de crédito da empresa</div>
+            <div class="debt-detail">3 bancos · disponível € 12M</div>
           </div>
           <div class="debt-amount num">€ 9,3M</div>
         </div>
         <div class="debt-row">
           <div>
-            <div class="debt-name"><strong>Total Dívida Consolidada</strong></div>
-            <div class="debt-detail">LTV agregado (Ourique + revolving)</div>
+            <div class="debt-name"><strong>Dívida total</strong></div>
+            <div class="debt-detail">Empréstimo de Ourique + linha de crédito</div>
           </div>
           <div class="debt-amount num" style="font-size:15px">€ 23,5M</div>
         </div>
       </div>
       <div class="finance-card">
-        <h3>Reciclagem de Capital</h3>
+        <h3>Garantias e venda de participações</h3>
         <div class="debt-row">
           <div>
-            <div class="debt-name">Bonding Capacity Total</div>
-            <div class="debt-detail">Garantias bancárias + surety bonds</div>
+            <div class="debt-name">Garantias bancárias (total)</div>
+            <div class="debt-detail">Cauções que o banco emite por ti para concorreres e manteres TRC</div>
           </div>
           <div class="debt-amount num">€ 16,0M</div>
         </div>
         <div class="debt-row">
           <div>
-            <div class="debt-name">Utilizado</div>
-            <div class="debt-detail">Cauções DGEG + E-REDES</div>
+            <div class="debt-name">Usadas</div>
+            <div class="debt-detail">Cauções à DGEG e à REN</div>
           </div>
           <div class="debt-amount num">€ 9,8M</div>
         </div>
         <div class="debt-row">
           <div>
-            <div class="debt-name">Livre</div>
+            <div class="debt-name">Livres</div>
             <div class="debt-detail">Disponível para novos leilões</div>
           </div>
           <div class="debt-amount num" style="color:var(--success)">€ 6,2M</div>
         </div>
         <div class="farmdown-box">
-          <h4>Farm-Down Disponível</h4>
-          <p>Farm-down indisponível enquanto SE Ourique sangra (NPV ≤ 0). Ferreira e Évora são prémios posteriores no pipeline.</p>
+          <h4>Vender parte do projeto (49%)</h4>
+          <p>Ainda não é possível: SE Ourique está a perder dinheiro (NPV negativo). Ferreira e Évora chegam mais tarde, nos próximos concursos.</p>
         </div>
       </div>
     </div>
@@ -4550,7 +4677,7 @@
 
 <!-- ═══ FAB · Próximo Trimestre ═══ -->
 <button class="fab-nextq" id="btnNextQ" type="button"
-  aria-label="Play · avançar o mês" title="Play · avançar o mês">
+  aria-label="Avançar o tempo" title="Avançar o tempo">
   <!-- universal Play triangle in circle -->
   <svg class="fab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/>
@@ -4574,7 +4701,7 @@
   <div class="drawer-header">
     <div>
       <div class="drawer-title" id="drawerTitle">—</div>
-      <div class="drawer-subtitle" id="drawerSubtitle">Dossier do TRC</div>
+      <div class="drawer-subtitle" id="drawerSubtitle">Ficha do projeto</div>
     </div>
     <button class="drawer-close" id="drawerClose" type="button" aria-label="Fechar">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -4593,8 +4720,7 @@
     <div class="inbox-header-text">
       <div class="inbox-title-row">
         <div class="inbox-title" id="inboxTitle">Correio</div>
-        <span class="inbox-mock-chip">Mock</span>
-      </div>
+              </div>
       <div class="inbox-subtitle" id="inboxSubtitle">Cartas · Câmara · Consultor · Dicas</div>
     </div>
   </div>
@@ -4606,26 +4732,26 @@
   <div class="auction-shell" role="dialog" aria-modal="true" aria-labelledby="auctionTitle">
     <aside class="auction-left">
       <div class="auction-left-head">
-        <div class="auction-kicker" id="auctionWaveKicker">Concurso REN · onda 1</div>
-        <div class="auction-left-title">Mesa de leilão</div>
-        <div class="auction-left-sub" id="auctionLeftSub">Concurso ao vivo · rivais limpam se hesitares</div>
-        <div class="mandate-auction-strip" id="auctionMandateStrip" aria-label="Mandato">
-          <span class="mandate-chip" id="auctionMandateChip">Boutique</span>
-          <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">CAR · banda L</span>
-          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Equity · banda L</span>
+        <div class="auction-kicker" id="auctionWaveKicker">Ligações à rede · ronda 1</div>
+        <div class="auction-left-title">Leilão</div>
+        <div class="auction-left-sub" id="auctionLeftSub">Leilão ao vivo. Se o tempo acabar, os rivais ficam com os lotes que faltam.</div>
+        <div class="mandate-auction-strip" id="auctionMandateStrip" aria-label="O teu orçamento">
+          <span class="mandate-chip" id="auctionMandateChip">Orçamento pequeno</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">Dinheiro para desenvolver: pouco</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Capital próprio para construir: pouco</span>
         </div>
         <div class="auction-clock-row" aria-live="polite">
           <div>
-            <div class="auction-clock-label">Fase do concurso</div>
+            <div class="auction-clock-label">Tempo restante</div>
             <div class="auction-clock-val" id="auctionClockVal">1:45</div>
           </div>
         </div>
       </div>
-      <div class="auction-rivals" id="auctionRivals" aria-label="IPPs rivais presentes"></div>
-      <div class="auction-lot-list" id="auction-lot-list" role="listbox" aria-label="Lotes SE"></div>
+      <div class="auction-rivals" id="auctionRivals" aria-label="Empresas rivais presentes"></div>
+      <div class="auction-lot-list" id="auction-lot-list" role="listbox" aria-label="Lotes"></div>
       <div style="padding:10px 12px 14px;border-top:1px solid var(--border-subtle)">
         <div class="auction-leftover" id="auctionLeftoverNote" hidden></div>
-        <button type="button" class="btn-auction-ghost auction-home-rail" id="auctionExitLots" title="Home / Consola" aria-label="Home / Consola" style="width:100%;margin-top:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="auction-home-rail-label">Consola</span></button>
+        <button type="button" class="btn-auction-ghost auction-home-rail" id="auctionExitLots" title="Início" aria-label="Início" style="width:100%;margin-top:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="auction-home-rail-label">Início</span></button>
       </div>
     </aside>
 
@@ -4633,15 +4759,15 @@
       <div class="auction-mobile-sticky">
       <header class="auction-right-head">
         <div>
-          <div class="auction-kicker">Lote seleccionado</div>
+          <div class="auction-kicker">Lote selecionado</div>
           <div class="auction-title" id="auctionTitle">SE Ourique · Leilão</div>
-          <div class="auction-sub" id="auctionSub">400/150 · cintura solar · 120 MWp · Câmara hostil</div>
+          <div class="auction-sub" id="auctionSub" title="kV: tensão da subestação · MWp: potência máxima dos painéis">400/150 kV · zona de muito sol · 120 MWp · Câmara hostil</div>
         </div>
         <div class="auction-head-actions">
-          <span class="auction-pay-pill">Pay-as-bid · adjudicação = tua oferta</span>
-          <button type="button" class="auction-tutorial-btn auction-home-btn" id="btnAuctionHome" title="Home / Consola" aria-label="Home / Consola"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></button>
+          <span class="auction-pay-pill" title="Se ganhares, recebes por cada MWh o preço que ofereceste. Ganha quem oferecer o preço mais baixo.">Recebes o preço que ofereces</span>
+          <button type="button" class="auction-tutorial-btn auction-home-btn" id="btnAuctionHome" title="Início" aria-label="Início"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></button>
           <button type="button" class="auction-tutorial-btn" id="btnAuctionTutorial" title="Abrir tutorial">Tutorial</button>
-          <button type="button" class="auction-close" id="auctionClose" aria-label="Fechar sala" title="Fechar">
+          <button type="button" class="auction-close" id="auctionClose" aria-label="Fechar o leilão" title="Fechar">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -4656,7 +4782,7 @@
           <div class="auction-bid-scroll auction-swipe-surface" id="auctionBidSwipe">
           <div class="auction-offer" id="auction-bid-offer">
             <div class="auction-bid-huge num" id="auctionBidValue">40</div>
-            <div class="auction-bid-unit">€/MWh · oferta proposta</div>
+            <div class="auction-bid-unit">€/MWh · a tua oferta</div>
             <div class="auction-slider-wrap">
               <input type="range" class="auction-slider" id="auctionBidSlider" min="12" max="48" step="1" value="40" aria-label="Oferta em euros por MWh" />
               <div class="auction-slider-ends"><span>12 €/MWh</span><span>48 €/MWh</span></div>
@@ -4665,39 +4791,39 @@
           </div>
 
           <div class="auction-consult" id="auction-consultant">
-            <div class="auction-consultant-label">Consultor · economia por calibrar</div>
+            <div class="auction-consultant-label">Consultor <span class="prov-mark">valores provisórios</span></div>
             <div class="auction-consultant-line" id="auctionConsultantLine">Se fechares a 40 €/MWh → NPV +2,2 M€ · IRR 3,8%</div>
-            <div class="auction-irony" aria-label="Ironia do clearing">
+            <div class="auction-irony" aria-label="As tuas contas e o preço dos rivais">
               <div class="auction-irony-good">
-                <div class="k">NPV indicativo</div>
+                <div class="k" title="NPV: quanto o projeto vale hoje, somando as receitas e os custos futuros">NPV · valor do projeto hoje</div>
                 <div class="v anemic num" id="auctionVan">+2,2 M€</div>
-                <div class="sub" id="auctionVanSub">NPV no papel · IRR abaixo do hurdle 8%</div>
+                <div class="sub" id="auctionVanSub">Rentabilidade abaixo do mínimo exigido (8%)</div>
               </div>
               <div class="auction-irony-trap">
-                <div class="k">Rivais a limpar</div>
+                <div class="k">Preço habitual dos rivais</div>
                 <div class="v" id="auctionNpcIrony">~15–25 €/MWh</div>
-                <div class="sub" id="auctionNpcBid">Banda dos rivais · print exacto só após abertura</div>
+                <div class="sub" id="auctionNpcBid">O preço exato dos rivais só se sabe no fim</div>
               </div>
             </div>
             <div class="auction-irr-row">
-              <span class="k">IRR indicativo <span style="font-weight:500;color:var(--text-muted)">· hurdle 8%</span></span>
+              <span class="k" title="IRR: rentabilidade anual esperada do projeto. Os investidores exigem pelo menos 8%.">IRR · rentabilidade por ano <span style="font-weight:500;color:var(--text-muted)">· mínimo 8%</span></span>
               <span class="v anemic num" id="auctionIrr">3,8%</span>
             </div>
-            <p class="auction-honest" id="auctionHonestHint">Verde a ~40 — mas rivais limpam a zona 15–25. Pay-as-bid: recebes a tua oferta. · economia por calibrar.</p>
+            <p class="auction-honest" id="auctionHonestHint">O NPV é positivo, mas a rentabilidade fica abaixo do mínimo exigido (8%). Os rivais costumam oferecer entre 15 e 25 €/MWh.</p>
           </div>
           </div>
 
           <div class="auction-actions">
-            <button type="button" class="btn-auction-primary" id="auction-confirm">Submeter ao concurso</button>
+            <button type="button" class="btn-auction-primary" id="auction-confirm">Enviar a oferta</button>
           </div>
         </div>
 
         <!-- Abertura beat -->
         <div class="auction-screen" id="auctionScreenAbertura" data-screen="abertura">
           <div class="auction-abertura">
-            <div class="auction-abertura-badge">Abertura · ofertas seladas</div>
-            <h3 id="auctionAberturaTitle">A abrir o envelope…</h3>
-            <p id="auctionAberturaBody">Rivais a revelar presença no lote. Pay-as-bid — o print será a tua oferta se ganhares.</p>
+            <div class="auction-abertura-badge">Abertura das propostas</div>
+            <h3 id="auctionAberturaTitle">A revelar as propostas…</h3>
+            <p id="auctionAberturaBody">Os rivais estão a revelar as propostas. Se ganhares, recebes o preço que ofereceste.</p>
             <div class="auction-abertura-rivals" id="auctionAberturaRivals"></div>
             <div class="auction-abertura-bar"><i id="auctionAberturaBar"></i></div>
           </div>
@@ -4706,18 +4832,18 @@
         <!-- Trap / win beat -->
         <div class="auction-screen" id="auctionScreenTrap" data-screen="trap">
           <div class="auction-trap">
-            <div class="auction-trap-badge" id="auctionTrapBadge">Armadilha · ganhaste barato</div>
-            <h3 id="auctionTrapTitle">Ganhaste. O projecto sangra.</h3>
-            <p id="auctionTrapBody">A oferta baixa fechou o lote, mas o offtake implícito não cobre o risco. A primeira decisão já dói — o TRC vem daqui, não de graça.</p>
+            <div class="auction-trap-badge" id="auctionTrapBadge">Preço baixo demais</div>
+            <h3 id="auctionTrapTitle">Ganhaste, mas o projeto perde dinheiro.</h3>
+            <p id="auctionTrapBody">A tua oferta baixa ganhou o lote, mas o preço de venda da energia não paga o risco do projeto.</p>
             <div class="auction-trap-stats" id="auctionTrapStats">
-              <div><strong>Pay-as-bid</strong><span class="num" id="auctionTrapBid">18 €/MWh</span></div>
+              <div><strong>A tua oferta</strong><span class="num" id="auctionTrapBid">18 €/MWh</span></div>
               <div><strong>NPV</strong><span class="num" id="auctionTrapVan">−3,6 M€</span></div>
               <div><strong>IRR</strong><span class="num" id="auctionTrapIrr">−2,1%</span></div>
             </div>
-            <p id="auctionTrapNote" style="font-size:12px;color:#94a3b8">Duas saídas: fica com o TRC na consola, ou continua a licitar o que falta.</p>
+            <p id="auctionTrapNote" style="font-size:12px;color:#94a3b8">Podes ficar com este lote e sair, ou continuar a licitar os lotes que faltam.</p>
             <div class="auction-actions" style="justify-content:flex-start;flex-wrap:wrap">
-              <button type="button" class="btn-auction-primary" id="auctionTrapDone">Aceitar TRC e sair</button>
-              <button type="button" class="btn-auction-ghost" id="auctionTrapAgain">Continuar no concurso</button>
+              <button type="button" class="btn-auction-primary" id="auctionTrapDone">Ficar com este lote e sair</button>
+              <button type="button" class="btn-auction-ghost" id="auctionTrapAgain">Continuar no leilão</button>
             </div>
           </div>
         </div>
@@ -4725,15 +4851,15 @@
         <!-- Fora (lose-all) -->
         <div class="auction-screen" id="auctionScreenFora" data-screen="fora">
           <div class="auction-fora-card">
-            <div class="auction-trap-badge" style="background:#f1f5f9;color:#334155">Fora deste concurso</div>
-            <h3>Não adjudicaste nenhum lote.</h3>
-            <p id="auctionForaBody">Os pontos foram limpos pelos rivais. Caixa intacta — sem TRC, sem game over. Espera o próximo concurso.</p>
+            <div class="auction-trap-badge" style="background:#f1f5f9;color:#334155">Fora deste leilão</div>
+            <h3>Não ganhaste nenhum lote.</h3>
+            <p id="auctionForaBody">Os rivais ganharam os lotes. Não perdeste dinheiro e o jogo continua. Espera pelo próximo leilão.</p>
             <div class="auction-fora-facts">
               <div class="auction-fora-fact"><div class="k">Caixa</div><div class="v ok num" id="auctionForaCash">18,4 M€</div></div>
-              <div class="auction-fora-fact"><div class="k">TRCs</div><div class="v num" id="auctionForaTrc">0</div></div>
+              <div class="auction-fora-fact"><div class="k">TRC</div><div class="v num" id="auctionForaTrc">0</div></div>
             </div>
             <div class="auction-actions" style="justify-content:flex-start">
-              <button type="button" class="btn-auction-primary" id="auctionForaExit">Home / Consola</button>
+              <button type="button" class="btn-auction-primary" id="auctionForaExit">Voltar ao início</button>
             </div>
           </div>
         </div>
@@ -4751,7 +4877,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
         Voltar ao portefólio
       </button>
-      <button type="button" class="asset-room-close" id="assetRoomClose" aria-label="Fechar sala do ativo" title="Fechar">
+      <button type="button" class="asset-room-close" id="assetRoomClose" aria-label="Fechar a sala do ativo" title="Fechar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
@@ -4768,34 +4894,32 @@
 <!-- ═══ Mandate briefing / investor letter (Gate 1 mock) ═══ -->
 <div class="mandate-overlay" id="mandateBriefing" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mandateBriefingTitle">
   <div class="mandate-card">
-    <div class="mandate-kicker">Briefing · mandato</div>
-    <h2 id="mandateBriefingTitle">Boutique</h2>
-    <p class="mandate-club" id="mandateBriefingClub">Runway curto — um lote cabe no mandato; os outros ficam fora do runway.</p>
+    <div class="mandate-kicker">Antes do leilão</div>
+    <h2 id="mandateBriefingTitle">O teu orçamento</h2>
+    <p class="mandate-club" id="mandateBriefingClub">Tens orçamento para um lote. Os outros ainda estão fora do teu alcance.</p>
     <div class="mandate-auction-strip" style="margin:0 0 14px" aria-hidden="true">
-      <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">CAR · banda S</span>
-      <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Equity · banda S</span>
-      <span class="mandate-chip mandate-chip-band" id="mandateBriefingBands">máx. 1 TRC</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">Dinheiro para desenvolver: pouco</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Capital próprio para construir: pouco</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingBands">Máximo: 1 lote</span>
     </div>
     <span id="mandateBriefingCarHint" hidden></span>
     <span id="mandateBriefingEquityHint" hidden></span>
     <span id="mandateBriefingTrcs" hidden>1</span>
-    <p class="mandate-note">HIPÓTESE · bandas S/M/L, sem finais em €. Hybrid MVP = boutique (sem selector de dificuldade).</p>
     <div class="mandate-actions">
-      <button type="button" class="btn-mandate-ghost" id="mandateBriefingLetter">Ver carta dos investidores</button>
-      <button type="button" class="btn-mandate-primary" id="mandateBriefingMarket">Ir ao mercado</button>
+      <button type="button" class="btn-mandate-ghost" id="mandateBriefingLetter">Ler a carta dos investidores</button>
+      <button type="button" class="btn-mandate-primary" id="mandateBriefingMarket">Ir ao leilão</button>
     </div>
   </div>
 </div>
 
 <div class="mandate-overlay" id="mandateLetter" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mandateLetterTitle">
   <div class="mandate-card">
-    <div class="mandate-kicker">Carta · investidores</div>
-    <h2 id="mandateLetterTitle">Mandato e purse — o que podes caçar</h2>
+    <div class="mandate-kicker">Carta dos investidores</div>
+    <h2 id="mandateLetterTitle">As regras dos teus investidores</h2>
     <p class="mandate-club" id="mandateLetterFrom">De: Comité de investidores</p>
     <div class="mandate-letter-body" id="mandateLetterBody"></div>
-    <p class="mandate-note">HIPÓTESE · pre-market. A carta M0 pós-adjudicação passa a revisão de runway.</p>
     <div class="mandate-actions">
-      <button type="button" class="btn-mandate-primary" id="mandateLetterOpenMarket">Abrir mercado</button>
+      <button type="button" class="btn-mandate-primary" id="mandateLetterOpenMarket">Ir ao leilão</button>
     </div>
   </div>
 </div>
@@ -4824,9 +4948,9 @@
     <button type="button" class="settings-sheet-close" id="settingsClose" title="Fechar" aria-label="Fechar">×</button>
   </div>
   <div class="settings-sheet-body">
-    <p class="settings-hint">Gravação automática no browser (Game Boy). Exporta ou importa um ficheiro JSON para mudar de dispositivo.</p>
-    <button type="button" class="settings-btn primary" id="btnExportSave">Exportar save</button>
-    <button type="button" class="settings-btn" id="btnImportSave">Importar save</button>
+    <p class="settings-hint">O jogo é gravado automaticamente neste navegador. Para mudar de dispositivo, exporta o jogo para um ficheiro e importa-o no outro.</p>
+    <button type="button" class="settings-btn primary" id="btnExportSave">Exportar jogo</button>
+    <button type="button" class="settings-btn" id="btnImportSave">Importar jogo</button>
     <input type="file" id="importSaveInput" accept="application/json,.json" hidden />
     <button type="button" class="settings-btn danger" id="btnNewGame">Novo jogo</button>
   </div>
@@ -4834,7 +4958,7 @@
 <div class="settings-confirm" id="settingsConfirm" hidden role="dialog" aria-modal="true" aria-labelledby="settingsConfirmTitle">
   <div class="settings-confirm-card">
     <div class="settings-confirm-title" id="settingsConfirmTitle">Novo jogo?</div>
-    <div class="settings-confirm-body" id="settingsConfirmBody">Isto apaga o save actual neste browser e reinicia a consola. Não se desfaz.</div>
+    <div class="settings-confirm-body" id="settingsConfirmBody">Isto apaga o jogo gravado neste navegador e começa de novo. Não se pode desfazer.</div>
     <div class="settings-confirm-actions">
       <button type="button" class="settings-btn" id="settingsConfirmCancel">Cancelar</button>
       <button type="button" class="settings-btn danger" id="settingsConfirmOk">Novo jogo</button>
@@ -4875,7 +4999,7 @@
       capacity: '400/150 kV',
       badge: 'Leilão',
       badgeClass: 'a',
-      tensao: 'Alentejo · Câmara hostil · sangra',
+      tensao: 'Alentejo · Câmara hostil · perde dinheiro',
       tensaoTone: 'red',
       van: -0.8,
       vanDelta: null,
@@ -4895,33 +5019,33 @@
         preco: '€ 41,0/MWh',
         dscr: '0,92×',
         bonding: '€ 2,8M caução',
-        farmdown: 'Indisponível até rentável',
+        farmdown: 'Indisponível até dar lucro',
       },
     },
   ];
 
   const actions = {
     ourique: [
-      { id: 'sobre', title: '+ Sobreequipamento Solar (+20% MWp)', desc: 'Acréscimo de potência solar no mesmo ponto de ligação, sem reforço de TRC.', capex: '€ 3,6M', tempo: '7–9 meses', nav: '+ € 2,4M' },
-      { id: 'bess', title: '+ Hibridização com BESS', desc: 'Sistema de armazenamento 15 MW / 30 MWh. Mitiga curtailment e captura arbitragem.', capex: '€ 5,4M', tempo: '11–13 meses', nav: '+ € 3,5M' },
-      { id: 'eolica', title: '+ Hibridização Eólica Onshore', desc: 'Parque eólico de 15 MW no mesmo nó. Diversifica o perfil de produção.', capex: '€ 16,5M', tempo: '16–20 meses', nav: '+ € 5,8M' },
-      { id: 'farm', title: 'Refinanciamento / Farm-Down (Venda de 49%)', desc: 'Cessão parcial do equity. Indisponível enquanto o projecto sangra.', capex: '—', tempo: 'Após NPV > 0', nav: '€ 6,9M caixa' },
+      { id: 'sobre', title: '+ Sobreequipar o solar (+20% MWp)', desc: 'Instalar mais painéis do que a potência da ligação, para produzir durante mais horas. Não precisas de mais TRC.', capex: '€ 3,6M', tempo: '7–9 meses', nav: '+ € 2,4M' },
+      { id: 'bess', title: '+ Juntar baterias (BESS)', desc: 'Baterias de 15 MW / 30 MWh. Reduzem os cortes de produção impostos pela rede e guardam energia quando está barata para a vender quando está cara.', capex: '€ 5,4M', tempo: '11–13 meses', nav: '+ € 3,5M' },
+      { id: 'eolica', title: '+ Juntar um parque eólico', desc: 'Parque eólico de 15 MW no mesmo ponto de ligação. Produz em horas diferentes do solar.', capex: '€ 16,5M', tempo: '16–20 meses', nav: '+ € 5,8M' },
+      { id: 'farm', title: 'Vender parte do projeto (49%)', desc: 'Vendes 49% do projeto a outro investidor. Só é possível quando o projeto der lucro.', capex: '—', tempo: 'Quando o NPV for positivo', nav: '€ 6,9M caixa' },
     ],
   };
 
   const pipeline = [
-    { title: 'Leilão Solar DGEG — Zona Sul', region: 'Alentejo', mw: '150 MWp', prazo: '15 Out 2026', urgency: 'soon', urgencyLabel: 'Fecha em 34 dias', modalidade: 'Mod. A' },
-    { title: 'Acordo Quadro E-REDES — Hibridização', region: 'Centro', mw: '80 MW', prazo: 'Aberto', urgency: 'open', urgencyLabel: 'Aberto', modalidade: 'Mod. B' },
-    { title: 'Leilão Eólico Offshore — Fase Pilot', region: 'Costa Oeste', mw: '500 MW', prazo: 'Mar 2027', urgency: 'open', urgencyLabel: 'Pré-qualificação', modalidade: 'Mod. A' },
-    { title: 'Leilão Solar DGEG — Zona Norte', region: 'Trás-os-Montes', mw: '100 MWp', prazo: 'Encerrado', urgency: 'closed', urgencyLabel: 'Encerrado', modalidade: 'Mod. A' },
+    { title: 'Leilão solar — Zona Sul', region: 'Alentejo', mw: '150 MWp', prazo: '15 Out 2026', urgency: 'soon', urgencyLabel: 'Fecha em 34 dias', modalidade: 'Leilão' },
+    { title: 'Acordo com a E-REDES — centrais híbridas', region: 'Centro', mw: '80 MW', prazo: 'Aberto', urgency: 'open', urgencyLabel: 'Aberto', modalidade: 'Acordo' },
+    { title: 'Leilão eólico no mar — fase piloto', region: 'Costa Oeste', mw: '500 MW', prazo: 'Mar 2027', urgency: 'open', urgencyLabel: 'Pré-qualificação', modalidade: 'Leilão' },
+    { title: 'Leilão solar — Zona Norte', region: 'Trás-os-Montes', mw: '100 MWp', prazo: 'Encerrado', urgency: 'closed', urgencyLabel: 'Encerrado', modalidade: 'Leilão' },
   ];
 
   let activities = [
-    { time: 'Agora', text: 'Sala de leilão aberta — ganha um ponto REN antes da consola' },
-    { time: '11:05', text: 'Rivais presentes na mesa (Solis / IberVolt / Alentejo Renew)' },
-    { time: '09:40', text: 'Lotes vivos: Ourique · Ferreira do Alentejo · Estremoz' },
-    { time: 'Ontem', text: 'Pipeline posterior bloqueado até o primeiro ponto ser rentável' },
-    { time: '08 Set', text: 'Bonding capacity renovada junto do sindicato bancário — € 16,0M totais' },
+    { time: 'Agora', text: 'Leilão aberto: ganha um TRC para começar' },
+    { time: '11:05', text: 'Rivais presentes no leilão: Solis, IberVolt e Alentejo Renew' },
+    { time: '09:40', text: 'Lotes em leilão: Ourique · Ferreira do Alentejo · Estremoz' },
+    { time: 'Ontem', text: 'Próximos concursos bloqueados até o primeiro projeto dar lucro' },
+    { time: '08 Set', text: 'Garantias bancárias renovadas com os bancos: € 16,0M no total' },
   ];
 
   /* ── Helpers ── */
@@ -4959,12 +5083,12 @@
 
   function threatFace(n) {
     if (n.threat === 'cash') {
-      return { label: 'Cash at risk', value: fmtCashRisk(n.cashAtRisk), tone: cashTone(n.cashAtRisk) };
+      return { label: 'Dinheiro em risco', value: fmtCashRisk(n.cashAtRisk), tone: cashTone(n.cashAtRisk) };
     }
     if (n.threat === 'pip' && n.pipMonth != null) {
-      return { label: 'PIP · mês ' + n.pipMonth, value: '', tone: 'amber' };
+      return { label: 'PIP: mês ' + n.pipMonth, value: '', tone: 'amber', tip: 'PIP: pedido de informação prévia. É o pedido em que a Câmara diz se aceita a central neste terreno.' };
     }
-    return { label: 'Sem missão', value: '', tone: '' };
+    return { label: 'Sem tarefas', value: '', tone: '' };
   }
 
   function bumpVan(node, delta) {
@@ -4980,7 +5104,8 @@
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => t.classList.remove('show'), String(msg || '').length > 70 ? 4200 : 2800);
   }
 
   function flashPill(id) {
@@ -5008,6 +5133,8 @@
 
   function isAwardedTrc(nodeId) {
     if (!state.auctionWon) return false;
+    const node = nodes.find((n) => n.id === nodeId);
+    if (node && node.mwState && node.mwState.removed) return false;
     const won = (typeof auctionState !== 'undefined' && auctionState.wonLots) ? auctionState.wonLots : [];
     if (won.length) return won.indexOf(nodeId) !== -1;
     return nodeId === 'ourique';
@@ -5015,7 +5142,7 @@
 
   function restoreNode(nodeId) {
     if (!isAwardedTrc(nodeId)) {
-      showToast('Ganha um ponto no leilão primeiro');
+      showToast('Primeiro tens de ganhar um TRC no leilão');
       return;
     }
     state.minimized.delete(nodeId);
@@ -5032,7 +5159,7 @@
 
   function restoreAllNodes() {
     if (!state.auctionWon) {
-      showToast('Ganha um ponto no leilão primeiro');
+      showToast('Primeiro tens de ganhar um TRC no leilão');
       return;
     }
     const won = (typeof auctionState !== 'undefined' && auctionState.wonLots) ? auctionState.wonLots : [];
@@ -5085,11 +5212,11 @@
 
     // Won TRCs but all minimized → dock hint, NEVER «Sem central»
     if (state.auctionWon && awarded.length > 0) {
-      if (title) title.textContent = 'Centrais no dock';
+      if (title) title.textContent = 'Centrais minimizadas';
       if (sub) {
         sub.textContent = awarded.length === 1
           ? ('Toca em «' + shortNodeName(awarded[0]) + '» em baixo para restaurar a janela.')
-          : ('Tens ' + awarded.length + ' TRC no dock — toca num ícone em baixo para restaurar.');
+          : ('Tens ' + awarded.length + ' TRC minimizado' + (awarded.length === 1 ? '' : 's') + '. Toca num ícone em baixo para o abrir.');
       }
       const cta = document.getElementById('portfolioEmptyCta');
       if (cta) cta.hidden = true;
@@ -5097,7 +5224,7 @@
     }
 
     if (title) title.textContent = 'Sem central';
-    if (sub) sub.textContent = 'Ainda não tens TRC. Abre a mesa de leilão — o ponto não vem de graça.';
+    if (sub) sub.textContent = 'Ainda não tens TRC. Abre o leilão para ganhar o primeiro.';
     if (typeof syncPortfolioEmptyCta === 'function') syncPortfolioEmptyCta();
   }
 
@@ -5127,20 +5254,20 @@
         if (nd) {
           const clock = mailLoop.month | 0;
           const deltaM = nd.atMonth - clock;
-          const when = deltaM === 0 ? 'este mês' : (deltaM > 0 ? ('M' + nd.atMonth + ' · em ' + deltaM + 'm') : ('M' + nd.atMonth + ' · passou'));
+          const when = (typeof deadlineWhenPt === 'function') ? deadlineWhenPt(nd.atMonth, clock) : ('mês ' + nd.atMonth);
           nextCrit = nd.label + ' · ' + when;
         }
         hudPhaseHtml = `
             <div class="hud-phase-row">
               <span class="hud-phase-pill"><span class="hud-phase-dot" aria-hidden="true"></span>${phaseLbl}</span>
-              <span class="hud-next-crit">Próxima: <strong>${nextCrit}</strong></span>
+              <span class="hud-next-crit">Próximo prazo: <strong>${nextCrit}</strong></span>
             </div>`;
       }
       return `
         <article class="${classes}" id="card-${n.id}" data-node="${n.id}">
           <div class="window-titlebar">
             <button type="button" class="btn-minimize-node" data-minimize="${n.id}"
-              aria-label="Minimizar nó" title="Minimizar nó"></button>
+              aria-label="Minimizar" title="Minimizar"></button>
             <div class="window-title">${n.name}</div>
             <div class="window-titlebar-end">
               <span class="mod-badge ${n.badgeClass}">${n.badge}</span>
@@ -5157,15 +5284,15 @@
                 <span class="card-hero-value tone-${vTone} num">${fmtVan(n.van)}</span>
                 ${delta ? `<span class="card-hero-delta tone-${vTone} num">${delta}</span>` : ''}
               </div>
-              <div class="hud-drivers-line"><strong>Capex</strong> · P50 <span class="num">—</span> <span style="opacity:.7">(hipótese)</span></div>
+              <div class="hud-drivers-line"><strong>Custo de construção</strong>: a definir</div>
             </div>
 
             <div class="card-threat">
               <div class="threat-row">
-                <span class="threat-label">${th.label}</span>
+                <span class="threat-label"${th.tip ? ` data-tip="${th.tip}"` : ''}>${th.label}</span>
                 ${th.value ? `<span class="threat-value tone-${th.tone} num">${th.value}</span>` : ''}
               </div>
-              ${n.missionOpen ? `<span class="mission-chip">1 missão em curso</span>` : ''}
+              ${n.missionOpen ? `<span class="mission-chip">1 tarefa em curso</span>` : ''}
             </div>
 
             <div class="trc-face">
@@ -5217,8 +5344,8 @@
     if (listEl) listEl.hidden = locked;
     if (subEl) {
       subEl.textContent = locked
-        ? 'Bloqueado até Ourique ser rentável'
-        : 'Oportunidades ao abrigo do DL 15/2022 · Leilões DGEG e acordos E-REDES';
+        ? 'Bloqueado até Ourique dar lucro'
+        : 'Leilões e acordos com a E-REDES';
     }
     if (locked || !listEl) return;
     listEl.innerHTML = pipeline.map(p => `
@@ -5255,15 +5382,15 @@
     const d = node.dossier || {};
     const t = node.trc;
     document.getElementById('drawerTitle').textContent = node.name;
-    document.getElementById('drawerSubtitle').textContent = node.capacity + ' · Dossier do TRC';
+    document.getElementById('drawerSubtitle').textContent = node.capacity + ' · Ficha do projeto';
 
     const body = document.getElementById('drawerBody');
     body.innerHTML = `
       <div class="dossier">
-        <div class="drawer-section-label">Dossier</div>
+        <div class="drawer-section-label">Ficha do projeto <span class="prov-mark">valores provisórios</span></div>
         <div class="dossier-grid">
           <div class="dossier-cell">
-            <div class="dossier-label">CAPEX</div>
+            <div class="dossier-label">Custo de construção</div>
             <div class="dossier-value num">${d.capex || '—'}</div>
           </div>
           <div class="dossier-cell">
@@ -5276,10 +5403,10 @@
           </div>
           <div class="dossier-cell">
             <div class="dossier-label">IRR</div>
-            <div class="dossier-value num">${d.irr || '—'}<span class="hurdle">hurdle 8%</span></div>
+            <div class="dossier-value num">${d.irr || '—'}<span class="hurdle">mínimo 8%</span></div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">Purse</div>
+            <div class="dossier-label">Orçamento</div>
             <div class="dossier-value num">${d.purse || '—'}</div>
           </div>
           <div class="dossier-cell">
@@ -5287,19 +5414,19 @@
             <div class="dossier-value num">${d.producao || '—'}</div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">Preço capturado</div>
+            <div class="dossier-label">Preço recebido</div>
             <div class="dossier-value num">${d.preco || '—'}</div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">DSCR</div>
+            <div class="dossier-label">Cobertura da dívida</div>
             <div class="dossier-value num">${d.dscr || '—'}</div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">Bonding</div>
+            <div class="dossier-label">Garantias bancárias</div>
             <div class="dossier-value num">${d.bonding || '—'}</div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">Farm-down</div>
+            <div class="dossier-label">Venda de 49%</div>
             <div class="dossier-value">${d.farmdown || '—'}</div>
           </div>
         </div>
@@ -5317,7 +5444,7 @@
           <div class="trc-legend">
             <span class="trc-legend-item"><span class="trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</span>
             <span class="trc-legend-item"><span class="trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</span>
-            <span class="trc-legend-item"><span class="trc-dot" style="background:var(--bess)"></span>BESS ${t.bess}%</span>
+            <span class="trc-legend-item"><span class="trc-dot" style="background:var(--bess)"></span>Baterias ${t.bess}%</span>
             <span class="trc-legend-item"><span class="trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</span>
           </div>
         </div>
@@ -5331,7 +5458,7 @@
             <div class="action-desc">${a.desc}</div>
             <div class="action-meta">
               <div class="action-meta-item">
-                <span class="action-meta-label">CAPEX</span>
+                <span class="action-meta-label">Custo</span>
                 <span class="action-meta-value num">${a.capex}</span>
               </div>
               <div class="action-meta-item">
@@ -5344,7 +5471,7 @@
               </div>
             </div>
             <button class="btn-confirm" type="button" data-confirm="${nodeId}:${a.id}" ${done ? 'disabled' : ''}>
-              ${done ? 'Já aplicado' : 'Começar missão'}
+              ${done ? 'Feito' : 'Começar'}
             </button>
           </div>`;
       }).join('')}
@@ -5384,9 +5511,9 @@
       return String(lr.bid).replace('.', ',') + ' €/MWh';
     }
     if (node.dossier && node.dossier.preco) {
-      return node.dossier.preco + ' <span class="asset-hyp">HIPÓTESE</span>';
+      return node.dossier.preco + ' <span class="prov-mark">provisório</span>';
     }
-    return '— €/MWh <span class="asset-hyp">HIPÓTESE</span>';
+    return 'a definir';
   }
 
   function assetMwLabel(node) {
@@ -5404,9 +5531,9 @@
   function assetCarBandLabel() {
     try {
       const m = (typeof currentMandate === 'function') ? currentMandate() : null;
-      if (m && m.car_band_max) return 'banda ' + m.car_band_max;
+      if (m && m.car_band_max) return bandWordPt(m.car_band_max);
     } catch (_) {}
-    return 'banda S';
+    return bandWordPt('S');
   }
 
   function assetPhaseDeadline() {
@@ -5420,11 +5547,7 @@
     if (nearest) {
       const clock = mailLoop.month | 0;
       const deltaM = nearest.atMonth - clock;
-      const when = deltaM === 0
-        ? 'este mês'
-        : (deltaM > 0
-          ? ('M' + nearest.atMonth + ' · em ' + deltaM + 'm')
-          : ('M' + nearest.atMonth + ' · passou'));
+      const when = deadlineWhenPt(nearest.atMonth, clock);
       deadline = nearest.label + ' · ' + when;
     }
     return { phase: phaseLbl, deadline: deadline };
@@ -5436,6 +5559,329 @@
     return { t: t, used: used, free: t.free | 0 };
   }
 
+  function parseMwNumber(label) {
+    if (label == null) return null;
+    const m = String(label).replace(',', '.').match(/(\d+(?:\.\d+)?)/);
+    return m ? Number(m[1]) : null;
+  }
+
+  /** Per-asset Free MW state (physical plug). Qualitative % of TRC until Economy. */
+  function ensureAssetMwState(node) {
+    if (!node) return null;
+    if (!node.mwState) {
+      const tf = assetTrcParts(node);
+      const trcAbs = parseMwNumber(assetMwLabel(node));
+      node.mwState = {
+        trc_mw: trcAbs,
+        own_plugged_pct: tf.used,
+        reserved_by_buyer_pct: 0,
+        qualitative: true,
+        car_burn: true,
+        removed: false,
+        sale_closed_mode: null,
+        grid_usage_rent: false
+      };
+    }
+    // Keep own_plugged in sync with TRC map when no buyer reserve moved ownership yet
+    const tf2 = assetTrcParts(node);
+    const reserved = node.mwState.reserved_by_buyer_pct | 0;
+    if (!node.mwState._ownLocked) {
+      node.mwState.own_plugged_pct = Math.max(0, tf2.used - reserved);
+    }
+    return node.mwState;
+  }
+
+  function freeMwPct(node) {
+    const s = ensureAssetMwState(node);
+    if (!s) return 0;
+    const own = s.own_plugged_pct | 0;
+    const reserved = s.reserved_by_buyer_pct | 0;
+    return Math.max(0, 100 - own - reserved);
+  }
+
+  function formatMwHudPct(pct, absBase) {
+    const p = Math.max(0, Math.round(pct));
+    if (absBase != null && Number.isFinite(absBase)) {
+      const mw = Math.round((absBase * p) / 100);
+      return mw + ' MW · ' + p + '%';
+    }
+    return p + '% TRC';
+  }
+
+  function renderFreeMwHud(node) {
+    const s = ensureAssetMwState(node);
+    const free = freeMwPct(node);
+    const own = s.own_plugged_pct | 0;
+    const rent = s.reserved_by_buyer_pct | 0;
+    const base = s.trc_mw;
+    return `
+      <div class="asset-mw-hud" aria-label="Potência na ligação à rede">
+        <div class="asset-mw-card">
+          <div class="k">MW livres</div>
+          <div class="v free num">${formatMwHudPct(free, base)}</div>
+          <div class="sub">Podes usar em novos planos</div>
+        </div>
+        <div class="asset-mw-card">
+          <div class="k">MW ligados por ti</div>
+          <div class="v num">${formatMwHudPct(own, base)}</div>
+          <div class="sub">As tuas centrais neste ponto</div>
+        </div>
+        <div class="asset-mw-card">
+          <div class="k">MW em renda ao comprador</div>
+          <div class="v rent num">${formatMwHudPct(rent, base)}</div>
+          <div class="sub">Centrais que vendeste e continuam ligadas aqui</div>
+        </div>
+      </div>
+      <p class="asset-mw-note">A potência do TRC é o limite que a rede aceita neste ponto. MW livres = potência do TRC, menos os MW ligados por ti, menos os MW em renda ao comprador. <span class="prov-mark">valores provisórios</span></p>`;
+  }
+
+  function mailTagOn(key) {
+    return !!(typeof mailLoop !== 'undefined' && mailLoop.tags && (mailLoop.tags[key] || 0) > 0);
+  }
+
+  function hasHybridSliceAvailable(node) {
+    if (mailTagOn('hybrid_slice_available')) return true;
+    const t = (node && node.trc) || {};
+    const hybridSeg = (t.wind | 0) + (t.bess | 0);
+    return hybridSeg > 0;
+  }
+
+  const LP_REASON_PT = 'Precisas da licença de produção (a autorização do Estado para a central produzir energia)';
+
+  function saleModeGate(mode, node) {
+    const phase = (typeof mailLoop !== 'undefined' && mailLoop.active)
+      ? (mailLoop.projectPhase || 'trc_won')
+      : 'trc_won';
+    const pIdx = (typeof phaseIndex === 'function') ? phaseIndex(phase) : 0;
+    const lpIdx = (typeof phaseIndex === 'function') ? phaseIndex('licenca_producao') : 4;
+    if (mode === 'full_exit') {
+      return { ok: pIdx >= 0, reason: '' };
+    }
+    if (mode === 'keep_connection') {
+      if (pIdx < lpIdx) return { ok: false, reason: LP_REASON_PT };
+      if (!mailTagOn('line_ready')) return { ok: false, reason: 'A ligação à rede ainda não está pronta' };
+      return { ok: true, reason: '' };
+    }
+    if (mode === 'sell_one_park') {
+      if (pIdx < lpIdx) return { ok: false, reason: LP_REASON_PT };
+      if (!mailTagOn('line_ready')) return { ok: false, reason: 'A ligação à rede ainda não está pronta' };
+      if (!hasHybridSliceAvailable(node)) return { ok: false, reason: 'Não tens um parque extra para vender (eólico ou baterias)' };
+      return { ok: true, reason: '' };
+    }
+    return { ok: false, reason: 'Não disponível' };
+  }
+
+  function offerLetterPresent() {
+    try {
+      if (typeof mailState === 'undefined') return false;
+      return (mailState.items || []).some((m) => {
+        const sk = (m.skeletonId || m.id || '').split(':')[0];
+        return sk === 'mail-buyer-offer-01';
+      });
+    } catch (_) { return false; }
+  }
+
+  function sellModesVisible() {
+    return mailTagOn('buyer_search_active') || mailTagOn('sale_pipeline_open') || offerLetterPresent();
+  }
+
+  function renderSellModeChips(node) {
+    if (!sellModesVisible()) return '';
+    const modes = [
+      { id: 'full_exit', label: 'Vender o projeto' },
+      { id: 'keep_connection', label: 'Vender a central e ficar com a ligação' },
+      { id: 'sell_one_park', label: 'Vender um parque' }
+    ];
+    const chips = modes.map((m) => {
+      const g = saleModeGate(m.id, node);
+      const cls = g.ok ? 'open' : 'gated';
+      const title = g.ok ? 'Disponível. Aceita na carta de proposta, no Correio.' : g.reason;
+      return `<span class="asset-sell-chip ${cls}" title="${title}">${m.label}${g.ok ? '' : ' · bloqueado'}</span>`;
+    }).join('');
+    return `<div class="asset-sell-modes" aria-label="Formas de vender">${chips}</div>
+      <p class="asset-mw-note">Para aceitar, abre a proposta no Correio. Se venderes só a central ou só um parque, continuas com o TRC e não ficas com lugar para outro lote.</p>`;
+  }
+
+  function choiceWhenPasses(when, node) {
+    if (!when) return true;
+    node = node || (typeof nodes !== 'undefined' && assetRoomState && assetRoomState.nodeId
+      ? nodes.find((n) => n.id === assetRoomState.nodeId)
+      : (typeof nodes !== 'undefined' ? nodes.find((n) => n.id === 'ourique') : null));
+    const phase = (typeof mailLoop !== 'undefined' && mailLoop.active)
+      ? (mailLoop.projectPhase || 'trc_won')
+      : 'trc_won';
+    if (when.min_phase && typeof phaseIndex === 'function') {
+      if (phaseIndex(phase) < phaseIndex(when.min_phase)) return false;
+    }
+    if (Array.isArray(when.requires)) {
+      for (let i = 0; i < when.requires.length; i++) {
+        const req = when.requires[i];
+        if (req === 'hybrid_slice_available') {
+          if (!hasHybridSliceAvailable(node)) return false;
+        } else if (!mailTagOn(req)) {
+          return false;
+        }
+      }
+    }
+    if (Array.isArray(when.sale_modes) && when.sale_modes.length) {
+      return when.sale_modes.some((mode) => saleModeGate(mode, node).ok);
+    }
+    return true;
+  }
+
+  function filterLetterChoices(letter) {
+    const choices = Array.isArray(letter && letter.choices) ? letter.choices : [];
+    const node = (typeof nodes !== 'undefined' && mailLoop && mailLoop.seId)
+      ? nodes.find((n) => n.id === mailLoop.seId)
+      : null;
+    return choices.filter((c) => choiceWhenPasses(c.when, node));
+  }
+
+  async function deliverComposedLetter(skeletonId, skinId, opts) {
+    opts = opts || {};
+    const pack = await loadEventPack();
+    const sk = pack.skeletons.find((s) => s.id === skeletonId);
+    if (!sk) {
+      console.warn('[WattMail] missing skeleton', skeletonId);
+      return null;
+    }
+    const skin = skinId
+      ? getSkinById(skeletonId, skinId, pack)
+      : pickSkin(skeletonId, (getSeSheet(mailLoop.seId || 'ourique', pack) || {}).tags || {}, pack);
+    if (!skin) {
+      console.warn('[WattMail] missing skin', skeletonId, skinId);
+      return null;
+    }
+    const seSheet = getSeSheet(mailLoop.seId || opts.seId || 'ourique', pack);
+    const letter = composeLetter({
+      skeleton: sk,
+      skin: skin,
+      seSheet: seSheet,
+      opts: { when: opts.when || 'Agora', read: false }
+    });
+    if (mailLoop.deliveredIds && mailLoop.deliveredIds[letter.id] && !opts.allowDup) {
+      // Refresh existing copy to top if already delivered
+      const existing = mailState.items.find((m) => m.id === letter.id);
+      if (existing) {
+        mailState.items = [existing].concat(mailState.items.filter((m) => m.id !== letter.id));
+        if (opts.open) openLetter(existing.id);
+        return existing;
+      }
+    }
+    mailLoop.deliveredIds = mailLoop.deliveredIds || {};
+    mailLoop.deliveredIds[letter.id] = true;
+    mailState.items = [letter].concat(mailState.items.filter((m) => m.id !== letter.id));
+    renderInboxBadge();
+    scheduleSave('mail-player-' + skeletonId);
+    if (opts.open) openLetter(letter.id);
+    return letter;
+  }
+
+  async function startFindBuyersFlow(nodeId) {
+    const node = nodes.find((n) => n.id === nodeId);
+    if (!node) return;
+    ensureAssetMwState(node);
+    if (!mailLoop.active) {
+      try { await startMailLoop(nodeId === 'ourique' ? 'ourique' : (mailLoop.seId || 'ourique')); } catch (_) {}
+    }
+    mailLoop.tags = mailLoop.tags || {};
+    mailLoop.tags.find_buyers_started = (mailLoop.tags.find_buyers_started || 0) + 1;
+    mailLoop.tags.sale_mode_full_exit_available = (mailLoop.tags.sale_mode_full_exit_available || 0) + 1;
+    const letter = await deliverComposedLetter('mail-find-buyers-start-01', 'default', { open: true, when: 'Agora' });
+    showToast('Começaste a procurar comprador. Ainda não vendeste nada: vê o Correio.');
+    try { if (assetRoomState.open) renderAssetRoom(); } catch (_) {}
+    return letter;
+  }
+
+  async function injectBuyerOfferForQa(skinId) {
+    skinId = skinId || 'full-exit-thin';
+    mailLoop.tags = mailLoop.tags || {};
+    mailLoop.tags.buyer_search_active = (mailLoop.tags.buyer_search_active || 0) + 1;
+    mailLoop.tags.sale_pipeline_open = (mailLoop.tags.sale_pipeline_open || 0) + 1;
+    mailLoop.tags.sale_mode_full_exit_available = (mailLoop.tags.sale_mode_full_exit_available || 0) + 1;
+    const letter = await deliverComposedLetter('mail-buyer-offer-01', skinId, { open: true, allowDup: true, when: 'Agora' });
+    showToast('Chegou uma proposta de compra ao Correio');
+    try { if (assetRoomState.open) renderAssetRoom(); } catch (_) {}
+    return letter;
+  }
+
+  async function blockOversubscribeHybrid(node, plannedPct) {
+    const free = freeMwPct(node);
+    if (plannedPct <= free) return false;
+    mailLoop.tags = mailLoop.tags || {};
+    mailLoop.tags.block_oversubscribe = (mailLoop.tags.block_oversubscribe || 0) + 1;
+    showToast('Não há potência livre para este plano: precisa de ' + plannedPct + '% e tens ' + free + '% livre');
+    try {
+      await deliverComposedLetter('mail-trc-mw-full-01', 'default', { open: true, allowDup: true, when: 'Agora' });
+    } catch (err) {
+      console.warn('[WattMail] mw-full deliver failed', err);
+    }
+    return true;
+  }
+
+  function freeMandateSeatFromAsset(nodeId) {
+    try {
+      if (typeof auctionState !== 'undefined' && Array.isArray(auctionState.wonLots)) {
+        auctionState.wonLots = auctionState.wonLots.filter((id) => id !== nodeId);
+        if (auctionState.wonId === nodeId) {
+          auctionState.wonId = auctionState.wonLots[0] || null;
+        }
+      }
+    } catch (_) {}
+    const node = nodes.find((n) => n.id === nodeId);
+    if (node) {
+      const s = ensureAssetMwState(node);
+      s.removed = true;
+      s.car_burn = false;
+      node.missionOpen = false;
+      node.badge = 'Vendido';
+      node.badgeClass = 'c';
+    }
+    try { state.minimized.add(nodeId); } catch (_) {}
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
+    try { if (typeof renderAuctionLots === 'function') renderAuctionLots(); } catch (_) {}
+    try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+    try { if (typeof renderEmptyState === 'function') renderEmptyState(0); } catch (_) {}
+    try {
+      if (assetRoomState.open && assetRoomState.nodeId === nodeId) closeAssetRoom();
+    } catch (_) {}
+  }
+
+  function applyMwSaleEffects(effects, nodeId) {
+    const node = nodes.find((n) => n.id === (nodeId || mailLoop.seId || 'ourique'));
+    if (!node) return;
+    const s = ensureAssetMwState(node);
+    const list = Array.isArray(effects) ? effects : [];
+    if (list.indexOf('mw_reserved_by_buyer_up') !== -1) {
+      let move = 0;
+      if (list.indexOf('sale_partial_park') !== -1 || list.indexOf('hybrid_slice_sold') !== -1) {
+        move = Math.max(5, (node.trc && node.trc.wind) || 10);
+      } else if (list.indexOf('sale_keep_seat') !== -1) {
+        move = Math.max(10, Math.round((s.own_plugged_pct || 50) * 0.6));
+      } else {
+        move = 15;
+      }
+      move = Math.min(move, s.own_plugged_pct | 0);
+      s.own_plugged_pct = Math.max(0, (s.own_plugged_pct | 0) - move);
+      s.reserved_by_buyer_pct = (s.reserved_by_buyer_pct | 0) + move;
+      s._ownLocked = true;
+      // Reflect on TRC map: reserved eats free / own visually via free segment shrink
+      if (node.trc) {
+        const eat = Math.min(move, node.trc.free | 0);
+        // reserved does not free MW — keep used look: reduce free further if any, else leave
+        if (eat > 0) node.trc.free = Math.max(0, (node.trc.free | 0) - eat);
+      }
+    }
+    if (list.indexOf('grid_usage_rent_on') !== -1) s.grid_usage_rent = true;
+    if (list.indexOf('car_burn_stop') !== -1) s.car_burn = false;
+    if (list.indexOf('sale_keep_seat') !== -1) s.sale_closed_mode = 'keep_connection';
+    if (list.indexOf('sale_partial_park') !== -1) s.sale_closed_mode = 'sell_one_park';
+    if (list.indexOf('sale_full_exit') !== -1) s.sale_closed_mode = 'full_exit';
+    if (list.indexOf('mandate_slot_free') !== -1 || list.indexOf('asset_removed') !== -1) {
+      freeMandateSeatFromAsset(node.id);
+    }
+  }
+
   function renderAssetRoomOptimizations(node) {
     const nodeId = node.id;
     const applied = state.appliedActions[nodeId] || new Set();
@@ -5445,14 +5891,14 @@
       const isFarm = a.id === 'farm';
       const blockedFarm = isFarm && !(node.van > 0);
       const disabled = done || blockedFarm;
-      let btnLabel = done ? 'Já aplicado' : 'Começar missão';
-      if (blockedFarm && !done) btnLabel = 'Bloqueado · NPV ≤ 0';
+      let btnLabel = done ? 'Feito' : 'Começar';
+      if (blockedFarm && !done) btnLabel = 'Bloqueado: o projeto perde dinheiro';
       return `
         <div class="asset-opt-card${done ? ' done' : ''}" data-asset-opt="${a.id}">
           <h4>${a.title}${done ? ' ✓' : ''}</h4>
           <p>${a.desc}</p>
           <div class="asset-opt-meta">
-            <span>CAPEX <strong class="num">${a.capex}</strong></span>
+            <span>Custo <strong class="num">${a.capex}</strong></span>
             <span>Licenciamento <strong>${a.tempo}</strong></span>
             <span>Impacto NPV <strong class="num">${a.nav}</strong></span>
           </div>
@@ -5483,7 +5929,7 @@
     const offtake = assetOfftakeLabel(node);
     const mw = assetMwLabel(node);
     const vTone = (typeof vanTone === 'function') ? vanTone(node) : (node.van > 0 ? 'green' : 'red');
-    const tension = node.tensao || 'Barato no leilão · agora remenda';
+    const tension = node.tensao || 'Ganhaste barato: agora tens de melhorar o projeto';
     const tensionTone = node.tensaoTone || 'red';
     const npvStr = (typeof fmtVan === 'function') ? fmtVan(node.van) : (String(node.van).replace('.', ',') + ' M€');
     const carBand = assetCarBandLabel();
@@ -5507,91 +5953,112 @@
     const landOpen = true;
     const pipOpen = phaseIdx >= ((typeof phaseIndex === 'function') ? phaseIndex('land') : 1);
     const offerOpen = phaseIdx >= ((typeof phaseIndex === 'function') ? phaseIndex('pip') : 2);
-    const farmOk = node.van > 0;
+    ensureAssetMwState(node);
+    const searching = (typeof mailTagOn === 'function') && (mailTagOn('find_buyers_started') || mailTagOn('buyer_search_active'));
+    const modesVis = (typeof sellModesVisible === 'function') && sellModesVisible();
+    const gateFull = saleModeGate('full_exit', node);
+    const gateKeep = saleModeGate('keep_connection', node);
+    const gatePark = saleModeGate('sell_one_park', node);
 
     const ctas = [
-      cta('terrenos', 'Terrenos / promessas', 'Opções e DD de terreno',
-        missionOpen ? 'Missão' : 'Aberto', missionOpen ? 'mission' : '', !landOpen, 'Aguarda fase'),
-      cta('pip', 'PIP / ICNF / Câmara', 'Licenciamento e hostilidade local',
-        pipOpen ? 'Aberto' : 'Fase', pipOpen ? '' : 'gated', !pipOpen, 'Desbloqueia após terreno'),
-      cta('hibridizacao', 'Hibridização / BESS / sobreequip', 'Abrir otimizações deste TRC',
-        'Otimizar', '', false, ''),
-      cta('oferta', 'Oferta (PPA / merchant)', 'Captura e contrato de offtake',
-        offerOpen ? 'Aberto' : 'Fase', offerOpen ? '' : 'gated', !offerOpen, 'Desbloqueia mais tarde na fase'),
-      cta('farmdown', 'Farm-down / refinanciar',
-        farmOk ? 'Cessão parcial / refinanciamento' : 'Indisponível',
-        farmOk ? 'Aberto' : 'Bloqueado', farmOk ? '' : 'gated', !farmOk, 'Requer NPV > 0'),
-    ].join('');
+      cta('terrenos', 'Terrenos', 'Negociar e verificar terrenos',
+        missionOpen ? 'Tarefa' : 'Aberto', missionOpen ? 'mission' : '', !landOpen, 'Ainda não disponível'),
+      cta('pip', 'PIP / ICNF / Câmara', 'PIP: pedido de informação prévia, em que a Câmara diz se aceita a central neste terreno. O ICNF dá parecer sobre sobreiros e azinheiras.',
+        pipOpen ? 'Aberto' : 'Mais tarde', pipOpen ? '' : 'gated', !pipOpen, 'Abre depois de tratares do terreno'),
+      cta('hibridizacao', 'Juntar eólico, baterias ou mais painéis', 'Ver as melhorias deste projeto',
+        'Melhorar', '', false, ''),
+      cta('oferta', 'Venda da energia', 'A preço de mercado ou com contrato de venda a longo prazo',
+        offerOpen ? 'Aberto' : 'Mais tarde', offerOpen ? '' : 'gated', !offerOpen, 'Abre mais tarde'),
+      cta('find_buyers', 'Procurar comprador',
+        searching ? 'Procura de comprador em curso · vê o Correio' : 'Começa no Correio (não vende logo)',
+        searching ? 'Em curso' : 'Vender', searching ? 'search' : 'sell', false, ''),
+    ];
+    if (modesVis) {
+      ctas.push(
+        cta('sell_full_exit', 'Vender o projeto',
+          gateFull.ok ? 'Vendes tudo. Aceita na carta de proposta.' : 'Bloqueado',
+          gateFull.ok ? 'Aberto' : 'Fechado', gateFull.ok ? 'sell' : 'gated', !gateFull.ok, gateFull.reason),
+        cta('sell_keep', 'Vender a central e ficar com a ligação',
+          gateKeep.ok ? 'Vendes a central e o TRC fica contigo. Aceita no Correio.' : 'Bloqueado',
+          gateKeep.ok ? 'Aberto' : 'Fechado', gateKeep.ok ? 'sell' : 'gated', !gateKeep.ok, gateKeep.reason),
+        cta('sell_one_park', 'Vender um parque',
+          gatePark.ok ? 'Vendes só um parque extra. Aceita no Correio.' : 'Bloqueado',
+          gatePark.ok ? 'Aberto' : 'Fechado', gatePark.ok ? 'sell' : 'gated', !gatePark.ok, gatePark.reason)
+      );
+    }
+    const ctasHtml = ctas.join('');
 
     body.innerHTML = `
-      <section class="asset-zone" id="assetZoneContrato" aria-label="Cabeçalho contrato">
-        <div class="asset-zone-kicker">Cabeçalho contrato</div>
+      <section class="asset-zone" id="assetZoneContrato" aria-label="Resumo">
+        <div class="asset-zone-kicker">Resumo</div>
         <h2 class="asset-zone-title">${node.name}</h2>
         <div class="asset-tension tone-${tensionTone}">${tension}</div>
         <div class="asset-meta-grid">
-          <div class="asset-meta-cell"><div class="k">Potência / TRC</div><div class="v num">${mw} · ${tf.used}% usado · ${tf.free}% livre</div></div>
-          <div class="asset-meta-cell"><div class="k">Preço offtake</div><div class="v num">${offtake}</div></div>
-          <div class="asset-meta-cell"><div class="k">Fase do projecto</div><div class="v">${pd.phase}</div></div>
+          <div class="asset-meta-cell"><div class="k">Potência do TRC</div><div class="v num">${mw} · ${tf.used}% usado · ${tf.free}% livre</div></div>
+          <div class="asset-meta-cell"><div class="k">Preço de venda da energia</div><div class="v num">${offtake}</div></div>
+          <div class="asset-meta-cell"><div class="k">Fase do projeto</div><div class="v">${pd.phase}</div></div>
           <div class="asset-meta-cell"><div class="k">Próximo prazo</div><div class="v">${pd.deadline}</div></div>
         </div>
+        ${renderFreeMwHud(node)}
+        ${renderSellModeChips(node)}
       </section>
 
-      <section class="asset-zone" id="assetZoneVital" aria-label="Vitalidade">
-        <div class="asset-zone-kicker">Vitalidade <span class="asset-hyp">HIPÓTESE</span></div>
+      <section class="asset-zone" id="assetZoneVital" aria-label="Saúde do projeto">
+        <div class="asset-zone-kicker">Saúde do projeto <span class="prov-mark">valores provisórios</span></div>
         <div class="asset-vital-grid">
           <div class="asset-vital-card">
-            <div class="k">NPV</div>
+            <div class="k" title="NPV: quanto o projeto vale hoje, somando as receitas e os custos futuros">NPV</div>
             <div class="v tone-${vTone} num">${npvStr}</div>
-            <div class="sub">Indicativo · sem M€ finais inventados</div>
+            <div class="sub">Quanto o projeto vale hoje</div>
           </div>
           <div class="asset-vital-card">
-            <div class="k">Captura <span class="asset-hyp">HIPÓTESE</span></div>
+            <div class="k">Preço recebido</div>
             <div class="v muted num">—</div>
-            <div class="sub">A calibrar</div>
+            <div class="sub">A definir</div>
           </div>
           <div class="asset-vital-card">
-            <div class="k">CAR deste ativo</div>
+            <div class="k" title="O dinheiro que os investidores aceitam arriscar para preparares o projeto até decidires construir">Dinheiro para desenvolver</div>
             <div class="v">${carBand}</div>
-            <div class="sub">Mandato · banda</div>
+            <div class="sub">Definido pelos investidores</div>
           </div>
           <div class="asset-vital-card">
-            <div class="k">Dívida PF</div>
-            <div class="v muted num">${(node.dossier && node.dossier.dscr) ? ('DSCR ' + node.dossier.dscr) : '—'}</div>
-            <div class="sub">Se relevante</div>
+            <div class="k">Cobertura da dívida</div>
+            <div class="v muted num">${(node.dossier && node.dossier.dscr) ? node.dossier.dscr : '—'}</div>
+            <div class="sub">Abaixo de 1, a receita não chega para pagar ao banco</div>
           </div>
         </div>
       </section>
 
-      <section class="asset-zone" id="assetZoneTrc" aria-label="Mapa TRC">
-        <div class="asset-zone-kicker">Mapa TRC</div>
-        <div class="asset-trc-bar" role="img" aria-label="Segmentos TRC">
+      <section class="asset-zone" id="assetZoneTrc" aria-label="Uso da ligação">
+        <div class="asset-zone-kicker">Uso da ligação</div>
+        <div class="asset-trc-bar" role="img" aria-label="Uso da ligação por tecnologia">
           <div class="asset-trc-seg" data-trc-seg="solar" style="width:${t.solar}%;background:var(--solar)" title="Solar ${t.solar}%"></div>
           <div class="asset-trc-seg" data-trc-seg="wind" style="width:${t.wind}%;background:var(--wind)" title="Eólico ${t.wind}%"></div>
-          <div class="asset-trc-seg" data-trc-seg="bess" style="width:${t.bess}%;background:var(--bess)" title="BESS ${t.bess}%"></div>
+          <div class="asset-trc-seg" data-trc-seg="bess" style="width:${t.bess}%;background:var(--bess)" title="Baterias ${t.bess}%"></div>
           <div class="asset-trc-seg" data-trc-seg="free" style="width:${t.free}%;background:#e2e8f0" title="Livre ${t.free}%"></div>
         </div>
         <div class="asset-trc-legend">
           <button type="button" data-trc-seg="solar"><span class="asset-trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</button>
           <button type="button" data-trc-seg="wind"><span class="asset-trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</button>
-          <button type="button" data-trc-seg="bess"><span class="asset-trc-dot" style="background:var(--bess)"></span>BESS ${t.bess}%</button>
+          <button type="button" data-trc-seg="bess"><span class="asset-trc-dot" style="background:var(--bess)"></span>Baterias ${t.bess}%</button>
           <button type="button" data-trc-seg="free"><span class="asset-trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</button>
         </div>
       </section>
 
-      <section class="asset-zone" id="assetZoneActos" aria-label="Actos">
-        <div class="asset-zone-kicker">Actos</div>
-        <div class="asset-cta-list">${ctas}</div>
+      <section class="asset-zone" id="assetZoneActos" aria-label="O que podes fazer">
+        <div class="asset-zone-kicker">O que podes fazer</div>
+        <div class="asset-cta-list">${ctasHtml}</div>
       </section>
 
-      <section class="asset-zone" id="assetZoneHibridizacao" aria-label="Hibridização BESS sobreequipamento">
-        <div class="asset-zone-kicker">Hibridização / BESS / sobreequip</div>
-        <p style="font-size:13px;color:#64748b;margin:0 0 4px;line-height:1.45">Otimizações deste TRC — o mesmo conteúdo do dossier antigo, agora na sala.</p>
+      <section class="asset-zone" id="assetZoneHibridizacao" aria-label="Melhorias do projeto">
+        <div class="asset-zone-kicker">Melhorias: eólico, baterias e mais painéis <span class="prov-mark">valores provisórios</span></div>
+        <p style="font-size:13px;color:#64748b;margin:0 0 4px;line-height:1.45">Sobreequipar é instalar mais painéis do que a potência da ligação, para produzir durante mais horas. Hibridizar é juntar um parque eólico ou baterias no mesmo ponto de ligação.</p>
         <div class="asset-opt-list">${renderAssetRoomOptimizations(node)}</div>
       </section>
 
-      <section class="asset-zone" id="assetZoneMail" aria-label="Correio deste ativo">
-        <div class="asset-zone-kicker">Correio deste ativo</div>
-        <p class="asset-mail-stub">Correio deste ativo · em breve</p>
+      <section class="asset-zone" id="assetZoneMail" aria-label="Correio deste projeto">
+        <div class="asset-zone-kicker">Correio deste projeto</div>
+        <p class="asset-mail-stub">As propostas de compra e as respostas chegam ao Correio. Abre-o pelo ícone do envelope.</p>
       </section>
     `;
 
@@ -5601,14 +6068,17 @@
     body.querySelectorAll('[data-asset-cta]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-asset-cta');
-        if (id === 'hibridizacao' || id === 'farmdown') {
+        if (id === 'hibridizacao') {
           focusAssetHybridizacao();
-          if (id === 'farmdown') {
-            const farm = body.querySelector('[data-asset-opt="farm"]');
-            if (farm) farm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
+        } else if (id === 'find_buyers') {
+          startFindBuyersFlow(node.id);
+        } else if (id === 'sell_full_exit' || id === 'sell_keep' || id === 'sell_one_park') {
+          showToast('Para aceitar, abre a proposta no Correio');
+          const offer = (mailState.items || []).find((m) => (m.skeletonId || m.id || '').split(':')[0] === 'mail-buyer-offer-01');
+          if (offer) openLetter(offer.id);
+          else openInbox();
         } else if (id === 'terrenos' || id === 'pip' || id === 'oferta') {
-          showToast('Em breve · acto de fase (mock)');
+          showToast('Disponível em breve');
         }
       });
     });
@@ -5663,6 +6133,7 @@
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
       if (!assetRoomState.open) return;
+      if (typeof mailState !== 'undefined' && mailState.open) return; // Correio above sala owns Escape
       e.stopPropagation();
       closeAssetRoom();
     }, true);
@@ -5672,10 +6143,22 @@
   function confirmAction(nodeId, actionId) {
     if (!state.appliedActions[nodeId]) state.appliedActions[nodeId] = new Set();
     if (state.appliedActions[nodeId].has(actionId)) return;
-    state.appliedActions[nodeId].add(actionId);
 
     const act = (actions[nodeId] || []).find(a => a.id === actionId);
     const node = nodes.find(n => n.id === nodeId);
+
+    // MW-livres gate for hybrid / sobreequip (physical plug — not FiT vs merchant)
+    const hybridPlanPct = actionId === 'sobre' ? 5 : (actionId === 'bess' ? 8 : (actionId === 'eolica' ? 10 : 0));
+    if (hybridPlanPct > 0 && node) {
+      ensureAssetMwState(node);
+      const free = freeMwPct(node);
+      if (hybridPlanPct > free) {
+        blockOversubscribeHybrid(node, hybridPlanPct);
+        return;
+      }
+    }
+
+    state.appliedActions[nodeId].add(actionId);
 
     // Light KPI mutation (Ourique start board)
     if (actionId === 'farm') {
@@ -5722,7 +6205,7 @@
     } else {
       openDrawer(nodeId); // refresh drawer state
     }
-    showToast('Ação registada · KPIs atualizados');
+    showToast('Ação registada · valores atualizados');
     scheduleSave('confirm-action');
   }
 
@@ -5733,7 +6216,7 @@
     document.getElementById('valBonding').textContent = fmtEur(state.bondingFree) + ' livres';
     const usedPct = ((state.bondingTotal - state.bondingFree) / state.bondingTotal) * 100;
     document.getElementById('bondingFill').style.width = Math.min(100, Math.max(0, usedPct)) + '%';
-    const periodTxt = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · Q' + state.quarter);
+    const periodTxt = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · T' + state.quarter);
     document.getElementById('periodLabel').textContent = periodTxt;
     const fmp = document.getElementById('footerMockPeriod');
     if (fmp) fmp.textContent = periodTxt;
@@ -5804,29 +6287,29 @@
         flashPill('pillDivida');
 
         const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · M' + mailLoop.month);
-        const jumpNote = jumpResult ? (' (salto +' + jumpResult.jumped + ')') : '';
+        const jumpNote = jumpResult ? (' (avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ')') : '';
         activities.unshift({
           time: 'Agora',
-          text: 'Mês avançado para ' + label + jumpNote + (mailDelivered ? (' — ' + mailDelivered + ' carta(s)') : ''),
+          text: 'Tempo avançado: ' + label + jumpNote + (mailDelivered ? (' · ' + cartasNovasPt(mailDelivered)) : ''),
         });
         renderActivity();
 
         btn.classList.remove('loading');
         btn.disabled = false;
         if (cappedAtEnd) {
-          showToast('Fim do arco MVP M0–M6');
+          showToast('Por agora não há mais cartas.');
         } else if (jumpResult) {
           if (jumpResult.hit) {
-            showToast('Salto +' + jumpResult.jumped + ' → M' + jumpResult.month + ' · Correio · ' + mailDelivered + ' carta(s)');
+            showToast('Avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ' (mês ' + jumpResult.month + ') · ' + cartasNovasPt(mailDelivered) + ' no Correio');
           } else if (jumpResult.month >= scheduleMax && mailDelivered === 0) {
-            showToast('Fim do arco MVP M0–M6');
+            showToast('Por agora não há mais cartas.');
           } else {
-            showToast('Sem evento · +' + jumpResult.jumped + ' meses (teto)');
+            showToast('Avançaste ' + jumpResult.jumped + ' meses. Não há cartas novas.');
           }
         } else if (mailDelivered > 0) {
-          showToast('Avançado para ' + label + ' · Correio · ' + mailDelivered + ' carta(s)');
+          showToast('Avançaste para ' + label + ' · ' + cartasNovasPt(mailDelivered) + ' no Correio');
         } else {
-          showToast('Avançado para ' + label);
+          showToast('Avançaste para ' + label);
         }
         scheduleSave('next-month-mail');
       } else {
@@ -5846,13 +6329,13 @@
 
         activities.unshift({
           time: 'Agora',
-          text: `Trimestre avançado para ${state.year} · Q${state.quarter} — caixa e NAV atualizados`,
+          text: `Trimestre avançado para ${state.year} · T${state.quarter}: caixa e valor da empresa atualizados`,
         });
         renderActivity();
 
         btn.classList.remove('loading');
         btn.disabled = false;
-        showToast(`Avançado para ${state.year} · Q${state.quarter}`);
+        showToast(`Avançaste para ${state.year} · T${state.quarter}`);
         scheduleSave('next-quarter');
 
         // Next month/quarter: if no TRC (or after lose-all), open next REN concurso wave
@@ -5928,8 +6411,8 @@
       kind: 'storytelling',
       overlay_highlight: true,
       card_data: {
-        title: 'Country Manager',
-        body: 'És o Country Manager de uma Empresa da Energia e os teus investidores querem-te no mercado Nacional.',
+        title: 'O teu papel',
+        body: 'És o diretor em Portugal de uma empresa de energia. Os teus investidores querem que entres no mercado português.',
         action_instruction: '',
         btn_label: 'Continuar'
       }
@@ -5939,8 +6422,8 @@
       kind: 'storytelling',
       overlay_highlight: true,
       card_data: {
-        title: 'Aqui um TRC é Ouro!',
-        body: 'Sem ponto de ligação, não há central — Numa rede congestionada, cada TRC é ouro em Portugal, não os paineis.\nOs primeiros TRC ganham-se em leilões da DGEG.',
+        title: 'Primeiro, a ligação à rede',
+        body: 'TRC quer dizer título de reserva de capacidade: é a licença para ligares a tua central à rede numa subestação (SE). Sem TRC não há central.\nA rede tem pouco espaço livre, por isso há poucos TRC. Os primeiros ganham-se em leilões.',
         action_instruction: '',
         btn_label: 'Continuar'
       }
@@ -5952,8 +6435,8 @@
       position: 'right',
       overlay_highlight: true,
       card_data: {
-        title: '3 TRCs a leilão',
-        body: 'Só podes concorrer a um. Olha os prós e contras de cada — o que não levares, os outros levam.',
+        title: '3 lotes em leilão',
+        body: 'Cada lote é um TRC numa subestação. Podes licitar mais do que um, mas só podes ficar com um. Vê os prós e contras de cada lote. Os que não ganhares ficam para os rivais.',
         action_instruction: 'Clica num lote',
         btn_label: 'Saltar'
       }
@@ -5979,7 +6462,7 @@
       overlay_highlight: true,
       card_data: {
         title: 'Olha o consultor',
-        body: 'A 40 o papel é bonito. Os rivais limpam mais baixo. Se desceres para ganhar, o ponto sangra.',
+        body: 'A 40 €/MWh, o NPV é positivo, mas a rentabilidade fica abaixo do mínimo que os investidores exigem. Os rivais costumam oferecer menos. Se baixares a oferta para ganhar, o projeto perde dinheiro.',
         action_instruction: 'Lê o painel',
         btn_label: 'Jogar'
       }
@@ -6599,39 +7082,53 @@
 
   /* ── Gate 1 mandate mock (tiers boutique / mid / infra) ── */
   const BAND_RANK = { S: 1, M: 2, L: 3 };
+  /** Player-facing words for the qualitative bands (no € values). */
+  const BAND_WORD_PT = { S: 'pouco', M: 'médio', L: 'muito' };
+  const BAND_COST_PT = { S: 'baixo', M: 'médio', L: 'alto' };
+  function bandWordPt(b) { return BAND_WORD_PT[b] || BAND_WORD_PT.S; }
+  function bandCostPt(b) { return BAND_COST_PT[b] || '—'; }
+  const CAR_EXPLAIN_PT = 'Dinheiro para desenvolver: o dinheiro que os investidores aceitam arriscar para preparares o projeto até decidires construir.';
+  const EQUITY_EXPLAIN_PT = 'Capital próprio para construir: o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco.';
+  /** "mês 3 · daqui a 2 meses" — deadline timing in plain PT. */
+  function deadlineWhenPt(atMonth, clock) {
+    const d = (atMonth | 0) - (clock | 0);
+    if (d === 0) return 'este mês';
+    if (d > 0) return 'mês ' + atMonth + ' · daqui a ' + d + (d === 1 ? ' mês' : ' meses');
+    return 'mês ' + atMonth + ' · já passou';
+  }
   const MANDATE_TIERS = {
     boutique: {
-      id: 'boutique', label: 'Boutique', tierLabel: 'Boutique',
-      clubLine: 'Runway curto — um lote cabe no mandato; os outros ficam fora do runway.',
+      id: 'boutique', label: 'Orçamento pequeno', tierLabel: 'Orçamento pequeno',
+      clubLine: 'Tens orçamento para um lote. Os outros ainda estão fora do teu alcance.',
       car_band_max: 'S',
       equity_band_max: 'S',
       max_trcs: 1,
-      car_purse_label: 'CAR · banda S',
-      equity_headroom_label: 'Equity · banda S',
-      car_hint: '~runway FID curto',
-      equity_hint: 'gearing alto / little equity'
+      car_purse_label: 'Dinheiro para desenvolver: pouco',
+      equity_headroom_label: 'Capital próprio para construir: pouco',
+      car_hint: CAR_EXPLAIN_PT,
+      equity_hint: EQUITY_EXPLAIN_PT
     },
     mid: {
-      id: 'mid', label: 'Meia-tabela', tierLabel: 'Mid',
-      clubLine: 'Mandato mid — runway médio, gearing controlado.',
+      id: 'mid', label: 'Orçamento médio', tierLabel: 'Orçamento médio',
+      clubLine: 'Tens orçamento para até 2 lotes. Os lotes mais caros ainda estão fora do teu alcance.',
       car_band_max: 'M',
       equity_band_max: 'M',
       max_trcs: 2,
-      car_purse_label: 'CAR · banda M',
-      equity_headroom_label: 'Equity · banda M',
-      car_hint: '~runway até FID típico',
-      equity_hint: 'equity para 1–2 TRCs mid'
+      car_purse_label: 'Dinheiro para desenvolver: médio',
+      equity_headroom_label: 'Capital próprio para construir: médio',
+      car_hint: CAR_EXPLAIN_PT,
+      equity_hint: EQUITY_EXPLAIN_PT
     },
     infra: {
-      id: 'infra', label: 'Infra', tierLabel: 'Infra',
-      clubLine: 'Mandato alto (infra) — purse folgada; o arco Ourique é jogável.',
+      id: 'infra', label: 'Orçamento grande', tierLabel: 'Orçamento grande',
+      clubLine: 'Tens orçamento para até 4 lotes. Todos os lotes estão ao teu alcance.',
       car_band_max: 'L',
       equity_band_max: 'L',
       max_trcs: 4,
-      car_purse_label: 'CAR · banda L',
-      equity_headroom_label: 'Equity · banda L',
-      car_hint: 'runway longo / multi-FID',
-      equity_hint: 'equity para portfolio'
+      car_purse_label: 'Dinheiro para desenvolver: muito',
+      equity_headroom_label: 'Capital próprio para construir: muito',
+      car_hint: CAR_EXPLAIN_PT,
+      equity_hint: EQUITY_EXPLAIN_PT
     }
   };
 
@@ -6675,7 +7172,7 @@
     // equity_band_max follows so M/L lots (matched car+equity) actually unlock; equity HUD label stays tier.
     const out = Object.assign({}, base, {
       car_band_max: ov,
-      car_purse_label: 'CAR · banda ' + ov
+      car_purse_label: 'Dinheiro para desenvolver: ' + bandWordPt(ov)
     });
     if ((BAND_RANK[ov] || 0) > (BAND_RANK[base.equity_band_max] || 0)) {
       out.equity_band_max = ov;
@@ -6691,19 +7188,19 @@
 
   function lotFitsMandate(lot, mandate) {
     const m = mandate || currentMandate();
-    if (!lot) return { ok: false, reason: 'lote inválido' };
+    if (!lot) return { ok: false, reason: 'Lote inválido', short: 'Lote inválido' };
     if (!mandateSoftLockEnabled()) return { ok: true, reason: '' };
     const car = lot.car_band || 'S';
     const eq = lot.equity_capex_band || 'S';
     if ((BAND_RANK[car] || 0) > (BAND_RANK[m.car_band_max] || 0)) {
-      return { ok: false, reason: 'fora do runway' };
+      return { ok: false, reason: 'Custa mais do que o teu orçamento de desenvolvimento', short: 'Acima do teu orçamento' };
     }
     if ((BAND_RANK[eq] || 0) > (BAND_RANK[m.equity_band_max] || 0)) {
-      return { ok: false, reason: 'equity acima do mandato' };
+      return { ok: false, reason: 'Pede mais capital próprio do que o teu orçamento permite', short: 'Acima do teu orçamento' };
     }
     const won = (typeof auctionState !== 'undefined' && auctionState.wonLots) ? auctionState.wonLots.length : 0;
     if (won >= m.max_trcs) {
-      return { ok: false, reason: 'máx. TRCs do mandato' };
+      return { ok: false, reason: 'Já tens o número máximo de lotes (' + m.max_trcs + ')', short: 'Já tens ' + m.max_trcs + (m.max_trcs === 1 ? ' lote' : ' lotes') };
     }
     return { ok: true, reason: '' };
   }
@@ -6712,17 +7209,19 @@
     const m = currentMandate();
     const car = document.getElementById('valMandateCar');
     const eq = document.getElementById('valMandateEquity');
-    if (car) car.textContent = m.car_purse_label;
-    if (eq) eq.textContent = m.equity_headroom_label;
+    if (car) car.textContent = bandWordPt(m.car_band_max);
+    if (eq) eq.textContent = bandWordPt(MANDATE_TIERS[mandateState.tier] ? MANDATE_TIERS[mandateState.tier].equity_band_max : m.equity_band_max);
     const chip = document.getElementById('auctionMandateChip');
     const aCar = document.getElementById('auctionMandateCar');
     const aEq = document.getElementById('auctionMandateEquity');
-    if (chip) chip.textContent = (m.label === m.tierLabel) ? m.tierLabel : (m.tierLabel + ' · ' + m.label);
-    if (aCar) aCar.textContent = m.car_purse_label;
-    if (aEq) aEq.textContent = m.equity_headroom_label;
+    const lotsTxt = m.max_trcs === 1 ? '1 lote de cada vez' : ('até ' + m.max_trcs + ' lotes');
+    if (chip) chip.textContent = m.label + ' · ' + lotsTxt;
+    if (aCar) { aCar.textContent = m.car_purse_label; aCar.title = m.car_hint; }
+    if (aEq) { aEq.textContent = m.equity_headroom_label; aEq.title = m.equity_hint; }
     const rating = document.querySelector('.rating-badge');
     if (rating && !rating.dataset.mandateLocked) {
-      rating.textContent = (m.label === m.tierLabel) ? m.tierLabel : (m.tierLabel + ' · ' + m.label);
+      rating.textContent = m.label;
+      rating.title = m.label + ': podes ficar com ' + lotsTxt + '.';
     }
   }
 
@@ -6730,42 +7229,46 @@
     const m = currentMandate();
     const title = document.getElementById('mandateBriefingTitle');
     const club = document.getElementById('mandateBriefingClub');
-    if (title) title.textContent = (m.label === m.tierLabel) ? m.tierLabel : (m.tierLabel + ' · ' + m.label);
-    // Hybrid MVP: one sentence — boutique. No difficulty selector.
-    if (club) {
-      club.textContent = (m.id === 'boutique')
-        ? 'Runway curto — um lote cabe no mandato; os outros ficam fora do runway.'
-        : m.clubLine;
-    }
+    if (title) title.textContent = 'O teu orçamento';
+    if (club) club.textContent = m.clubLine;
     const car = document.getElementById('mandateBriefingCar');
     const eq = document.getElementById('mandateBriefingEquity');
     const carH = document.getElementById('mandateBriefingCarHint');
     const eqH = document.getElementById('mandateBriefingEquityHint');
     const trcs = document.getElementById('mandateBriefingTrcs');
     const bands = document.getElementById('mandateBriefingBands');
-    if (car) car.textContent = m.car_purse_label;
-    if (eq) eq.textContent = m.equity_headroom_label;
+    if (car) { car.textContent = m.car_purse_label; car.title = m.car_hint; }
+    if (eq) { eq.textContent = m.equity_headroom_label; eq.title = m.equity_hint; }
     if (carH) carH.textContent = m.car_hint;
     if (eqH) eqH.textContent = m.equity_hint;
     if (trcs) trcs.textContent = String(m.max_trcs);
-    if (bands) bands.textContent = 'máx. ' + m.max_trcs + ' TRCs';
+    if (bands) bands.textContent = 'Máximo: ' + m.max_trcs + (m.max_trcs === 1 ? ' lote' : ' lotes');
   }
 
   function fillMandateLetter() {
     const m = currentMandate();
     const body = document.getElementById('mandateLetterBody');
     if (!body) return;
-    body.textContent =
-      'Antes de ires à mesa: mandato ' + m.tierLabel + '.\n\n' +
-      '• Purse CAR: ' + m.car_purse_label + ' — ' + m.car_hint + '\n' +
-      '• Headroom equity: ' + m.equity_headroom_label + ' — ' + m.equity_hint + '\n' +
-      '• Máximo de TRCs neste mandato: ' + m.max_trcs + '\n\n' +
-      (m.id === 'boutique'
-        ? 'Boutique · banda S · máx. 1 TRC — joga Ourique; não caçes os cinzentos ainda. Joga bem e o mandato alarga.\n\n'
-        : m.id === 'mid'
-          ? 'Mid: S+M abertos; L ficam cinza («fora do runway» / «equity acima do mandato»).\n\n'
-          : 'Infra (QA): purse L — soft-lock activo mas bandas L desbloqueiam a onda.\n\n') +
-      'HIPÓTESE qualitativa — sem finais em €. Depois da adjudicação, a carta M0 passa a revisão de runway — não a primeira revelação.';
+    // Texto §3 (LANGUAGE-AUDIT.md), grafia AO90. Promoção: ver MANDATE_PROMOTE_EFFECTS.
+    let txt;
+    if (m.id === 'mid') {
+      txt =
+        'Os investidores aumentaram o teu orçamento.\n\n' +
+        'Agora tens mais dinheiro para desenvolver e mais capital próprio para construir. Podes ficar com até 2 lotes ao mesmo tempo.\n\n' +
+        'Os lotes a cinzento custam mais do que o teu orçamento permite.';
+    } else if (m.id === 'infra') {
+      txt =
+        'Os teus investidores dão-te um orçamento grande.\n\n' +
+        'Podes ficar com até 4 lotes ao mesmo tempo, e todos os lotes estão ao teu alcance.';
+    } else {
+      txt =
+        'Os teus investidores apostam em ti, mas com cuidado.\n\n' +
+        'Por agora tens dinheiro para desenvolver um só projeto e pouco capital próprio para o construir. Por isso só podes ficar com um lote neste leilão.\n\n' +
+        'Os lotes a cinzento custam mais do que o teu orçamento permite. Começa por Ourique.\n\n' +
+        'Quando o projeto de Ourique avançar — por exemplo, quando fizeres a opção sobre o terreno — os investidores aumentam o teu orçamento e podes ficar com mais um lote, incluindo lotes mais caros.\n\n' +
+        'Logo depois de ganhares o lote, os investidores escrevem-te para reverem contigo quanto dinheiro tens para desenvolver o projeto.';
+    }
+    body.textContent = txt;
   }
 
   function showMandateOverlay(id, show) {
@@ -6836,7 +7339,7 @@
       try { scheduleSave('mandate-briefing'); } catch (_) {}
     });
     if (btnMarket) btnMarket.addEventListener('click', () => {
-      // Ir ao mercado still requires letter once — show letter if unread
+      // Ir ao leilão still requires letter once — show letter if unread
       mandateState.acknowledged = true;
       if (!mandateState.letterRead) {
         showMandateLetterPanel();
@@ -6866,7 +7369,7 @@
     mandateState.tier = next;
     try {
       if (typeof showToast === 'function') {
-        showToast('Mandato alargado · ' + next + ' — novos lotes no próximo mercado');
+        showToast('Os investidores aumentaram o teu orçamento. No próximo leilão podes ficar com mais um lote.');
       }
     } catch (_) {}
     try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
@@ -6891,27 +7394,27 @@
   const AUCTION_ABERTURA_MS = 2800;
 
   const AUCTION_RIVALS = [
-    { id: 'solis', name: 'Solis Lusitania', toneIdle: 'presente', toneHot: 'a limpar baixo' },
-    { id: 'ibervolt', name: 'IberVolt Energy', toneIdle: 'presente', toneHot: 'a limpar baixo' },
-    { id: 'alentejo', name: 'Alentejo Renew', toneIdle: 'presente', toneHot: 'a limpar baixo' }
+    { id: 'solis', name: 'Solis Lusitania', toneIdle: 'presente', toneHot: 'a oferecer barato' },
+    { id: 'ibervolt', name: 'IberVolt Energy', toneIdle: 'presente', toneHot: 'a oferecer barato' },
+    { id: 'alentejo', name: 'Alentejo Renew', toneIdle: 'presente', toneHot: 'a oferecer barato' }
   ];
 
   /** Real REN SE names only — never invent substations. */
   const AUCTION_WAVES = [
     [
-      { id: 'ourique', name: 'SE Ourique', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 120 MWp · Câmara hostil', mw: '120 MWp', risk: 'Câmara hostil', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
-      { id: 'ferreira', name: 'SE Ferreira do Alentejo', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 100 MWp · Rede congestionada', mw: '100 MWp', risk: 'Rede congestionada', npcFloor: 20, npcHi: 22, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
-      { id: 'estremoz', name: 'SE Estremoz', badge: 'Leilão', tension: '400/150 · cintura solar', fullMeta: '400/150 · cintura solar · 90 MWp · Offtake fraco', mw: '90 MWp', risk: 'Offtake fraco', npcFloor: 22, npcHi: 24, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
+      { id: 'ourique', name: 'SE Ourique', badge: 'Leilão', tension: '400/150 kV · zona de muito sol', fullMeta: '400/150 kV · zona de muito sol · 120 MWp · Câmara hostil', mw: '120 MWp', risk: 'Câmara hostil', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
+      { id: 'ferreira', name: 'SE Ferreira do Alentejo', badge: 'Leilão', tension: '400/150 kV · zona de muito sol', fullMeta: '400/150 kV · zona de muito sol · 100 MWp · Rede congestionada', mw: '100 MWp', risk: 'Rede congestionada', npcFloor: 20, npcHi: 22, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
+      { id: 'estremoz', name: 'SE Estremoz', badge: 'Leilão', tension: '400/150 kV · zona de muito sol', fullMeta: '400/150 kV · zona de muito sol · 90 MWp · Preço de venda fraco', mw: '90 MWp', risk: 'Preço de venda fraco', npcFloor: 22, npcHi: 24, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
     ],
     [
-      { id: 'evora', name: 'SE Évora', badge: 'Leilão', tension: '400/150 · Alentejo', fullMeta: '400/150 · Alentejo · 110 MWp · Licenciamento tenso', mw: '110 MWp', risk: 'Licenciamento tenso', npcFloor: 19, npcHi: 23, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
-      { id: 'alqueva', name: 'SE Alqueva', badge: 'Leilão', tension: '400/150 · Alqueva', fullMeta: '400/150 · Alqueva · 95 MWp · Rede remota', mw: '95 MWp', risk: 'Rede remota', npcFloor: 21, npcHi: 24, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
-      { id: 'falagueira', name: 'SE Falagueira', badge: 'Leilão', tension: '400/150 · Interior', fullMeta: '400/150 · Interior · 100 MWp · Curtailment', mw: '100 MWp', risk: 'Curtailment', npcFloor: 20, npcHi: 23, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
+      { id: 'evora', name: 'SE Évora', badge: 'Leilão', tension: '400/150 · Alentejo', fullMeta: '400/150 kV · Alentejo · 110 MWp · Licenciamento difícil', mw: '110 MWp', risk: 'Licenciamento difícil', npcFloor: 19, npcHi: 23, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
+      { id: 'alqueva', name: 'SE Alqueva', badge: 'Leilão', tension: '400/150 · Alqueva', fullMeta: '400/150 kV · Alqueva · 95 MWp · Rede longe', mw: '95 MWp', risk: 'Rede longe', npcFloor: 21, npcHi: 24, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
+      { id: 'falagueira', name: 'SE Falagueira', badge: 'Leilão', tension: '400/150 · Interior', fullMeta: '400/150 kV · Interior · 100 MWp · Cortes de produção frequentes', mw: '100 MWp', risk: 'Cortes de produção frequentes', npcFloor: 20, npcHi: 23, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
     ],
     [
-      { id: 'portimao', name: 'SE Portimão', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 · Algarve · 90 MWp · Pico de carga', mw: '90 MWp', risk: 'Pico de carga', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
-      { id: 'tavira', name: 'SE Tavira', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 · Algarve · 80 MWp · Rede fina', mw: '80 MWp', risk: 'Rede fina', npcFloor: 20, npcHi: 23, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
-      { id: 'ponte-sor', name: 'SE Ponte de Sor', badge: 'Leilão', tension: '400/150 · Alto Alentejo', fullMeta: '400/150 · Alto Alentejo · 100 MWp · Offtake fraco', mw: '100 MWp', risk: 'Offtake fraco', npcFloor: 22, npcHi: 25, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
+      { id: 'portimao', name: 'SE Portimão', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 kV · Algarve · 90 MWp · Rede cheia nas horas de ponta', mw: '90 MWp', risk: 'Rede cheia nas horas de ponta', npcFloor: 18, npcHi: 22, rival: 'Solis Lusitania', rivalId: 'solis', car_band: 'S', equity_capex_band: 'S' },
+      { id: 'tavira', name: 'SE Tavira', badge: 'Leilão', tension: '400/150 · Algarve', fullMeta: '400/150 kV · Algarve · 80 MWp · Rede com pouca capacidade', mw: '80 MWp', risk: 'Rede com pouca capacidade', npcFloor: 20, npcHi: 23, rival: 'IberVolt Energy', rivalId: 'ibervolt', car_band: 'M', equity_capex_band: 'M' },
+      { id: 'ponte-sor', name: 'SE Ponte de Sor', badge: 'Leilão', tension: '400/150 · Alto Alentejo', fullMeta: '400/150 kV · Alto Alentejo · 100 MWp · Preço de venda fraco', mw: '100 MWp', risk: 'Preço de venda fraco', npcFloor: 22, npcHi: 25, rival: 'Alentejo Renew', rivalId: 'alentejo', car_band: 'L', equity_capex_band: 'L' }
     ]
   ];
 
@@ -6967,11 +7470,11 @@
     else if (van < 0) tone = 'warn';
     else if (irr < HURDLE) tone = 'anemic';
     else tone = 'good';
-    let hint = 'Zona vermelha (~15–25): rivais limpam aqui — ganhar é sangrar.';
-    if (tone === 'warn') hint = 'Meio da curva: números anémicos / âmbar. Pay-as-bid — recebes a tua oferta, não o clearing rival.';
-    if (tone === 'anemic') hint = 'NPV pode parecer ok, mas IRR < hurdle 8% — não pintes de verde. Rivais limpam a ~15–25.';
-    if (tone === 'good') hint = 'Acima do hurdle no papel — mas rivais limpam a banda ~15–25.';
-    if (bid <= 22) hint = 'Armadilha clássica: clears fácil (pagas o preço que propões), offtake não cobre o risco.';
+    let hint = 'Os rivais costumam ganhar com ofertas entre 15 e 25 €/MWh. Se ganhares nessa zona, o projeto perde dinheiro.';
+    if (tone === 'warn') hint = 'Com esta oferta, as contas ficam no limite. Se ganhares, recebes o preço que ofereceste, não o preço do rival.';
+    if (tone === 'anemic') hint = 'O NPV é positivo, mas a rentabilidade fica abaixo do mínimo exigido (8%). Os rivais costumam oferecer entre 15 e 25 €/MWh.';
+    if (tone === 'good') hint = 'A rentabilidade passa o mínimo exigido (8%), mas os rivais costumam oferecer entre 15 e 25 €/MWh.';
+    if (bid <= 22) hint = 'Com esta oferta ganhas com facilidade, mas recebes o preço que propões e esse preço não paga o risco do projeto.';
     return { van, irr, tone, hint };
   }
 
@@ -7084,15 +7587,15 @@
       const leftover = document.getElementById('auctionLeftoverNote');
       if (leftover) {
         leftover.hidden = false;
-        leftover.textContent = threat.rival + ' a pressionar ' + threat.name + ' — se hesitares, levam.';
+        leftover.textContent = threat.rival + ' está a pressionar ' + threat.name + '. Se esperares, o rival fica com o lote.';
       }
       return false;
     }
     const lot = left[Math.floor(Math.random() * left.length)];
     auctionState.taken[lot.id] = { bid: lot.npcFloor, van: null, irr: null, lost: true, stolen: true };
-    setAuctionRivalMode(lot.rivalId, 'flash', 'adjudicado ~' + lot.npcFloor);
-    showToast(lot.rival + ' limpou ' + lot.name + ' enquanto hesitavas');
-    activities.unshift({ time: 'Agora', text: lot.rival + ' adjudicou ' + lot.name + ' (~' + lot.npcFloor + ' €/MWh) — não licitas te' });
+    setAuctionRivalMode(lot.rivalId, 'flash', 'ganhou a ~' + lot.npcFloor + ' €');
+    showToast(lot.rival + ' ganhou ' + lot.name + ' enquanto esperavas');
+    activities.unshift({ time: 'Agora', text: lot.rival + ' ganhou ' + lot.name + ' (~' + lot.npcFloor + ' €/MWh). Não licitaste este lote.' });
     if (typeof renderActivity === 'function') renderActivity();
     // If current selection was somehow taken, move on
     if (auctionState.taken[auctionState.selectedId]) {
@@ -7105,11 +7608,11 @@
     if (still.length === 0) {
       stopAuctionPressure();
       if (!auctionState.wonId && !(auctionState.wonLots && auctionState.wonLots.length)) {
-        enterAuctionFora('Rivais limparam os lotes enquanto hesitavas. Caixa intacta · 0 TRC.');
+        enterAuctionFora('Os rivais ganharam os lotes enquanto esperavas.');
       } else {
         auctionState.clockPaused = true;
         stopAuctionClock();
-        showToast('Concurso sem lotes em aberto — Home com o(s) teu(s) TRC');
+        showToast('Já não há lotes em aberto. O teu TRC está no início.');
         syncAuctionExitGates();
       }
       return true;
@@ -7117,7 +7620,7 @@
     const leftover = document.getElementById('auctionLeftoverNote');
     if (leftover) {
       leftover.hidden = false;
-      leftover.textContent = 'Roubado: ' + lot.name + ' · restam ' + still.length + ' — o relógio não para.';
+      leftover.textContent = 'Um rival ganhou ' + lot.name + '. ' + (still.length === 1 ? 'Resta 1 lote' : ('Restam ' + still.length + ' lotes')) + ' e o tempo continua a contar.';
     }
     return true;
   }
@@ -7157,17 +7660,17 @@
     const left = availableAuctionLots();
     left.forEach((lot) => {
       auctionState.taken[lot.id] = { bid: lot.npcFloor, van: null, irr: null, lost: true, auto: true };
-      setAuctionRivalMode(lot.rivalId, 'flash', 'adjudicado ~' + lot.npcFloor);
+      setAuctionRivalMode(lot.rivalId, 'flash', 'ganhou a ~' + lot.npcFloor + ' €');
     });
     renderAuctionLots();
     renderAuctionRivals();
     const hasWin = !!(auctionState.wonId || (auctionState.wonLots && auctionState.wonLots.length));
     if (!hasWin) {
-      enterAuctionFora('Tempo esgotado: lotes por resolver passaram aos rivais.');
+      enterAuctionFora('O tempo acabou e os lotes que faltavam ficaram para os rivais.');
     } else {
       auctionState.clockPaused = true;
       stopAuctionClock();
-      showToast('Tempo a 0 — rivais limparam o resto. O teu TRC fica na consola.');
+      showToast('O tempo acabou. Os rivais ficaram com os lotes que faltavam. O teu TRC está no início.');
       syncAuctionExitGates();
     }
   }
@@ -7186,7 +7689,7 @@
       if (mode === 'hot') tone = r.toneHot;
       if (mode === 'quiet') tone = 'em silêncio';
       if (mode === 'flash' && modeObj.label) tone = modeObj.label;
-      else if (mode === 'flash') tone = 'adjudicou';
+      else if (mode === 'flash') tone = 'ganhou';
       return '<span class="auction-rival' + (mode !== 'idle' ? ' is-' + mode : '') + '"><strong>' + r.name + '</strong> · ' + tone + '</span>';
     }).join('');
   }
@@ -7205,9 +7708,9 @@
     document.getElementById('auctionTitle').textContent = lot.name + ' · Leilão';
     const subBits = [lot.fullMeta];
     if (lot.car_band || lot.equity_capex_band) {
-      subBits.push('CAR ' + (lot.car_band || '?') + ' · Equity ' + (lot.equity_capex_band || '?'));
+      subBits.push('Custo de desenvolvimento: ' + bandCostPt(lot.car_band) + ' · Capital para construir: ' + bandCostPt(lot.equity_capex_band));
     }
-    if (!fit.ok) subBits.push('⛔ ' + fit.reason);
+    if (!fit.ok) subBits.push('⛔ Bloqueado: ' + fit.reason.charAt(0).toLowerCase() + fit.reason.slice(1));
     document.getElementById('auctionSub').textContent = subBits.join(' · ');
     AUCTION_RIVALS.forEach((r) => {
       if ((auctionState.rivalModes[r.id] || {}).mode === 'flash') setAuctionRivalMode(r.id, 'idle');
@@ -7236,8 +7739,8 @@
       const taken = auctionState.taken[lot.id];
       if (taken) {
         return taken.lost
-          ? ((taken.stolen ? 'Roubado' : taken.auto ? 'Tempo 0' : 'Perdido') + (taken.bid != null ? ' · ~' + taken.bid + '€' : ''))
-          : ('Teu · ' + taken.bid + '€');
+          ? ((taken.stolen ? 'Ganho por um rival' : taken.auto ? 'Tempo esgotado' : 'Perdido') + (taken.bid != null ? ' · ~' + taken.bid + ' €' : ''))
+          : ('Ganhaste · ' + taken.bid + ' €');
       }
       return lot.mw || 'em disputa';
     }
@@ -7252,10 +7755,10 @@
         let tension;
         if (taken) {
           tension = taken.lost
-            ? ((taken.stolen ? 'Roubado · ' : taken.auto ? 'Tempo 0 · ' : 'Perdido · ') + lot.rival + (taken.bid != null ? ' ~' + taken.bid + ' €' : ''))
-            : ('Adjudicado a ti · ' + taken.bid + ' €/MWh');
+            ? ((taken.stolen ? 'Ganho por um rival · ' : taken.auto ? 'Tempo esgotado · ' : 'Perdido · ') + lot.rival + (taken.bid != null ? ' ~' + taken.bid + ' €' : ''))
+            : ('Ganhaste · ' + taken.bid + ' €/MWh');
         } else {
-          tension = lot.risk + ' · ' + lot.mw + ' · CAR ' + (lot.car_band || '?') + '/' + (lot.equity_capex_band || '?');
+          tension = lot.risk + ' · ' + lot.mw + ' · custo ' + bandCostPt(lot.car_band);
         }
         const reasonHtml = blocked
           ? ('<div class="mandate-reason">' + fit.reason + '</div>')
@@ -7287,7 +7790,7 @@
         const fit = (!taken && typeof lotFitsMandate === 'function') ? lotFitsMandate(lot) : { ok: true, reason: '' };
         const blocked = !taken && !fit.ok;
         const disabled = !!taken;
-        const meta = blocked ? fit.reason : lotTension(lot);
+        const meta = blocked ? (fit.short || fit.reason) : lotTension(lot);
         return (
           '<button type="button" class="auction-lot-chip' + (selected ? ' selected' : '') + (taken ? ' taken' : '') + (blocked ? ' mandate-blocked' : '') + '"' +
           ' data-lot="' + lot.id + '" role="option" aria-selected="' + (selected ? 'true' : 'false') + '"' +
@@ -7306,10 +7809,10 @@
     if (leftover) {
       if (takenCount > 0 && available.length === 1) {
         leftover.hidden = false;
-        leftover.textContent = 'Último lote (' + available[0].name + '): rivais mais agressivos. A sala não é o jogo — podes sempre voltar à consola.';
+        leftover.textContent = 'Último lote (' + available[0].name + '): os rivais estão mais agressivos. Podes sempre voltar ao início.';
       } else if (available.length === 0 && !auctionState.wonId) {
         leftover.hidden = false;
-        leftover.textContent = 'Concurso encerrado · nenhum lote teu.';
+        leftover.textContent = 'Leilão fechado. Não ganhaste nenhum lote.';
       } else {
         leftover.hidden = true;
         leftover.textContent = '';
@@ -7369,27 +7872,27 @@
     const vanSub = document.getElementById('auctionVanSub');
     if (vanSub) {
       vanSub.textContent =
-        eco.tone === 'good' ? 'Acima do hurdle no papel' :
-        eco.tone === 'bad' ? 'Sangra no papel' :
-        eco.tone === 'anemic' ? 'IRR abaixo do hurdle 8%' :
-        'Margem frágil';
+        eco.tone === 'good' ? 'Com esta oferta, passa o mínimo exigido' :
+        eco.tone === 'bad' ? 'Com esta oferta, o projeto perde dinheiro' :
+        eco.tone === 'anemic' ? 'Rentabilidade abaixo do mínimo exigido (8%)' :
+        'Margem pequena';
     }
     // Fog exact npcFloor pre-seal
     const npcIrony = document.getElementById('auctionNpcIrony');
     const npcBid = document.getElementById('auctionNpcBid');
     if (npcIrony) npcIrony.textContent = '~15–25 €/MWh';
     if (npcBid) {
-      npcBid.textContent = (lot && lot.rival ? lot.rival + ' · ' : '') + 'banda dos rivais · print exacto só após abertura';
+      npcBid.textContent = (lot && lot.rival ? lot.rival + ' · ' : '') + 'o preço exato só se sabe no fim';
     }
     const hint = document.getElementById('auctionHonestHint');
-    if (hint) hint.textContent = eco.hint + ' · economia por calibrar.';
+    if (hint) hint.textContent = eco.hint;
     const confirm = document.getElementById('auction-confirm');
     const softBlock = bid < 14;
     const mandateBlock = !!(lot && typeof lotFitsMandate === 'function' && !lotFitsMandate(lot).ok);
     if (confirm) {
       confirm.textContent = mandateBlock
-        ? ((lotFitsMandate(lot).reason) || 'Fora do mandato')
-        : (softBlock ? 'Oferta não credível' : 'Submeter ao concurso');
+        ? ((lotFitsMandate(lot).short) || 'Este lote não cabe no teu orçamento')
+        : (softBlock ? 'Oferta fora dos limites' : 'Enviar a oferta');
       confirm.disabled = softBlock || mandateBlock || !lot || !!auctionState.taken[lot.id] || auctionState.screen !== 'bid' || !!auctionState.allLost;
     }
     document.querySelectorAll('.auction-step').forEach((s) => {
@@ -7421,7 +7924,7 @@
     node.name = lot.name;
     node.badge = 'TRC';
     node.badgeClass = 'a';
-    node.tensao = lot.risk + (eco.van < 0 || bid <= 25 ? ' · sangra' : ' · sob pressão');
+    node.tensao = lot.risk + (eco.van < 0 || bid <= 25 ? ' · perde dinheiro' : ' · sob pressão');
     node.tensaoTone = (eco.van < 0 || bid <= 25) ? 'red' : 'amber';
     node.van = Math.round(eco.van * 10) / 10;
     node.missionOpen = true;
@@ -7437,12 +7940,12 @@
 
     const sub = document.getElementById('portfolioSubtitle');
     if (sub) {
-      sub.textContent = 'Portfólio · ' + auctionState.wonLots.length + ' TRC · último ' + lot.name + ' @ ' + bid + ' €/MWh';
+      sub.textContent = auctionState.wonLots.length + ' TRC · último: ' + lot.name + ' a ' + bid + ' €/MWh';
     }
     syncPortfolioEmptyCta();
     activities.unshift({
       time: 'Agora',
-      text: 'TRC adjudicado — ' + lot.name + ' @ ' + bid + ' €/MWh (pay-as-bid) · carta na consola'
+      text: 'Ganhaste o TRC de ' + lot.name + ' a ' + bid + ' €/MWh · tens uma carta no Correio'
     });
     renderNodes();
     renderActivity();
@@ -7482,7 +7985,7 @@
     document.querySelectorAll('.panel').forEach((pn) => pn.classList.remove('active'));
     const home = document.getElementById('panel-portfolio');
     if (home) home.classList.add('active');
-    showToast('Home · TRC no portfólio');
+    showToast('O teu TRC está no portefólio');
   }
 
   function continueAuctionBidding() {
@@ -7509,7 +8012,7 @@
     renderAuctionRivals();
     updateConsultant();
     renderAuctionClock();
-    showToast('Continua · relógio a ' + auctionFmtClock(auctionState.clockLeft) + ' · ' + left.length + ' lote(s)');
+    showToast('Continuas no leilão · faltam ' + auctionFmtClock(auctionState.clockLeft) + ' · ' + left.length + (left.length === 1 ? ' lote' : ' lotes'));
   }
 
   function paintHonestEmptyHome(reason) {
@@ -7517,13 +8020,13 @@
     state.minimized.add('ourique');
     const emptyTitle = document.getElementById('portfolioEmptyTitle');
     const emptySub = document.getElementById('portfolioEmptySub');
-    if (emptyTitle) emptyTitle.textContent = 'Fora deste concurso';
+    if (emptyTitle) emptyTitle.textContent = 'Fora deste leilão';
     if (emptySub) {
       emptySub.textContent =
-        (reason || 'Caixa intacta · 0 TRC.') + ' Sem «À espera do leilão» — espera o próximo concurso REN.';
+        (reason ? reason + ' ' : '') + 'Não perdeste dinheiro. Espera pelo próximo leilão.';
     }
     const sub = document.getElementById('portfolioSubtitle');
-    if (sub) sub.textContent = 'Sem ponto adjudicado · à espera do próximo concurso';
+    if (sub) sub.textContent = 'Ainda sem TRC · à espera do próximo leilão';
     syncPortfolioEmptyCta();
     renderNodes();
   }
@@ -7533,7 +8036,7 @@
     if (!cta) return;
     const show = !!auctionState.allLost || (!state.auctionWon && auctionState.resolved && !auctionState.wonId);
     cta.hidden = !show;
-    cta.textContent = 'Abrir próximo concurso REN';
+    cta.textContent = 'Abrir o próximo leilão';
   }
 
   function enterAuctionFora(reason) {
@@ -7546,15 +8049,15 @@
     const body = document.getElementById('auctionForaBody');
     if (body) {
       body.textContent =
-        (reason || 'Os pontos foram limpos pelos rivais.') +
-        ' Caixa intacta — sem TRC, sem game over. Volta à consola ou abre o próximo concurso.';
+        (reason || 'Os rivais ganharam os lotes.') +
+        ' Não perdeste dinheiro e o jogo continua. Volta ao início ou abre o próximo leilão.';
     }
     const cash = document.getElementById('auctionForaCash');
     if (cash) cash.textContent = state.caixa.toFixed(1).replace('.', ',') + ' M€';
     const trc = document.getElementById('auctionForaTrc');
     if (trc) trc.textContent = '0';
     paintHonestEmptyHome(reason);
-    activities.unshift({ time: 'Agora', text: 'Fora deste concurso · caixa intacta · 0 TRC' });
+    activities.unshift({ time: 'Agora', text: 'Fora deste leilão · não perdeste dinheiro' });
     renderActivity();
     setAuctionScreen('fora');
     renderAuctionLots();
@@ -7570,7 +8073,7 @@
     if (typeof lotFitsMandate === 'function') {
       const fit = lotFitsMandate(lot);
       if (!fit.ok) {
-        try { showToast(fit.reason || 'Fora do mandato'); } catch (_) {}
+        try { showToast(fit.reason || 'Este lote não cabe no teu orçamento'); } catch (_) {}
         return;
       }
     }
@@ -7582,9 +8085,9 @@
 
   function startAuctionAbertura(lot, bid) {
     setAuctionScreen('abertura');
-    document.getElementById('auctionAberturaTitle').textContent = 'A abrir · ' + lot.name;
+    document.getElementById('auctionAberturaTitle').textContent = 'A revelar as propostas · ' + lot.name;
     document.getElementById('auctionAberturaBody').textContent =
-      'Oferta selada a ' + bid + ' €/MWh. Rivais a revelar… pay-as-bid se adjudicarem a ti.';
+      'A tua oferta: ' + bid + ' €/MWh. Os rivais estão a revelar as propostas. Se ganhares, recebes este preço.';
     const box = document.getElementById('auctionAberturaRivals');
     box.innerHTML = AUCTION_RIVALS.map((r) =>
       '<span class="auction-pulse-chip" data-rival="' + r.id + '">' + r.name + '</span>'
@@ -7621,11 +8124,11 @@
 
     if (!win) {
       auctionState.taken[lot.id] = { bid: lot.npcFloor, van: null, irr: null, lost: true };
-      setAuctionRivalMode(lot.rivalId, 'flash', 'adjudicado ~' + lot.npcFloor);
-      showToast('Perdeste ' + lot.name + ' — ' + lot.rival + ' limpou a ~' + lot.npcFloor + ' €/MWh');
+      setAuctionRivalMode(lot.rivalId, 'flash', 'ganhou a ~' + lot.npcFloor + ' €');
+      showToast('Perdeste ' + lot.name + ': ' + lot.rival + ' ganhou com ~' + lot.npcFloor + ' €/MWh');
       const left = availableAuctionLots();
       if (left.length === 0) {
-        enterAuctionFora('Rivais limparam os lotes desta onda. Caixa intacta · 0 TRC.');
+        enterAuctionFora('Os rivais ganharam os lotes desta ronda.');
         return;
       }
       auctionState.lastResult = { lot: lot, bid: bid, eco: eco, lost: true, outcome: 'lose' };
@@ -7648,19 +8151,26 @@
     setAuctionScreen('trap');
     // Re-assert Continuar visibility after DOM screen switch (win + lots left)
     (function () {
-      const left = availableAuctionLots();
+      const left = biddableAuctionLots();
       const again = document.getElementById('auctionTrapAgain');
       if (again && left.length > 0) {
         again.hidden = false;
         again.removeAttribute('hidden');
         again.style.display = '';
-        again.textContent = 'Continuar no concurso';
+        again.textContent = 'Continuar no leilão';
       }
     })();
     renderAuctionLots();
     renderAuctionRivals();
     syncAuctionExitGates();
     scheduleSave('auction-resolve');
+  }
+
+  /** Open lots the player may still bid on (fits the investors' budget). */
+  function biddableAuctionLots() {
+    return availableAuctionLots().filter((l) => {
+      try { return typeof lotFitsMandate !== 'function' || lotFitsMandate(l).ok; } catch (_) { return true; }
+    });
   }
 
   function paintAuctionResult(result, outcome) {
@@ -7675,21 +8185,23 @@
       if (badge) { badge.textContent = 'Lote perdido'; badge.style.background = '#f1f5f9'; badge.style.color = '#334155'; }
       title.textContent = result.lot.name + ' foi para ' + result.lot.rival;
       body.textContent =
-        'Limpou a ~' + result.lot.npcFloor + ' €/MWh. A tua oferta a ' + result.bid +
-        ' €/MWh não chegou. Ainda há lotes — ou volta à consola.';
+        'O rival ganhou com ~' + result.lot.npcFloor + ' €/MWh. A tua oferta de ' + result.bid +
+        ' €/MWh não chegou. Ainda há lotes, ou podes voltar ao início.';
       if (stats) stats.style.display = 'none';
-      if (btnAgain) { btnAgain.hidden = false; btnAgain.removeAttribute('hidden'); btnAgain.style.display = ''; btnAgain.textContent = 'Continuar no concurso'; }
-      if (btnDone) { btnDone.hidden = false; btnDone.removeAttribute('hidden'); btnDone.textContent = 'Aceitar TRC e sair'; }
+      if (btnAgain) { btnAgain.hidden = false; btnAgain.removeAttribute('hidden'); btnAgain.style.display = ''; btnAgain.textContent = 'Continuar no leilão'; }
+      if (btnDone) { btnDone.hidden = false; btnDone.removeAttribute('hidden'); btnDone.textContent = 'Sair do leilão'; }
+      const noteLose = document.getElementById('auctionTrapNote');
+      if (noteLose) noteLose.textContent = 'Podes continuar a licitar os lotes que faltam, ou sair do leilão.';
     } else {
       if (badge) {
-        badge.textContent = outcome === 'trap' ? 'Armadilha · ganhaste barato' : 'Adjudicado';
+        badge.textContent = outcome === 'trap' ? 'Preço baixo demais' : 'Ganhaste o lote';
         badge.style.background = '';
         badge.style.color = '';
       }
-      title.textContent = outcome === 'trap' ? 'Ganhaste barato. É uma armadilha.' : 'Adjudicado — ainda sob pressão.';
+      title.textContent = outcome === 'trap' ? 'Ganhaste, mas o projeto perde dinheiro.' : 'Ganhaste. O projeto ainda tem riscos.';
       body.textContent = outcome === 'trap'
-        ? ('Pagas o preço que propuseste: ' + result.bid + ' €/MWh em ' + result.lot.name + '. O projecto sangra — agora tens de fazer o extra pagar, sem queimar a caixa.')
-        : ('Adjudicado a ' + result.bid + ' €/MWh (a tua oferta). O ponto é teu — a consola abre com este TRC. Economia por calibrar.');
+        ? ('Recebes o preço que propuseste: ' + result.bid + ' €/MWh em ' + result.lot.name + '. A este preço, o projeto perde dinheiro. Agora tens de o melhorar sem gastar demasiado.')
+        : ('Ganhaste a ' + result.bid + ' €/MWh (a tua oferta). O TRC é teu e o jogo continua com este projeto.');
       if (stats) stats.style.display = 'grid';
       document.getElementById('auctionTrapBid').textContent = result.bid + ' €/MWh';
       document.getElementById('auctionTrapVan').textContent = auctionFmtVan(result.eco.van);
@@ -7699,19 +8211,19 @@
       document.getElementById('auctionTrapVan').style.color = col;
       document.getElementById('auctionTrapIrr').style.color = col;
       // WIN/TRAP: both exits — Aceitar → Home; Continuar → remaining lots (must SHOW when any left)
-      const left = availableAuctionLots();
+      const left = biddableAuctionLots();
       if (btnDone) {
         btnDone.hidden = false;
         btnDone.removeAttribute('hidden');
         btnDone.style.display = '';
-        btnDone.textContent = 'Aceitar TRC e sair';
+        btnDone.textContent = 'Ficar com este lote e sair';
       }
       if (btnAgain) {
         if (left.length > 0) {
           btnAgain.hidden = false;
           btnAgain.removeAttribute('hidden');
           btnAgain.style.display = '';
-          btnAgain.textContent = 'Continuar no concurso';
+          btnAgain.textContent = 'Continuar no leilão';
         } else {
           btnAgain.hidden = true;
           btnAgain.setAttribute('hidden', '');
@@ -7720,8 +8232,8 @@
       const note = document.getElementById('auctionTrapNote');
       if (note) {
         note.textContent = left.length
-          ? 'Aceitar TRC e sair → Home com a carta. Continuar no concurso → lotes que faltam (' + left.length + ').'
-          : 'Sem lotes em aberto — Aceitar TRC e sair leva-te à Home com este TRC.';
+          ? 'Podes ficar com este lote e sair (os investidores escrevem-te logo), ou continuar a licitar os lotes que faltam (' + left.length + ').'
+          : 'Já não há lotes que possas licitar. Fica com este lote e sai: os investidores escrevem-te logo a seguir.';
       }
     }
     scheduleSave('auction-result');
@@ -7739,7 +8251,7 @@
     document.getElementById('auctionRoom').classList.add('open');
     document.getElementById('auctionRoom').setAttribute('aria-hidden', 'false');
     const kicker = document.getElementById('auctionWaveKicker');
-    if (kicker) kicker.textContent = 'Concurso REN · onda ' + (auctionState.wave + 1);
+    if (kicker) kicker.textContent = 'Ligações à rede · ronda ' + (auctionState.wave + 1);
     try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
     renderAuctionRivals();
     renderAuctionClock();
@@ -7762,7 +8274,7 @@
     }
     syncAuctionExitGates();
     const kickerSub = document.getElementById('auctionLeftSub');
-    if (kickerSub) kickerSub.textContent = 'Concurso ao vivo · rivais limpam se hesitares';
+    if (kickerSub) kickerSub.textContent = 'Leilão ao vivo. Se o tempo acabar, os rivais ficam com os lotes que faltam.';
     if (opts.keepCoach || (typeof coachActive !== 'undefined' && coachActive)) {
       auctionState.clockPaused = true;
       renderAuctionClock();
@@ -7781,16 +8293,16 @@
     if (exitLots) {
       exitLots.hidden = false;
       exitLots.disabled = false;
-      exitLots.title = state.auctionWon ? 'Home · ver TRC' : 'Home / Consola';
+      exitLots.title = state.auctionWon ? 'Início · ver o teu TRC' : 'Início';
       exitLots.setAttribute('aria-label', exitLots.title);
       const lab = exitLots.querySelector('.auction-home-rail-label');
-      if (lab) lab.textContent = state.auctionWon ? 'Ver TRC' : 'Consola';
+      if (lab) lab.textContent = state.auctionWon ? 'Ver o meu TRC' : 'Início';
     }
     if (closeBtn) {
       closeBtn.hidden = false;
       closeBtn.disabled = false;
       closeBtn.title = 'Fechar';
-      closeBtn.setAttribute('aria-label', 'Fechar sala');
+      closeBtn.setAttribute('aria-label', 'Fechar o leilão');
     }
     if (homeBtn) {
       homeBtn.hidden = false;
@@ -7861,17 +8373,17 @@
     state.minimized.add('ourique');
     const emptyTitle = document.getElementById('portfolioEmptyTitle');
     const emptySub = document.getElementById('portfolioEmptySub');
-    if (emptyTitle) emptyTitle.textContent = 'Novo concurso REN';
-    if (emptySub) emptySub.textContent = 'Onda ' + (wave + 1) + ' · ' + AUCTION_LOTS.map((l) => l.name.replace(/^SE /, '')).join(' · ');
+    if (emptyTitle) emptyTitle.textContent = 'Novo leilão';
+    if (emptySub) emptySub.textContent = 'Ronda ' + (wave + 1) + ' · ' + AUCTION_LOTS.map((l) => l.name.replace(/^SE /, '')).join(' · ');
     syncPortfolioEmptyCta();
     activities.unshift({
       time: 'Agora',
-      text: 'Novo concurso REN · onda ' + (wave + 1) + ' — ' + AUCTION_LOTS.map((l) => l.name).join(' · ')
+      text: 'Novo leilão de ligações à rede · ronda ' + (wave + 1) + ': ' + AUCTION_LOTS.map((l) => l.name).join(' · ')
     });
     renderActivity();
     renderNodes();
     if (opts.fromFab || opts.open !== false) openAuctionRoom();
-    showToast('Concurso REN · onda ' + (wave + 1));
+    showToast('Leilão de ligações à rede · ronda ' + (wave + 1));
     renderAuctionBadge();
     scheduleSave('auction-wave');
   }
@@ -7885,7 +8397,7 @@
         const emptyTitle = document.getElementById('portfolioEmptyTitle');
         const emptySub = document.getElementById('portfolioEmptySub');
         if (emptyTitle) emptyTitle.textContent = 'Sem central';
-        if (emptySub) emptySub.textContent = 'Ainda não tens TRC. Abre a mesa de leilão — o ponto não vem de graça.';
+        if (emptySub) emptySub.textContent = 'Ainda não tens TRC. Abre o leilão para ganhar o primeiro.';
       }
     }
     syncPortfolioEmptyCta();
@@ -7974,7 +8486,7 @@
       // swipe left → next lot; swipe right → previous
       const lot = nextSwipeableLot(dx < 0 ? 1 : -1);
       if (!lot) {
-        showToast('Sem outro lote disponível neste concurso.');
+        showToast('Não há outro lote disponível neste leilão.');
         return;
       }
       selectAuctionLot(lot.id);
@@ -8086,7 +8598,7 @@
     camara: 'Câmara',
     consultor: 'Consultor',
     dica: 'Dica',
-    sistema: 'Sistema',
+    sistema: 'Dica',
     banco: 'Banco',
     proprietario: 'Proprietário',
     investidores: 'Investidores',
@@ -8094,10 +8606,20 @@
     advogado: 'Advogado',
     rede: 'Rede',
     comunidade: 'Comunidade',
-    media: 'Media',
+    media: 'Imprensa',
     apa: 'APA',
     dgeg: 'DGEG',
-    concorrente: 'Concorrente'
+    concorrente: 'Concorrente',
+    comprador: 'Comprador',
+    equipa: 'Equipa',
+    icnf: 'ICNF'
+  };
+  /** Tooltip on the sender chip (first-time explanation of acronyms). */
+  const MAIL_TYPE_TITLE = {
+    icnf: 'ICNF — Instituto da Conservação da Natureza e das Florestas',
+    apa: 'APA — Agência Portuguesa do Ambiente',
+    dgeg: 'DGEG — Direção-Geral de Energia e Geologia',
+    rede: 'REN — Redes Energéticas Nacionais: a empresa que gere a rede elétrica de alta tensão'
   };
 
   /* ── Offline content pack (licenca/events via content/events symlink) ── */
@@ -8116,7 +8638,10 @@
     APA: 'apa',
     BANCO: 'banco',
     DGEG: 'dgeg',
-    CONCORRENTE: 'concorrente'
+    CONCORRENTE: 'concorrente',
+    COMPRADOR: 'comprador',
+    EQUIPA: 'equipa',
+    ICNF: 'icnf'
   };
 
   async function loadEventPack() {
@@ -8141,6 +8666,16 @@
       se_sheets: await loadList(manifest.se_sheets),
       mvp_schedule: null
     };
+    pack.effect_labels = {};
+    if (manifest.effect_labels) {
+      try {
+        const lr = await fetch(base + '/' + manifest.effect_labels);
+        if (lr.ok) pack.effect_labels = (await lr.json()) || {};
+        else console.warn('[WattMail] effect_labels ' + lr.status);
+      } catch (err) {
+        console.warn('[WattMail] effect_labels failed', err);
+      }
+    }
     if (manifest.mvp_schedule) {
       const sr = await fetch(base + '/' + manifest.mvp_schedule);
       if (!sr.ok) throw new Error(manifest.mvp_schedule + ' ' + sr.status);
@@ -8183,9 +8718,9 @@
   function triggerWhenLabel(trigger) {
     trigger = trigger || {};
     const mo = trigger.month_offset != null ? Number(trigger.month_offset) : null;
-    if (trigger.immediate || mo === 0) return 'M0 · agora';
+    if (trigger.immediate || mo === 0) return 'Mês 0 · agora';
     if (mo == null || Number.isNaN(mo)) return '—';
-    return 'M+' + mo;
+    return 'Mês ' + mo;
   }
 
   function pickSkin(skeletonId, seTags, pack) {
@@ -8234,7 +8769,9 @@
     const choices = (skeleton.choices || []).map((c) => ({
       id: c.id,
       label: c.label,
-      effects: (c.effects || []).slice()
+      effects: (c.effects || []).slice(),
+      when: c.when ? JSON.parse(JSON.stringify(c.when)) : null,
+      hint: (typeof c.hint === 'string' && c.hint.trim()) ? c.hint.trim() : null
     }));
     const id = opts.id || (skin.skin_id && skin.skin_id !== 'default'
       ? (skeleton.id + ':' + skin.skin_id)
@@ -8308,13 +8845,13 @@
   /* ── MVP Correio loop (phase progress + pressure clock) ── */
   const PROJECT_PHASES = ['trc_won', 'land', 'pip', 'aia', 'licenca_producao', 'obra', 'cod'];
   const PHASE_LABEL_PT = {
-    trc_won: 'TRC',
+    trc_won: 'TRC ganho',
     land: 'Terreno',
-    pip: 'PIP',
-    aia: 'AIA',
-    licenca_producao: 'LP',
+    pip: 'Câmara (PIP)',
+    aia: 'Avaliação ambiental',
+    licenca_producao: 'Licença de produção',
     obra: 'Obra',
-    cod: 'COD'
+    cod: 'Em operação'
   };
   /** Conservative MVP bumps — only from choices that clearly imply the milestone. No obra/cod auto-jump. */
   const PHASE_BUMP = {
@@ -8326,12 +8863,20 @@
     // placeholders (Economy / later letters): value_add_commit=null; capex_rede_flag / lp_granted → licenca_producao (not wired in MVP1)
   };
 
+  /** Player-facing deadline names by id (also relabels older saves). Timing unchanged. */
+  const DEADLINE_LABEL_PT = {
+    land_option: 'Prazo do terreno',
+    pip_camara: 'Prazo do PIP na Câmara',
+    main_permit: 'Início da avaliação ambiental',
+    grid_agreement: 'Acordo com a REN'
+  };
+
   function seedDefaultDeadlines() {
     return {
-      land_option: { label: 'Janela opção terreno', atMonth: 1 },
-      pip_camara: { label: 'PIP / Câmara', atMonth: 2 },
-      main_permit: { label: 'Licença principal (APA)', atMonth: 5 },
-      grid_agreement: { label: 'Acordo rede', atMonth: 6 }
+      land_option: { label: DEADLINE_LABEL_PT.land_option, atMonth: 1 },
+      pip_camara: { label: DEADLINE_LABEL_PT.pip_camara, atMonth: 2 },
+      main_permit: { label: DEADLINE_LABEL_PT.main_permit, atMonth: 5 },
+      grid_agreement: { label: DEADLINE_LABEL_PT.grid_agreement, atMonth: 6 }
     };
   }
 
@@ -8393,11 +8938,17 @@
       mailLoop.projectPhase = next;
     }
     const raised = phaseIndex(mailLoop.projectPhase) > ci;
-    if (raised && (mailLoop.projectPhase === 'land' || mailLoop.projectPhase === 'pip')) {
-      try { if (typeof maybePromoteMandate === 'function') maybePromoteMandate('phase:' + mailLoop.projectPhase); } catch (_) {}
-    }
+    // Mandate promotion is NOT tied to phase raises (land talk / Câmara meeting raise phase
+    // but are not completed milestones). See MANDATE_PROMOTE_EFFECTS.
     return raised;
   }
+
+  /** Mandate promotion only on completed milestones: land secured (option signed) or PIP submitted.
+   *  NOT: land_talk_+1 (negotiating), risk_camara_-1 (meeting Câmara), dd_started (DD kick-off). */
+  const MANDATE_PROMOTE_EFFECTS = {
+    'land_option_open': 'land_secured',
+    'pip_request_submitted': 'pip_submitted'
+  };
 
   function maybeRaisePhaseFromEffects(effects) {
     if (!Array.isArray(effects) || !effects.length) return false;
@@ -8407,6 +8958,14 @@
       const target = PHASE_BUMP[key];
       if (target && raiseProjectPhase(target)) raised = true;
     });
+    const promoteKey = effects.map(String).find((e) => MANDATE_PROMOTE_EFFECTS[e]);
+    if (promoteKey) {
+      try {
+        if (typeof maybePromoteMandate === 'function') {
+          maybePromoteMandate('milestone:' + MANDATE_PROMOTE_EFFECTS[promoteKey] + ' (' + promoteKey + ')');
+        }
+      } catch (_) {}
+    }
     // Soft deadline clears when related effects fire
     if (effects.some((e) => e === 'land_option_open' || e === 'land_talk_+1' || e === 'dd_started')) {
       if (mailLoop.deadlines && mailLoop.deadlines.land_option) {
@@ -8446,7 +9005,7 @@
       const d = dls[k];
       if (!d || d.atMonth == null) return;
       if (!best || d.atMonth < best.atMonth) {
-        best = { id: k, label: d.label || k, atMonth: d.atMonth };
+        best = { id: k, label: DEADLINE_LABEL_PT[k] || d.label || 'Prazo', atMonth: d.atMonth };
       }
     });
     return best;
@@ -8502,79 +9061,110 @@
     return mkeys.length ? Math.max.apply(null, mkeys) : 6;
   }
 
+  /** Fallback only — `content/events/effect-labels.pt.json` (manifest `effect_labels`) wins. */
   const MAIL_EFFECT_LABEL_PT = {
-    car_band_s: 'CAR · banda S',
-    car_band_m: 'CAR · banda M',
-    car_band_l: 'CAR · banda L',
-    car_request_sent: 'Pedido CAR enviado aos investidores',
-    cash_at_risk_request: 'Pedido de Cash at Risk enviado',
-    'investor_patience_-1': 'Investidores · paciência -1',
-    'investor_patience_-2': 'Investidores · paciência -2',
-    investor_plan_sent: 'Plano enviado aos investidores',
-    land_option_open: 'Opção de terreno aberta',
-    'land_talk_+1': 'Negociação de terreno +1',
-    'land_miss_+1': 'Terreno · oportunidade perdida',
-    dd_started: 'Due diligence iniciada',
-    'dd_delay_+1': 'Due diligence · atraso +1',
-    dossier_unlock: 'Dossier desbloqueado',
-    'risk_camara_+1': 'Risco Câmara +1',
-    'risk_camara_+2': 'Risco Câmara +2',
-    'risk_camara_-1': 'Risco Câmara -1',
-    'risk_community_+1': 'Risco comunidade +1',
-    'risk_community_-1': 'Risco comunidade -1',
-    'risk_media_+1': 'Risco media +1',
-    'risk_media_-1': 'Risco media -1',
-    'delay_pip_+1': 'PIP · atraso +1',
-    'delay_pip_+2': 'PIP · atraso +2',
-    'delay_env_+1': 'Ambiente · atraso +1',
-    'delay_land_+1': 'Terreno · atraso +1',
-    'delay_ligacao_+1': 'Ligação · atraso +1',
-    'caducidade_risk_+1': 'Risco caducidade +1',
-    'caducidade_risk_+2': 'Risco caducidade +2',
-    'caducidade_risk_-1': 'Risco caducidade -1',
-    value_add_commit: 'Value-add confirmado',
-    'value_add_delay_+1': 'Value-add · atraso +1',
-    hint_value_add: 'Pista value-add',
-    reequip_study: 'Estudo de reequipamento',
-    reequip_defer: 'Reequipamento adiado',
-    bess_dev_flag: 'BESS em desenvolvimento',
-    fa_bess_apply: 'FA BESS · candidatura',
-    fa_bess_wait: 'FA BESS · aguardar',
-    fa_bess_skip: 'FA BESS · passar',
-    apa_track_start: 'APA · processo iniciado',
-    bank_seed_seen: 'Banco · seed visto',
-    dgeg_obligations_seen: 'DGEG · obrigações vistas',
-    rede_calendar_seen: 'Rede · calendário visto',
-    competitor_seen: 'Concorrente visto',
-    dica_ack: 'Dica registada',
-    capex_rede_flag: 'Capex rede assinalado',
-    'cash_at_risk_+1': 'Cash at Risk +1'
+    car_band_s: 'Pediste pouco orçamento de desenvolvimento',
+    car_band_m: 'Pediste um orçamento de desenvolvimento médio',
+    car_band_l: 'Pediste muito orçamento de desenvolvimento',
+    car_request_sent: 'Enviaste o pedido de orçamento aos investidores',
+    cash_at_risk_request: 'Pediste mais orçamento aos investidores',
+    'investor_patience_-1': 'Os investidores ficaram menos pacientes',
+    'investor_patience_-2': 'Os investidores ficaram muito menos pacientes',
+    investor_plan_sent: 'Enviaste o plano aos investidores',
+    land_option_open: 'Fizeste uma opção sobre o terreno',
+    'land_talk_+1': 'Estás a negociar o terreno',
+    'land_miss_+1': 'Perdeste este terreno',
+    dd_started: 'O advogado está a verificar o terreno',
+    'dd_delay_+1': 'Adiaste a verificação do terreno',
+    dossier_unlock: 'A ficha do projeto está disponível',
+    'risk_camara_+1': 'A relação com a Câmara piorou',
+    'risk_camara_+2': 'A relação com a Câmara piorou muito',
+    'risk_camara_-1': 'A relação com a Câmara melhorou',
+    'risk_community_+1': 'A relação com os moradores piorou',
+    'risk_community_-1': 'A relação com os moradores melhorou',
+    'risk_media_+1': 'A imprensa ficou mais crítica',
+    'risk_media_-1': 'A imprensa ouviu a tua versão',
+    'delay_pip_+1': 'O PIP atrasou-se',
+    'delay_pip_+2': 'O PIP atrasou-se muito',
+    'delay_env_+1': 'A avaliação ambiental atrasou-se',
+    'delay_land_+1': 'O terreno atrasou-se',
+    'delay_ligacao_+1': 'A ligação à rede atrasou-se',
+    'caducidade_risk_+1': 'Subiu o risco de perderes o TRC por prazo',
+    'caducidade_risk_+2': 'Subiu muito o risco de perderes o TRC por prazo',
+    'caducidade_risk_-1': 'Baixou o risco de perderes o TRC por prazo',
+    value_add_commit: 'Deste prioridade às melhorias do projeto',
+    'value_add_delay_+1': 'Adiaste as melhorias do projeto',
+    hint_value_add: 'Sabes agora como melhorar o projeto',
+    reequip_study: 'Começaste a estudar a renovação do equipamento',
+    reequip_defer: 'Deixaste a renovação do equipamento para mais tarde',
+    bess_dev_flag: 'Começaste a preparar as baterias',
+    fa_bess_apply: 'Candidataste-te ao apoio a baterias',
+    fa_bess_wait: 'Vais preparar a candidatura ao apoio a baterias',
+    fa_bess_skip: 'Não te candidataste ao apoio a baterias',
+    apa_track_start: 'Começaste a avaliação ambiental',
+    bank_seed_seen: 'O banco vai acompanhar o projeto',
+    dgeg_obligations_seen: 'Viste as obrigações do TRC',
+    rede_calendar_seen: 'Viste o calendário da ligação à rede',
+    competitor_seen: 'Tomaste nota do rival',
+    dica_ack: 'Anotado',
+    capex_rede_flag: 'Aceitaste um custo de obras na rede',
+    'cash_at_risk_+1': 'Gastaste mais dinheiro de desenvolvimento',
+    find_buyers_started: 'Começaste a procurar comprador',
+    buyer_search_active: 'Procura de comprador em curso',
+    sale_pipeline_open: 'Procura de comprador em curso',
+    sale_pipeline_clear: 'Terminaste a procura de comprador',
+    sale_pipeline_watch: 'Vais acompanhar os compradores',
+    sale_full_exit: 'Vendeste o projeto todo',
+    sale_keep_seat: 'Vendeste a central e ficaste com a ligação',
+    sale_partial_park: 'Vendeste um parque',
+    mandate_slot_free: 'Tens lugar para ganhar outro lote',
+    asset_removed: 'O projeto saiu da tua lista',
+    car_burn_stop: 'Deixaste de gastar dinheiro de desenvolvimento neste projeto',
+    equity_capex_need_stop: 'Já não precisas de pôr capital próprio na obra deste projeto',
+    mw_reserved_by_buyer_up: 'A potência vendida continua a ocupar a tua ligação',
+    trc_mw_free_down: 'Tens menos potência livre na ligação',
+    grid_usage_rent_on: 'O comprador paga-te uma renda pelo uso da ligação',
+    hybrid_slice_sold: 'Vendeste o parque extra',
+    plant_capex_forgone: 'Já não pagas a construção da central',
+    offtake_profit_forgone: 'A receita da energia passa para o comprador',
+    block_oversubscribe: 'Não há potência livre para este plano',
+    reopen_tech_plan: 'Vais refazer o plano técnico',
+    hybrid_plan_cancel: 'Cancelaste o plano de ampliação',
+    'delay_hybrid_+1': 'A ampliação do projeto atrasou-se',
+    'buyer_patience_-1': 'O comprador ficou menos paciente',
+    'buyer_interest_-1': 'O comprador perdeu interesse',
+    sale_ack: 'Venda registada',
+    sale_mode_full_exit_available: 'Já podes vender o projeto todo',
+    line_ready: 'A ligação à rede está pronta'
   };
 
+  /** Plain-PT phrase for an effect code. Unknown codes → '' (never show the raw code). */
   function mailEffectLabelPt(ef) {
     const key = String(ef || '');
+    if (!key) return '';
+    const pack = window.__wattEventPack;
+    const fromPack = pack && pack.effect_labels ? pack.effect_labels[key] : null;
+    if (typeof fromPack === 'string' && fromPack.trim()) return fromPack.trim();
     if (MAIL_EFFECT_LABEL_PT[key]) return MAIL_EFFECT_LABEL_PT[key];
-    // Heuristic: foo_+1 / foo_-1
-    const m = key.match(/^(.*?)_([+-]\d+)$/);
-    if (m) return m[1].replace(/_/g, ' ') + ' ' + m[2];
-    return key.replace(/_/g, ' ');
+    try { console.info('[WattMail] effect sem rótulo PT (escondido):', key); } catch (_) {}
+    return '';
   }
 
+  /** Toast after a letter choice: the PT phrase of each effect (deduped, max 3), from effect-labels.pt.json.
+   *  No per-choice hardcoded text; unknown codes are hidden. Falls back to the button label. */
+  function cartasNovasPt(n) { n = n | 0; if (n === 0) return 'nenhuma carta nova'; return n + (n === 1 ? ' carta nova' : ' cartas novas'); }
+
   function toastForMailChoice(choice, effects) {
-    const id = choice && choice.id;
-    if (id === 'ask_car_s') return 'CAR · banda S — HUD e lotes actualizados';
-    if (id === 'ask_car_m') return 'CAR · banda M — HUD e lotes actualizados';
-    if (id === 'ask_car_l') return 'CAR · banda L — HUD e lotes actualizados';
-    if (id === 'delay') return 'Pedido de tempo — paciência dos investidores -1';
     const list = Array.isArray(effects) ? effects : [];
-    if (list.indexOf('car_band_s') !== -1) return 'CAR · banda S — HUD e lotes actualizados';
-    if (list.indexOf('car_band_m') !== -1) return 'CAR · banda M — HUD e lotes actualizados';
-    if (list.indexOf('car_band_l') !== -1) return 'CAR · banda L — HUD e lotes actualizados';
-    if (list.indexOf('investor_patience_-1') !== -1) return 'Investidores · paciência -1';
-    if (list.indexOf('investor_patience_-2') !== -1) return 'Investidores · paciência -2';
-    if (list.indexOf('car_request_sent') !== -1) return 'Pedido CAR enviado aos investidores';
-    const labels = list.map(mailEffectLabelPt).filter(Boolean);
-    if (labels.length) return labels[0] + (labels.length > 1 ? ' · +' + (labels.length - 1) : '');
+    const seen = {};
+    const labels = [];
+    list.forEach((ef) => {
+      const t = mailEffectLabelPt(ef);
+      if (!t || seen[t]) return;
+      seen[t] = true;
+      labels.push(t.replace(/[.\s]+$/, ''));
+    });
+    if (labels.length) return labels.slice(0, 3).join('. ') + '.';
     if (choice && choice.label) return choice.label;
     return null;
   }
@@ -8592,9 +9182,18 @@
     if (!Array.isArray(effects) || !effects.length) return { carBand: null, messages: [] };
     const messages = [];
     let carBand = null;
+    mailLoop.tags = mailLoop.tags || {};
     effects.forEach((ef) => {
       if (!ef) return;
       const key = String(ef);
+      // Clear tags: remove pipeline flags instead of incrementing
+      if (key === 'sale_pipeline_clear') {
+        mailLoop.tags.sale_pipeline_open = 0;
+        mailLoop.tags.buyer_search_active = 0;
+        mailLoop.tags.sale_pipeline_clear = (mailLoop.tags.sale_pipeline_clear || 0) + 1;
+        messages.push(mailEffectLabelPt(key));
+        return;
+      }
       mailLoop.tags[key] = (mailLoop.tags[key] || 0) + 1;
       if (key === 'car_band_s') carBand = 'S';
       else if (key === 'car_band_m') carBand = 'M';
@@ -8611,9 +9210,19 @@
     if ((mailLoop.tags.value_add_commit || mailLoop.tags.bess_dev_flag) && !mailLoop.tags.bess_dev_started) {
       mailLoop.tags.bess_dev_started = 1;
     }
+    // Keep sounding also sets buyer_search_active (already in effects); ensure pipeline open
+    if (effects.indexOf('sale_pipeline_open') !== -1 && !mailLoop.tags.buyer_search_active) {
+      mailLoop.tags.buyer_search_active = 1;
+    }
+    try { applyMwSaleEffects(effects, mailLoop.seId || assetRoomState.nodeId || 'ourique'); } catch (err) {
+      console.warn('[WattMail] mw sale effects', err);
+    }
     maybeRaisePhaseFromEffects(effects);
     try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
     try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+    try {
+      if (assetRoomState && assetRoomState.open && typeof renderAssetRoom === 'function') renderAssetRoom();
+    } catch (_) {}
     return { carBand: carBand, messages: messages };
   }
 
@@ -8667,9 +9276,9 @@
   function periodLabelText() {
     if (mailLoop && mailLoop.active && mailLoop.month >= 0) {
       const ph = phaseLabelPt(mailLoop.projectPhase || 'trc_won');
-      return 'M' + mailLoop.month + ' · ' + ph;
+      return 'Mês ' + mailLoop.month + ' · ' + ph;
     }
-    return state.year + ' · Q' + state.quarter;
+    return state.year + ' · T' + state.quarter;
   }
 
   /** Plan landing delivery without mutating mailState / deliveredIds / lastJokerMonth. */
@@ -8756,7 +9365,7 @@
       skeleton: c.skeleton,
       skin: c.skin,
       seSheet: seSheet,
-      opts: { id: c.id, when: 'M' + month + ' · ' + phaseLabelPt(mailLoop.projectPhase) }
+      opts: { id: c.id, when: 'Mês ' + month }
     }));
 
     let relevantCount = chosen.filter((c) => c.relevant).length;
@@ -8779,7 +9388,7 @@
             skeleton: jsk,
             skin: jskin,
             seSheet: seSheet,
-            opts: { id: jid, when: 'M' + month + ' · joker' }
+            opts: { id: jid, when: 'Mês ' + month + ' · oportunidade' }
           }));
           jokerIncluded = true;
           relevantCount += 1;
@@ -8892,7 +9501,7 @@
       mailState.items = newLetters.concat(mailState.items);
       renderInboxBadge();
       if (!opts.silentToast) {
-        showToast('Correio · ' + newLetters.length + ' carta(s) · M' + month + ' · ' + phaseLabelPt(mailLoop.projectPhase));
+        showToast('Correio: ' + cartasNovasPt(newLetters.length) + ' · mês ' + month);
       }
     }
     scheduleSave('mail-deliver-M' + month);
@@ -9072,8 +9681,8 @@
     const n = unreadMailCount();
     if (sub) {
       sub.textContent = n
-        ? (n + ' por ler · ' + mailState.items.length + ' carta(s)')
-        : (mailState.items.length ? 'Tudo lido · ' + mailState.items.length + ' carta(s)' : 'Sem cartas');
+        ? (n + ' por ler · ' + mailState.items.length + (mailState.items.length === 1 ? ' carta' : ' cartas'))
+        : (mailState.items.length ? 'Tudo lido · ' + mailState.items.length + (mailState.items.length === 1 ? ' carta' : ' cartas') : 'Sem cartas');
     }
 
     if (mailState.view === 'detail' && mailState.activeId) {
@@ -9082,12 +9691,19 @@
         mailState.view = 'list';
       } else {
         const typeLabel = MAIL_TYPE_LABEL[letter.type] || letter.type;
-        const choices = Array.isArray(letter.choices) ? letter.choices : [];
+        const choices = (typeof filterLetterChoices === 'function')
+          ? filterLetterChoices(letter)
+          : (Array.isArray(letter.choices) ? letter.choices : []);
         let actionsHtml = '';
+        let hasHints = false;
         if (choices.length) {
           actionsHtml = choices.map((c, i) => {
             const cls = i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary';
-            return '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(c.id) + '" data-mail-letter="' + escapeHtml(letter.id) + '">' + escapeHtml(c.label) + '</button>';
+            const btn = '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(c.id) + '" data-mail-letter="' + escapeHtml(letter.id) + '">' + escapeHtml(c.label) + '</button>';
+            const hint = choiceHintFor(letter, c);
+            if (!hint) return btn;
+            hasHints = true;
+            return '<div class="mail-choice">' + btn + '<p class="mail-choice-hint">' + escapeHtml(hint) + '</p></div>';
           }).join('');
         } else if (letter.cta) {
           actionsHtml =
@@ -9097,13 +9713,13 @@
         body.innerHTML =
           '<div class="mail-detail">' +
             '<div class="mail-detail-meta">' +
-              '<span class="mail-type-chip ' + letter.type + '">' + escapeHtml(typeLabel) + '</span>' +
+              '<span class="mail-type-chip ' + letter.type + '"' + (MAIL_TYPE_TITLE[letter.type] ? ' title="' + escapeHtml(MAIL_TYPE_TITLE[letter.type]) + '"' : '') + '>' + escapeHtml(typeLabel) + '</span>' +
               '<span class="mail-row-time">' + escapeHtml(letter.when) + '</span>' +
             '</div>' +
             '<div class="mail-detail-subject">' + escapeHtml(letter.subject) + '</div>' +
             '<div class="mail-detail-from">De <strong>' + escapeHtml(letter.sender) + '</strong></div>' +
             '<div class="mail-detail-body">' + escapeHtml(letter.body) + '</div>' +
-            (actionsHtml ? '<div class="mail-detail-actions">' + actionsHtml + '</div>' : '') +
+            (actionsHtml ? '<div class="mail-detail-actions' + (hasHints ? ' has-hints' : '') + '">' + actionsHtml + '</div>' : '') +
           '</div>';
         return;
       }
@@ -9120,7 +9736,7 @@
       return (
         '<button type="button" class="mail-row' + (m.read ? '' : ' unread') + '" data-mail-id="' + m.id + '">' +
           '<div class="mail-row-top">' +
-            '<span class="mail-type-chip ' + m.type + '">' + escapeHtml(typeLabel) + '</span>' +
+            '<span class="mail-type-chip ' + m.type + '"' + (MAIL_TYPE_TITLE[m.type] ? ' title="' + escapeHtml(MAIL_TYPE_TITLE[m.type]) + '"' : '') + '>' + escapeHtml(typeLabel) + '</span>' +
             '<span class="mail-row-time">' + escapeHtml(m.when) + '</span>' +
           '</div>' +
           '<div class="mail-row-subject">' + escapeHtml(m.subject) + '</div>' +
@@ -9128,6 +9744,19 @@
         '</button>'
       );
     }).join('');
+  }
+
+  /** choice.hint (optional, from skeleton). Older saved letters: look it up in the loaded pack. */
+  function choiceHintFor(letter, c) {
+    if (c && typeof c.hint === 'string' && c.hint.trim()) return c.hint.trim();
+    try {
+      const pack = window.__wattEventPack;
+      const skId = (letter && (letter.skeletonId || String(letter.id || '').split(':')[0])) || '';
+      const sk = pack && pack.skeletons ? pack.skeletons.find((x) => x.id === skId) : null;
+      const src = sk && Array.isArray(sk.choices) ? sk.choices.find((x) => x.id === (c && c.id)) : null;
+      if (src && typeof src.hint === 'string' && src.hint.trim()) return src.hint.trim();
+    } catch (_) {}
+    return '';
   }
 
   function escapeHtml(s) {
@@ -9143,7 +9772,7 @@
       {
         id: 'mail-camara-ourique',
         type: 'camara',
-        subject: 'Pedido de esclarecimentos · reunião sobre o TRC Ourique',
+        subject: 'Pedido de esclarecimentos: reunião sobre o TRC de Ourique',
         sender: 'Câmara Municipal de Ourique',
         when: 'Set · 09:12',
         read: false,
@@ -9153,32 +9782,32 @@
       {
         id: 'mail-consultor-estudos',
         type: 'consultor',
-        subject: 'Primeiros estudos de recurso · Ourique',
-        sender: 'Consultor · Watt Indeferido',
+        subject: 'Primeiros estudos de sol em Ourique',
+        sender: 'Consultor',
         when: 'Set · 08:40',
         read: false,
-        cta: 'Ler dossier',
-        body: 'Bom dia.\n\nJá temos um primeiro pacote de estudos de recurso solar e notas de curtailment para a SE Ourique. Nada de números de economia finais — só o enquadramento técnico para abrires o dossier do TRC.\n\nQuando quiseres, abre o dossier na consola e cruzamos com a tensão da Câmara.'
+        cta: 'Ler a ficha do projeto',
+        body: 'Bom dia.\n\nJá temos os primeiros estudos de sol e de cortes de produção para a SE Ourique. Ainda não há números finais: é só o enquadramento técnico para abrires a ficha do projeto.\n\nQuando quiseres, abre a ficha e vemos isto com a posição da Câmara.'
       },
       {
-        id: 'mail-dica-sangra',
+        id: 'mail-dica-custo',
         type: 'dica',
-        subject: 'O teu TRC sangra até teres geração ou BESS',
-        sender: 'Coach · Dica',
+        subject: 'O teu TRC custa dinheiro até a central produzir',
+        sender: 'Dica',
         when: 'Set · 08:05',
         read: false,
         cta: null,
-        body: 'Lembra-te: um TRC adjudicado sem capacidade a entrar em operação continua a sangrar caixa (PIP, bonding, prazos).\n\nPrioridade: desbloquear licenciamento, meter geração (ou BESS) a trabalhar, e só depois pensar em farm-down ou novos lotes.'
+        body: 'Lembra-te: um TRC sem central a produzir continua a custar dinheiro (PIP, garantias bancárias, prazos).\n\nPrimeiro avança com as licenças e põe a central (ou as baterias) a produzir. Só depois pensa em vender parte do projeto ou em novos lotes.'
       },
       {
         id: 'mail-banco-bonding',
         type: 'banco',
-        subject: 'Lembrete · capacidade de bonding sob pressão',
-        sender: 'Banco · Relação IPP',
+        subject: 'Lembrete: garantias bancárias apertadas',
+        sender: 'Banco',
         when: 'Ago · 17:20',
         read: true,
         cta: null,
-        body: 'Nota de acompanhamento: com o TRC Ourique em carteira, a linha de bonding fica mais apertada até haver geração ou garantias reforçadas.\n\nIsto é um lembrete mock — sem alteração automática aos KPIs da consola.'
+        body: 'Com o TRC de Ourique, tens menos garantias bancárias disponíveis até a central produzir ou até reforçares as garantias.'
       }
     ];
   }
@@ -9445,7 +10074,7 @@
           const toastMsg = (typeof toastForMailChoice === 'function')
             ? toastForMailChoice(choice, effectList)
             : null;
-          showToast(toastMsg || ('Escolha · ' + (choiceId || 'ok')));
+          showToast(toastMsg || 'Escolha registada');
           renderInboxBody();
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
@@ -9453,7 +10082,7 @@
         }
         if (e.target.closest('[data-mail-ignore]')) {
           closeInbox();
-          showToast('Ignorado por agora · carta fica no correio');
+          showToast('Ignoraste por agora. A carta fica no Correio.');
           return;
         }
         const cta = e.target.closest('[data-mail-cta]');
@@ -9474,7 +10103,7 @@
           const toastMsg = (typeof toastForMailChoice === 'function')
             ? toastForMailChoice(choice, effectList)
             : null;
-          showToast(toastMsg || (letter && letter.cta) || 'Acção aplicada');
+          showToast(toastMsg || (letter && letter.cta) || 'Ação aplicada');
           renderInboxBody();
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
@@ -9486,7 +10115,7 @@
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
       if (!mailState.open) return;
-      e.stopPropagation();
+      e.stopImmediatePropagation(); // one Escape = one step (don't also close the sala underneath)
       inboxHeaderBack();
     }, true);
 
@@ -9538,6 +10167,11 @@
       nearestDeadline: nearestDeadline,
       playStep: playStep,
       playPacing: playPacing,
+      findBuyers: startFindBuyersFlow,
+      injectOffer: injectBuyerOfferForQa,
+      deliverLetter: deliverComposedLetter,
+      freeMw: freeMwPct,
+      saleGate: saleModeGate,
       state: mailState,
       loop: mailLoop
     };
@@ -9832,7 +10466,7 @@
   }
 
   function syncPeriodChrome() {
-    const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · Q' + state.quarter);
+    const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · T' + state.quarter);
     const pl = document.getElementById('periodLabel');
     if (pl) pl.textContent = label;
     const fmp = document.getElementById('footerMockPeriod');
@@ -9856,7 +10490,7 @@
     if (sub && state.auctionWon && auctionState.wonLots && auctionState.wonLots.length) {
       const lastId = auctionState.wonLots[auctionState.wonLots.length - 1];
       const n = nodes.find((x) => x.id === lastId);
-      sub.textContent = 'Portfólio · ' + auctionState.wonLots.length + ' TRC' + (n ? (' · ' + n.name) : '');
+      sub.textContent = auctionState.wonLots.length + ' TRC' + (n ? (' · ' + n.name) : '');
     }
   }
 
@@ -9915,9 +10549,9 @@
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1500);
-      showToast('Save exportado');
+      showToast('Jogo exportado');
     } catch (err) {
-      showToast('Falha ao exportar save');
+      showToast('Não foi possível exportar o jogo');
     }
   }
 
@@ -9928,21 +10562,21 @@
       try {
         const blob = JSON.parse(String(reader.result || ''));
         if (!blob || blob.v !== 1 || !blob.state) {
-          showToast('Save inválido (exige v: 1)');
+          showToast('Ficheiro inválido: não é um jogo gravado');
           return;
         }
         localStorage.setItem(SAVE_KEY, JSON.stringify(blob));
         if (blob.flags && blob.flags.onboardingDone) {
           try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
         }
-        showToast('Save importado · a recarregar…');
+        showToast('Jogo importado · a recarregar…');
         setTimeout(() => {
           // Drop override queries so cold load hydrates the imported save
           const url = location.pathname + location.hash;
           location.replace(url || location.href.split('?')[0]);
         }, 350);
       } catch (_) {
-        showToast('Ficheiro JSON inválido');
+        showToast('Ficheiro inválido');
       }
     };
     reader.onerror = () => showToast('Não foi possível ler o ficheiro');
@@ -10080,10 +10714,10 @@
 
 <!-- ═══ MOBILE FOOTER MOCK (?footer=1) ═══ -->
 <div class="mobile-tabbar-hint" id="mobileTabbarHint" hidden>Navegação móvel</div>
-<nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navegação móvel (mock)" hidden>
-  <button type="button" class="mobile-tabbar-btn" id="tabHome" title="Home / Consola" aria-label="Home / Consola">
+<nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navegação" hidden>
+  <button type="button" class="mobile-tabbar-btn" id="tabHome" title="Início" aria-label="Início">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
-    <span>Home</span>
+    <span>Início</span>
   </button>
   <button type="button" class="mobile-tabbar-btn" id="tabInbox" title="Correio" aria-label="Correio">
     <span class="inbox-badge pulse tab-badge" id="tabInboxBadge" hidden>0</span>

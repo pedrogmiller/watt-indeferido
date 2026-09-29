@@ -2,7 +2,7 @@
   "skeleton_id": "mail-consultor-m0",
   "skin_id": "default",
   "from_name": "Consultor de desenvolvimento",
-  "subject": "Ganhaste o ponto — agora desenvolve",
-  "body": "O TRC na {{se_name}} obriga-te a desenvolver o parque solar ({{mwp}} MWp). O ponto sozinho não se rentabiliza com solar puro: o caminho cedo é hibridizar e sobreequipar (eólico + BESS). Reequipamento (merchant/PPA) fica para mais tarde.",
+  "subject": "Ganhaste o TRC: agora tens de desenvolver o projeto",
+  "body": "O TRC (título de reserva de capacidade) é o direito de ligares uma central à rede na {{se_name}}, a subestação onde ganhaste o lote. Com ele, tens de desenvolver um parque solar de {{mwp}} MWp (MWp é a potência máxima dos painéis).\n\nSó com painéis solares, este projeto não dá lucro. Para dar, tens duas formas de o melhorar, desde já:\n• sobreequipar: instalar mais painéis do que a potência da ligação, para produzir durante mais horas;\n• hibridizar: juntar um parque eólico ou baterias no mesmo ponto de ligação. As baterias guardam energia para a vender mais tarde.\n\nMais à frente, também poderás renovar o equipamento. Falamos disso quando chegar a altura. Os dados do projeto estão na ficha do projeto.",
   "params": {}
 }

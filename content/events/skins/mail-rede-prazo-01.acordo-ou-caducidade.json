@@ -1,8 +1,8 @@
 {
   "skeleton_id": "mail-rede-prazo-01",
   "skin_id": "acordo-ou-caducidade",
-  "from_name": "REN / E-REDES — prazos",
-  "subject": "Prazo de ligação e reforço",
-  "body": "Ou avançam com acordo de reforço, ou o risco de caducidade sobe. Adiar é possível — caro em calendário. Arriscar o prazo é decisão vossa.",
+  "from_name": "REN — prazos de ligação",
+  "subject": "Prazo da ligação e reforço da rede",
+  "body": "Para ligar a tua central, a rede precisa de obras de reforço. O acordo de reforço tem um custo para o projeto, mas baixa o risco de perderes o TRC por falhar o prazo. Podes pedir adiamento, mas perdes tempo. Também podes arriscar o prazo: a decisão é tua.",
   "params": {}
 }

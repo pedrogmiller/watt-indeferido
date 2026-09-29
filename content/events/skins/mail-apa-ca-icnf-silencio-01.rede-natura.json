@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-apa-ca-icnf-silencio-01",
+  "skin_id": "rede-natura",
+  "draft": true,
+  "when": {
+    "rede_natura": true
+  },
+  "from_name": "APA — Comissão de Avaliação",
+  "subject": "O ICNF não respondeu a tempo: a avaliação atrasa",
+  "body": "Na Comissão de Avaliação, o ICNF (o instituto do Estado que protege a natureza e as florestas) não deu parecer dentro do prazo. Como o projeto fica numa zona da Rede Natura 2000, uma rede europeia de áreas protegidas para animais e plantas, a lei exige uma resposta expressa do ICNF. Sem ela, a Comissão não pode fechar o parecer, e a avaliação ambiental atrasa.",
+  "params": {}
+}

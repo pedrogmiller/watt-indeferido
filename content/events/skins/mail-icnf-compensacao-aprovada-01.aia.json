@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-icnf-compensacao-aprovada-01",
+  "skin_id": "aia",
+  "draft": true,
+  "when": {
+    "route": "aia"
+  },
+  "from_name": "APA — Comissão de Avaliação",
+  "from_type_override": "APA",
+  "subject": "O ICNF aceitou o teu plano de compensação",
+  "body": "Na Comissão de Avaliação, o ICNF aceitou o teu plano de compensação. Tens de plantar as árvores no terreno combinado e cuidar delas durante vários anos. Isto vai ficar como condição na DIA.",
+  "params": {}
+}

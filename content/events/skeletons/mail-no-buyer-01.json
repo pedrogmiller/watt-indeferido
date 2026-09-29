@@ -1,0 +1,38 @@
+{
+  "id": "mail-no-buyer-01",
+  "phase": "mid_dev",
+  "trigger": {
+    "after": "buyer_search_active",
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra",
+      "cod"
+    ],
+    "outcome": "no_serious_offer"
+  },
+  "priority": "normal",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "keep_sounding",
+      "label": "Continuar a procurar",
+      "effects": [
+        "sale_pipeline_open",
+        "buyer_search_active"
+      ]
+    },
+    {
+      "id": "stop_search",
+      "label": "Parar por agora",
+      "effects": [
+        "sale_pipeline_clear"
+      ]
+    }
+  ],
+  "notes_for_economy": "Fases cedo e offtake barato → alta chance desta carta vs offer. Sem €.",
+  "notes_for_ui": "Toast neutro; não fingir que houve oferta."
+}

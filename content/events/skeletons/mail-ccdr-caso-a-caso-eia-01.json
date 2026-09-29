@@ -1,0 +1,53 @@
+{
+  "id": "mail-ccdr-caso-a-caso-eia-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 — proposta GM (routing ambiental calculado); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "caso_a_caso_request",
+    "when_phase": [
+      "land",
+      "pip"
+    ],
+    "requires": [
+      "caso_a_caso_request"
+    ],
+    "or_deadline": "caso_a_caso_decision"
+  },
+  "priority": "high",
+  "from_type": "CCDR",
+  "deadline_ref": "caso_a_caso_decision",
+  "choices": [
+    {
+      "id": "prepare_eia",
+      "label": "Preparar EIA (via A)",
+      "effects": [
+        "aia_sujeito",
+        "apa_track_start",
+        "env_route_a"
+      ]
+    },
+    {
+      "id": "redesign",
+      "label": "Redesenhar fora da área sensível",
+      "effects": [
+        "caso_a_caso_redesign",
+        "reopen_tech_plan",
+        "delay_env_+1"
+      ]
+    },
+    {
+      "id": "contest",
+      "label": "Contestar a decisão",
+      "effects": [
+        "aia_sujeito",
+        "caso_a_caso_contest",
+        "delay_env_+1",
+        "risk_apa_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "delay_env_+1 = meses. Redesenhar = perda de área/MW (NPV) — PEDIR_ECONOMY. Contestar: odds baixas.",
+  "notes_for_ui": "Autoridade de AIA exige EIA. redesign → UI tira a sobreposição com área sensível; motor recalcula env_path (pode sair nao_sujeito). apa_track_start já faz PHASE_BUMP → aia. mutex env_screening. CTA pesado."
+}

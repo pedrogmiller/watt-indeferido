@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-icnf-consulta-01",
+  "skin_id": "ourique-util",
+  "draft": true,
+  "when": {
+    "outcome": "util"
+  },
+  "from_name": "ICNF — Instituto da Conservação da Natureza e das Florestas",
+  "subject": "O ICNF deu uma indicação",
+  "body": "Somos o ICNF, o instituto do Estado que protege a natureza e as florestas. Sem um processo aberto na Câmara, não podemos dar uma posição oficial. Mas, pelo que vemos no mapa, a parte do terreno mais perto da subestação tem poucas árvores. A parte mais afastada é montado denso, com quercíneas (sobreiros e azinheiras) protegidas por lei. Isto não é uma garantia.",
+  "params": {}
+}

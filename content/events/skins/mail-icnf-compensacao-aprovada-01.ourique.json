@@ -1,0 +1,11 @@
+{
+  "skeleton_id": "mail-icnf-compensacao-aprovada-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Serviços de Urbanismo — {{camara_nome}}",
+  "subject": "O ICNF aceitou o teu plano de compensação",
+  "body": "O ICNF aceitou o teu plano de compensação e informou-nos. Tens de plantar as árvores no terreno combinado e cuidar delas durante vários anos. Isto fica como condição no PIP e na licença do projeto.",
+  "params": {},
+  "from_type_override": "CAMARA"
+}

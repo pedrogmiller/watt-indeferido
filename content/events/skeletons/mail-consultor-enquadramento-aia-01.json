@@ -1,0 +1,104 @@
+{
+  "id": "mail-consultor-enquadramento-aia-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 — proposta GM (routing ambiental calculado); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "land_option_open|risk_camara_-1",
+    "when_phase": [
+      "land",
+      "pip"
+    ],
+    "requires_any": [
+      "land_option_open",
+      "dd_started"
+    ],
+    "month_offset": 3
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "choices": [
+    {
+      "id": "go_aia",
+      "label": "Preparar EIA já",
+      "effects": [
+        "apa_track_start",
+        "env_route_a"
+      ],
+      "when": {
+        "requires": [
+          "env_path_aia_obrigatoria"
+        ]
+      }
+    },
+    {
+      "id": "go_pip",
+      "label": "Seguir para PIP e LP",
+      "effects": [
+        "nao_sujeicao",
+        "env_route_b"
+      ],
+      "when": {
+        "requires": [
+          "env_path_nao_sujeito"
+        ]
+      }
+    },
+    {
+      "id": "ask_screening",
+      "label": "Pedir apreciação prévia à CCDR",
+      "effects": [
+        "caso_a_caso_request",
+        "cash_at_risk_+1"
+      ],
+      "when": {
+        "requires": [
+          "env_path_caso_a_caso"
+        ]
+      }
+    },
+    {
+      "id": "go_aas",
+      "label": "Submeter Avaliação Ambiental Simplificada",
+      "effects": [
+        "aas_submitted",
+        "env_mitigation_flag"
+      ],
+      "when": {
+        "requires": [
+          "env_path_aac_simplificada"
+        ]
+      }
+    },
+    {
+      "id": "trim",
+      "label": "Encolher abaixo do limiar",
+      "effects": [
+        "design_trim_threshold",
+        "reopen_tech_plan"
+      ],
+      "when": {
+        "requires": [
+          "env_trim_possible"
+        ]
+      }
+    },
+    {
+      "id": "bury_line",
+      "label": "Enterrar ou encurtar a linha",
+      "effects": [
+        "underground_cable",
+        "capex_rede_flag",
+        "reopen_tech_plan"
+      ],
+      "when": {
+        "requires": [
+          "env_trigger_line"
+        ]
+      }
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "cash_at_risk_+1 (apreciação prévia) e capex_rede_flag (cabo enterrado) — PEDIR_ECONOMY. design_trim_threshold = menos MVA/ha/aerogeradores → NPV. Sem €.",
+  "notes_for_ui": "A via NÃO é escolha do jogador: o motor calcula env_path (lp-cod-rules.draft.json → env_routing) e escreve a flag env_path_<via> em mailLoop.tags antes de entregar. A carta relata a via e oferece alavancas de desenho; choices filtradas por when (normalmente 1–3 visíveis). Skin por env_path. trim/bury_line → recalcula env_path e, se mudar, a carta volta (rearm_on_effects: reopen_tech_plan)."
+}

@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-fyi-processo-01",
+  "skin_id": "obra-subestacao",
+  "draft": true,
+  "when": {},
+  "from_name": "Direcção de obra",
+  "subject": "Obra — subestação elevadora montada",
+  "body": "Transformador elevador instalado e cablagem de média tensão quase fechada. Falta a ligação ao painel da SE Ourique. Só informativo.",
+  "params": {
+    "filler_for_phase": "obra",
+    "marco": "subestacao"
+  }
+}

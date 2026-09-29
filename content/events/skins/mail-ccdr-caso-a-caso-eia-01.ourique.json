@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-ccdr-caso-a-caso-eia-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "CCDR Alentejo — Autoridade de AIA",
+  "subject": "Apreciação prévia: sujeito a AIA",
+  "body": "A sobreposição com a área sensível e os valores ecológicos presentes justificam avaliação completa. O projecto fica sujeito a AIA: estudo de impacte ambiental, consulta pública e DIA. Pode redesenhar-se para sair da área sensível, ou contestar — contestar raramente vinga.",
+  "params": {
+    "base_legal": "RJAIA alt. DL 11/2023"
+  }
+}

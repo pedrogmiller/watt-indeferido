@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-fyi-processo-01",
+  "skin_id": "lp-em-apreciacao",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de licenciamento",
+  "subject": "LP em apreciação na DGEG",
+  "body": "Sem novidades da DGEG: o pedido está em apreciação e os pareceres a circular. Só informativo — o prazo de decisão está no HUD.",
+  "params": {
+    "filler_for_phase": "aia"
+  }
+}

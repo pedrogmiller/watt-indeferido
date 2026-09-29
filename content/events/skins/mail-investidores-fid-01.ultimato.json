@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-investidores-fid-01",
+  "skin_id": "ultimato",
+  "draft": true,
+  "when": {},
+  "from_name": "Comité de investidores",
+  "subject": "FID — a janela está a fechar",
+  "body": "Passou a janela que combinámos para a FID. Cada mês sem decisão é Cash at Risk a queimar num activo já licenciado. Ou aprovas com o que tens, ou trazes um plano de venda. Mais um adiamento e revemos o mandato.",
+  "params": {
+    "tom": "pressao"
+  }
+}

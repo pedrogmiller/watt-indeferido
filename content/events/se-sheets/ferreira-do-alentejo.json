@@ -8,5 +8,71 @@
     "ambiente": "leve",
     "offtake": "normal"
   },
-  "lot_blurb": "Rede congestionada · 100 MWp · em disputa"
+  "lot_blurb": "Rede congestionada · 180 MWp · em disputa",
+  "env_draft": {
+    "status": "DRAFT 2026-09-29 — HIPÓTESE / PEDIR_PEDRO (lote cinzento)",
+    "tech": {
+      "value": "solar"
+    },
+    "installed_mwp": {
+      "value": 180,
+      "band": "160–200",
+      "source": "opção A euro-fields-console.md §3 (banda M); HIPÓTESE"
+    },
+    "connection_mva": {
+      "value": null,
+      "band": "~130–180 HIPÓTESE (DC/AC ~1,0–1,4)",
+      "source": "PEDIR_PEDRO",
+      "engine_default": 150
+    },
+    "area_ha": {
+      "value": null,
+      "band": "~180–290 (HIPÓTESE 1,0–1,6 ha/MWp)",
+      "source": "PEDIR_PEDRO",
+      "engine_default": "band_low"
+    },
+    "n_turbines": {
+      "value": 0
+    },
+    "line_overhead": {
+      "value": null,
+      "engine_default": true
+    },
+    "line_kv": {
+      "value": null,
+      "engine_default": 150
+    },
+    "line_km": {
+      "value": null,
+      "engine_default": 5
+    },
+    "sensitive_area": {
+      "value": null,
+      "engine_default": false
+    },
+    "area_aceleracao": {
+      "value": false
+    },
+    "solar_on_structure": {
+      "value": false
+    },
+    "resolves_to": {
+      "env_path": "aia_obrigatoria",
+      "why": "area_ha ≥ 100 (HIPÓTESE); linha 150 kV ~5 km não dispara"
+    },
+    "quercineas_densidade": {
+      "value": "baixa",
+      "source": "HIPÓTESE — planície de regadio (Alqueva) e olival; montado residual. PEDIR_PEDRO."
+    },
+    "rede_natura": {
+      "value": null,
+      "engine_default": false,
+      "source": "PEDIR_PEDRO"
+    },
+    "area_protegida": {
+      "value": null,
+      "engine_default": false,
+      "source": "PEDIR_PEDRO"
+    }
+  }
 }

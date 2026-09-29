@@ -1,0 +1,11 @@
+{
+  "skeleton_id": "mail-icnf-compensacao-exigente-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Serviços de Urbanismo — {{camara_nome}}",
+  "subject": "O ICNF quer uma compensação maior",
+  "body": "O ICNF informou-nos de que o teu plano não chega. Pede uma área de plantação maior e uma garantia bancária: o banco compromete-se a pagar se a plantação não for feita. Podes aceitar, ou mudar o desenho para cortar menos árvores.",
+  "params": {},
+  "from_type_override": "CAMARA"
+}

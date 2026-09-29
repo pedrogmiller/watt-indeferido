@@ -1,0 +1,56 @@
+{
+  "id": "mail-camara-pip-indeferido-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM (Via B não-sujeição + PIP); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "pip_request_submitted",
+    "when_phase": [
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "pip_request_submitted",
+      "nao_sujeicao"
+    ],
+    "or_deadline": "pip_decision",
+    "month_offset": 8
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "deadline_ref": "pip_decision",
+  "choices": [
+    {
+      "id": "reformulate",
+      "label": "Reformular e voltar a pedir",
+      "effects": [
+        "pip_indeferido",
+        "pip_reformulate",
+        "delay_pip_+2"
+      ]
+    },
+    {
+      "id": "hearing",
+      "label": "Reunir com o executivo e pedir reapreciação",
+      "effects": [
+        "pip_indeferido",
+        "pip_hearing",
+        "risk_camara_-1",
+        "delay_pip_+1"
+      ]
+    },
+    {
+      "id": "appeal",
+      "label": "Recorrer",
+      "effects": [
+        "pip_indeferido",
+        "pip_appeal",
+        "risk_camara_+1",
+        "delay_pip_+2"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "delay_pip_* = meses; recurso = longo (PEDIR_ECONOMY). Sem €.",
+  "notes_for_ui": "mutex pip_outcome. Odds sobem com risk_camara_+*, risk_community_+1 e se-sheet camara=hostil (Ourique). Sem PIP não há LP na via B; prazos do TRC continuam. CTA pesado (Câmara)."
+}

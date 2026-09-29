@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-rede-ligacao-atraso-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "REN — Ligações à RNT",
+  "subject": "Reforço da SE Ourique atrasado",
+  "body": "O painel novo e o reforço do transformador derrapam: licenciamento da linha e entrega do transformador. A central pode ficar pronta antes da rede. Podes exigir calendário formal, pedir energização faseada com injecção limitada, ou aceitar a nova data. Atraso do operador conta a teu favor nos prazos da DGEG.",
+  "params": {
+    "base_legal": "DL 15/2022 art. 14.º/3 b)",
+    "operator": "REN"
+  }
+}

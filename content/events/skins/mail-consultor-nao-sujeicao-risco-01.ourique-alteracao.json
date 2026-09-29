@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-consultor-nao-sujeicao-risco-01",
+  "skin_id": "ourique-alteracao",
+  "draft": true,
+  "when": {},
+  "from_name": "Consultor de licenciamento ambiental",
+  "subject": "Ampliação acima do limite da não sujeição",
+  "body": "A ampliação da central licenciada de Ourique passa os 20% de potência ou de área, pede linha aérea nova ou toca área sensível. Deixa de caber na isenção das alterações (as três condições têm de se cumprir juntas) e cai na via calculada para o novo total — em Ourique, AIA. Encolher e enterrar mantém a via curta; manter o desenho dá mais MW, com licenciamento longo.",
+  "params": {
+    "scope": "alteracao",
+    "base_legal": "RJAIA alt. DL 11/2023"
+  }
+}

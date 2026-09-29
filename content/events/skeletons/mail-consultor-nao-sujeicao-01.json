@@ -1,0 +1,49 @@
+{
+  "id": "mail-consultor-nao-sujeicao-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 — proposta GM (routing ambiental calculado); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "alteracao_nao_sujeicao_eligible",
+    "when_phase": [
+      "land",
+      "pip",
+      "licenca_producao",
+      "obra",
+      "cod"
+    ],
+    "requires": [
+      "alteracao_nao_sujeicao_eligible"
+    ]
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "choices": [
+    {
+      "id": "declare",
+      "label": "Declarar não sujeição e pedir PIP",
+      "effects": [
+        "nao_sujeicao_declared",
+        "env_route_b"
+      ]
+    },
+    {
+      "id": "oversize",
+      "label": "Ampliar mesmo assim (perde a isenção)",
+      "effects": [
+        "ampliacao_gt_20pct",
+        "aia_nao_sujeicao_lost"
+      ]
+    },
+    {
+      "id": "defer",
+      "label": "Adiar a ampliação",
+      "effects": [
+        "value_add_defer"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Sem €. aia_nao_sujeicao_lost → caso a caso ou AIA (tempo + CAR — PEDIR_ECONOMY).",
+  "notes_for_ui": "Isenção de alterações/reequipamento pós-LP da base (RJAIA alt. DL 11/2023: 3 condições cumulativas; DL 99/2024: reequipamento). Para projecto NOVO a via vem de env_path (enquadramento), não desta carta; skin estrutura = lote novo em estrutura artificial com env_path=nao_sujeito (alternativa ao enquadramento; usar só uma). O motor mapeia nao_sujeicao_declared → nao_sujeicao_alteracao (pós-LP) para não mexer no gate de obra do projecto base."
+}

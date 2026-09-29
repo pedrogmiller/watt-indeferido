@@ -1,8 +1,8 @@
 {
   "skeleton_id": "mail-advogado-dd-01",
   "skin_id": "default",
-  "from_name": "Advogado de due diligence",
+  "from_name": "Advogado — verificação do terreno",
   "subject": "Antes de assinares o terreno",
-  "body": "Registo, servidões, ónus e contraparte. Sem DD, o sinal é fé — e os investidores não gostam de fé.",
+  "body": "Antes de pagares a entrada, posso fazer a verificação jurídica do terreno: confirmo no registo quem é o dono, se há direitos de passagem e se há dívidas ou encargos sobre o terreno. Sem esta verificação, pagas a entrada sem saber se o terreno tem problemas. A verificação gasta algum dinheiro de desenvolvimento.",
   "params": {}
 }

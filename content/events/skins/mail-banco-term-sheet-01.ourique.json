@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-banco-term-sheet-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Banco — project finance",
+  "subject": "Term sheet em cima da mesa",
+  "body": "Com LP na mão, o comité de crédito avança. Dívida sénior sobre a parte com tarifa do TRC; a fatia merchant do híbrido entra com desconto. Gearing na banda base — pedir mais obriga a nova análise e empurra o fecho. Sem term sheet assinado não há FID.",
+  "params": {
+    "gearing_band": "base",
+    "nota": "PEDIR_ECONOMY para %"
+  }
+}

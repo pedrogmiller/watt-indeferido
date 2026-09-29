@@ -1,0 +1,48 @@
+{
+  "id": "mail-dgeg-lp-condicionada-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "lp_request_submitted",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "lp_request_submitted",
+      "env_gate_ok"
+    ],
+    "requires_any": [
+      "grid_conditions_accepted",
+      "grid_phasing_request"
+    ],
+    "month_offset": 14
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "choices": [
+    {
+      "id": "accept",
+      "label": "Aceitar condições",
+      "effects": [
+        "lp_granted",
+        "lp_conditions",
+        "injection_cap_restricted",
+        "fid_track_open"
+      ]
+    },
+    {
+      "id": "amend",
+      "label": "Pedir alteração da LP",
+      "effects": [
+        "lp_granted",
+        "lp_conditions",
+        "lp_alteration_request",
+        "delay_fid_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "injection_cap_restricted = injecção limitada até reforço (P50/NPV, banco endurece) — PEDIR_ECONOMY. lp_alteration_request remove a restrição mais tarde (art. 35.º).",
+  "notes_for_ui": "Mesmo gate e mutex de concedida. PHASE_BUMP igual (lp_granted). Cria le_deadline e fid_window. Via A ou B: gate env_gate_ok = dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado)."
+}

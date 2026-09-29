@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-apa-ca-quercineas-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "icnf_binding": true
+  },
+  "from_name": "APA — Comissão de Avaliação",
+  "subject": "Avaliação ambiental: a Comissão de Avaliação levanta a questão dos sobreiros",
+  "body": "O estudo de impacte ambiental do teu projeto foi aceite. Para o avaliar, a APA formou uma Comissão de Avaliação: um grupo de entidades do Estado, como o ICNF, a DGEG, a Câmara e o Turismo, que analisa o projeto e dá um único parecer. Esse parecer serve de base à DIA (declaração de impacte ambiental), a decisão final da APA sobre o ambiente.\n\nDentro da Comissão, o ICNF, o instituto do Estado que protege a natureza e as florestas, avisou que o projeto obriga a cortar quercíneas: sobreiros e azinheiras, árvores do montado protegidas por lei. Como é preciso cortar árvores protegidas, se o ICNF disser que não, a DIA é desfavorável e o projeto não avança.\n\nA Comissão pede-te uma resposta antes de fechar o parecer. Isto pode aumentar o dinheiro de desenvolvimento de que precisas.",
+  "params": {
+    "base_legal": "RJAIA (DL 151-B/2013); DL 169/2001; DL 11/2023",
+    "icnf_binding": "corte de quercíneas"
+  }
+}

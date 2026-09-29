@@ -8,5 +8,90 @@
     "ambiente": "apa_first",
     "offtake": "normal"
   },
-  "lot_blurb": "Câmara hostil · 120 MWp · em disputa"
+  "lot_blurb": "Câmara hostil · 120 MWp · em disputa",
+  "env_draft": {
+    "status": "DRAFT 2026-09-29 — valores NÃO são facto. HIPÓTESE / PEDIR_PEDRO salvo indicação.",
+    "tech": {
+      "value": "solar",
+      "source": "lote de jogo (TRC solar; híbrido = value-add)"
+    },
+    "installed_mwp": {
+      "value": 120,
+      "band": "100–140",
+      "source": "UI lote (fullMeta '120 MWp'); gate6 banda HIPÓTESE"
+    },
+    "connection_mva": {
+      "value": 100,
+      "band": "80–120",
+      "source": "HIPÓTESE gate6-ourique-calibracao.md (lotes 2020 Ourique ~99–109 MVA); PEDIR_PEDRO MVA exacto do TRC",
+      "note": "Potência de ligação do TRC. Solar sem limiar eléctrico geral (DL 11/2023, leitura Pedro): só pesa se houver eólico (≥50 MW total do TRC). 120 MWp ≠ 120 MVA."
+    },
+    "area_ha": {
+      "value": null,
+      "band": "~120–200 (HIPÓTESE ~1,0–1,6 ha/MWp × 120 MWp)",
+      "source": "PEDIR_PEDRO — sem dado no pacote",
+      "engine_default": "band_low",
+      "note": "Causa assumida da AIA em Ourique (leitura DL 11/2023: solar AIA ≥100 ha de painéis). Definição de 'área' (implantação vedada vs módulos) PEDIR_PEDRO."
+    },
+    "n_turbines": {
+      "value": 0,
+      "source": "base solar; eólico só com value-add"
+    },
+    "line_overhead": {
+      "value": null,
+      "source": "PEDIR_PEDRO (gate6 P5 km/baía)",
+      "engine_default": true
+    },
+    "line_kv": {
+      "value": null,
+      "band": "150 ou 400 (SE 400/150 kV, REAL)",
+      "source": "PEDIR_PEDRO",
+      "engine_default": 150,
+      "note": "Anexo I só ≥220 kV >15 km; Anexo II ≥110 kV ≥20 km."
+    },
+    "line_km": {
+      "value": null,
+      "band": "<10 HIPÓTESE (parcela A 'colada à subestação')",
+      "source": "PEDIR_PEDRO",
+      "engine_default": 3
+    },
+    "sensitive_area": {
+      "value": null,
+      "source": "PEDIR_PEDRO — verificar ZPE de Castro Verde / Rede Natura 2000",
+      "engine_default": false
+    },
+    "area_aceleracao": {
+      "value": false,
+      "source": "MVP: mapeamento não activo (evento de mundo futuro)"
+    },
+    "solar_on_structure": {
+      "value": false,
+      "source": "lote em terreno"
+    },
+    "structure_exception": {
+      "value": null
+    },
+    "resolves_to": {
+      "env_path": "aia_obrigatoria",
+      "why": "area_ha ~120–200 ≥ 100 (HIPÓTESE / PEDIR_PEDRO). Não depende do MVA, da linha nem da área sensível.",
+      "flag": "se area_ha for área de módulos (~50–70 ha), os atributos não chegam a AIA; Ourique mantém-se AIA por decisão Pedro/Economy",
+      "consistent_with": "tags.ambiente = apa_first"
+    },
+    "quercineas_densidade": {
+      "value": "alta",
+      "source": "HIPÓTESE ao nível do terreno — concelho de Ourique tem ~25 000 ha de sobreiro + ~16 000 ha de azinheira (INIAV, 'A vegetação dos montados em áreas afetadas por declínio — situação de Ourique'), ≈60% de ~66 000 ha; montado em declínio (densidades baixas em Ourique/Panóias/Garvão). PEDIR_PEDRO confirmar parcela junto à SE."
+    },
+    "rede_natura": {
+      "value": false,
+      "source": "HIPÓTESE / PEDIR_PEDRO — EIAs reais da Central Solar de Ourique (Panóias e Conceição) põem a ZPE de Castro Verde (PTZPE0046) a ~0,4–3,7 km a este e a ZPE de Piçarras a ~11 km: adjacente, não dentro. Depende da parcela do jogo."
+    },
+    "area_protegida": {
+      "value": false,
+      "source": "HIPÓTESE / PEDIR_PEDRO — sem área protegida nacional conhecida junto à SE; Reserva da Biosfera de Castro Verde a ~1,8 km (não é área protegida para este efeito)."
+    },
+    "icnf_binding": {
+      "value": true,
+      "source": "derivado: quercineas_densidade alta → corte de sobreiro/azinheira (computed_tags.icnf_binding)"
+    }
+  }
 }

@@ -14,7 +14,7 @@
   "choices": [
     {
       "id": "meet",
-      "label": "Agendar reunião",
+      "label": "Marcar reunião",
       "effects": [
         "risk_camara_-1"
       ]

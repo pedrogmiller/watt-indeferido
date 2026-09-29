@@ -14,14 +14,14 @@
   "choices": [
     {
       "id": "study_reequip",
-      "label": "Estudar reequipamento",
+      "label": "Estudar a renovação do equipamento",
       "effects": [
         "reequip_study"
       ]
     },
     {
       "id": "not_now",
-      "label": "Cedo demais",
+      "label": "É cedo demais",
       "effects": [
         "reequip_defer"
       ]

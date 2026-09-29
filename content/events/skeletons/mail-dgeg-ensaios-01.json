@@ -1,0 +1,48 @@
+{
+  "id": "mail-dgeg-ensaios-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "mechanical_completion+line_ready",
+    "when_phase": [
+      "obra"
+    ],
+    "requires": [
+      "mechanical_completion",
+      "line_ready"
+    ],
+    "month_offset": 32
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "deadline_ref": "le_deadline",
+  "choices": [
+    {
+      "id": "dgeg",
+      "label": "Pedir ensaios e vistoria DGEG",
+      "effects": [
+        "commissioning_started"
+      ]
+    },
+    {
+      "id": "accredited",
+      "label": "Ensaios e vistoria por entidade acreditada",
+      "effects": [
+        "commissioning_started",
+        "vistoria_acreditada"
+      ]
+    },
+    {
+      "id": "punch_list",
+      "label": "Fechar pendentes primeiro",
+      "effects": [
+        "punch_list_first",
+        "delay_cod_+1"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "vistoria_acreditada = custo pequeno, tira risco de atraso DGEG — PEDIR_ECONOMY. Sem €.",
+  "notes_for_ui": "Arts. 32.º (ensaios, com parecer do operador) e 34.º (vistoria ≤30 dias; entidade acreditada se a DGEG falhar)."
+}

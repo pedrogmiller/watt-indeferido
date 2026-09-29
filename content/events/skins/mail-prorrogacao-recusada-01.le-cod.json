@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-prorrogacao-recusada-01",
+  "skin_id": "le-cod",
+  "draft": true,
+  "when": {},
+  "from_name": "DGEG — Licenciamento de centros electroprodutores",
+  "subject": "Prorrogação recusada — licença de exploração",
+  "body": "Prorrogação indeferida. Resta pedir licença para as partes já concluídas, com injecção limitada, ou deixar caducar licença e título.",
+  "params": {
+    "deadline_id": "le_deadline"
+  }
+}

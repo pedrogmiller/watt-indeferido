@@ -14,34 +14,38 @@
   "choices": [
     {
       "id": "ask_car_s",
-      "label": "Pedir Cash at Risk · banda S",
+      "label": "Pedir pouco",
       "effects": [
         "car_band_s",
         "car_request_sent"
-      ]
+      ],
+      "hint": "Aceitamos sempre."
     },
     {
       "id": "ask_car_m",
-      "label": "Pedir Cash at Risk · banda M",
+      "label": "Pedir um valor médio",
       "effects": [
         "car_band_m",
         "car_request_sent"
-      ]
+      ],
+      "hint": "Aceitamos, mas marcamos uma revisão contigo."
     },
     {
       "id": "ask_car_l",
-      "label": "Pedir Cash at Risk · banda L",
+      "label": "Pedir muito",
       "effects": [
         "car_band_l",
         "car_request_sent"
-      ]
+      ],
+      "hint": "Podemos baixar para o valor médio. Se aceitarmos, tens menos tempo para o terreno ou o pedido à Câmara; se falhares, cortamos o orçamento."
     },
     {
       "id": "delay",
-      "label": "Pedir mais tempo",
+      "label": "Pedir mais tempo para decidir",
       "effects": [
         "investor_patience_-1"
-      ]
+      ],
+      "hint": "Esperamos, mas ficamos menos pacientes."
     }
   ],
   "notes_for_economy": "Outcomes aceitar/cortar/plano por banda; M€ = PEDIR_ECONOMY / car-bands-boutique.md. Boutique: S cabe Ourique; L pode ser cortado.",

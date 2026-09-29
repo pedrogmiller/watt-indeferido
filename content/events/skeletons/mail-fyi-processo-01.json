@@ -1,0 +1,27 @@
+{
+  "id": "mail-fyi-processo-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "phase_filler",
+    "when_phase": [
+      "aia",
+      "licenca_producao",
+      "obra"
+    ],
+    "month_offset": 10
+  },
+  "priority": "low",
+  "from_type": "SISTEMA",
+  "choices": [
+    {
+      "id": "dismiss",
+      "label": "Arquivar",
+      "effects": []
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Sem €.",
+  "notes_for_ui": "FYI dismiss-only. Conta no cap (máx. 2–3 FYI por aterragem). Usado como filler do teto de 6 meses e como progresso de obra (skins por marco)."
+}

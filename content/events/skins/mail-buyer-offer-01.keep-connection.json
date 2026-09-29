@@ -1,0 +1,16 @@
+{
+  "skeleton_id": "mail-buyer-offer-01",
+  "skin_id": "keep-connection",
+  "when": {
+    "sale_mode": "keep_connection",
+    "min_phase": "licenca_producao",
+    "line_ready": true
+  },
+  "from_name": "Lusovento Utility Desk",
+  "subject": "Proposta: comprar a central e deixar-te a ligação",
+  "body": "Queremos comprar a tua central. O TRC, ou seja, a ligação à rede na subestação, continua a ser teu. Pagamos-te uma renda por ano por usarmos a tua ligação.\n\nA potência da central vendida continua a ocupar a ligação, por isso não ganhas potência livre para outros planos. Como continuas com o TRC, também não ficas com lugar para outro lote.\n\nEsta forma de venda só é possível porque já tens a licença de produção (a autorização do Estado para a central produzir energia) e a ligação à rede está pronta.",
+  "params": {
+    "sale_mode": "keep_connection",
+    "offer_band": "fair"
+  }
+}

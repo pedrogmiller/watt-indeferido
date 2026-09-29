@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-camara-pip-pedido-01",
+  "skin_id": "reformulado",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de licenciamento",
+  "subject": "PIP reformulado — segunda submissão",
+  "body": "Revimos o que a Câmara apontou: implantação, acessos e integração paisagística. Voltamos a submeter. Segunda recusa e a via B fica muito difícil.",
+  "params": {
+    "attempt": 2
+  }
+}

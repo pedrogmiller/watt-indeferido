@@ -1,0 +1,48 @@
+{
+  "id": "mail-epc-propostas-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "lp_granted",
+    "when_phase": [
+      "licenca_producao"
+    ],
+    "requires": [
+      "lp_granted"
+    ],
+    "month_offset": 15
+  },
+  "priority": "high",
+  "from_type": "EPC",
+  "choices": [
+    {
+      "id": "turnkey",
+      "label": "EPC chave-na-mão",
+      "effects": [
+        "epc_selected",
+        "epc_turnkey"
+      ]
+    },
+    {
+      "id": "multi",
+      "label": "Multi-contrato",
+      "effects": [
+        "epc_selected",
+        "epc_multi",
+        "epc_interface_risk_+1"
+      ]
+    },
+    {
+      "id": "retender",
+      "label": "Relançar concurso",
+      "effects": [
+        "epc_retender",
+        "delay_fid_+1"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "epc_turnkey = Capex mais alto, contingência baixa; epc_multi = Capex mais baixo, odds de atraso sobem — PEDIR_ECONOMY.",
+  "notes_for_ui": "from_type EPC é novo (FROM_TYPE_TO_MAIL → 'epc'). 'Relançar' re-arma (epc_retender)."
+}

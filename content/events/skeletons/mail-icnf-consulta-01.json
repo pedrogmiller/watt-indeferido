@@ -1,0 +1,34 @@
+{
+  "id": "mail-icnf-consulta-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 (rev. Pedro 15:45) — ICNF só via PIP + consulta prévia opcional; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "icnf_consult_requested",
+    "when_phase": [
+      "land",
+      "pip"
+    ],
+    "requires": [
+      "icnf_consult_requested"
+    ],
+    "player_initiated": true,
+    "month_offset": 1
+  },
+  "priority": "low",
+  "from_type": "ICNF",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Percebi",
+      "hint": "Fica registado. A posição oficial do ICNF só chega quando entregares o PIP à Câmara.",
+      "effects": [
+        "icnf_consulted"
+      ]
+    }
+  ],
+  "notes_for_economy": "Consulta por conta própria: sem €. Desfecho (vaga / sem resposta / indicação útil) e odds = PEDIR_ECONOMY; tags do desfecho aplicadas na entrega (on_deliver_effects), não na escolha.",
+  "notes_for_ui": "Resposta à ação do botão 'PIP / ICNF / Câmara' → 'Consultar o ICNF' (a ação dispara icnf_consult_requested). from_type ICNF novo. Skin escolhida pela regra (mutex icnf_consulta).",
+  "nota_gm": "Pedro: sem enquadramento (sem PIP aberto) é difícil obter resposta; o ICNF não se compromete. Melhor caso = pequena redução de risco, nunca garantia."
+}

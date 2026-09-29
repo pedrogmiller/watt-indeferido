@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-consultor-enquadramento-aia-01",
+  "skin_id": "caso-a-caso",
+  "draft": true,
+  "when": {
+    "env_path": "caso_a_caso"
+  },
+  "from_name": "Consultor de licenciamento ambiental",
+  "subject": "Área sensível — apreciação prévia caso a caso",
+  "body": "Estamos abaixo dos limiares gerais, mas há motivo para apreciação prévia. Ou parte da implantação ou da linha toca uma área sensível, onde o solar passa a contar a partir de 10 ha ou 20 MW, ou a linha aérea é de 110 kV com 20 km ou mais. A CCDR (ou a APA) aprecia os elementos preliminares num prazo mais curto e decide: isenta, ou exige EIA completo. Tirar a sobreposição do desenho, ou encurtar a linha, pode evitar a apreciação.",
+  "params": {
+    "env_path": "caso_a_caso",
+    "base_legal": "DL 151-B/2013 (RJAIA) Anexos I e II, alt. DL 11/2023; DL 99/2024"
+  }
+}

@@ -1,0 +1,687 @@
+{
+  "version": 0,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro. Não carregado pela consola actual (chave nova no manifest, ignorada pelo loader).",
+  "spec": "../deadlines-lp-cod-proposta.md",
+  "time_unit": "month (mailLoop.month; M0 = TRC adjudicado)",
+  "states": [
+    "pending",
+    "open",
+    "extension_pending",
+    "extended",
+    "met",
+    "missed",
+    "voided"
+  ],
+  "kinds": {
+    "player": "O jogador tem de fazer X até atMonth. Falha = on_miss (+ on_miss_mail).",
+    "authority": "A administração (DGEG/APA) deve decidir até atMonth. Falha = atraso dela: on_miss dá tags de 'motivo não imputável' + carta.",
+    "third_party": "Operador de rede / EPC entregam até atMonth. Resolve no mês: met (on_meet + on_meet_mail) ou empurrado por shift_on_effects vindos de cartas de risco."
+  },
+  "defaults": {
+    "hud": true,
+    "warn": null,
+    "extension": {
+      "allowed": false
+    },
+    "rush": {
+      "allowed": false
+    }
+  },
+  "generated_tags": [
+    "dl_met_<id>",
+    "dl_missed_<id>",
+    "dl_extended_<id>",
+    "dl_voided_<id>"
+  ],
+  "deadlines": [
+    {
+      "id": "land_option",
+      "legacy_seed": true,
+      "label": "Janela opção terreno",
+      "kind": "player",
+      "severity": "normal",
+      "create_on": {
+        "seed": true
+      },
+      "due": {
+        "anchor": "trc_awarded",
+        "months": 1,
+        "source": "SEED_MVP"
+      },
+      "meet_on_effects": [
+        "land_option_open",
+        "land_talk_+1",
+        "dd_started"
+      ],
+      "on_miss": [
+        "land_miss_+1"
+      ],
+      "on_miss_mail": null,
+      "void_on_effects": [
+        "sale_full_exit"
+      ]
+    },
+    {
+      "id": "pip_camara",
+      "legacy_seed": true,
+      "label": "PIP / Câmara",
+      "kind": "player",
+      "severity": "normal",
+      "create_on": {
+        "seed": true
+      },
+      "due": {
+        "anchor": "trc_awarded",
+        "months": 2,
+        "source": "SEED_MVP"
+      },
+      "meet_on_effects": [
+        "risk_camara_-1"
+      ],
+      "on_miss": [
+        "risk_camara_+1"
+      ],
+      "on_miss_mail": null,
+      "void_on_effects": [
+        "sale_full_exit"
+      ]
+    },
+    {
+      "id": "main_permit",
+      "legacy_seed": true,
+      "label": "Arranque AIA (APA)",
+      "kind": "player",
+      "severity": "high",
+      "create_on": {
+        "seed": true
+      },
+      "due": {
+        "anchor": "trc_awarded",
+        "months": 5,
+        "source": "SEED_MVP"
+      },
+      "meet_on_effects": [
+        "apa_track_start"
+      ],
+      "on_miss": [
+        "delay_env_+1"
+      ],
+      "on_miss_mail": null,
+      "void_on_effects": [
+        "sale_full_exit"
+      ],
+      "note": "Rótulo actual na consola: 'Licença principal (APA)'. Proposta: renomear para 'Arranque AIA (APA)' — a licença principal passa a ser lp_request/lp_decision."
+    },
+    {
+      "id": "grid_agreement",
+      "legacy_seed": true,
+      "label": "Acordo rede",
+      "kind": "player",
+      "severity": "high",
+      "create_on": {
+        "seed": true
+      },
+      "due": {
+        "anchor": "trc_awarded",
+        "months": 6,
+        "source": "SEED_MVP"
+      },
+      "meet_on_effects": [
+        "capex_rede_flag",
+        "grid_conditions_accepted"
+      ],
+      "on_miss": [
+        "caducidade_risk_+1"
+      ],
+      "on_miss_mail": null,
+      "void_on_effects": [
+        "sale_full_exit"
+      ]
+    },
+    {
+      "id": "lp_request",
+      "label": "Pedido de LP à DGEG",
+      "hud_owner": "tu",
+      "kind": "player",
+      "severity": "critical",
+      "legal_basis": "DL 15/2022 art. 14.º/1 (12 meses com AIA; 6 meses sem AIA)",
+      "create_on": {
+        "seed": true
+      },
+      "due": {
+        "anchor": "trc_awarded",
+        "months": 12,
+        "variants": [
+          {
+            "if_any_effects": [
+              "env_path_aia_obrigatoria",
+              "aia_sujeito",
+              "apa_track_start"
+            ],
+            "months": 12
+          },
+          {
+            "if_any_effects": [
+              "env_path_caso_a_caso"
+            ],
+            "months": 6,
+            "note": "sem AIA até decisão; se a CCDR exigir EIA passa a 12 (HIPÓTESE / PEDIR_PEDRO)"
+          },
+          {
+            "if_any_effects": [
+              "env_path_nao_sujeito",
+              "env_path_aac_simplificada",
+              "nao_sujeicao"
+            ],
+            "months": 6
+          }
+        ],
+        "source": "LEGAL",
+        "variants_rule": "primeira que casar ganha; recalcula quando as tags mudam"
+      },
+      "meet_on_effects": [
+        "lp_request_submitted"
+      ],
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "warn": {
+        "months_before": 2,
+        "mail": {
+          "skeleton": "mail-prazo-aviso-01",
+          "skin": "lp-pedido"
+        }
+      },
+      "on_meet": [
+        "dl_met_lp_request"
+      ],
+      "on_miss": [
+        "dl_missed_lp_request",
+        "caducidade_risk_+2"
+      ],
+      "on_miss_mail": {
+        "skeleton": "mail-prazo-prorrogacao-01",
+        "skin": "lp-pedido"
+      },
+      "extension": {
+        "allowed": true,
+        "max": 1,
+        "adds_months": {
+          "band": "3-6",
+          "source": "HIPÓTESE / PEDIR_PEDRO (art. 14.º/5)"
+        },
+        "response_lag_months": 1,
+        "odds": "PEDIR_ECONOMY",
+        "odds_up_if_any": [
+          "dgeg_late",
+          "grid_slip_operator"
+        ],
+        "odds_down_if_any": [
+          "risk_camara_+2",
+          "lp_request_hold"
+        ],
+        "granted_mail": {
+          "skeleton": "mail-prorrogacao-concedida-01",
+          "skin": "lp-pedido"
+        },
+        "denied_mail": {
+          "skeleton": "mail-prorrogacao-recusada-01",
+          "skin": "lp-pedido"
+        }
+      },
+      "rush": {
+        "allowed": true,
+        "effects": [
+          "lp_request_submitted",
+          "lp_dossier_thin"
+        ]
+      },
+      "final_miss": [
+        "trc_caducado",
+        "caucao_executada",
+        "asset_removed",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "investor_patience_-2"
+      ]
+    },
+    {
+      "id": "lp_aperfeicoamento",
+      "label": "Elementos pedidos pela DGEG",
+      "hud_owner": "tu",
+      "kind": "player",
+      "severity": "high",
+      "legal_basis": "DL 15/2022 art. 25.º/2 (uma vez, ≤30 dias)",
+      "create_on": {
+        "delivered": "mail-dgeg-lp-aperfeicoamento-01"
+      },
+      "due": {
+        "anchor": "created",
+        "months": 1,
+        "source": "LEGAL (30 dias → 1 mês)"
+      },
+      "meet_on_effects": [
+        "lp_elements_sent"
+      ],
+      "void_on_effects": [
+        "sale_full_exit"
+      ],
+      "on_meet": [
+        "dl_met_lp_aperfeicoamento"
+      ],
+      "on_miss": [
+        "dl_missed_lp_aperfeicoamento",
+        "lp_elements_missing"
+      ],
+      "on_miss_mail": null,
+      "extension": {
+        "allowed": false
+      },
+      "note": "Falha não tem carta própria: lp_elements_missing torna muito provável mail-dgeg-lp-audiencia-01."
+    },
+    {
+      "id": "lp_decision",
+      "label": "Decisão da DGEG sobre a LP",
+      "hud_owner": "DGEG",
+      "kind": "authority",
+      "severity": "high",
+      "legal_basis": "DL 15/2022 art. 14.º/2 (1 ano; 6 meses em ZAER). Sem deferimento tácito com AIA (art. 14.º-B/2).",
+      "create_on": {
+        "effect": "lp_request_submitted"
+      },
+      "due": {
+        "anchor": "created",
+        "months": 12,
+        "variants": [
+          {
+            "if_any_effects": [
+              "zaer"
+            ],
+            "months": 6
+          }
+        ],
+        "source": "LEGAL"
+      },
+      "meet_on_effects": [
+        "lp_granted",
+        "lp_indeferido"
+      ],
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "on_meet": [
+        "dl_met_lp_decision"
+      ],
+      "on_miss": [
+        "dl_missed_lp_decision",
+        "dgeg_late",
+        "delay_lp_+1"
+      ],
+      "on_miss_mail": {
+        "skeleton": "mail-dgeg-lp-atraso-01",
+        "skin": "ourique"
+      },
+      "extension": {
+        "allowed": false
+      },
+      "note": "Novo lp_request_submitted (2ª tentativa após lp_indeferido) recria o deadline com anchor nesse mês.",
+      "recreate_if_closed": true
+    },
+    {
+      "id": "fid_window",
+      "label": "Janela de FID (investidores)",
+      "hud_owner": "tu",
+      "kind": "player",
+      "severity": "high",
+      "legal_basis": null,
+      "create_on": {
+        "effect": "lp_granted"
+      },
+      "due": {
+        "anchor": "created",
+        "months_band": "6-9",
+        "months": 6,
+        "source": "HIPÓTESE / PEDIR_ECONOMY + Pedro"
+      },
+      "meet_on_effects": [
+        "fid_reached",
+        "sale_full_exit"
+      ],
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "on_meet": [
+        "dl_met_fid_window"
+      ],
+      "on_miss": [
+        "dl_missed_fid_window",
+        "investor_patience_-2"
+      ],
+      "on_miss_mail": {
+        "skeleton": "mail-investidores-fid-01",
+        "skin": "ultimato"
+      },
+      "extension": {
+        "allowed": false
+      },
+      "note": "Prazo comercial, não legal. CAR continua a queimar até FID."
+    },
+    {
+      "id": "grid_connection",
+      "label": "Ligação pronta (operador)",
+      "hud_owner": "REN",
+      "kind": "third_party",
+      "severity": "high",
+      "legal_basis": "Acordo/condições do operador (art. 24.º/3 e 26.º)",
+      "create_on": {
+        "effect_any": [
+          "grid_conditions_accepted",
+          "grid_phasing_request"
+        ]
+      },
+      "due": {
+        "anchor": "created",
+        "months_band": "18-30",
+        "months": 24,
+        "source": "HIPÓTESE / PEDIR_PEDRO"
+      },
+      "shift_on_effects": {
+        "delay_cod_+1": "PEDIR_ECONOMY (meses)",
+        "delay_cod_+2": "PEDIR_ECONOMY (meses)",
+        "delay_ligacao_+1": "PEDIR_ECONOMY (meses)"
+      },
+      "shift_only_if_letter_ref": true,
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "on_meet": [
+        "dl_met_grid_connection",
+        "line_ready"
+      ],
+      "on_meet_mail": {
+        "skeleton": "mail-rede-linha-pronta-01",
+        "skin": "ourique"
+      },
+      "on_miss": [],
+      "on_miss_mail": null,
+      "risk_card": {
+        "skeleton": "mail-rede-ligacao-atraso-01",
+        "skin": "ourique"
+      },
+      "note": "third_party: no atMonth resolve como met; a derrapagem vem antes, pela carta de risco (regra r-grid-slip) que empurra atMonth."
+    },
+    {
+      "id": "epc_mechanical_completion",
+      "label": "Conclusão mecânica (EPC)",
+      "hud_owner": "EPC",
+      "kind": "third_party",
+      "severity": "high",
+      "legal_basis": null,
+      "create_on": {
+        "effect": "construction_started"
+      },
+      "due": {
+        "anchor": "created",
+        "months_band": "10-16",
+        "months": 12,
+        "source": "HIPÓTESE / PEDIR_ECONOMY (120 MWp solar + híbrido)"
+      },
+      "shift_on_effects": {
+        "delay_obra_+1": "PEDIR_ECONOMY (meses)",
+        "delay_cod_+1": "PEDIR_ECONOMY (meses)",
+        "delay_cod_+2": "PEDIR_ECONOMY (meses)",
+        "punch_list_first": 0
+      },
+      "shift_only_if_letter_ref": true,
+      "void_on_effects": [
+        "sale_full_exit"
+      ],
+      "on_meet": [
+        "dl_met_epc_mechanical_completion",
+        "mechanical_completion"
+      ],
+      "on_meet_mail": null,
+      "on_miss": [],
+      "on_miss_mail": null,
+      "risk_card": {
+        "skeleton": "mail-epc-atraso-01",
+        "skin": "ourique"
+      }
+    },
+    {
+      "id": "le_deadline",
+      "label": "Licença de exploração (COD)",
+      "hud_owner": "tu",
+      "kind": "player",
+      "severity": "critical",
+      "legal_basis": "DL 15/2022 art. 14.º/3 (1 ano após LP; se a rede atrasar: 90 dias após a infra da RESP) e 14.º/5 (prorrogação)",
+      "create_on": {
+        "effect": "lp_granted"
+      },
+      "due": {
+        "anchor": "created",
+        "months": 12,
+        "source": "LEGAL"
+      },
+      "rebase_on_effects": {
+        "grid_slip_operator": {
+          "anchor": "deadline_met:grid_connection",
+          "months": 3,
+          "source": "LEGAL art. 14.º/3 b)"
+        }
+      },
+      "meet_on_effects": [
+        "le_granted",
+        "cod_reached"
+      ],
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "warn": {
+        "months_before": 2,
+        "mail": {
+          "skeleton": "mail-prazo-aviso-01",
+          "skin": "le-cod"
+        }
+      },
+      "on_meet": [
+        "dl_met_le_deadline"
+      ],
+      "on_miss": [
+        "dl_missed_le_deadline",
+        "caducidade_risk_+2"
+      ],
+      "on_miss_mail": {
+        "skeleton": "mail-prazo-prorrogacao-01",
+        "skin": "le-cod"
+      },
+      "extension": {
+        "allowed": true,
+        "max": 1,
+        "adds_months": {
+          "band": "6-12",
+          "source": "HIPÓTESE / PEDIR_PEDRO (art. 14.º/5; DL 99/2024)"
+        },
+        "response_lag_months": 1,
+        "odds": "PEDIR_ECONOMY",
+        "odds_up_if_any": [
+          "dgeg_late",
+          "grid_slip_operator",
+          "lp_conditions"
+        ],
+        "odds_down_if_any": [
+          "obra_start_deferred",
+          "fid_defer"
+        ],
+        "granted_mail": {
+          "skeleton": "mail-prorrogacao-concedida-01",
+          "skin": "le-cod"
+        },
+        "denied_mail": {
+          "skeleton": "mail-prorrogacao-recusada-01",
+          "skin": "le-cod"
+        }
+      },
+      "rush": {
+        "allowed": true,
+        "effects": [
+          "le_partial",
+          "injection_cap_restricted"
+        ],
+        "note": "LE para partes concluídas (definição de licença de exploração, art. 3.º)."
+      },
+      "final_miss": [
+        "lp_caducada",
+        "trc_caducado",
+        "caucao_executada",
+        "asset_removed",
+        "mandate_slot_free",
+        "investor_patience_-2"
+      ],
+      "note": "12 meses após LP é apertado face a FID + obra: prorrogação esperada — tensão desenhada, não bug (confirmar com Pedro)."
+    },
+    {
+      "id": "pip_decision",
+      "label": "Decisão do PIP (Câmara)",
+      "hud_owner": "Câmara",
+      "kind": "authority",
+      "severity": "high",
+      "legal_basis": "RJUE (DL 555/99) arts. 14.º e ss. — prazo exacto PEDIR_PEDRO",
+      "create_on": {
+        "effect_any": [
+          "pip_request_submitted",
+          "pip_hearing",
+          "pip_appeal"
+        ]
+      },
+      "recreate_if_closed": true,
+      "due": {
+        "anchor": "created",
+        "months_band": "2-4",
+        "months": 3,
+        "variants": [
+          {
+            "if_any_effects": [
+              "pip_appeal"
+            ],
+            "months": 8
+          }
+        ],
+        "source": "HIPÓTESE / PEDIR_PEDRO"
+      },
+      "meet_on_effects": [
+        "pip_aprovado"
+      ],
+      "meet_on_delivered": [
+        "mail-camara-pip-aprovado-01",
+        "mail-camara-pip-condicionado-01",
+        "mail-camara-pip-indeferido-01"
+      ],
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado",
+        "env_route_a",
+        "aia_sujeito"
+      ],
+      "on_meet": [
+        "dl_met_pip_decision"
+      ],
+      "on_miss": [
+        "dl_missed_pip_decision",
+        "camara_late",
+        "delay_pip_+1"
+      ],
+      "on_miss_mail": null,
+      "extension": {
+        "allowed": false
+      }
+    },
+    {
+      "id": "caso_a_caso_decision",
+      "label": "Apreciação prévia (CCDR/APA)",
+      "hud_owner": "CCDR",
+      "kind": "authority",
+      "severity": "high",
+      "legal_basis": "RJAIA DL 151-B/2013 alt. DL 11/2023 — apreciação prévia caso a caso (prazo mais curto que AIA); dias exactos PEDIR_PEDRO",
+      "create_on": {
+        "effect_any": [
+          "caso_a_caso_request"
+        ]
+      },
+      "recreate_if_closed": true,
+      "due": {
+        "anchor": "created",
+        "months_band": "1-2",
+        "months": 1,
+        "source": "PEDIR_PEDRO (dias exactos)"
+      },
+      "meet_on_delivered": [
+        "mail-ccdr-caso-a-caso-isento-01",
+        "mail-ccdr-caso-a-caso-eia-01"
+      ],
+      "meet_on_effects": [
+        "nao_sujeicao",
+        "aia_sujeito"
+      ],
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado",
+        "reopen_tech_plan"
+      ],
+      "on_meet": [
+        "dl_met_caso_a_caso_decision"
+      ],
+      "on_miss": [
+        "dl_missed_caso_a_caso_decision",
+        "ccdr_late",
+        "delay_env_+1"
+      ],
+      "on_miss_mail": null,
+      "extension": {
+        "allowed": false
+      },
+      "note": "Efeito real de silêncio da autoridade = PEDIR_PEDRO; MVP trata como atraso."
+    },
+    {
+      "id": "aas_decision",
+      "label": "Avaliação Ambiental Simplificada (APA)",
+      "hud_owner": "APA",
+      "kind": "authority",
+      "severity": "normal",
+      "status": "BACKLOG",
+      "legal_basis": "DL 99/2024 — prazo PEDIR_PEDRO",
+      "create_on": {
+        "effect": "aas_submitted"
+      },
+      "due": {
+        "anchor": "created",
+        "months_band": "1-3",
+        "months": 2,
+        "source": "PEDIR_PEDRO"
+      },
+      "meet_on_delivered": [
+        "mail-ccdr-caso-a-caso-isento-01"
+      ],
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "on_meet": [
+        "dl_met_aas_decision"
+      ],
+      "on_miss": [
+        "dl_missed_aas_decision",
+        "delay_env_+1"
+      ],
+      "on_miss_mail": null,
+      "extension": {
+        "allowed": false
+      }
+    }
+  ]
+}

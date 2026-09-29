@@ -1,0 +1,73 @@
+{
+  "id": "mail-investidores-fid-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "term_sheet_signed+epc_selected",
+    "when_phase": [
+      "licenca_producao"
+    ],
+    "requires": [
+      "lp_granted",
+      "term_sheet_signed",
+      "epc_selected"
+    ],
+    "or_deadline": "fid_window",
+    "month_offset": 17
+  },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "deadline_ref": "fid_window",
+  "choices": [
+    {
+      "id": "approve_fid",
+      "label": "Aprovar FID e fecho financeiro",
+      "effects": [
+        "fid_reached",
+        "financial_close",
+        "car_burn_stop",
+        "equity_capex_commit"
+      ],
+      "when": {
+        "requires": [
+          "fid_ready"
+        ]
+      }
+    },
+    {
+      "id": "ask_equity",
+      "label": "Pedir reforço de equity",
+      "effects": [
+        "equity_capex_request",
+        "delay_fid_+1"
+      ],
+      "when": {
+        "requires": [
+          "equity_fit_short"
+        ]
+      }
+    },
+    {
+      "id": "delay_fid",
+      "label": "Adiar FID",
+      "effects": [
+        "fid_defer",
+        "delay_fid_+1",
+        "investor_patience_-1"
+      ]
+    },
+    {
+      "id": "sell_rtb",
+      "label": "Sondar venda pronto-a-construir",
+      "effects": [
+        "find_buyers_started",
+        "sale_pipeline_open",
+        "buyer_search_active"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "FID = CAR burn pára (car_burn_stop) + equity Capex comprometida (equity_capex_commit ≈ Capex×(1−gearing)). fid_ready/equity_fit_* = cálculo Economy (gate5 §4.2). Sem €.",
+  "notes_for_ui": "Choices filtradas por when (máx. 3 visíveis: approve e ask_equity são exclusivos). Cumpre fid_window. Skin 'ultimato' chega por on_miss de fid_window. sell_rtb = Sell the project (modo 1), não contradiz sell-modes-lock."
+}

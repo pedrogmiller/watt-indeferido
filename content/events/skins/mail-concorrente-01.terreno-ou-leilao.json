@@ -1,8 +1,8 @@
 {
   "skeleton_id": "mail-concorrente-01",
   "skin_id": "terreno-ou-leilao",
-  "from_name": "Intel de mercado",
-  "subject": "Movimento de um rival",
-  "body": "Um IPP concorrente andou a sondar parcelas junto à SE e meteu-se noutro concurso de ligação. Só para saberes — ainda não é combate directo.",
+  "from_name": "Notícias do mercado",
+  "subject": "Um rival está a mexer-se",
+  "body": "Uma empresa concorrente andou a perguntar por terrenos junto à subestação e concorreu a outro leilão de ligação à rede. É só para saberes: por agora, não te afeta diretamente.",
   "params": {}
 }

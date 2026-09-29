@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-rede-linha-pronta-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "REN — Ligações à RNT",
+  "subject": "Ligação pronta na SE Ourique",
+  "body": "Painel e linha de ligação concluídos, prontos a energizar. Quando a central estiver mecanicamente concluída, pedes à DGEG autorização para ensaios. Com LP e linha prontas, abrem-se também os modos de venda que mantêm o TRC.",
+  "params": {
+    "operator": "REN"
+  }
+}

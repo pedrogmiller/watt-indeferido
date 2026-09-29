@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-dgeg-lp-pedido-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de licenciamento",
+  "subject": "Pedido de licença de produção — prazo do TRC a correr",
+  "body": "O pedido de LP à DGEG tem de entrar até {{deadline_month}} — 12 meses após o TRC quando há AIA (art. 14.º do DL 15/2022). A AIA pode ainda estar a correr; o processo de ligação com o operador segue em paralelo. Submeter o dossier completo custa mais agora. Entrar já com o mínimo poupa tempo, mas convida um pedido de aperfeiçoamento.",
+  "params": {
+    "base_legal": "DL 15/2022 art. 14.º/1 e 24.º",
+    "deadline_month": "M12"
+  }
+}

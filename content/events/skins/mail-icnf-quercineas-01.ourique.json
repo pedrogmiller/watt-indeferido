@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-icnf-quercineas-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Serviços de Urbanismo — {{camara_nome}}",
+  "subject": "PIP: o ICNF encontrou sobreiros e azinheiras",
+  "body": "Para analisarmos o teu PIP, pedimos parecer, ou seja, a opinião oficial, ao ICNF: o instituto do Estado que protege a natureza e as florestas. O ICNF respondeu que no terreno há quercíneas: sobreiros e azinheiras, as árvores do montado alentejano. São árvores protegidas por lei. Não podem ser cortadas sem autorização do ICNF, e quem corta tem de plantar outras noutro sítio.\n\nO ICNF pede um levantamento das árvores ou um plano de compensação. Só decidimos o PIP depois de responderes. Isto pode aumentar o dinheiro de desenvolvimento de que precisas.",
+  "params": {
+    "base_legal": "DL 169/2001 (alt. DL 155/2004, DL 11/2023); consulta ICNF no PIP (RJUE)",
+    "se_attr": "quercineas_densidade=alta"
+  }
+}

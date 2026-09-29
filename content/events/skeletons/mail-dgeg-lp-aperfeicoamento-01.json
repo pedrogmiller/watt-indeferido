@@ -1,0 +1,50 @@
+{
+  "id": "mail-dgeg-lp-aperfeicoamento-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "lp_request_submitted",
+    "when_phase": [
+      "land",
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "lp_request_submitted"
+    ],
+    "or_deadline": "lp_aperfeicoamento",
+    "month_offset": 8
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "deadline_ref": "lp_aperfeicoamento",
+  "choices": [
+    {
+      "id": "send_full",
+      "label": "Entregar tudo no prazo",
+      "effects": [
+        "lp_elements_sent",
+        "cash_at_risk_+1"
+      ]
+    },
+    {
+      "id": "send_min",
+      "label": "Entregar o que houver",
+      "effects": [
+        "lp_elements_sent",
+        "lp_dossier_thin"
+      ]
+    },
+    {
+      "id": "let_go",
+      "label": "Deixar passar",
+      "effects": [
+        "lp_elements_missing"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "Carta probabilística (odds PEDIR_ECONOMY; sobe com lp_dossier_thin). cash_at_risk_+1 = peças em falta — PEDIR_ECONOMY.",
+  "notes_for_ui": "Ao entregar a carta, o motor cria o deadline lp_aperfeicoamento (+1 mês; art. 25.º: única vez, ≤30 dias). Sem prorrogação."
+}

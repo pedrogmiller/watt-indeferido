@@ -1,0 +1,29 @@
+{
+  "id": "mail-sale-closed-01",
+  "phase": "mid_dev",
+  "trigger": {
+    "after": "sale_closed",
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra",
+      "cod"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "dismiss",
+      "label": "Percebi",
+      "effects": [
+        "sale_ack"
+      ]
+    }
+  ],
+  "notes_for_economy": "Confirma full_exit | keep_seat | partial; liquidez/renda = PEDIR_ECONOMY.",
+  "notes_for_ui": "HUD: purse/CAR/mandate/Free MW conforme modo. FYI dismiss."
+}

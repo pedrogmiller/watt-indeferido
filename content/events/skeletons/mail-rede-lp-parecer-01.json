@@ -1,0 +1,41 @@
+{
+  "id": "mail-rede-lp-parecer-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "lp_request_submitted",
+    "when_phase": [
+      "land",
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "lp_request_submitted"
+    ],
+    "month_offset": 9
+  },
+  "priority": "high",
+  "from_type": "REDE",
+  "choices": [
+    {
+      "id": "accept_grid",
+      "label": "Aceitar condições e calendário",
+      "effects": [
+        "grid_conditions_accepted",
+        "capex_rede_flag"
+      ]
+    },
+    {
+      "id": "phasing",
+      "label": "Pedir ligação faseada",
+      "effects": [
+        "grid_phasing_request",
+        "delay_ligacao_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "capex_rede_flag = painel/reforço a cargo do requerente — PEDIR_ECONOMY. grid_phasing_request → LP com restrições de injecção (P50/NPV).",
+  "notes_for_ui": "Pronúncia do operador à DGEG (art. 26.º). Gate da decisão LP: sem esta carta respondida não há concedida/condicionada. Cria deadline grid_connection. CTA pesado (Rede)."
+}

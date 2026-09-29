@@ -1,0 +1,44 @@
+{
+  "id": "mail-prazo-prorrogacao-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "deadline_missed",
+    "when_phase": [
+      "aia",
+      "licenca_producao",
+      "obra"
+    ],
+    "or_deadline": "*"
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "deadline_ref": "from_deadline",
+  "choices": [
+    {
+      "id": "extend",
+      "label": "Pedir prorrogação fundamentada",
+      "effects": [
+        "deadline_extend_request"
+      ]
+    },
+    {
+      "id": "rush",
+      "label": "Cumprir já com o que houver",
+      "effects": [
+        "deadline_rush"
+      ]
+    },
+    {
+      "id": "let_lapse",
+      "label": "Deixar caducar",
+      "effects": [
+        "deadline_accept_miss"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "Odds de concessão = PEDIR_ECONOMY (sobem com dgeg_late / grid_slip_operator; descem com risk_*_+2). deadline_rush aplica os rush.effects do deadline (catálogo). deadline_accept_miss aplica final_miss (caducidade).",
+  "notes_for_ui": "on_miss_mail dos deadlines legais (lp_request, le_deadline). O motor liga deadline_ref ao deadline que falhou. Enquanto o pedido de prorrogação está pendente, o deadline fica congelado. CTA pesado."
+}

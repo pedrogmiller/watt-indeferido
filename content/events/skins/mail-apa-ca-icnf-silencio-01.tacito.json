@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-apa-ca-icnf-silencio-01",
+  "skin_id": "tacito",
+  "draft": true,
+  "when": {
+    "rede_natura": false
+  },
+  "from_name": "APA — Comissão de Avaliação",
+  "subject": "O ICNF não respondeu a tempo: conta como não oposição",
+  "body": "Na Comissão de Avaliação, o ICNF (o instituto do Estado que protege a natureza e as florestas) não deu parecer dentro do prazo legal. Neste caso, a lei conta o silêncio como não oposição: é como se o ICNF não se opusesse ao projeto. A Comissão pode fechar o parecer e seguir para a DIA, a decisão ambiental final, sem esperar mais.",
+  "params": {}
+}

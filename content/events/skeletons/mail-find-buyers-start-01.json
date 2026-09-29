@@ -1,0 +1,38 @@
+{
+  "id": "mail-find-buyers-start-01",
+  "phase": "mid_dev",
+  "trigger": {
+    "after": "find_buyers_started",
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra",
+      "cod"
+    ],
+    "player_initiated": true
+  },
+  "priority": "normal",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "keep_sounding",
+      "label": "Continuar a procurar comprador",
+      "effects": [
+        "sale_pipeline_open",
+        "buyer_search_active"
+      ]
+    },
+    {
+      "id": "stop_search",
+      "label": "Parar a procura",
+      "effects": [
+        "sale_pipeline_clear"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €. Abre pipeline; próximo Play pode ser offer / no-buyer. offer_band = thin|fair|rich por fase.",
+  "notes_for_ui": "CTA dossier 'Find buyers' → esta carta. Não vende na hora. Mostrar Free MW no dossier."
+}

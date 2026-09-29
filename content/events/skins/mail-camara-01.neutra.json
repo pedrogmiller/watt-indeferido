@@ -1,9 +1,15 @@
 {
   "skeleton_id": "mail-camara-01",
   "skin_id": "neutra",
-  "when": { "se_tags": { "camara": "neutra" } },
+  "when": {
+    "se_tags": {
+      "camara": "neutra"
+    }
+  },
   "from_name": "Serviços de Urbanismo — {{camara_nome}}",
-  "subject": "Pedido de esclarecimentos",
-  "body": "Pedimos memória descritiva e planta de implantação. Prazo administrativo curto; tom de serviços, não de campanha.",
-  "params": { "tom": "admin" }
+  "subject": "A Câmara pede documentos",
+  "body": "Para analisarmos o PIP (pedido de informação prévia, em que a Câmara diz se aceita a central neste terreno), precisamos da descrição do projeto e da planta com a localização da central. O prazo para responder é curto.",
+  "params": {
+    "tom": "admin"
+  }
 }

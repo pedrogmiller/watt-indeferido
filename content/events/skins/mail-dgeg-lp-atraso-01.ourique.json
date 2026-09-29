@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-dgeg-lp-atraso-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de licenciamento",
+  "subject": "LP fora do prazo legal — DGEG sem decisão",
+  "body": "Passou um ano desde o pedido e a DGEG ainda não decidiu. Com AIA no processo não há deferimento tácito. O gestor do procedimento diz que faltam pareceres. Cada mês parado aqui come margem aos prazos seguintes do TRC — mas fica registado que o atraso não é nosso.",
+  "params": {
+    "base_legal": "DL 15/2022 arts. 14.º/2, 14.º-B/2 e 16.º"
+  }
+}

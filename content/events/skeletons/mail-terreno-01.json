@@ -14,7 +14,7 @@
   "choices": [
     {
       "id": "open_dd",
-      "label": "Abrir due diligence",
+      "label": "Fazer a opção e verificar o terreno",
       "effects": [
         "land_option_open",
         "cash_at_risk_+1"

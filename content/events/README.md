@@ -43,3 +43,7 @@ events/
 ## MVP
 
 Ver `MVP-ITERATION-1.md` — fluxo M0–M6 ↔ esqueletos (Ourique).
+
+## DRAFT 2026-09-28 — prazos + LP → obra → COD
+
+Proposta GM (não trancada): `deadlines.draft.json`, `lp-cod-rules.draft.json`, 22 esqueletos `mail-dgeg-lp-*`, `mail-banco-term-sheet-01`, `mail-epc-*`, `mail-investidores-fid-01`, `mail-obra-arranque-01`, `mail-rede-*`, `mail-dgeg-ensaios-01`, `mail-dgeg-le-cod-01`, `mail-prazo-*`, `mail-prorrogacao-*`, `mail-fyi-processo-01` + skins Ourique. Spec: `../deadlines-lp-cod-proposta.md`.

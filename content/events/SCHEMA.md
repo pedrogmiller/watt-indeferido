@@ -71,3 +71,22 @@ Preferir **fase + deadline** a `month_offset` puro:
 
 Fase sobe só via `effects[]` / tags (Economy + UI). Comunicação prévia / `obra` implica já `licenca_producao` + `aia` (ou PIP + não sujeição).
 
+
+## Apêndice DRAFT 2026-09-28 — prazos + LP → COD (proposta, não trancado)
+
+Spec: `../deadlines-lp-cod-proposta.md`. Tudo opcional e ignorado pela consola actual até a UI ligar.
+
+| Onde | Campo | Uso |
+|------|-------|-----|
+| Esqueleto | `draft`, `status` | Marca de proposta (aguarda Gate Pedro) |
+| Esqueleto | `deadline_ref` | Id do prazo a que a carta se refere (`from_deadline` = herdado do prazo que a gerou) |
+| Esqueleto | `heavy` | Conta para o cap de CTA pesado (≤2 por aterragem) |
+| Choice | `when.requires` | Já existe — usado para gates `fid_ready` / `equity_fit_short` / `fid_reached` |
+| Manifest | `deadlines_draft` | Catálogo de prazos (`deadlines.draft.json`) |
+| Manifest | `rules_draft` | Regras de disparo pós-M6 (`lp-cod-rules.draft.json`) |
+
+`phase` dos esqueletos novos = `mid_dev` / `crisis` (não `post_win`, para não entrarem no seed `?inbox=1`).
+
+Via B (2026-09-28, DRAFT): se-sheet pode ter `env_draft` {`sensitive_area`, `aia_threshold`, `solar_on_structure`, `structure_exception`}; regras podem usar `requires_any_effects_2`; prazos podem usar `meet_on_delivered`. Ver spec §2B.
+
+Routing ambiental (2026-09-29, DRAFT): `se-sheet.env_draft` passa a ter atributos `{value, band, source, engine_default}` — `connection_mva`, `area_ha`, `n_turbines`, `tech`, `line_overhead`, `line_kv`, `line_km`, `sensitive_area`, `area_aceleracao`, `solar_on_structure`, `structure_exception` — e `resolves_to`. Skins podem usar `when.env_path`. O motor escreve a flag `env_path_<via>`. Ver `lp-cod-rules.draft.json → env_routing` e spec §2B. `requires_any_effects_2` deixou de ser usado.

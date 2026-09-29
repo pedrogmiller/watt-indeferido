@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-camara-pip-aprovado-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Serviços de Urbanismo — Câmara Municipal de Ourique",
+  "subject": "PIP favorável",
+  "body": "A informação prévia é favorável à implantação da central nos termos apresentados. Fica vinculativa para o licenciamento no prazo legal. Juntem-na ao procedimento na DGEG.",
+  "params": {
+    "base_legal": "RJUE arts. 14.º e 17.º"
+  }
+}

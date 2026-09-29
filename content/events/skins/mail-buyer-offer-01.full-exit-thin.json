@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-buyer-offer-01",
+  "skin_id": "full-exit-thin",
+  "when": {
+    "sale_mode": "full_exit",
+    "offer_band": "thin"
+  },
+  "from_name": "Horizon Infra Partners",
+  "subject": "Proposta: comprar o projeto todo",
+  "body": "Queremos comprar o projeto todo: o TRC e tudo o que já fizeste. A nossa oferta é baixa, porque o projeto ainda está no início e as licenças ainda são um risco.\n\nSe aceitares, o projeto deixa de ser teu, deixas de gastar dinheiro de desenvolvimento nele e ficas com lugar para ganhar outro lote. Se recusares, o projeto continua contigo e o dinheiro de desenvolvimento vai sendo gasto.",
+  "params": {
+    "sale_mode": "full_exit",
+    "offer_band": "thin"
+  }
+}

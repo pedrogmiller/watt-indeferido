@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-icnf-consulta-01",
+  "skin_id": "ourique-sem-resposta",
+  "draft": true,
+  "when": {
+    "outcome": "sem_resposta"
+  },
+  "from_name": "Equipa de desenvolvimento",
+  "subject": "O ICNF não respondeu",
+  "body": "Pedimos ao ICNF, o instituto do Estado que protege a natureza e as florestas, uma opinião sobre os sobreiros e azinheiras do terreno. Passou um mês e não houve resposta. Sem um processo aberto na Câmara, é normal o ICNF não responder.",
+  "params": {}
+}

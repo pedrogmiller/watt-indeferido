@@ -14,7 +14,7 @@
   "choices": [
     {
       "id": "meet_now",
-      "label": "Desbloquear agora",
+      "label": "Reunir já com a Câmara",
       "effects": [
         "risk_camara_-1",
         "cash_at_risk_+1"

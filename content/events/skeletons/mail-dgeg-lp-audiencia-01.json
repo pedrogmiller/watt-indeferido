@@ -1,0 +1,58 @@
+{
+  "id": "mail-dgeg-lp-audiencia-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "lp_request_submitted",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "lp_request_submitted",
+      "env_gate_ok"
+    ],
+    "requires_any": [
+      "lp_dossier_thin",
+      "lp_elements_missing",
+      "dia_contest",
+      "risk_camara_+2",
+      "grid_phasing_request",
+      "pip_conditions"
+    ],
+    "month_offset": 13
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "choices": [
+    {
+      "id": "reply",
+      "label": "Responder com parecer técnico e jurídico",
+      "effects": [
+        "lp_hearing_reply",
+        "cash_at_risk_+1",
+        "delay_lp_+1"
+      ]
+    },
+    {
+      "id": "redesign",
+      "label": "Reformular o projecto",
+      "effects": [
+        "lp_hearing_reply",
+        "reopen_tech_plan",
+        "delay_lp_+2"
+      ]
+    },
+    {
+      "id": "silence",
+      "label": "Não responder",
+      "effects": [
+        "lp_indeferido",
+        "caducidade_risk_+2"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "Risco de indeferimento. Odds de chegar = PEDIR_ECONOMY (sobem com as tags requires_any). cash_at_risk_+1 = consultor/advogado — PEDIR_ECONOMY.",
+  "notes_for_ui": "mutex_group lp_outcome (com concedida/condicionada). Audiência prévia CPA (arts. 25.º/4 e 28.º/2). lp_indeferido re-arma o pedido (skin novo-pedido). CTA pesado (crise). Via A ou B: gate env_gate_ok = dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado)."
+}

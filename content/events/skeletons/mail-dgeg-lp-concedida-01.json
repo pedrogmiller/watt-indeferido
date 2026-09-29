@@ -1,0 +1,37 @@
+{
+  "id": "mail-dgeg-lp-concedida-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "lp_request_submitted",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "lp_request_submitted",
+      "env_gate_ok"
+    ],
+    "requires_any": [
+      "grid_conditions_accepted",
+      "grid_phasing_request"
+    ],
+    "month_offset": 14
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Seguir para FID",
+      "effects": [
+        "lp_granted",
+        "lp_clean",
+        "fid_track_open"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "lp_granted: fim da fase de licença no risco de desenvolvimento; banco/EPC abrem. Ver fid_window. Sem €.",
+  "notes_for_ui": "PHASE_BUMP proposto: lp_granted → licenca_producao. Cria deadlines le_deadline e fid_window; cumpre lp_decision. Desbloqueia sell modes 2–3 quando também line_ready. Maturidade FA = 'producao'. Via A ou B: gate env_gate_ok = dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado)."
+}

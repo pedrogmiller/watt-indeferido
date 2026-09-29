@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-consultor-enquadramento-aia-01",
+  "skin_id": "aac-simplificada",
+  "draft": true,
+  "when": {
+    "env_path": "aac_simplificada"
+  },
+  "from_name": "Consultor de licenciamento ambiental",
+  "subject": "Dentro da área de aceleração — avaliação simplificada",
+  "body": "O projecto fica estritamente dentro de uma zona de aceleração de renováveis já mapeada. Há presunção de não sujeição a AIA, mesmo acima dos limiares normais: basta uma Avaliação Ambiental Simplificada, bem mais rápida. Depois seguem-se o PIP e a LP.",
+  "params": {
+    "env_path": "aac_simplificada",
+    "base_legal": "DL 99/2024 (transposição RED III)"
+  }
+}

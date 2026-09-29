@@ -2,7 +2,9 @@
   "skeleton_id": "mail-joker-fa-bess-01",
   "skin_id": "default",
   "from_name": "Fundo Ambiental",
-  "subject": "Aviso RP-C21-I08 — flexibilidade de rede e armazenamento",
-  "body": "Abriu o concurso de apoio a armazenamento. A pontuação de maturidade distingue licença de exploração, licença de produção e só TRC — vê a grelha antes de candidatares.",
-  "params": { "aviso": "RP-C21-I08" }
+  "subject": "Fundo Ambiental: apoio a baterias",
+  "body": "Abriu um concurso do Fundo Ambiental com apoio para baterias. Os projetos mais avançados têm mais pontos: quem já tem a licença de exploração (a autorização para a central começar a vender energia) tem mais pontos do que quem tem a licença de produção (a autorização do Estado para a central produzir energia), e quem só tem o TRC tem menos. Vê a tabela de pontos antes de te candidatares.",
+  "params": {
+    "aviso": "RP-C21-I08"
+  }
 }

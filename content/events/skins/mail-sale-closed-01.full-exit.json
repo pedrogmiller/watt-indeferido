@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-sale-closed-01",
+  "skin_id": "full-exit",
+  "when": {
+    "sale_mode": "full_exit"
+  },
+  "from_name": "Equipa de desenvolvimento",
+  "subject": "Venda fechada: vendeste o projeto todo",
+  "body": "A venda está feita. O projeto já não é teu e deixaste de gastar dinheiro de desenvolvimento nele. Tens agora lugar para ganhar outro lote no próximo leilão."
+}

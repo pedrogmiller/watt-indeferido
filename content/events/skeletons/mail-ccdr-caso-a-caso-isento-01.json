@@ -1,0 +1,34 @@
+{
+  "id": "mail-ccdr-caso-a-caso-isento-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 — proposta GM (routing ambiental calculado); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "caso_a_caso_request|aas_submitted",
+    "when_phase": [
+      "land",
+      "pip"
+    ],
+    "requires_any": [
+      "caso_a_caso_request",
+      "aas_submitted"
+    ],
+    "or_deadline": "caso_a_caso_decision"
+  },
+  "priority": "high",
+  "from_type": "CCDR",
+  "deadline_ref": "caso_a_caso_decision",
+  "choices": [
+    {
+      "id": "to_pip",
+      "label": "Seguir para PIP e LP",
+      "effects": [
+        "nao_sujeicao",
+        "env_route_b"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Sem €. Poupa AIA completa (tempo + CAR) — diferencial PEDIR_ECONOMY.",
+  "notes_for_ui": "Decisão favorável da autoridade de AIA (CCDR ou APA) na apreciação prévia, ou AAS favorável (skin aas-favoravel). nao_sujeicao = tag exacta que a consola já lê. from_type CCDR é novo (FROM_TYPE_TO_MAIL → 'ccdr'). mutex env_screening."
+}

@@ -1,0 +1,49 @@
+{
+  "id": "mail-banco-term-sheet-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "lp_granted",
+    "when_phase": [
+      "licenca_producao"
+    ],
+    "requires": [
+      "lp_granted"
+    ],
+    "month_offset": 15
+  },
+  "priority": "high",
+  "from_type": "BANCO",
+  "choices": [
+    {
+      "id": "sign",
+      "label": "Assinar term sheet",
+      "effects": [
+        "term_sheet_signed",
+        "gearing_band_base"
+      ]
+    },
+    {
+      "id": "negotiate",
+      "label": "Negociar gearing mais alto",
+      "effects": [
+        "term_sheet_negotiate",
+        "gearing_push",
+        "delay_fid_+1"
+      ]
+    },
+    {
+      "id": "defer",
+      "label": "Adiar financiamento",
+      "effects": [
+        "term_sheet_defer",
+        "delay_fid_+1",
+        "investor_patience_-1"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "gearing_band_base|high = % dívida — PEDIR_ECONOMY. negotiate: Economy resolve em 1–2 meses → term_sheet_signed + gearing_band_(base|high) (toast, sem carta nova). Merchant do híbrido com haircut.",
+  "notes_for_ui": "Structuration date no dossier. 'Adiar' re-arma (rearm_on_effects: term_sheet_defer)."
+}

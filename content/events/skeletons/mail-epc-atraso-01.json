@@ -1,0 +1,48 @@
+{
+  "id": "mail-epc-atraso-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ],
+    "requires": [
+      "construction_started"
+    ],
+    "month_offset": 24
+  },
+  "priority": "high",
+  "from_type": "EPC",
+  "deadline_ref": "epc_mechanical_completion",
+  "choices": [
+    {
+      "id": "claim_lds",
+      "label": "Aplicar penalidades contratuais",
+      "effects": [
+        "epc_lds_claimed",
+        "delay_cod_+1",
+        "epc_relationship_-1"
+      ]
+    },
+    {
+      "id": "accelerate",
+      "label": "Pagar aceleração",
+      "effects": [
+        "epc_acceleration",
+        "equity_capex_overrun_flag"
+      ]
+    },
+    {
+      "id": "accept",
+      "label": "Aceitar o novo prazo",
+      "effects": [
+        "delay_cod_+2"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "Odds PEDIR_ECONOMY (sobem com epc_multi / epc_interface_risk_+1; descem com epc_turnkey). epc_acceleration/overrun = equity extra; LDs = crédito parcial — PEDIR_ECONOMY.",
+  "notes_for_ui": "delay_cod_+N empurra o deadline epc_mechanical_completion (shift_on_effects). CTA pesado (crise)."
+}

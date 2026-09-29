@@ -1,0 +1,34 @@
+{
+  "id": "mail-camara-pip-aprovado-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM (Via B não-sujeição + PIP); aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "pip_request_submitted",
+    "when_phase": [
+      "pip",
+      "aia"
+    ],
+    "requires": [
+      "pip_request_submitted",
+      "nao_sujeicao"
+    ],
+    "or_deadline": "pip_decision",
+    "month_offset": 8
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "deadline_ref": "pip_decision",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Seguir para a LP",
+      "effects": [
+        "pip_aprovado"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Sem €.",
+  "notes_for_ui": "mutex pip_outcome. pip_aprovado + nao_sujeicao → env_gate_ok (gate da decisão LP na via B)."
+}
