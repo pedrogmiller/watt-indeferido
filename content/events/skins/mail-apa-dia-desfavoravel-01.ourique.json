@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-apa-dia-desfavoravel-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "APA — Autoridade de AIA",
+  "subject": "Proposta de decisão ambiental desfavorável — central de Ourique",
+  "body": "A Comissão de Avaliação propõe uma decisão desfavorável. Os pontos principais são o corte de sobreiros e azinheiras no montado e o efeito nas aves estepárias da zona de Castro Verde, ali ao lado. Antes de ficar definitiva, podes responder por escrito. Sem decisão favorável, não há licença de produção. Um layout que poupe o montado e se afaste da zona das aves pode passar, mas é um estudo novo e cerca de um ano. O prazo do TRC continua a contar.",
+  "params": {
+    "dia": "desfavoravel_proposta"
+  }
+}

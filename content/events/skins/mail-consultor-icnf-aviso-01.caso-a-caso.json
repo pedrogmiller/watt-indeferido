@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-consultor-icnf-aviso-01",
+  "skin_id": "caso-a-caso",
+  "draft": true,
+  "when": {
+    "route": "caso_a_caso"
+  },
+  "from_name": "Consultor ambiental",
+  "subject": "Aviso: o ICNF pode vir a exigir mudanças",
+  "body": "Pediste à CCDR que decida se o projeto precisa de avaliação ambiental. Um aviso: nestas decisões, a opinião do ICNF, o instituto do Estado que protege a natureza e as florestas, tem sido tratada como obrigatória, mesmo fora de zonas protegidas.\n\nNo teu caso, o ICNF pode vir a exigir mudanças ao desenho ou uma compensação. Não é certo: muitas vezes não acontece. Podemos preparar já alternativas, ou esperar para ver.",
+  "params": {}
+}

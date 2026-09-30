@@ -11,7 +11,9 @@
     "requires": [
       "fid_reached"
     ],
-    "month_offset": 18
+    "month_offset": 18,
+    "requires_equity_full": true,
+    "gate_note": "Obra só com todo o capital próprio comprometido (fid_reached ∧ equity_capex_commit ∧ equity_fit_ok). Regra Pedro 2026-09-30."
   },
   "priority": "high",
   "from_type": "EQUIPA",

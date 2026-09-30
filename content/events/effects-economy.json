@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "status": "DRAFT 2026-09-29 PT — nada é live; Pedro aprova antes de ligar à UI. Não edita ipp-console-light.",
+  "status": "DRAFT 2026-09-30 PT (decisões Pedro 2026-09-30b + GM ronda 2026-09-30 tarde: linha enterrada Nisa, aviso ICNF, equity só na obra, Capex = motor de leilão) — nada é live; Pedro aprova antes de ligar à UI. Não edita ipp-console-light.",
   "units": {
    "money": "M€ (delta, sinal = efeito no campo)",
    "months": "meses (delta no calendário até COD, ou na fase indicada)",
@@ -17,8 +17,9 @@
    "prob": "ver units.prob"
   },
   "scaling": {
+   "MVA_label": "Ourique 99 = REAL DGEG lote 2020 n.º 6 (TRANCADO Pedro 2026-09-30); Ferreira/Estremoz = MWp/1,25 (HIPÓTESE)",
    "MVA": {
-    "Ourique": 96,
+    "Ourique": 99,
     "Ferreira": 144,
     "Estremoz": 224
    },
@@ -29,23 +30,45 @@
     "rule": "k = (CAR cash − kickoff − contingência) do lote ÷ o de Ourique (2,85 M€)"
    },
    "CAPEX": {
-    "Ourique": 103.0,
-    "Ferreira": 143.4,
-    "Estremoz": 213.6
+    "Ourique": 90.0,
+    "Ferreira": 136.3,
+    "Estremoz": 198.6,
+    "label": "HIPÓTESE (PEDIR P4) = motor de leilão TRANCADO (tools/euro_s6_lotes.json capex_MEUR; Ferreira inclui +7,4 de reforço de rede). Antes (§6 antigo): 103,0 / 143,4 / 213,6"
    },
-   "g": "gearing default 0.70 (HIPÓTESE 0.60–0.80)",
+   "g": "gearing do motor de leilão à oferta ganha (dívida = min(80 % Capex, o que a tarifa paga a DSCR 1,25)): Ourique 0,54 a 40 €/MWh, 0,51 a 38 (HIPÓTESE / PEDIR P9). A regra antiga g 0,70 deixou de ser usada no Capex base.",
+   "equity_need": {
+    "Ourique": 41.4,
+    "Ferreira": 62.7,
+    "Estremoz": 83.4
+   },
    "U": "U = 0.15*k (Ourique 0.15 M€; k = 1.00 Ourique / 1.25 Ferreira / 1.76 Estremoz)"
   },
   "rules": [
-   "Nenhum dinheiro entra antes do COD, excepto financiamento (car_band_*, cash_at_risk_request, equity_capex_request, dívida) e vendas (sale_*, hybrid_slice_sold).",
+   "Nenhum dinheiro entra antes do COD, excepto financiamento (car_band_*, cash_at_risk_request, equity_capex_request, dívida) e vendas (sale_*, hybrid_slice_sold). Venda total antes da LP: o preço só entra no averbamento DGEG (trc_transfer_averbado → sale_full_exit), nunca em sale_full_exit_pending. Venda depois da LP (projeto todo ou central + aluguer): também fica pendente (sale_full_exit_pending / sale_plant_rent_infra_pending) até a DGEG autorizar (lp_transfer_authorized; DL 15/2022 art. 36.º/1 e 36.º/4: 15 dias, +30 dias uma vez se pedir elementos). A caução +50 % do comprador só existe antes da licença de exploração (arts. 18.º/10 e 36.º/2; depois da LE a caução já foi liberada, art. 13.º/18).",
+   "Rendas das vendas/partilha (capacity_use_fee_on, infra_usage_rent_on, share_rent_on) são receita recorrente por mês e só começam no COD do comprador/parceiro (sell-modes-lock; trc-partilha §7). Valor = PEDIR.",
+   "mw_free = trc_mw − mw_own_plugged − mw_reserved_by_buyer − mw_reserved_by_partner (MVA de injeção; lp-cod-rules computed_tags, sell-modes-lock). Vender em renda ou partilhar move MW own → reserved: mw_free NÃO muda (as unidades vendidas continuam a usar capacidade de injeção). Nenhuma tag económica mexe em mw_free; trc_mw_free_down retirada (ver deprecated_tags).",
+   "Sobreequipamento (Pedro 2026-09-30, reformulado): o +20 % do DL 15/2022 art. 3.º sss) limita a INJEÇÃO, não os painéis. Ourique: 99 MVA → injeção máx. 1,2 × 99 = 118,8 MVA (+19,8). O jogador instala os MWp que quiser; a economia decide o DC/AC (tools/dcac_optimo.py: mais Capex e mais energia, menos o corte no limite de injeção). Gate da missão: injeção ≤ 1,2 × MVA da LP inicial; SEM limite fixo de MWp. Não usa mw_free. A energia acima do volume base vai a preço de mercado (tag sobreequip_merchant_energy; lp-cod-rules computed_tags: art. 66.º → 17.º). Só a hibridização (outra tecnologia/BESS) é travada por mw_free (art. 74.º/2).",
    "Play NÃO soma caixa aleatória: cada mês Caixa −= burn da fase (engine_events.burn_*) + efeitos das cartas.",
    "NAV = cash − debt + Σ NPV (recalcular sempre; nunca somar NPV à Caixa).",
-   "Kickoff + burn por fase + cash_at_risk_+1 (contingência) + caução = CAR need do lote (Ourique 1,00 + 2,85 + 0,69 + 0,96 = 5,50 M€).",
+   "Kickoff + burn por fase + cash_at_risk_+1 (contingência) + caução = CAR need do lote (Ourique 1,00 + 2,85 + 0,69 + 0,99 = 5,53 M€; 99 MVA REAL).",
    "Depois de ~5 cartas cash_at_risk_+1 (contingência gasta, Ourique 0,69 M€) cada nova soma também car +U.",
-   "NPV nunca VAN."
+   "NPV nunca VAN.",
+   "Capital próprio (GM 2026-09-30 tarde): a obra só arranca com todo o capital próprio: equity_full = equity_fit_ok ∧ equity_capex_commit (lp-cod-rules computed_tags; r-arranque requires_equity_full). O leilão NÃO filtra lotes pela equity.",
+   "Lote cinza no leilão (Economy 2026-09-30c): SÓ quando o CAR need (centro) do lote > orçamento CAR do jogador (mandato do tier: boutique 6,5 · mid 8,5 · infra 12,0; ou a Caixa total depois do M0, se for maior). A equity, o nível do lote (level) e a linha de bonding NÃO põem cinza (a caução que não cabe no bonding sai da Caixa).",
+   "Convenção antiga nas tags de ΔCapex: equity +0,3 × ΔCapex (g 0,70). No motor a dívida está presa ao DSCR (g 0,54 < 80 %), por isso cada € a mais de Capex é ~100 % equity. As tags continuam com 0,3 até o Pedro decidir (PEDIR P43); nas tags novas da linha enterrada a note dá os dois."
   ],
   "sources": [
-   "euro-fields-console.md §1–6",
+   "GM ronda 2026-09-30 tarde: lp-cod-rules.draft.json r-nisa-enterrar-linha, r-consultor-icnf-aviso-*, r-apa-icnf-vinculativo-* (condicional ao aviso), computed_tags.equity_full; skeletons mail-camara-linha-enterrada-01, mail-consultor-icnf-aviso-01",
+   "tools/leilao_faixa_npv.json (motor TRANCADO; Capex e gearing)",
+   "tools/producao_params.json (yield 1 750 kWh/kWp)",
+   "correcções GM 2026-09-30 (trancadas Pedro): trc-partilha-dl15-2022.md §9; lp-cod-rules.draft.json (r-lp-transfer-*, dia_outcome, computed_tags.sobreequip_merchant_energy); deadlines.draft.json lp_transfer_authorization",
+   "gate3-curvas-mercado.md §2, §5, §6 (capture price)",
+   "APA REA 2025 ficha AIA; ECO 03/10/2025 (dados APA 2016–set 2025)",
+   "DL 11/2023 (RJAIA anexos I/II)",
+   "sell-modes-lock.md (rev. 2026-09-29)",
+   "events/lp-cod-rules.draft.json sell_modes_2026_09_29",
+   "trc-partilha-dl15-2022.md §6–7",
+   "euro-fields-console.md §1–6, §11",
    "estudo-economia-por-dimensao.md §2.2/§4",
    "gate5-motor-npv-irr-car.md §3–8",
    "gate6-ourique-calibracao.md §A–C",
@@ -58,7 +81,7 @@
    "cash": null,
    "debt": null,
    "nav": null,
-   "bonding": 0.96,
+   "bonding": 0.99,
    "car": null,
    "equity": null,
    "months": null,
@@ -159,17 +182,17 @@
   },
   "burn_obra": {
    "cash": 0.0,
-   "debt": 4.51,
+   "debt": 3.04,
    "nav": null,
    "bonding": null,
    "car": null,
-   "equity": -1.93,
+   "equity": -2.59,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §3.2; estudo §1.1 (obra 16 meses, Sobreira de Baixo REAL)",
-   "note": "Pós-FID: CAR pára (car_burn_stop). Por mês: purse_equity −equity/16 e dívida +Capex×g/16. Ourique @g 0,70: equity −1,93/mês, dívida +4,51/mês.",
-   "formula": "equity/mês: -CAPEX*(1-g)/16 ; debt/mês: +CAPEX*g/16",
+   "note": "Pós-FID: CAR pára (car_burn_stop). Por mês: purse_equity −equity/16 e dívida +Capex×g/16. Capex do motor de leilão TRANCADO (tools/leilao_faixa_npv.py: 580 €/kWp + rede + 5 %): Ourique 90.0 (antes §6 103,0); equity = Capex × (1 − gearing do motor à oferta; dívida por DSCR 1,25, máx. 80 %): Ourique a 40 €/MWh g 0.54 → equity 41.4, dívida 48.6 → equity −2.59/mês, dívida +3.04/mês (antes @g 0,70 com 103: −1,93 / +4,51). Só arranca com equity_full.",
+   "formula": "equity/mês: -CAPEX*(1-g_bid)/16 ; debt/mês: +CAPEX*g_bid/16 (g_bid = leilao_faixa_npv.json gearing_by_bid[oferta])",
    "phase": "obra"
   },
   "burn_cod": {
@@ -182,9 +205,9 @@
    "months": null,
    "prob": null,
    "label": "HIPÓTESE / PEDIR",
-   "origin": "gate5 §2.3; estudo §1.1 yield 1 727 kWh/kWp (REAL-derived)",
-   "note": "Primeira entrada de dinheiro operacional. Receita/mês = MWp×1,727/12×bid/1000 M€ (Ourique @20 €/MWh ≈ +0,35). Menos opex (PEDIR P10; HIPÓTESE 7,5–14 k€/MWp/ano ≈ −0,11/mês) e serviço da dívida (PEDIR P9).",
-   "formula": "cash/mês: +MWp*1.727/12*bid/1000 - MWp*0.011/12 - DS/12",
+   "origin": "gate5 §2.3; tools/producao_params.json PT18 yield 1 750 kWh/kWp (HIPÓTESE calibrada vs renewables.ninja; antes 1 727 do estudo §1.1)",
+   "note": "Primeira entrada de dinheiro operacional. Receita/mês = MWp×1,750/12×bid/1000 M€ (Ourique @20 €/MWh ≈ +0.35). Menos opex (PEDIR P10; HIPÓTESE 7,5–14 k€/MWp/ano ≈ −0,11/mês) e serviço da dívida (PEDIR P9).",
+   "formula": "cash/mês: +MWp*1.750/12*bid/1000 - MWp*0.011/12 - DS/12",
    "phase": "cod"
   },
   "mission_sobreequipamento": {
@@ -193,13 +216,13 @@
    "nav": null,
    "bonding": null,
    "car": 0.3,
-   "equity": 5.1,
+   "equity": 6.3,
    "months": 6,
    "prob": null,
-   "label": "HIPÓTESE",
-   "origin": "euro-fields-console.md §6 / §1.4 / gate6 §B.1",
-   "note": "+20 % MWp (+24 MWp). Capex Δ 14–22 (~17). Kickoff 0,15–0,6. Sem caução nova (mesmo TRC MVA).",
-   "formula": "equity: +0.3*ΔCapex (ΔCapex=ΔMWp*0.6…0.9)"
+   "label": "HIPÓTESE / PEDIR (condições da subida de injeção)",
+   "origin": "euro-fields-console.md §6 / gate6 §B.1 / tools/dcac_optimo.py / skeleton mail-consultor-sobreequipamento-01",
+   "note": "Pedro 2026-09-30: o limite é a INJEÇÃO (≤ 1,2 × MVA da LP inicial = 118,8 MVA em Ourique), não os MWp. Opção 1: pôr mais painéis na mesma ligação (99 MVA) — o único limite é a economia (Capex só DC 450–600 €/kWp vs energia extra menos corte). Opção 2: subir a injeção +20 % (até 118,8 MVA): condições REAIS não estão nos nossos ficheiros → PEDIR (o art. 64.º/2 citado em trc-partilha diz que a potência de ligação 'mantém-se inalterada' com o sobreequipamento; custo AC — inversores, transformador, baía — e caução dos +19,8 MVA = PEDIR). Planos da carta (vs 118,8 MVA): pequeno +20 MWp (DC/AC 1.18), médio +40 (1.35), grande +90 (1.77); valores em overequip_plan_*. Kickoff 0,15–0,6. Sem caução nova na opção 1. Se a injeção pedida > 1,2 × MVA → block_overequip_cap.",
+   "formula": "equity: +0.3*ΔCapex (ΔCapex = ΔMWp × 0,45…0,60 M€/MWp, só DC) ; gate: injeção ≤ 1.2*MVA_LP_inicial (Ourique 118,8 MVA); SEM limite de MWp; NÃO mw_free. Display = plano médio"
   },
   "mission_bess": {
    "cash": -0.4,
@@ -225,7 +248,7 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "euro-fields-console.md §6 / §1.4 / gate6 §B.3",
-   "note": "15 MW, Capex Δ 18–29 (~23). Kickoff 0,3–1,2. Com Ourique: equity 30,9 + 6,9 = 37,8 > purse boutique 37,5 → não cabe a gearing 0,70 (cabe com gearing_push)."
+   "note": "15 MW, Capex Δ 18–29 (~23). Kickoff 0,3–1,2. Na FID/obra (não no leilão): Ourique 41.4 + 6,9 = 48.3 > purse boutique 37,5 → não chega à obra sem as opções D9 (equity_capex_request, gearing_push, sócio). (+6,9 = convenção 0,3 × ΔCapex; motor ≈ +23, PEDIR P43.)"
   },
   "m0_ask_table": {
    "cash": null,
@@ -282,7 +305,7 @@
    "prob": 0.0,
    "label": "HIPÓTESE",
    "origin": "euro-fields-console.md §6.1; §2",
-   "note": "Pedir muito. P(aceitar no M0)=0 / plano 0,40 / corte 0,60 (→ M 0,35, S 0,25). Só pelo plano + M4 review (P aceitar 0,25 HIPÓTESE) → ~10 % no total. Total 8,5 cobre o CAR de Ferreira (7,4) mas a equity de Ferreira (43) continua > 37,5 → lote segue cinza.",
+   "note": "Pedir muito. P(aceitar no M0)=0 / plano 0,40 / corte 0,60 (→ M 0,35, S 0,25). Só pelo plano + M4 review (P aceitar 0,25 HIPÓTESE) → ~10 % no total. Total 8,5 cobre o CAR de Ferreira (7,4) → Ferreira deixa de estar cinza no leilão (a equity já não filtra lotes). Mas na FID Ferreira pede ~63 M€ de equity (motor, oferta 40) > 37,5 → sem obra sem as opções D9.",
    "formula": "cash: +6.5 boutique | +8.5 mid | +12.0 infra"
   },
   "cash_at_risk_request": {
@@ -946,7 +969,7 @@
    "prob": 0.05,
    "label": "HIPÓTESE",
    "origin": "gate5; deadlines.draft.json",
-   "note": "+0,05 em P(caducidade). Perda esperada = P × caução (Ourique 0,96)."
+   "note": "+0,05 em P(caducidade). Perda esperada = P × caução (Ourique 0,99)."
   },
   "caducidade_risk_+2": {
    "cash": null,
@@ -975,10 +998,10 @@
    "note": "−0,05 em P(caducidade)."
   },
   "caucao_executada": {
-   "cash": -0.96,
+   "cash": -0.99,
    "debt": null,
-   "nav": -0.96,
-   "bonding": -0.96,
+   "nav": -0.99,
+   "bonding": -0.99,
    "car": null,
    "equity": null,
    "months": null,
@@ -1015,17 +1038,17 @@
    "note": "Remove o NPV do activo do NAV; burn pára; equity need → 0."
   },
   "deadline_accept_miss": {
-   "cash": -0.96,
+   "cash": -0.99,
    "debt": null,
    "nav": null,
-   "bonding": -0.96,
+   "bonding": -0.99,
    "car": null,
    "equity": null,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "deadlines final_miss",
-   "note": "Aplica final_miss do deadline (caducidade → caucao_executada, −0,96 Ourique).",
+   "note": "Aplica final_miss do deadline (caducidade → caucao_executada, −0,99 Ourique).",
    "formula": "= caucao_executada"
   },
   "deadline_extend_request": {
@@ -1175,6 +1198,88 @@
    "label": "HIPÓTESE",
    "origin": "gate5",
    "note": "Contestar DIA: 3 meses, −U, P(sucesso) 0,25."
+  },
+  "dia_favoravel": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-apa-dia-favoravel-01; regra r-dia-favoravel",
+   "note": "DIA favorável sem condições: sem custo novo (o EIA já está no CAR need). Sem delta. Odds em rule_odds_proposed.dia_outcome."
+  },
+  "dia_desfavoravel": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra) / HIPÓTESE",
+   "origin": "RJAIA (DL 151-B/2013) art. 18.º/2 «A DIA desfavorável extingue o respetivo procedimento de AIA» (republicação no DL 11/2023, DR 10/02/2023); regra r-dia-desfavoravel",
+   "note": "Não há LP por agora (sem dia_emitida). Sem € no próprio marcador: o custo depende da escolha (eia_reformulate, dia_hearing, venda, desistir). Prazos do TRC continuam a correr (lp_request, DL 15/2022 art. 14.º/1, 12 meses com AIA). O burn da fase aia continua (−0,09×k/mês)."
+  },
+  "eia_reformulate": {
+   "cash": -0.54,
+   "debt": null,
+   "nav": -3.0,
+   "bonding": null,
+   "car": 0.3,
+   "equity": null,
+   "months": 3,
+   "prob": 0.05,
+   "label": "HIPÓTESE / PEDIR (custo do novo EIA)",
+   "origin": "skeleton mail-apa-dia-desfavoravel-01 (reformulate: + reopen_tech_plan, cash_at_risk_+1, delay_env_+1, caducidade_risk_+1); estudo §2.2 EIA 0,20–0,55 (HIPÓTESE); euro-fields-console.md §6.4 burn_aia",
+   "note": "Refazer o projeto e novo EIA: ~12 meses (GM). Esta tag só leva o que falta às outras da mesma escolha, para não somar duas vezes: meses 12 = 6 (delay_env_+1) + 3 (reopen_tech_plan) + 3 (aqui); burn extra total = 12 × burn_aia = −1,08 Ourique, dos quais −0,54 vêm de delay_env_+1 e −0,54 daqui (os 3 meses próprios + os 3 de reopen_tech_plan, que não trazem burn). Custo do novo EIA = PEDIR P32; placeholder no CAR need +0,3 (= aia_nao_sujeicao_lost, estudo §2.2). Pressão de prazo: +0,05 em P(caducidade) além do caducidade_risk_+1 da escolha (total +0,10 → perda esperada ≈ 0,10 × 0,99 ≈ 0,10 M€). ΔNPV por adiar o COD 12 meses ≈ −0,25×12×k = −3,0 (ordem de grandeza, como delay_cod; se o motor recalcula o NPV pelo calendário, não somar). Total da escolha (Ourique): cash ≈ −1,38 (burn −1,08 + reopen −0,15 + cash_at_risk −0,15), car +0,3, +12 meses, P(caducidade) +0,10. Se a regra do §8 (meses sobrepostos não somam) for aprovada, esta escolha tem de somar (é sequencial).",
+   "formula": "cash: -0.09*k*6 ; car: +2*U (PEDIR P32) ; nav: -0.25*12*k ; prob: +0.05 P(caducidade)",
+   "phase": "aia"
+  },
+  "dia_hearing": {
+   "cash": -0.255,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 2,
+   "prob": null,
+   "label": "HIPÓTESE (aprovado Pedro 2026-09-30: 1–3 meses, centro 2)",
+   "origin": "skeleton mail-apa-dia-desfavoravel-01 (hearing); CPA art. 121.º (audiência prévia)",
+   "note": "Contestar na audiência prévia: advogado/consultor −0,5U + 2 meses de burn_aia (1–3). Já NÃO usa os 6 meses de delay_env_+1: o GM deve tirar delay_env_+1 desta escolha (ou o motor ignora-o aqui), senão soma 6 + 2. Depois disto P(desfavorável) = 0,75 (rule_odds_proposed.dia_outcome.after_hearing, aprovado Pedro 2026-09-30).",
+   "formula": "cash: -0.5*U -0.09*k*2 ; months: 2 (1–3)",
+   "phase": "aia"
+  },
+  "dia_desfavoravel_disclosed": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": -0.15,
+   "label": "HIPÓTESE / PEDIR (preço)",
+   "origin": "skeleton mail-apa-dia-desfavoravel-01 (sell_lot)",
+   "note": "Os compradores sabem do chumbo: oferta forçada a offer_band_thin (HIPÓTESE) e −0,15 em P(oferta de comprador) (= buyer_interest_-1). Preço = PEDIR P24."
+  },
+  "project_abandoned": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "skeleton mail-apa-dia-desfavoravel-01 (abandon)",
+   "note": "Marcador. Os € vêm de caucao_executada (−0,99), asset_removed e car_burn_stop na mesma escolha — não somar."
   },
   "lp_alteration_request": {
    "cash": -0.075,
@@ -1430,13 +1535,13 @@
    "nav": "recalc MWp*0.9",
    "bonding": null,
    "car": null,
-   "equity": -2.0,
+   "equity": -2.2,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "§5.2; estudo §2.3",
-   "note": "−5…−15 % MWp (display −10 %): Capex planta −6,6 (Ourique) → equity −2,0; receita −10 % → NPV recalculado.",
-   "formula": "equity: -0.3*0.10*plant_capex (Ourique plant ≈ 66)"
+   "note": "−5…−15 % MWp (display −10 %): Capex planta −7,3 (Ourique, motor: 120 × 580 €/kWp × 1,05 ≈ 73; antes 66) → equity −2,2; receita −10 % → NPV recalculado.",
+   "formula": "equity: -0.3*0.10*plant_capex (Ourique plant ≈ 73, motor)"
   },
   "layout_trim_trees": {
    "cash": null,
@@ -1444,7 +1549,7 @@
    "nav": "recalc MWp*0.9",
    "bonding": null,
    "car": null,
-   "equity": -2.0,
+   "equity": -2.2,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
@@ -1475,8 +1580,8 @@
    "prob": null,
    "label": "REAL (unitário) / HIPÓTESE (km)",
    "origin": "Gate 4 §6.1–6.2 ACER UIC 2023",
-   "note": "Enterrar 150 kV 2c: 0,85–3,06 M€/km vs aéreo 0,22–0,39 → Δ ~0,6–2,7 M€/km × 3 km = +2…+8, display +4 Capex.",
-   "formula": "equity: +0.3*ΔCapex ; ΔCapex = km*(0.6…2.7)"
+   "note": "Tag genérica. Enterrar 150 kV 2c: 0,85–3,06 M€/km vs aéreo 0,22–0,39 → Δ ~0,6–2,7 M€/km × 3 km = +2…+8, display +4 Capex. Na carta mail-camara-linha-enterrada-01 vem junto com line_undergrounded_km_short/_long: aí vale 0 (o km da carta manda; não somar).",
+   "formula": "equity: +0.3*ΔCapex ; ΔCapex = km*(0.6…2.7) ; 0 se vier com line_undergrounded_km_*"
   },
   "capex_rede_flag": {
    "cash": null,
@@ -1489,7 +1594,7 @@
    "prob": null,
    "label": "REAL (unitário) / PEDIR",
    "origin": "§3.2 (trafo 400/110 3,6–4,7 + baía 1,2–5,2, ACER)",
-   "note": "Reforço de rede a cargo do promotor: Capex +5 (2–10).",
+   "note": "Reforço de rede a cargo do promotor: Capex +5 (2–10). Atenção GM: a escolha accept_underground (mail-camara-linha-enterrada-01) traz esta tag, mas enterrar a linha não é reforço de rede → somaria +5 M€ a mais. Propomos tirá-la dessa escolha (ou o motor ignora-a quando vem com line_undergrounded).",
    "formula": "equity: +0.3*5"
   },
   "injection_cap_restricted": {
@@ -1775,22 +1880,22 @@
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
-   "origin": "gate5 §4.1",
-   "note": "g = 0,70 → equity need Ourique 30,9 (dívida 72,1).",
-   "formula": "equity = CAPEX*(1-0.70)"
+   "origin": "gate5 §4.1; tools/leilao_faixa_npv.json",
+   "note": "Gearing do motor (dívida por DSCR 1,25, máx. 80 %). equity = Capex × (1 − gearing do motor à oferta; dívida por DSCR 1,25, máx. 80 %): Ourique a 40 €/MWh g 0.54 → equity 41.4, dívida 48.6. A 38 €/MWh: g 0.51 → equity 44.1. Antes: g 0,70 → 30,9 / 72,1 com Capex 103.",
+   "formula": "equity = CAPEX*(1-g_bid)"
   },
   "gearing_push": {
    "cash": null,
-   "debt": 10.3,
+   "debt": 9.0,
    "nav": null,
    "bonding": null,
    "car": null,
-   "equity": -10.3,
+   "equity": -9.0,
    "months": null,
    "prob": 0.4,
    "label": "HIPÓTESE / PEDIR",
    "origin": "gate5 §4.1; P9",
-   "note": "g 0,70 → 0,80: equity need −10,3, dívida +10,3 (na FID). Banco aceita P=0,40 HIPÓTESE (−0,20 se NPV<0).",
+   "note": "Banco empresta +10 pp do Capex (no motor = aceitar DSCR mais baixo ou prazo mais longo, porque a dívida está presa ao DSCR): equity need −9.0, dívida +9.0 (na FID). Ourique a 40: 41.4 → 32.4 (≤ 37,5 ✓). Banco aceita P=0,40 HIPÓTESE (−0,20 se NPV<0). Antes −10,3 com Capex 103.",
    "formula": "equity: -0.10*CAPEX ; debt: +0.10*CAPEX"
   },
   "term_sheet_signed": {
@@ -1804,8 +1909,8 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §4",
-   "note": "Dívida disponível (não sacada) = CAPEX×g. Sem cash.",
-   "formula": "debt_available: +CAPEX*g (72.1)"
+   "note": "Dívida disponível (não sacada) = CAPEX×g do motor. Sem cash.",
+   "formula": "debt_available: +CAPEX*g_bid (48.6 Ourique a 40 €/MWh)"
   },
   "financial_close": {
    "cash": null,
@@ -1818,8 +1923,8 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §4",
-   "note": "Linha fechada; saques mensais em burn_obra (+4,51/mês Ourique).",
-   "formula": "debt/mês: +CAPEX*g/16"
+   "note": "Linha fechada; saques mensais em burn_obra (+3.04/mês Ourique).",
+   "formula": "debt/mês: +CAPEX*g_bid/16"
   },
   "fid_reached": {
    "cash": null,
@@ -1827,12 +1932,12 @@
    "nav": null,
    "bonding": null,
    "car": null,
-   "equity": "commit CAPEX*(1-g)",
+   "equity": "commit CAPEX*(1-g_bid)",
    "months": null,
    "prob": null,
    "label": "REAL (regra)",
    "origin": "gate5 §3.2, §4.2",
-   "note": "CAR pára; equity comprometida; começa burn_obra. can_reach_fid exige equity need ≤ purse_equity (Ourique 30,9 ≤ 37,5)."
+   "note": "CAR pára; equity comprometida; começa burn_obra. can_reach_fid exige equity_fit_ok (equity need ≤ purse_equity). Ourique a 40 €/MWh: 41.4 > 37,5 → NÃO chega sem as opções D9 (equity_capex_request +5 → 42,5 ✓; gearing_push → 32.4 ✓; sócio = PEDIR). A obra só arranca com equity_full (= equity_fit_ok ∧ equity_capex_commit)."
   },
   "equity_capex_commit": {
    "cash": null,
@@ -1840,26 +1945,26 @@
    "nav": null,
    "bonding": null,
    "car": null,
-   "equity": -30.9,
+   "equity": -41.4,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
-   "origin": "gate5 §3.2",
-   "note": "purse_equity reservada = equity need (Ourique −30,9), sacada em 16 meses.",
-   "formula": "purse_equity: -CAPEX*(1-g)"
+   "origin": "gate5 §3.2; lp-cod-rules computed_tags.equity_full",
+   "note": "purse_equity reservada = equity need (Ourique −41.4 a 40 €/MWh; antes −30,9), sacada em 16 meses. Com equity_fit_ok dá equity_full → a obra pode arrancar.",
+   "formula": "purse_equity: -CAPEX*(1-g_bid)"
   },
   "equity_capex_overrun_flag": {
    "cash": null,
    "debt": null,
-   "nav": -5.2,
+   "nav": -4.5,
    "bonding": null,
    "car": null,
-   "equity": 5.2,
+   "equity": 4.5,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "Gate 4 contingência 5–10 %",
-   "note": "Derrapagem +5 % Capex, 100 % equity: +5,2 Ourique.",
+   "note": "Derrapagem +5 % Capex, 100 % equity: +4.5 Ourique (antes 5,2 com 103).",
    "formula": "equity: +0.05*CAPEX"
   },
   "equity_capex_need_stop": {
@@ -1878,29 +1983,29 @@
   "epc_turnkey": {
    "cash": null,
    "debt": null,
-   "nav": -5.2,
+   "nav": -4.5,
    "bonding": null,
    "car": null,
-   "equity": 1.5,
+   "equity": 1.35,
    "months": null,
    "prob": -0.1,
    "label": "HIPÓTESE / PEDIR",
    "origin": "skeleton epc-propostas",
-   "note": "Preço fechado: Capex +5 % (+5,2), −0,10 em P(atraso obra).",
+   "note": "Preço fechado: Capex +5 % (+4.5), −0,10 em P(atraso obra).",
    "formula": "equity: +0.3*0.05*CAPEX"
   },
   "epc_multi": {
    "cash": null,
    "debt": null,
-   "nav": 3.1,
+   "nav": 2.7,
    "bonding": null,
    "car": null,
-   "equity": -0.9,
+   "equity": -0.81,
    "months": null,
    "prob": 0.15,
    "label": "HIPÓTESE / PEDIR",
    "origin": "skeleton epc-propostas",
-   "note": "Multi-contrato: Capex −3 % (−3,1), +0,15 em P(atraso obra).",
+   "note": "Multi-contrato: Capex −3 % (−2.7), +0,15 em P(atraso obra).",
    "formula": "equity: -0.3*0.03*CAPEX"
   },
   "epc_retender": {
@@ -2009,31 +2114,745 @@
    "origin": "skeleton mail-joker-fa-bess-01 (RP-C21-I08)",
    "note": "Apoio Fundo Ambiental a baterias: Capex BESS −? (PEDIR), P(ganhar) PEDIR. Placeholder: custo candidatura −0,5U."
   },
-  "sale_full_exit": {
-   "cash": "+price (PEDIR)",
-   "debt": "-debt_asset",
-   "nav": "price - NPV_asset",
-   "bonding": "-0.01*MVA",
+  "sobreequip_merchant_energy": {
+   "cash": "+0.247/mês (plano médio, ano 1; desde o COD da fatia)",
+   "debt": null,
+   "nav": "recalc (já no ΔNPV do plano; não somar)",
+   "bonding": null,
    "car": null,
    "equity": null,
    "months": null,
    "prob": null,
-   "label": "PEDIR (preço) / HIPÓTESE (método)",
-   "origin": "§1.2; sell-find-buyers-lock §7; sell-modes-lock",
-   "note": "Venda total: Caixa + preço (PEDIR P17; método HIPÓTESE ≈ equity investido + NPV equity, só se NPV>0); dívida sai com o activo; caução devolvida/transferida; NPV sai do NAV. Liberta o slot boutique."
+   "label": "HIPÓTESE / PEDIR (tarifa vs mercado)",
+   "origin": "lp-cod-rules computed_tags.sobreequip_merchant_energy (art. 66.º → 17.º; art. 65.º); tools/dcac_optimo.py; captura 45 €/MWh 2026 (motor leilão, HIPÓTESE; sensibilidade 36)",
+   "note": "Liga quando overequip_added_mwp > 0 (plano confirmado). Energia ACIMA do volume base (120 MWp @ 99 MVA ≈ 210481 MWh/ano) vendida a preço de mercado, nunca à tarifa. Os nossos ficheiros definem a separação só pelos MWp de sobreequipamento; NÃO definem um volume (MWh) coberto pela tarifa nem se painéis postos no projeto inicial contam como sobreequipamento → PEDIR (dcac_optimo.json traz os dois casos: 'merchant' e 'tariff'). Energia extra/ano (líquida do corte, vs 118,8 MVA): pequeno +35473 MWh, médio +65862, grande +111710. Receita ano 1 a 45 €/MWh: +0.133 / +0.247 / +0.419 M€/mês. Corte (clipping) já descontado (curva HIPÓTESE, NREL como tecto).",
+   "formula": "cash/mês: +(E(MWp_total, 118.8) − E_base)*45*(1.02^ano)/1e6/12 ; E = MWp × Y0 × (1 − clip(DC/AC)) ; Y0 = 1750/(1−clip(1.25)) — ver tools/dcac_optimo.py"
   },
-  "sale_keep_seat": {
-   "cash": "+price (PEDIR)",
+  "overequip_plan_small": {
+   "cash": null,
+   "debt": null,
+   "nav": 8.8,
+   "bonding": null,
+   "car": null,
+   "equity": 3.15,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (custo AC da subida de injeção)",
+   "origin": "skeleton mail-consultor-sobreequipamento-01; tools/dcac_optimo.py plans_card",
+   "note": "Plano small: +20 MWp → 140 MWp, DC/AC 1.18 vs 118,8 MVA. Energia ano 1 +35473 MWh vs base; corte 0.41 % (NREL tecto 0.54 %). Capex só DC 9.0–12.0 (centro 10.5) M€. Área de módulos 60–67 ha (AIA ≥ 100 ha: não). ΔNPV (bid 38, extra a mercado, custo AC 0 = tecto) +8.8 M€; se a energia extra tivesse tarifa +4.3. Só com 99 MVA (sem subir injeção): +4.8.",
+   "formula": "equity: +0.3*10.5 ; nav: ΔNPV do plano (bid 38; ver dcac_optimo.json plans_card.small)"
+  },
+  "overequip_plan_medium": {
+   "cash": null,
+   "debt": null,
+   "nav": 14.8,
+   "bonding": null,
+   "car": null,
+   "equity": 6.3,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (custo AC da subida de injeção)",
+   "origin": "skeleton mail-consultor-sobreequipamento-01; tools/dcac_optimo.py plans_card",
+   "note": "Plano medium: +40 MWp → 160 MWp, DC/AC 1.35 vs 118,8 MVA. Energia ano 1 +65862 MWh vs base; corte 2.1 % (NREL tecto 4.05 %). Capex só DC 18.0–24.0 (centro 21.0) M€. Área de módulos 69–77 ha (AIA ≥ 100 ha: não). ΔNPV (bid 38, extra a mercado, custo AC 0 = tecto) +14.8 M€; se a energia extra tivesse tarifa +6.4. Só com 99 MVA (sem subir injeção): +4.7.",
+   "formula": "equity: +0.3*21.0 ; nav: ΔNPV do plano (bid 38; ver dcac_optimo.json plans_card.medium)"
+  },
+  "overequip_plan_large": {
+   "cash": null,
+   "debt": null,
+   "nav": 12.9,
+   "bonding": null,
+   "car": null,
+   "equity": 14.17,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (custo AC da subida de injeção)",
+   "origin": "skeleton mail-consultor-sobreequipamento-01; tools/dcac_optimo.py plans_card",
+   "note": "Plano large: +90 MWp → 210 MWp, DC/AC 1.77 vs 118,8 MVA. Energia ano 1 +111710 MWh vs base; corte 13.03 % (NREL tecto 18.52 %). Capex só DC 40.5–54.0 (centro 47.25) M€. Área de módulos 90–101 ha (AIA ≥ 100 ha: no limite: passa os 100 ha se a eficiência dos módulos for ≤ 21.0 %). ΔNPV (bid 38, extra a mercado, custo AC 0 = tecto) +12.9 M€; se a energia extra tivesse tarifa -1.4. Só com 99 MVA (sem subir injeção): -9.2.",
+   "formula": "equity: +0.3*47.25 ; nav: ΔNPV do plano (bid 38; ver dcac_optimo.json plans_card.large)"
+  },
+  "overequip_plan_commit": {
+   "cash": null,
    "debt": null,
    "nav": null,
    "bonding": null,
    "car": null,
-   "equity": "-equity_need",
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-consultor-sobreequipamento-01",
+   "note": "Confirma o plano escolhido (overequip_plan_*): arranca engine_events.mission_sobreequipamento. Sem € próprio (não somar)."
+  },
+  "clipping_risk_+1": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (P44: valor GM ≠ dcac)",
+   "origin": "skeleton mail-consultor-sobreequipamento-01 (GM 2026-09-30 tarde: plano +40 → clipping_risk_+1); tools/dcac_optimo.json plans_card.medium",
+   "note": "Só texto (copy), sem € próprio (o corte já está na energia e no ΔNPV do plano medium; não somar). Plano +40 MWp (DC/AC 1.35 vs 118,8 MVA). Valor GM: 1 % de energia cortada. Valor do dcac_optimo (usado no ΔNPV): 2.1 % (5915 MWh/ano; NREL tecto 4.05 %). NÃO BATEM: com a curva do dcac, 1 % de corte é DC/AC ≈ 1,27 e 3 % é DC/AC ≈ 1,40 (≈ +31 e +46 MWp a 118,8 MVA; ≈ +6 e +19 MWp a 99 MVA), não +40 / +90. Proposta: a copy usa o valor do dcac (~2 %); se o Pedro quiser 1 %, muda-se a curva e os ΔNPV dos planos (PEDIR P44).",
+   "clip_pct_gm_proposed": 1.0,
+   "clip_pct_dcac": 2.1,
+   "clip_pct_dcac_nrel_high": 4.05,
+   "plan": "medium",
+   "plan_added_MWp": 40,
+   "consistent_with_dcac": false
+  },
+  "clipping_risk_+2": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (P44: valor GM ≠ dcac)",
+   "origin": "skeleton mail-consultor-sobreequipamento-01 (GM 2026-09-30 tarde: plano +90 → clipping_risk_+2); tools/dcac_optimo.json plans_card.large",
+   "note": "Só texto (copy), sem € próprio (o corte já está na energia e no ΔNPV do plano large; não somar). Plano +90 MWp (DC/AC 1.77 vs 118,8 MVA). Valor GM: 3 % de energia cortada. Valor do dcac_optimo (usado no ΔNPV): 13.03 % (48273 MWh/ano; NREL tecto 18.52 %). NÃO BATEM: com a curva do dcac, 1 % de corte é DC/AC ≈ 1,27 e 3 % é DC/AC ≈ 1,40 (≈ +31 e +46 MWp a 118,8 MVA; ≈ +6 e +19 MWp a 99 MVA), não +40 / +90. Proposta: a copy usa o valor do dcac (~13 %); se o Pedro quiser 3 %, muda-se a curva e os ΔNPV dos planos (PEDIR P44).",
+   "clip_pct_gm_proposed": 3.0,
+   "clip_pct_dcac": 13.03,
+   "clip_pct_dcac_nrel_high": 18.52,
+   "plan": "large",
+   "plan_added_MWp": 90,
+   "consistent_with_dcac": false
+  },
+  "overequip_area_aia": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": 0.3,
+   "equity": null,
+   "months": 9,
+   "prob": null,
+   "label": "HIPÓTESE / REAL (limiar)",
+   "origin": "DL 11/2023 preâmbulo (painéis + inversores > 100 ha → AIA); ha/MWp 0,43–0,48 (HIPÓTESE, η 21–23 %)",
+   "note": "Área de módulos ≥ 100 ha → a alteração vai a AIA: +0,3 CAR need (EIA, estudo §2.2) e +9 meses (= aia_nao_sujeicao_lost). Ourique cruza os 100 ha entre 208 e 233 MWp no total (+88…+113). Plano grande (210 MWp) = 90–101 ha: no limite. Pequeno/médio: não."
+  },
+  "overequip_area_caso": {
+   "cash": -0.075,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 3,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "lp-cod-rules computed_tags.overequip_area_caso",
+   "note": "Alteração toca área sensível com ≥ 10 ha → caso a caso: +3 meses de decisão, −0,5U (= caso_a_caso_request).",
+   "formula": "cash: -0.5*U"
+  },
+  "land_line_curta": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "grid_line_bands_proposed (APROVADO Pedro 2026-09-30: km exato)",
+   "note": "Marcador da banda UI (short). O motor usa o km EXATO da oferta (params.linha_km) e recalcula env_path. Os € vêm de capex_linha_* e servidoes_linha_* da mesma escolha (curta: sem delta se km ≤ km do lote)."
+  },
+  "land_line_media": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "grid_line_bands_proposed (APROVADO Pedro 2026-09-30: km exato)",
+   "note": "Marcador da banda UI (medium). O motor usa o km EXATO da oferta (params.linha_km) e recalcula env_path. Os € vêm de capex_linha_* e servidoes_linha_* da mesma escolha (curta: sem delta se km ≤ km do lote)."
+  },
+  "land_line_longa": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "grid_line_bands_proposed (APROVADO Pedro 2026-09-30: km exato)",
+   "note": "Marcador da banda UI (long). O motor usa o km EXATO da oferta (params.linha_km) e recalcula env_path. Os € vêm de capex_linha_* e servidoes_linha_* da mesma escolha (curta: sem delta se km ≤ km do lote)."
+  },
+  "capex_linha_+1": {
+   "cash": null,
+   "debt": null,
+   "nav": -10.5,
+   "bonding": null,
+   "car": null,
+   "equity": 3.15,
+   "months": null,
+   "prob": null,
+   "label": "REAL (€/km ACER) / HIPÓTESE (km)",
+   "origin": "grid_line_bands_proposed; ACER UIC 2023 Table 3",
+   "note": "Linha média: ΔCapex = (km_exato − km do lote no Capex) × €/km. Ourique (400 kV 2c, 5 km no Capex) a 15 km: +10.5 M€ (mediana 1,05 M€/km; banda 5.3–16.4). Lotes 150 kV: × 0,26 (0,224–0,393). equity +0,3 × ΔCapex; ΔNPV ≈ −ΔCapex.",
+   "formula": "equity: +0.3*(km−km_lote)*€/km ; nav: −(km−km_lote)*€/km"
+  },
+  "capex_linha_+2": {
+   "cash": null,
+   "debt": null,
+   "nav": -23.6,
+   "bonding": null,
+   "car": null,
+   "equity": 7.09,
+   "months": null,
+   "prob": null,
+   "label": "REAL (€/km ACER) / HIPÓTESE (km)",
+   "origin": "grid_line_bands_proposed; ACER UIC 2023 Table 3",
+   "note": "Linha longa: ΔCapex = (km_exato − km do lote no Capex) × €/km. Ourique (400 kV 2c, 5 km no Capex) a 27.5 km: +23.6 M€ (mediana 1,05 M€/km; banda 12.0–36.8). Lotes 150 kV: × 0,26 (0,224–0,393). equity +0,3 × ΔCapex; ΔNPV ≈ −ΔCapex.",
+   "formula": "equity: +0.3*(km−km_lote)*€/km ; nav: −(km−km_lote)*€/km"
+  },
+  "servidoes_linha_+1": {
+   "cash": -0.06,
+   "debt": null,
+   "nav": -0.45,
+   "bonding": null,
+   "car": null,
+   "equity": 0.14,
+   "months": 1,
+   "prob": 0.05,
+   "label": "HIPÓTESE / PEDIR P33",
+   "origin": "grid_line_bands_proposed.servitude_land (âncoras REN FAQ, Provedor, TRL 2018, TRP 2020, STJ 2022)",
+   "note": "Mais proprietários no traçado: servidão 400 kV 15–50 k€/km (150 kV 10–30) → ~0.45 M€ a 15 km (400 kV display 30 k€/km); paga na obra (Capex). +1 mês de negociação (land) e +0.05 em P(atraso de terreno/arbitragem DGEG).",
+   "formula": "equity: +0.3*km*servidão ; nav: −km*servidão ; cash: −0.06*k*meses",
+   "phase": "land"
+  },
+  "servidoes_linha_+2": {
+   "cash": -0.12,
+   "debt": null,
+   "nav": -0.82,
+   "bonding": null,
+   "car": null,
+   "equity": 0.25,
+   "months": 2,
+   "prob": 0.1,
+   "label": "HIPÓTESE / PEDIR P33",
+   "origin": "grid_line_bands_proposed.servitude_land (âncoras REN FAQ, Provedor, TRL 2018, TRP 2020, STJ 2022)",
+   "note": "Mais proprietários no traçado: servidão 400 kV 15–50 k€/km (150 kV 10–30) → ~0.82 M€ a 27.5 km (400 kV display 30 k€/km); paga na obra (Capex). +2 mês de negociação (land) e +0.10 em P(atraso de terreno/arbitragem DGEG).",
+   "formula": "equity: +0.3*km*servidão ; nav: −km*servidão ; cash: −0.06*k*meses",
+   "phase": "land"
+  },
+  "line_undergrounded": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra) / HIPÓTESE",
+   "origin": "skeleton mail-camara-linha-enterrada-01; lp-cod-rules r-nisa-enterrar-linha; ACER UIC 2023 Table 4 (enterrado 150 kV 2c 0,85–3,06 M€/km, média 2,23; REAL) e Table 3 (aéreo 0,224–0,393; REAL); tools/leilao_faixa_npv.json lots.falagueira.breakeven_sensitivities",
+   "note": "Marcador: a linha passa a subterrânea no troço pedido (params.underground_km). Os € estão em line_undergrounded_km_short / _long (não somar com underground_cable nem capex_rede_flag da mesma escolha). Cabo enterrado não conta para os limiares de linhas aéreas do RJAIA (Anexo I n.º 19 / Anexo II 3 b) → env_path recalculado."
+  },
+  "line_undergrounded_km": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (€/km) / HIPÓTESE (km, meses)",
+   "origin": "skeleton mail-camara-linha-enterrada-01; lp-cod-rules r-nisa-enterrar-linha; ACER UIC 2023 Table 4 (enterrado 150 kV 2c 0,85–3,06 M€/km, média 2,23; REAL) e Table 3 (aéreo 0,224–0,393; REAL); tools/leilao_faixa_npv.json lots.falagueira.breakeven_sensitivities",
+   "note": "Fórmula por km (os números para mostrar estão em _short / _long; vem sempre com um deles → aqui null para não somar). ΔCapex = km × (enterrado − aéreo já no Capex) = km × 1,65 M€ (0,63–2,67). Meses de obra: +1 até 5 km, +2 acima (HIPÓTESE: vala, câmaras de junção e ensaios do cabo; parte em paralelo com a obra da central).",
+   "formula": "ΔCapex = params.underground_km * ((0.85+3.06)/2 − (0.224+0.393)/2) ; banda (0.85−0.224 … 3.06−0.393)*km ; equity +0.3*ΔCapex (motor: ~1.0*ΔCapex, P43) ; nav: ΔNPV do motor"
+  },
+  "line_undergrounded_km_short": {
+   "cash": null,
+   "debt": null,
+   "nav": -6.3,
+   "bonding": null,
+   "car": null,
+   "equity": 2.46,
+   "months": 1,
+   "prob": null,
+   "label": "REAL (€/km ACER) / HIPÓTESE (km, meses, display)",
+   "origin": "skeleton mail-camara-linha-enterrada-01; lp-cod-rules r-nisa-enterrar-linha; ACER UIC 2023 Table 4 (enterrado 150 kV 2c 0,85–3,06 M€/km, média 2,23; REAL) e Table 3 (aéreo 0,224–0,393; REAL); tools/leilao_faixa_npv.json lots.falagueira.breakeven_sensitivities",
+   "note": "Enterrar 5 km a 150 kV (2 circuitos). Custo do cabo: 4.25–15.3 M€ (mostrar 9.8; meio do intervalo ACER, HIPÓTESE; com a média REAL 2,23 M€/km seria 11.2). A mais do que a linha aérea que já está no Capex: +3.1–13.3 M€ (mostrar +8.2). Capex Falagueira 69.5 → 77.7. Atraso: +3 meses antes da FID (vêm de reopen_tech_plan, mesma escolha) e +1 mês(es) de obra (aqui). Break-even Falagueira 36.6 → 41.6 só com o Capex, 41.8 com os meses (banda de Capex: 38.6–44.9) €/MWh. NPV a 40 €/MWh: +4.2 → -2.1 M€. Equity na obra a 40 €/MWh: 30.1 → 38.4 (a dívida não sobe: está presa ao DSCR). Convenção antiga das tags (0,3 × ΔCapex): equity +2.46; motor: +8.3 (P43).",
+   "formula": "ΔCapex = 5 km × 1,65 (0,63–2,67) = +8.2 (3.1–13.3) ; nav = ΔNPV motor a 40 €/MWh ; months: obra +1",
+   "phase": "obra",
+   "capex_delta_MEUR": [
+    3.1,
+    13.3,
+    8.2
+   ],
+   "capex_gross_underground_MEUR": [
+    4.25,
+    15.3,
+    9.78
+   ],
+   "km": 5,
+   "breakeven_eur_mwh": {
+    "before": 36.6,
+    "capex_only": 41.6,
+    "with_months": 41.8,
+    "capex_band": [
+     38.6,
+     44.9
+    ]
+   }
+  },
+  "line_undergrounded_km_long": {
+   "cash": null,
+   "debt": null,
+   "nav": -10.1,
+   "bonding": null,
+   "car": null,
+   "equity": 3.96,
+   "months": 2,
+   "prob": null,
+   "label": "REAL (€/km ACER) / HIPÓTESE (km, meses, display)",
+   "origin": "skeleton mail-camara-linha-enterrada-01; lp-cod-rules r-nisa-enterrar-linha; ACER UIC 2023 Table 4 (enterrado 150 kV 2c 0,85–3,06 M€/km, média 2,23; REAL) e Table 3 (aéreo 0,224–0,393; REAL); tools/leilao_faixa_npv.json lots.falagueira.breakeven_sensitivities",
+   "note": "Enterrar 8 km a 150 kV (2 circuitos). Custo do cabo: 6.8–24.48 M€ (mostrar 15.6; meio do intervalo ACER, HIPÓTESE; com a média REAL 2,23 M€/km seria 17.8). A mais do que a linha aérea que já está no Capex: +5.0–21.3 M€ (mostrar +13.2). Capex Falagueira 69.5 → 82.7. Atraso: +3 meses antes da FID (vêm de reopen_tech_plan, mesma escolha) e +2 mês(es) de obra (aqui). Break-even Falagueira 36.6 → 44.6 só com o Capex, 45.0 com os meses (banda de Capex: 39.9–49.9) €/MWh. NPV a 40 €/MWh: +4.2 → -5.9 M€. Equity na obra a 40 €/MWh: 30.1 → 43.5 (a dívida não sobe: está presa ao DSCR). Convenção antiga das tags (0,3 × ΔCapex): equity +3.96; motor: +13.4 (P43).",
+   "formula": "ΔCapex = 8 km × 1,65 (0,63–2,67) = +13.2 (5.0–21.3) ; nav = ΔNPV motor a 40 €/MWh ; months: obra +2",
+   "phase": "obra",
+   "capex_delta_MEUR": [
+    5.0,
+    21.3,
+    13.2
+   ],
+   "capex_gross_underground_MEUR": [
+    6.8,
+    24.48,
+    15.64
+   ],
+   "km": 8,
+   "breakeven_eur_mwh": {
+    "before": 36.6,
+    "capex_only": 44.6,
+    "with_months": 45.0,
+    "capex_band": [
+     39.9,
+     49.9
+    ]
+   }
+  },
+  "line_reroute_negotiated": {
+   "cash": -0.06,
+   "debt": null,
+   "nav": -0.8,
+   "bonding": null,
+   "car": null,
+   "equity": 0.25,
+   "months": 1,
+   "prob": null,
+   "label": "REAL (€/km aéreo) / HIPÓTESE (km, servidão, meses)",
+   "origin": "skeleton mail-camara-linha-enterrada-01; lp-cod-rules r-nisa-enterrar-linha; ACER UIC 2023 Table 4 (enterrado 150 kV 2c 0,85–3,06 M€/km, média 2,23; REAL) e Table 3 (aéreo 0,224–0,393; REAL); tools/leilao_faixa_npv.json lots.falagueira.breakeven_sensitivities; grid_line_bands_proposed.servitude_land",
+   "note": "Traçado aéreo mais longo, longe das zonas que preocupam a Câmara: +2–3 km (mostrar +2.5). Linha +0.45–1.18 M€ (mostrar +0.77) + servidão 0.02–0.09 (mostrar 0.05) = +0.82 M€ de Capex. Atraso: +1 mês de terreno aqui (novo traçado, novos donos) + 2 de delay_land_+1 = +3 meses. Break-even Falagueira 36.6 → 37.1 €/MWh; NPV a 40: +4.2 → +3.4. A regra volta a sortear 2 meses depois com P × 0,5 = 0,20 (a Câmara pode voltar a pedir a linha enterrada). Atenção GM: a mesma escolha traz capex_linha_+1 e servidoes_linha_+1; com o km exacto (8 + 2,5 = 10,5 km) elas dão este mesmo Capex → não somar (propomos tirá-las da escolha; ou o motor usa só esta tag).",
+   "formula": "ΔCapex = 2.5 km × 0,3085 + 2.5 km × 0,020 (servidão) = +0.82 ; cash: −0.06*k (1 mês de burn_land; k Falagueira ≈ 0.96) ; equity +0.3*ΔCapex",
+   "phase": "land"
+  },
+  "line_underground_refused": {
+   "cash": -0.17,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 3,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-camara-linha-enterrada-01 (refuse); gate5 delay_camara +2…+6",
+   "note": "Recusaste enterrar. A Câmara trava o parecer: +3 meses de PIP (burn_pip 0,06 × k 0.96 × 3). O risco de PIP recusado sobe +0,30 no total, mas via risk_camara_+2 (+0,20) e pip_refusal_risk_+1 (+0,10) da mesma escolha → aqui sem prob, para não somar. Break-even Falagueira 36.6 → 36.6 (só a espera); se o PIP for mesmo recusado (+6 meses, pip_indeferido) → 36.8. O risco grande não é o break-even: é perder o PIP (recurso P 0,30, pip_appeal) ou ter de enterrar mais tarde.",
+   "formula": "cash: −0.06*k*3 (burn_pip)",
+   "phase": "pip"
+  },
+  "pip_refusal_risk_+1": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": 0.1,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-camara-linha-enterrada-01 (refuse); lp-cod-rules r-pip-indeferido up_if_any",
+   "note": "+0,10 em P(PIP recusado). Sem €. (Mesmo passo das tags risk_camara_*.)"
+  },
+  "icnf_demands_accepted": {
+   "cash": null,
+   "debt": null,
+   "nav": "recalc MWp*0.95 (×0.97 com icnf_alt_design_prepared)",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": -0.06,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-apa-icnf-vinculativo-01 (accept_redesign)",
+   "note": "Aceitar o que o ICNF pede: redesenho perde área → −5 % MWp (HIPÓTESE, 0–10 %; Ourique −6 MWp ≈ −10 ha; ΔNPV a 40 €/MWh ≈ −1,0 M€, break-even 37,8 → 38,4) → NPV recalculado; meses vêm de delay_env_+1 e reopen_tech_plan da mesma escolha. Com icnf_alt_design_prepared: −3 % MWp e −2 meses (ver essa tag). Na DIA: −0,06 em P(desfavorável), +0,05 em P(favorável)."
+  },
+  "icnf_binding_contested": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-apa-icnf-vinculativo-01 (contest_legal)",
+   "note": "Marcador: abre r-apa-icnf-contest-* (odds em rule_odds_proposed.icnf_vinculativo). € em legal_opinion_ordered e car_need_up."
+  },
+  "legal_opinion_ordered": {
+   "cash": -0.05,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR",
+   "origin": "skeleton mail-apa-icnf-vinculativo-01; estudo §2.2 legal 0,12–0,38 M€ (todo o desenvolvimento)",
+   "note": "Parecer jurídico de direito do ambiente/administrativo: −0,05 M€ (0,03–0,08 HIPÓTESE, sem preço público; PEDIR P37). Sai da Caixa já. O car_need_up da mesma escolha (+0,3) é o orçamento do seguimento (audiência, recurso, condições da DIA) — não é o parecer.",
+   "formula": "cash: -0.33*U"
+  },
+  "sector_escalation": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-apa-icnf-vinculativo-01 (escalate_sector)",
+   "note": "Marcador: abre r-apa-icnf-escalada-* (P aceite 0,10). Sem € (quota da associação já no burn). Meses em delay_env_+1."
+  },
+  "reputation_exposed": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": 0.05,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-apa-icnf-vinculativo-01",
+   "note": "Nome nas notícias: +0,05 em P(PIP recusado / oposição local) e −0,05 em P(oferta de comprador) até ao fim do licenciamento. Sem €."
+  },
+  "icnf_opinion_consultive": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": -0.04,
+   "label": "HIPÓTESE (ver ECO 03/10/2025)",
+   "origin": "regra r-apa-icnf-*-aceite",
+   "note": "A APA aceita que o parecer do ICNF é só conselho (RJAIA fora de RN2000/área protegida/quercíneas). Na DIA: −0,04 em P(desfavorável), +0,05 em P(favorável). Sem €."
+  },
+  "icnf_opinion_binding_kept": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": 0.15,
+   "label": "HIPÓTESE",
+   "origin": "regra r-apa-icnf-*-recusada",
+   "note": "A APA mantém o parecer como obrigatório: as exigências viram condições (vem com env_mitigation_flag, Capex +1,5). Na DIA: +0,15 em P(desfavorável); se também faltar icnf_demands_accepted e icnf_compensation_approved → P(desfavorável) = 0,50 (quase veto). Favorável sem condições = 0."
+  },
+  "icnf_aviso_delivered": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "skeleton mail-consultor-icnf-aviso-01; lp-cod-rules r-consultor-icnf-aviso-aia / -caso",
+   "note": "Marcador: o consultor avisou. Arma o vinculativo (P condicional 0,67, ver rule_odds_proposed.icnf_vinculativo). Sem €."
+  },
+  "icnf_aviso_answered": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "skeleton mail-consultor-icnf-aviso-01; lp-cod-rules r-consultor-icnf-aviso-aia / -caso",
+   "note": "Marcador de encaminhamento. Sem €."
+  },
+  "icnf_aviso_wait": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-consultor-icnf-aviso-01; lp-cod-rules r-consultor-icnf-aviso-aia / -caso (wait)",
+   "note": "Esperar: 0 € agora. Se o vinculativo vier, respondes sem os bónus de icnf_alt_design_prepared. Se não vier (falso alarme, P ≈ 0,33), poupaste o estudo."
+  },
+  "car_need_up_small": {
+   "cash": -0.05,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": 0.05,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (P45: preço de um estudo de alternativas)",
+   "origin": "skeleton mail-consultor-icnf-aviso-01; lp-cod-rules r-consultor-icnf-aviso-aia / -caso (prepare_alt); U = 0,15×k (build script); legal_opinion_ordered 0,03–0,08 (mesma escala)",
+   "note": "Estudo de desenhos alternativos pelo consultor/engenharia (layout sem as árvores/áreas sensíveis, peças para a APA): 0,03–0,08 M€ (mostrar 0,05) em Ourique, × k nos outros lotes. É trabalho novo, fora da contingência: sai da Caixa agora e sobe o CAR need no mesmo valor. HIPÓTESE: poucas semanas de engenharia de layout + ecólogo; sem preço público (PEDIR P45).",
+   "formula": "cash: -0.33*U ; car: +0.33*U (banda 0.2U–0.53U = 0,03–0,08 M€ Ourique; U = 0.15*k)"
+  },
+  "icnf_alt_design_prepared": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": 0.1,
+   "label": "HIPÓTESE (âncora REAL: RJAIA Anexo V n.º 2)",
+   "origin": "skeleton mail-consultor-icnf-aviso-01; lp-cod-rules r-consultor-icnf-aviso-aia / -caso (prepare_alt); DL 151-B/2013 red. DL 11/2023 Anexo V n.º 2 (o EIA descreve as 'alternativas razoáveis … em termos de conceção do projeto' e compara os efeitos; sources/rjaia/dl11-2023.txt)",
+   "note": "Tens desenhos alternativos prontos. Efeitos só se o vinculativo vier: (1) contestar: +0,10 em P(contestação aceite) e o tecto sobe de 0,50 para 0,55 (base 0,35 + levantamento 0,10 + DD 0,05 + este 0,10 = 0,60 → 0,55). Porquê: mostrar à APA que estudaste alternativas é o que a lei pede ao EIA; é o mesmo peso que o levantamento de campo (prova nova), e o tecto sobe pouco porque a APA raramente muda de prática. (2) aceitar o redesenho (icnf_demands_accepted): −2 meses (1–3), porque o desenho já está feito: reopen_tech_plan passa de 3 para 1 mês; poupa ~2 × burn_aia = 0,18 M€ em Ourique (o motor conta o burn pelos meses; não somar). E perdes menos área: −3 % MWp (0–6 %) em vez de −5 % (Ourique −3,6 MWp ≈ −6 ha de terreno a 1,7 ha/MWp, em vez de −6 MWp ≈ −10 ha). ΔNPV Ourique a 40 €/MWh: −0,6 em vez de −1,0 M€; break-even 37,8 → 38,1 (em vez de 38,4). (3) negociar a compensação (icnf_compensation_plan): −1 mês (o plano já tem o mapa das árvores). Se o vinculativo não vier, o estudo foi gasto (car_need_up_small).",
+   "formula": "prob: +0.10 P(r-apa-icnf-contest-aceite), cap 0.55 ; se icnf_demands_accepted: months −2 (reopen_tech_plan 3→1), MWp ×0.97 (em vez de ×0.95) ; se icnf_compensation_plan: months −1"
+  },
+  "sale_full_exit": {
+   "cash": "+price (PEDIR)",
+   "debt": "-debt_asset",
+   "nav": "+price (o −NPV_asset vem de asset_removed, mesma escolha/regra — não somar duas vezes)",
+   "bonding": -0.99,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "PEDIR (preço) / HIPÓTESE (método) / REAL (caução, regra)",
+   "origin": "§1.2; sell-find-buyers-lock §7; sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29; DL 15/2022 art. 18.º/8, 18.º/10, 36.º/1–5",
+   "note": "Venda total: Caixa + preço (PEDIR P17/P24; método HIPÓTESE ≈ equity investido + NPV equity, só se NPV>0); dívida sai com o activo; caução do jogador libertada (bonding −0,01×MVA); NPV sai do NAV. Liberta o slot boutique. ANTES DA LP só dispara no averbamento (r-averbamento-ok → trc_transfer_averbado): o dinheiro só entra aí. DEPOIS DA LP também não é imediato (TRANCADO Pedro 2026-09-30): fica em sale_full_exit_pending até lp_transfer_authorized (art. 36.º/1, 36.º/4: ~15 dias, +1 mês se a DGEG pedir elementos). Caução +50 % do comprador só até à LE (36.º/2 → 18.º/10); depois da LE não há caução (13.º/18) e bonding −0 (já devolvida no COD). caução do comprador: assume-se que o comprador presta a SUA garantia = 1,5 × caução actual (0,99 + 0,495 = 1,485 Ourique) e a do jogador é libertada no averbamento (HIPÓTESE de modelação; se em vez disso a garantia do jogador for transferida e o comprador só juntar +50 %, o efeito no jogador é o mesmo: bonding −0,01×MVA no fecho).",
+   "formula": "cash: +price (PEDIR) ; bonding: -0.01*MVA (no fecho: averbamento antes da LP ou lp_transfer_authorized depois da LP; 0 se pós-LE/COD, caução já devolvida)"
+  },
+  "sale_full_exit_pending": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra) / HIPÓTESE (prazo antes da LP)",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29; deadlines trc_transfer_averbamento (1–3 m) e lp_transfer_authorization (0,5 m +1); DL 15/2022 art. 18.º/8, 36.º/1, 36.º/4",
+   "note": "Oferta aceite: ainda NÃO há venda, em qualquer fase. Antes da LP espera o averbamento (1–3 m, HIPÓTESE). Depois da LP espera a autorização da DGEG (REAL: 15 dias, +30 dias uma vez se pedir elementos → 0,5–1,5 meses). O projeto continua do jogador: burn da fase (ou, na obra, os saques de equity/dívida de burn_obra; no COD, a receita), CAR, prazos, caução (bonding 0,99 até à LE) e lugar do lote mantêm-se. Sem cash até ao fecho (travão ao flip, G25)."
+  },
+  "buyer_caution_+50pct": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra) / PEDIR (tratamento no preço)",
+   "origin": "DL 15/2022 art. 18.º/10 (reforço da caução em metade = condição do averbamento); art. 36.º/2 (aplica-se à transmissão da LP até à LE); art. 13.º/18 (caução liberada na LE)",
+   "note": "SÓ ANTES DA LICENÇA DE EXPLORAÇÃO (fases até obra; as cartas não a emitem em cod). Custo do COMPRADOR, não do jogador: reforço = +50 % da caução actual (Ourique +0,495 → garantia do comprador 1,485). Caixa e bonding do jogador não mudam aqui. Efeito no preço (o comprador desconta a comissão da garantia extra até ao COD, ~1–3 %/ano × 0,495) = PEDIR P25. caução do comprador: assume-se que o comprador presta a SUA garantia = 1,5 × caução actual (0,99 + 0,495 = 1,485 Ourique) e a do jogador é libertada no averbamento (HIPÓTESE de modelação; se em vez disso a garantia do jogador for transferida e o comprador só juntar +50 %, o efeito no jogador é o mesmo: bonding −0,01×MVA no fecho).",
+   "formula": "buyer_bonding: +0.005*MVA (reforço) ; garantia total do comprador: 0.015*MVA ; jogador: 0"
+  },
+  "trc_transfer_averbamento_requested": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": "1–3 (display 2; só no calendário da venda, não no COD)",
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR_PEDRO (prazo)",
+   "origin": "deadlines trc_transfer_averbamento (1–3 m, display 2); art. 18.º/8",
+   "note": "Pedido de averbamento à DGEG. Sem €. Durante 1–3 meses (HIPÓTESE, CPA 90 dias supletivo) o jogador continua a pagar o burn da fase (já contado em engine_events.burn_*; não somar aqui)."
+  },
+  "trc_transfer_averbado": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "art. 18.º/8; regra r-averbamento-ok",
+   "note": "DGEG averbou o novo titular: fecha a venda. Os € estão em sale_full_exit (vem no mesmo on_deliver_effects) — não somar duas vezes."
+  },
+  "buyer_caution_failed": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": "0 no COD; venda recomeça do zero",
+   "prob": null,
+   "label": "HIPÓTESE (consequência) / PEDIR (odds, ver rule_odds_proposed)",
+   "origin": "regra r-averbamento-caucao-falhou; art. 18.º/10",
+   "note": "O comprador não reforçou a caução → sem averbamento → a venda cai (vem com sale_full_exit_cancelled). O jogador volta a ter o projeto como antes: cash 0 do comprador, caução do jogador fica (bonding sem mudança), lugar do lote ocupado. Tempo perdido = os 1–3 meses de espera (burn já pago, afundado) + recomeçar a procura de comprador (sale_pipeline_clear). Sem efeito no calendário até ao COD (o desenvolvimento não parou)."
+  },
+  "sale_full_exit_cancelled": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "regra r-averbamento-caucao-falhou",
+   "note": "Anula sale_full_exit_pending: nada de preço, NPV do activo continua no NAV, burn continua. = buyer_caution_failed (não somar)."
+  },
+  "lp_transfer_authorization_requested": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": "0.5 (+1 se lp_transfer_elementos_pedidos; só no calendário da venda, não no COD)",
+   "prob": null,
+   "label": "REAL (prazo legal)",
+   "origin": "DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % só até à LE); deadlines lp_transfer_authorization",
+   "note": "Pedido de autorização da venda à DGEG (depois da LP). Sem €. Prazo 15 dias (0,5 mês), +1 mês se a DGEG pedir elementos. Durante a espera o jogador continua a pagar o burn da fase (ou burn_obra; no COD recebe a receita): já contado em engine_events, não somar aqui. Odds do desfecho em rule_odds_proposed.lp_transfer."
+  },
+  "lp_transfer_elementos_pedidos": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": "+1 (calendário da venda)",
+   "prob": null,
+   "label": "REAL (prazo) / HIPÓTESE (custo 0)",
+   "origin": "DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % só até à LE); deadlines lp_transfer_authorization; regra r-lp-transfer-elementos",
+   "note": "A DGEG pediu mais elementos (sobre o comprador: idoneidade, art. 36.º/3). Uma vez só. +1 mês de espera. Custo dos papéis = do comprador (0 para o jogador, HIPÓTESE). O jogador paga +1 mês de burn da fase (já contado pelo motor)."
+  },
+  "lp_transfer_authorized": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % só até à LE); deadlines lp_transfer_authorization; regra r-lp-transfer-ok",
+   "note": "A DGEG autorizou → averbamento do novo titular (36.º/5): fecha a venda. Os € estão em sale_full_exit ou sale_plant_rent_infra (vêm em on_deliver_effects_by_tag) — não somar duas vezes."
+  },
+  "lp_transfer_refused": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % só até à LE); deadlines lp_transfer_authorization; regra r-lp-transfer-caucao-falhou",
+   "note": "A venda cai (hoje só por caução em falta, antes da LE). Vem com buyer_caution_failed + sale_*_cancelled + sale_pipeline_clear. Sem €; o jogador fica com o projeto; perdeu 0,5–1,5 meses de espera (burn já pago)."
+  },
+  "sale_plant_rent_infra_pending": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra) / REAL (prazo legal)",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29; DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % só até à LE); deadlines lp_transfer_authorization",
+   "note": "Oferta aceite para «Vender a central e alugar a subestação e a linha»: ainda NÃO há venda. Espera lp_transfer_authorized (0,5–1,5 meses). Tudo continua do jogador (receita/burn, dívida, caução até à LE, lugar do lote). Sem cash."
+  },
+  "sale_plant_rent_infra_cancelled": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "regra r-lp-transfer-caucao-falhou",
+   "note": "Anula sale_plant_rent_infra_pending: sem preço, sem renda; NPV do activo continua no NAV. = buyer_caution_failed (não somar)."
+  },
+  "dl_met_lp_transfer_authorization": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % só até à LE); deadlines lp_transfer_authorization",
+   "note": "Marcador: a DGEG decidiu a tempo. Sem €."
+  },
+  "dl_missed_lp_transfer_authorization": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % só até à LE); deadlines lp_transfer_authorization",
+   "note": "A DGEG passou o prazo: vem com dgeg_late (+0,10 em P(elementos) na próxima tiragem, ver rule_odds_proposed.lp_transfer). Sem € (o burn do mês extra já é contado pelo motor)."
+  },
+  "sale_hybrid_part": {
+   "cash": "+price_slice (PEDIR)",
+   "debt": null,
+   "nav": "price_slice - NPV_slice",
+   "bonding": null,
+   "car": null,
+   "equity": "-ΔEquity_slice",
    "months": null,
    "prob": null,
    "label": "PEDIR",
-   "origin": "sell-modes-lock",
-   "note": "Vende a central, fica com a ligação: Caixa + preço (PEDIR); equity need da central → 0; activa grid_usage_rent_on. Slot NÃO libertado."
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29; DL 15/2022 arts. 75.º, 77.º, 78.º/3",
+   "note": "Vende só unidades de outra tecnologia ou BESS (nunca sobreequipamento, art. 70.º, nem a central base). Caixa + preço da fatia (PEDIR P24); equity need da fatia sai. TRC e caução ficam do jogador (bonding igual). MW own → reserved_by_buyer: mw_free NÃO muda. Slot NÃO libertado. Renda recorrente em capacity_use_fee_on."
   },
   "sale_partial_park": {
    "cash": "+price_slice (PEDIR)",
@@ -2045,11 +2864,11 @@
    "months": null,
    "prob": null,
    "label": "PEDIR",
-   "origin": "sell-modes-lock",
-   "note": "Vende um parque (ex. eólico): Caixa + preço da fatia (PEDIR); equity need da fatia sai."
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29 (legacy)",
+   "note": "LEGADO = sale_hybrid_part (Sell one park). Usar sale_hybrid_part; não somar os dois."
   },
   "hybrid_slice_sold": {
-   "cash": "+price_slice (PEDIR)",
+   "cash": null,
    "debt": null,
    "nav": null,
    "bonding": null,
@@ -2058,8 +2877,76 @@
    "months": null,
    "prob": null,
    "label": "PEDIR",
-   "origin": "sell-modes-lock",
-   "note": "= sale_partial_park."
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29",
+   "note": "Marcador da fatia vendida; os € estão em sale_hybrid_part (vem na mesma escolha) — aqui null para não somar o preço duas vezes."
+  },
+  "capacity_use_fee_on": {
+   "cash": "+fee/mês (PEDIR)",
+   "debt": null,
+   "nav": "+NPV(fee)",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "PEDIR (€/MW/ano) / REAL (regra)",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29 modo 2; trc-partilha §4 (sem fonte pública PT de capacity fee)",
+   "note": "Receita recorrente: o comprador da parte híbrida paga pelo uso da capacidade de injeção do TRC do jogador. €/MW/ano = PEDIR P26. Começa no COD do comprador. A central do jogador mantém prioridade (partner_injection_subordinate).",
+   "formula": "cash/mês: +fee_eur_mw_ano*MW_reserved_by_buyer/12/1e6 (desde COD do comprador)"
+  },
+  "sale_plant_rent_infra": {
+   "cash": "+price (PEDIR)",
+   "debt": "-debt_plant",
+   "nav": "+price (o −NPV da receita vem de offtake_profit_forgone; equity need → 0 vem de plant_capex_forgone, mesma escolha — não somar duas vezes)",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "PEDIR",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29; DL 15/2022 arts. 18.º/5, 36.º/1, 37.º/2",
+   "note": "Vende a central; o TRC vai com ela (trc_transferred_with_plant). Caixa + preço (PEDIR P24); equity need e dívida da central saem; o jogador fica com a subestação e a linha (activo físico) e recebe infra_usage_rent_on. mandate_slot_free = HIPÓTESE/PEDIR_PEDRO. Gate: licenca_producao + line_ready."
+  },
+  "sale_keep_seat": {
+   "cash": "+price (PEDIR)",
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": "-equity_need",
+   "months": null,
+   "prob": null,
+   "label": "PEDIR",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29 (legacy)",
+   "note": "LEGADO = sale_plant_rent_infra (Keep the connection). Mudou em 2026-09-29: o TRC vai com a central e o slot pode libertar-se (antes: slot NÃO libertado). Não somar com sale_plant_rent_infra."
+  },
+  "trc_transferred_with_plant": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": -0.99,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "DL 15/2022 arts. 18.º/5, 36.º/1, 37.º/2",
+   "note": "O TRC e a caução passam ao comprador com a central: bonding do jogador −0,01×MVA (se ainda antes do COD; depois do COD a caução já foi devolvida → 0).",
+   "formula": "bonding: -0.01*MVA (0 se pós-COD)"
+  },
+  "infra_usage_rent_on": {
+   "cash": "+rent/mês (PEDIR) − 0.02",
+   "debt": null,
+   "nav": "+NPV(rent − O&M)",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "PEDIR (renda) / HIPÓTESE (O&M)",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29 modo 3; O&M 1–2 %/ano do CAPEX_infra = HIPÓTESE (prática de mercado, sem fonte PT)",
+   "note": "Receita recorrente: renda do comprador pela subestação e pela linha (€/ano = PEDIR P27), só desde o COD do comprador. O jogador continua a pagar o O&M da SE+linha (HIPÓTESE 1,5 %/ano do CAPEX_infra ≈ 0,24 M€/ano ≈ −0,02/mês Ourique) desde a venda. CAPEX_infra = SE própria + baía + linha (Ourique 400 kV, 5 km, 2c: 7,5 + 3,2 + 1,08×5 ≈ 16,1 M€, §10 HIPÓTESE centros).",
+   "formula": "cash/mês: +rent_infra/12 (PEDIR; desde COD do comprador) − 0.015*CAPEX_infra/12 (HIPÓTESE; desde a venda)"
   },
   "grid_usage_rent_on": {
    "cash": "+rent/mês (PEDIR)",
@@ -2071,8 +2958,8 @@
    "months": null,
    "prob": null,
    "label": "PEDIR",
-   "origin": "sell-modes-lock",
-   "note": "Renda mensal do comprador pelo uso da ligação (€/MVA/ano = PEDIR). Só entra depois do COD da central vendida."
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29 (legacy)",
+   "note": "LEGADO = infra_usage_rent_on. Não somar os dois."
   },
   "offtake_profit_forgone": {
    "cash": null,
@@ -2084,7 +2971,7 @@
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
-   "origin": "sell-modes-lock",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29",
    "note": "Receita da energia passa ao comprador: NPV da receita sai do NAV (compensado pelo preço)."
   },
   "plant_capex_forgone": {
@@ -2097,7 +2984,7 @@
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
-   "origin": "sell-modes-lock",
+   "origin": "sell-modes-lock (rev. 2026-09-29); lp-cod-rules.sell_modes_2026_09_29",
    "note": "Equity need da central → 0."
   },
   "find_buyers_started": {
@@ -2112,6 +2999,33 @@
    "label": "PEDIR",
    "origin": "sell-find-buyers-lock",
    "note": "Sem € no arranque; success fee do assessor na venda = PEDIR."
+  },
+  "share_rent_on": {
+   "cash": "+share_rent/mês (PEDIR)",
+   "debt": null,
+   "nav": "+NPV(share_rent)",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "PEDIR (€) / REAL (regra)",
+   "origin": "trc-partilha-dl15-2022 §7; entities cta-concorrente-partilha; DL 15/2022 art. 76.º",
+   "note": "Receita recorrente: o parceiro paga pelo uso da capacidade da ligação. € = PEDIR P28 (HIPÓTESE de estrutura: capacity fee + quota da SE/linha + O&M). Começa só no COD do parceiro. MW own → reserved_by_partner: mw_free não aumenta.",
+   "formula": "cash/mês: +share_rent/12 (desde COD do parceiro)"
+  },
+  "share_rent_off": {
+   "cash": "stop share_rent_on",
+   "debt": null,
+   "nav": "-NPV(share_rent restante)",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "art. 76.º/5; entities exits",
+   "note": "O parceiro sai/caduca: pára share_rent_on; os MW voltam (mw_reserved_released)."
   },
   "apa_track_start": {
    "cash": null,
@@ -2180,14 +3094,14 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §2, §7.4; euro-fields-console.md §6.4",
-   "note": "Muda a fase → burn passa ao valor de engine_events.burn_obra.",
+   "note": "Muda a fase → burn passa ao valor de engine_events.burn_obra. Só com equity_full (= equity_fit_ok ∧ equity_capex_commit; lp-cod-rules r-arranque requires_equity_full, GM 2026-09-30 tarde).",
    "phase": "obra"
   },
   "cod_reached": {
    "cash": null,
    "debt": null,
    "nav": null,
-   "bonding": -0.96,
+   "bonding": -0.99,
    "car": null,
    "equity": null,
    "months": null,
@@ -2268,17 +3182,1028 @@
    "note": "LP com condições: se inclui injecção limitada aplica injection_cap_restricted; senão Capex/Opex menor PEDIR. Placeholder ΔNPV −0,5."
   }
  },
+ "rule_odds_proposed": {
+  "_status": "aprovado Pedro 2026-09-30: trc_averbamento, lp_transfer (antes e depois da LE), dia_outcome (incl. depois da audiência e depois de refazer). NOVO: icnf_vinculativo = HIPÓTESE Economy 2026-09-30 (proposta). Não escritas em lp-cod-rules.draft.json (ficheiro GM).",
+  "trc_averbamento": {
+   "status": "aprovado Pedro 2026-09-29; confirmado aprovado Pedro 2026-09-30 (0,90/0,75 ok; 0,10/0,25 falha). Prazo 1–3 meses = PEDIR_PEDRO",
+   "r-averbamento-caucao-falhou": {
+    "P": 0.1,
+    "up_if_any": {
+     "offer_band_thin": 0.15
+    },
+    "P_if_offer_band_thin": 0.25,
+    "label": "HIPÓTESE (aprovada Pedro 2026-09-29)",
+    "rationale": "O reforço é só +0,50 M€ (Ourique) em garantia bancária, pequeno face ao preço e devolvido no COD; um comprador que já fez oferta costuma ter linha de garantias → falha rara. Oferta fraca (offer_band_thin) = comprador mais frágil → +0,15.",
+    "consequence": "buyer_caution_failed + sale_full_exit_cancelled + sale_pipeline_clear: a venda cai, o jogador volta a ter o projeto, perdeu 1–3 meses de espera (burn já pago) e recomeça a procura."
+   },
+   "r-averbamento-ok": {
+    "P": 0.9,
+    "P_if_offer_band_thin": 0.75,
+    "label": "HIPÓTESE (aprovada Pedro 2026-09-29)",
+    "rationale": "Complemento do mutex_group (fallback). DGEG averba se a caução estiver reforçada; recusa por outros motivos não modelada no MVP.",
+    "consequence": "trc_transfer_averbado + sale_full_exit (+preço PEDIR, bonding −0,99) + car_burn_stop + equity_capex_need_stop + mandate_slot_free + asset_removed + sale_closed."
+   }
+  },
+  "lp_transfer": {
+   "status": "aprovado Pedro 2026-09-30 (antes e depois da LE); grupo lp_transfer (reroll) em lp-cod-rules",
+   "idea": "Reusar as odds aprovadas do averbamento como resultado FINAL (P(falha no fim) = 0,10 / 0,25 com offer_band_thin; P(autorizada no fim) = 0,90 / 0,75) e pôr ~0,3 de 'elementos' como passo intermédio, que não muda o final: só atrasa 1 mês. Como elementos sai uma vez e depois o grupo volta a sortear só falha/ok, basta tirar a falha da 1.ª tiragem na mesma proporção: f1 = F × (1 − E).",
+   "antes_da_LE": {
+    "_where": "fases licenca_producao, obra (há caução +50 %; as 3 regras podem sair)",
+    "tiragem_1": {
+     "r-lp-transfer-caucao-falhou": 0.07,
+     "r-lp-transfer-elementos": 0.3,
+     "r-lp-transfer-ok": 0.63
+    },
+    "tiragem_1_offer_band_thin": {
+     "r-lp-transfer-caucao-falhou": 0.15,
+     "r-lp-transfer-elementos": 0.4,
+     "r-lp-transfer-ok": 0.45
+    },
+    "tiragem_2_depois_de_elementos": {
+     "r-lp-transfer-caucao-falhou": 0.1,
+     "r-lp-transfer-ok": 0.9
+    },
+    "tiragem_2_offer_band_thin": {
+     "r-lp-transfer-caucao-falhou": 0.25,
+     "r-lp-transfer-ok": 0.75
+    },
+    "check_final": "falha = 0,07 + 0,30×0,10 = 0,10; ok = 0,63 + 0,30×0,90 = 0,90 · thin: falha = 0,15 + 0,40×0,25 = 0,25; ok = 0,45 + 0,40×0,75 = 0,75 (= averbamento aprovado)",
+    "dgeg_late": "+0,10 em elementos, tirado de ok (falha igual) → final falha 0,11 / ok 0,89 (thin: 0,275 / 0,725). Só na 1.ª tiragem."
+   },
+   "depois_da_LE": {
+    "_where": "fase cod (sem caução: r-lp-transfer-caucao-falhou não é elegível, requires buyer_caution_+50pct)",
+    "tiragem_1": {
+     "r-lp-transfer-elementos": 0.3,
+     "r-lp-transfer-ok": 0.7
+    },
+    "tiragem_1_offer_band_thin": {
+     "r-lp-transfer-elementos": 0.4,
+     "r-lp-transfer-ok": 0.6
+    },
+    "tiragem_2_depois_de_elementos": {
+     "r-lp-transfer-ok": 1.0
+    },
+    "flag_gm": "Depois da LE a venda nunca falha no modelo actual (não há regra de recusa por idoneidade, art. 36.º/3). Se o GM quiser risco aqui, propomos r-lp-transfer-recusada P 0,05 (HIPÓTESE) — PEDIR ao GM/Pedro."
+   },
+   "rationale": [
+    "elementos 0,30 = sugestão GM (~0,3). É o evento 'normal' de burocracia: a DGEG pede papéis sobre o comprador (36.º/3–4). Com offer_band_thin sobe para 0,40 (comprador mais frágil → mais perguntas; está em up_if_any da regra).",
+    "Falha só por caução em falta (a DGEG decide sobre a caução; recusa por outros motivos não modelada) → mesma lógica do averbamento aprovado: reforço pequeno (0,50 M€ Ourique), comprador com linha de garantias.",
+    "Custo de 'elementos' para o jogador: +1 mês de espera (o burn do mês é contado pelo motor); os papéis são do comprador."
+   ]
+  },
+  "dia_outcome": {
+   "status": "aprovado Pedro 2026-09-30 (base, depois da audiência e depois de refazer). Modificadores revistos 2026-09-30 para as tags ICNF novas (HIPÓTESE, cap 0,80). condicionada = fallback (1 − favorável − desfavorável).",
+   "evidence_REAL": [
+    "APA, Relatório do Estado do Ambiente, ficha 'Avaliação de Impacte Ambiental' (atualizada 07/10/2025): DIA emitidas 2019–2024 = 87 % favorável condicionada, 13 % desfavorável (todos os tipos de projeto; não reporta favorável sem condições). https://rea.apambiente.pt/content/avalia%C3%A7%C3%A3o-de-impacte-ambiental",
+    "ECO, 03/10/2025, dados cedidos pela APA: jan 2016–set 2025, 69 AIA de centrais solares concluídas pela APA, 91,3 % favoráveis; 6 centrais solares, 2 parques eólicos e 1 LMAT travados; eólico 95,7 %, LMAT 94,4 %. https://eco.sapo.pt/2025/10/03/apa-deu-luz-verde-a-mais-de-90-dos-projetos-solares-eolicos-e-linhas-de-alta-tensao-desde-2016/",
+    "Não encontrámos estatística pública do split favorável vs favorável condicionada só para solar. Não encontrámos estatística de desfecho depois de audiência prévia nem depois de EIA reformulado."
+   ],
+   "base": {
+    "r-dia-favoravel": 0.1,
+    "r-dia (condicionada)": 0.81,
+    "r-dia-desfavoravel": 0.09
+   },
+   "base_rationale": "desfavorável 0,09 ≈ solar APA 2016–2025 (8,7 % = 6/69; REAL). O número de todos os tipos (13 %) é mais alto porque inclui pedreiras, pecuária, etc. Na realidade quase todas as DIA positivas são condicionadas; 'favorável' do jogo = condições leves sem €, 0,10 é escolha de jogo (HIPÓTESE, não está nos dados) para o jogador ver às vezes um desfecho limpo.",
+   "modifiers": {
+    "r-dia-desfavoravel": {
+     "up_if_any": {
+      "risk_icnf_+1": 0.1,
+      "risk_apa_+1": 0.1,
+      "icnf_minimal_reply": 0.2,
+      "icnf_opinion_binding_kept": 0.15,
+      "apa_relation_down": 0.05,
+      "icnf_relation_down": 0.05
+     },
+     "strong_up_if_all(icnf_binding, icnf_minimal_reply)": "P = 0,60 (não 1,0: o ICNF ainda pode não chumbar; se chumbar é veto → 1,0)",
+     "strong_up_if(icnf_opinion_binding_kept ∧ ¬icnf_demands_accepted ∧ ¬icnf_compensation_approved)": "P = 0,50 (a APA trata o parecer como veto; ECO 03/10/2025)",
+     "down_if_any": {
+      "icnf_survey_done": -0.04,
+      "layout_trim_trees": -0.04,
+      "icnf_compensation_approved": -0.04,
+      "eia_reformulate": -0.04,
+      "icnf_opinion_consultive": -0.04,
+      "icnf_demands_accepted": -0.06
+     },
+     "floor": 0.03,
+     "cap": 0.8,
+     "order": "somar ups e downs à base 0,09; depois aplicar strong_* (maior dos dois); depois floor/cap. reputation_exposed não mexe na DIA (só PIP/compradores).",
+     "why": "Os deltas up já estão nas tags (risk_*_+1 +0,10; icnf_minimal_reply +0,20). O APA diz que os chumbos solares foram por grandes áreas, uso do solo, floresta e ecologia → ICNF/quercíneas é o risco certo para Ourique."
+    },
+    "r-dia-favoravel": {
+     "up_if_any": {
+      "icnf_survey_done": 0.05,
+      "layout_trim_trees": 0.05,
+      "icnf_tacit_non_opposition": 0.05,
+      "icnf_compensation_approved": 0.05,
+      "eia_reformulate": 0.05,
+      "icnf_opinion_consultive": 0.05,
+      "icnf_demands_accepted": 0.05
+     },
+     "down_if_any (→ condicionada)": {
+      "icnf_compensation_plan": -0.03,
+      "env_mitigation_flag": -0.03,
+      "icnf_compensation_more": -0.03
+     },
+     "cap": 0.3,
+     "zero_if_any": [
+      "dia_hearing",
+      "icnf_opinion_binding_kept"
+     ],
+     "why_new": "As tags que o GM pôs em condicionada.up_if_any sobem a condicionada tirando à favorável (a condicionada é o fallback)."
+    },
+    "r-dia (condicionada)": {
+     "rule": "1 − favorável − desfavorável; se < 0,15, reduzir favorável até condicionada = 0,15"
+    }
+   },
+   "after_hearing": {
+    "r-dia-favoravel": 0.0,
+    "r-dia (condicionada)": 0.25,
+    "r-dia-desfavoravel": 0.75,
+    "status": "aprovado Pedro 2026-09-30",
+    "hearing_months": "1–3, centro 2 (aprovado Pedro 2026-09-30)",
+    "why": "A audiência raramente muda o resultado (dica da carta). Sem estatística (HIPÓTESE aprovada)."
+   },
+   "after_reformulate": {
+    "r-dia-favoravel": 0.15,
+    "r-dia (condicionada)": 0.8,
+    "r-dia-desfavoravel": 0.05,
+    "status": "aprovado Pedro 2026-09-30",
+    "why": "O projeto novo responde às objeções → chumbo menos provável que na 1.ª vez (HIPÓTESE aprovada). Os modificadores ICNF continuam a aplicar-se (cap 0,80)."
+   },
+   "economy_effects": {
+    "favoravel": "0 € (EIA já no CAR need). dia_emitida → fase licenca_producao.",
+    "condicionada": "env_mitigation_flag / dia_conditions_accepted: Capex +1,5 (0,5–3 HIPÓTESE) → equity +0,45, ΔNPV −1,5; Opex das medidas = PEDIR. Não somar as duas.",
+    "desfavoravel": "Não há LP. Escolha reformulate (eia_reformulate + reopen_tech_plan + cash_at_risk_+1 + delay_env_+1 + caducidade_risk_+1): cash ≈ −1,38, car +0,3 (novo EIA = PEDIR P32), +12 meses, P(caducidade) +0,10, ΔNPV ≈ −3,0 (Ourique). Burn extra por mês = burn_aia 0,09×k (Ourique 0,09 · Ferreira 0,11 · Estremoz 0,16). Pressão de prazo: o prazo lp_request (art. 14.º/1, 12 meses com AIA) quase de certeza passa → deadline_extend_request (P 0,50 HIPÓTESE) ou caducidade (perde a caução 0,99). Hearing: −0,255 e +2 m (1–3; aprovado Pedro 2026-09-30). Vender: offer_band_thin. Desistir: −0,99 caução."
+   }
+  },
+  "icnf_vinculativo": {
+   "status": "HIPÓTESE Economy 2026-09-30; 2026-09-30 tarde: GM pôs um aviso antes (mail-consultor-icnf-aviso-01) e o vinculativo passou a condicional ao aviso — confirmado Economy que o total bate com a proposta 0,15 / 0,10",
+   "context_REAL": [
+    "ECO 03/10/2025 (dados APA): 69 AIA solares 2016–set 2025, 91,3 % favoráveis; um ex-SEE afirma que a APA trata 'qualquer parecer do ICNF' como vinculativo, em zona sensível ou não (https://eco.sapo.pt/2025/10/03/apa-deu-luz-verde-a-mais-de-90-dos-projetos-solares-eolicos-e-linhas-de-alta-tensao-desde-2016/)",
+    "RJAIA (DL 151-B/2013, alt. DL 11/2023): pareceres da CA em regra não vinculativos; ICNF vinculativo em Rede Natura (DL 140/99), áreas protegidas (DL 142/2008) e corte de sobreiro/azinheira (DL 169/2001) — nota GM no esqueleto"
+   ],
+   "r-apa-icnf-vinculativo-aia": {
+    "P": 0.15,
+    "up_if_any": {
+     "risk_icnf_+1": 0.1,
+     "icnf_minimal_reply": 0.1
+    },
+    "down_if_any": {
+     "icnf_hint_useful": -0.05,
+     "risk_icnf_-1": -0.05
+    },
+    "floor": 0.05,
+    "cap": 0.4,
+    "why": "= sugestão GM. A prática descrita no ECO é geral, mas só vira problema quando o ICNF pede algo que custa (área, árvores). Os chumbos solares (~9 %) foram sobretudo por ecologia/uso do solo → 0,15 é 'acontece às vezes'."
+   },
+   "r-apa-icnf-vinculativo-caso": {
+    "P": 0.1,
+    "up_if_any": {
+     "risk_icnf_+1": 0.1
+    },
+    "down_if_any": {
+     "icnf_hint_useful": -0.05,
+     "risk_icnf_-1": -0.05
+    },
+    "floor": 0.03,
+    "cap": 0.3,
+    "why": "= sugestão GM. Na apreciação prévia (caso a caso) o ICNF nem sempre é ouvido → menos que na AIA."
+   },
+   "r-apa-icnf-contest-aceite": {
+    "P": 0.35,
+    "up_if_any": {
+     "icnf_survey_done": 0.1,
+     "dd_started": 0.05,
+     "icnf_alt_design_prepared": 0.1
+    },
+    "cap": 0.55,
+    "cap_before_0930c": 0.5,
+    "fallback": "r-apa-icnf-contest-recusada = 1 − P",
+    "why_0930c": "icnf_alt_design_prepared +0,10 (= peso do levantamento de campo: prova nova; o RJAIA Anexo V n.º 2 pede ao EIA as alternativas de conceção estudadas — REAL). Tecto 0,50 → 0,55: com as três preparações o jogador chega a 0,55, não a 0,60, porque a APA raramente muda de prática (ECO 03/10/2025). HIPÓTESE.",
+    "why": "Um pouco abaixo da sugestão GM (0,4): a lei está do lado do promotor (fora das zonas protegidas o parecer não obriga), mas o ECO diz que é prática da APA; uma autoridade raramente muda a sua prática por um parecer. Com levantamento de campo feito (prova), sobe."
+   },
+   "r-apa-icnf-escalada-aceite": {
+    "P": 0.1,
+    "cap": 0.15,
+    "fallback": "r-apa-icnf-escalada-recusada = 0,90",
+    "why": "= sugestão GM. Pressão política raramente muda uma decisão a tempo; o custo é reputação (reputation_exposed)."
+   },
+   "economy_effects": {
+    "contest_legal": "legal_opinion_ordered −0,05 cash + car_need_up +0,3 + delay_env_+1 (−0,54, +6 m)",
+    "negotiate_icnf": "icnf_compensation_plan (car +0,3, bonding +0,1, +8 m) — o car_need_up da mesma escolha é o MESMO orçamento: GM deve tirá-lo ou o motor não soma (senão +0,6)",
+    "accept_redesign": "icnf_demands_accepted (NPV × 0,95) + reopen_tech_plan (−0,15, +3 m) + delay_env_+1",
+    "escalate_sector": "0 € + delay_env_+1; reputation_exposed"
+   },
+   "aviso_2026_09_30_tarde": {
+    "status": "GM 2026-09-30 tarde (P aviso 0,22 / 0,15; P(vinculativo | aviso) 0,67) — CONFIRMADO Economy: total = 0,22 × 0,67 = 0,147 ≈ 0,15 (AIA) e 0,15 × 0,67 = 0,1005 ≈ 0,10 (caso a caso) = a nossa proposta 0,15 / 0,10",
+    "r-consultor-icnf-aviso-aia": {
+     "P": 0.22,
+     "up_if_any": {
+      "risk_icnf_+1": 0.15
+     },
+     "down_if_any": {
+      "icnf_hint_useful": -0.075,
+      "risk_icnf_-1": -0.075
+     },
+     "floor": 0.075,
+     "cap": 0.6,
+     "label": "HIPÓTESE"
+    },
+    "r-consultor-icnf-aviso-caso": {
+     "P": 0.15,
+     "up_if_any": {
+      "risk_icnf_+1": 0.15
+     },
+     "down_if_any": {
+      "icnf_hint_useful": -0.075,
+      "risk_icnf_-1": -0.075
+     },
+     "floor": 0.045,
+     "cap": 0.45,
+     "label": "HIPÓTESE"
+    },
+    "r-apa-icnf-vinculativo-aia (dado o aviso)": {
+     "P": 0.67,
+     "up_if_any": {
+      "icnf_minimal_reply": 0.15
+     },
+     "cap": 0.9,
+     "label": "HIPÓTESE"
+    },
+    "r-apa-icnf-vinculativo-caso (dado o aviso)": {
+     "P": 0.67,
+     "cap": 0.9,
+     "label": "HIPÓTESE"
+    },
+    "check_total": "AIA 0,22 × 0,67 = 0,147 · caso 0,15 × 0,67 = 0,10. Falso alarme = 0,33 dos avisos.",
+    "modifiers_rule": "HIPÓTESE: os modificadores antigos (sobre o total) passam para a tiragem do AVISO, ×1,5 (= ÷ 0,67), para o total ficar igual: risk_icnf_+1 +0,10 total → +0,15 no aviso. Floors/caps também ×1,5 (AIA 0,05/0,40 → 0,075/0,60; caso 0,03/0,30 → 0,045/0,45). Na tiragem condicional (0,67) só entra o que chega DEPOIS do aviso (icnf_minimal_reply +0,15, cap 0,90). Uma tag conta uma só vez: se já contou no aviso, não conta outra vez no vinculativo.",
+    "economy_effects": "prepare_alt: car_need_up_small (cash −0,05, car +0,05) + icnf_alt_design_prepared (contestação +0,10, tecto 0,55; redesenho −2 meses e −3 % MWp em vez de −5 %; compensação −1 mês). wait: 0 €."
+   }
+  },
+  "nisa_linha": {
+   "status": "r-nisa-enterrar-linha P 0,40 = HIPÓTESE, CONFIRMADA Economy 2026-09-30 tarde (P40 fechado quanto à P). Modificadores = proposta Economy (HIPÓTESE).",
+   "r-nisa-enterrar-linha": {
+    "P": 0.4,
+    "up_if_any": {
+     "land_line_longa": 0.1,
+     "servidoes_linha_+2": 0.05
+    },
+    "down_if_any": {
+     "land_line_curta": -0.1
+    },
+    "floor": 0.2,
+    "cap": 0.6,
+    "after_reroute": "× 0,5 (GM) → 0,20",
+    "why": "0,40 = 'mais provável que não, mas frequente' (Nisa hostil a linhas aéreas, Pedro). Linha longa atravessa mais concelho → +0,10; muitos donos no traçado (servidões) → mais queixas → +0,05; linha curta → −0,10. Novo traçado negociado → a Câmara pede menos (× 0,5)."
+   },
+   "economy_effects": "accept_underground: line_undergrounded_km_short (5 km: +8,2 M€ Capex) ou _long (8 km: +13,2) + reopen_tech_plan (+3 m, −0,15) + risk_camara_-1 · negotiate_route: line_reroute_negotiated (+0,82 M€, +1 m) + delay_land_+1 (+2 m) · refuse: line_underground_refused (+3 m PIP) + risk_camara_+2 (+0,20) + pip_refusal_risk_+1 (+0,10) → P(PIP recusado) +0,30",
+   "gm_flags": [
+    "accept_underground traz underground_cable e capex_rede_flag: com line_undergrounded_km_* somariam +4 e +5 M€ a mais → propomos tirar as duas desta escolha (ou o motor ignora-as).",
+    "negotiate_route traz capex_linha_+1 e servidoes_linha_+1: com o km exacto (10,5 km) dão o mesmo Capex que line_reroute_negotiated → não somar (propomos tirá-las; servidoes_linha_+1 também traz +1 mês e +0,05)."
+   ]
+  },
+  "land_line": {
+   "status": "aprovado Pedro 2026-09-30",
+   "rule": "km exato por oferta de terreno; limiares no km exato; 20 km inclusive = caso a caso; bandas UI < 10 / 10–20 / 20–35",
+   "values": "grid_line_bands_proposed"
+  }
+ },
+ "grid_line_bands_proposed": {
+  "_status": "APROVADO Pedro 2026-09-30: km EXATO por oferta de terreno (params.linha_km); limiares avaliados no km exato; 20 km inclusive = caso a caso; bandas só para a UI: curta < 10 · média 10–20 · longa 20–35 km. Capex = km × €/km REAL ACER; display = km do meio × mediana. SE própria e painel/baía REN à parte (euro-fields §10.1). Servidão = HIPÓTESE (âncoras públicas abaixo; PEDIR P33 confirmar).",
+  "source": "REAL ACER UIC 2023 Table 3 (via Gate 4 §6.1; euro-fields §10): aérea 2 circuitos 150 kV 0,224–0,393 M€/km (mediana 0,260); 400 kV 0,533–1,635 (mediana 1,050); 400 kV 1 circuito 0,298–0,606; enterrado 150 kV 2c 0,85–3,06 M€/km (REAL ACER UIC 2023 Table 4); display enterrado = meio da banda (HIPÓTESE)",
+  "bands": {
+   "short": {
+    "km": "1–10",
+    "display_km": 5,
+    "capex_150kV_2c": [
+     0.22,
+     3.93
+    ],
+    "capex_150kV_display": 1.3,
+    "capex_400kV_2c": [
+     0.53,
+     16.35
+    ],
+    "capex_400kV_display": 5.25,
+    "servitude_150kV_MEUR": [
+     0.01,
+     0.3
+    ],
+    "servitude_150kV_display": 0.1,
+    "servitude_400kV_MEUR": [
+     0.01,
+     0.5
+    ],
+    "servitude_400kV_display": 0.15,
+    "underground_150kV_2c_MEUR": [
+     0.85,
+     30.6
+    ],
+    "underground_150kV_display": 9.78,
+    "underground_400kV": "PEDIR (sem linha 400 kV enterrada nos nossos ficheiros)"
+   },
+   "medium": {
+    "km": "10–20",
+    "display_km": 15,
+    "capex_150kV_2c": [
+     2.24,
+     7.86
+    ],
+    "capex_150kV_display": 3.9,
+    "capex_400kV_2c": [
+     5.33,
+     32.7
+    ],
+    "capex_400kV_display": 15.75,
+    "servitude_150kV_MEUR": [
+     0.1,
+     0.6
+    ],
+    "servitude_150kV_display": 0.3,
+    "servitude_400kV_MEUR": [
+     0.15,
+     1.0
+    ],
+    "servitude_400kV_display": 0.45,
+    "underground_150kV_2c_MEUR": [
+     8.5,
+     61.2
+    ],
+    "underground_150kV_display": 29.33,
+    "underground_400kV": "PEDIR (sem linha 400 kV enterrada nos nossos ficheiros)"
+   },
+   "long": {
+    "km": "20–35",
+    "display_km": 27.5,
+    "capex_150kV_2c": [
+     4.48,
+     13.76
+    ],
+    "capex_150kV_display": 7.15,
+    "capex_400kV_2c": [
+     10.66,
+     57.23
+    ],
+    "capex_400kV_display": 28.88,
+    "servitude_150kV_MEUR": [
+     0.2,
+     1.05
+    ],
+    "servitude_150kV_display": 0.55,
+    "servitude_400kV_MEUR": [
+     0.3,
+     1.75
+    ],
+    "servitude_400kV_display": 0.82,
+    "underground_150kV_2c_MEUR": [
+     17.0,
+     107.1
+    ],
+    "underground_150kV_display": 53.76,
+    "underground_400kV": "PEDIR (sem linha 400 kV enterrada nos nossos ficheiros)"
+   }
+  },
+  "tags": {
+   "land_line_curta": "short",
+   "land_line_media": "medium",
+   "land_line_longa": "long",
+   "effect": "ΔCapex = (km_exato − km do lote no §9) × €/km da tensão + servidão × km; equity +0,3 × ΔCapex; ΔNPV ≈ −ΔCapex. Ourique (400 kV, 5 km no Capex) com 15 km: +10,5 M€ linha (mediana) +0,3 servidão."
+  },
+  "servitude_land": {
+   "label": "HIPÓTESE (valor) / REAL (regra) / PEDIR P33 (confirmar)",
+   "rule": "REAL: DL 43 335/1960 art. 37.º (proprietários indemnizados por redução de rendimento, diminuição de área ou prejuízos da construção) e art. 38.º (acordo ou arbitragem). REN: avaliadores propõem valor; sem acordo, arbitragem pedida à DGEG (3 árbitros) (REN, FAQ servidão de linhas da RNT, https://www.ren.pt/media/yk1ofqs0/faq-servid%C3%A3o-de-linhas-de-transporte-de-eletricidade.pdf).",
+   "public_anchors_REAL": [
+    "Provedor de Justiça (linha EDP em terreno rural): passagem da linha + 1 apoio = 206,73 € (https://www.provedor-jus.pt/documentos-html/?id=3676)",
+    "TR Lisboa 2018: 1 poste em solo urbanizável/industrial, 2 × área (≈138 m²) × 47–66 €/m² = 7 276,96 € (https://jurisprudencia.pt/acordao/183315/)",
+    "TR Porto 2020 (EDP): parcela de 3 354 m² sob a linha, 18,70 → 2,80 €/m² = 53 328,60 € (solo com aptidão construtiva) (https://jurisprudencia.pt/acordao/197302/)",
+    "STJ 2022: casa a 7 m de uma linha de 60 kV; o tribunal aceitou perda de valor de ~200 000 € (https://jurisprudencia.pt/acordao/206833/)"
+   ],
+   "value_HIPOTESE": {
+    "150kV_MEUR_per_km": [
+     0.01,
+     0.03,
+     0.02
+    ],
+    "400kV_MEUR_per_km": [
+     0.015,
+     0.05,
+     0.03
+    ],
+    "why": "Terreno rural do Alentejo: ~3 apoios/km a 150 kV e ~2,5 a 400 kV; cada apoio + faixa + danos da obra = alguns milhares de € (âncoras rurais: 0,2–7 k€ por apoio). Uma linha privada (do promotor, não da REN) costuma pagar um prémio para ter acordo rápido → 10–30 k€/km (150 kV), 15–50 k€/km (400 kV). Perto de casas ou solo urbanizável: caso a caso, até ~0,05–0,2 M€ por prédio (TRP 2020, STJ 2022). É pequeno face à linha (0,26–1,05 M€/km)."
+   }
+  },
+  "aia_trigger": {
+   "rule": "REAL DL 151-B/2013 red. DL 11/2023: Anexo I n.º 19 linhas aéreas ≥ 220 kV e > 15 km → AIA; Anexo II 3 b) linhas aéreas ≥ 110 kV e ≥ 20 km → AIA; abaixo → caso a caso (só exclui ≤ 30 kV e < 10 km); área sensível: ≥ 110 kV → AIA. Cabo enterrado não conta (texto diz 'cabos aéreos'). Avaliado no km EXATO (Pedro 2026-09-30).",
+   "edge_20km": "Decisão Pedro 2026-09-30: 20,0 km = caso a caso (inclusive). Nota: o texto do Anexo II diz '≥ 20 km' → numa leitura literal 20,0 km seria AIA; fica como regra de jogo.",
+   "150kV": {
+    "short": "caso a caso",
+    "medium": "caso a caso (até 20,0 km inclusive)",
+    "long": "AIA obrigatória acima de 20 km (Anexo II)"
+   },
+   "400kV": {
+    "short": "caso a caso",
+    "medium": "caso a caso até 15,0 km; AIA obrigatória > 15 km (Anexo I)",
+    "long": "AIA obrigatória (Anexo I e II)"
+   },
+   "sensitive_area": "qualquer banda ≥ 110 kV → AIA obrigatória"
+  }
+ },
+ "lot_risks_proposed": {
+  "falagueira": {
+   "plant_location": "Nisa (Portalegre, Alto Alentejo) — PT18 Alentejo. Fecha o PEDIR de localização (Pedro 2026-09-30).",
+   "location_label": "REAL (Pedro 2026-09-30; SE Falagueira em Nisa, ren-substations.md)",
+   "risk_id": "nisa_hostil_renovaveis_linhas_aereas",
+   "risk_label": "HIPÓTESE (Pedro 2026-09-30): Nisa é hostil às renováveis e às linhas aéreas",
+   "effects_proposed": {
+    "pip_refusal": {
+     "what": "Câmara/PIP mais difícil",
+     "tags": [
+      "risk_camara_+1 à partida (+0,10 em P(PIP recusado))",
+      "se:camara=hostil (sheet GM)"
+     ],
+     "delta_prob": 0.1,
+     "label": "HIPÓTESE (mesmo passo das tags risk_camara_*)"
+    },
+    "underground_required": {
+     "what": "a Câmara/APA exige enterrar a linha (ou parte)",
+     "P": 0.4,
+     "P_other_lots_ref": "sem valor base nos nossos ficheiros (PEDIR)",
+     "label": "HIPÓTESE (jogo): 0,40 = 'mais provável que não, mas frequente'. Regra GM r-nisa-enterrar-linha usa 0,40 — confirmado Economy 2026-09-30 tarde (P40 fechado quanto à P)",
+     "rule": "r-nisa-enterrar-linha",
+     "cost_per_km_MEUR": {
+      "underground_150kV_2c": [
+       0.85,
+       3.06
+      ],
+      "overhead_150kV_2c": [
+       0.224,
+       0.393
+      ],
+      "delta": [
+       0.63,
+       2.67
+      ],
+      "label": "REAL ACER UIC 2023 Tables 3–4"
+     },
+     "cases": {
+      "short_5km": {
+       "km": 5,
+       "tag": "line_undergrounded_km_short",
+       "gross_underground_MEUR": [
+        4.25,
+        15.3,
+        9.78
+       ],
+       "delta_capex_MEUR": [
+        3.1,
+        13.3,
+        8.2
+       ],
+       "label": "REAL €/km (ACER UIC 2023 Tables 3–4) × km HIPÓTESE (GM skins); display = meio do IQR (HIPÓTESE; média REAL do ACER 2,23 M€/km)"
+      },
+      "long_8km": {
+       "km": 8,
+       "tag": "line_undergrounded_km_long",
+       "gross_underground_MEUR": [
+        6.8,
+        24.48,
+        15.64
+       ],
+       "delta_capex_MEUR": [
+        5.0,
+        21.3,
+        13.2
+       ],
+       "label": "REAL €/km (ACER UIC 2023 Tables 3–4) × km HIPÓTESE (GM skins); display = meio do IQR (HIPÓTESE; média REAL do ACER 2,23 M€/km)"
+      }
+     }
+    },
+    "months": {
+     "what": "Aceitar enterrar: +3 meses antes da FID (reopen_tech_plan) e +1 (5 km) / +2 (8 km) meses de obra. Negociar traçado: +3 meses de terreno (delay_land_+1 2 + line_reroute_negotiated 1). Recusar: +3 meses de PIP (line_underground_refused) e P(PIP recusado) +0,30 (risk_camara_+2 +0,20, pip_refusal_risk_+1 +0,10)",
+     "label": "HIPÓTESE (GM 2026-09-30 tarde; ver effects-economy.json)"
+    },
+    "reroute": {
+     "what": "line_reroute_negotiated: traçado aéreo mais longo que foge às zonas sensíveis",
+     "extra_km": [
+      2,
+      3
+     ],
+     "display_km": 2.5,
+     "delta_capex_MEUR": [
+      0.45,
+      1.18,
+      0.77
+     ],
+     "servitude_MEUR": [
+      0.02,
+      0.09,
+      0.05
+     ],
+     "label": "REAL €/km aéreo (ACER Table 3) · km e servidão HIPÓTESE (servidão 10–30 k€/km, P33)"
+    }
+   },
+   "game_effects": {
+    "at_lot_start": [
+     "risk_camara_+1 (+0,10 em P(PIP recusado)) — ou se:camara=hostil na se-sheet (GM)"
+    ],
+    "underground_required": "Regra GM r-nisa-enterrar-linha (P 0,40 HIPÓTESE, confirmada Economy 2026-09-30 tarde; fases land/pip). Skin default 5 km (curto) / Falagueira 8 km (longo = toda a linha). ΔCapex = km × (0,85–3,06 − 0,224–0,393) M€/km (REAL ACER Tables 3–4): 5 km +3.1…+13.3 (mostrar +8.2); 8 km +5.0…+21.3 (mostrar +13.2). Com o cabo enterrado a linha deixa de contar para a AIA (Anexo II fala de 'cabos aéreos').",
+    "npv_effect": "Break-even do lote 36.6 → 41.8 (5 km) / 45.0 (8 km) / 37.1 (novo traçado) / 36.6–36.8 (recusar). O rival de Falagueira oferece 40: enterrar deixa o lote sem faixa boa. Ver tools/leilao_faixa_npv.json lots.falagueira.breakeven_sensitivities.",
+    "months": "aceitar: +3 antes da FID + 1/2 de obra · negociar: +3 de terreno · recusar: +3 de PIP (+6 se o PIP for recusado)",
+    "label": "HIPÓTESE (Pedro 2026-09-30; GM 2026-09-30 tarde); €/km REAL ACER"
+   }
+  }
+ },
+ "overequip_dcac_optimum": {
+  "source": "tools/dcac_optimo.json",
+  "plans_card": {
+   "small": {
+    "added_MWp": 20,
+    "MWp_total": 140,
+    "dc_ac_vs_118_8": 1.18,
+    "energy_MWh_yr1": 245954,
+    "extra_MWh_yr1": 35473,
+    "clip_pct": 0.41,
+    "clip_pct_high": 0.54,
+    "clip_lost_MWh_yr1": 1022,
+    "capex_delta_MEUR": [
+     9.0,
+     12.0,
+     10.5
+    ],
+    "module_area_ha": [
+     60,
+     67
+    ],
+    "aia_100ha": "não",
+    "npv_delta_MEUR": {
+     "merchant": {
+      "30": 8.8,
+      "38": 8.8,
+      "40": 8.8
+     },
+     "tariff": {
+      "30": 2.3,
+      "38": 4.3,
+      "40": 4.8
+     },
+     "merchant_at_99MVA_ref": {
+      "30": 4.8,
+      "38": 4.8,
+      "40": 4.8
+     }
+    }
+   },
+   "medium": {
+    "added_MWp": 40,
+    "MWp_total": 160,
+    "dc_ac_vs_118_8": 1.35,
+    "energy_MWh_yr1": 276343,
+    "extra_MWh_yr1": 65862,
+    "clip_pct": 2.1,
+    "clip_pct_high": 4.05,
+    "clip_lost_MWh_yr1": 5915,
+    "capex_delta_MEUR": [
+     18.0,
+     24.0,
+     21.0
+    ],
+    "module_area_ha": [
+     69,
+     77
+    ],
+    "aia_100ha": "não",
+    "npv_delta_MEUR": {
+     "merchant": {
+      "30": 14.8,
+      "38": 14.8,
+      "40": 14.8
+     },
+     "tariff": {
+      "30": 2.6,
+      "38": 6.4,
+      "40": 7.3
+     },
+     "merchant_at_99MVA_ref": {
+      "30": 4.7,
+      "38": 4.7,
+      "40": 4.7
+     }
+    }
+   },
+   "large": {
+    "added_MWp": 90,
+    "MWp_total": 210,
+    "dc_ac_vs_118_8": 1.77,
+    "energy_MWh_yr1": 322191,
+    "extra_MWh_yr1": 111710,
+    "clip_pct": 13.03,
+    "clip_pct_high": 18.52,
+    "clip_lost_MWh_yr1": 48273,
+    "capex_delta_MEUR": [
+     40.5,
+     54.0,
+     47.25
+    ],
+    "module_area_ha": [
+     90,
+     101
+    ],
+    "aia_100ha": "no limite: passa os 100 ha se a eficiência dos módulos for ≤ 21.0 %",
+    "npv_delta_MEUR": {
+     "merchant": {
+      "30": 12.9,
+      "38": 12.9,
+      "40": 12.9
+     },
+     "tariff": {
+      "30": -7.8,
+      "38": -1.4,
+      "40": 0.2
+     },
+     "merchant_at_99MVA_ref": {
+      "30": -9.2,
+      "38": -9.2,
+      "40": -9.2
+     }
+    }
+   },
+   "_note": "Δ contra a base 120 MWp @ 99 MVA. Custo AC da subida 99 → 118,8 MVA = 0 (PEDIR): o Δ é o máximo. Capex Δ = só DC (450–600 €/kWp, centro 525)."
+  },
+  "optimum_merchant_centre": {
+   "99MVA_bid30": {
+    "MWp_opt": 151,
+    "dc_ac": 1.53,
+    "extra_MWp": 31,
+    "extra_MWh_yr1": 39567,
+    "clip_pct": 6.13,
+    "extra_capex_MEUR": 16.27,
+    "npv_MEUR": -6.3,
+    "npv_delta_MEUR": 5.0
+   },
+   "99MVA_bid38": {
+    "MWp_opt": 151,
+    "dc_ac": 1.53,
+    "extra_MWp": 31,
+    "extra_MWh_yr1": 39567,
+    "clip_pct": 6.13,
+    "extra_capex_MEUR": 16.27,
+    "npv_MEUR": 5.8,
+    "npv_delta_MEUR": 5.0
+   },
+   "99MVA_bid40": {
+    "MWp_opt": 151,
+    "dc_ac": 1.53,
+    "extra_MWp": 31,
+    "extra_MWh_yr1": 39567,
+    "clip_pct": 6.13,
+    "extra_capex_MEUR": 16.27,
+    "npv_MEUR": 8.8,
+    "npv_delta_MEUR": 5.0
+   },
+   "118.8MVA_bid30": {
+    "MWp_opt": 181,
+    "dc_ac": 1.52,
+    "extra_MWp": 61,
+    "extra_MWh_yr1": 89380,
+    "clip_pct": 6.09,
+    "extra_capex_MEUR": 32.02,
+    "npv_MEUR": 5.0,
+    "npv_delta_MEUR": 16.4
+   },
+   "118.8MVA_bid38": {
+    "MWp_opt": 181,
+    "dc_ac": 1.52,
+    "extra_MWp": 61,
+    "extra_MWh_yr1": 89380,
+    "clip_pct": 6.09,
+    "extra_capex_MEUR": 32.02,
+    "npv_MEUR": 17.1,
+    "npv_delta_MEUR": 16.4
+   },
+   "118.8MVA_bid40": {
+    "MWp_opt": 181,
+    "dc_ac": 1.52,
+    "extra_MWp": 61,
+    "extra_MWh_yr1": 89380,
+    "clip_pct": 6.09,
+    "extra_capex_MEUR": 32.02,
+    "npv_MEUR": 20.1,
+    "npv_delta_MEUR": 16.4
+   }
+  },
+  "optimum_tariff_centre_PEDIR": {
+   "99MVA_bid30": {
+    "MWp_opt": 128,
+    "dc_ac": 1.29,
+    "extra_MWp": 8,
+    "extra_MWh_yr1": 12550,
+    "clip_pct": 1.23,
+    "extra_capex_MEUR": 4.2,
+    "npv_MEUR": -11.1,
+    "npv_delta_MEUR": 0.3
+   },
+   "99MVA_bid38": {
+    "MWp_opt": 138,
+    "dc_ac": 1.39,
+    "extra_MWp": 18,
+    "extra_MWh_yr1": 25914,
+    "clip_pct": 2.9,
+    "extra_capex_MEUR": 9.45,
+    "npv_MEUR": 2.0,
+    "npv_delta_MEUR": 1.3
+   },
+   "99MVA_bid40": {
+    "MWp_opt": 138,
+    "dc_ac": 1.39,
+    "extra_MWp": 18,
+    "extra_MWh_yr1": 25914,
+    "clip_pct": 2.9,
+    "extra_capex_MEUR": 9.45,
+    "npv_MEUR": 5.4,
+    "npv_delta_MEUR": 1.6
+   },
+   "118.8MVA_bid30": {
+    "MWp_opt": 154,
+    "dc_ac": 1.3,
+    "extra_MWp": 34,
+    "extra_MWh_yr1": 57761,
+    "clip_pct": 1.26,
+    "extra_capex_MEUR": 17.85,
+    "npv_MEUR": -8.5,
+    "npv_delta_MEUR": 2.9
+   },
+   "118.8MVA_bid38": {
+    "MWp_opt": 166,
+    "dc_ac": 1.4,
+    "extra_MWp": 46,
+    "extra_MWh_yr1": 73710,
+    "clip_pct": 2.95,
+    "extra_capex_MEUR": 24.15,
+    "npv_MEUR": 7.2,
+    "npv_delta_MEUR": 6.5
+   },
+   "118.8MVA_bid40": {
+    "MWp_opt": 166,
+    "dc_ac": 1.4,
+    "extra_MWp": 46,
+    "extra_MWh_yr1": 73710,
+    "clip_pct": 2.95,
+    "extra_capex_MEUR": 24.15,
+    "npv_MEUR": 11.3,
+    "npv_delta_MEUR": 7.5
+   }
+  },
+  "max_ac_cost_MEUR_for_118_8": {
+   "merchant": {
+    "30": 11.3,
+    "38": 11.3,
+    "40": 11.3
+   },
+   "tariff": {
+    "30": 2.6,
+    "38": 5.2,
+    "40": 5.9
+   }
+  },
+  "area_crossing": {
+   "MWp_total_at_100ha": [
+    208,
+    233
+   ],
+   "added_MWp_at_100ha": [
+    88,
+    113
+   ],
+   "label": "HIPOTESE (η 21–23 %) — com 0,48 ha/MWp o limiar é 208 MWp; com 0,43 é 233 MWp"
+  },
+  "bess": "ver tools/dcac_optimo.json bess e sobreequip-bess.md"
+ },
+ "pedir_sell_modes_2026_09_29": [
+  {
+   "id": "P24",
+   "what": "Preço de venda por modo e fase: projeto todo (full_exit), parte híbrida (sell_hybrid_part), central com aluguer (sell_plant_rent_infra). Método HIPÓTESE actual: equity investido + NPV equity, só se NPV>0 (extensão de P17).",
+   "tags": [
+    "sale_full_exit",
+    "sale_hybrid_part",
+    "hybrid_slice_sold",
+    "sale_plant_rent_infra"
+   ]
+  },
+  {
+   "id": "P25",
+   "what": "Caução +50 % do comprador (art. 18.º/10): confirmar que o comprador presta garantia nova de 1,5× e a do jogador é libertada no averbamento (vs. transferida + reforço), e se o preço desconta esse custo.",
+   "tags": [
+    "buyer_caution_+50pct",
+    "sale_full_exit"
+   ]
+  },
+  {
+   "id": "P26",
+   "what": "Pagamento pelo uso da capacidade (capacity fee) na parte híbrida vendida: €/MW/ano.",
+   "tags": [
+    "capacity_use_fee_on"
+   ]
+  },
+  {
+   "id": "P27",
+   "what": "Renda da subestação e da linha (€/ano ou €/MVA/ano) e confirmar O&M SE+linha 1–2 %/ano do CAPEX_infra (HIPÓTESE).",
+   "tags": [
+    "infra_usage_rent_on"
+   ]
+  },
+  {
+   "id": "P28",
+   "what": "Pagamento do parceiro na partilha da ligação (€/ano ou €/MW/ano), a partir do COD do parceiro.",
+   "tags": [
+    "share_rent_on"
+   ]
+  },
+  {
+   "id": "P29",
+   "what": "Averbamento: odds APROVADAS Pedro 2026-09-29 (falha 0,10 / 0,25 com offer_band_thin; ok 0,90 / 0,75). Falta só o prazo 1–3 meses (PEDIR_PEDRO).",
+   "tags": [
+    "buyer_caution_failed",
+    "trc_transfer_averbado"
+   ],
+   "rules": [
+    "r-averbamento-ok",
+    "r-averbamento-caucao-falhou"
+   ]
+  }
+ ],
+ "pedir_gm_2026_09_30": [
+  {
+   "id": "P30",
+   "what": "FECHADO Pedro 2026-09-30: ligação 99 MVA; o +20 % é de injeção (118,8 MVA), sem limite de MWp.",
+   "tags": [
+    "mission_sobreequipamento"
+   ]
+  },
+  {
+   "id": "P31",
+   "what": "Corte (clipping): curva HIPÓTESE no dcac_optimo (0,8 % a 1,25; 3 % a 1,4; 8 % a 1,6; NREL Desert Rock como tecto). Falta: cortes da REN / gestor do SEN (art. 65.º) = PEDIR.",
+   "tags": [
+    "sobreequip_merchant_energy",
+    "clipping_risk_+1",
+    "clipping_risk_+2"
+   ]
+  },
+  {
+   "id": "P32",
+   "what": "Custo de refazer o EIA depois de DIA desfavorável (novo EIA + redesenho). Placeholder CAR +0,3 (estudo §2.2, EIA 0,20–0,55, HIPÓTESE).",
+   "tags": [
+    "eia_reformulate"
+   ]
+  },
+  {
+   "id": "P33",
+   "what": "Servidão da linha: agora HIPÓTESE 10–30 k€/km (150 kV) e 15–50 k€/km (400 kV), com âncoras públicas (REN FAQ, Provedor, TRL 2018, TRP 2020, STJ 2022). Pedro confirma ou dá valor.",
+   "tags": [
+    "land_line_*"
+   ]
+  },
+  {
+   "id": "P34",
+   "what": "FECHADO: aprovado Pedro 2026-09-30 (lp_transfer, dia_outcome, averbamento, linha).",
+   "rules": [
+    "r-lp-transfer-*",
+    "r-dia*"
+   ]
+  },
+  {
+   "id": "P35",
+   "what": "FECHADO Pedro 2026-09-30: km exato; 20 km inclusive = caso a caso (nota: texto do Anexo II diz ≥ 20 km); bandas UI < 10 / 10–20 / 20–35.",
+   "tags": [
+    "land_line_*"
+   ]
+  },
+  {
+   "id": "P36",
+   "what": "Parte 1 FECHADA: audiência 1–3 meses (centro 2), dia_hearing já não usa os 6 meses (GM tira delay_env_+1 da escolha). Parte 2 aberta (GM): depois da LE não há risco de recusa da venda.",
+   "tags": [
+    "dia_hearing",
+    "lp_transfer_refused"
+   ]
+  }
+ ],
+ "pedir_open_2026_09_30b": [
+  {
+   "id": "P37",
+   "what": "Custo de um parecer jurídico (HIPÓTESE 0,03–0,08 M€).",
+   "tags": [
+    "legal_opinion_ordered"
+   ]
+  },
+  {
+   "id": "P38",
+   "what": "Subida de injeção 99 → 118,8 MVA: base legal e condições (o art. 64.º/2 diz que a potência de ligação não muda com o sobreequipamento), custo AC (inversores, transformador, baía) e caução dos +19,8 MVA. O dcac_optimo dá o tecto: o que a subida vale a mais (max_ac_cost_MEUR_for_118_8).",
+   "tags": [
+    "mission_sobreequipamento",
+    "overequip_plan_*"
+   ]
+  },
+  {
+   "id": "P39",
+   "what": "Energia de painéis a mais: tarifa ou mercado? Os nossos ficheiros só dizem 'sobreequipamento → mercado' (art. 66.º → 17.º). Não há volume em MWh coberto pela tarifa, nem regra para painéis postos no projeto inicial.",
+   "tags": [
+    "sobreequip_merchant_energy"
+   ]
+  },
+  {
+   "id": "P40",
+   "what": "PARTE FECHADA 2026-09-30 tarde: P(linha enterrada) 0,40 confirmada (regra GM r-nisa-enterrar-linha); km = skins GM (5 default / 8 Falagueira). Continua HIPÓTESE: meses de obra do cabo (+1/+2).",
+   "tags": [
+    "line_undergrounded_km_short",
+    "line_undergrounded_km_long",
+    "underground_cable"
+   ]
+  },
+  {
+   "id": "P41",
+   "what": "BESS no mesmo ponto: conta como hibridização (art. 3.º nn) → aloca injeção (74.º/2) e mw_free. Com a solar a usar toda a injeção, mw_free = 0: pode o BESS partilhar os mesmos MVA (injetar só quando a solar está abaixo)? E pode carregar da rede? Ver sobreequip-bess.md.",
+   "tags": [
+    "bess_dev_flag",
+    "mission_bess"
+   ]
+  },
+  {
+   "id": "P42",
+   "what": "Cabo enterrado a 400 kV (€/km): não temos valor.",
+   "tags": [
+    "underground_cable",
+    "land_line_*"
+   ]
+  }
+ ],
+ "pedir_open_2026_09_30c": [
+  {
+   "id": "P43",
+   "what": "Convenção 'equity +0,3 × ΔCapex' nas tags: no motor de leilão a dívida está presa ao DSCR (g 0,54 a 40 €/MWh), por isso cada € a mais de Capex é ~100 % equity. Passar todas as tags para 1,0 × ΔCapex? (mexe em pip_conditions, env_mitigation_flag, underground_cable, capex_rede_flag, capex_linha_*, servidoes_linha_*, overequip_plan_*, epc_*, bess, eólico, linha enterrada.)",
+   "tags": [
+    "*ΔCapex*"
+   ]
+  },
+  {
+   "id": "P44",
+   "what": "Corte (clipping) na copy: GM quer ~1 % (plano +40) e ~3 % (plano +90); o dcac_optimo dá 2,1 % e 13,0 % (é o que está nos ΔNPV). Usar os valores do dcac na copy, ou mudar a curva (e os ΔNPV)?",
+   "tags": [
+    "clipping_risk_+1",
+    "clipping_risk_+2"
+   ]
+  },
+  {
+   "id": "P45",
+   "what": "Preço de um estudo de desenhos alternativos (consultor/engenharia de layout + ecólogo): HIPÓTESE 0,03–0,08 M€.",
+   "tags": [
+    "car_need_up_small"
+   ]
+  },
+  {
+   "id": "P46",
+   "what": "Equity na FID, motor a 40 €/MWh: Ourique 41,4 > boutique 37,5; Ferreira 62,7 > mid 50; Estremoz 83,4 > infra 75. Os lotes do próprio tier já não cabem sem opções D9. Subir purse_equity0 (P7) ou aceitar que a FID pede sempre D9?",
+   "tags": [
+    "fid_reached",
+    "equity_capex_commit",
+    "equity_capex_request",
+    "gearing_push"
+   ]
+  }
+ ],
+ "deprecated_tags": {
+  "trc_mw_free_down": "Retirada 2026-09-29 (G27; sell-modes-lock; mail-buyer-offer-01 notes): vender em renda ou partilhar move MW own → reserved, não mexe em mw_free. Nenhuma carta a emite. A label continua em effect-labels.pt.json (GM/UI removem). Sem efeito económico."
+ },
  "no_economy": [
   "aas_eligible_ack",
   "aas_skip",
+  "apa_prior_meeting_requested",
+  "apa_relation_down",
+  "asset_added",
+  "bank_offer_requested",
   "bank_seed_seen",
+  "block_overequip_cap",
   "block_oversubscribe",
+  "buy_negotiate",
+  "buy_offer_accepted",
+  "buy_withdrawn",
   "buyer_search_active",
+  "camara_meeting_requested",
   "car_request_sent",
+  "community_benefits_proposed",
+  "community_trust_down",
+  "community_trust_up",
+  "competitor_buy_proposed",
+  "competitor_seeks_connection",
   "competitor_seen",
+  "competitor_share_proposed",
+  "competitor_watch",
+  "constraint_reveal",
+  "contest_shield",
   "deadline_rush",
   "delay_env_+0",
+  "dgeg_extension_cta",
+  "dgeg_late",
   "dgeg_obligations_seen",
+  "dgeg_status_requested",
   "dica_ack",
   "dossier_unlock",
   "epc_selected",
@@ -2293,24 +4218,50 @@
   "icnf_compensation_approved",
   "icnf_consult_requested",
   "icnf_consulted",
+  "icnf_contest_outcome_seen",
   "icnf_hint_vague",
+  "icnf_meeting_requested",
   "icnf_no_reply",
+  "icnf_relation_down",
   "icnf_silence_seen",
   "icnf_via_ca",
+  "icnf_vinc_answered",
+  "joint_liability_on",
   "line_ready",
   "lp_clean",
   "mandate_slot_free",
+  "mw_own_down",
   "mw_reserved_by_buyer_up",
+  "mw_reserved_by_partner_up",
+  "mw_reserved_released",
+  "offer_band_thin",
+  "partner_injection_subordinate",
+  "partner_sale_authorized",
+  "partner_sale_negotiate",
+  "partner_sale_refused",
+  "partner_trc_spun_off",
   "punch_list_first",
   "rede_calendar_seen",
   "reequip_defer",
+  "ren_status_requested",
   "risk_media_+1",
   "risk_media_-1",
   "sale_ack",
+  "sale_closed",
   "sale_mode_full_exit_available",
   "sale_pipeline_clear",
   "sale_pipeline_open",
   "sale_pipeline_watch",
-  "trc_mw_free_down"
+  "session_timing_bad",
+  "share_loi_declined",
+  "share_loi_signed",
+  "share_negotiate",
+  "share_refused",
+  "share_rent_agreed",
+  "shared_benefits_unlock",
+  "trc_alteration_approved",
+  "trc_alteration_refused",
+  "trc_alteration_requested",
+  "trc_remainder_to_grid"
  ]
 }

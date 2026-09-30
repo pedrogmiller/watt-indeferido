@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-apa-dia-favoravel-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "APA — Autoridade de AIA",
+  "subject": "Decisão ambiental favorável — central de Ourique",
+  "body": "A Comissão de Avaliação fechou o parecer e a decisão ambiental é favorável. As medidas do estudo para o montado e para as aves chegam: não há condições novas no layout. O projeto de Ourique pode seguir para a licença de produção. O plano de monitorização entra no caderno da obra tal como está.",
+  "params": {
+    "dia": "favoravel"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "id": "mail-consultor-sobreequipamento-01",
+  "phase": "late_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-30 — HIPÓTESE Pedro 2026-09-30 (via Economy): o +20 % limita a potência INJETADA (Ourique: 99 + 19,8 = 118,8 MVA), não os MWp. O jogador instala os MWp que quiser; a rentabilidade (DC/AC vs corte no limite de injeção) decide — otimizador DC/AC da Economy.",
+  "trigger": {
+    "after": "lp_granted",
+    "month_offset": 1,
+    "when_phase": [
+      "licenca_producao",
+      "obra",
+      "cod"
+    ]
+  },
+  "priority": "normal",
+  "from_type": "CONSULTOR",
+  "choices": [
+    {
+      "id": "overequip_small",
+      "label": "Plano pequeno",
+      "hint": "Poucos painéis a mais. Quase toda a energia extra entra na rede e o licenciamento da alteração é simples.",
+      "effects": [
+        "overequip_plan_small",
+        "overequip_plan_commit",
+        "sobreequip_merchant_energy",
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "overequip_medium",
+      "label": "Plano médio",
+      "hint": "Mais energia ao longo do dia. Nas horas de sol forte, parte dela é cortada porque a ligação não deixa injetar mais.",
+      "effects": [
+        "overequip_plan_medium",
+        "overequip_plan_commit",
+        "sobreequip_merchant_energy",
+        "clipping_risk_+1",
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "overequip_large",
+      "label": "Plano grande",
+      "hint": "Muito mais energia de manhã e ao fim da tarde, mas muita energia cortada ao meio-dia. Com tantos painéis, a área fica perto dos 100 ha e a alteração pode passar a precisar de avaliação ambiental.",
+      "effects": [
+        "overequip_plan_large",
+        "overequip_plan_commit",
+        "sobreequip_merchant_energy",
+        "clipping_risk_+2",
+        "reopen_tech_plan"
+      ]
+    },
+    {
+      "id": "later",
+      "label": "Ainda não",
+      "effects": [
+        "value_add_delay_+1"
+      ]
+    }
+  ],
+  "heavy": false,
+  "nota_gm": "Sobreequipamento: DL 15/2022 art. 3.º sss) (até 20 % da potência de ligação da LP inicial), art. 64.º/2 (potência de ligação inalterada), art. 66.º (energia a preço de mercado), art. 65.º (interrupção pelo gestor do SEN), art. 70.º (intransmissível). Leitura de jogo (Pedro, HIPÓTESE): o limite aplica-se à injeção (99 + 19,8 = 118,8 MVA em Ourique), não aos MWp. Licenciamento da alteração: RJAIA alterações (≤20 % potência e área, sem linha nova → não sujeição); acima disso o projeto total volta ao algoritmo env_routing (≥100 ha de módulos → AIA; em área sensível ≥10 ha → caso a caso).",
+  "notes_for_economy": "Tamanhos em params.overequip_added_mwp da skin; o otimizador DC/AC da Economy calcula energia, corte (clipping), Capex e NPV. Injeção máxima = potência de ligação × 1,2. sobreequip_merchant_energy: energia extra a preço de mercado. clipping_risk_+1/+2 = só indicativo para a copy. € = Economy. 2026-09-30: ΔNPV por tamanho no sobreequip-bess.md §7 (Economy). Sem opção de baterias neste cartão (baterias = hibridização).",
+  "notes_for_ui": "Cada escolha grava overequip_added_mwp = params.overequip_added_mwp[<tamanho>] e recalcula env_path_planned ANTES de confirmar (tripwire mail-consultor-nao-sujeicao-risco-01). Se a área de módulos do total ≥100 ha → overequip_area_aia; se toca área sensível com ≥10 ha → overequip_area_caso. Injeção limitada a 1,2 × potência de ligação (não aos MWp)."
+}

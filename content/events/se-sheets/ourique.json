@@ -21,21 +21,29 @@
       "source": "UI lote (fullMeta '120 MWp'); gate6 banda HIPÓTESE"
     },
     "connection_mva": {
-      "value": 100,
-      "band": "80–120",
-      "source": "HIPÓTESE gate6-ourique-calibracao.md (lotes 2020 Ourique ~99–109 MVA); PEDIR_PEDRO MVA exacto do TRC",
-      "note": "Potência de ligação do TRC. Solar sem limiar eléctrico geral (DL 11/2023, leitura Pedro): só pesa se houver eólico (≥50 MW total do TRC). 120 MWp ≠ 120 MVA."
+      "value": 99,
+      "band": "99 (REAL)",
+      "source": "REAL — DGEG, Leilão Solar 2020, lote 6 (Ourique 400 · Tavira 150), 99 MVA: https://www.dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf. TRANCADO Pedro 2026-09-30.",
+      "note": "Potência de ligação do TRC. 120 MWp / 99 MVA = DC/AC 1,21. Não conta para a AIA. Sobreequipamento: injeção máx. 1,2 × 99 = 118,8 MVA; MWp livres (HIPÓTESE Pedro 2026-09-30)."
     },
     "area_ha": {
       "value": null,
-      "band": "~120–200 (HIPÓTESE ~1,0–1,6 ha/MWp × 120 MWp)",
-      "source": "PEDIR_PEDRO — sem dado no pacote",
+      "band": "~52–57 (HIPÓTESE: 120 MWp × 0,43–0,48 ha/MWp de módulos)",
+      "basis": "módulos + inversores (Pedro 2026-09-29; DL 11/2023 preâmbulo: «área ocupada por painéis solares e inversores»)",
+      "formula": "área de módulos + inversores = P / (η × 1000 W/m²); η 21–23 % → ~0,43–0,48 ha/MWp (HIPÓTESE; inversores < 1 ha)",
+      "source": "HIPÓTESE — sem layout no pacote; PEDIR_PEDRO só se houver dado real",
       "engine_default": "band_low",
-      "note": "Causa assumida da AIA em Ourique (leitura DL 11/2023: solar AIA ≥100 ha de painéis). Definição de 'área' (implantação vedada vs módulos) PEDIR_PEDRO."
+      "note": "Área vedada/implantação (~1,0–1,6 ha/MWp) NÃO conta para o limiar. Ourique fica abaixo dos 100 ha."
     },
     "n_turbines": {
       "value": 0,
       "source": "base solar; eólico só com value-add"
+    },
+    "nearby_wind_turbines_2km": {
+      "value": null,
+      "engine_default": 0,
+      "source": "PEDIR_PEDRO — aerogeradores de outros parques a < 2 km (só conta se houver eólico no projeto)",
+      "rule": "n_turbines + nearby ≥ 20 → AIA (TRANCADO Pedro 2026-09-30 (DL 11/2023))"
     },
     "line_overhead": {
       "value": null,
@@ -47,13 +55,14 @@
       "band": "150 ou 400 (SE 400/150 kV, REAL)",
       "source": "PEDIR_PEDRO",
       "engine_default": 150,
-      "note": "Anexo I só ≥220 kV >15 km; Anexo II ≥110 kV ≥20 km."
+      "note": "Anexo I só ≥220 kV >15 km; Anexo II ≥110 kV ≥20 km. ABERTO (Pedro 2026-09-30): 150 vs 400 kV. Os lotes reais de 2020 eram 'Ourique 400' (posto de corte de Panóias). A 400 kV, terreno > 15 km → AIA (Anexo I)."
     },
     "line_km": {
       "value": null,
       "band": "<10 HIPÓTESE (parcela A 'colada à subestação')",
-      "source": "PEDIR_PEDRO",
-      "engine_default": 3
+      "source": "TRANCADO Pedro 2026-09-30: vem do terreno escolhido (params.linha_km da oferta); engine_default só antes de haver terreno",
+      "engine_default": 3,
+      "note": "PROPOSTA 2026-09-29 (Pedro): o comprimento da linha passa a vir do TERRENO escolhido (land offer linha_km_band), não do lote. engine_default 3 só até a proposta ser aceite. Típico 20–30 km."
     },
     "sensitive_area": {
       "value": null,
@@ -72,10 +81,14 @@
       "value": null
     },
     "resolves_to": {
-      "env_path": "aia_obrigatoria",
-      "why": "area_ha ~120–200 ≥ 100 (HIPÓTESE / PEDIR_PEDRO). Não depende do MVA, da linha nem da área sensível.",
-      "flag": "se area_ha for área de módulos (~50–70 ha), os atributos não chegam a AIA; Ourique mantém-se AIA por decisão Pedro/Economy",
-      "consistent_with": "tags.ambiente = apa_first"
+      "env_path": "nao_sujeito",
+      "route": "B (não sujeição → PIP → LP)",
+      "why": "módulos ~52–57 ha < 100 (HIPÓTESE); sem limiar eléctrico solar; linha 150 kV curta (default) não dispara; fora de Rede Natura / área protegida (HIPÓTESE).",
+      "becomes_caso_a_caso_if": "a parcela ou o traçado tocar área sensível (ZPE Castro Verde a ~0,4–3,7 km) com ≥10 ha ou ≥20 MW, OU linha aérea ≥110 kV com ≥20 km (proposta linha pelo terreno: terreno 'longa' a 150 kV → caso a caso)",
+      "becomes_aia_if": "módulos do total ≥100 ha (≈ ≥210–233 MWp; plano grande de sobreequipamento pode lá chegar) ou linha aérea ≥220 kV >15 km (tensão ABERTA)",
+      "icnf": "icnf_binding mantém-se (quercíneas): ICNF pronuncia-se no PIP/LP, independente da via",
+      "flag": "tags.ambiente = apa_first e mvp-schedule (mail-apa-01 em Ourique) assumem AIA: a UI/schedule tem de ler env_path. GM não mexeu (PEDIR_PEDRO/UI).",
+      "supersedes": "2026-09-29 tarde: aia_obrigatoria por área de implantação"
     },
     "quercineas_densidade": {
       "value": "alta",

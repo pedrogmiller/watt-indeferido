@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-apa-icnf-vinculativo-01",
+  "skin_id": "aia",
+  "draft": true,
+  "when": {
+    "route": "aia"
+  },
+  "from_name": "APA — Comissão de Avaliação",
+  "subject": "Avaliação ambiental: a APA trata a opinião do ICNF como obrigatória",
+  "body": "O teu projeto está na avaliação ambiental. A APA formou uma Comissão de Avaliação: um grupo de entidades do Estado que analisa o projeto e dá um único parecer, que serve de base à DIA (declaração de impacte ambiental), a decisão final da APA sobre o ambiente.\n\nDentro da Comissão, o ICNF, o instituto do Estado que protege a natureza e as florestas, deu uma opinião negativa e pede mudanças ao projeto. O teu terreno não fica em nenhuma zona protegida, por isso, pela lei, esta opinião devia contar como conselho. Mas a APA está a tratá-la como vinculativa. Um parecer vinculativo é um parecer que obriga: a APA teria de o seguir à letra.\n\nA Comissão pede-te uma resposta antes de fechar o parecer.",
+  "params": {
+    "base_legal": "ver nota_gm do esqueleto"
+  }
+}

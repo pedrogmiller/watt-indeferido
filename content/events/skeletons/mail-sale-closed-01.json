@@ -24,6 +24,6 @@
       ]
     }
   ],
-  "notes_for_economy": "Confirma full_exit | keep_seat | partial; liquidez/renda = PEDIR_ECONOMY.",
+  "notes_for_economy": "Confirma full_exit | sell_plant_rent_infra | sell_hybrid_part; liquidez/renda = PEDIR_ECONOMY.",
   "notes_for_ui": "HUD: purse/CAR/mandate/Free MW conforme modo. FYI dismiss."
 }

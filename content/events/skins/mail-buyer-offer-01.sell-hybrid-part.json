@@ -1,0 +1,18 @@
+{
+  "skeleton_id": "mail-buyer-offer-01",
+  "skin_id": "sell-hybrid-part",
+  "when": {
+    "sale_mode": "sell_hybrid_part",
+    "min_phase": "licenca_producao",
+    "line_ready": true,
+    "slice_tech_differs_from_base": true
+  },
+  "from_name": "Atlântico Renewables",
+  "subject": "Proposta: comprar só o parque eólico",
+  "body": "Queremos comprar só o parque eólico do teu projeto. O TRC continua a ser teu, tal como a central solar e as baterias, se existirem. Pagamos-te pelo uso da capacidade da tua ligação.\n\nA tua central solar mantém a prioridade: quando a rede não aguenta tudo, o parque eólico é cortado primeiro. Perante a DGEG e a rede, respondemos os dois pelo parque eólico.\n\nA potência do parque continua a ocupar a ligação, por isso não ganhas potência livre, e o projeto continua a ocupar o lugar do lote.",
+  "params": {
+    "sale_mode": "sell_hybrid_part",
+    "slice": "wind",
+    "offer_band": "fair"
+  }
+}

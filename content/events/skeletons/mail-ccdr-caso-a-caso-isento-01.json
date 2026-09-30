@@ -16,7 +16,7 @@
     "or_deadline": "caso_a_caso_decision"
   },
   "priority": "high",
-  "from_type": "CCDR",
+  "from_type": "APA",
   "deadline_ref": "caso_a_caso_decision",
   "choices": [
     {
@@ -30,5 +30,6 @@
   ],
   "heavy": false,
   "notes_for_economy": "Sem €. Poupa AIA completa (tempo + CAR) — diferencial PEDIR_ECONOMY.",
-  "notes_for_ui": "Decisão favorável da autoridade de AIA (CCDR ou APA) na apreciação prévia, ou AAS favorável (skin aas-favoravel). nao_sujeicao = tag exacta que a consola já lê. from_type CCDR é novo (FROM_TYPE_TO_MAIL → 'ccdr'). mutex env_screening."
+  "notes_for_ui": "Decisão favorável da autoridade de AIA (APA) na apreciação prévia, ou AAS favorável (skin aas-favoravel). nao_sujeicao = tag exacta que a consola já lê. from_type CCDR é novo (FROM_TYPE_TO_MAIL → 'ccdr'). mutex env_screening.",
+  "nota_gm": "Remetente = APA (Pedro 2026-09-29). O id 'mail-ccdr-*' fica por compatibilidade de referências. RJAIA art. 3.º: fora de área sensível a decisão caso a caso é da entidade licenciadora (DGEG, 25 dias, 3.º/4); em área sensível da autoridade de AIA (3.º/6) — o jogo simplifica para APA."
 }

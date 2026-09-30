@@ -3,9 +3,9 @@
   "skin_id": "ourique",
   "draft": true,
   "when": {},
-  "from_name": "Banco — project finance",
-  "subject": "Term sheet em cima da mesa",
-  "body": "Com LP na mão, o comité de crédito avança. Dívida sénior sobre a parte com tarifa do TRC; a fatia merchant do híbrido entra com desconto. Gearing na banda base — pedir mais obriga a nova análise e empurra o fecho. Sem term sheet assinado não há FID.",
+  "from_name": "Banco — financiamento de projetos",
+  "subject": "Proposta de condições do banco",
+  "body": "Com a licença de produção na mão, o comité de crédito do banco avança. O empréstimo principal cobre a parte vendida ao preço fixo do TRC; a parte do híbrido vendida a preço de mercado conta menos. O banco financia a parte habitual da obra; pedir mais obriga a nova análise e atrasa o fecho. Sem esta proposta de condições assinada, não há decisão final de investimento. O banco só empresta a parte da dívida: o resto da obra tem de ser capital próprio.",
   "params": {
     "gearing_band": "base",
     "nota": "PEDIR_ECONOMY para %"

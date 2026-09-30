@@ -2,7 +2,7 @@
   "id": "mail-trc-mw-full-01",
   "phase": "mid_dev",
   "trigger": {
-    "after": "block_oversubscribe",
+    "after": "block_oversubscribe|block_overequip_cap",
     "when_phase": [
       "trc_won",
       "land",
@@ -25,11 +25,14 @@
     },
     {
       "id": "wait_buyer_exit",
-      "label": "Esperar que um comprador liberte potência",
+      "label": "Esperar que um comprador ou parceiro liberte potência",
       "effects": [
         "delay_hybrid_+1",
         "sale_pipeline_watch"
-      ]
+      ],
+      "when": {
+        "gate": "hybrid_alloc"
+      }
     },
     {
       "id": "cancel",
@@ -39,6 +42,10 @@
       ]
     }
   ],
-  "notes_for_economy": "Gate duro: planned_mw > trc_mw_free. Copy = físico, não FiT vs mercado.",
-  "notes_for_ui": "Bloquear commit híbrido; toast + esta carta. Dossier Free MW / Own / On rent. NÃO oferecer 'vender mais em renda' como forma de libertar MW."
+  "notes_for_economy": "Dois gates duros: hibridização por mw_free; sobreequipamento só pelo limite de INJEÇÃO (1,2 × potência de ligação; Ourique 118,8 MVA), nunca pelos MWp. Energia do sobreequipamento = preço de mercado (sobreequip_merchant_energy). HIPÓTESE Pedro 2026-09-30 (via Economy): o +20 % limita a potência INJETADA (Ourique: 99 + 19,8 = 118,8 MVA), não os MWp. O jogador instala os MWp que quiser; a rentabilidade (DC/AC vs corte no limite de injeção) decide — otimizador DC/AC da Economy.",
+  "notes_for_ui": "Bloquear commit do plano; toast + esta carta com a skin do gate. Sobreequipamento: NÃO verificar mw_free. Dossier Própria / Reservada / Livre. NÃO oferecer 'vender mais em renda' como forma de libertar MW.",
+  "gates": {
+    "hybrid_alloc": "planned_hybrid_alloc_mva > mw_free (mw_free = trc_mw − mw_own_plugged − mw_reserved_by_buyer − mw_reserved_by_partner) → skin default. Só hibridização (outra tecnologia ou BESS) aloca injeção (DL 15/2022 art. 74.º/2).",
+    "overequip_cap": "planned_export_mva (potência AC que o plano quer injetar) > 1,2 × potência de ligação da LP inicial → skin limite-sobreequipamento (explica o limite de injeção). Os MWp NÃO têm limite. HIPÓTESE Pedro 2026-09-30 (via Economy): o +20 % limita a potência INJETADA (Ourique: 99 + 19,8 = 118,8 MVA), não os MWp. O jogador instala os MWp que quiser; a rentabilidade (DC/AC vs corte no limite de injeção) decide — otimizador DC/AC da Economy. id do gate e da tag block_overequip_cap mantidos por compatibilidade."
+  }
 }

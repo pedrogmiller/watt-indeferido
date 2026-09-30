@@ -23,7 +23,7 @@
   "choices": [
     {
       "id": "ack",
-      "label": "Seguir para FID",
+      "label": "Seguir para a decisão final de investimento",
       "effects": [
         "lp_granted",
         "lp_clean",

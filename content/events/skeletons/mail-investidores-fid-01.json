@@ -22,7 +22,7 @@
   "choices": [
     {
       "id": "approve_fid",
-      "label": "Aprovar FID e fecho financeiro",
+      "label": "Aprovar a decisão final de investimento e fechar o financiamento",
       "effects": [
         "fid_reached",
         "financial_close",
@@ -33,11 +33,16 @@
         "requires": [
           "fid_ready"
         ]
-      }
+      },
+      "hint": "Fecha o financiamento e a obra pode começar. Deixas de gastar dinheiro de desenvolvimento neste projeto. Só é possível com todo o capital próprio para a obra.",
+      "requires_state": [
+        "equity_fit_ok"
+      ],
+      "locked_hint": "Falta capital próprio para a obra. Pede reforço, vende o projeto ou adia."
     },
     {
       "id": "ask_equity",
-      "label": "Pedir reforço de equity",
+      "label": "Pedir reforço de capital próprio",
       "effects": [
         "equity_capex_request",
         "delay_fid_+1"
@@ -46,16 +51,18 @@
         "requires": [
           "equity_fit_short"
         ]
-      }
+      },
+      "hint": "Pedes aos investidores o capital próprio que falta. A decisão atrasa e eles podem não dar tudo."
     },
     {
       "id": "delay_fid",
-      "label": "Adiar FID",
+      "label": "Adiar a decisão final de investimento",
       "effects": [
         "fid_defer",
         "delay_fid_+1",
         "investor_patience_-1"
-      ]
+      ],
+      "hint": "Ganhas tempo, mas continuas a gastar dinheiro de desenvolvimento e os investidores ficam menos pacientes."
     },
     {
       "id": "sell_rtb",
@@ -64,10 +71,11 @@
         "find_buyers_started",
         "sale_pipeline_open",
         "buyer_search_active"
-      ]
+      ],
+      "hint": "Procuras um comprador para o projeto pronto a construir. Não é logo uma venda: só começas a procurar."
     }
   ],
   "heavy": true,
   "notes_for_economy": "FID = CAR burn pára (car_burn_stop) + equity Capex comprometida (equity_capex_commit ≈ Capex×(1−gearing)). fid_ready/equity_fit_* = cálculo Economy (gate5 §4.2). Sem €.",
-  "notes_for_ui": "Choices filtradas por when (máx. 3 visíveis: approve e ask_equity são exclusivos). Cumpre fid_window. Skin 'ultimato' chega por on_miss de fid_window. sell_rtb = Sell the project (modo 1), não contradiz sell-modes-lock."
+  "notes_for_ui": "Choices filtradas por when (máx. 3 visíveis: approve e ask_equity são exclusivos). Cumpre fid_window. Skin 'ultimato' chega por on_miss de fid_window. sell_rtb = Sell the project (modo 1), não contradiz sell-modes-lock. 2026-09-30 (Pedro): sem todo o capital próprio não há obra. approve_fid tem requires_state [equity_fit_ok]: se equity_fit_short, a escolha aparece bloqueada com locked_hint. A regra r-fid-sem-capital entrega a skin falta-capital-proprio em vez da ourique. Ganhar o leilão NÃO depende do capital próprio (a UI não deve pôr lotes a cinza por equity)."
 }

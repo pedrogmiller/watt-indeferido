@@ -1,0 +1,59 @@
+{
+  "id": "mail-consultor-icnf-aviso-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-30 (Pedro) — aviso prévio do consultor, ~1 mês antes de mail-apa-icnf-vinculativo-01; pode ser falso alarme; aguarda Gate Pedro",
+  "trigger": {
+    "after": "apa_track_start|caso_a_caso_request",
+    "when_phase": [
+      "land",
+      "pip",
+      "aia"
+    ],
+    "requires_any": [
+      "apa_track_start",
+      "caso_a_caso_request"
+    ],
+    "requires_any_land_secured": [
+      "land_option_open",
+      "dd_started"
+    ],
+    "gate": {
+      "computed": {
+        "icnf_binding": false
+      },
+      "se_attrs": {
+        "env_draft.rede_natura": false,
+        "env_draft.area_protegida": false
+      }
+    },
+    "month_offset": 2
+  },
+  "priority": "normal",
+  "from_type": "CONSULTOR",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "prepare_alt",
+      "label": "Estudar já alternativas ao desenho",
+      "hint": "Pedes ao consultor desenhos alternativos para a central. Precisas de um pouco mais de dinheiro de desenvolvimento. Se o ICNF vier mesmo a pedir mudanças, respondes mais depressa e com melhores argumentos. Se não pedir, gastaste esse dinheiro.",
+      "effects": [
+        "icnf_alt_design_prepared",
+        "car_need_up_small",
+        "icnf_aviso_answered"
+      ]
+    },
+    {
+      "id": "wait",
+      "label": "Esperar para ver",
+      "hint": "Não gastas nada agora. Se o ICNF vier a pedir mudanças, começas a estudá-las só nessa altura.",
+      "effects": [
+        "icnf_aviso_wait",
+        "icnf_aviso_answered"
+      ]
+    }
+  ],
+  "notes_for_economy": "car_need_up_small = custo pequeno do estudo (PEDIR_ECONOMY). icnf_alt_design_prepared melhora o desfecho do vinculativo: menos atraso em accept_redesign e odds maiores em r-apa-icnf-contest-aceite (PEDIR_ECONOMY). Probabilidades: ver r-consultor-icnf-aviso-*.",
+  "notes_for_ui": "Remetente CONSULTOR. Mostrar choice.hint. icnf_aviso_answered só encaminha regras (sem toast). Não é spoiler: o texto diz «pode», e muitas vezes o vinculativo não segue (falso alarme); nada acontece nesse caso.",
+  "nota_gm": "Aviso prévio de mail-apa-icnf-vinculativo-01. Mesma base: ECO 03/10/2025 (ex-SE da Energia: a APA trata qualquer parecer do ICNF como vinculativo, em zona sensível ou não). Probabilidades: P(aviso) ≈ 1,5 × P(vinculativo); P(vinculativo | aviso) ≈ 0,67 → P(vinculativo) total inalterada. O vinculativo só sai depois do aviso (≥ 1 mês). Referências legais só aqui (RJAIA, DL 151-B/2013 alt. DL 11/2023)."
+}

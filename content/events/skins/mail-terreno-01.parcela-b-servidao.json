@@ -7,6 +7,8 @@
   "params": {
     "sinal": "baixo",
     "prazo_dias": 60,
-    "servidao": "vizinho"
+    "servidao": "vizinho",
+    "linha_km": 14,
+    "linha_km_band": "media"
   }
 }

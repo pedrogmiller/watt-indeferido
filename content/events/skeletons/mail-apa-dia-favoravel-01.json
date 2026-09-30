@@ -1,0 +1,34 @@
+{
+  "id": "mail-apa-dia-favoravel-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "apa_track_start",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "apa_track_start"
+    ],
+    "or_deadline": "main_permit",
+    "month_offset": 12
+  },
+  "priority": "high",
+  "from_type": "APA",
+  "choices": [
+    {
+      "id": "go_lp",
+      "label": "Seguir para a licença de produção",
+      "hint": "A decisão ambiental está fechada. O pedido de licença à DGEG pode avançar.",
+      "effects": [
+        "dia_emitida",
+        "dia_favoravel"
+      ]
+    }
+  ],
+  "heavy": true,
+  "nota_gm": "DIA favorável sem condicionantes (RJAIA, DL 151-B/2013, art. 18.º). A DIA é condição da decisão da LP (DL 15/2022). Validade da DIA: 4 anos (RJAIA art. 23.º — HIPÓTESE, não reverificado). Rara em solar grande; a condicionada é o caso normal.",
+  "notes_for_economy": "Sem custo novo. Odds do grupo dia_outcome: PEDIR_ECONOMY.",
+  "notes_for_ui": "Regra r-dia-favoravel (grupo dia_outcome, pick 2). Fecha o ramo AIA; não muda fase."
+}

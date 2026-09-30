@@ -20,64 +20,169 @@
   "from_type": "COMPRADOR",
   "choices": [
     {
-      "id": "accept_full_exit",
+      "id": "accept_full_exit_pre_lp",
       "label": "Vender o projeto todo",
       "effects": [
-        "sale_full_exit",
-        "car_burn_stop",
-        "equity_capex_need_stop",
-        "mandate_slot_free",
-        "asset_removed",
+        "sale_full_exit_pending",
+        "buyer_caution_+50pct",
+        "trc_transfer_averbamento_requested",
         "sale_pipeline_clear"
       ],
       "when": {
         "sale_modes": [
           "full_exit"
-        ]
+        ],
+        "before_phase": "licenca_producao"
+      },
+      "legal_basis": "DL 15/2022 art. 18.º/8 (averbamento DGEG) e 18.º/10 (reforço da caução em metade)",
+      "note": "Não é instantânea: a venda só fecha com mail-dgeg-averbamento-trc-01 (prazo trc_transfer_averbamento). Até lá o projeto continua do jogador (CAR, prazos e lugar do lote mantêm-se) — travão ao flip (G25).",
+      "effects_if_param": {
+        "offer_band": {
+          "thin": [
+            "offer_band_thin"
+          ]
+        }
       }
     },
     {
-      "id": "accept_keep_connection",
-      "label": "Vender a central e ficar com a ligação",
+      "id": "accept_full_exit",
+      "label": "Vender o projeto todo",
       "effects": [
-        "sale_keep_seat",
-        "grid_usage_rent_on",
-        "mw_reserved_by_buyer_up",
-        "trc_mw_free_down",
-        "plant_capex_forgone",
-        "offtake_profit_forgone",
+        "sale_full_exit_pending",
+        "buyer_caution_+50pct",
+        "lp_transfer_authorization_requested",
         "sale_pipeline_clear"
       ],
       "when": {
         "sale_modes": [
-          "keep_connection"
+          "full_exit"
+        ],
+        "min_phase": "licenca_producao",
+        "before_phase": "cod"
+      },
+      "legal_basis": "DL 15/2022 art. 36.º/1, 36.º/2 → 18.º/10, 36.º/4",
+      "note": "TRANCADO Pedro 2026-09-30 (lei em vigor). Depois da LP e antes da LE: autorização DGEG (15 dias, +30 se pedir elementos) e reforço da caução em metade. Fecha em mail-dgeg-lp-transmissao-01.",
+      "effects_if_param": {
+        "offer_band": {
+          "thin": [
+            "offer_band_thin"
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_full_exit_pos_le",
+      "label": "Vender o projeto todo",
+      "effects": [
+        "sale_full_exit_pending",
+        "lp_transfer_authorization_requested",
+        "sale_pipeline_clear"
+      ],
+      "when": {
+        "sale_modes": [
+          "full_exit"
+        ],
+        "min_phase": "cod"
+      },
+      "legal_basis": "DL 15/2022 art. 36.º/1, 36.º/4; 13.º/18 (caução já liberada)",
+      "note": "TRANCADO Pedro 2026-09-30 (lei em vigor). Depois da LE: só autorização DGEG, sem reforço de caução.",
+      "effects_if_param": {
+        "offer_band": {
+          "thin": [
+            "offer_band_thin"
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_sell_plant_rent_infra",
+      "legacy_id": "accept_keep_connection",
+      "label": "Vender a central e alugar a subestação e a linha",
+      "effects": [
+        "sale_plant_rent_infra_pending",
+        "buyer_caution_+50pct",
+        "lp_transfer_authorization_requested",
+        "sale_pipeline_clear"
+      ],
+      "when": {
+        "sale_modes": [
+          "sell_plant_rent_infra"
         ],
         "min_phase": "licenca_producao",
         "requires": [
           "line_ready"
-        ]
+        ],
+        "before_phase": "cod"
+      },
+      "legal_basis": "DL 15/2022 arts. 18.º/5, 36.º/1, 36.º/2 → 18.º/10, 36.º/4, 37.º/2",
+      "note": "TRANCADO Pedro 2026-09-30 (lei em vigor). É transmissão da LP: autorização DGEG (15 dias, +30 se pedir elementos) e, antes da LE, caução +50 %. O TRC vai sempre com a central; o jogador fica com a subestação e a linha e recebe renda (PEDIR_ECONOMY). Efeitos finais (trc_transferred_with_plant, infra_usage_rent_on…) só na autorização.",
+      "effects_if_param": {
+        "offer_band": {
+          "thin": [
+            "offer_band_thin"
+          ]
+        }
       }
     },
     {
-      "id": "accept_sell_one_park",
-      "label": "Vender só um parque",
+      "id": "accept_sell_plant_rent_infra_pos_le",
+      "label": "Vender a central e alugar a subestação e a linha",
       "effects": [
-        "sale_partial_park",
-        "mw_reserved_by_buyer_up",
-        "trc_mw_free_down",
-        "grid_usage_rent_on",
-        "hybrid_slice_sold",
+        "sale_plant_rent_infra_pending",
+        "lp_transfer_authorization_requested",
         "sale_pipeline_clear"
       ],
       "when": {
         "sale_modes": [
-          "sell_one_park"
+          "sell_plant_rent_infra"
+        ],
+        "min_phase": "cod",
+        "requires": [
+          "line_ready"
+        ]
+      },
+      "legal_basis": "DL 15/2022 arts. 18.º/5, 36.º/1, 36.º/2 → 18.º/10, 36.º/4, 37.º/2",
+      "note": "TRANCADO Pedro 2026-09-30 (lei em vigor). Depois da LE: só autorização DGEG, sem reforço de caução.",
+      "effects_if_param": {
+        "offer_band": {
+          "thin": [
+            "offer_band_thin"
+          ]
+        }
+      }
+    },
+    {
+      "id": "accept_sell_hybrid_part",
+      "legacy_id": "accept_sell_one_park",
+      "label": "Vender a parte híbrida e ficar com a central",
+      "effects": [
+        "sale_hybrid_part",
+        "hybrid_slice_sold",
+        "mw_own_down",
+        "mw_reserved_by_buyer_up",
+        "capacity_use_fee_on",
+        "partner_injection_subordinate",
+        "joint_liability_on",
+        "sale_pipeline_clear"
+      ],
+      "when": {
+        "sale_modes": [
+          "sell_hybrid_part"
         ],
         "min_phase": "licenca_producao",
         "requires": [
           "line_ready",
           "hybrid_slice_available"
         ]
+      },
+      "legal_basis": "DL 15/2022 arts. 75.º, 77.º, 78.º (TRC fica com o titular do centro preexistente)",
+      "note": "Só unidades de hibridização (outra tecnologia ou BESS). Nunca sobreequipamento (art. 70.º) nem a central base. MW: own → reserved_by_buyer; mw_free não muda.",
+      "effects_if_param": {
+        "offer_band": {
+          "thin": [
+            "offer_band_thin"
+          ]
+        }
       }
     },
     {
@@ -97,6 +202,6 @@
       ]
     }
   ],
-  "notes_for_economy": "Preço/renda = PEDIR_ECONOMY. offer_band_thin|fair|rich na skin/params. MW: reserved_by_buyer; não liberta mw_free. Mandato: keep/partial NÃO libertam slot.",
-  "notes_for_ui": "Mostrar só CTAs cujo when passa. Toast: modo + Free MW. Dossier: Own / On rent / Free MW."
+  "notes_for_economy": "Preço, caução e pagamentos = PEDIR_ECONOMY. Venda total antes da LP: comprador reforça a caução em metade (18.º/10) e a venda espera o averbamento. Parte híbrida: o comprador paga pelo uso da capacidade. Central + aluguer: renda pela subestação e pela linha. mw_free nunca aumenta com vendas em renda. (2026-09-29: retirado trc_mw_free_down — own→reserved não muda mw_free.)",
+  "notes_for_ui": "Mostrar só CTAs cujo when passa (novo campo before_phase). IDs novos: sell_plant_rent_infra (era keep_connection), sell_hybrid_part (era sell_one_park); legacy_id na escolha. Dossier: Própria / Reservada / Livre. effects_if_param: se a skin entregue tiver params.offer_band = thin, a escolha de aceitar aplica também offer_band_thin (usada nas odds de r-averbamento-caucao-falhou). 2026-09-30: vendas pós-LP ficam pendentes (lp_transfer_authorization_requested → prazo lp_transfer_authorization → mail-dgeg-lp-transmissao-01). Variantes _pos_le (fase cod) sem caução."
 }

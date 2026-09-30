@@ -13,14 +13,19 @@
     "requires": [
       "area_aceleracao"
     ],
-    "type": "world_event"
+    "type": "world_event",
+    "requires_any_land_secured": [
+      "land_option_open",
+      "dd_started"
+    ],
+    "min_phase_note": "Só depois de o terreno estar garantido (land_secured). Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
   },
   "priority": "high",
   "from_type": "APA",
   "choices": [
     {
       "id": "move_in",
-      "label": "Ajustar o projecto à área de aceleração",
+      "label": "Ajustar o projeto à área de aceleração",
       "effects": [
         "aas_eligible_ack",
         "reopen_tech_plan"
@@ -28,7 +33,7 @@
     },
     {
       "id": "stay",
-      "label": "Manter o caminho actual",
+      "label": "Manter o caminho atual",
       "effects": [
         "aas_skip"
       ]

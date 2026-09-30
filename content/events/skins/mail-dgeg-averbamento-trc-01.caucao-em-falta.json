@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-dgeg-averbamento-trc-01",
+  "skin_id": "caucao-em-falta",
+  "when": {
+    "outcome": "caucao_em_falta"
+  },
+  "from_name": "DGEG",
+  "subject": "TRC: não registámos a mudança de titular",
+  "body": "O comprador não reforçou a caução em metade do valor, como a lei exige para mudar o titular do TRC. Por isso não registámos a mudança. O projeto continua a ser teu, com os mesmos prazos."
+}

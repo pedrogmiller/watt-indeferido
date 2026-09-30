@@ -1,0 +1,23 @@
+{
+  "skeleton_id": "mail-icnf-compensacao-exigente-01",
+  "skin_id": "caso-a-caso",
+  "draft": true,
+  "when": {
+    "route": "caso_a_caso"
+  },
+  "from_name": "CCDR — Apreciação prévia",
+  "from_type_override": "APA",
+  "subject": "O ICNF quer uma compensação maior",
+  "body": "Na apreciação prévia, o ICNF diz que o teu plano não chega. Pede uma área de compensação maior e uma garantia bancária: o banco compromete-se a pagar se o plano não for cumprido. Podes aceitar, ou mudar o desenho para mexer em menos terreno com valor natural.",
+  "choice_overrides": {
+    "redesign_trees": {
+      "hint": "Perdes área e cabem menos painéis, mas a compensação fica menor. A decisão da CCDR atrasa.",
+      "effects": [
+        "layout_trim_trees",
+        "reopen_tech_plan",
+        "delay_env_+1"
+      ]
+    }
+  },
+  "params": {}
+}

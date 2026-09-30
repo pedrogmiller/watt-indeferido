@@ -1,8 +1,10 @@
 {
   "skeleton_id": "mail-trc-mw-full-01",
   "skin_id": "default",
-  "when": {},
+  "when": {
+    "gate": "hybrid_alloc"
+  },
   "from_name": "Consultor técnico",
   "subject": "A ligação está cheia",
-  "body": "O TRC só deixa ligar uma certa potência à rede neste ponto. A potência das tuas centrais, mais a das centrais que vendeste e que continuam ligadas aqui, já ocupa todo esse espaço. Não há potência livre para este plano.\n\nPodes fazer o plano mais pequeno, esperar que um comprador liberte potência, ou cancelar o plano. Vender mais centrais não cria potência nova."
+  "body": "O TRC só deixa injetar uma certa potência na rede neste ponto. A potência das tuas centrais, mais a das centrais de compradores ou parceiros que usam esta ligação, já ocupa todo esse espaço. Não há potência livre para a nova central deste plano.\n\nPodes fazer o plano mais pequeno, esperar que um comprador ou parceiro liberte potência, ou cancelar o plano. Vender mais centrais não cria potência nova."
 }

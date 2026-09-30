@@ -1,0 +1,17 @@
+{
+  "skeleton_id": "mail-apa-icnf-vinculativo-01",
+  "skin_id": "consultor",
+  "draft": true,
+  "when": {
+    "retired": true
+  },
+  "from_name": "Consultor ambiental",
+  "subject": "A APA está a tratar a opinião do ICNF como obrigatória",
+  "body": "Recebemos um aviso da APA. O ICNF, o instituto do Estado que protege a natureza e as florestas, deu uma opinião negativa sobre o teu projeto e pede mudanças.\n\nO teu terreno não fica em nenhuma zona protegida. Pela lei, nestes casos a opinião do ICNF é só um conselho, e a APA pode decidir de outra forma se explicar porquê. Mas, na prática, a APA tem tratado estas opiniões como vinculativas, ou seja, como se a obrigassem, e segue-as à letra.\n\nTens quatro caminhos. Nenhum é grátis.",
+  "params": {
+    "base_legal": "ver nota_gm do esqueleto"
+  },
+  "from_type_override": "CONSULTOR",
+  "retired": true,
+  "status": "RETIRADA 2026-09-30 (Pedro): a skin APA é a carta principal; o aviso do consultor passou a carta própria (mail-consultor-icnf-aviso-01). Não usar."
+}

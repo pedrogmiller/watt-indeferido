@@ -1,0 +1,35 @@
+{
+  "skeleton_id": "mail-consultor-sobreequipamento-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor técnico",
+  "subject": "Ourique: quantos painéis a mais?",
+  "body": "A central de Ourique tem 120 MWp numa ligação de 99 MVA. Com o sobreequipamento, a rede deixa injetar até 118,8 MVA, e o que passar disso é cortado. Podemos juntar poucos painéis, alguns ou muitos. Com muitos, a central passa dos 200 MWp e a área de painéis fica perto dos 100 ha, e a alteração pode passar a precisar de avaliação ambiental. A energia a mais é vendida ao preço do mercado.",
+  "params": {
+    "overequip_added_mwp": {
+      "small": 20,
+      "medium": 40,
+      "large": 90
+    },
+    "total_mwp": {
+      "small": 140,
+      "medium": 160,
+      "large": 210
+    },
+    "module_area_ha": {
+      "small": "~60–67",
+      "medium": "~69–77",
+      "large": "~90–101 (pode chegar a AIA)"
+    },
+    "dc_ac_vs_cap": {
+      "small": 1.18,
+      "medium": 1.35,
+      "large": 1.77
+    },
+    "injection_cap_mva": 118.8,
+    "hipotese": "áreas a 0,43–0,48 ha/MWp; tamanhos HIPÓTESE"
+  }
+}

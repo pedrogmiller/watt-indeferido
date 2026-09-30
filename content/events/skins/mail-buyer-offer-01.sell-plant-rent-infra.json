@@ -1,0 +1,16 @@
+{
+  "skeleton_id": "mail-buyer-offer-01",
+  "skin_id": "sell-plant-rent-infra",
+  "when": {
+    "sale_mode": "sell_plant_rent_infra",
+    "min_phase": "licenca_producao",
+    "line_ready": true
+  },
+  "from_name": "Lusovento Utility Desk",
+  "subject": "Proposta: comprar a central e alugar a tua subestação e a tua linha",
+  "body": "Queremos comprar a tua central. O TRC vai com ela: o direito de injetar na rede pertence à licença da central, e a lei não deixa separá-los.\n\nTu ficas com a subestação e com a linha que construíste, e pagamos-te uma renda por ano para as usarmos. Deixas de ter potência nesta ligação. A venda só fecha quando a DGEG autorizar a mudança de titular da licença, em cerca de duas semanas.\n\nEsta forma de venda só é possível porque já tens a licença de produção e a linha está pronta.",
+  "params": {
+    "sale_mode": "sell_plant_rent_infra",
+    "offer_band": "fair"
+  }
+}

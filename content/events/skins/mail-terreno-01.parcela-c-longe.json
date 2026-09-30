@@ -1,0 +1,16 @@
+{
+  "skeleton_id": "mail-terreno-01",
+  "skin_id": "parcela-c-longe",
+  "draft": true,
+  "status": "TRANCADO Pedro 2026-09-30 (linha pelo terreno)",
+  "from_name": "Joaquim Rosado",
+  "subject": "Terreno barato, longe da ligação",
+  "body": "Tenho uma herdade grande a um preço baixo. Fica a uns 25 km da subestação onde o teu TRC liga, por isso a linha é longa e passa pelas terras de muitos vizinhos. O teu consultor vai querer ver o traçado antes de decidires.",
+  "params": {
+    "sinal": "baixo",
+    "prazo_dias": 60,
+    "servidao": "varios",
+    "linha_km": 25,
+    "linha_km_band": "longa"
+  }
+}

@@ -53,7 +53,6 @@
       "hint": "Plantas sobreiros ou azinheiras noutro terreno e cuidas deles durante anos. Precisas de mais dinheiro de desenvolvimento, e a plantação fica como condição na DIA. O ICNF pode pedir mais.",
       "effects": [
         "icnf_compensation_plan",
-        "car_need_up",
         "env_mitigation_flag",
         "icnf_via_ca"
       ]

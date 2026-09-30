@@ -40,6 +40,12 @@
     }
   ],
   "notes_for_economy": "car_need_up adicional (área de compensação maior + garantia bancária) — PEDIR_ECONOMY.",
-  "notes_for_ui": "Mutex com mail-icnf-compensacao-aprovada-01. Remetente real = Câmara (via PIP) ou APA/Comissão (via AIA): o promotor não recebe o ICNF diretamente — skin traz from_type_override (UI ligar).",
-  "nota_gm": "Prática ICNF: fator de área acima do mínimo legal 1,25× e garantia bancária (DL 169/2001 art. 8.º n.º 4)."
+  "notes_for_ui": "Mutex com mail-icnf-compensacao-aprovada-01. Remetente real = Câmara (via PIP) ou APA/Comissão (via AIA): o promotor não recebe o ICNF diretamente — skin traz from_type_override (UI ligar). 2026-09-30: skins aia e caso-a-caso trazem choice_overrides (hint + effects de redesign_trees: delay_env_+1 em vez de delay_pip_+1). A UI tem de aplicar choice_overrides por id de escolha.",
+  "nota_gm": "Prática ICNF: fator de área acima do mínimo legal 1,25× e garantia bancária (DL 169/2001 art. 8.º n.º 4).",
+  "skin_by_route": {
+    "pip (via B, Câmara)": "ourique",
+    "aia (Comissão de Avaliação)": "aia",
+    "caso_a_caso (apreciação prévia CCDR/APA)": "caso-a-caso",
+    "regra": "A skin escolhe-se pela regra que dispara (r-icnf-* → ourique, r-icnf-ca-* → aia, r-icnf-caso-* → caso-a-caso), não pela SE."
+  }
 }

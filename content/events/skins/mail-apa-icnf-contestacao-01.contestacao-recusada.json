@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-apa-icnf-contestacao-01",
+  "skin_id": "contestacao-recusada",
+  "draft": true,
+  "when": {
+    "outcome": "recusada"
+  },
+  "from_name": "APA",
+  "subject": "A APA mantém a opinião do ICNF como obrigatória",
+  "body": "Analisámos o teu pedido e mantemos a nossa posição: as exigências do ICNF passam a ser condições da decisão ambiental. Terás de as cumprir. Se o projeto não as cumprir, a decisão pode ser desfavorável e o projeto fica parado.",
+  "params": {
+    "base_legal": "ver nota_gm do esqueleto"
+  }
+}

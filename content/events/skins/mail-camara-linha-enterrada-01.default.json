@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-camara-linha-enterrada-01",
+  "skin_id": "default",
+  "draft": true,
+  "when": {},
+  "from_name": "Câmara Municipal",
+  "subject": "A Câmara quer a linha enterrada",
+  "body": "A Câmara não aceita uma linha aérea de alta tensão no concelho. Diz que estraga a paisagem e que a população está contra. Só dá parecer favorável se a linha for enterrada no troço que atravessa o concelho. Sem esse parecer, o PIP fica em risco.",
+  "params": {
+    "underground_km": 5,
+    "underground_km_band": "curto"
+  }
+}

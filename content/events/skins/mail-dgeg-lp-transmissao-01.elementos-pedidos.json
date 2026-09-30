@@ -1,0 +1,11 @@
+{
+  "skeleton_id": "mail-dgeg-lp-transmissao-01",
+  "skin_id": "elementos-pedidos",
+  "draft": true,
+  "when": {
+    "outcome": "elementos_pedidos"
+  },
+  "from_name": "DGEG",
+  "subject": "Venda: faltam elementos do comprador",
+  "body": "Para decidir sobre a transmissão da licença precisamos de mais elementos sobre a capacidade técnica e financeira do comprador. Só pedimos isto uma vez. O comprador tem até 30 dias para responder e, entretanto, o nosso prazo fica parado. O projeto continua a ser teu."
+}

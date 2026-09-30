@@ -1,0 +1,11 @@
+{
+  "skeleton_id": "mail-dgeg-lp-transmissao-01",
+  "skin_id": "autorizada",
+  "draft": true,
+  "when": {
+    "outcome": "autorizada"
+  },
+  "from_name": "DGEG",
+  "subject": "Venda autorizada: registámos o novo titular",
+  "body": "Autorizámos a transmissão da licença de produção e registámos o comprador como novo titular. O TRC e tudo o que está registado na licença passam com a central. A venda está feita."
+}

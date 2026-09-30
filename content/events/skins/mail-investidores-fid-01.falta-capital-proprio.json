@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-investidores-fid-01",
+  "skin_id": "falta-capital-proprio",
+  "draft": true,
+  "when": {
+    "computed": "equity_fit_short"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "Falta capital próprio: a obra não pode começar",
+  "body": "O projeto está pronto para a decisão final de investimento, mas falta capital próprio (o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco). Sem ele, não aprovamos a construção e a obra não pode começar.\n\nPodes pedir-nos um reforço, vender o projeto pronto a construir, ou adiar a decisão. O teu TRC e a licença continuam válidos, mas os prazos continuam a contar.",
+  "params": {}
+}

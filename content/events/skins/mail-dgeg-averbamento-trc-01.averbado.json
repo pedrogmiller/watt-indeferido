@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-dgeg-averbamento-trc-01",
+  "skin_id": "averbado",
+  "when": {
+    "outcome": "averbado"
+  },
+  "from_name": "DGEG",
+  "subject": "TRC: registámos o novo titular",
+  "body": "O comprador reforçou a caução e registámos a mudança de titular no TRC. A venda está feita: o projeto deixa de ser teu, deixas de gastar dinheiro de desenvolvimento nele e ficas com lugar para ganhar outro lote."
+}

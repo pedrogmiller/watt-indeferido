@@ -58,7 +58,8 @@
       ],
       "on_miss_mail": null,
       "void_on_effects": [
-        "sale_full_exit"
+        "sale_full_exit",
+        "trc_transferred_with_plant"
       ]
     },
     {
@@ -83,8 +84,10 @@
       ],
       "on_miss_mail": null,
       "void_on_effects": [
-        "sale_full_exit"
-      ]
+        "sale_full_exit",
+        "trc_transferred_with_plant"
+      ],
+      "proposal_2026_09_30": "PROPOSTA (regra Pedro): não semear no M0. Criar só com land_secured e só na via sem AIA (nao_sujeicao); até lá o HUD não mostra 'PIP / Câmara'. Código da consola (legacy_seed) — UI decide."
     },
     {
       "id": "main_permit",
@@ -108,9 +111,11 @@
       ],
       "on_miss_mail": null,
       "void_on_effects": [
-        "sale_full_exit"
+        "sale_full_exit",
+        "trc_transferred_with_plant"
       ],
-      "note": "Rótulo actual na consola: 'Licença principal (APA)'. Proposta: renomear para 'Arranque AIA (APA)' — a licença principal passa a ser lp_request/lp_decision."
+      "note": "Rótulo actual na consola: 'Licença principal (APA)'. Proposta: renomear para 'Arranque AIA (APA)' — a licença principal passa a ser lp_request/lp_decision.",
+      "proposal_2026_09_30": "PROPOSTA (regra Pedro): não semear no M0. Criar só com land_secured e via AIA (env_path_aia_obrigatoria / aia_sujeito); até lá o HUD não mostra 'Arranque AIA (APA)'. Código da consola (legacy_seed) — UI decide."
     },
     {
       "id": "grid_agreement",
@@ -135,7 +140,8 @@
       ],
       "on_miss_mail": null,
       "void_on_effects": [
-        "sale_full_exit"
+        "sale_full_exit",
+        "trc_transferred_with_plant"
       ]
     },
     {
@@ -184,7 +190,8 @@
       ],
       "void_on_effects": [
         "sale_full_exit",
-        "trc_caducado"
+        "trc_caducado",
+        "trc_transferred_with_plant"
       ],
       "warn": {
         "months_before": 2,
@@ -265,7 +272,8 @@
         "lp_elements_sent"
       ],
       "void_on_effects": [
-        "sale_full_exit"
+        "sale_full_exit",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_lp_aperfeicoamento"
@@ -309,7 +317,8 @@
       ],
       "void_on_effects": [
         "sale_full_exit",
-        "trc_caducado"
+        "trc_caducado",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_lp_decision"
@@ -351,7 +360,8 @@
       ],
       "void_on_effects": [
         "sale_full_exit",
-        "trc_caducado"
+        "trc_caducado",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_fid_window"
@@ -396,7 +406,8 @@
       "shift_only_if_letter_ref": true,
       "void_on_effects": [
         "sale_full_exit",
-        "trc_caducado"
+        "trc_caducado",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_grid_connection",
@@ -438,7 +449,8 @@
       },
       "shift_only_if_letter_ref": true,
       "void_on_effects": [
-        "sale_full_exit"
+        "sale_full_exit",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_epc_mechanical_completion",
@@ -480,7 +492,8 @@
       ],
       "void_on_effects": [
         "sale_full_exit",
-        "trc_caducado"
+        "trc_caducado",
+        "trc_transferred_with_plant"
       ],
       "warn": {
         "months_before": 2,
@@ -586,7 +599,8 @@
         "sale_full_exit",
         "trc_caducado",
         "env_route_a",
-        "aia_sujeito"
+        "aia_sujeito",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_pip_decision"
@@ -603,8 +617,8 @@
     },
     {
       "id": "caso_a_caso_decision",
-      "label": "Apreciação prévia (CCDR/APA)",
-      "hud_owner": "CCDR",
+      "label": "Apreciação prévia (APA)",
+      "hud_owner": "APA",
       "kind": "authority",
       "severity": "high",
       "legal_basis": "RJAIA DL 151-B/2013 alt. DL 11/2023 — apreciação prévia caso a caso (prazo mais curto que AIA); dias exactos PEDIR_PEDRO",
@@ -631,7 +645,8 @@
       "void_on_effects": [
         "sale_full_exit",
         "trc_caducado",
-        "reopen_tech_plan"
+        "reopen_tech_plan",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_caso_a_caso_decision"
@@ -669,7 +684,8 @@
       ],
       "void_on_effects": [
         "sale_full_exit",
-        "trc_caducado"
+        "trc_caducado",
+        "trc_transferred_with_plant"
       ],
       "on_meet": [
         "dl_met_aas_decision"
@@ -682,6 +698,100 @@
       "extension": {
         "allowed": false
       }
+    },
+    {
+      "id": "trc_transfer_averbamento",
+      "label": "Registo do novo titular do TRC (DGEG)",
+      "hud_owner": "DGEG",
+      "kind": "authority",
+      "severity": "normal",
+      "legal_basis": "DL 15/2022 art. 18.º/8 (averbamento) e 18.º/10 (reforço da caução em metade = condição do averbamento). O artigo não fixa prazo.",
+      "create_on": {
+        "effect_any": [
+          "trc_transfer_averbamento_requested"
+        ]
+      },
+      "recreate_if_closed": true,
+      "due": {
+        "anchor": "created",
+        "months_band": "1-3",
+        "months": 2,
+        "source": "HIPÓTESE (sem prazo no art. 18.º; CPA art. 128.º supletivo = 90 dias) — PEDIR_PEDRO"
+      },
+      "meet_on_delivered": [
+        "mail-dgeg-averbamento-trc-01"
+      ],
+      "meet_on_effects": [
+        "trc_transfer_averbado",
+        "buyer_caution_failed"
+      ],
+      "void_on_effects": [
+        "trc_caducado",
+        "sale_full_exit"
+      ],
+      "on_meet": [
+        "dl_met_trc_transfer_averbamento"
+      ],
+      "on_miss": [
+        "dl_missed_trc_transfer_averbamento",
+        "dgeg_late"
+      ],
+      "on_miss_mail": null,
+      "extension": {
+        "allowed": false
+      },
+      "note": "Venda total antes da LP não é instantânea (travão ao flip, G25). Durante o prazo o projeto continua do jogador."
+    },
+    {
+      "id": "lp_transfer_authorization",
+      "label": "Autorização da DGEG para a venda",
+      "hud_owner": "DGEG",
+      "kind": "authority",
+      "severity": "normal",
+      "status": "TRANCADO Pedro 2026-09-30 (lei em vigor)",
+      "legal_basis": "DL 15/2022 art. 36.º/1 (autorização), 36.º/4 (15 dias; elementos uma vez, 30 dias, suspende), 36.º/2 → 18.º/10 (caução +50 % até à LE)",
+      "create_on": {
+        "effect_any": [
+          "lp_transfer_authorization_requested"
+        ]
+      },
+      "recreate_if_closed": true,
+      "due": {
+        "anchor": "created",
+        "months": 0.5,
+        "months_band": "0.5",
+        "source": "art. 36.º/4: 15 dias"
+      },
+      "meet_on_delivered": [],
+      "meet_on_effects": [
+        "lp_transfer_authorized",
+        "buyer_caution_failed"
+      ],
+      "void_on_effects": [
+        "trc_caducado",
+        "project_abandoned"
+      ],
+      "on_meet": [
+        "dl_met_lp_transfer_authorization"
+      ],
+      "on_miss": [
+        "dl_missed_lp_transfer_authorization",
+        "dgeg_late"
+      ],
+      "on_miss_mail": null,
+      "extension": {
+        "allowed": true,
+        "max": 1,
+        "auto_on_effects": [
+          "lp_transfer_elementos_pedidos"
+        ],
+        "adds_months": {
+          "months": 1,
+          "source": "art. 36.º/4: 30 dias para entregar elementos; prazo suspenso"
+        },
+        "note": "Automática (não é pedido do jogador)."
+      },
+      "note": "A venda depois da LP não é instantânea. Durante o prazo o projeto continua do jogador. O elementos-pedidos não fecha o prazo (não está em meet_on_effects)."
     }
   ]
 }

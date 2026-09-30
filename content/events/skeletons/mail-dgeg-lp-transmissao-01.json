@@ -1,0 +1,31 @@
+{
+  "id": "mail-dgeg-lp-transmissao-01",
+  "phase": "late_dev",
+  "draft": true,
+  "status": "TRANCADO Pedro 2026-09-30 (lei em vigor)",
+  "trigger": {
+    "after": "lp_transfer_authorization_requested",
+    "when_phase": [
+      "licenca_producao",
+      "obra",
+      "cod"
+    ],
+    "or_deadline": "lp_transfer_authorization"
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "deadline_ref": "lp_transfer_authorization",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Percebido",
+      "effects": [
+        "sale_ack"
+      ]
+    }
+  ],
+  "heavy": false,
+  "nota_gm": "DL 15/2022 art. 36.º: transmissão da LP sujeita a autorização (n.º 1); decisão em 15 dias, pedido de elementos uma vez com 30 dias que suspende o prazo (n.º 4); até à LE segue o art. 18.º, incluindo reforço da caução em metade como condição (n.º 2 → 18.º/10); averbamento do novo titular (n.º 5). Depois da LE a caução já foi liberada (13.º/18). O TRC acompanha a central (18.º/5, 36.º/1, 37.º/2).",
+  "notes_for_economy": "Desfecho sorteado nas regras r-lp-transfer-* (odds PEDIR_ECONOMY; proposta = as do averbamento). Caução +50 % = custo do comprador, entra no preço.",
+  "notes_for_ui": "Efeitos vêm das regras (on_deliver_effects + on_deliver_effects_by_tag conforme sale_full_exit_pending / sale_plant_rent_infra_pending). Skins: autorizada | elementos-pedidos | caucao-em-falta (só antes da LE)."
+}

@@ -1,0 +1,89 @@
+{
+  "id": "mail-apa-icnf-vinculativo-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-30 (Pedro aprovou o evento) — APA trata o parecer do ICNF como vinculativo fora de zona protegida; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "apa_track_start|caso_a_caso_request",
+    "when_phase": [
+      "land",
+      "pip",
+      "aia"
+    ],
+    "requires_any": [
+      "apa_track_start",
+      "caso_a_caso_request"
+    ],
+    "requires_any_land_secured": [
+      "land_option_open",
+      "dd_started"
+    ],
+    "gate": {
+      "computed": "icnf_binding == false",
+      "se_attrs": {
+        "env_draft.rede_natura": false,
+        "env_draft.area_protegida": false
+      },
+      "nota": "Só onde, por lei, o parecer do ICNF não devia obrigar. Em Ourique só acontece depois de layout_trim_trees (sem corte de quercíneas → icnf_binding false)."
+    },
+    "month_offset": 3,
+    "min_phase_note": "Só depois do terreno garantido e com via ambiental definida (AIA ou caso a caso)."
+  },
+  "priority": "high",
+  "from_type": "APA",
+  "heavy": true,
+  "choices": [
+    {
+      "id": "accept_redesign",
+      "label": "Aceitar e mudar o projeto como o ICNF pede",
+      "hint": "Tens de entregar um desenho novo, por isso a avaliação ambiental atrasa. Podes perder área ou potência. Em troca, o problema fica resolvido e a relação com a APA e com o ICNF não piora.",
+      "effects": [
+        "icnf_demands_accepted",
+        "reopen_tech_plan",
+        "delay_env_+1",
+        "risk_icnf_-1",
+        "icnf_vinc_answered"
+      ]
+    },
+    {
+      "id": "contest_legal",
+      "label": "Contestar com um parecer jurídico",
+      "hint": "Pedes a advogados um parecer a defender que, fora das zonas protegidas, a opinião do ICNF não obriga a APA. Custa tempo e dinheiro de desenvolvimento, e o resultado é incerto. Mesmo que ganhes, a APA e o ICNF podem ficar de pé atrás contigo.",
+      "effects": [
+        "icnf_binding_contested",
+        "legal_opinion_ordered",
+        "car_need_up",
+        "delay_env_+1",
+        "apa_relation_down",
+        "icnf_relation_down",
+        "icnf_vinc_answered"
+      ]
+    },
+    {
+      "id": "negotiate_icnf",
+      "label": "Negociar diretamente com o ICNF",
+      "hint": "Pedes uma reunião técnica ao ICNF e propões um plano de compensação, como plantar árvores noutro terreno. Precisas de mais dinheiro de desenvolvimento e a avaliação pode atrasar um pouco. O ICNF pode aceitar ou pedir mais.",
+      "effects": [
+        "icnf_meeting_requested",
+        "icnf_compensation_plan",
+        "icnf_vinc_answered"
+      ]
+    },
+    {
+      "id": "escalate_sector",
+      "label": "Levar o caso à associação do setor e ao Governo",
+      "hint": "Pedes à associação das empresas de renováveis que leve o caso ao Governo. Raramente muda alguma coisa a tempo, e o teu nome passa a aparecer nas notícias. Enquanto isso, a avaliação ambiental fica parada.",
+      "effects": [
+        "sector_escalation",
+        "reputation_exposed",
+        "risk_media_+1",
+        "apa_relation_down",
+        "delay_env_+1",
+        "icnf_vinc_answered"
+      ]
+    }
+  ],
+  "notes_for_economy": "Sem €. car_need_up (parecer jurídico / compensação) e delay_env_+1 = PEDIR_ECONOMY. Odds do desfecho da contestação (r-apa-icnf-contest-*) e da escalada (r-apa-icnf-escalada-*, mais baixas) = PEDIR_ECONOMY. Efeito na DIA: ver r-dia.dia_outcome_odds (icnf_opinion_binding_kept sobe desfavorável; icnf_opinion_consultive e icnf_demands_accepted descem). Se icnf_alt_design_prepared: accept_redesign atrasa menos (delay_env_+1 reduzido ou anulado) e a contestação tem mais hipóteses — PEDIR_ECONOMY.",
+  "notes_for_ui": "Remetente APA; na via caso a caso trocar from_name para a CCDR (skin caso-a-caso). Skin 'consultor' RETIRADA (2026-09-30): o aviso prévio é a carta mail-consultor-icnf-aviso-01. Mostrar choice.hint. icnf_vinc_answered serve só para encaminhar regras (não usar no toast). apa_relation_down / icnf_relation_down entram nos drivers de relação (entities.draft.json).",
+  "nota_gm": "Base real: ECO, 03/10/2025, «APA deu luz verde a mais de 90% dos projetos solares, eólicos e linhas de alta tensão desde 2016» (https://eco.sapo.pt/2025/10/03/apa-deu-luz-verde-a-mais-de-90-dos-projetos-solares-eolicos-e-linhas-de-alta-tensao-desde-2016/): um ex-Secretário de Estado da Energia afirma que «a APA determina, neste momento, que qualquer parecer do ICNF é vinculativo, seja em zona sensível ou não sensível. A lei diz claramente que há uma diferença.» (não nomear em texto de jogador). Enquadramento: RJAIA (DL 151-B/2013, alt. DL 11/2023) — pareceres das entidades da CA são em regra não vinculativos; o do ICNF é vinculativo em Rede Natura 2000 (DL 140/99), áreas protegidas (RJCNB, DL 142/2008) e corte de sobreiro/azinheira (DL 169/2001). Fora disso, a autoridade de AIA pode decidir contra o parecer, fundamentando. Na via caso a caso (art. 1.º/3 b) RJAIA), a autoridade (CCDR ou APA) pode ouvir o ICNF na apreciação prévia. Por isso a carta só sai com icnf_binding == false. Galamba só aqui, nunca no corpo."
+}

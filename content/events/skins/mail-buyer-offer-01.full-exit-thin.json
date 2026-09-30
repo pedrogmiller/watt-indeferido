@@ -3,13 +3,17 @@
   "skin_id": "full-exit-thin",
   "when": {
     "sale_mode": "full_exit",
-    "offer_band": "thin"
+    "offer_band": "thin",
+    "before_phase": "licenca_producao"
   },
   "from_name": "Horizon Infra Partners",
   "subject": "Proposta: comprar o projeto todo",
-  "body": "Queremos comprar o projeto todo: o TRC e tudo o que já fizeste. A nossa oferta é baixa, porque o projeto ainda está no início e as licenças ainda são um risco.\n\nSe aceitares, o projeto deixa de ser teu, deixas de gastar dinheiro de desenvolvimento nele e ficas com lugar para ganhar outro lote. Se recusares, o projeto continua contigo e o dinheiro de desenvolvimento vai sendo gasto.",
+  "body": "Queremos comprar o projeto todo: o TRC e tudo o que já fizeste. A nossa oferta é baixa, porque o projeto ainda está no início e as licenças ainda são um risco.\n\nComo ainda não tens a licença de produção, a venda não fecha já. Temos de reforçar a caução em metade do valor e a DGEG tem de registar a mudança de titular no TRC. Até lá, o projeto continua a ser teu e o dinheiro de desenvolvimento continua a ser gasto.\n\nSe a DGEG registar a mudança, deixas de gastar dinheiro neste projeto e ficas com lugar para ganhar outro lote. Se recusares a proposta, nada muda.",
   "params": {
     "sale_mode": "full_exit",
-    "offer_band": "thin"
+    "offer_band": "thin",
+    "sets_on_accept": [
+      "offer_band_thin"
+    ]
   }
 }

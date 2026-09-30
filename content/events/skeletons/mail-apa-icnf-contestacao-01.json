@@ -1,0 +1,35 @@
+{
+  "id": "mail-apa-icnf-contestacao-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-30 (Pedro aprovou o evento) — APA trata o parecer do ICNF como vinculativo fora de zona protegida; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "icnf_binding_contested|sector_escalation",
+    "when_phase": [
+      "land",
+      "pip",
+      "aia"
+    ],
+    "requires_any": [
+      "icnf_binding_contested",
+      "sector_escalation"
+    ],
+    "month_offset": 2
+  },
+  "priority": "high",
+  "from_type": "APA",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Percebi",
+      "hint": "Fica registado. O resultado entra na decisão ambiental.",
+      "effects": [
+        "icnf_contest_outcome_seen"
+      ]
+    }
+  ],
+  "notes_for_economy": "Desfecho sorteado na regra (on_deliver_effects), não na escolha. Odds PEDIR_ECONOMY: contestação jurídica = incerta; escalada = baixa.",
+  "notes_for_ui": "Duas skins: contestacao-aceite / contestacao-recusada, em mutex (grupo icnf_vinc_outcome). Mesmo esqueleto para contestação jurídica e escalada ao setor (o texto serve às duas).",
+  "nota_gm": "Desfecho da contestação de mail-apa-icnf-vinculativo-01. Aceite = a autoridade reconhece que, fora de Rede Natura/área protegida, o parecer do ICNF é consultivo e decide fundamentando (RJAIA). Recusada = a autoridade mantém a posição; as exigências do ICNF passam a condições da DIA/decisão. Base real: ECO, 03/10/2025, «APA deu luz verde a mais de 90% dos projetos solares, eólicos e linhas de alta tensão desde 2016» (https://eco.sapo.pt/2025/10/03/apa-deu-luz-verde-a-mais-de-90-dos-projetos-solares-eolicos-e-linhas-de-alta-tensao-desde-2016/): um ex-Secretário de Estado da Energia afirma que «a APA determina, neste momento, que qualquer parecer do ICNF é vinculativo, seja em zona sensível ou não sensível. A lei diz claramente que há uma diferença.» (não nomear em texto de jogador)."
+}

@@ -1,0 +1,1288 @@
+{
+  "version": 0,
+  "status": "DRAFT 2026-09-29 (rev. Pedro 21:24) — proposta GM; aguarda Gate Pedro (não trancado)",
+  "spec": "../entidades-cta-proposta.md",
+  "types": {
+    "camara": {
+      "label_pt": "Câmara Municipal",
+      "national": false,
+      "per": "concelho",
+      "mail_from_types": [
+        "CAMARA"
+      ]
+    },
+    "ccdr": {
+      "label_pt": "CCDR — Comissão de Coordenação e Desenvolvimento Regional",
+      "national": false,
+      "per": "região (Norte, Centro, Lisboa e Vale do Tejo, Alentejo, Algarve)",
+      "mail_from_types": [
+        "CCDR"
+      ]
+    },
+    "apa": {
+      "label_pt": "APA — Agência Portuguesa do Ambiente",
+      "national": true,
+      "mail_from_types": [
+        "APA"
+      ]
+    },
+    "icnf": {
+      "label_pt": "ICNF — Instituto da Conservação da Natureza e das Florestas",
+      "national": true,
+      "regional_flavour": true,
+      "mail_from_types": [
+        "ICNF"
+      ]
+    },
+    "dgeg": {
+      "label_pt": "DGEG — Direção-Geral de Energia e Geologia",
+      "national": true,
+      "mail_from_types": [
+        "DGEG"
+      ]
+    },
+    "ren": {
+      "label_pt": "REN — Redes Energéticas Nacionais",
+      "national": true,
+      "per_se_context": true,
+      "mail_from_types": [
+        "REDE"
+      ]
+    },
+    "e_redes": {
+      "label_pt": "E-REDES",
+      "national": true,
+      "per_se_context": true,
+      "mail_from_types": [
+        "REDE"
+      ],
+      "note": "Ourique liga à REN (Pedro 2026-09-29). E-REDES só em lotes ligados à rede de distribuição."
+    },
+    "banco": {
+      "label_pt": "Banco",
+      "national": false,
+      "per": "instância (vários bancos, cada um com o seu apetite)",
+      "mail_from_types": [
+        "BANCO"
+      ]
+    },
+    "concorrente": {
+      "label_pt": "Concorrente",
+      "national": false,
+      "per": "empresa fictícia",
+      "mail_from_types": [
+        "CONCORRENTE"
+      ]
+    }
+  },
+  "relation": {
+    "scale": [
+      "hostil",
+      "cética",
+      "neutra",
+      "colaborante"
+    ],
+    "labels_pt": {
+      "hostil": "Hostil: está contra o teu projeto",
+      "cética": "Cética: desconfia, mas ouve",
+      "neutra": "Neutra: trata o teu projeto como qualquer outro",
+      "colaborante": "Colaborante: está disposta a ajudar"
+    },
+    "rule": "Cada tag de 'melhora' sobe um degrau, cada tag de 'piora' desce um degrau; limitado à escala. Pesos e decaimento = PEDIR_ECONOMY. Concorrentes não têm relação (mostram 'Concorrente').",
+    "initial_from": {
+      "camara": "se-sheet tags.camara (hostil→hostil, neutra→neutra, favoravel→colaborante)",
+      "default": "neutra"
+    },
+    "drivers": {
+      "camara": {
+        "melhora": [
+          "risk_camara_-1",
+          "community_trust_up",
+          "shared_benefits_unlock",
+          "pip_aprovado"
+        ],
+        "piora": [
+          "risk_camara_+1",
+          "risk_camara_+2",
+          "community_trust_down",
+          "session_timing_bad",
+          "pip_appeal",
+          "risk_community_+1"
+        ]
+      },
+      "ccdr": {
+        "melhora": [],
+        "piora": [
+          "risk_apa_+1",
+          "caso_a_caso_contest",
+          "dia_contest",
+          "apa_relation_down"
+        ]
+      },
+      "apa": {
+        "melhora": [
+          "dia_conditions_accepted"
+        ],
+        "piora": [
+          "risk_apa_+1",
+          "dia_contest",
+          "apa_relation_down"
+        ]
+      },
+      "icnf": {
+        "melhora": [
+          "risk_icnf_-1",
+          "icnf_hint_useful",
+          "icnf_compensation_approved"
+        ],
+        "piora": [
+          "risk_icnf_+1",
+          "icnf_minimal_reply",
+          "icnf_relation_down"
+        ]
+      },
+      "dgeg": {
+        "melhora": [
+          "lp_elements_sent"
+        ],
+        "piora": [
+          "risk_dgeg_+1",
+          "lp_escalate",
+          "lp_elements_missing"
+        ]
+      },
+      "ren": {
+        "melhora": [
+          "grid_conditions_accepted"
+        ],
+        "piora": [
+          "grid_chase"
+        ]
+      },
+      "banco": {
+        "melhora": [
+          "term_sheet_signed"
+        ],
+        "piora": [
+          "term_sheet_defer"
+        ]
+      }
+    }
+  },
+  "traits_labels_pt": {
+    "camara_trait_pro_renovaveis": "Costuma apoiar projetos de energia renovável",
+    "camara_trait_cetica": "Desconfia de centrais grandes no concelho",
+    "camara_trait_lenta": "Demora a responder aos pedidos",
+    "camara_trait_assembleia_sensivel": "As decisões dependem muito da Assembleia Municipal",
+    "ccdr_trait_rapida": "Costuma decidir dentro do prazo",
+    "ccdr_trait_lenta": "Costuma atrasar decisões",
+    "icnf_trait_montado": "Região com muito montado: atenção aos sobreiros e azinheiras",
+    "concorrente_porte_grande": "Empresa grande, com vários projetos em Portugal",
+    "concorrente_tec_solar": "Desenvolve centrais solares",
+    "concorrente_tec_eolica": "Tem parques eólicos",
+    "concorrente_tec_hibrido": "Junta solar, eólico ou baterias no mesmo projeto",
+    "concorrente_tec_hidrica": "Tem centrais hídricas",
+    "concorrente_regiao_nacional": "Ativa em várias regiões do país",
+    "concorrente_regiao_sul": "Ativa sobretudo no Sul",
+    "concorrente_regiao_centro": "Ativa sobretudo no Centro",
+    "banco_porte_grande": "Banco grande, com presença em todo o país",
+    "banco_publico": "Banco do Estado",
+    "banco_grupo_internacional": "Faz parte de um grupo bancário internacional",
+    "banco_fomento": "Banco público de apoio ao investimento",
+    "banco_tec_solar": "Já financiou centrais solares em Portugal",
+    "banco_tec_hibrido_bess": "Já financiou projetos com solar, eólico e baterias juntos",
+    "banco_sindicato": "Costuma financiar em conjunto com outros bancos"
+  },
+  "trait_effects": {
+    "camara_trait_pro_renovaveis": "PEDIR_ECONOMY",
+    "camara_trait_cetica": "PEDIR_ECONOMY",
+    "camara_trait_lenta": "PEDIR_ECONOMY",
+    "camara_trait_assembleia_sensivel": "PEDIR_ECONOMY",
+    "ccdr_trait_rapida": "PEDIR_ECONOMY",
+    "ccdr_trait_lenta": "PEDIR_ECONOMY",
+    "icnf_trait_montado": "PEDIR_ECONOMY",
+    "concorrente_porte_grande": "nenhum (traço descritivo, só texto)",
+    "concorrente_tec_solar": "nenhum (traço descritivo, só texto)",
+    "concorrente_tec_eolica": "nenhum (traço descritivo, só texto)",
+    "concorrente_tec_hibrido": "nenhum (traço descritivo, só texto)",
+    "concorrente_tec_hidrica": "nenhum (traço descritivo, só texto)",
+    "concorrente_regiao_nacional": "nenhum (traço descritivo, só texto)",
+    "concorrente_regiao_sul": "nenhum (traço descritivo, só texto)",
+    "concorrente_regiao_centro": "nenhum (traço descritivo, só texto)",
+    "banco_porte_grande": "nenhum (traço descritivo, só texto)",
+    "banco_publico": "nenhum (traço descritivo, só texto)",
+    "banco_grupo_internacional": "nenhum (traço descritivo, só texto)",
+    "banco_fomento": "nenhum (traço descritivo, só texto)",
+    "banco_tec_solar": "nenhum (traço descritivo, só texto)",
+    "banco_tec_hibrido_bess": "nenhum (traço descritivo, só texto)",
+    "banco_sindicato": "nenhum (traço descritivo, só texto)"
+  },
+  "instances": [
+    {
+      "id": "camara-ourique",
+      "type": "camara",
+      "name": "Câmara Municipal de Ourique",
+      "who_pt": "A câmara do concelho onde fica o teu projeto de Ourique.",
+      "decides_pt": "Decide o PIP e pede pareceres a outras entidades. Pesa na avaliação ambiental.",
+      "traits": [
+        "camara_trait_cetica",
+        "camara_trait_assembleia_sensivel"
+      ],
+      "se_links": [
+        "ourique"
+      ],
+      "source": "HIPÓTESE — traço de jogo, não descreve a entidade real (o jogo usa camara=hostil na se-sheet)",
+      "relation_initial": "hostil"
+    },
+    {
+      "id": "camara-ferreira-do-alentejo",
+      "type": "camara",
+      "name": "Câmara Municipal de Ferreira do Alentejo",
+      "who_pt": "A câmara do concelho do lote de Ferreira do Alentejo.",
+      "decides_pt": "Decide o PIP e pede pareceres a outras entidades.",
+      "traits": [
+        "camara_trait_lenta"
+      ],
+      "se_links": [
+        "ferreira-do-alentejo"
+      ],
+      "source": "HIPÓTESE — traço de jogo, não descreve a entidade real",
+      "relation_initial": "neutra"
+    },
+    {
+      "id": "camara-estremoz",
+      "type": "camara",
+      "name": "Câmara Municipal de Estremoz",
+      "who_pt": "A câmara do concelho do lote de Estremoz.",
+      "decides_pt": "Decide o PIP. Algumas decisões vão à Assembleia Municipal.",
+      "traits": [
+        "camara_trait_assembleia_sensivel",
+        "camara_trait_cetica"
+      ],
+      "se_links": [
+        "estremoz"
+      ],
+      "source": "HIPÓTESE — traço de jogo, não descreve a entidade real; inspirado no caso público da Serra d'Ossa (voto da Assembleia Municipal, set. 2026 — MASTER-PLAN joker #2)",
+      "relation_initial": "neutra"
+    },
+    {
+      "id": "ccdr-norte",
+      "type": "ccdr",
+      "name": "CCDR Norte",
+      "who_pt": "A comissão regional do Estado para o Norte.",
+      "decides_pt": "Em projetos da região, decide se é precisa avaliação ambiental e pode conduzi-la.",
+      "traits": [],
+      "se_links": []
+    },
+    {
+      "id": "ccdr-centro",
+      "type": "ccdr",
+      "name": "CCDR Centro",
+      "who_pt": "A comissão regional do Estado para o Centro.",
+      "decides_pt": "Em projetos da região, decide se é precisa avaliação ambiental e pode conduzi-la.",
+      "traits": [],
+      "se_links": []
+    },
+    {
+      "id": "ccdr-lvt",
+      "type": "ccdr",
+      "name": "CCDR Lisboa e Vale do Tejo",
+      "who_pt": "A comissão regional do Estado para Lisboa e Vale do Tejo.",
+      "decides_pt": "Em projetos da região, decide se é precisa avaliação ambiental e pode conduzi-la.",
+      "traits": [],
+      "se_links": []
+    },
+    {
+      "id": "ccdr-alentejo",
+      "type": "ccdr",
+      "name": "CCDR Alentejo",
+      "who_pt": "A comissão regional do Estado para o Alentejo.",
+      "decides_pt": "Em projetos da região, decide se é precisa avaliação ambiental e pode conduzi-la.",
+      "traits": [
+        "ccdr_trait_lenta"
+      ],
+      "se_links": [
+        "ourique",
+        "ferreira-do-alentejo",
+        "estremoz"
+      ],
+      "source": "HIPÓTESE — traço de jogo, não descreve a entidade real"
+    },
+    {
+      "id": "ccdr-algarve",
+      "type": "ccdr",
+      "name": "CCDR Algarve",
+      "who_pt": "A comissão regional do Estado para o Algarve.",
+      "decides_pt": "Em projetos da região, decide se é precisa avaliação ambiental e pode conduzi-la.",
+      "traits": [],
+      "se_links": []
+    },
+    {
+      "id": "apa",
+      "type": "apa",
+      "name": "APA — Agência Portuguesa do Ambiente",
+      "who_pt": "A agência do Estado para o ambiente.",
+      "decides_pt": "Conduz a avaliação ambiental dos projetos grandes e emite a decisão ambiental final (DIA).",
+      "traits": [],
+      "se_links": [
+        "*"
+      ]
+    },
+    {
+      "id": "icnf",
+      "type": "icnf",
+      "name": "ICNF — Instituto da Conservação da Natureza e das Florestas",
+      "who_pt": "O instituto do Estado que protege a natureza e as florestas.",
+      "decides_pt": "Dá parecer sobre árvores protegidas e áreas naturais, através da Câmara (no PIP) ou da avaliação ambiental. Não gosta de se comprometer fora de um processo.",
+      "traits": [],
+      "se_links": [
+        "*"
+      ],
+      "regional_flavour": {
+        "alentejo": {
+          "name": "ICNF — Direção Regional do Alentejo",
+          "traits": [
+            "icnf_trait_montado"
+          ]
+        }
+      }
+    },
+    {
+      "id": "dgeg",
+      "type": "dgeg",
+      "name": "DGEG — Direção-Geral de Energia e Geologia",
+      "who_pt": "O serviço do Estado que trata das licenças de energia.",
+      "decides_pt": "Emite o TRC, a licença de produção e a licença de exploração, e controla os prazos.",
+      "traits": [],
+      "se_links": [
+        "*"
+      ]
+    },
+    {
+      "id": "ren",
+      "type": "ren",
+      "name": "REN — Redes Energéticas Nacionais",
+      "who_pt": "A empresa que gere a rede elétrica de alta tensão.",
+      "decides_pt": "Liga a tua central à rede e define o calendário e as obras de reforço.",
+      "traits": [],
+      "se_links": [
+        "*"
+      ],
+      "se_context": {
+        "ourique": "SE Ourique 400/150 kV (Pedro 2026-09-29: operador REN)",
+        "ferreira-do-alentejo": "SE Ferreira do Alentejo 400/150 kV",
+        "estremoz": "SE Estremoz 400/150 kV"
+      }
+    },
+    {
+      "id": "e-redes",
+      "type": "e_redes",
+      "name": "E-REDES",
+      "who_pt": "A empresa que gere a rede elétrica de média e baixa tensão.",
+      "decides_pt": "Só entra em lotes ligados à rede de distribuição (nenhum dos lotes atuais).",
+      "traits": [],
+      "se_links": []
+    },
+    {
+      "id": "concorrente-edpr",
+      "type": "concorrente",
+      "name": "EDP Renováveis",
+      "who_pt": "Uma das maiores empresas de energia renovável em Portugal.",
+      "decides_pt": "Disputa leilões e terrenos contigo, e pode partilhar ligações ou vender projetos.",
+      "traits": [
+        "concorrente_porte_grande",
+        "concorrente_tec_solar",
+        "concorrente_tec_eolica",
+        "concorrente_tec_hibrido",
+        "concorrente_regiao_nacional"
+      ],
+      "se_links": [
+        "ourique"
+      ],
+      "source": "HIPÓTESE — traço descritivo; ligação à SE é ficção de jogo. Fonte: edp.com — 'EDP ultrapassa os 500 MWp de capacidade solar… em Portugal' (Central da Cerca, 202 MWp, Alenquer/Azambuja; projetos híbridos).",
+      "auction_rival_id_proposed": "solis"
+    },
+    {
+      "id": "concorrente-iberdrola",
+      "type": "concorrente",
+      "name": "Iberdrola",
+      "who_pt": "Uma grande empresa de energia com projetos solares e hídricos em Portugal.",
+      "decides_pt": "Disputa leilões e terrenos contigo, e pode partilhar ligações ou vender projetos.",
+      "traits": [
+        "concorrente_porte_grande",
+        "concorrente_tec_solar",
+        "concorrente_tec_hidrica",
+        "concorrente_regiao_nacional"
+      ],
+      "se_links": [
+        "ourique"
+      ],
+      "source": "HIPÓTESE — traço descritivo; ligação à SE é ficção de jogo. Fonte: Observador 2026-07-10 — central solar Fernando Pessoa (~1,1–1,2 GW, com a Prosolia) com DIA suspensa em tribunal. Hídrica (Tâmega): conhecimento geral, não verificado nesta pesquisa.",
+      "auction_rival_id_proposed": "(novo)"
+    },
+    {
+      "id": "concorrente-finerge",
+      "type": "concorrente",
+      "name": "Finerge",
+      "who_pt": "Uma grande produtora de energia eólica e solar em Portugal.",
+      "decides_pt": "Disputa leilões contigo, e pode partilhar ligações ou vender projetos.",
+      "traits": [
+        "concorrente_porte_grande",
+        "concorrente_tec_eolica",
+        "concorrente_tec_solar",
+        "concorrente_regiao_nacional"
+      ],
+      "se_links": [
+        "ferreira-do-alentejo"
+      ],
+      "source": "HIPÓTESE — traço descritivo; ligação à SE é ficção de jogo. Fontes: finerge.pt ('Tudo sobre a Finerge': 93 centrais eólicas, 18 parques solares, 62 concelhos) e Jornal Económico ('Finerge supera os dois gigas de potência').",
+      "auction_rival_id_proposed": "ibervolt"
+    },
+    {
+      "id": "concorrente-lightsource-bp",
+      "type": "concorrente",
+      "name": "Lightsource bp",
+      "who_pt": "Uma empresa internacional que desenvolve grandes centrais solares em Portugal.",
+      "decides_pt": "Disputa leilões e terrenos contigo, e pode partilhar ligações ou vender projetos.",
+      "traits": [
+        "concorrente_porte_grande",
+        "concorrente_tec_solar",
+        "concorrente_regiao_centro"
+      ],
+      "se_links": [
+        "estremoz"
+      ],
+      "source": "HIPÓTESE — traço descritivo; ligação à SE é ficção de jogo. Fontes: lightsourcebp.com (set. 2026, Parque Solar Sophia reformulado, 867→~573 MWp, Penamacor/Idanha-a-Nova/Fundão) e Jornal Económico.",
+      "auction_rival_id_proposed": "alentejo"
+    },
+    {
+      "id": "banco-cgd",
+      "type": "banco",
+      "name": "Caixa Geral de Depósitos",
+      "who_pt": "O banco do Estado português.",
+      "decides_pt": "Pode financiar a construção da tua central.",
+      "traits": [
+        "banco_publico",
+        "banco_porte_grande",
+        "banco_tec_solar",
+        "banco_sindicato"
+      ],
+      "se_links": [
+        "*"
+      ],
+      "source": "HIPÓTESE — traço descritivo, sem apetite ligado ao nome. Fonte: Expresso 2026-04-30 / SAPO: 'Sindicato bancário da CGD, BCP e Sabadell financia projetos solares da Finerge' (115 M, 4 solares híbridos, project finance)"
+    },
+    {
+      "id": "banco-millennium-bcp",
+      "type": "banco",
+      "name": "Millennium bcp",
+      "who_pt": "Um dos maiores bancos privados portugueses.",
+      "decides_pt": "Pode financiar a construção da tua central.",
+      "traits": [
+        "banco_porte_grande",
+        "banco_tec_solar",
+        "banco_tec_hibrido_bess",
+        "banco_sindicato"
+      ],
+      "se_links": [
+        "*"
+      ],
+      "source": "HIPÓTESE — traço descritivo, sem apetite ligado ao nome. Fontes: Expresso 2026-04-30 / SAPO: 'Sindicato bancário da CGD, BCP e Sabadell financia projetos solares da Finerge' (115 M, 4 solares híbridos, project finance); Hyperion Renewables, 2026-02-12: 'Theia Project' (~300 MW solar+eólico+baterias; sindicato Santander Totta, Banco Português de Fomento, BCP, SMBC); Greenvolt/Millennium bcp (35 M project finance)"
+    },
+    {
+      "id": "banco-santander",
+      "type": "banco",
+      "name": "Santander (Portugal)",
+      "who_pt": "Um grande banco em Portugal, parte de um grupo internacional.",
+      "decides_pt": "Pode financiar a construção da tua central.",
+      "traits": [
+        "banco_porte_grande",
+        "banco_grupo_internacional",
+        "banco_tec_hibrido_bess",
+        "banco_sindicato"
+      ],
+      "se_links": [
+        "*"
+      ],
+      "source": "HIPÓTESE — traço descritivo, sem apetite ligado ao nome. Fonte: Hyperion Renewables, 2026-02-12: 'Theia Project' (~300 MW solar+eólico+baterias; sindicato Santander Totta, Banco Português de Fomento, BCP, SMBC)"
+    },
+    {
+      "id": "banco-bpf",
+      "type": "banco",
+      "name": "Banco Português de Fomento",
+      "who_pt": "O banco público de apoio ao investimento.",
+      "decides_pt": "Pode entrar no financiamento da tua central, normalmente com outros bancos.",
+      "traits": [
+        "banco_publico",
+        "banco_fomento",
+        "banco_tec_hibrido_bess",
+        "banco_sindicato"
+      ],
+      "se_links": [
+        "*"
+      ],
+      "source": "HIPÓTESE — traço descritivo, sem apetite ligado ao nome. Fonte: Hyperion Renewables, 2026-02-12: 'Theia Project' (~300 MW solar+eólico+baterias; sindicato Santander Totta, Banco Português de Fomento, BCP, SMBC)"
+    }
+  ],
+  "se_links": {
+    "ourique": {
+      "camara": "camara-ourique",
+      "ccdr": "ccdr-alentejo",
+      "autoridade_aia": "apa",
+      "icnf": "icnf@alentejo",
+      "rede": "ren",
+      "concorrentes": [
+        "concorrente-edpr",
+        "concorrente-iberdrola"
+      ]
+    },
+    "ferreira-do-alentejo": {
+      "camara": "camara-ferreira-do-alentejo",
+      "ccdr": "ccdr-alentejo",
+      "autoridade_aia": "apa",
+      "icnf": "icnf@alentejo",
+      "rede": "ren",
+      "concorrentes": [
+        "concorrente-finerge"
+      ]
+    },
+    "estremoz": {
+      "camara": "camara-estremoz",
+      "ccdr": "ccdr-alentejo",
+      "autoridade_aia": "apa",
+      "icnf": "icnf@alentejo",
+      "rede": "ren",
+      "concorrentes": [
+        "concorrente-lightsource-bp"
+      ],
+      "note": "sem se-sheet ainda"
+    }
+  },
+  "profile": {
+    "max_lines": 6,
+    "lines": [
+      "Quem é (who_pt)",
+      "O que decide no jogo (decides_pt)",
+      "Relação contigo: <estado> — <motivo mais recente>",
+      "Traços (até 2 frases) — nas fichas da DGEG e da autoridade de AIA esta linha é a linha de estado (grátis, sem carta)",
+      "Último correio: <assunto> · <mês>",
+      "CtAs: até 2 botões (por prioridade), com hint por baixo"
+    ],
+    "status_lines": {
+      "dgeg": {
+        "line_pt": "Prazos: <próximo prazo> · <mês> (<estado: a tempo / em risco / falhado>)",
+        "source": "deadlines.draft.json + estado do motor de prazos",
+        "cost": "grátis, sem carta"
+      },
+      "autoridade_aia": {
+        "line_pt": "Avaliação ambiental: <não começou / a decorrer desde o mês X / decisão emitida>",
+        "source": "tags apa_track_start, dia_emitida (+ eia_submitted se criada)",
+        "cost": "grátis, sem carta"
+      }
+    }
+  },
+  "cta_rules": {
+    "max_visible_per_profile": 2,
+    "order": "priority (1 primeiro)",
+    "always_dispatch_card": true,
+    "no_instant_resolution": true,
+    "cost_values": "PEDIR_ECONOMY",
+    "odds": "PEDIR_ECONOMY",
+    "info_only": "Informação pura é linha grátis na ficha, nunca CtA nem carta (Pedro 2026-09-29)."
+  },
+  "ctas": [
+    {
+      "id": "cta-icnf-consulta",
+      "entity_type": "icnf",
+      "label": "Pedir consulta prévia",
+      "hint": "Pedes ao ICNF uma opinião antes de entregares os pedidos de licença. Custa pouco tempo, mas quase sempre a resposta é vaga ou não chega.",
+      "visible_when": {
+        "phase": [
+          "land",
+          "pip"
+        ],
+        "blocks_if_any_effects": [
+          "pip_request_submitted"
+        ],
+        "requires_any_effects": [
+          "dd_started",
+          "land_option_open"
+        ],
+        "gate_note": "Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "nenhum"
+      },
+      "may_fail": "quase sempre: resposta vaga ou nenhuma",
+      "dispatches": {
+        "card": "mail-icnf-consulta-01",
+        "skin": "pela regra r-icnf-consulta-* (vaga / sem resposta / útil)",
+        "status": "existe"
+      },
+      "effects_on_click": [
+        "icnf_consult_requested"
+      ],
+      "cooldown_months": 3,
+      "priority": 1,
+      "new_cards": false
+    },
+    {
+      "id": "cta-icnf-reuniao",
+      "entity_type": "icnf",
+      "label": "Pedir reunião técnica",
+      "hint": "Só com um processo aberto na Câmara ou na avaliação ambiental. Explicas o projeto aos técnicos do ICNF. Não é uma decisão, mas pode ajudar o parecer.",
+      "visible_when": {
+        "phase": [
+          "pip",
+          "aia"
+        ],
+        "requires_any_effects": [
+          "pip_request_submitted",
+          "apa_track_start"
+        ],
+        "blocks_if_any_effects": [
+          "pip_aprovado",
+          "pip_indeferido",
+          "dia_emitida"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "PEDIR_ECONOMY"
+      },
+      "may_fail": "sim: o ICNF pode recusar ou não se comprometer",
+      "dispatches": {
+        "card": "mail-icnf-reuniao-tecnica-01",
+        "status": "NOVA"
+      },
+      "effects_on_click": [
+        "icnf_meeting_requested"
+      ],
+      "cooldown_months": 4,
+      "priority": 2,
+      "new_cards": true
+    },
+    {
+      "id": "cta-dgeg-prorrogacao",
+      "entity_type": "dgeg",
+      "label": "Pedir mais prazo",
+      "hint": "Só quando um prazo está em risco. Pedes à DGEG mais tempo e tens de justificar. A DGEG pode recusar.",
+      "visible_when": {
+        "phase": [
+          "pip",
+          "aia",
+          "licenca_producao",
+          "obra"
+        ],
+        "deadline_state_any": [
+          "warn",
+          "at_risk"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "PEDIR_ECONOMY"
+      },
+      "may_fail": "sim: pode ser recusado (mail-prorrogacao-recusada-01)",
+      "dispatches": {
+        "card": "mail-prazo-prorrogacao-01",
+        "skin": "conforme o prazo em risco (lp-pedido, le-cod; outros prazos = NOVAS skins)",
+        "status": "existe"
+      },
+      "effects_on_click": [
+        "dgeg_extension_cta"
+      ],
+      "cooldown_months": "1 por prazo",
+      "priority": 1,
+      "new_cards": false
+    },
+    {
+      "id": "cta-dgeg-estado-pedido",
+      "entity_type": "dgeg",
+      "label": "Consultar estado do pedido",
+      "hint": "Perguntas à DGEG como está o teu pedido de licença de produção. A resposta pode demorar e não acelera a decisão.",
+      "visible_when": {
+        "phase": [
+          "aia",
+          "licenca_producao"
+        ],
+        "requires_all_effects": [
+          "lp_request_submitted"
+        ],
+        "blocks_if_any_effects": [
+          "lp_granted",
+          "lp_indeferido"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "nenhum"
+      },
+      "may_fail": "sim: pode não haver resposta",
+      "dispatches": {
+        "card": "mail-fyi-processo-01",
+        "skin": "lp-em-apreciacao; se o prazo lp_decision já passou → mail-dgeg-lp-atraso-01",
+        "status": "existe"
+      },
+      "effects_on_click": [
+        "dgeg_status_requested"
+      ],
+      "cooldown_months": 2,
+      "priority": 2,
+      "new_cards": false
+    },
+    {
+      "id": "cta-camara-reuniao",
+      "entity_type": "camara",
+      "label": "Pedir reunião com o presidente",
+      "hint": "Explicas o projeto ao presidente da Câmara. Leva tempo. A reunião pode correr bem ou mal, conforme a relação que já tens.",
+      "visible_when": {
+        "phase": [
+          "land",
+          "pip",
+          "aia"
+        ],
+        "hide_if_unanswered": [
+          "mail-camara-01",
+          "mail-camara-followup-01"
+        ],
+        "requires_any_effects": [
+          "dd_started",
+          "land_option_open"
+        ],
+        "gate_note": "Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "nenhum"
+      },
+      "may_fail": "sim: pode piorar a relação",
+      "dispatches": {
+        "card": "mail-camara-reuniao-01",
+        "skin": "pela relação (hostil / cética / neutra / colaborante)",
+        "status": "NOVA"
+      },
+      "effects_on_click": [
+        "camara_meeting_requested"
+      ],
+      "cooldown_months": 3,
+      "priority": 1,
+      "new_cards": true
+    },
+    {
+      "id": "cta-camara-beneficios",
+      "entity_type": "camara",
+      "label": "Propor benefícios à comunidade",
+      "hint": "Organizas uma sessão pública e propões benefícios para a terra, como apoio à freguesia ou energia mais barata. Custa tempo e dinheiro de desenvolvimento, e a sessão pode correr mal.",
+      "visible_when": {
+        "phase": [
+          "land",
+          "pip",
+          "aia"
+        ],
+        "requires_any_effects": [
+          "dd_started",
+          "land_option_open"
+        ],
+        "gate_note": "Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "PEDIR_ECONOMY"
+      },
+      "may_fail": "sim: pode sair cética ou hostil, sobretudo perto de uma votação ou decisão",
+      "dispatches": {
+        "card": "mail-camara-sessao-publica-01",
+        "skin": "desfecho hostil / cética / curiosa / aliada (joker #2 e #2b)",
+        "status": "NOVA"
+      },
+      "effects_on_click": [
+        "community_benefits_proposed"
+      ],
+      "cooldown_months": 6,
+      "priority": 2,
+      "new_cards": true
+    },
+    {
+      "id": "cta-aia-reuniao-previa",
+      "entity_type": "autoridade_aia",
+      "label": "Pedir reunião antes do estudo ambiental",
+      "hint": "Antes de entregares o estudo de impacte ambiental, pedes à autoridade que diga o que quer ver nele. Custa tempo, mas pode mostrar problemas mais cedo.",
+      "visible_when": {
+        "phase": [
+          "land",
+          "pip",
+          "aia"
+        ],
+        "requires_any_effects": [
+          "env_path_aia_obrigatoria",
+          "aia_sujeito",
+          "env_route_a"
+        ],
+        "blocks_if_any_effects": [
+          "eia_submitted (tag NOVA, ver Q5)",
+          "dia_emitida",
+          "apa_prior_meeting_requested"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "PEDIR_ECONOMY"
+      },
+      "may_fail": "sim: a resposta pode ser genérica",
+      "dispatches": {
+        "card": "mail-apa-reuniao-previa-01",
+        "skin": "remetente APA (autoridade de AIA; Pedro 2026-09-29)",
+        "status": "NOVA"
+      },
+      "effects_on_click": [
+        "apa_prior_meeting_requested"
+      ],
+      "cooldown_months": "uma vez",
+      "priority": 1,
+      "new_cards": true
+    },
+    {
+      "id": "cta-ren-linha",
+      "entity_type": "ren",
+      "label": "Pedir ponto de situação da ligação",
+      "hint": "Perguntas à REN como estão as obras da ligação à rede. Se houver atraso, ficas a saber mais cedo. A resposta não acelera a obra.",
+      "visible_when": {
+        "phase": [
+          "licenca_producao",
+          "obra"
+        ],
+        "requires_any_effects": [
+          "grid_conditions_accepted",
+          "capex_rede_flag"
+        ],
+        "blocks_if_any_effects": [
+          "line_ready"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "nenhum"
+      },
+      "may_fail": "sim: pode revelar atraso",
+      "dispatches": {
+        "card": "mail-fyi-processo-01",
+        "skin": "linha-em-obra (NOVA skin); se houver atraso sorteado → mail-rede-ligacao-atraso-01",
+        "status": "existe (skin nova)"
+      },
+      "effects_on_click": [
+        "ren_status_requested"
+      ],
+      "cooldown_months": 2,
+      "priority": 1,
+      "new_cards": true
+    },
+    {
+      "id": "cta-banco-proposta",
+      "entity_type": "banco",
+      "label": "Pedir proposta de financiamento",
+      "hint": "Pedes a este banco condições para um empréstimo. Se for cedo demais, a resposta é «ainda não». As condições dependem do estado do teu projeto e podem mudar de um pedido para outro.",
+      "visible_when": {
+        "phase": [
+          "land",
+          "pip",
+          "aia",
+          "licenca_producao"
+        ],
+        "blocks_if_any_effects": [
+          "financial_close"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "nenhum"
+      },
+      "may_fail": "sim: pode dizer «ainda não»; o apetite é sorteado em cada pedido",
+      "dispatches": {
+        "card": "antes de lp_granted → mail-banco-seed-01; com lp_granted → mail-banco-term-sheet-01",
+        "skin": "por apetite sorteado (cauteloso / padrao / arrojado) — NOVAS skins; {{bank_name}} vem da instância",
+        "status": "existe (skins novas por apetite, não por banco)",
+        "params": {
+          "bank_id": "id da instância",
+          "offer_appetite": "sorteado no pedido"
+        }
+      },
+      "effects_on_click": [
+        "bank_offer_requested"
+      ],
+      "cooldown_months": "3 por banco",
+      "priority": 1,
+      "new_cards": true
+    },
+    {
+      "id": "cta-concorrente-vigiar",
+      "entity_type": "concorrente",
+      "label": "Acompanhar este concorrente",
+      "hint": "Ficas atento ao que este concorrente faz perto dos teus projetos. Custa pouco tempo. Recebes notícias quando houver movimento.",
+      "visible_when": {
+        "phase": [
+          "trc_won",
+          "land",
+          "pip",
+          "aia",
+          "licenca_producao",
+          "obra",
+          "cod"
+        ],
+        "blocks_if_any_effects": [
+          "competitor_watch"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "nenhum"
+      },
+      "may_fail": "não",
+      "dispatches": {
+        "card": "mail-concorrente-01",
+        "skin": "por concorrente (NOVAS skins)",
+        "status": "existe (skins novas)"
+      },
+      "effects_on_click": [
+        "competitor_watch"
+      ],
+      "cooldown_months": 6,
+      "priority": 3,
+      "new_cards": true
+    },
+    {
+      "id": "cta-concorrente-partilha",
+      "entity_type": "concorrente",
+      "label": "Propor partilha da ligação",
+      "hint": "Propões que este concorrente junte ao teu projeto uma central de outra tecnologia (por exemplo eólica) ou baterias, ligada ao teu TRC nesta subestação, e te pague pelo uso da capacidade. A tua central mantém a prioridade. A potência cedida deixa de estar livre e só volta se ele sair. Só depois da licença de produção, e só fica firme se a DGEG aprovar a alteração do TRC.",
+      "visible_when": {
+        "phase": [
+          "licenca_producao",
+          "obra",
+          "cod"
+        ],
+        "requires_state": [
+          "o lote do jogador tem licença de produção (DL 15/2022 art. 3.º nn))",
+          "o concorrente foi revelado por carta (tag competitor_seeks_connection) e tem projeto na mesma subestação",
+          "o parceiro traz outra tecnologia ou baterias (nunca a mesma tecnologia da central do jogador)",
+          "mw_free ≥ MVA pedidos pelo parceiro (mw_free = trc_mw − mw_own_plugged − mw_reserved_by_buyer − mw_reserved_by_partner)"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "PEDIR_ECONOMY"
+      },
+      "may_fail": "sim: o concorrente pode recusar; a DGEG pode recusar a alteração do TRC; o parceiro pode não obter a licença dele",
+      "dispatches": {
+        "card": "mail-concorrente-partilha-01",
+        "status": "NOVA",
+        "choices_spec": [
+          {
+            "id": "accept_rent",
+            "label": "Aceitar o pagamento pelo uso da ligação",
+            "effects": [
+              "share_rent_agreed",
+              "mw_reserved_by_partner_up",
+              "share_rent_on",
+              "trc_alteration_requested",
+              "partner_injection_subordinate",
+              "joint_liability_on"
+            ]
+          },
+          {
+            "id": "negotiate",
+            "label": "Negociar condições",
+            "effects": [
+              "share_negotiate"
+            ]
+          },
+          {
+            "id": "refuse",
+            "label": "Recusar",
+            "effects": [
+              "share_refused"
+            ]
+          }
+        ],
+        "follow_up": {
+          "card": "mail-dgeg-alteracao-trc-01",
+          "status": "NOVA",
+          "outcomes": {
+            "aprovada": [
+              "trc_alteration_approved"
+            ],
+            "recusada": [
+              "trc_alteration_refused",
+              "mw_reserved_released"
+            ]
+          },
+          "odds": "PEDIR_ECONOMY"
+        },
+        "mw_rule": "Ao aceitar, os MVA do parceiro passam a reservados (mw_free = trc_mw − mw_own_plugged − mw_reserved_by_buyer − mw_reserved_by_partner). O pagamento (share_rent_on) começa no COD do parceiro; valor PEDIR_ECONOMY. Se o parceiro não obtiver a licença dele ou a DGEG recusar → mw_reserved_released.",
+        "pre_lp_variant": {
+          "card": "mail-concorrente-partilha-intencao-01",
+          "status": "NOVA (plano)",
+          "visible_when": {
+            "phase": [
+              "land",
+              "pip",
+              "aia"
+            ],
+            "requires_state": [
+              "concorrente revelado (competitor_seeks_connection)",
+              "outra tecnologia ou baterias"
+            ]
+          },
+          "choices_spec": [
+            {
+              "id": "sign_loi",
+              "label": "Assinar a carta de intenções",
+              "effects": [
+                "share_loi_signed"
+              ]
+            },
+            {
+              "id": "decline",
+              "label": "Recusar",
+              "effects": [
+                "share_loi_declined"
+              ]
+            }
+          ],
+          "note": "Sem efeito em MW nem em TRC. Com share_loi_signed, a carta mail-concorrente-partilha-01 pode chegar logo que a LP seja emitida (HIPÓTESE)."
+        },
+        "reveal_event": {
+          "card": "mail-concorrente-procura-ligacao-01",
+          "status": "NOVA (plano)",
+          "from_type": "CONCORRENTE",
+          "example_pt": "A Iberdrola tem um projeto perto de Ourique e procura ligação.",
+          "effects": [
+            "competitor_seeks_connection"
+          ],
+          "odds": {
+            "base": "PEDIR_ECONOMY",
+            "up_if_any": [
+              "se:congestionada (capacidade livre da SE baixa)"
+            ]
+          },
+          "rule": "Só concorrentes com se_links para a SE do lote. Tecnologia do projeto do concorrente sorteada entre as que tem e que diferem da do jogador (HIPÓTESE)."
+        },
+        "exits": {
+          "parceiro sai ou caduca": [
+            "mw_reserved_released",
+            "share_rent_off"
+          ],
+          "jogador sai ou o lote caduca": [
+            "partner_trc_spun_off",
+            "trc_remainder_to_grid"
+          ],
+          "basis": "DL 15/2022 art. 76.º/2–5"
+        },
+        "partner_sale": {
+          "card": "mail-concorrente-partilha-venda-01",
+          "status": "NOVA (plano)",
+          "choices_spec": [
+            {
+              "id": "authorize",
+              "label": "Autorizar a venda",
+              "effects": [
+                "partner_sale_authorized"
+              ]
+            },
+            {
+              "id": "negotiate",
+              "label": "Negociar condições",
+              "effects": [
+                "partner_sale_negotiate"
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "Recusar",
+              "effects": [
+                "partner_sale_refused"
+              ]
+            }
+          ],
+          "basis": "DL 15/2022 art. 78.º/2–3: a venda da parte do parceiro precisa da tua autorização; o TRC continua teu."
+        },
+        "legal_basis": "DL 15/2022 arts. 3.º nn), 74.º a 78.º (hibridização por terceiro); ver trc-partilha-dl15-2022.md"
+      },
+      "effects_on_click": [
+        "competitor_share_proposed"
+      ],
+      "cooldown_months": 6,
+      "priority": 1,
+      "new_cards": true
+    },
+    {
+      "id": "cta-concorrente-comprar",
+      "entity_type": "concorrente",
+      "label": "Propor comprar o projeto",
+      "hint": "Propões comprar um projeto deste concorrente. Só é possível se tiveres lugar para mais um lote no teu orçamento, e ele pode recusar ou pedir muito.",
+      "visible_when": {
+        "phase": [
+          "sem_projeto",
+          "trc_won",
+          "land",
+          "pip",
+          "aia",
+          "licenca_producao",
+          "obra",
+          "cod"
+        ],
+        "requires_state": [
+          "lugar livre: lotes ativos < máximo do orçamento (max_trcs)",
+          "o concorrente tem um projeto numa SE do jogo"
+        ]
+      },
+      "cost": {
+        "time": "PEDIR_ECONOMY",
+        "car": "PEDIR_ECONOMY"
+      },
+      "may_fail": "sim: pode recusar ou pedir muito",
+      "dispatches": {
+        "card": "mail-concorrente-venda-01",
+        "status": "NOVA",
+        "choices_spec": [
+          {
+            "id": "accept_price",
+            "label": "Aceitar o preço",
+            "effects": [
+              "buy_offer_accepted",
+              "asset_added"
+            ]
+          },
+          {
+            "id": "negotiate",
+            "label": "Negociar o preço",
+            "effects": [
+              "buy_negotiate"
+            ]
+          },
+          {
+            "id": "withdraw",
+            "label": "Desistir",
+            "effects": [
+              "buy_withdrawn"
+            ]
+          }
+        ],
+        "note": "Preço por fase do projeto comprado = PEDIR_ECONOMY. O projeto entra com a fase que tinha. Antes da LP: o jogador (comprador) reforça a caução em metade (art. 18.º/10) e o projeto só entra depois do averbamento da DGEG (prazo trc_transfer_averbamento, HIPÓTESE/PEDIR_PEDRO)."
+      },
+      "effects_on_click": [
+        "competitor_buy_proposed"
+      ],
+      "cooldown_months": 6,
+      "priority": 2,
+      "new_cards": true,
+      "slot_rule": "Comprar = +1 lote ativo. Verifica-se ao clicar e outra vez ao aceitar (se o lugar já não existir, a escolha de aceitar fica bloqueada com dica). Com o orçamento pequeno (1 lote) só dá sem projeto ativo (leilão perdido, ou depois de 'Vender o projeto todo'). 'Vender a parte híbrida e ficar com a central' continua a ocupar o lugar; 'Vender a central e alugar a subestação e a linha' liberta-o (HIPÓTESE/PEDIR_PEDRO). Com o orçamento médio (2 lotes) dá com 1 projeto ativo."
+    }
+  ],
+  "search": {
+    "mvp_scope": [
+      "subestações e lotes (se-sheets + lotes do leilão)",
+      "entidades (instâncias deste ficheiro)",
+      "os teus projetos",
+      "concorrentes"
+    ],
+    "out_of_scope": [
+      "pessoas com nome",
+      "preços de mercado",
+      "legislação"
+    ],
+    "rules": [
+      "Só leitura: pesquisar não cria decisões nem gasta tempo.",
+      "Cada resultado abre a ficha (SE, projeto ou entidade). Os CtAs só existem na ficha, com as mesmas regras de visibilidade.",
+      "Resultados só com o que o jogador já conhece: entidades ligadas às SE do leilão, aos seus projetos, ou que já lhe escreveram."
+    ],
+    "result_line_pt": "<nome> · <tipo> · <SE ligadas> · <relação>",
+    "status": "TRANCADO Pedro 2026-09-29 — modelo FM",
+    "model_locked": {
+      "clickable_names": "Todos os nomes de entidades, SE, projetos e concorrentes são clicáveis em todo o lado (cartas, fichas, HUD, leilão) e abrem a ficha.",
+      "interlinked_profiles": "As fichas ligam-se entre si: SE ↔ Câmara/CCDR/ICNF/REN/concorrentes; entidade ↔ SE e projetos ligados.",
+      "light_search": "Pesquisa leve por nome; mostra só o que o jogador já conhece (sem revelar informação nova)."
+    }
+  },
+  "new_tags": [
+    "apa_prior_meeting_requested",
+    "apa_relation_down",
+    "asset_added",
+    "bank_offer_requested",
+    "buy_negotiate",
+    "buy_offer_accepted",
+    "buy_withdrawn",
+    "camara_meeting_requested",
+    "community_benefits_proposed",
+    "community_trust_down",
+    "community_trust_up",
+    "competitor_buy_proposed",
+    "competitor_seeks_connection",
+    "competitor_share_proposed",
+    "competitor_watch",
+    "constraint_reveal",
+    "contest_shield",
+    "dgeg_extension_cta",
+    "dgeg_status_requested",
+    "icnf_meeting_requested",
+    "icnf_relation_down",
+    "joint_liability_on",
+    "mw_reserved_by_partner_up",
+    "mw_reserved_released",
+    "partner_injection_subordinate",
+    "partner_sale_authorized",
+    "partner_sale_negotiate",
+    "partner_sale_refused",
+    "partner_trc_spun_off",
+    "ren_status_requested",
+    "session_timing_bad",
+    "share_loi_declined",
+    "share_loi_signed",
+    "share_negotiate",
+    "share_refused",
+    "share_rent_agreed",
+    "share_rent_off",
+    "share_rent_on",
+    "shared_benefits_unlock",
+    "trc_alteration_approved",
+    "trc_alteration_refused",
+    "trc_alteration_requested",
+    "trc_remainder_to_grid"
+  ],
+  "real_company_rule": "Concorrentes e bancos = empresas reais ativas em Portugal (Pedro 2026-09-29). Só traços neutros e factuais (porte, tecnologias, regiões), marcados HIPÓTESE; nunca traços de juízo (agressivo, cético, etc.). A ligação de cada empresa a uma SE do jogo é ficção de jogo. As cartas não lhes atribuem condutas negativas.",
+  "console_alignment_note": "A consola (leilão) usa rivais fictícios Solis Lusitania / IberVolt Energy / Alentejo Renew (rivalId solis/ibervolt/alentejo). A UI deve alinhá-los com as instâncias reais (proposta: solis→EDP Renováveis, ibervolt→Finerge, alentejo→Lightsource bp; Iberdrola nova). GM não mexe no código. Bancos: os nomes fictícios anteriores (Banco Almirante, Tejo Capital, Banco Sobral Verde) saem; as cartas do banco devem receber params.bank_id.",
+  "offer_appetite": {
+    "rule": "O apetite NÃO é da entidade: é sorteado em cada pedido de financiamento (CtA ou carta) e guardado na proposta (params.offer_appetite), nunca no banco (Pedro 2026-09-29). O mesmo banco pode responder de forma diferente em pedidos diferentes.",
+    "values": {
+      "cauteloso": "Só avança com a licença de produção e empresta uma parte menor da obra",
+      "padrao": "Condições habituais para o estado do projeto",
+      "arrojado": "Responde mais cedo e empresta mais, mas com condições mais duras"
+    },
+    "modifier_verde": {
+      "when_any": [
+        "bess_dev_flag",
+        "env_mitigation_flag",
+        "icnf_compensation_approved"
+      ],
+      "effect": "melhores condições (PEDIR_ECONOMY) — do projeto, não do banco"
+    },
+    "odds": {
+      "base": "PEDIR_ECONOMY",
+      "up_cauteloso_if": [
+        "¬lp_granted",
+        "risk_icnf_+1",
+        "caducidade_risk_+2"
+      ],
+      "up_arrojado_if": [
+        "lp_granted",
+        "term_sheet_signed noutro banco"
+      ]
+    },
+    "player_label_pt": {
+      "cauteloso": "Proposta cautelosa",
+      "padrao": "Proposta normal",
+      "arrojado": "Proposta arriscada"
+    }
+  }
+}

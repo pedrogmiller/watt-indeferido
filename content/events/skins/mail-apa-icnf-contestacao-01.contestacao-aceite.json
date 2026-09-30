@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-apa-icnf-contestacao-01",
+  "skin_id": "contestacao-aceite",
+  "draft": true,
+  "when": {
+    "outcome": "aceite"
+  },
+  "from_name": "APA",
+  "subject": "A APA aceitou rever a opinião do ICNF",
+  "body": "Analisámos o teu pedido. Como o terreno não fica em nenhuma zona protegida, a opinião do ICNF passa a contar como conselho, e não como obrigação. Vamos ter em conta o que o ICNF disse, mas a decisão final é nossa e será fundamentada.\n\nA avaliação segue. O tempo que passou já não se recupera.",
+  "params": {
+    "base_legal": "ver nota_gm do esqueleto"
+  }
+}

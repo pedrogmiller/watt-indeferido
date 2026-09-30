@@ -3,7 +3,7 @@
   "skin_id": "le-cod",
   "draft": true,
   "when": {},
-  "from_name": "Direcção de obra",
+  "from_name": "Direção de obra",
   "subject": "Licença de exploração — prazo à vista",
   "body": "A licença de exploração tem de estar emitida até {{deadline_month}}. Com a obra onde está, vale a pena preparar já um pedido de prorrogação fundamentado. Só informativo.",
   "params": {

@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-trc-mw-full-01",
+  "skin_id": "limite-sobreequipamento",
+  "when": {
+    "gate": "overequip_cap"
+  },
+  "from_name": "Consultor técnico",
+  "subject": "O sobreequipamento tem um limite de injeção",
+  "body": "Podes pôr os painéis que quiseres. O limite é o que entra na rede: no máximo um quinto acima da potência de ligação da licença inicial. Este plano quer injetar mais do que isso, e o equipamento de ligação não pode ser montado assim.\n\nPodes baixar a potência de saída do plano, e o que passar do limite é cortado, ou cancelá-lo. A energia a mais é vendida ao preço do mercado, sem a tarifa do leilão.",
+  "status": "DRAFT 2026-09-30 — HIPÓTESE Pedro 2026-09-30 (via Economy): o +20 % limita a potência INJETADA (Ourique: 99 + 19,8 = 118,8 MVA), não os MWp. O jogador instala os MWp que quiser; a rentabilidade (DC/AC vs corte no limite de injeção) decide — otimizador DC/AC da Economy.",
+  "nota_gm": "DL 15/2022 art. 3.º sss) (texto original, 20 % da potência de ligação da LP inicial); art. 64.º/2; art. 66.º; art. 65.º. Leitura de jogo (Pedro, HIPÓTESE): o limite é na injeção (Ourique 99 + 19,8 = 118,8 MVA), não nos MWp; os MWp decidem-se pela rentabilidade (DC/AC vs corte)."
+}

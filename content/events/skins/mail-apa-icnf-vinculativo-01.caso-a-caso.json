@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-apa-icnf-vinculativo-01",
+  "skin_id": "caso-a-caso",
+  "draft": true,
+  "when": {
+    "route": "caso_a_caso"
+  },
+  "from_name": "CCDR — Apreciação prévia",
+  "subject": "Apreciação prévia: a opinião do ICNF está a ser tratada como obrigatória",
+  "body": "Estamos a decidir se o teu projeto precisa de avaliação ambiental completa. Para isso, ouvimos o ICNF, o instituto do Estado que protege a natureza e as florestas. O ICNF deu uma opinião negativa e pede mudanças ao projeto.\n\nO teu terreno não fica em nenhuma zona protegida, por isso, pela lei, esta opinião devia contar como conselho. Mesmo assim, vamos tratá-la como vinculativa, como a APA tem feito. Um parecer vinculativo é um parecer que obriga: teríamos de o seguir à letra.\n\nAntes de decidirmos, precisamos da tua resposta.",
+  "params": {
+    "base_legal": "ver nota_gm do esqueleto"
+  }
+}

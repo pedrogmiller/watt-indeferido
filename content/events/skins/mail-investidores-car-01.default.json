@@ -3,6 +3,16 @@
   "skin_id": "default",
   "from_name": "Comité de investidores",
   "subject": "Vamos rever o teu orçamento",
-  "body": "Ganhaste o TRC. Agora precisas de dinheiro para o terreno, a Câmara e as licenças, até decidires construir. A isto chamamos orçamento de desenvolvimento: o dinheiro que aceitamos arriscar para preparares o projeto.\n\nDiz-nos quanto queres pedir. Com mais orçamento, podes concorrer a lotes mais caros. Mas quanto mais pedires, mais depressa vamos querer ver resultados.\n\n• Pouco: aceitamos sempre.\n• Um valor médio: aceitamos, mas marcamos uma revisão contigo.\n• Muito: podemos baixar para o valor médio. Se aceitarmos, tens menos tempo para garantir o terreno ou fazer o pedido à Câmara. Se falhares esse prazo, cortamos o orçamento.\n• Mais tempo: esperamos, mas ficamos menos pacientes.",
-  "params": {}
+  "body": "Ganhaste o TRC. Agora precisas de dinheiro para o terreno, os estudos e as licenças, até decidires construir. A isto chamamos orçamento de desenvolvimento: o dinheiro que aceitamos arriscar para preparares o projeto.\n\nDiz-nos quanto queres pedir. Quanto mais pedires, mais depressa vamos querer ver resultados.\n\nPodes concorrer a novos lotes mesmo sem teres já todo o dinheiro da obra. Mas só podes começar a construir quando tiveres todo o capital próprio (o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco).\n\n• Mais {ask_s}: a caixa fica em cerca de {cash_s}. Aceitamos quase sempre.\n• Mais {ask_m}: a caixa fica em {cash_m}. Aceitamos cerca de metade das vezes e marcamos uma revisão do projeto.\n• Mais {ask_l}: a caixa fica em {cash_l}. Quase nunca aceitamos logo: podemos baixar para o valor médio ou cortar. Se aceitarmos, o prazo para garantir o terreno fica mais curto. Se falhares, cortamos o orçamento.\n• Mais tempo: esperamos, mas ficamos menos pacientes.",
+  "params": {
+    "placeholders": [
+      "ask_s",
+      "ask_m",
+      "ask_l",
+      "cash_s",
+      "cash_m",
+      "cash_l"
+    ],
+    "source": "Economy §6.1 (aprovado Pedro 2026-09-29), substituído pela consola por nível de mandato"
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "skeleton_id": "mail-dgeg-lp-transmissao-01",
+  "skin_id": "caucao-em-falta",
+  "draft": true,
+  "when": {
+    "outcome": "caucao_em_falta"
+  },
+  "from_name": "DGEG",
+  "subject": "Venda: não autorizámos a mudança de titular",
+  "body": "Enquanto não houver licença de exploração, o comprador tem de reforçar a caução em metade do valor. Não o fez, por isso não autorizámos a transmissão. O projeto continua a ser teu, com os mesmos prazos."
+}

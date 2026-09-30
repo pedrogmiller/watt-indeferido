@@ -3,7 +3,7 @@
   "skin_id": "ourique",
   "draft": true,
   "when": {},
-  "from_name": "Direcção de obra",
+  "from_name": "Direção de obra",
   "subject": "Conclusão mecânica — pedir ensaios e vistoria",
   "body": "A central está mecanicamente concluída e a linha está pronta. Próximo passo: autorização de ensaios da DGEG, com parecer do operador, e depois vistoria para a licença de exploração. A DGEG tem 30 dias para vistoriar; se falhar, uma entidade acreditada pode fazê-lo, a nosso custo. O EPC ainda tem uma lista de pendentes.",
   "params": {

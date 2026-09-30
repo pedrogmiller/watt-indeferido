@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-consultor-icnf-aviso-01",
+  "skin_id": "aia",
+  "draft": true,
+  "when": {
+    "route": "aia"
+  },
+  "from_name": "Consultor ambiental",
+  "subject": "Aviso: o ICNF pode vir a exigir mudanças",
+  "body": "A avaliação ambiental do teu projeto está a andar. Um aviso: nos últimos processos, a APA tem tratado a opinião do ICNF, o instituto do Estado que protege a natureza e as florestas, como obrigatória, mesmo fora de zonas protegidas.\n\nNo teu caso, o ICNF pode vir a exigir mudanças ao desenho ou uma compensação. Não é certo: muitas vezes não acontece. Podemos preparar já alternativas, ou esperar para ver.",
+  "params": {}
+}

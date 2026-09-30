@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-sale-closed-01",
+  "skin_id": "hybrid-part",
+  "when": {
+    "sale_mode": "sell_hybrid_part"
+  },
+  "from_name": "Equipa de desenvolvimento",
+  "subject": "Venda fechada: vendeste a parte híbrida",
+  "body": "A venda está feita. Continuas com a central e com o TRC, e a tua central mantém a prioridade na injeção. O comprador paga-te pelo uso da capacidade da ligação. A potência que vendeste continua a ocupar a ligação, por isso a potência livre não aumenta, e o projeto continua a ocupar o lugar do lote."
+}

@@ -35,7 +35,12 @@
     "wait_for_answer_if_delivered": "lista de esqueletos: se algum foi entregue e ainda não respondido, esta regra espera (não sorteia).",
     "from_type_override": "(skin) remetente a usar em vez do from_type do esqueleto (mesmo desfecho, circuitos diferentes).",
     "dia_outcome_odds": "(r-dia) proposta de desfecho da DIA: favorável / condicionada / desfavorável com modificadores; só 'condicionada' tem carta hoje (TODO).",
-    "se_requires": "(regra) condição sobre atributos da se-sheet; se falhar, a regra não entrega."
+    "se_requires": "(regra) condição sobre atributos da se-sheet; se falhar, a regra não entrega.",
+    "wait_for_pending_cards": "{skeletons, max_wait_months}: a regra não sorteia enquanto alguma carta destes esqueletos estiver pendente, ou seja: (a) a regra dessa carta tem as condições cumpridas (requires/gate) e ainda não passou a janela after_effect.band, ou (b) o sorteio já passou mas a carta ainda não foi entregue (limite por mês/aterragem). Deixa de estar pendente quando a carta é entregue (aí vale wait_for_answer_if_delivered), quando o sorteio falha sem reroll, ou quando fica bloqueada. max_wait_months: espera máxima; depois disso a regra sorteia na mesma (evita bloqueio). Pedido 2026-09-30.",
+    "requires_computed": "{tag: bool}: tags calculadas (computed_tags) que têm de ter este valor para a regra sair.",
+    "requires_equity_full": "true = só com todo o capital próprio da obra (equity_fit_ok ∧ equity_capex_commit). Sem isto não há obra; o leilão NÃO usa este gate.",
+    "arms": "id da regra que esta carta 'arma' (a outra só pode sair depois desta).",
+    "false_alarm": "nota: a carta pode sair sem que a carta armada venha a sair."
   },
   "rules": [
     {
@@ -222,7 +227,23 @@
         "caso_a_caso_contest"
       ],
       "rearm_after_months": 2,
-      "route": "B"
+      "route": "B",
+      "wait_for_answer_if_delivered": [
+        "mail-apa-icnf-vinculativo-01",
+        "mail-apa-icnf-contestacao-01",
+        "mail-icnf-compensacao-aprovada-01",
+        "mail-icnf-compensacao-exigente-01"
+      ],
+      "wait_for_pending_cards": {
+        "skeletons": [
+          "mail-consultor-icnf-aviso-01",
+          "mail-apa-icnf-vinculativo-01",
+          "mail-apa-icnf-contestacao-01",
+          "mail-icnf-compensacao-aprovada-01",
+          "mail-icnf-compensacao-exigente-01"
+        ],
+        "max_wait_months": 4
+      }
     },
     {
       "id": "r-caso-eia",
@@ -258,7 +279,23 @@
         "caso_a_caso_contest"
       ],
       "rearm_after_months": 2,
-      "route": "B→A"
+      "route": "B→A",
+      "wait_for_answer_if_delivered": [
+        "mail-apa-icnf-vinculativo-01",
+        "mail-apa-icnf-contestacao-01",
+        "mail-icnf-compensacao-aprovada-01",
+        "mail-icnf-compensacao-exigente-01"
+      ],
+      "wait_for_pending_cards": {
+        "skeletons": [
+          "mail-consultor-icnf-aviso-01",
+          "mail-apa-icnf-vinculativo-01",
+          "mail-apa-icnf-contestacao-01",
+          "mail-icnf-compensacao-aprovada-01",
+          "mail-icnf-compensacao-exigente-01"
+        ],
+        "max_wait_months": 4
+      }
     },
     {
       "id": "r-aas-evento",
@@ -286,7 +323,12 @@
         "source": "evento de mundo"
       },
       "status": "BACKLOG",
-      "route": "AAS"
+      "route": "AAS",
+      "requires_any_effects": [
+        "dd_started",
+        "land_option_open"
+      ],
+      "gate_note": "Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
     },
     {
       "id": "r-aas-favoravel",
@@ -508,7 +550,8 @@
           "risk_camara_+2",
           "risk_community_+1",
           "risk_icnf_+1",
-          "icnf_minimal_reply"
+          "icnf_minimal_reply",
+          "pip_refusal_risk_+1"
         ],
         "down_if_any": [
           "risk_camara_-1",
@@ -635,7 +678,9 @@
         "apa_track_start"
       ],
       "blocks_if_any_effects": [
-        "dia_emitida"
+        "dia_emitida",
+        "project_abandoned",
+        "find_buyers_started"
       ],
       "after_effect": {
         "tag": "apa_track_start",
@@ -647,17 +692,21 @@
       "wait_for_answer_if_delivered": [
         "mail-apa-ca-quercineas-01",
         "mail-icnf-compensacao-exigente-01",
-        "mail-icnf-compensacao-aprovada-01"
+        "mail-icnf-compensacao-aprovada-01",
+        "mail-apa-icnf-vinculativo-01",
+        "mail-apa-icnf-contestacao-01"
       ],
       "dia_outcome_odds": {
-        "status": "PROPOSTA — só existe carta para 'condicionada' (mail-apa-dia-01.ourique); TODO skins favorável e desfavorável",
+        "status": "TRANCADO Pedro 2026-09-30 (odds Economy) — números em odds de r-dia-favoravel / r-dia-desfavoravel / r-dia.",
         "favoravel": {
           "base": "PEDIR_ECONOMY",
           "up_if_any": [
             "icnf_survey_done",
             "layout_trim_trees",
             "icnf_tacit_non_opposition",
-            "icnf_compensation_approved"
+            "icnf_compensation_approved",
+            "icnf_opinion_consultive",
+            "icnf_demands_accepted"
           ]
         },
         "condicionada": {
@@ -665,7 +714,8 @@
           "up_if_any": [
             "icnf_compensation_plan",
             "env_mitigation_flag",
-            "icnf_compensation_more"
+            "icnf_compensation_more",
+            "icnf_opinion_binding_kept"
           ]
         },
         "desfavoravel": {
@@ -673,7 +723,9 @@
           "up_if_any": [
             "risk_icnf_+1",
             "icnf_minimal_reply",
-            "risk_apa_+1"
+            "risk_apa_+1",
+            "icnf_opinion_binding_kept",
+            "apa_relation_down"
           ],
           "strong_up_if_all": [
             "icnf_binding",
@@ -682,10 +734,196 @@
           "down_if_any": [
             "icnf_survey_done",
             "layout_trim_trees",
-            "icnf_compensation_approved"
+            "icnf_compensation_approved",
+            "icnf_opinion_consultive",
+            "icnf_demands_accepted"
           ],
           "note": "icnf_binding ∧ chumbo do ICNF → DIA desfavorável obrigatória (veto)."
-        }
+        },
+        "after_hearing": "Depois de dia_hearing: favorável não sai; P(desfavorável) proposta 0,7–0,8 (PEDIR_ECONOMY); se reverte → condicionada.",
+        "after_reformulate": "Depois de eia_reformulate: P(desfavorável) desce (down_if_any eia_reformulate); nova DIA ~12 meses (9–18, HIPÓTESE).",
+        "icnf_vinculativo_2026_09_30": "Com icnf_opinion_binding_kept sem icnf_demands_accepted/icnf_compensation_approved, a desfavorável sobe muito (a APA trata o chumbo como veto). PEDIR_ECONOMY."
+      },
+      "mutex_group": "dia_outcome",
+      "pick": 3,
+      "odds": {
+        "base": "fallback = 1 − favorável − desfavorável (≈0,81); mínimo 0,15 (reduzir favorável)",
+        "after_hearing": 0.25,
+        "after_reformulate": 0.8,
+        "status": "TRANCADO Pedro 2026-09-30 (odds Economy)"
+      },
+      "rearm_on_effects": [
+        "eia_reformulate",
+        "dia_hearing"
+      ],
+      "rearm_after_months_by_effect": {
+        "eia_reformulate": 12,
+        "dia_hearing": 2
+      },
+      "wait_for_pending_cards": {
+        "skeletons": [
+          "mail-consultor-icnf-aviso-01",
+          "mail-apa-icnf-vinculativo-01",
+          "mail-apa-icnf-contestacao-01",
+          "mail-icnf-compensacao-aprovada-01",
+          "mail-icnf-compensacao-exigente-01"
+        ],
+        "max_wait_months": 3
+      }
+    },
+    {
+      "id": "r-dia-favoravel",
+      "skeleton": "mail-apa-dia-favoravel-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "apa_track_start"
+      ],
+      "blocks_if_any_effects": [
+        "dia_emitida",
+        "project_abandoned",
+        "find_buyers_started"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start",
+        "months": 8,
+        "band": "6-12",
+        "source": "HIPÓTESE / PEDIR_PEDRO (duração AIA)"
+      },
+      "route": "A",
+      "wait_for_answer_if_delivered": [
+        "mail-apa-ca-quercineas-01",
+        "mail-icnf-compensacao-exigente-01",
+        "mail-icnf-compensacao-aprovada-01",
+        "mail-apa-icnf-vinculativo-01",
+        "mail-apa-icnf-contestacao-01"
+      ],
+      "mutex_group": "dia_outcome",
+      "pick": 2,
+      "odds": {
+        "base": 0.1,
+        "up_if_any": {
+          "icnf_survey_done": 0.05,
+          "layout_trim_trees": 0.05,
+          "icnf_tacit_non_opposition": 0.05,
+          "icnf_compensation_approved": 0.05,
+          "eia_reformulate": 0.05
+        },
+        "cap": 0.3,
+        "zero_if_any": [
+          "dia_hearing"
+        ],
+        "after_reformulate": 0.15,
+        "status": "TRANCADO Pedro 2026-09-30 (odds Economy)"
+      },
+      "rearm_on_effects": [
+        "eia_reformulate",
+        "dia_hearing"
+      ],
+      "rearm_after_months_by_effect": {
+        "eia_reformulate": 12,
+        "dia_hearing": 2
+      },
+      "skin_fallback": "default",
+      "wait_for_pending_cards": {
+        "skeletons": [
+          "mail-consultor-icnf-aviso-01",
+          "mail-apa-icnf-vinculativo-01",
+          "mail-apa-icnf-contestacao-01",
+          "mail-icnf-compensacao-aprovada-01",
+          "mail-icnf-compensacao-exigente-01"
+        ],
+        "max_wait_months": 3
+      }
+    },
+    {
+      "id": "r-dia-desfavoravel",
+      "skeleton": "mail-apa-dia-desfavoravel-01",
+      "skin": "ourique",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "apa_track_start"
+      ],
+      "blocks_if_any_effects": [
+        "dia_emitida",
+        "project_abandoned",
+        "find_buyers_started"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start",
+        "months": 8,
+        "band": "6-12",
+        "source": "HIPÓTESE / PEDIR_PEDRO (duração AIA)"
+      },
+      "route": "A",
+      "wait_for_answer_if_delivered": [
+        "mail-apa-ca-quercineas-01",
+        "mail-icnf-compensacao-exigente-01",
+        "mail-icnf-compensacao-aprovada-01",
+        "mail-apa-icnf-vinculativo-01",
+        "mail-apa-icnf-contestacao-01"
+      ],
+      "mutex_group": "dia_outcome",
+      "pick": 1,
+      "odds": {
+        "base": 0.09,
+        "up_if_any": {
+          "risk_icnf_+1": 0.1,
+          "risk_apa_+1": 0.1,
+          "icnf_minimal_reply": 0.2
+        },
+        "strong_if_all": {
+          "tags": [
+            "icnf_binding",
+            "icnf_minimal_reply"
+          ],
+          "P": 0.6
+        },
+        "down_if_any": {
+          "icnf_survey_done": -0.04,
+          "layout_trim_trees": -0.04,
+          "icnf_compensation_approved": -0.04,
+          "eia_reformulate": -0.04
+        },
+        "floor": 0.03,
+        "cap": 0.8,
+        "after_hearing": 0.75,
+        "after_reformulate": 0.05,
+        "veto": "chumbo do ICNF com icnf_binding → 1,0",
+        "status": "TRANCADO Pedro 2026-09-30 (odds Economy)",
+        "source": "APA/ECO: 6/69 AIA solares travadas 2016–2025 (~8,7 %); ver effects-economy rule_odds_proposed.dia_outcome"
+      },
+      "rearm_on_effects": [
+        "eia_reformulate",
+        "dia_hearing"
+      ],
+      "rearm_after_months_by_effect": {
+        "eia_reformulate": 12,
+        "dia_hearing": 2
+      },
+      "skin_fallback": "default",
+      "on_deliver_effects": [
+        "dia_desfavoravel"
+      ],
+      "wait_for_pending_cards": {
+        "skeletons": [
+          "mail-consultor-icnf-aviso-01",
+          "mail-apa-icnf-vinculativo-01",
+          "mail-apa-icnf-contestacao-01",
+          "mail-icnf-compensacao-aprovada-01",
+          "mail-icnf-compensacao-exigente-01"
+        ],
+        "max_wait_months": 3
       }
     },
     {
@@ -1065,7 +1303,12 @@
         "fid_defer",
         "equity_capex_request"
       ],
-      "rearm_after_months": 2
+      "rearm_after_months": 2,
+      "requires_computed": {
+        "equity_fit_ok": true
+      },
+      "mutex_group": "fid_card",
+      "pick": 2
     },
     {
       "id": "r-fid-ultimato",
@@ -1086,7 +1329,8 @@
       "relevant": true,
       "once": true,
       "requires_all_effects": [
-        "fid_reached"
+        "fid_reached",
+        "equity_capex_commit"
       ],
       "blocks_if_any_effects": [
         "construction_started"
@@ -1100,7 +1344,12 @@
       "rearm_on_effects": [
         "obra_start_deferred"
       ],
-      "rearm_after_months": 1
+      "rearm_after_months": 1,
+      "requires_computed": {
+        "equity_fit_ok": true
+      },
+      "requires_equity_full": true,
+      "gate_note": "Sem todo o capital próprio não há arranque de obra (Pedro 2026-09-30). O leilão não depende disto."
     },
     {
       "id": "r-fyi-obra-1",
@@ -1393,8 +1642,11 @@
         "icnf_compensation_plan"
       ],
       "blocks_if_any_effects": [
+        "apa_track_start",
+        "caso_a_caso_request",
         "icnf_compensation_approved",
-        "icnf_via_ca"
+        "icnf_via_ca",
+        "icnf_vinc_answered"
       ],
       "after_effect": {
         "tag": "icnf_compensation_plan",
@@ -1430,8 +1682,11 @@
         "icnf_compensation_plan"
       ],
       "blocks_if_any_effects": [
+        "apa_track_start",
+        "caso_a_caso_request",
         "icnf_compensation_approved",
-        "icnf_via_ca"
+        "icnf_via_ca",
+        "icnf_vinc_answered"
       ],
       "after_effect": {
         "tag": "icnf_compensation_plan",
@@ -1480,7 +1735,12 @@
       ],
       "rearm_on_effects": [
         "icnf_consult_requested"
-      ]
+      ],
+      "requires_any_effects": [
+        "dd_started",
+        "land_option_open"
+      ],
+      "gate_note": "Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
     },
     {
       "id": "r-icnf-consulta-sem-resposta",
@@ -1515,7 +1775,12 @@
       ],
       "rearm_on_effects": [
         "icnf_consult_requested"
-      ]
+      ],
+      "requires_any_effects": [
+        "dd_started",
+        "land_option_open"
+      ],
+      "gate_note": "Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
     },
     {
       "id": "r-icnf-consulta-vaga",
@@ -1550,7 +1815,12 @@
       ],
       "rearm_on_effects": [
         "icnf_consult_requested"
-      ]
+      ],
+      "requires_any_effects": [
+        "dd_started",
+        "land_option_open"
+      ],
+      "gate_note": "Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
     },
     {
       "id": "r-icnf-ca-quercineas",
@@ -1697,7 +1967,7 @@
       "route": "A",
       "requires_all_effects": [
         "icnf_compensation_plan",
-        "icnf_via_ca"
+        "apa_track_start"
       ],
       "blocks_if_any_effects": [
         "icnf_compensation_approved",
@@ -1720,7 +1990,11 @@
           "icnf_hint_useful"
         ]
       },
-      "reroll": true
+      "reroll": true,
+      "requires_any_effects": [
+        "icnf_via_ca",
+        "icnf_vinc_answered"
+      ]
     },
     {
       "id": "r-icnf-ca-aprovada",
@@ -1735,7 +2009,7 @@
       "route": "A",
       "requires_all_effects": [
         "icnf_compensation_plan",
-        "icnf_via_ca"
+        "apa_track_start"
       ],
       "blocks_if_any_effects": [
         "icnf_compensation_approved",
@@ -1752,7 +2026,838 @@
       "odds": {
         "base": "fallback do grupo"
       },
+      "reroll": true,
+      "requires_any_effects": [
+        "icnf_via_ca",
+        "icnf_vinc_answered"
+      ]
+    },
+    {
+      "skeleton": "mail-dgeg-averbamento-trc-01",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "trc_transfer_averbamento_requested"
+      ],
+      "blocks_if_any_effects": [
+        "trc_transfer_averbado",
+        "buyer_caution_failed"
+      ],
+      "after_effect": {
+        "tag": "trc_transfer_averbamento_requested",
+        "months": 2,
+        "band": "1-3",
+        "source": "HIPÓTESE / PEDIR_PEDRO"
+      },
+      "mutex_group": "trc_averbamento",
+      "reroll": true,
+      "id": "r-averbamento-caucao-falhou",
+      "skin": "caucao-em-falta",
+      "pick": 1,
+      "odds": {
+        "base": 0.1,
+        "up_if_any": [
+          "offer_band_thin"
+        ],
+        "P_if_offer_band_thin": 0.25,
+        "down_if_any": [],
+        "status": "APROVADO Pedro 2026-09-29 (proposta Economy)"
+      },
+      "on_deliver_effects": [
+        "buyer_caution_failed",
+        "sale_full_exit_cancelled",
+        "sale_pipeline_clear"
+      ]
+    },
+    {
+      "skeleton": "mail-dgeg-averbamento-trc-01",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "trc_transfer_averbamento_requested"
+      ],
+      "blocks_if_any_effects": [
+        "trc_transfer_averbado",
+        "buyer_caution_failed"
+      ],
+      "after_effect": {
+        "tag": "trc_transfer_averbamento_requested",
+        "months": 2,
+        "band": "1-3",
+        "source": "HIPÓTESE / PEDIR_PEDRO"
+      },
+      "mutex_group": "trc_averbamento",
+      "reroll": true,
+      "id": "r-averbamento-ok",
+      "skin": "averbado",
+      "pick": 2,
+      "odds": {
+        "base": 0.9,
+        "P_if_offer_band_thin": 0.75,
+        "note": "complemento do grupo (fallback)",
+        "status": "APROVADO Pedro 2026-09-29 (proposta Economy)"
+      },
+      "on_deliver_effects": [
+        "trc_transfer_averbado",
+        "sale_full_exit",
+        "car_burn_stop",
+        "equity_capex_need_stop",
+        "mandate_slot_free",
+        "asset_removed",
+        "sale_closed"
+      ]
+    },
+    {
+      "id": "r-lp-transfer-caucao-falhou",
+      "skeleton": "mail-dgeg-lp-transmissao-01",
+      "skin": "caucao-em-falta",
+      "when_phase": [
+        "licenca_producao",
+        "obra",
+        "cod"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_transfer_authorization_requested",
+        "buyer_caution_+50pct"
+      ],
+      "blocks_if_any_effects": [
+        "lp_transfer_authorized",
+        "buyer_caution_failed"
+      ],
+      "after_effect": {
+        "tag": "lp_transfer_authorization_requested",
+        "months": 0.5,
+        "band": "0.5-1.5",
+        "source": "art. 36.º/4: 15 dias; +30 dias se pedir elementos"
+      },
+      "mutex_group": "lp_transfer",
+      "reroll": true,
+      "status": "TRANCADO Pedro 2026-09-30 (desenho + odds)",
+      "pick": 1,
+      "odds": {
+        "tiragem_1": 0.07,
+        "tiragem_1_offer_band_thin": 0.15,
+        "tiragem_2_depois_de_elementos": 0.1,
+        "tiragem_2_offer_band_thin": 0.25,
+        "final_check": "0,10 / 0,25 com offer_band_thin (= averbamento)",
+        "status": "TRANCADO Pedro 2026-09-30 (odds Economy)"
+      },
+      "on_deliver_effects": [
+        "buyer_caution_failed",
+        "lp_transfer_refused",
+        "sale_pipeline_clear"
+      ],
+      "on_deliver_effects_by_tag": {
+        "sale_full_exit_pending": [
+          "sale_full_exit_cancelled"
+        ],
+        "sale_plant_rent_infra_pending": [
+          "sale_plant_rent_infra_cancelled"
+        ]
+      },
+      "note": "Só antes da LE (buyer_caution_+50pct só é posto em licenca_producao/obra)."
+    },
+    {
+      "id": "r-lp-transfer-elementos",
+      "skeleton": "mail-dgeg-lp-transmissao-01",
+      "skin": "elementos-pedidos",
+      "when_phase": [
+        "licenca_producao",
+        "obra",
+        "cod"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_transfer_authorization_requested"
+      ],
+      "blocks_if_any_effects": [
+        "lp_transfer_authorized",
+        "buyer_caution_failed",
+        "lp_transfer_elementos_pedidos"
+      ],
+      "after_effect": {
+        "tag": "lp_transfer_authorization_requested",
+        "months": 0.5,
+        "band": "0.5-1.5",
+        "source": "art. 36.º/4: 15 dias; +30 dias se pedir elementos"
+      },
+      "mutex_group": "lp_transfer",
+      "reroll": true,
+      "status": "TRANCADO Pedro 2026-09-30 (desenho + odds)",
+      "pick": 2,
+      "odds": {
+        "antes_da_LE": 0.3,
+        "antes_da_LE_offer_band_thin": 0.4,
+        "depois_da_LE": 0.3,
+        "depois_da_LE_offer_band_thin": 0.4,
+        "dgeg_late": "+0,10, tirado de ok; só na 1.ª tiragem",
+        "status": "TRANCADO Pedro 2026-09-30 (odds Economy)"
+      },
+      "on_deliver_effects": [
+        "lp_transfer_elementos_pedidos"
+      ],
+      "extends_deadline": {
+        "id": "lp_transfer_authorization",
+        "adds_months": 1
+      },
+      "rearm_group_after_months": 1,
+      "note": "Uma única vez (art. 36.º/4). Depois o grupo volta a sortear só caução/autorizada."
+    },
+    {
+      "id": "r-lp-transfer-ok",
+      "skeleton": "mail-dgeg-lp-transmissao-01",
+      "skin": "autorizada",
+      "when_phase": [
+        "licenca_producao",
+        "obra",
+        "cod"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_transfer_authorization_requested"
+      ],
+      "blocks_if_any_effects": [
+        "lp_transfer_authorized",
+        "buyer_caution_failed"
+      ],
+      "after_effect": {
+        "tag": "lp_transfer_authorization_requested",
+        "months": 0.5,
+        "band": "0.5-1.5",
+        "source": "art. 36.º/4: 15 dias; +30 dias se pedir elementos"
+      },
+      "mutex_group": "lp_transfer",
+      "reroll": true,
+      "status": "TRANCADO Pedro 2026-09-30 (desenho + odds)",
+      "pick": 3,
+      "odds": {
+        "base": "fallback do grupo",
+        "antes_da_LE": {
+          "tiragem_1": 0.63,
+          "tiragem_1_offer_band_thin": 0.45,
+          "tiragem_2": 0.9,
+          "tiragem_2_offer_band_thin": 0.75
+        },
+        "depois_da_LE": {
+          "tiragem_1": 0.7,
+          "tiragem_1_offer_band_thin": 0.6,
+          "tiragem_2": 1.0
+        },
+        "status": "TRANCADO Pedro 2026-09-30 (odds Economy)",
+        "open": "Economy sugere r-lp-transfer-recusada 0,05 depois da LE (idoneidade, art. 36.º/3) — não criada, PEDIR_PEDRO"
+      },
+      "on_deliver_effects": [
+        "lp_transfer_authorized"
+      ],
+      "on_deliver_effects_by_tag": {
+        "sale_full_exit_pending": [
+          "sale_full_exit",
+          "car_burn_stop",
+          "equity_capex_need_stop",
+          "mandate_slot_free",
+          "asset_removed",
+          "sale_closed"
+        ],
+        "sale_plant_rent_infra_pending": [
+          "sale_plant_rent_infra",
+          "trc_transferred_with_plant",
+          "infra_usage_rent_on",
+          "plant_capex_forgone",
+          "offtake_profit_forgone",
+          "mandate_slot_free",
+          "sale_closed"
+        ]
+      }
+    },
+    {
+      "id": "r-apa-icnf-vinculativo-aia",
+      "skeleton": "mail-apa-icnf-vinculativo-01",
+      "skin": "aia",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "apa_track_start",
+        "icnf_aviso_delivered"
+      ],
+      "requires_any_effects": [
+        "env_path_aia_obrigatoria",
+        "aia_sujeito",
+        "env_route_a"
+      ],
+      "gate": {
+        "computed": {
+          "icnf_binding": false
+        },
+        "se_attrs": {
+          "env_draft.rede_natura": false,
+          "env_draft.area_protegida": false
+        },
+        "nota": "Só fora de Rede Natura/área protegida e sem corte de quercíneas (icnf_binding false). Em Ourique só depois de layout_trim_trees."
+      },
+      "blocks_if_any_effects": [
+        "dia_emitida",
+        "icnf_vinc_answered",
+        "icnf_via_ca",
+        "icnf_silence_seen"
+      ],
+      "after_effect": {
+        "tag": "icnf_aviso_delivered",
+        "months": 1,
+        "band": "1-2",
+        "source": "≥ 1 mês depois do aviso do consultor (Pedro 2026-09-30)"
+      },
+      "mutex_group": "icnf_ca",
+      "pick": 3,
+      "odds": {
+        "base": "PEDIR_ECONOMY (condicional ao aviso: proposta GM ~0,67 → total ≈ 0,15 como antes)",
+        "up_if_any": [
+          "risk_icnf_+1",
+          "icnf_minimal_reply"
+        ],
+        "down_if_any": [
+          "icnf_hint_useful",
+          "risk_icnf_-1"
+        ]
+      },
+      "reroll": false,
+      "wait_for_answer_if_delivered": [
+        "mail-consultor-icnf-aviso-01"
+      ]
+    },
+    {
+      "id": "r-apa-icnf-vinculativo-caso",
+      "skeleton": "mail-apa-icnf-vinculativo-01",
+      "skin": "caso-a-caso",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "caso_a_caso_request",
+        "icnf_aviso_delivered"
+      ],
+      "requires_any_effects": [
+        "land_option_open",
+        "dd_started"
+      ],
+      "gate": {
+        "computed": {
+          "icnf_binding": false
+        },
+        "se_attrs": {
+          "env_draft.rede_natura": false,
+          "env_draft.area_protegida": false
+        },
+        "nota": "Só fora de Rede Natura/área protegida e sem corte de quercíneas (icnf_binding false). Em Ourique só depois de layout_trim_trees."
+      },
+      "blocks_if_any_effects": [
+        "icnf_vinc_answered",
+        "aia_sujeito",
+        "nao_sujeicao"
+      ],
+      "after_effect": {
+        "tag": "icnf_aviso_delivered",
+        "months": 1,
+        "band": "1",
+        "source": "1 mês depois do aviso do consultor (Pedro 2026-09-30)"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY (condicional ao aviso: proposta GM ~0,67 → total ≈ 0,10 como antes)",
+        "up_if_any": [
+          "risk_icnf_+1"
+        ],
+        "down_if_any": [
+          "icnf_hint_useful",
+          "risk_icnf_-1"
+        ]
+      },
+      "reroll": false,
+      "wait_for_answer_if_delivered": [
+        "mail-consultor-icnf-aviso-01"
+      ]
+    },
+    {
+      "id": "r-apa-icnf-contest-aceite",
+      "skeleton": "mail-apa-icnf-contestacao-01",
+      "skin": "contestacao-aceite",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "icnf_binding_contested"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_contest_outcome_seen",
+        "dia_emitida"
+      ],
+      "after_effect": {
+        "tag": "icnf_binding_contested",
+        "months": 2,
+        "band": "1-3",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_vinc_outcome",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY (incerta; proposta GM ~0,4)",
+        "up_if_any": [
+          "icnf_alt_design_prepared"
+        ]
+      },
+      "on_deliver_effects": [
+        "icnf_opinion_consultive",
+        "risk_icnf_-1"
+      ]
+    },
+    {
+      "id": "r-apa-icnf-contest-recusada",
+      "skeleton": "mail-apa-icnf-contestacao-01",
+      "skin": "contestacao-recusada",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "icnf_binding_contested"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_contest_outcome_seen",
+        "dia_emitida"
+      ],
+      "after_effect": {
+        "tag": "icnf_binding_contested",
+        "months": 2,
+        "band": "1-3",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_vinc_outcome",
+      "pick": 2,
+      "odds": {
+        "base": "fallback"
+      },
+      "on_deliver_effects": [
+        "icnf_opinion_binding_kept",
+        "env_mitigation_flag"
+      ]
+    },
+    {
+      "id": "r-apa-icnf-escalada-aceite",
+      "skeleton": "mail-apa-icnf-contestacao-01",
+      "skin": "contestacao-aceite",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "sector_escalation"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_contest_outcome_seen",
+        "dia_emitida"
+      ],
+      "after_effect": {
+        "tag": "sector_escalation",
+        "months": 2,
+        "band": "1-3",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_vinc_outcome",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY (baixa; proposta GM ~0,1)"
+      },
+      "on_deliver_effects": [
+        "icnf_opinion_consultive",
+        "risk_icnf_-1"
+      ]
+    },
+    {
+      "id": "r-apa-icnf-escalada-recusada",
+      "skeleton": "mail-apa-icnf-contestacao-01",
+      "skin": "contestacao-recusada",
+      "when_phase": [
+        "land",
+        "pip",
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "sector_escalation"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_contest_outcome_seen",
+        "dia_emitida"
+      ],
+      "after_effect": {
+        "tag": "sector_escalation",
+        "months": 2,
+        "band": "1-3",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_vinc_outcome",
+      "pick": 2,
+      "odds": {
+        "base": "fallback"
+      },
+      "on_deliver_effects": [
+        "icnf_opinion_binding_kept",
+        "env_mitigation_flag"
+      ]
+    },
+    {
+      "id": "r-icnf-caso-exigente",
+      "skeleton": "mail-icnf-compensacao-exigente-01",
+      "skin": "caso-a-caso",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "icnf_compensation_plan",
+        "caso_a_caso_request",
+        "icnf_vinc_answered"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_compensation_approved",
+        "apa_track_start",
+        "aia_sujeito",
+        "nao_sujeicao"
+      ],
+      "after_effect": {
+        "tag": "icnf_compensation_plan",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_outcome_caso",
+      "pick": 1,
+      "odds": {
+        "base": "PEDIR_ECONOMY",
+        "up_if_any": [
+          "risk_icnf_+1"
+        ],
+        "down_if_any": [
+          "icnf_hint_useful"
+        ]
+      },
       "reroll": true
+    },
+    {
+      "id": "r-icnf-caso-aprovada",
+      "skeleton": "mail-icnf-compensacao-aprovada-01",
+      "skin": "caso-a-caso",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "icnf_compensation_plan",
+        "caso_a_caso_request",
+        "icnf_vinc_answered"
+      ],
+      "blocks_if_any_effects": [
+        "icnf_compensation_approved",
+        "apa_track_start",
+        "aia_sujeito",
+        "nao_sujeicao"
+      ],
+      "after_effect": {
+        "tag": "icnf_compensation_plan",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "icnf_outcome_caso",
+      "pick": 2,
+      "odds": {
+        "base": "fallback do grupo"
+      },
+      "reroll": true
+    },
+    {
+      "id": "r-sobreequipamento",
+      "skeleton": "mail-consultor-sobreequipamento-01",
+      "skin": "ourique",
+      "skin_fallback": "default",
+      "when_phase": [
+        "licenca_producao",
+        "obra",
+        "cod"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "lp_granted"
+      ],
+      "blocks_if_any_effects": [
+        "overequip_plan_commit",
+        "asset_removed",
+        "sale_full_exit_pending",
+        "sale_plant_rent_infra_pending"
+      ],
+      "after_effect": {
+        "tag": "lp_granted",
+        "months": 1,
+        "band": "1-2",
+        "source": "GM"
+      },
+      "rearm_on_effects": [
+        "value_add_delay_+1"
+      ],
+      "rearm_after_months": 3,
+      "status": "DRAFT 2026-09-30 — HIPÓTESE Pedro 2026-09-30 (via Economy): o +20 % limita a potência INJETADA (Ourique: 99 + 19,8 = 118,8 MVA), não os MWp. O jogador instala os MWp que quiser; a rentabilidade (DC/AC vs corte no limite de injeção) decide — otimizador DC/AC da Economy."
+    },
+    {
+      "id": "r-nisa-enterrar-linha",
+      "skeleton": "mail-camara-linha-enterrada-01",
+      "skin": "falagueira",
+      "skin_fallback": "default",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "se_requires": {
+        "tags.linhas_aereas": "hostil"
+      },
+      "requires_all_effects": [
+        "land_option_open"
+      ],
+      "blocks_if_any_effects": [
+        "underground_cable",
+        "line_undergrounded",
+        "pip_aprovado",
+        "asset_removed"
+      ],
+      "after_effect": {
+        "tag": "land_option_open",
+        "months": 1,
+        "band": "1-3",
+        "source": "GM"
+      },
+      "odds": {
+        "base": 0.4,
+        "status": "PEDIR_ECONOMY (proposta GM 0,40)",
+        "up_if_any": [
+          "land_line_longa",
+          "servidoes_linha_+2"
+        ],
+        "down_if_any": [
+          "land_line_curta"
+        ],
+        "after_reroute": "× 0,5 (HIPÓTESE)"
+      },
+      "rearm_on_effects": [
+        "line_reroute_negotiated"
+      ],
+      "rearm_after_months": 2,
+      "note": "Câmara de Nisa (SE Falagueira) hostil a linhas aéreas. DRAFT 2026-09-30."
+    },
+    {
+      "id": "r-consultor-icnf-aviso-aia",
+      "skeleton": "mail-consultor-icnf-aviso-01",
+      "skin": "aia",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "apa_track_start"
+      ],
+      "requires_any_effects": [
+        "env_path_aia_obrigatoria",
+        "aia_sujeito",
+        "env_route_a"
+      ],
+      "gate": {
+        "computed": {
+          "icnf_binding": false
+        },
+        "se_attrs": {
+          "env_draft.rede_natura": false,
+          "env_draft.area_protegida": false
+        }
+      },
+      "blocks_if_any_effects": [
+        "dia_emitida",
+        "icnf_via_ca",
+        "icnf_silence_seen",
+        "icnf_vinc_answered"
+      ],
+      "after_effect": {
+        "tag": "apa_track_start",
+        "months": 2,
+        "band": "1-4",
+        "source": "~1 mês antes do vinculativo"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY (≈ 1,5 × odds do vinculativo: proposta GM ~0,22 AIA / ~0,15 caso a caso)",
+        "up_if_any": [
+          "risk_icnf_+1"
+        ],
+        "down_if_any": [
+          "icnf_hint_useful",
+          "risk_icnf_-1"
+        ]
+      },
+      "reroll": false,
+      "on_deliver_effects": [
+        "icnf_aviso_delivered"
+      ],
+      "arms": "r-apa-icnf-vinculativo-aia",
+      "false_alarm": "Se o vinculativo não sair (odds condicionais ou mutex icnf_ca), nada acontece: o aviso fica como falso alarme."
+    },
+    {
+      "id": "r-consultor-icnf-aviso-caso",
+      "skeleton": "mail-consultor-icnf-aviso-01",
+      "skin": "caso-a-caso",
+      "when_phase": [
+        "land",
+        "pip"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "route": "B",
+      "requires_all_effects": [
+        "caso_a_caso_request"
+      ],
+      "requires_any_effects": [
+        "land_option_open",
+        "dd_started"
+      ],
+      "gate": {
+        "computed": {
+          "icnf_binding": false
+        },
+        "se_attrs": {
+          "env_draft.rede_natura": false,
+          "env_draft.area_protegida": false
+        }
+      },
+      "blocks_if_any_effects": [
+        "aia_sujeito",
+        "nao_sujeicao",
+        "icnf_vinc_answered"
+      ],
+      "after_effect": {
+        "tag": "caso_a_caso_request",
+        "months": 0,
+        "band": "0",
+        "source": "logo após o pedido caso a caso"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY (≈ 1,5 × odds do vinculativo: proposta GM ~0,22 AIA / ~0,15 caso a caso)",
+        "up_if_any": [
+          "risk_icnf_+1"
+        ],
+        "down_if_any": [
+          "icnf_hint_useful",
+          "risk_icnf_-1"
+        ]
+      },
+      "reroll": false,
+      "on_deliver_effects": [
+        "icnf_aviso_delivered"
+      ],
+      "arms": "r-apa-icnf-vinculativo-caso",
+      "false_alarm": "Se o vinculativo não sair (odds condicionais ou mutex icnf_ca), nada acontece: o aviso fica como falso alarme."
+    },
+    {
+      "id": "r-fid-sem-capital",
+      "skeleton": "mail-investidores-fid-01",
+      "skin": "falta-capital-proprio",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": false,
+      "requires_all_effects": [
+        "lp_granted",
+        "term_sheet_signed",
+        "epc_selected"
+      ],
+      "requires_computed": {
+        "equity_fit_short": true
+      },
+      "blocks_if_any_effects": [
+        "fid_reached",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "epc_selected",
+        "months": 1,
+        "band": "0-2",
+        "source": "igual a r-fid"
+      },
+      "mutex_group": "fid_card",
+      "pick": 1,
+      "rearm_on_effects": [
+        "fid_defer",
+        "equity_capex_request"
+      ],
+      "rearm_after_months": 2,
+      "note": "Substitui a carta de FID quando falta capital próprio. approve_fid fica bloqueada (requires_state). Pedro 2026-09-30."
     }
   ],
   "phase_bump_proposed": {
@@ -1796,11 +2901,18 @@
     "env_path": "ver env_routing; escreve UMA flag env_path_<nao_sujeito|caso_a_caso|aia_obrigatoria|aac_simplificada> = 1 (as outras 0)",
     "env_path_planned": "mesmo cálculo sobre o plano em edição (antes de confirmar)",
     "env_path_worsened_planned": "rank(env_path_planned) > rank(env_path)  ∨ (project_kind=alteration ∧ ¬alteracao_nao_sujeicao_eligible(plano))",
-    "env_trigger_mva|area|turbines|line|sensitive (+ _planned)": "que critério disparou: area = ha solar; mva = MW total do TRC (só com eólico); turbines = nº aerogeradores; line = Anexo I (≥220 kV >15 km) ou II (≥110 kV ≥20 km); sensitive = sub-limiar por componente",
+    "env_trigger_mva|area|turbines|line|sensitive (+ _planned)": "que critério disparou: area = ha solar; mva = OBSOLETO desde 2026-09-30 (sem limiar eléctrico; nunca dispara); turbines = nº aerogeradores (≥20, incl. parques a <2 km); line = Anexo I (≥220 kV >15 km) ou II (≥110 kV ≥20 km); sensitive = sub-limiar por componente",
     "env_trim_possible (+ _planned)": "o atributo que dispara está a ≤ trim_margin acima do limiar (trim_margin HIPÓTESE 20%, PEDIR_PEDRO)",
     "project_kind_new": "project_kind = new",
     "alteracao_nao_sujeicao_eligible": "ver env_routing.alteracoes (substitui aia_nao_sujeicao_eligible para value-add pós-LP)",
-    "icnf_binding": "parecer do ICNF é vinculativo: env_draft.rede_natura ∨ env_draft.area_protegida ∨ (quercineas_densidade ∈ {alta, media} ∧ ¬layout_trim_trees). Ourique = true (corte de quercíneas)."
+    "icnf_binding": "parecer do ICNF é vinculativo: env_draft.rede_natura ∨ env_draft.area_protegida ∨ (quercineas_densidade ∈ {alta, media} ∧ ¬layout_trim_trees). Ourique = true (corte de quercíneas).",
+    "mw_free": "trc_mw − mw_own_plugged − mw_reserved_by_buyer − mw_reserved_by_partner (MVA de injeção). Só a hibridização (outra tecnologia ou BESS) aloca injeção (DL 15/2022 art. 74.º/2).",
+    "sobreequip_merchant_energy": "TRANCADO: ativa quando overequip_added_mwp > 0 (plano confirmado). Energia do sobreequipamento a preço de mercado, não à tarifa do leilão (art. 66.º → 17.º); pode ser interrompida pelo gestor do SEN (art. 65.º).",
+    "overequip_injection_cap_mva": "1,2 × potência de ligação da LP inicial (Ourique: 99 × 1,2 = 118,8 MVA). HIPÓTESE Pedro 2026-09-30 (via Economy): o +20 % limita a potência INJETADA (Ourique: 99 + 19,8 = 118,8 MVA), não os MWp. O jogador instala os MWp que quiser; a rentabilidade (DC/AC vs corte no limite de injeção) decide — otimizador DC/AC da Economy. DL 15/2022 art. 3.º sss) (20 %, texto original), 64.º/2.",
+    "overequip_module_area_ha": "(installed_mwp + overequip_added_mwp) × 0,43–0,48 ha/MWp (HIPÓTESE η 21–23 %; usar area_ha real do layout se existir)",
+    "overequip_area_aia": "overequip_module_area_ha ≥ 100 → env_path_planned = aia_obrigatoria (alteração acima dos 20 % de área volta ao algoritmo do projeto total). Tripwire mail-consultor-nao-sujeicao-risco-01 antes de confirmar. Ourique: ≥ ~210–233 MWp no total.",
+    "overequip_area_caso": "alteração toca área sensível ∧ área da alteração ≥ 10 ha → env_path_planned = caso_a_caso (se ainda não for aia_obrigatoria).",
+    "equity_full": "equity_fit_ok ∧ equity_capex_commit (obra pode arrancar)"
   },
   "schedule_patches_proposed": {
     "status": "NÃO aplicado ao mvp-schedule.json (vivo). A UI aplica quando o Pedro aprovar.",
@@ -1820,7 +2932,7 @@
     "status": "DRAFT 2026-09-29 (rev. tarde) — limiares solar e linha pela leitura do DL 11/2023 (Pedro); regra mista do híbrido mantida",
     "inputs": {
       "lot (se-sheet env_draft)": [
-        "connection_mva (→ total_trc_mw)",
+        "connection_mva",
         "area_ha (área de painéis — definição PEDIR_PEDRO)",
         "n_turbines",
         "tech",
@@ -1830,10 +2942,10 @@
         "sensitive_area",
         "area_aceleracao",
         "solar_on_structure",
-        "structure_exception"
+        "structure_exception",
+        "nearby_wind_turbines_2km"
       ],
       "design (plano do dossier)": [
-        "total_trc_mw (não sobe com value-add no mesmo TRC — físico)",
         "solar.area_ha",
         "wind.n_turbines",
         "component_mw (instalado/alocado, só para sub-limiar sensível — HIPÓTESE)",
@@ -1853,7 +2965,7 @@
       "solar": {
         "aia_obrigatoria": {
           "area_ha": 100,
-          "note": "área de painéis ≥100 ha; SEM limiar eléctrico geral"
+          "note": "área de MÓDULOS + inversores ≥100 ha (Pedro 2026-09-29, FECHADO; DL 11/2023 preâmbulo: «área ocupada por painéis solares e inversores»). NÃO é a área vedada/implantação. Conversão HIPÓTESE: ~0,43–0,48 ha/MWp (η 21–23 %). SEM limiar eléctrico geral."
         },
         "sensitive_caso_a_caso": {
           "area_ha": 10,
@@ -1862,30 +2974,34 @@
       },
       "wind": {
         "aia_obrigatoria": {
-          "total_trc_mw": 50,
-          "n_turbines": 20
+          "n_turbines": 20,
+          "proximity_km": 2,
+          "cumulative_turbines_with_nearby": 20,
+          "rule": "eólico → aia_obrigatoria se n_turbines ≥ 20 OU (n_turbines > 0 ∧ há parque(s) eólico(s) a < 2 km ∧ n_turbines + nearby_wind_turbines_2km ≥ 20). Sem critério em MW.",
+          "status": "TRANCADO Pedro 2026-09-30 (DL 11/2023)"
         },
         "sensitive_caso_a_caso": {
           "component_mw": 20,
           "n_turbines": 10
         },
-        "flag": "inalterado; não confirmado na mesma leitura (lei fala em MW, não MVA; possível critério de proximidade a outros parques) — só flag, PEDIR_PEDRO"
+        "flag": "TRANCADO Pedro 2026-09-30 (DL 11/2023): o critério de 50 MW foi REMOVIDO. 'Somem ≥20' lido como cumulativo (projeto + parques a <2 km). Sub-limiares em área sensível (20 MW / 10 aerogeradores) inalterados (não fazem parte desta decisão)."
       },
       "line": {
         "aia_obrigatoria_if": "line_overhead ∧ line_kv ≥ 220 ∧ line_km > 15 (Anexo I)",
         "caso_a_caso_if": "line_overhead ∧ line_kv ≥ 110 ∧ line_km ≥ 20 (Anexo II)",
-        "note": "substitui '≥110 kV e ≥10 km força AIA'"
+        "note": "substitui '≥110 kV e ≥10 km força AIA'",
+        "comparison_exact": "km exato do terreno: Anexo I > 15 km (estrito); Anexo II ≥ 20 km (inclusive) — TRANCADO Pedro 2026-09-30"
       },
       "comparison": "sujeito se valor ≥ limiar (Anexo I linha: > 15 km)",
-      "units": "lei em MW: MW eléctrico total do TRC ≈ potência de ligação (MVA≈MW, HIPÓTESE cos φ≈1); MW por componente = instalado/alocado (HIPÓTESE, só este detalhe)"
+      "units": "Sem limiar eléctrico geral (nem solar nem eólico). MW por componente = instalado/alocado, só para o sub-limiar em área sensível (HIPÓTESE)."
     },
     "algorithm": [
       "1. solar_on_structure ∧ tech∈{solar,solar+bess} ∧ structure_exception ∉ {artificial_water_body, classified_building_or_zone, defence_security_zone} → nao_sujeito (DL 99/2024)",
       "2. area_aceleracao ∧ projecto novo estritamente dentro → aac_simplificada (DL 99/2024; mesmo acima dos limiares)",
-      "3. aia_obrigatoria se QUALQUER: solar.area_ha ≥ 100 · (tem eólico ∧ total_trc_mw ≥ 50) · wind.n_turbines ≥ 20 · linha aérea ≥220 kV com >15 km — independente de área sensível",
+      "3. aia_obrigatoria se QUALQUER: solar.area_ha (módulos + inversores) ≥ 100 · wind.n_turbines ≥ 20 · (wind.n_turbines > 0 ∧ parque a < 2 km ∧ wind.n_turbines + nearby_wind_turbines_2km ≥ 20) · linha aérea ≥220 kV com >15 km — independente de área sensível",
       "4. caso_a_caso se QUALQUER: linha aérea ≥110 kV com ≥20 km (Anexo II, com ou sem área sensível) · OU (algum polígono de componente ou traçado da linha toca área sensível ∧ UM componente ≥ sub-limiar: solar area_ha ≥ 10 ∨ component_mw ≥ 20; eólico component_mw ≥ 20 ∨ n_turbines ≥ 10)",
       "5. em área sensível abaixo dos sub-limiares → nao_sujeito (HIPÓTESE)",
-      "6. senão → nao_sujeito (solar < 100 ha · eólico: TRC < 50 MW e < 20 aerogeradores · linha abaixo do Anexo I e II · fora de área sensível)",
+      "6. senão → nao_sujeito (solar < 100 ha de módulos · eólico < 20 aerogeradores, também somando parques a < 2 km · linha abaixo do Anexo I e II · fora de área sensível)",
       "BESS sozinho sem limiar próprio (HIPÓTESE)"
     ],
     "alteracoes": {
@@ -1893,7 +3009,8 @@
       "applies_when": "project_kind ∈ {alteration, reequipamento} (value-add depois de lp_granted da base)",
       "alteracao_nao_sujeicao_eligible": "(alteration ∧ ¬sensitive_area ∧ ¬layout_touches_sensitive ∧ ΔMW ≤ 20% ∧ Δárea ≤ 20% ∧ ¬nova linha aérea) ∨ (reequipamento ∧ tech∈{solar,wind})",
       "else": "a alteração cai no algoritmo acima aplicado ao projecto total (HIPÓTESE)",
-      "tags": "ampliacao_le_20pct / ampliacao_gt_20pct_planned / new_overhead_line_planned mantêm-se"
+      "tags": "ampliacao_le_20pct / ampliacao_gt_20pct_planned / new_overhead_line_planned mantêm-se",
+      "note_injection_cap": "Não confundir: o ΔMW ≤ 20 % aqui é o do RJAIA (potência INSTALADA e área da alteração, para a não sujeição ambiental). O limite do sobreequipamento no jogo é outro: injeção ≤ overequip_injection_cap_mva (1,2 × potência de ligação; HIPÓTESE Pedro 2026-09-30); os MWp são livres. Plano pequeno (+20 MWp em 120) ≈ +17 % → elegível; médio/grande → algoritmo do projeto total."
     },
     "recompute_on": [
       "hybrid/overequip plan edit (→ _planned)",
@@ -1904,40 +3021,119 @@
       "caso_a_caso_redesign",
       "area_aceleracao (evento)",
       "lp_granted (project_kind muda)",
-      "se-sheet load"
+      "se-sheet load",
+      "overequip_plan_small|medium|large (→ _planned, antes de confirmar)"
     ],
     "ourique_mvp": {
-      "resolves_to": "aia_obrigatoria",
-      "cause": "area_ha solar ≥ 100 (HIPÓTESE / PEDIR_PEDRO)",
-      "why": "120 MWp × ~1,0–1,6 ha/MWp (área de implantação) ≈ 120–200 ha ≥ 100. Linha (150 kV, ~3 km) não dispara; sensitive_area default false não é necessário. Solar deixou de ter limiar eléctrico: os 100 MVA do TRC já não justificam AIA.",
-      "risk": "Se '100 ha de painéis' for a área projectada dos módulos (~0,4–0,6 ha/MWp) → ~50–70 ha < 100 → Ourique NÃO chegaria a AIA pelos atributos; manter AIA por decisão Pedro/Economy com area_ha como causa assumida.",
-      "route": "A",
-      "value_add_post_lp": "sobreequipamento ≤20% sem linha aérea nova → alteracao_nao_sujeicao_eligible"
+      "resolves_to": "nao_sujeito",
+      "route": "B (não sujeição → PIP → LP)",
+      "why": "120 MWp × ~0,43–0,48 ha/MWp de módulos ≈ 52–57 ha < 100 (HIPÓTESE). Sem limiar eléctrico solar. Linha 150 kV curta (default) não dispara. Fora de Rede Natura / área protegida (HIPÓTESE).",
+      "caso_a_caso_only_if": "parcela/traçado toca área sensível (ZPE Castro Verde adjacente) com ≥10 ha ou ≥20 MW; ou linha aérea ≥110 kV ≥20 km (ver line_from_land_proposal: terreno longe a 150 kV → caso a caso)",
+      "sobreequipamento_check": "MWp livres (injeção limitada a 118,8 MVA). Plano pequeno +20 → ~60–67 ha · médio +40 → ~69–77 ha · grande +90 → ~90–101 ha (pode chegar a AIA). Só o pequeno (≤ +20 %) cabe na não sujeição automática da alteração; médio/grande voltam ao algoritmo do projeto total.",
+      "icnf": "icnf_binding (quercíneas) mantém-se, independente da via",
+      "flag_ui": "mvp-schedule.json (mail-apa-01 em Ourique) e tags.ambiente=apa_first assumem AIA — não mexi; UI/schedule devem ler env_path",
+      "supersedes": "2026-09-29 tarde: aia_obrigatoria por área de implantação 120–200 ha",
+      "value_add_post_lp": "ver mail-consultor-sobreequipamento-01 (pequeno/médio/grande); alteracao_nao_sujeicao_eligible só se ΔMW e Δárea ≤ 20 % e sem linha aérea nova",
+      "connection": "99 MVA (REAL, lote 2020 n.º 6) — TRANCADO 2026-09-30; tensão 150 vs 400 kV ABERTA"
     },
     "hybrid_rule": {
-      "status": "FECHADO Pedro 2026-09-29; unidades adaptadas à leitura DL 11/2023",
-      "electrical": "total do TRC (potência de ligação, MW) — só onde a lei tem limiar eléctrico geral: eólico 50 MW. Solar não tem limiar eléctrico geral.",
-      "physical": "por componente: solar ha (100); eólico nº aerogeradores (20)",
+      "status": "FECHADO Pedro 2026-09-29; critério eléctrico removido TRANCADO Pedro 2026-09-30 (DL 11/2023)",
+      "electrical": "NENHUM: não há limiar eléctrico geral (solar nem eólico). O MW do TRC não conta para a AIA.",
+      "physical": "por componente: solar ha de módulos (100); eólico nº aerogeradores (20, também somando parques a < 2 km)",
       "sensitive": "sub-limiares por componente (solar 10 ha / 20 MW; eólico 20 MW / 10 aerogeradores); basta um",
       "examples": [
-        "solar 45 + eólico 30 com TRC 75 MW → aia_obrigatoria (eólico presente, 75 ≥ 50 no total do TRC)",
-        "TRC 45 MW com sobreequipamento até 75 instalados mas injecção limitada a 45 → abaixo do limiar eléctrico; decidem ha solar, aerogeradores, linha, área sensível",
-        "solar puro 120 MWp num TRC de 100 MW com 90 ha de painéis, fora de área sensível, linha curta → nao_sujeito (sem limiar eléctrico solar)"
+        "solar 45 + eólico 30 MW com 8 aerogeradores, sem parques a < 2 km → decide a área solar, a linha e a área sensível (o eólico não dispara)",
+        "eólico de 12 aerogeradores a 1,5 km de um parque com 10 → 22 ≥ 20 → aia_obrigatoria",
+        "solar puro 120 MWp num TRC de 100 MW com ~55 ha de módulos, fora de área sensível, linha curta → nao_sujeito"
       ]
     },
     "lots_2026_09_29": {
       "ferreira-do-alentejo": {
-        "installed_mwp": "~180 (160–200) — opção A euro-fields-console §3",
-        "resolves_to": "aia_obrigatoria",
-        "cause": "area_ha ~180–290 (HIPÓTESE 1,0–1,6 ha/MWp; PEDIR_PEDRO)",
-        "note": "módulos projectados ~70–110 ha: mesmo nessa leitura fica perto/acima do limiar"
+        "installed_mwp": "~180 (160–200)",
+        "resolves_to": "nao_sujeito",
+        "cause": "módulos ~70–95 ha < 100 (HIPÓTESE)",
+        "note": "perto do limiar: a 200 MWp / η 21 % ≈ 95 ha; sobreequipamento pode cruzar os 100 ha → AIA"
       },
       "estremoz": {
         "installed_mwp": "~280 (250–300)",
         "resolves_to": "aia_obrigatoria",
-        "cause": "area_ha ~280–450 (HIPÓTESE) e ligação 400 kV longa (~20 km, cenário euro-fields §3.2) ≥220 kV >15 km → Anexo I, dupla causa",
+        "cause": "módulos ~109–143 ha ≥ 100 (HIPÓTESE, 250–300 MWp) e ligação 400 kV longa (~20 km) ≥220 kV >15 km → Anexo I, dupla causa",
         "note": "sem se-sheet no pacote; km PEDIR_PEDRO"
       }
+    },
+    "line_from_land_proposal": {
+      "status": "TRANCADO Pedro 2026-09-30",
+      "principle": "O TRC fixa a subestação REN do lote (ponto de ligação). O jogador NÃO escolhe a subestação REN. O terreno que encontra fixa a distância da central (e da sua subestação elevadora) até essa subestação REN → line_km.",
+      "land_offer_param": "cada oferta de terreno traz linha_km EXATO (km até à SE REN do lote, fixa pelo TRC) + linha_km_band descritiva {curta <10, media 10–20, longa 20–35}; típico 20–30 km; curta é rara",
+      "line_kv": "nível de injeção do TRC na SE REN do lote (ex. Ourique 400/150 kV). Fallback HIPÓTESE por MW do projeto: ≤~100 MWp → 60 kV* · ~100–250 → 150 kV · ≥250 → 220/400 kV. *60 kV é tensão da RND (E-REDES), não da RNT: numa SE REN o mínimo realista é 150 kV — PEDIR_PEDRO",
+      "linha_env_route": "usa linha_km exato: line_overhead ∧ line_kv ≥ 220 ∧ linha_km > 15 → aia_obrigatoria (Anexo I) · line_overhead ∧ line_kv ≥ 110 ∧ linha_km ≥ 20 (inclusive) → caso_a_caso (Anexo II) · senão → none",
+      "combine": "env_path = max(rank) entre via da central e linha_env_route",
+      "trade_off": "curta: rara, entrada/renda mais alta · media: normal · longa: barata, mas + capex_linha (PEDIR_ECONOMY) + possível caso a caso/AIA + mais proprietários/servidões no traçado + risco de atraso",
+      "tags_proposed": [
+        "land_line_curta",
+        "land_line_media",
+        "land_line_longa",
+        "capex_linha_+1",
+        "capex_linha_+2",
+        "servidoes_linha_+1",
+        "servidoes_linha_+2"
+      ],
+      "lever": "underground_cable (enterrar) tira line_overhead → linha_env_route none, com capex_rede_flag",
+      "ourique_example": "150 kV: curta/média → none (fica nao_sujeito) · longa ≥20 km → caso_a_caso",
+      "state": "ao escolher o terreno (open_dd), line_km do projeto = params.linha_km da skin do terreno; substitui se-sheet line_km.engine_default",
+      "land_skins": {
+        "parcela-a-cara": {
+          "linha_km": 3,
+          "band": "curta"
+        },
+        "parcela-b-servidao": {
+          "linha_km": 14,
+          "band": "media"
+        },
+        "parcela-c-longe": {
+          "linha_km": 25,
+          "band": "longa"
+        }
+      }
+    }
+  },
+  "sell_modes_2026_09_29": {
+    "status": "Desenho aprovado pelo Pedro 2026-09-29 (base: trc-partilha-dl15-2022.md). € = PEDIR_ECONOMY. · Venda pós-LP TRANCADO Pedro 2026-09-30 (lei em vigor)",
+    "modes": {
+      "full_exit": {
+        "label": "Vender o projeto todo",
+        "gate": "desde trc_won",
+        "pre_lp": "caução do comprador +50% (18.º/10) + averbamento DGEG (prazo trc_transfer_averbamento, 1–3 m HIPÓTESE/PEDIR_PEDRO); sale_full_exit só no averbamento",
+        "post_lp": "TRANCADO Pedro 2026-09-30: transmissão da LP com autorização prévia da DGEG (art. 36.º/1), decisão em 15 dias (36.º/4) → prazo lp_transfer_authorization 0,5 mês, +1 mês se a DGEG pedir elementos (uma vez). Até à LE (licenca_producao, obra): comprador reforça a caução em metade (36.º/2 → 18.º/10). Depois da LE (cod): sem reforço (caução liberada, 13.º/18). Venda pendente até mail-dgeg-lp-transmissao-01."
+      },
+      "sell_hybrid_part": {
+        "label": "Vender a parte híbrida e ficar com a central",
+        "legacy": "sell_one_park",
+        "gate": "licenca_producao + line_ready + hybrid_slice_available",
+        "hybrid_slice_available": "só unidades de outra tecnologia ou BESS; nunca sobreequipamento (70.º) nem a central base",
+        "mw": "own → reserved_by_buyer; mw_free igual",
+        "effects": [
+          "capacity_use_fee_on",
+          "partner_injection_subordinate",
+          "joint_liability_on"
+        ]
+      },
+      "sell_plant_rent_infra": {
+        "label": "Vender a central e alugar a subestação e a linha",
+        "legacy": "keep_connection",
+        "gate": "licenca_producao + line_ready",
+        "trc": "vai com a central (18.º/5, 36.º/1, 37.º/2)",
+        "effects": [
+          "trc_transferred_with_plant",
+          "infra_usage_rent_on"
+        ],
+        "seat": "mandate_slot_free HIPÓTESE/PEDIR_PEDRO",
+        "post_lp": "Igual a full_exit pós-LP (é transmissão da LP): autorização DGEG 15 dias; caução +50 % só antes da LE. TRC vai sempre com a central; o vendedor fica com a subestação e a linha e aluga-as. TRANCADO Pedro 2026-09-30 (lei em vigor)"
+      }
+    },
+    "exits": {
+      "buyer_or_partner_exits": "MW voltam ao jogador (76.º/5): mw_reserved_released",
+      "player_exits_or_lapses": "parceiro/comprador da parte híbrida fica com os seus MW num TRC próprio (partner_trc_spun_off); o resto vai para a rede (trc_remainder_to_grid) — 76.º/2–4"
     }
   }
 }

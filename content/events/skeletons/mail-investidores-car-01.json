@@ -14,30 +14,30 @@
   "choices": [
     {
       "id": "ask_car_s",
-      "label": "Pedir pouco",
+      "label": "Pedir mais {ask_s}",
       "effects": [
         "car_band_s",
         "car_request_sent"
       ],
-      "hint": "Aceitamos sempre."
+      "hint": "A caixa fica em cerca de {cash_s}. Os investidores aceitam quase sempre."
     },
     {
       "id": "ask_car_m",
-      "label": "Pedir um valor médio",
+      "label": "Pedir mais {ask_m}",
       "effects": [
         "car_band_m",
         "car_request_sent"
       ],
-      "hint": "Aceitamos, mas marcamos uma revisão contigo."
+      "hint": "A caixa fica em {cash_m}. Aceitam cerca de metade das vezes e marcam uma revisão do projeto."
     },
     {
       "id": "ask_car_l",
-      "label": "Pedir muito",
+      "label": "Pedir mais {ask_l}",
       "effects": [
         "car_band_l",
         "car_request_sent"
       ],
-      "hint": "Podemos baixar para o valor médio. Se aceitarmos, tens menos tempo para o terreno ou o pedido à Câmara; se falhares, cortamos o orçamento."
+      "hint": "A caixa fica em {cash_l}. Quase nunca aceitam logo: podem baixar para o valor médio ou cortar. Se aceitarem, o prazo para garantir o terreno fica mais curto, e se falhares o orçamento é cortado."
     },
     {
       "id": "delay",
@@ -49,5 +49,5 @@
     }
   ],
   "notes_for_economy": "Outcomes aceitar/cortar/plano por banda; M€ = PEDIR_ECONOMY / car-bands-boutique.md. Boutique: S cabe Ourique; L pode ser cortado.",
-  "notes_for_ui": "CTA: bandas S/M/L → HUD car_band + filtro lotes; toast do outcome. Sem metáforas de clube. Sem M€ até Gate €."
+  "notes_for_ui": "CTA: bandas S/M/L → HUD car_band + filtro lotes; toast do outcome. Sem metáforas de clube. Sem M€ até Gate €. 2026-09-29 (Pedro): labels, hints e corpo usam placeholders {ask_s} {ask_m} {ask_l} {cash_s} {cash_m} {cash_l} (chaveta simples) substituídos pela consola a partir de Economy §6.1 por nível de mandato; nunca números no conteúdo. 2026-09-30 (Pedro): carta de M0, antes do terreno: sem PIP/AIA/Câmara no texto; o prazo mais curto de ask_car_l é só o do terreno (land_option)."
 }

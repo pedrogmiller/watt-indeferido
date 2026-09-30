@@ -1,0 +1,31 @@
+{
+  "id": "mail-dgeg-averbamento-trc-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 — proposta GM (venda antes da LP); aprovado em desenho pelo Pedro, valores PEDIR",
+  "trigger": {
+    "after": "trc_transfer_averbamento_requested",
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia"
+    ],
+    "or_deadline": "trc_transfer_averbamento"
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "deadline_ref": "trc_transfer_averbamento",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Percebido",
+      "effects": [
+        "sale_ack"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Desfecho sorteado na regra (r-averbamento-ok / r-averbamento-caucao-falhou), odds PEDIR_ECONOMY. Caução +50% = custo do comprador (entra no preço, PEDIR_ECONOMY).",
+  "notes_for_ui": "Os efeitos vêm em on_deliver_effects da regra. Skins: averbado | caucao-em-falta."
+}

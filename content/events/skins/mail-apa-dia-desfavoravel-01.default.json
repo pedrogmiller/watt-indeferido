@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-apa-dia-desfavoravel-01",
+  "skin_id": "default",
+  "draft": true,
+  "when": {},
+  "from_name": "APA — Autoridade de AIA",
+  "subject": "Proposta de decisão ambiental desfavorável",
+  "body": "A Comissão de Avaliação concluiu que os impactes do projeto, tal como está, não são aceitáveis, e a proposta de decisão é desfavorável. Antes de ficar definitiva, podes responder por escrito. Sem decisão favorável, a DGEG não emite a licença de produção. Podes refazer o projeto e entregar um estudo novo, contestar agora, vender ou desistir. O prazo do TRC continua a contar.",
+  "params": {
+    "dia": "desfavoravel_proposta"
+  }
+}

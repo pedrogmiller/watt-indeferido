@@ -3,6 +3,6 @@
   "skin_id": "hibrido-bess",
   "from_name": "Consultor de desenvolvimento",
   "subject": "Só com solar, o projeto não dá lucro",
-  "body": "O NPV mostra quanto o projeto vale hoje, somando as receitas e os custos futuros. Só com painéis solares, o NPV deste projeto não chega para dar lucro.\n\nEnquanto o TRC é teu, aproveita a ligação: sobreequipa (mais painéis do que a potência da ligação) e hibridiza (junta um parque eólico ou baterias no mesmo ponto). Renovar o equipamento fica para mais tarde.",
+  "body": "Só com painéis solares, o NPV deste projeto não chega para dar lucro.\n\nEnquanto o TRC é teu, aproveita a ligação: sobreequipa (mais painéis do que a potência da ligação) e hibridiza (junta um parque eólico ou baterias no mesmo ponto). Renovar o equipamento fica para mais tarde.",
   "params": {}
 }

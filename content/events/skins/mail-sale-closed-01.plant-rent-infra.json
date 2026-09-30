@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-sale-closed-01",
+  "skin_id": "plant-rent-infra",
+  "when": {
+    "sale_mode": "sell_plant_rent_infra"
+  },
+  "from_name": "Equipa de desenvolvimento",
+  "subject": "Venda fechada: a central e o TRC passaram para o comprador",
+  "body": "A venda está feita. A central e o TRC são agora do comprador. Continuas dono da subestação e da linha, e o comprador paga-te uma renda por ano para as usar."
+}

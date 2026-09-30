@@ -27,12 +27,20 @@
     },
     "area_ha": {
       "value": null,
-      "band": "~180–290 (HIPÓTESE 1,0–1,6 ha/MWp)",
-      "source": "PEDIR_PEDRO",
+      "band": "~70–95 (HIPÓTESE: 160–200 MWp × 0,43–0,48 ha/MWp de módulos)",
+      "basis": "módulos + inversores (Pedro 2026-09-29)",
+      "formula": "área de módulos + inversores = P / (η × 1000 W/m²); η 21–23 % → ~0,43–0,48 ha/MWp (HIPÓTESE; inversores < 1 ha)",
+      "source": "HIPÓTESE; PEDIR_PEDRO",
       "engine_default": "band_low"
     },
     "n_turbines": {
       "value": 0
+    },
+    "nearby_wind_turbines_2km": {
+      "value": null,
+      "engine_default": 0,
+      "source": "PEDIR_PEDRO — aerogeradores de outros parques a < 2 km (só conta se houver eólico no projeto)",
+      "rule": "n_turbines + nearby ≥ 20 → AIA (TRANCADO Pedro 2026-09-30 (DL 11/2023))"
     },
     "line_overhead": {
       "value": null,
@@ -44,7 +52,8 @@
     },
     "line_km": {
       "value": null,
-      "engine_default": 5
+      "engine_default": 5,
+      "source": "TRANCADO Pedro 2026-09-30: vem do terreno escolhido (params.linha_km da oferta); engine_default só antes de haver terreno"
     },
     "sensitive_area": {
       "value": null,
@@ -57,8 +66,10 @@
       "value": false
     },
     "resolves_to": {
-      "env_path": "aia_obrigatoria",
-      "why": "area_ha ≥ 100 (HIPÓTESE); linha 150 kV ~5 km não dispara"
+      "env_path": "nao_sujeito",
+      "why": "módulos ~70–95 ha < 100 (HIPÓTESE); linha 150 kV ~5 km (default) não dispara",
+      "flag": "perto do limiar: a 200 MWp com η baixo (~21 %) dá ~95 ha; qualquer sobreequipamento >~5 % pode cruzar os 100 ha → AIA",
+      "supersedes": "aia_obrigatoria por área de implantação ~180–290 ha"
     },
     "quercineas_densidade": {
       "value": "baixa",

@@ -1,0 +1,62 @@
+{
+  "id": "mail-camara-linha-enterrada-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-30 — proposta GM",
+  "trigger": {
+    "after": "land_option_open",
+    "month_offset": 1,
+    "when_phase": [
+      "land",
+      "pip"
+    ]
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "choices": [
+    {
+      "id": "accept_underground",
+      "label": "Aceitar enterrar a linha",
+      "hint": "A linha passa a ser subterrânea no troço que a Câmara pede. Custa bem mais e a obra demora mais, mas a Câmara deixa de se opor.",
+      "effects": [
+        "line_undergrounded",
+        "line_undergrounded_km",
+        "reopen_tech_plan",
+        "risk_camara_-1"
+      ],
+      "effects_if_param": {
+        "underground_km_band": {
+          "curto": [
+            "line_undergrounded_km_short"
+          ],
+          "longo": [
+            "line_undergrounded_km_long"
+          ]
+        }
+      }
+    },
+    {
+      "id": "negotiate_route",
+      "label": "Negociar outro traçado",
+      "hint": "Propões um traçado que evite as zonas que mais preocupam a Câmara. Leva uns meses e podes precisar de mais vizinhos. A Câmara pode aceitar ou voltar a pedir a linha enterrada.",
+      "effects": [
+        "line_reroute_negotiated",
+        "delay_land_+1"
+      ]
+    },
+    {
+      "id": "refuse",
+      "label": "Recusar e manter a linha aérea",
+      "hint": "Manténs o projeto como está. A Câmara pode recusar o PIP, e a relação com ela piora muito.",
+      "effects": [
+        "line_underground_refused",
+        "risk_camara_+2",
+        "pip_refusal_risk_+1"
+      ]
+    }
+  ],
+  "heavy": true,
+  "nota_gm": "A Câmara não licencia a linha (a linha é licenciada pela DGEG com a LP), mas pesa no PIP e no parecer municipal; na prática, pode travar o projeto. Nisa: Câmara real, hostil a renováveis e a linhas aéreas (Pedro, domínio). Enterrar a linha retira-a dos limiares do RJAIA para linhas aéreas (Anexo I/II).",
+  "notes_for_economy": "line_undergrounded_km (+ banda short/long em params.underground_km_band) = Capex do cabo enterrado por km (Economy 30/09: 5 km +8,2 M€, 8 km +13,2 M€). line_reroute_negotiated = custo do traçado alternativo (+0,82 M€). pip_refusal_risk_+1 sobe P(PIP indeferido) +0,30. Duplicados underground_cable/capex_rede_flag/capex_linha_+1/servidoes_linha_+1 retirados a pedido da Economy.",
+  "notes_for_ui": "Regra r-nisa-enterrar-linha (P 0,40 PEDIR_ECONOMY; só se a se-sheet tiver tags.linhas_aereas = hostil e a linha for aérea). accept_underground grava line_overhead = false no troço (km em params.underground_km) e recalcula env_path. negotiate_route rearma a regra 2 meses depois com P × 0,5."
+}

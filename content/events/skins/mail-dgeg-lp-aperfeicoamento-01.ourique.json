@@ -3,9 +3,9 @@
   "skin_id": "ourique",
   "draft": true,
   "when": {},
-  "from_name": "DGEG — Licenciamento de centros electroprodutores",
+  "from_name": "DGEG — Licenciamento de centros eletroprodutores",
   "subject": "Pedido de aperfeiçoamento — prazo único",
-  "body": "Na verificação da instrução faltam elementos: título de uso da parcela sul e o estudo de ligação actualizado. Esta notificação é feita uma única vez e o prazo não passa de 30 dias. Sem os elementos, o pedido é indeferido depois de audiência prévia.",
+  "body": "Na verificação da instrução faltam elementos: título de uso da parcela sul e o estudo de ligação atualizado. Esta notificação é feita uma única vez e o prazo não passa de 30 dias. Sem os elementos, o pedido é indeferido depois de audiência prévia.",
   "params": {
     "base_legal": "DL 15/2022 art. 25.º",
     "prazo_dias": 30

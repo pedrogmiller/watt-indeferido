@@ -7,7 +7,12 @@
     "when_phase": [
       "land",
       "pip"
-    ]
+    ],
+    "requires_any_land_secured": [
+      "land_option_open",
+      "dd_started"
+    ],
+    "min_phase_note": "Só depois de o terreno estar garantido (land_secured). Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
   },
   "priority": "high",
   "from_type": "CAMARA",

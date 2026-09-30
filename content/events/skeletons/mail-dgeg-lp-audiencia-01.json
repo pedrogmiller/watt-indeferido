@@ -36,7 +36,7 @@
     },
     {
       "id": "redesign",
-      "label": "Reformular o projecto",
+      "label": "Reformular o projeto",
       "effects": [
         "lp_hearing_reply",
         "reopen_tech_plan",

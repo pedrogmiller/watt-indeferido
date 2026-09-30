@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-buyer-offer-01",
+  "skin_id": "full-exit-pos-lp",
+  "when": {
+    "sale_mode": "full_exit",
+    "min_phase": "licenca_producao"
+  },
+  "from_name": "Horizon Infra Partners",
+  "subject": "Proposta: comprar o projeto todo",
+  "body": "Queremos comprar o projeto todo: a central, a licença de produção e o TRC, que vão sempre juntos.\n\nSe aceitares, a venda fica à espera da autorização da DGEG, que decide em cerca de duas semanas. Se ainda não tens licença de exploração, pomos também a caução a mais que a lei pede. Quando a DGEG autorizar, o projeto deixa de ser teu, deixas de gastar dinheiro de desenvolvimento nele e ficas com lugar para ganhar outro lote. Se recusares, o projeto continua contigo.",
+  "params": {
+    "sale_mode": "full_exit",
+    "offer_band": "fair"
+  }
+}

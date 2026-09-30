@@ -1,0 +1,18 @@
+{
+  "skeleton_id": "mail-consultor-sobreequipamento-01",
+  "skin_id": "default",
+  "draft": true,
+  "when": {},
+  "from_name": "Consultor técnico",
+  "subject": "Sobreequipamento: quantos painéis a mais?",
+  "body": "Com a licença de produção, podes pôr mais painéis na central sem pedir mais ligação. A rede deixa injetar até um quinto acima da potência de ligação, e o que passar disso é cortado nas horas de mais sol. Mais painéis dão mais energia de manhã e ao fim da tarde, mas também mais energia perdida ao meio-dia. Essa energia a mais é vendida ao preço do mercado, sem a tarifa do leilão.",
+  "params": {
+    "overequip_added_mwp": {
+      "small": "≈ +15 % dos MWp",
+      "medium": "≈ +35 % dos MWp",
+      "large": "≈ +75 % dos MWp"
+    },
+    "injection_cap": "1,2 × potência de ligação",
+    "hipotese": "tamanhos HIPÓTESE; o otimizador da Economy pode afinar"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "skeleton_id": "mail-camara-linha-enterrada-01",
+  "skin_id": "falagueira",
+  "draft": true,
+  "when": {
+    "se_id": "falagueira"
+  },
+  "from_name": "Câmara Municipal de Nisa",
+  "subject": "Nisa: linha aérea, não",
+  "body": "A Câmara de Nisa já disse muitas vezes que não quer mais linhas aéreas nem grandes centrais no concelho. Para dar parecer favorável, exige que a linha até à subestação da Falagueira seja enterrada em todo o troço dentro do concelho, cerca de 8 km. Se recusares, é provável que a Câmara vote contra o PIP.",
+  "params": {
+    "underground_km": 8,
+    "underground_km_band": "longo",
+    "hipotese": "km HIPÓTESE; depende do terreno escolhido"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-icnf-compensacao-aprovada-01",
+  "skin_id": "caso-a-caso",
+  "draft": true,
+  "when": {
+    "route": "caso_a_caso"
+  },
+  "from_name": "CCDR — Apreciação prévia",
+  "from_type_override": "APA",
+  "subject": "O ICNF aceitou o teu plano de compensação",
+  "body": "Na apreciação prévia, o ICNF aceitou o teu plano de compensação. Tens de fazer o que ficou combinado no terreno indicado e cuidar dele durante vários anos. Isto vai ficar como condição da nossa decisão.",
+  "params": {}
+}

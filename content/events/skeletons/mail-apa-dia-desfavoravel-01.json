@@ -1,0 +1,74 @@
+{
+  "id": "mail-apa-dia-desfavoravel-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-29 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "apa_track_start",
+    "when_phase": [
+      "aia"
+    ],
+    "requires": [
+      "apa_track_start"
+    ],
+    "or_deadline": "main_permit",
+    "month_offset": 12
+  },
+  "priority": "high",
+  "from_type": "APA",
+  "choices": [
+    {
+      "id": "reformulate",
+      "label": "Refazer o projeto e voltar a submeter",
+      "hint": "Mudas o desenho para responder às objeções e entregas um estudo novo. Conta com cerca de um ano até nova decisão, e o prazo do TRC continua a contar.",
+      "effects": [
+        "eia_reformulate",
+        "reopen_tech_plan",
+        "cash_at_risk_+1",
+        "delay_env_+1",
+        "caducidade_risk_+1"
+      ]
+    },
+    {
+      "id": "hearing",
+      "label": "Contestar na audiência prévia",
+      "hint": "Respondes por escrito antes de a decisão ficar definitiva. Demora um a três meses e raramente muda o resultado.",
+      "effects": [
+        "dia_hearing",
+        "risk_apa_+1"
+      ],
+      "when": {
+        "blocks": [
+          "dia_hearing"
+        ]
+      }
+    },
+    {
+      "id": "sell_lot",
+      "label": "Pôr o projeto à venda",
+      "hint": "Procuras comprador para o TRC e o terreno. Com esta decisão ambiental, as ofertas vão ser baixas.",
+      "effects": [
+        "find_buyers_started",
+        "sale_pipeline_open",
+        "dia_desfavoravel_disclosed"
+      ]
+    },
+    {
+      "id": "abandon",
+      "label": "Desistir do projeto",
+      "hint": "Deixas cair o TRC. Perdes a caução e o que já gastaste, mas paras de gastar.",
+      "effects": [
+        "project_abandoned",
+        "trc_caducado",
+        "caucao_executada",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "asset_removed"
+      ]
+    }
+  ],
+  "heavy": true,
+  "nota_gm": "Proposta de DIA desfavorável (RJAIA, DL 151-B/2013, arts. 16.º–18.º): vai a audiência prévia dos interessados (CPA art. 121.º, 10 dias úteis) antes de ser definitiva. DIA desfavorável impede o licenciamento (RJAIA art. 22.º; DL 15/2022 exige DIA favorável/condicionada para a LP). O promotor pode apresentar novo EIA reformulado (novo procedimento; HIPÓTESE 9–18 meses). Impugnação judicial fora do MVP. Renúncia ao TRC antes da LP: caução executada (DL 15/2022 art. 13.º — HIPÓTESE, confirmar). Prazos do TRC (DL 15/2022 art. 14.º) não param. Artigos do RJAIA citados de memória — PEDIR_PEDRO/verificar.",
+  "notes_for_economy": "cash_at_risk_+1 = novo EIA + redesenho. dia_desfavoravel_disclosed baixa a banda de oferta dos compradores (PEDIR_ECONOMY; pode forçar offer_band_thin). caucao_executada = perda da caução do TRC. Sem €.",
+  "notes_for_ui": "Regra r-dia-desfavoravel (grupo dia_outcome, pick 1). Não dá dia_emitida: a LP fica bloqueada. eia_reformulate rearma o grupo 12 meses depois; dia_hearing rearma 2 meses depois (sem saída favorável). NOVO: choice.when.blocks esconde a escolha se a tag já existe (não contestar duas vezes). 2026-09-30: hearing sem delay_env_+1 (2 meses, 1–3, pela Economy/regra)."
+}

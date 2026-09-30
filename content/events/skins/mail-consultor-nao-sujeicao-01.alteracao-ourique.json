@@ -5,7 +5,7 @@
   "when": {},
   "from_name": "Consultor de licenciamento ambiental",
   "subject": "Ampliação cabe na não sujeição",
-  "body": "Com a base licenciada, a ampliação conta como alteração de projecto autorizado. Cumpre as três condições ao mesmo tempo: fora de área sensível, até 20% de potência e de área, sem linha aérea nova. Dá para declarar não sujeição a AIA e seguir para PIP. Se aumentares mais, perdes a isenção.",
+  "body": "Com a base licenciada, a ampliação conta como alteração de projeto autorizado. Cumpre as três condições ao mesmo tempo: fora de área sensível, até 20% de potência e de área, sem linha aérea nova. Dá para declarar não sujeição a AIA e seguir para PIP. Se aumentares mais, perdes a isenção.",
   "params": {
     "base_legal": "RJAIA (DL 151-B/2013) alt. DL 11/2023",
     "scope": "alteracao"

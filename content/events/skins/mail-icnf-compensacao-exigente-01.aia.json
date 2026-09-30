@@ -9,5 +9,15 @@
   "from_type_override": "APA",
   "subject": "O ICNF quer uma compensação maior",
   "body": "Na Comissão de Avaliação, o ICNF diz que o teu plano não chega. Pede uma área de plantação maior e uma garantia bancária: o banco compromete-se a pagar se a plantação não for feita. Podes aceitar, ou mudar o desenho para cortar menos árvores.",
-  "params": {}
+  "params": {},
+  "choice_overrides": {
+    "redesign_trees": {
+      "hint": "Perdes área e cabem menos painéis, mas a compensação fica menor. A avaliação ambiental atrasa.",
+      "effects": [
+        "layout_trim_trees",
+        "reopen_tech_plan",
+        "delay_env_+1"
+      ]
+    }
+  }
 }

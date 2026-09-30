@@ -18,7 +18,7 @@
   "choices": [
     {
       "id": "sign",
-      "label": "Assinar term sheet",
+      "label": "Assinar a proposta de condições",
       "effects": [
         "term_sheet_signed",
         "gearing_band_base"
@@ -26,7 +26,7 @@
     },
     {
       "id": "negotiate",
-      "label": "Negociar gearing mais alto",
+      "label": "Pedir ao banco um empréstimo maior",
       "effects": [
         "term_sheet_negotiate",
         "gearing_push",

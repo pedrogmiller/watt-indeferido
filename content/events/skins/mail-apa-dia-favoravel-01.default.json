@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-apa-dia-favoravel-01",
+  "skin_id": "default",
+  "draft": true,
+  "when": {},
+  "from_name": "APA — Autoridade de AIA",
+  "subject": "Decisão ambiental favorável",
+  "body": "A Comissão de Avaliação fechou o parecer e a decisão ambiental é favorável, sem condições extra além das medidas do próprio estudo. O projeto pode seguir para a licença de produção tal como foi desenhado. A decisão tem prazo de validade: se a obra não arrancar a tempo, voltamos a falar.",
+  "params": {
+    "dia": "favoravel"
+  }
+}

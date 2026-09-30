@@ -46,7 +46,7 @@
     },
     {
       "id": "ask_screening",
-      "label": "Pedir apreciação prévia à CCDR",
+      "label": "Pedir apreciação prévia à APA",
       "effects": [
         "caso_a_caso_request",
         "cash_at_risk_+1"

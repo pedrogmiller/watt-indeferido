@@ -29,5 +29,11 @@
   ],
   "notes_for_economy": "Sem €. Resultado favorável do plano de compensação.",
   "notes_for_ui": "Info; mutex com mail-icnf-compensacao-exigente-01. Remetente real = Câmara (via PIP) ou APA/Comissão (via AIA): o promotor não recebe o ICNF diretamente — skin traz from_type_override (UI ligar).",
-  "nota_gm": "Condição de arborização + plano de gestão (DL 169/2001 art. 8.º)."
+  "nota_gm": "Condição de arborização + plano de gestão (DL 169/2001 art. 8.º).",
+  "skin_by_route": {
+    "pip (via B, Câmara)": "ourique",
+    "aia (Comissão de Avaliação)": "aia",
+    "caso_a_caso (apreciação prévia CCDR/APA)": "caso-a-caso",
+    "regra": "A skin escolhe-se pela regra que dispara (r-icnf-* → ourique, r-icnf-ca-* → aia, r-icnf-caso-* → caso-a-caso), não pela SE."
+  }
 }

@@ -1,0 +1,102 @@
+{
+  "se_id": "falagueira",
+  "se_name": "SE Falagueira",
+  "ren_real": true,
+  "draft": true,
+  "status": "DRAFT 2026-09-30 — HIPÓTESE / PEDIR_PEDRO salvo indicação. Ficheiro com o id da consola ('falagueira'); pedido original: nisa-falagueira.json.",
+  "tags": {
+    "camara": "hostil",
+    "linhas_aereas": "hostil",
+    "rede": "cortes",
+    "ambiente": "leve",
+    "offtake": "normal"
+  },
+  "lot_blurb": "Cortes de produção · Câmara de Nisa hostil às linhas · 100 MWp",
+  "concelho": {
+    "value": "Nisa",
+    "source": "ren-substations.md (Falagueira, Nisa/Portalegre) — REAL localização da SE; confirmar concelho exato PEDIR_PEDRO"
+  },
+  "camara_note": {
+    "value": "Câmara de Nisa hostil a renováveis e a linhas aéreas",
+    "source": "Pedro (domínio), 2026-09-30 — tratar como informação do Pedro; sem fonte escrita no pacote"
+  },
+  "real_lots": {
+    "value": "Leilão 2019: lote 15 Falagueira 400 kV, 100 MVA (Akuo); lote 23 Castelo Branco 150 · Falagueira 150, 100 MVA (Power&Sol)",
+    "source": "REAL — leiloes-dimensao-real.md §1.1 (DGEG Leilão Solar 2019)"
+  },
+  "env_draft": {
+    "status": "DRAFT 2026-09-30 — HIPÓTESE",
+    "tech": {
+      "value": "solar"
+    },
+    "installed_mwp": {
+      "value": 100,
+      "source": "consola (lote falagueira, 100 MWp)"
+    },
+    "connection_mva": {
+      "value": null,
+      "band": "~80–100 (DC/AC 1,0–1,25) — lotes reais 2019: 100 MVA",
+      "engine_default": 80,
+      "source": "HIPÓTESE; PEDIR_PEDRO"
+    },
+    "area_ha": {
+      "value": null,
+      "band": "~43–48 de módulos (100 MWp × 0,43–0,48)",
+      "basis": "módulos + inversores",
+      "engine_default": "band_low"
+    },
+    "n_turbines": {
+      "value": 0
+    },
+    "nearby_wind_turbines_2km": {
+      "value": null,
+      "engine_default": 0
+    },
+    "line_overhead": {
+      "value": null,
+      "engine_default": true,
+      "note": "Câmara pode exigir enterrar (r-nisa-enterrar-linha)"
+    },
+    "line_kv": {
+      "value": null,
+      "band": "150 ou 400 (SE 400/150 kV, REAL)",
+      "engine_default": 150,
+      "source": "PEDIR_PEDRO"
+    },
+    "line_km": {
+      "value": null,
+      "source": "vem do terreno escolhido (params.linha_km)",
+      "engine_default": 20
+    },
+    "sensitive_area": {
+      "value": null,
+      "engine_default": false,
+      "source": "PEDIR_PEDRO — Tejo Internacional / Portas de Ródão perto? não verificado"
+    },
+    "rede_natura": {
+      "value": null,
+      "engine_default": false,
+      "source": "PEDIR_PEDRO"
+    },
+    "area_protegida": {
+      "value": null,
+      "engine_default": false,
+      "source": "PEDIR_PEDRO"
+    },
+    "quercineas_densidade": {
+      "value": "media",
+      "source": "HIPÓTESE — Alto Alentejo com montado; PEDIR_PEDRO"
+    },
+    "area_aceleracao": {
+      "value": false
+    },
+    "solar_on_structure": {
+      "value": false
+    },
+    "resolves_to": {
+      "env_path": "nao_sujeito",
+      "why": "~43–48 ha de módulos < 100; linha 150 kV < 20 km não dispara (HIPÓTESE)",
+      "flag": "terreno longo (≥20 km) a 150 kV → caso a caso; a 400 kV > 15 km → AIA"
+    }
+  }
+}
