@@ -4,8 +4,8 @@
   "draft": true,
   "when": {},
   "from_name": "DGEG — Licenciamento de centros eletroprodutores",
-  "subject": "Pedido de licença de produção fora de prazo: audiência antes da caducidade",
-  "body": "O pedido de licença de produção não entrou no prazo. Antes de declarar a caducidade do TRC, a DGEG ouve-te. Podes pedir mais prazo, com uma razão (um atraso que não foi culpa tua conta a teu favor), entregar já o que tens, ou deixar caducar e libertar a ligação.",
+  "subject": "A DGEG quer explicações: o pedido de licença de produção não entrou",
+  "body": "O pedido de licença de produção não entrou no prazo. A DGEG quer explicações antes de decidir se o TRC caduca.\n\nPodes pedir mais prazo, se o atraso não foi culpa tua. Podes entregar já o que tens. Podes tentar vender o projeto antes da decisão. Ou podes deixar caducar e libertar a ligação.",
   "params": {
     "deadline_id": "lp_request",
     "base_legal": "DL 15/2022 art. 14.º/1 e /5"

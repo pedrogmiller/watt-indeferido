@@ -7,6 +7,6 @@
   },
   "from_name": "Resumo do projeto",
   "subject": "O projeto de {{se_name}} ficou sem licença",
-  "body": "{{refusal_authority}} recusou de forma definitiva uma licença de que o projeto precisava. Sem ela, a central não pode ser construída e o TRC vai caducar.\n\nO que correu mal: {{end_reason_text}}\nMeses de jogo: {{months_played}}. Dinheiro de desenvolvimento gasto: {{car_spent}}.",
+  "body": "{{refusal_authority}} recusou de vez uma licença de que o projeto precisava. Sem ela, a central não pode ser construída e o TRC vai caducar.\n\nO que correu mal: {{end_reason_text}}\n\nNo balanço vês os números e o que podias ter feito de outra forma.",
   "params": {}
 }

@@ -7,7 +7,7 @@
     "first": true
   },
   "from_name": "Comité de investimento",
-  "subject": "A caixa ficou abaixo de zero",
-  "body": "A caixa da empresa ficou negativa: faltam {{cash_gap}} para pagar a equipa e os estudos.\n\nPodemos ajudar uma vez, mas não de graça. Escolhe uma saída. Se não aceitares nenhuma, fechamos o projeto.",
+  "subject": "A caixa está vazia",
+  "body": "A caixa ficou abaixo de zero. Faltam {{cash_gap}} para pagar a equipa e os estudos.\n\nIsto é sério. Podemos ajudar uma vez, mas não de graça. Escolhe uma saída. Se não aceitares nenhuma, fechamos o projeto.",
   "params": {}
 }

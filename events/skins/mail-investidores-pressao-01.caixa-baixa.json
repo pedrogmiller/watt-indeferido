@@ -6,7 +6,7 @@
     "state_check": "cash_ratio_low"
   },
   "from_name": "Comité de investimento",
-  "subject": "O dinheiro de desenvolvimento está a acabar",
-  "body": "Já gastaste a maior parte do dinheiro de desenvolvimento que aprovámos. Restam {{cash_left}}. Ao ritmo atual, chegam para cerca de {{months_left}} meses.\n\nSe a caixa ficar abaixo de zero, temos de falar a sério sobre o futuro do projeto. Podes cortar custos já, pedir-nos mais orçamento ou continuar como está.",
+  "subject": "Os investidores estão nervosos",
+  "body": "O dinheiro de desenvolvimento está a acabar. Ao ritmo a que gastas, dura poucos meses.\n\nOs investidores estão nervosos. Se a caixa ficar vazia, vamos ter uma conversa difícil sobre o futuro do projeto. Ainda vais a tempo: podes cortar custos, pedir-nos mais dinheiro ou vender um quarto do projeto.",
   "params": {}
 }

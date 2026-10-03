@@ -68,7 +68,7 @@
     {
       "id": "ack",
       "label": "Percebi",
-      "hint": "Ficas avisado. Nada muda por agora, mas o próximo atraso pode abrir o processo de caducidade.",
+      "hint": "Ficas avisado. Nada muda por agora, mas o teu Risco para a licença continua alto: o próximo atraso pode custar-te o TRC.",
       "effects": [
         "trc_risk_answered"
       ],

@@ -6,7 +6,7 @@
     "via": "lp_request.final_miss_mail | le_deadline.final_miss_mail | state_check caducidade_level_4 com marco do TRC falhado"
   },
   "from_name": "DGEG — Licenciamento de centros eletroprodutores",
-  "subject": "Audiência antes da caducidade do TRC",
-  "body": "Não cumpriste um prazo do teu TRC: {{risk_reasons}}. Antes de decidirmos se o TRC caduca, ouvimos-te: tens um mês para responder.\n\nSe o TRC caducar, perdes o direito de ligação e a caução que deste no leilão. Podes entregar o que está em falta, apresentar um plano para recuperar o atraso, tentar vender o projeto antes da decisão ou deixar caducar.",
+  "subject": "A DGEG vai decidir se perdes o TRC",
+  "body": "Falhaste um prazo do teu TRC: {{risk_reasons}}. A DGEG vai decidir se o TRC caduca. Antes disso, ouvimos-te: tens um mês para responder.\n\nSe o TRC caducar, perdes o direito de ligação e a caução que deste no leilão. Podes entregar o que está em falta, apresentar um plano, tentar vender o projeto antes da decisão ou deixar caducar. Se não responderes, decidimos sem te ouvir.",
   "params": {}
 }

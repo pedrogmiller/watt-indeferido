@@ -7,6 +7,6 @@
   },
   "from_name": "Resumo do projeto",
   "subject": "Os investidores fecharam o projeto",
-  "body": "A caixa continuou abaixo de zero depois do último aviso, e os investidores decidiram fechar o projeto de {{se_name}}.\n\nO que correu mal: {{end_reason_text}}\nMeses de jogo: {{months_played}}. Dinheiro de desenvolvimento gasto: {{car_spent}}.",
+  "body": "A caixa continuou vazia depois do último aviso. Os investidores perderam a confiança e fecharam o projeto de {{se_name}}.\n\nO que correu mal: {{end_reason_text}}\n\nNo balanço vês os números e o que podias ter feito de outra forma.",
   "params": {}
 }

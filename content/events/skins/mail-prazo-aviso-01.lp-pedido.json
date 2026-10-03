@@ -4,8 +4,8 @@
   "draft": true,
   "when": {},
   "from_name": "Equipa de licenciamento",
-  "subject": "Pedido de LP — faltam dois meses",
-  "body": "O pedido de licença de produção tem de entrar na DGEG até {{deadline_month}}. Se o prazo passar, a DGEG abre audiência antes de declarar a caducidade do TRC. Só informativo — a decisão está na carta do pedido.",
+  "subject": "Pedido de licença de produção: faltam dois meses",
+  "body": "O pedido de licença de produção tem de entrar na DGEG até {{deadline_month}}. Este prazo é dos mais importantes do TRC: se passar, a DGEG pode tirar-te o TRC. A decisão está na carta do pedido.",
   "params": {
     "deadline_id": "lp_request",
     "deadline_month": "M12"

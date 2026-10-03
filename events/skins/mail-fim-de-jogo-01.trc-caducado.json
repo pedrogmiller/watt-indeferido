@@ -7,6 +7,6 @@
   },
   "from_name": "Resumo do projeto",
   "subject": "Perdeste o TRC de {{se_name}}",
-  "body": "A DGEG declarou a caducidade do teu TRC. Perdeste o direito de ligar a central à rede, e a caução que deste no leilão foi executada.\n\nO que correu mal: {{end_reason_text}}\nMeses de jogo: {{months_played}}. Dinheiro de desenvolvimento gasto: {{car_spent}}.\n\nAbre o balanço para ver o que podias ter feito de outra forma.",
+  "body": "A DGEG declarou a caducidade do teu TRC. Perdeste o direito de ligar a central à rede, e a caução que deste no leilão foi executada.\n\nO que correu mal: {{end_reason_text}}\n\nNo balanço vês os números e o que podias ter feito de outra forma.",
   "params": {}
 }

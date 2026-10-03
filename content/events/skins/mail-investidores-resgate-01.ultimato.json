@@ -9,7 +9,7 @@
     ]
   },
   "from_name": "Comité de investimento",
-  "subject": "Último aviso: a caixa voltou a ficar negativa",
-  "body": "A caixa voltou a ficar abaixo de zero. Já te ajudámos uma vez e não voltamos a pôr dinheiro nas mesmas condições.\n\nTens até {{deadline_month}} para pôr a caixa acima de zero, vendendo o projeto ou cortando custos. Se no fim desse mês a caixa continuar negativa, fechamos o projeto.",
+  "subject": "Último aviso: a caixa voltou a ficar vazia",
+  "body": "A caixa voltou a ficar abaixo de zero. Já te ajudámos uma vez. Não voltamos a pôr dinheiro.\n\nTens até {{deadline_month}} para resolver isto, vendendo o projeto ou cortando custos. Se a caixa continuar vazia nessa altura, fechamos o projeto. Não há mais avisos.",
   "params": {}
 }

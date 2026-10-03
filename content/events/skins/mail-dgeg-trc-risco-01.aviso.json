@@ -6,7 +6,7 @@
     "state_check": "caducidade_level_2"
   },
   "from_name": "DGEG — Licenciamento de centros eletroprodutores",
-  "subject": "O teu TRC está em risco",
-  "body": "Os nossos registos mostram atrasos no teu projeto: {{risk_reasons}}.\n\nO TRC dá-te o direito de ligar a central à rede, mas obriga-te a cumprir prazos. Se os atrasos continuarem, abrimos um processo para declarar a caducidade do TRC, ou seja, o fim desse direito. Ainda vais a tempo de corrigir.",
+  "subject": "A DGEG quer explicações",
+  "body": "Os nossos registos mostram atrasos no teu projeto: {{risk_reasons}}.\n\nO TRC dá-te o direito de ligar a central à rede, mas só enquanto cumprires os prazos. O teu Risco para a licença está a subir. Se os atrasos continuarem, abrimos um processo para retirar esse direito. Ainda vais a tempo de corrigir.",
   "params": {}
 }
