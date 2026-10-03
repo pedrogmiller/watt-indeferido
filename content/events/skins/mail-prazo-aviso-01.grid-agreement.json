@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-prazo-aviso-01",
+  "skin_id": "grid-agreement",
+  "draft": true,
+  "when": {},
+  "from_name": "REN — Ligações à rede",
+  "subject": "Acordo de ligação: faltam dois meses",
+  "body": "Tens de assinar connosco o acordo das obras de ligação até {{deadline_month}}. Sem acordo, as obras de ligação atrasam e a central liga-se mais tarde. A proposta do acordo chega-te antes do prazo.",
+  "params": {
+    "deadline_id": "grid_agreement"
+  },
+  "from_type_override": "REDE"
+}

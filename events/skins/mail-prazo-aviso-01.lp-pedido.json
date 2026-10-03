@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-prazo-aviso-01",
+  "skin_id": "lp-pedido",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de licenciamento",
+  "subject": "Pedido de LP — faltam dois meses",
+  "body": "O pedido de licença de produção tem de entrar na DGEG até {{deadline_month}}. Se o prazo passar, a DGEG abre audiência antes de declarar a caducidade do TRC. Só informativo — a decisão está na carta do pedido.",
+  "params": {
+    "deadline_id": "lp_request",
+    "deadline_month": "M12"
+  }
+}

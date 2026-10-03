@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-prorrogacao-concedida-01",
+  "skin_id": "trc-mantido",
+  "draft": true,
+  "when": {},
+  "from_name": "DGEG — Licenciamento de centros eletroprodutores",
+  "subject": "O TRC mantém-se, com vigilância",
+  "body": "Aceitámos o teu plano e o TRC mantém-se. Vamos acompanhar os próximos prazos de perto: se voltares a falhar, não haverá segunda audiência.",
+  "params": {
+    "deadline_id": null
+  }
+}

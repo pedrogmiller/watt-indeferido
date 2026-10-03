@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-investidores-fid-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Comité de investidores",
+  "subject": "Decisão final de investimento — Ourique",
+  "body": "A licença de produção, a proposta de condições do banco e o empreiteiro (EPC) estão prontos. Aprovar a decisão final de investimento fecha o financiamento: deixas de gastar dinheiro de desenvolvimento neste ativo e o capital próprio (o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco) fica comprometido.\n\nSem todo o capital próprio, não aprovamos e a obra não pode começar. Nesse caso, podes pedir reforço ou vender o projeto pronto a construir.",
+  "params": {}
+}

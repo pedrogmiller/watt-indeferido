@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-investidores-resgate-01",
+  "skin_id": "resgate",
+  "draft": true,
+  "when": {
+    "state_check": "cash_negative",
+    "first": true
+  },
+  "from_name": "Comité de investimento",
+  "subject": "A caixa ficou abaixo de zero",
+  "body": "A caixa da empresa ficou negativa: faltam {{cash_gap}} para pagar a equipa e os estudos.\n\nPodemos ajudar uma vez, mas não de graça. Escolhe uma saída. Se não aceitares nenhuma, fechamos o projeto.",
+  "params": {}
+}

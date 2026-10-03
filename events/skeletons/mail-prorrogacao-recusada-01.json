@@ -1,0 +1,37 @@
+{
+  "id": "mail-prorrogacao-recusada-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "extension_denied",
+    "when_phase": [
+      "aia",
+      "licenca_producao",
+      "obra"
+    ],
+    "or_deadline": "*"
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "deadline_ref": "from_deadline",
+  "choices": [
+    {
+      "id": "rush",
+      "label": "Cumprir já com o que houver",
+      "effects": [
+        "deadline_rush"
+      ]
+    },
+    {
+      "id": "let_lapse",
+      "label": "Deixar caducar",
+      "effects": [
+        "deadline_accept_miss"
+      ]
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "deadline_rush / deadline_accept_miss como em mail-prazo-prorrogacao-01. Caducidade: caucao_executada — valor = PEDIR_ECONOMY.",
+  "notes_for_ui": "Última palavra sobre o deadline. CTA pesado."
+}

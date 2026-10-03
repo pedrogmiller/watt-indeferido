@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-investidores-pressao-01",
+  "skin_id": "caixa-baixa",
+  "draft": true,
+  "when": {
+    "state_check": "cash_ratio_low"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "O dinheiro de desenvolvimento está a acabar",
+  "body": "Já gastaste a maior parte do dinheiro de desenvolvimento que aprovámos. Restam {{cash_left}}. Ao ritmo atual, chegam para cerca de {{months_left}} meses.\n\nSe a caixa ficar abaixo de zero, temos de falar a sério sobre o futuro do projeto. Podes cortar custos já, pedir-nos mais orçamento ou continuar como está.",
+  "params": {}
+}

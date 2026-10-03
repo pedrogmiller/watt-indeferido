@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-investidores-resgate-01",
+  "skin_id": "ultimato",
+  "draft": true,
+  "when": {
+    "state_check": "cash_negative",
+    "requires": [
+      "cash_rescue_used"
+    ]
+  },
+  "from_name": "Comité de investimento",
+  "subject": "Último aviso: a caixa voltou a ficar negativa",
+  "body": "A caixa voltou a ficar abaixo de zero. Já te ajudámos uma vez e não voltamos a pôr dinheiro nas mesmas condições.\n\nTens até {{deadline_month}} para pôr a caixa acima de zero, vendendo o projeto ou cortando custos. Se no fim desse mês a caixa continuar negativa, fechamos o projeto.",
+  "params": {}
+}

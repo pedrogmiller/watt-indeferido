@@ -1,0 +1,103 @@
+{
+  "id": "mail-dgeg-trc-risco-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "status_note": "DRAFT 2026-10-03 — endings & stakes v0.1 (Ourique); ver ../endings-stakes-v01.md",
+  "trigger": {
+    "after": "state_check",
+    "state_check": [
+      "caducidade_level_2",
+      "caducidade_level_4"
+    ],
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "DGEG",
+  "heavy": true,
+  "choices": [
+    {
+      "id": "plan",
+      "label": "Apresentar um plano para recuperar o atraso",
+      "hint": "Mostras à DGEG como vais cumprir os próximos prazos. Ajuda, mas não garante nada: a DGEG pode decidir contra ti se o plano não for credível.",
+      "effects": [
+        "trc_recovery_plan",
+        "caducidade_risk_-1",
+        "trc_risk_answered"
+      ]
+    },
+    {
+      "id": "submit_lp_late",
+      "label": "Entregar já o pedido de licença de produção",
+      "hint": "Entregas agora o pedido que estava em falta. É a melhor resposta que podes dar, mas a DGEG pode decidir na mesma contra ti por causa do atraso.",
+      "effects": [
+        "lp_request_submitted",
+        "lp_dossier_thin",
+        "trc_recovery_plan",
+        "trc_risk_answered"
+      ],
+      "when": {
+        "requires": [
+          "dl_missed_lp_request",
+          "lp_request_ready"
+        ],
+        "blocks": [
+          "lp_request_submitted"
+        ]
+      }
+    },
+    {
+      "id": "sell",
+      "label": "Pôr o projeto à venda já",
+      "hint": "Procuras um comprador antes de perderes o TRC. As ofertas vão ser baixas, e a venda só conta se a DGEG registar o novo dono antes de decidir.",
+      "effects": [
+        "find_buyers_started",
+        "sale_pipeline_open",
+        "buyer_search_active",
+        "distressed_sale",
+        "trc_risk_answered"
+      ]
+    },
+    {
+      "id": "ack",
+      "label": "Percebi",
+      "hint": "Ficas avisado. Nada muda por agora, mas o próximo atraso pode abrir o processo de caducidade.",
+      "effects": [
+        "trc_risk_answered"
+      ],
+      "when": {
+        "blocks": [
+          "trc_audiencia_open"
+        ]
+      }
+    },
+    {
+      "id": "let_lapse",
+      "label": "Deixar caducar",
+      "hint": "Desistes do TRC. Perdes a caução e o que já gastaste, mas paras de gastar. O jogo acaba aqui para este projeto.",
+      "effects": [
+        "trc_lapse_accepted",
+        "trc_caducado",
+        "caucao_executada",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "asset_removed"
+      ],
+      "when": {
+        "requires": [
+          "trc_audiencia_open"
+        ]
+      }
+    }
+  ],
+  "notes_for_ui": "Skins: aviso (caducidade_level ≥ 2) e audiencia. 2026-10-03 (Pedro): a audiência só abre por falha de um marco do próprio TRC — sobretudo o prazo do pedido de LP (lp_request.final_miss_mail) ou da licença de exploração (le_deadline) — ou por caducidade_level ≥ 4 COM um desses prazos falhado. Falhar o acordo com a REN, sozinho, NÃO abre audiência (só atraso da ligação + caducidade_risk_+1). A skin audiencia põe trc_audiencia_open na entrega. submit_lp_late só aparece com dl_missed_lp_request e lp_request_ready (computed: há AIA, ou PIP aprovado). {{risk_reasons}}: lista curta dos prazos falhados (mailLoop.missedDeadlines).",
+  "notes_for_economy": "Decisão da audiência (r-trc-audiencia-mantido / -caducado): odds PEDIR_ECONOMY; trc_recovery_plan sobe a hipótese de manter; distressed_sale com averbamento antes da decisão evita a perda.",
+  "nota_gm": "Base: DL 15/2022 — o TRC caduca se o titular não cumprir os prazos dos marcos do próprio título, sobretudo o prazo do pedido de licença de produção (art. 14.º: 6 meses sem AIA, 12 com AIA, prorrogável), precedida de audiência prévia (CPA arts. 121.º e ss.). Pedro 2026-10-03: falhar o acordo com a REN não faz caducar o TRC diretamente; atrasa a ligação e pesa como risco."
+}

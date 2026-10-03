@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-investidores-pressao-01",
+  "skin_id": "paciencia",
+  "draft": true,
+  "when": {
+    "state_check": "patience_low"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "Estamos a perder a paciência",
+  "body": "Nos últimos meses adiaste várias decisões e alguns prazos escorregaram. Ainda acreditamos no projeto, mas queremos ver resultados: o terreno garantido, os pedidos de licença entregues, o acordo com a REN.\n\nSe isto continuar, vamos rever o teu orçamento, e os próximos pedidos que nos fizeres vão ser mais difíceis.",
+  "params": {}
+}

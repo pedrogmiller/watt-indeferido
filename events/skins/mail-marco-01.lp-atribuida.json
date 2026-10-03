@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-marco-01",
+  "skin_id": "lp-atribuida",
+  "draft": true,
+  "when": {
+    "milestone": "lp-atribuida"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "Licença de produção atribuída",
+  "body": "A DGEG atribuiu a licença de produção. O projeto passou a ser um projeto licenciado: vale mais, e os bancos já falam contigo a sério.",
+  "params": {}
+}

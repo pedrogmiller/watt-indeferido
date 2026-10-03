@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-fim-de-jogo-01",
+  "skin_id": "abandonado",
+  "draft": true,
+  "when": {
+    "reason": "abandonado"
+  },
+  "from_name": "Resumo do projeto",
+  "subject": "Desististe do projeto de {{se_name}}",
+  "body": "Decidiste deixar cair o projeto. Paraste de gastar, mas perdeste a caução e o que já tinhas gasto.\n\nMeses de jogo: {{months_played}}. Dinheiro de desenvolvimento gasto: {{car_spent}}.",
+  "params": {}
+}

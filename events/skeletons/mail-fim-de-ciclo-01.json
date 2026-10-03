@@ -1,0 +1,41 @@
+{
+  "id": "mail-fim-de-ciclo-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "status_note": "DRAFT 2026-10-03 — endings & stakes v0.1 (Ourique); ver ../endings-stakes-v01.md",
+  "trigger": {
+    "after": "cod_reached",
+    "when_phase": [
+      "obra",
+      "cod"
+    ]
+  },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "heavy": true,
+  "choices": [
+    {
+      "id": "open_balance",
+      "label": "Ver o balanço do ciclo",
+      "hint": "Abres o balanço completo: valor do projeto, rentabilidade, prazos e reputação.",
+      "effects": [
+        "end_screen_open",
+        "cycle_closed"
+      ]
+    },
+    {
+      "id": "next_cycle",
+      "label": "Preparar o próximo leilão",
+      "hint": "O dinheiro que a central gera, depois de pagar ao banco, passa a financiar o teu próximo projeto. A revisão do teu orçamento depende da tua reputação.",
+      "effects": [
+        "cycle_next",
+        "fcf_to_next_asset",
+        "cycle_closed"
+      ]
+    }
+  ],
+  "notes_for_ui": "Vitória. Na entrega: end_state = {status:'won', reason:'cod'}. Placeholders (Economy calcula, a consola substitui): {{cod_month}} {{cod_month_plan}} {{npv_now}} {{npv_auction}} {{irr}} {{car_spent}} {{months_played}} {{reputation_word}}.",
+  "notes_for_economy": "NPV hoje vs NPV no leilão, IRR do capital próprio, CAR gasto: motor Economy. fcf_to_next_asset: o fluxo de caixa livre da central entra na caixa do próximo ciclo (PEDIR_ECONOMY). Revisão do mandato a partir de reputation (PEDIR_ECONOMY/Pedro).",
+  "nota_gm": "Ciclo de jogo acordado: balanço → memória → fluxo de caixa livre financia os ativos seguintes."
+}

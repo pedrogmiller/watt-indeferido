@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-prazo-aviso-01",
+  "skin_id": "default",
+  "draft": true,
+  "when": {},
+  "from_name": "Sistema",
+  "subject": "Prazo a aproximar-se — {{deadline_label}}",
+  "body": "{{deadline_label}} vence em {{deadline_month}}. Se não fizeres nada até lá, o próximo Play pára nesse mês com as consequências.",
+  "params": {
+    "template": true
+  }
+}

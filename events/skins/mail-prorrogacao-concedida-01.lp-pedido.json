@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-prorrogacao-concedida-01",
+  "skin_id": "lp-pedido",
+  "draft": true,
+  "when": {},
+  "from_name": "DGEG — Licenciamento de centros eletroprodutores",
+  "subject": "Prorrogação concedida — pedido de LP",
+  "body": "A DGEG aceitou o fundamento e prorrogou o prazo do pedido de licença de produção até {{deadline_month}}. É uma vez; não contem com segunda.",
+  "params": {
+    "deadline_id": "lp_request"
+  }
+}

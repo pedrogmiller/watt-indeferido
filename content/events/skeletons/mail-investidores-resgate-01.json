@@ -1,0 +1,100 @@
+{
+  "id": "mail-investidores-resgate-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "status_note": "DRAFT 2026-10-03 — endings & stakes v0.1 (Ourique); ver ../endings-stakes-v01.md",
+  "trigger": {
+    "after": "state_check",
+    "state_check": [
+      "cash_negative"
+    ],
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao"
+    ]
+  },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "heavy": true,
+  "choices": [
+    {
+      "id": "rescue_capital",
+      "label": "Aceitar capital extra e dar-lhes uma parte maior do projeto",
+      "hint": "Os investidores cobrem o que falta e mais três meses de despesa. Em troca, ficam com cerca de 15 % do teu projeto, e o teu resultado final é menor. Só podem fazer isto uma vez.",
+      "effects": [
+        "rescue_capital_dilution",
+        "cash_rescue_used",
+        "reputation_-1"
+      ],
+      "when": {
+        "blocks": [
+          "cash_rescue_used"
+        ]
+      }
+    },
+    {
+      "id": "rescue_sell",
+      "label": "Vender o projeto todo",
+      "hint": "Os investidores cobrem só o que falta enquanto procuras comprador. A venda não é imediata e as ofertas vão ser cerca de 30 % mais baixas, porque o comprador sabe que precisas de vender. Quando a venda fechar, o projeto deixa de ser teu.",
+      "effects": [
+        "find_buyers_started",
+        "sale_pipeline_open",
+        "buyer_search_active",
+        "distressed_sale",
+        "rescue_sell_all",
+        "cash_rescue_used"
+      ]
+    },
+    {
+      "id": "rescue_sell_part",
+      "label": "Vender parte do projeto",
+      "hint": "Procuras alguém que compre uma parte da empresa do projeto. Continuas a mandar no projeto, mas ficas com uma parte menor do valor. O preço é baixo, porque precisas do dinheiro depressa.",
+      "effects": [
+        "stake_sale_started",
+        "stake_sale_pre_lp",
+        "sale_pipeline_open",
+        "distressed_sale",
+        "rescue_sell_part",
+        "cash_rescue_used"
+      ],
+      "when": {
+        "blocks": [
+          "stake_sale_started",
+          "sale_full_exit_pending"
+        ]
+      }
+    },
+    {
+      "id": "rescue_cut",
+      "label": "Cortar custos e atrasar o projeto",
+      "hint": "Os investidores cobrem só o que falta. Tu cortas a equipa e paras os estudos que não são urgentes durante três meses: gastas muito menos agora, mas o projeto atrasa dois meses e esse tempo também custa. Os prazos da lei continuam a contar.",
+      "effects": [
+        "burn_cut_deep",
+        "dev_slowdown",
+        "cash_rescue_used"
+      ],
+      "slip_cap_months": 2
+    },
+    {
+      "id": "close",
+      "label": "Fechar o projeto",
+      "hint": "Desistes. Perdes a caução e o que já gastaste. O jogo acaba aqui para este projeto.",
+      "effects": [
+        "cash_rescue_refused",
+        "project_abandoned",
+        "trc_caducado",
+        "caucao_executada",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "asset_removed"
+      ]
+    }
+  ],
+  "notes_for_ui": "Degrau 2 (resgate) e 3 (ultimato). Placeholders {{cash_gap}} e {{deadline_month}} (consola). No ultimato, rescue_capital fica escondida (when.blocks cash_rescue_used). A consola põe end_state se o jogador escolher close.",
+  "notes_for_economy": "Cada saída cobre o buraco da caixa (ponte = −caixa, PEDIR_ECONOMY). rescue_capital_dilution: + margem (PEDIR) e menos NPV para o jogador (diluição, PEDIR %). rescue_sell_part: ponte até venda; venda pré-LP só projeto todo (sell_modes); 'parte' depende do sócio D9 (PEDIR P46). burn_cut_deep: fator PEDIR (proposta 0,4). Chão de perda: cash_floor = −X% do orçamento aprovado (PEDIR_ECONOMY, proposta −25 %). 2026-10-03 (Pedro): venda parcial antes da LP passa a existir (stake_sale_pre_lp): venda de uma parte da empresa do projeto; o TRC continua no mesmo titular. Preço e % PEDIR_ECONOMY; distressed_sale baixa o preço. Economy §16 (2026-10-03): ponte = −caixa + 3 meses de burn da fase, tecto 25 % do orçamento; diluição a mostrar 15 % (fórmula e limites 10–30 % em endings_stakes_v01_economy); venda à pressa × 0,70; rescue_cut: burn_cut_deep + dev_slowdown = +2 meses no total (não +3).",
+  "nota_gm": "Sem base legal: regra comercial (mandato dos investidores). Venda parcial antes da LP = venda de quotas/ações da sociedade titular; o TRC não muda de titular. Se a DGEG tem de ser informada da mudança de controlo é HIPÓTESE (PEDIR_PEDRO)."
+}

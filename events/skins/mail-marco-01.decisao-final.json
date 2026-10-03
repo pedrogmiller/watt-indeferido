@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-marco-01",
+  "skin_id": "decisao-final",
+  "draft": true,
+  "when": {
+    "milestone": "decisao-final"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "A construção foi aprovada",
+  "body": "Tu, os investidores e o banco aprovaram a decisão final de investimento. O financiamento está fechado e deixas de gastar dinheiro de desenvolvimento.",
+  "params": {}
+}

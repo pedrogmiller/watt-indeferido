@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-rede-prazo-01",
+  "skin_id": "ligacao-adiada",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "when": {
+    "via": "grid_agreement_final.on_miss_mail"
+  },
+  "from_name": "REN — Ligações à rede",
+  "subject": "Sem acordo de ligação: a ligação da tua central fica para mais tarde",
+  "body": "O último prazo para o acordo de ligação passou sem assinatura. As obras de ligação da tua central saem do calendário deste ano e voltam a ser marcadas quando assinares.\n\nO teu TRC continua válido, mas este atraso fica registado na DGEG e torna mais difícil cumprir os próximos prazos.",
+  "params": {
+    "deadline_id": "grid_agreement_final"
+  }
+}

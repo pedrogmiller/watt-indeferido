@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-fim-de-jogo-01",
+  "skin_id": "trc-caducado",
+  "draft": true,
+  "when": {
+    "reason": "trc_caducado"
+  },
+  "from_name": "Resumo do projeto",
+  "subject": "Perdeste o TRC de {{se_name}}",
+  "body": "A DGEG declarou a caducidade do teu TRC. Perdeste o direito de ligar a central à rede, e a caução que deste no leilão foi executada.\n\nO que correu mal: {{end_reason_text}}\nMeses de jogo: {{months_played}}. Dinheiro de desenvolvimento gasto: {{car_spent}}.\n\nAbre o balanço para ver o que podias ter feito de outra forma.",
+  "params": {}
+}

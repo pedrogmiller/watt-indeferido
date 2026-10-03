@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-fid-resposta-01",
+  "skin_id": "emprestimo-recusado",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "when": {},
+  "from_name": "Banco — Financiamento de projetos",
+  "subject": "O banco não alarga o empréstimo",
+  "body": "Analisámos o pedido e não vamos emprestar por mais de 15 anos: o preço de mercado depois de acabar a tarifa do leilão é demasiado incerto para nós.\n\nO capital próprio que falta continua a faltar. Ainda podes trazer um sócio, pedir um reforço aos investidores ou vender o projeto.",
+  "params": {},
+  "from_type_override": "BANCO"
+}

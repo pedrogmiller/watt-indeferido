@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-marco-01",
+  "skin_id": "acordo-ren",
+  "draft": true,
+  "when": {
+    "milestone": "acordo-ren"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "Acordo com a REN assinado",
+  "body": "Tens o acordo com a REN para ligar a central à rede. Um dos maiores riscos de perderes o TRC deixou de existir.",
+  "params": {}
+}

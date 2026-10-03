@@ -1,0 +1,32 @@
+{
+  "id": "mail-marco-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "status_note": "DRAFT 2026-10-03 — endings & stakes v0.1 (Ourique); ver ../endings-stakes-v01.md",
+  "trigger": {
+    "after": "milestone",
+    "when_phase": [
+      "pip",
+      "aia",
+      "licenca_producao",
+      "obra"
+    ]
+  },
+  "priority": "normal",
+  "from_type": "INVESTIDORES",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Continuar",
+      "hint": "Os investidores registam o progresso. A tua reputação junto deles sobe.",
+      "effects": [
+        "milestone_seen"
+      ]
+    }
+  ],
+  "notes_for_ui": "Cartas curtas de vitória (não contam para o limite de cartas importantes: relevant=false). Mostrar também um momento no HUD (faixa «Marco atingido» + brilho no medidor do projeto) no mesmo Play. Cada skin sai uma só vez.",
+  "notes_for_economy": "investor_patience_+1 anula um investor_patience_-1 (PEDIR_ECONOMY se deve valer mais). reputation_+1 alimenta a revisão do mandato no fim do ciclo.",
+  "nota_gm": "Sem base legal."
+}
