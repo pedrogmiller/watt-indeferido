@@ -1,0 +1,18 @@
+{
+  "skeleton_id": "mail-dgeg-lp-pedido-01",
+  "skin_id": "sem-aia",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "when": {
+    "requires_all": [
+      "nao_sujeicao",
+      "pip_aprovado"
+    ]
+  },
+  "from_name": "Equipa de licenciamento",
+  "subject": "O PIP chegou: agora o pedido de licença de produção",
+  "body": "Com o PIP aprovado, já podemos pedir a licença de produção à DGEG. Sem avaliação ambiental, o PIP é peça obrigatória do pedido: sem ele o pedido não entra. O prazo do TRC termina em {{deadline_month}}.\n\nSubmeter o processo completo custa mais agora. Entrar já com o mínimo poupa tempo, mas a DGEG pode pedir documentos em falta.",
+  "params": {
+    "deadline_id": "lp_request"
+  }
+}

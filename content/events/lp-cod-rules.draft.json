@@ -40,7 +40,16 @@
     "requires_computed": "{tag: bool}: tags calculadas (computed_tags) que têm de ter este valor para a regra sair.",
     "requires_equity_full": "true = só com todo o capital próprio da obra (equity_fit_ok ∧ equity_capex_commit). Sem isto não há obra; o leilão NÃO usa este gate.",
     "arms": "id da regra que esta carta 'arma' (a outra só pode sair depois desta).",
-    "false_alarm": "nota: a carta pode sair sem que a carta armada venha a sair."
+    "false_alarm": "nota: a carta pode sair sem que a carta armada venha a sair.",
+    "state_check": "chave de endings_stakes_v01.state_checks: a regra só é elegível quando o teste passa (avaliado depois do gasto mensal, em cada Play).",
+    "requires_count": "{tag: n}: a tag tem de ter contador ≥ n.",
+    "cooldown_months": "meses mínimos entre duas entregas da mesma regra (regras repetíveis).",
+    "min_gap_after_delivered": "{skeleton, months}: só sai se essa carta foi entregue há ≥ months (degrau anterior da escada).",
+    "creates_deadline": "cria um prazo interno ao entregar (id, months, meet_if, on_miss_mail).",
+    "end_state": "ao entregar, mailLoop.end_state = {status, reason, month}; o relógio do projeto para; o botão da carta abre o ecrã de fim.",
+    "hud_moment": "momento visual no HUD no mesmo Play (faixa curta), além da carta.",
+    "skin_if": "{tag: skin}: troca de skin se a tag existir.",
+    "params": "placeholders fixos passados à skin (ex.: refusal_authority)."
   },
   "rules": [
     {
@@ -950,10 +959,43 @@
       ],
       "rearm_after_months": 1,
       "requires_any_effects": [
-        "apa_track_start",
-        "nao_sujeicao"
+        "apa_track_start"
       ],
-      "route": "A (+ lotes com isenção automática)"
+      "route": "A (+ lotes com isenção automática)",
+      "note_2026_10_03": "Só via com AIA. Sem AIA (nao_sujeicao) → r-lp-pedido-sem-aia, depois do PIP (Pedro 2026-10-03)."
+    },
+    {
+      "id": "r-lp-pedido-sem-aia",
+      "skeleton": "mail-dgeg-lp-pedido-01",
+      "skin": "sem-aia",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "nao_sujeicao",
+        "pip_aprovado"
+      ],
+      "blocks_if_any_effects": [
+        "lp_request_submitted",
+        "trc_caducado",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "pip_aprovado",
+        "months": 0,
+        "band": "0-1",
+        "source": "Pedro 2026-10-03: o PIP é obrigatório no pedido de LP sem AIA; carta logo a seguir ao PIP (~M5 Ourique)"
+      },
+      "rearm_on_effects": [
+        "lp_request_hold"
+      ],
+      "rearm_after_months": 1,
+      "note": "Ourique: PIP tem de sair até M5 para o pedido entrar antes do prazo M6. Se o PIP atrasar, o prazo lp_request falha e entra a escada (prazo-prorrogacao/lp-pedido → audiência DGEG → caducidade)."
     },
     {
       "id": "r-lp-novo-pedido",
@@ -1301,7 +1343,10 @@
       },
       "rearm_on_effects": [
         "fid_defer",
-        "equity_capex_request"
+        "equity_capex_request",
+        "longer_loan_granted",
+        "longer_loan_refused",
+        "partner_equity_in"
       ],
       "rearm_after_months": 2,
       "requires_computed": {
@@ -2854,10 +2899,792 @@
       "pick": 1,
       "rearm_on_effects": [
         "fid_defer",
-        "equity_capex_request"
+        "equity_capex_request",
+        "longer_loan_granted",
+        "longer_loan_refused",
+        "partner_equity_in"
       ],
       "rearm_after_months": 2,
-      "note": "Substitui a carta de FID quando falta capital próprio. approve_fid fica bloqueada (requires_state). Pedro 2026-09-30."
+      "note": "Substitui a carta de FID quando falta capital próprio. approve_fid fica bloqueada (requires_state). Pedro 2026-09-30.",
+      "note_2026_10_03": "Rearma depois da resposta do banco/sócio (r-es-d9-*). Economy §16.3 (4)."
+    },
+    {
+      "id": "r-es-d9-emprestimo-aceite",
+      "skeleton": "mail-fid-resposta-01",
+      "skin": "emprestimo-aceite",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "longer_loan_request"
+      ],
+      "blocks_if_any_effects": [
+        "fid_reached",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "longer_loan_request",
+        "months": 2,
+        "band": "2-3",
+        "source": "Economy §16 8a/8b (+3 meses HIPÓTESE)"
+      },
+      "mutex_group": "es_d9_emprestimo",
+      "pick": 1,
+      "odds": {
+        "base": "0,60 (Economy 8a; P52/P9)",
+        "if_npv_negative": "0,30",
+        "per_investor_patience_-1": -0.1
+      },
+      "on_deliver_effects": [
+        "longer_loan_granted",
+        "equity_need_down_loan",
+        "loan_fee_paid",
+        "merchant_tail_exposure"
+      ],
+      "note": "15 → 20 anos; equity Ourique 40 €/MWh 41,0 → 35,5 (cabe), 38 €/MWh 44,4 → 38,8."
+    },
+    {
+      "id": "r-es-d9-emprestimo-recusado",
+      "skeleton": "mail-fid-resposta-01",
+      "skin": "emprestimo-recusado",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "longer_loan_request"
+      ],
+      "blocks_if_any_effects": [
+        "fid_reached",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "longer_loan_request",
+        "months": 2,
+        "band": "2-3",
+        "source": "Economy §16 8a/8b (+3 meses HIPÓTESE)"
+      },
+      "mutex_group": "es_d9_emprestimo",
+      "pick": 2,
+      "odds": {
+        "base": "fallback do grupo"
+      },
+      "on_deliver_effects": [
+        "longer_loan_refused"
+      ],
+      "note": "Recusa: só uma tentativa (a escolha fica bloqueada por longer_loan_request)."
+    },
+    {
+      "id": "r-es-d9-socio",
+      "skeleton": "mail-fid-resposta-01",
+      "skin": "socio-entra",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "farm_down_fid_request"
+      ],
+      "blocks_if_any_effects": [
+        "fid_reached",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "farm_down_fid_request",
+        "months": 2,
+        "band": "2-3",
+        "source": "Economy §16 8a/8b (+3 meses HIPÓTESE)"
+      },
+      "mutex_group": "es_d9_socio",
+      "pick": 1,
+      "odds": {
+        "base": "1,0 — garantido (Pedro P46 + Economy 8b)"
+      },
+      "on_deliver_effects": [
+        "partner_equity_in",
+        "equity_gap_closed",
+        "partner_npv_share",
+        "partner_stake_25"
+      ],
+      "note": "s = máx(25 %, o que falta), a custo. NPV e FCF do jogador × (1 − s); {{partner_share}} = s."
+    },
+    {
+      "id": "r-es-pressao-caixa",
+      "skeleton": "mail-investidores-pressao-01",
+      "skin": "caixa-baixa",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "state_check": "cash_ratio_low",
+      "blocks_if_any_effects": [
+        "car_burn_stop",
+        "asset_removed"
+      ],
+      "cooldown_months": 3,
+      "mutex_group": "es_caixa",
+      "pick": 3,
+      "requires_state": [
+        "car_approved_known"
+      ],
+      "blocks_for_months_after_effect": {
+        "cash_rescue_used": 3
+      },
+      "note_2026_10_03": "Economy §16.3 (1)(2): só depois da resposta do M0 (carApproved ≠ null; antes disso o rácio dá 0,15 e o aviso saía no arranque). Depois do resgate, sem aviso de caixa durante 3 meses (o resgate deixa ~3 meses de despesa)."
+    },
+    {
+      "id": "r-es-resgate",
+      "skeleton": "mail-investidores-resgate-01",
+      "skin": "resgate",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "state_check": "cash_negative",
+      "blocks_if_any_effects": [
+        "cash_rescue_used",
+        "car_burn_stop",
+        "asset_removed"
+      ],
+      "mutex_group": "es_caixa",
+      "pick": 2
+    },
+    {
+      "id": "r-es-resgate-ultimato",
+      "skeleton": "mail-investidores-resgate-01",
+      "skin": "ultimato",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "state_check": "cash_negative",
+      "requires_all_effects": [
+        "cash_rescue_used"
+      ],
+      "blocks_if_any_effects": [
+        "car_burn_stop",
+        "asset_removed"
+      ],
+      "min_gap_after_delivered": {
+        "skeleton": "mail-investidores-resgate-01",
+        "months": 1
+      },
+      "on_deliver_effects": [
+        "cash_ultimatum_open"
+      ],
+      "creates_deadline": {
+        "id": "cash_recovery",
+        "months": 1,
+        "meet_if": "state.caixa ≥ 0",
+        "on_miss_mail": {
+          "skeleton": "mail-fim-de-jogo-01",
+          "skin": "sem-dinheiro"
+        }
+      },
+      "mutex_group": "es_caixa",
+      "pick": 1
+    },
+    {
+      "id": "r-es-pressao-paciencia",
+      "skeleton": "mail-investidores-pressao-01",
+      "skin": "paciencia",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "state_check": "patience_low",
+      "blocks_if_any_effects": [
+        "car_burn_stop",
+        "asset_removed"
+      ],
+      "follow_up": "Se patience_level ≥ 5 depois desta carta: mandate_review_down (tag) — sem perda; Economy decide o corte (PEDIR_ECONOMY)."
+    },
+    {
+      "id": "r-es-trc-aviso",
+      "skeleton": "mail-dgeg-trc-risco-01",
+      "skin": "aviso",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao",
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "state_check": "caducidade_level_2",
+      "blocks_if_any_effects": [
+        "trc_caducado",
+        "asset_removed"
+      ],
+      "on_deliver_effects": [
+        "trc_risk_warned"
+      ]
+    },
+    {
+      "id": "r-es-trc-audiencia",
+      "skeleton": "mail-dgeg-trc-risco-01",
+      "skin": "audiencia",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao",
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "state_check": "caducidade_level_4",
+      "requires_all_effects": [
+        "trc_risk_warned"
+      ],
+      "min_gap_after_delivered": {
+        "skeleton": "mail-dgeg-trc-risco-01",
+        "months": 1
+      },
+      "blocks_if_any_effects": [
+        "trc_caducado",
+        "asset_removed"
+      ],
+      "on_deliver_effects": [
+        "trc_audiencia_open"
+      ],
+      "also_via_deadline": "lp_request.final_miss_mail, le_deadline.final_miss_mail",
+      "requires_any_effects": [
+        "dl_missed_lp_request",
+        "dl_missed_le_deadline"
+      ],
+      "note_2026_10_03": "Pedro: a audiência só abre por marco do TRC falhado (pedido de LP, licença de exploração). REN sozinha não chega."
+    },
+    {
+      "id": "r-es-trc-mantido",
+      "skeleton": "mail-prorrogacao-concedida-01",
+      "skin": "trc-mantido",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao",
+        "obra"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "trc_audiencia_open"
+      ],
+      "blocks_if_any_effects": [
+        "trc_caducado",
+        "trc_lapse_accepted",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "trc_audiencia_open",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "es_trc_decisao",
+      "pick": 2,
+      "odds": {
+        "base": "fallback do grupo"
+      },
+      "on_deliver_effects": [
+        "trc_kept",
+        "caducidade_risk_-1"
+      ],
+      "note": "A DGEG decide 1 mês depois da audiência, com ou sem resposta (Economy §16.3 (3)). Sem resposta = odds piores.",
+      "decide_after": {
+        "tag": "trc_audiencia_open",
+        "months": 1,
+        "timeout": "decide mesmo sem resposta: se trc_risk_answered não existir, aplica no_answer"
+      }
+    },
+    {
+      "id": "r-es-trc-caducado",
+      "skeleton": "mail-fim-de-jogo-01",
+      "skin": "trc-caducado",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao",
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "trc_audiencia_open"
+      ],
+      "blocks_if_any_effects": [
+        "trc_caducado",
+        "sale_full_exit",
+        "trc_lapse_accepted"
+      ],
+      "after_effect": {
+        "tag": "trc_audiencia_open",
+        "months": 1,
+        "band": "1-2",
+        "source": "HIPÓTESE"
+      },
+      "mutex_group": "es_trc_decisao",
+      "pick": 1,
+      "odds": {
+        "base": "0,50 (Economy endings_stakes_v01_economy §4; P50)",
+        "modifiers": {
+          "trc_recovery_plan": -0.2,
+          "grid_agreement_signed": -0.15,
+          "lp_request_submitted": -0.1,
+          "each dl_final_missed_*": 0.15,
+          "no_answer (sem trc_risk_answered)": 0.2
+        },
+        "bounds": [
+          0.15,
+          0.85
+        ],
+        "source": "Economy 2026-10-03 (HIPÓTESE; números são do Economy)"
+      },
+      "on_deliver_effects": [
+        "trc_caducado",
+        "caucao_executada",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "asset_removed",
+        "end_state_lost"
+      ],
+      "end_state": {
+        "status": "lost",
+        "reason": "trc_caducado"
+      },
+      "note": "A DGEG decide 1 mês depois da audiência, com ou sem resposta (Economy §16.3 (3)). Sem resposta = odds piores.",
+      "decide_after": {
+        "tag": "trc_audiencia_open",
+        "months": 1,
+        "timeout": "decide mesmo sem resposta: se trc_risk_answered não existir, aplica no_answer"
+      }
+    },
+    {
+      "id": "r-es-fim-trc-aceite",
+      "skeleton": "mail-fim-de-jogo-01",
+      "skin": "trc-caducado",
+      "status": "draft_pending_pedro",
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_any_effects": [
+        "trc_lapse_accepted",
+        "deadline_accept_miss"
+      ],
+      "requires_all_effects": [
+        "trc_caducado"
+      ],
+      "blocks_if_any_effects": [
+        "end_state_lost"
+      ],
+      "after_effect": {
+        "tag": "trc_caducado",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play"
+      },
+      "on_deliver_effects": [
+        "end_state_lost"
+      ],
+      "end_state": {
+        "status": "lost",
+        "reason": "trc_caducado"
+      },
+      "note": "Também via deadline.final_miss_mail (lp_request, le_deadline)."
+    },
+    {
+      "id": "r-es-fim-licenca-pip",
+      "skeleton": "mail-fim-de-jogo-01",
+      "skin": "licenca-recusada",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "pip",
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_count": {
+        "pip_indeferido": 2
+      },
+      "blocks_if_any_effects": [
+        "pip_aprovado",
+        "pip_conditions",
+        "end_state_lost",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "pip_indeferido",
+        "months": 0,
+        "band": "0",
+        "source": "na 2.ª recusa"
+      },
+      "params": {
+        "refusal_authority": "A Câmara"
+      },
+      "on_deliver_effects": [
+        "licenca_recusada_final",
+        "trc_caducado",
+        "caucao_executada",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "asset_removed",
+        "end_state_lost"
+      ],
+      "end_state": {
+        "status": "lost",
+        "reason": "licenca_recusada"
+      },
+      "note": "A 2.ª recusa conta: pip_indeferido ≥ 2 (reformular/reapreciação/recurso e volta a ser recusado). A 1.ª carta de recusa é o aviso e já oferece venda."
+    },
+    {
+      "id": "r-es-fim-licenca-lp",
+      "skeleton": "mail-fim-de-jogo-01",
+      "skin": "licenca-recusada",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "aia",
+        "licenca_producao"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_count": {
+        "lp_indeferido": 2
+      },
+      "blocks_if_any_effects": [
+        "lp_granted",
+        "end_state_lost",
+        "sale_full_exit"
+      ],
+      "after_effect": {
+        "tag": "lp_indeferido",
+        "months": 0,
+        "band": "0",
+        "source": "na 2.ª recusa"
+      },
+      "params": {
+        "refusal_authority": "A DGEG"
+      },
+      "on_deliver_effects": [
+        "licenca_recusada_final",
+        "trc_caducado",
+        "caucao_executada",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "asset_removed",
+        "end_state_lost"
+      ],
+      "end_state": {
+        "status": "lost",
+        "reason": "licenca_recusada"
+      }
+    },
+    {
+      "id": "r-es-fim-licenca-dia",
+      "skeleton": "mail-fim-de-jogo-01",
+      "skin": "licenca-recusada",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "aia"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "route": "A",
+      "requires_all_effects": [
+        "dia_desfavoravel",
+        "dia_hearing"
+      ],
+      "requires_count": {
+        "dia_desfavoravel": 1
+      },
+      "blocks_if_any_effects": [
+        "eia_reformulate",
+        "end_state_lost",
+        "sale_full_exit",
+        "dia_favoravel"
+      ],
+      "after_effect": {
+        "tag": "dia_hearing",
+        "months": 2,
+        "band": "1-3",
+        "source": "audiência perdida"
+      },
+      "params": {
+        "refusal_authority": "A APA"
+      },
+      "odds": {
+        "base": "PEDIR_ECONOMY (r-dia after_hearing 0,7–0,8)"
+      },
+      "on_deliver_effects": [
+        "licenca_recusada_final",
+        "trc_caducado",
+        "caucao_executada",
+        "car_burn_stop",
+        "mandate_slot_free",
+        "asset_removed",
+        "end_state_lost"
+      ],
+      "end_state": {
+        "status": "lost",
+        "reason": "licenca_recusada"
+      },
+      "note": "Genérico (não se aplica a Ourique, que não tem AIA)."
+    },
+    {
+      "id": "r-es-fim-abandono",
+      "skeleton": "mail-fim-de-jogo-01",
+      "skin": "abandonado",
+      "status": "draft_pending_pedro",
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "project_abandoned"
+      ],
+      "blocks_if_any_effects": [
+        "end_state_lost"
+      ],
+      "after_effect": {
+        "tag": "project_abandoned",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play"
+      },
+      "on_deliver_effects": [
+        "end_state_lost"
+      ],
+      "end_state": {
+        "status": "lost",
+        "reason": "abandonado"
+      },
+      "note": "Se o jogador escolheu 'Fechar o projeto' no resgate, a razão é sem_dinheiro (skin sem-dinheiro): ver skin_if.",
+      "skin_if": {
+        "cash_rescue_refused": "sem-dinheiro"
+      }
+    },
+    {
+      "id": "r-es-marco-pip-aprovado",
+      "skeleton": "mail-marco-01",
+      "skin": "pip-aprovado",
+      "status": "draft_pending_pedro",
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_any_effects": [
+        "pip_aprovado",
+        "pip_conditions"
+      ],
+      "after_effect": {
+        "tag": "pip_aprovado|pip_conditions",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play"
+      },
+      "on_deliver_effects": [
+        "milestone_pip_aprovado",
+        "reputation_+1",
+        "investor_patience_+1"
+      ],
+      "hud_moment": {
+        "kind": "milestone",
+        "label_pt": "Marco atingido"
+      }
+    },
+    {
+      "id": "r-es-marco-acordo-ren",
+      "skeleton": "mail-marco-01",
+      "skin": "acordo-ren",
+      "status": "draft_pending_pedro",
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_any_effects": [
+        "grid_agreement_signed"
+      ],
+      "after_effect": {
+        "tag": "grid_agreement_signed",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play"
+      },
+      "on_deliver_effects": [
+        "milestone_acordo_ren",
+        "reputation_+1",
+        "investor_patience_+1"
+      ],
+      "hud_moment": {
+        "kind": "milestone",
+        "label_pt": "Marco atingido"
+      }
+    },
+    {
+      "id": "r-es-marco-lp-atribuida",
+      "skeleton": "mail-marco-01",
+      "skin": "lp-atribuida",
+      "status": "draft_pending_pedro",
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_any_effects": [
+        "lp_granted"
+      ],
+      "after_effect": {
+        "tag": "lp_granted",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play"
+      },
+      "on_deliver_effects": [
+        "milestone_lp_atribuida",
+        "reputation_+1",
+        "investor_patience_+1"
+      ],
+      "hud_moment": {
+        "kind": "milestone",
+        "label_pt": "Marco atingido"
+      }
+    },
+    {
+      "id": "r-es-marco-decisao-final",
+      "skeleton": "mail-marco-01",
+      "skin": "decisao-final",
+      "status": "draft_pending_pedro",
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_any_effects": [
+        "fid_reached"
+      ],
+      "after_effect": {
+        "tag": "fid_reached",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play"
+      },
+      "on_deliver_effects": [
+        "milestone_decisao_final",
+        "reputation_+1",
+        "investor_patience_+1"
+      ],
+      "hud_moment": {
+        "kind": "milestone",
+        "label_pt": "Marco atingido"
+      }
+    },
+    {
+      "id": "r-es-marco-inicio-obra",
+      "skeleton": "mail-marco-01",
+      "skin": "inicio-obra",
+      "status": "draft_pending_pedro",
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_any_effects": [
+        "construction_started"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play"
+      },
+      "on_deliver_effects": [
+        "milestone_inicio_obra",
+        "reputation_+1",
+        "investor_patience_+1"
+      ],
+      "hud_moment": {
+        "kind": "milestone",
+        "label_pt": "Marco atingido"
+      }
+    },
+    {
+      "id": "r-es-cod",
+      "skeleton": "mail-fim-de-ciclo-01",
+      "skin": "cod",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra",
+        "cod"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "cod_reached"
+      ],
+      "after_effect": {
+        "tag": "cod_reached",
+        "months": 0,
+        "band": "0",
+        "source": "mesmo Play, depois da carta da licença de exploração"
+      },
+      "wait_for_answer_if_delivered": [
+        "mail-dgeg-le-cod-01"
+      ],
+      "on_deliver_effects": [
+        "milestone_cod",
+        "reputation_+1",
+        "end_state_won"
+      ],
+      "end_state": {
+        "status": "won",
+        "reason": "cod"
+      }
     }
   ],
   "phase_bump_proposed": {
@@ -3135,5 +3962,153 @@
       "buyer_or_partner_exits": "MW voltam ao jogador (76.º/5): mw_reserved_released",
       "player_exits_or_lapses": "parceiro/comprador da parte híbrida fica com os seus MW num TRC próprio (partner_trc_spun_off); o resto vai para a rede (trc_remainder_to_grid) — 76.º/2–4"
     }
+  },
+  "endings_stakes_v01": {
+    "status": "draft_pending_pedro — 2026-10-03; spec ../endings-stakes-v01.md",
+    "computed": {
+      "cash_ratio": "state.caixa / econBudget().carApproved (ou carMandate se ainda null). Calcular depois de monthlyProjectDrift em cada Play.",
+      "caducidade_level": "tags caducidade_risk_+1 + 2×caducidade_risk_+2 − caducidade_risk_-1 (mín. 0)",
+      "patience_level": "investorPatienceHits() − investor_patience_+1 — o mesmo nível (com investor_patience_+1, peso 1, mínimo 0) tem de entrar em investorPatienceHits() nas odds da consola (Economy §16.3 (8))",
+      "months_to_deadline": "min(atMonth − mailLoop.month) dos prazos do jogador ainda abertos",
+      "end_state": "{status: 'playing'|'won'|'lost', reason, month} — novo campo em mailLoop (save)",
+      "lp_request_ready": "apa_track_start ∨ pip_aprovado (sem AIA o PIP é obrigatório no pedido de LP). Usado em requires_state / when.requires e em lp_request.rush.",
+      "car_approved_known": "econBudget().carApproved ≠ null (resposta do M0 já chegou)"
+    },
+    "state_checks": {
+      "cash_ratio_low": {
+        "test": "0 ≤ cash_ratio ≤ 0,25 ∧ carApproved ≠ null (só depois da resposta do M0) ∧ sem cash_rescue_used nos últimos 3 meses",
+        "threshold_source": "PEDIR_ECONOMY (proposta GM 0,25)",
+        "card": "mail-investidores-pressao-01/caixa-baixa"
+      },
+      "patience_low": {
+        "test": "patience_level ≥ 3",
+        "threshold_source": "PEDIR_ECONOMY (proposta GM 3)",
+        "card": "mail-investidores-pressao-01/paciencia"
+      },
+      "cash_negative": {
+        "test": "state.caixa < 0",
+        "card": "mail-investidores-resgate-01/resgate (1.ª vez) · /ultimato (com cash_rescue_used)"
+      },
+      "cash_floor": {
+        "test": "state.caixa < −10 % do orçamento aprovado (Economy 2026-10-03; era −25 %)",
+        "effect": "vai direto para o degrau seguinte da escada da caixa; perda só se já houve resgate ou ultimato (justiça)"
+      },
+      "caducidade_level_2": {
+        "test": "caducidade_level ≥ 2",
+        "card": "mail-dgeg-trc-risco-01/aviso"
+      },
+      "caducidade_level_4": {
+        "test": "caducidade_level ≥ 4 ∧ aviso entregue há ≥ 1 mês ∧ (dl_missed_lp_request ∨ dl_missed_le_deadline)",
+        "card": "mail-dgeg-trc-risco-01/audiencia"
+      },
+      "deadline_warn": {
+        "test": "prazo do jogador com months_to_deadline ≤ warn.months_before (2)",
+        "card": "deadline.warn.mail (mail-prazo-aviso-01/<skin>)"
+      }
+    },
+    "ladders": {
+      "caixa": [
+        "caixa-baixa (aviso)",
+        "resgate",
+        "ultimato (só depois de resgate)",
+        "fim-de-jogo/sem-dinheiro"
+      ],
+      "paciencia": [
+        "paciencia (aviso)",
+        "mandate_review_down: marca para o fecho do ciclo (sem mexer no orçamento a meio)"
+      ],
+      "rede": [
+        "prazo-aviso/grid-agreement (M−2)",
+        "rede-prazo/acordo-ou-caducidade (M6)",
+        "rede-prazo/ultimo-aviso + prazo grid_agreement_final (+2 m)",
+        "rede-prazo/ligacao-adiada: delay_ligacao_+1 + caducidade_risk_+1 (sem audiência)"
+      ],
+      "lp_request": [
+        "prazo-aviso/lp-pedido (M−2 = M4)",
+        "dgeg-lp-pedido/sem-aia (logo depois do PIP, ~M5; só com PIP aprovado)",
+        "prazo-prorrogacao/lp-pedido (prazo falhado: pedir prorrogação / entregar / vender)",
+        "prorrogacao-recusada/lp-pedido → dgeg-trc-risco/audiencia (final_miss_mail)",
+        "prorrogacao-concedida/trc-mantido ou fim-de-jogo/trc-caducado"
+      ],
+      "trc": [
+        "dgeg-trc-risco/aviso (nível 2)",
+        "dgeg-trc-risco/audiencia (só com marco do TRC falhado: lp_request ou le_deadline)",
+        "prorrogacao-concedida/trc-mantido ou fim-de-jogo/trc-caducado"
+      ],
+      "licencas": [
+        "camara-pip-indeferido (1.ª recusa = aviso)",
+        "fim-de-jogo/licenca-recusada (2.ª recusa)"
+      ]
+    },
+    "caps": {
+      "tension_per_play": 1,
+      "same_ladder_step_cooldown_months": 3,
+      "next_step_min_gap_months": 1,
+      "priority": "fim-de-jogo > ultimato/audiência > resgate > aviso > marco",
+      "note": "Avisos não contam para relevant_per_landing quando o limite já foi atingido: passam para o Play seguinte (overflow).",
+      "slip_cap": "burn_cut_deep + dev_slowdown na mesma escolha = +2 meses no total (Economy §16.3 (7))"
+    },
+    "fairness": {
+      "rule": "Nenhuma perda irreversível sem um aviso da mesma escada entregue pelo menos 1 mês antes. Se a perda chegasse sem aviso (salto grande do relógio), a consola entrega o aviso/ultimato primeiro e adia a perda 1 mês.",
+      "loss_requires_delivered_any": {
+        "trc-caducado": [
+          "mail-prazo-aviso-01",
+          "mail-prazo-prorrogacao-01",
+          "mail-dgeg-trc-risco-01",
+          "mail-rede-prazo-01"
+        ],
+        "sem-dinheiro": [
+          "mail-investidores-resgate-01"
+        ],
+        "licenca-recusada": [
+          "mail-camara-pip-indeferido-01",
+          "mail-dgeg-lp-audiencia-01",
+          "mail-apa-dia-desfavoravel-01"
+        ]
+      }
+    },
+    "end_screen": {
+      "fields": [
+        "status (won|lost)",
+        "reason",
+        "se_name",
+        "months_played",
+        "car_spent",
+        "caucao_lost",
+        "npv_auction",
+        "npv_now (won)",
+        "irr (won)",
+        "cod_month vs cod_month_plan (won)",
+        "deadlines: cumpridos/falhados (mailLoop.missedDeadlines)",
+        "reputation (soma reputation_±1)",
+        "key_decisions (3 escolhas com mais peso, do registo do Correio)"
+      ],
+      "actions": [
+        "Recomeçar o mandato",
+        "Ver o Correio (só leitura)"
+      ]
+    },
+    "mandate_review_2026_10_03": {
+      "rule": "Pedro 2026-10-03: o orçamento (mandato) só muda no fecho do ciclo. Marcos dão reputation_+1 e investor_patience_+1, mas a reputação não vale dinheiro a meio do jogo.",
+      "trigger": "cycle_closed (mail-fim-de-ciclo-01) — e também no fim de jogo perdido (revisão para baixo)",
+      "inputs": {
+        "npv_ratio": "npv_now / npv_auction",
+        "deadlines_met_ratio": "prazos cumpridos / prazos do jogador (mailLoop.firedDeadlines vs missedDeadlines)",
+        "reputation": "soma reputation_+1 / reputation_-1",
+        "flags": "mandate_review_down (paciência esgotada), cash_rescue_used, distressed_sale"
+      },
+      "output": "mandate_step: up_big | up | same | down (tags mandate_step_*); valores e limiares PEDIR_ECONOMY",
+      "proposal_gm": "up_big se npv_ratio ≥ 1 ∧ deadlines_met_ratio ≥ 0,8 ∧ reputação ≥ +3; up se npv_ratio ≥ 0,8; down se npv_ratio < 0,5 ou mandate_review_down; senão same",
+      "code": "Retirar a promoção antecipada (MANDATE_PROMOTE_EFFECTS: land_option_open / pip_request_submitted) do index.html."
+    },
+    "p46_resolution_2026_10_03": {
+      "pedro": "P46 = ambas",
+      "a": "purse de capital próprio da boutique na ronda 1 ~45 M€ (Economy: 45 cobre 38–40 €/MWh; 46 se os juros da obra entrarem no teste)",
+      "b": "opção garantida = SÓCIO (r-es-d9-socio: 25 % ou o que faltar, a custo; cash da central × 0,75). Empréstimo 20 anos P 0,60 (r-es-d9-emprestimo-*). Investidores +5 P 0,40.",
+      "equity_test": "usar equity exata 41,0 / 44,4 (não 41,4 / 44,1); juros da obra 1,4–1,5 M€ fora do teste por agora (PEDIR P53)"
+    },
+    "ren_realism_2026_10_03": "Falhar o acordo com a REN não faz caducar o TRC: grid_agreement → ultimo-aviso + grid_agreement_final; falhar esse → delay_ligacao_+1 + caducidade_risk_+1 (carta REN ligacao-adiada). A caducidade vem dos marcos do TRC (sobretudo lp_request) pela audiência da DGEG.",
+    "partial_sale_2026_10_03": "Venda parcial antes da LP (stake_sale_pre_lp): escolhas «Vender parte do projeto» em resgate e pressao/caixa-baixa. Preço/% PEDIR_ECONOMY.",
+    "economy_numbers_2026_10_03": "Números em effects-economy.json → endings_stakes_v01_economy (P47–P54). As regras só fazem referência; não copiar valores para aqui."
   }
 }

@@ -1,0 +1,22 @@
+{
+ "_meta": "ÚNICA fonte da purse de equity (capital próprio) por tier. Lido por euro_s6_lotes.py, finais_tensao_v01.py e effects_economy_build.py. Economy 2026-10-03b PT. DRAFT, nada é live.",
+ "boutique_r1_equity_MEUR": 45.0,
+ "boutique_r1_equity_label": "45 = CONFIRMADO Pedro 2026-10-03 (P46 = ambas: 45, 46 se os juros da obra entrarem no teste + sócio garantido 25 % a custo). Mudar SÓ aqui e correr: euro_s6_lotes.py → finais_tensao_v01.py → effects_economy_build.py",
+ "boutique_r1_equity_alternatives_MEUR": [
+  45.0
+ ],
+ "idc_increment_MEUR": 1.0,
+ "idc_increment_label": "purse + 1 se os juros da obra entrarem no teste da FID (P53): 45 → 46 · 42 → 43",
+ "mid_equity_MEUR": 50.0,
+ "infra_equity_MEUR": 75.0,
+ "mid_infra_label": "actuais; PENDENTE P55 (GM ×1,2 = 60/90; Economy propõe 70/100)",
+ "mid_infra_proposed_MEUR": {
+  "mid": 70.0,
+  "infra": 100.0
+ },
+ "car_mandate_MEUR": {
+  "boutique": 6.5,
+  "mid": 8.5,
+  "infra": 12.0
+ }
+}

@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-investidores-fid-01",
+  "skin_id": "ultimato",
+  "draft": true,
+  "when": {},
+  "from_name": "Comité de investidores",
+  "subject": "Decisão final de investimento: o prazo está a acabar",
+  "body": "Passou o prazo que combinámos para a decisão final de investimento. Cada mês sem decisão é dinheiro de desenvolvimento gasto num ativo já licenciado. Ou aprovas, se tiveres todo o capital próprio para a obra, ou trazes um plano de venda. Mais um adiamento e revemos o teu orçamento.",
+  "params": {
+    "tom": "pressao"
+  }
+}

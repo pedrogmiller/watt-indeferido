@@ -248,7 +248,7 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "euro-fields-console.md §6 / §1.4 / gate6 §B.3",
-   "note": "15 MW, Capex Δ 18–29 (~23). Kickoff 0,3–1,2. Na FID/obra (não no leilão): Ourique 41.4 + 6,9 = 48.3 > purse boutique 37,5 → não chega à obra sem as opções D9 (equity_capex_request, gearing_push, sócio). (+6,9 = convenção 0,3 × ΔCapex; motor ≈ +23, PEDIR P43.)"
+   "note": "15 MW, Capex Δ 18–29 (~23). Kickoff 0,3–1,2. Na FID/obra (não no leilão): Ourique 41.4 + 6,9 = 48.3 > purse boutique 45 (2026-10-03b; era 37,5) → precisa de D9 (sócio garantido, empréstimo 20 anos, investidores +5). (+6,9 = convenção 0,3 × ΔCapex; motor ≈ +23, PEDIR P43.)"
   },
   "m0_ask_table": {
    "cash": null,
@@ -1895,7 +1895,7 @@
    "prob": 0.4,
    "label": "HIPÓTESE / PEDIR",
    "origin": "gate5 §4.1; P9",
-   "note": "Banco empresta +10 pp do Capex (no motor = aceitar DSCR mais baixo ou prazo mais longo, porque a dívida está presa ao DSCR): equity need −9.0, dívida +9.0 (na FID). Ourique a 40: 41.4 → 32.4 (≤ 37,5 ✓). Banco aceita P=0,40 HIPÓTESE (−0,20 se NPV<0). Antes −10,3 com Capex 103.",
+   "note": "Banco empresta +10 pp do Capex (no motor = aceitar DSCR mais baixo ou prazo mais longo, porque a dívida está presa ao DSCR): equity need −9.0, dívida +9.0 (na FID). Ourique a 40: 41.4 → 32.4 (≤ purse 45 ✓). Banco aceita P=0,40 HIPÓTESE (−0,20 se NPV<0). Antes −10,3 com Capex 103. ATENÇÃO 2026-10-03: no motor +10 pp = DSCR 1.06 (40) — irrealista (PEDIR P54).",
    "formula": "equity: -0.10*CAPEX ; debt: +0.10*CAPEX"
   },
   "term_sheet_signed": {
@@ -1937,7 +1937,7 @@
    "prob": null,
    "label": "REAL (regra)",
    "origin": "gate5 §3.2, §4.2",
-   "note": "CAR pára; equity comprometida; começa burn_obra. can_reach_fid exige equity_fit_ok (equity need ≤ purse_equity). Ourique a 40 €/MWh: 41.4 > 37,5 → NÃO chega sem as opções D9 (equity_capex_request +5 → 42,5 ✓; gearing_push → 32.4 ✓; sócio = PEDIR). A obra só arranca com equity_full (= equity_fit_ok ∧ equity_capex_commit)."
+   "note": "CAR pára; equity comprometida; começa burn_obra. can_reach_fid exige equity_fit_ok (equity need ≤ purse_equity). Purse boutique 45 (tools/purse_params.json; CONFIRMADO Pedro 2026-10-03; era 37,5). Teste com a equity exata: Ourique 40 €/MWh 41.0 (folga 4.0) · 38 €/MWh 44.4 (folga 0.6). Folga < 0 → D9 (sócio garantido 25 %). Juros da obra (P53): +1,4–1,5. Derrapagem +5 %: +4,5. A obra só arranca com equity_full (= equity_fit_ok ∧ equity_capex_commit). 2026-10-03: D9 calculado em endings_stakes_v01_economy.fid_options (sócio garantido fecha 3,9 e 6,6; empréstimo 20 anos fecha só a 40)."
   },
   "equity_capex_commit": {
    "cash": null,
@@ -3180,6 +3180,493 @@
    "label": "PEDIR",
    "origin": "skeleton dgeg-lp-condicionada",
    "note": "LP com condições: se inclui injecção limitada aplica injection_cap_restricted; senão Capex/Opex menor PEDIR. Placeholder ΔNPV −0,5."
+  },
+  "burn_cut": {
+   "cash": 0.07,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 1,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json (pressao-01/cut_costs)",
+   "note": "Corte de custos: burn da fase × 0,6 durante 3 meses (só equipa/estudos; caução e opções de terra não descem). Trabalho anda a ~60 % → +1,2 meses → +1 mês no calendário (dev_slowdown). Ourique pip: 0,06 → 0,04/mês, poupa 0.07 agora, mas o mês extra custa 0.06 depois (líquido ≈ +0.01). ΔNPV ≈ -0.04 (40) pelo atraso. Prazos legais NÃO param. Ganha tempo, não dinheiro.",
+   "formula": "burn_mês = burn_fase × 0.6 durante 3 meses ; months +1 (via dev_slowdown, não somar) ; deadlines legais inalterados"
+  },
+  "burn_cut_deep": {
+   "cash": 0.11,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 2,
+   "prob": 0.1,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json (resgate-01/rescue_cut)",
+   "note": "Corte fundo: burn × 0,4 durante 3 meses → +1,8 → +2 meses. Ourique pip: poupa 0.11 agora, custa 0.12 depois (líquido -0.01); licenca_producao: 0.14 vs 0.15. ΔNPV ≈ -0.08 (40). Estudos mais finos: +0,10 em P(aperfeiçoamento/audiência da LP) (= lp_dossier_thin). Prazos legais correm: é a armadilha.",
+   "formula": "burn_mês = burn_fase × 0.4 durante 3 meses ; months +2 (o dev_slowdown da mesma escolha dá +1 nos timers: total +2, não +3) ; prob +0.10 P(LP aperfeiçoamento)"
+  },
+  "dev_slowdown": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 1,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "+1 mês nos timers das regras do jogador (after_effect), NUNCA nos prazos legais. Sem € próprio: o € está em burn_cut / burn_cut_deep. Com burn_cut_deep o total é +2 meses (não somar +3)."
+  },
+  "cash_rescue_used": {
+   "cash": "+(−caixa + 3*burn_fase)",
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json (resgate-01, todas as saídas menos 'Fechar')",
+   "note": "Ponte dos investidores: Caixa sobe para 3 meses de burn da fase atual. Ponte = −caixa + 3 × burn_fase (Ourique playtest: 0,34 + 3 × 0,06 = 0,52 M€). Tecto 0,25 × orçamento aprovado (1,6 boutique). Não mexe no orçamento (carApproved) nem no CAR need. Uma vez só.",
+   "formula": "bridge = max(0, −caixa) + 3*burn_fase ; ≤ 0.25*carApproved"
+  },
+  "rescue_capital_dilution": {
+   "cash": null,
+   "debt": null,
+   "nav": "−d × NPV_asset",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (âncora REAL: desconto de 20 % em notas convertíveis/pontes, Carta 2024)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; Carta Q1 2024 / State of Pre-Seed 2024 (desconto mediano 20 %)",
+   "note": "Os investidores ficam com mais do projeto em troca da ponte: diluição = ponte ÷ (0,8 × valor do projeto + ponte), valor = (NPV t0 + VP do CAR já gasto) levado ao mês atual. Ourique: oferta 40 → 9–11 %; oferta 38 → 17–25 %. Mostrar **15 %** (limites 10–30 %). Efeito: NPV e FCF do jogador × (1 − d). Ex.: NPV 3,2 → 2,7 (40). Vem com cash_rescue_used (a ponte) e reputation_-1.",
+   "formula": "d = clamp(B / (0.8*V + B), 0.10, 0.30) ; display 0.15 ; player_share *= (1 − d)"
+  },
+  "cash_rescue_refused": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "Marcador: o jogador fechou o projeto no resgate. Os € vêm de caucao_executada (−0,99), asset_removed e car_burn_stop na mesma escolha. Fim: sem-dinheiro."
+  },
+  "distressed_sale": {
+   "cash": "price × 0.70",
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (âncoras REAL noutros activos)",
+   "origin": "sell-find-buyers-lock; Campbell, Giglio & Pathak (2011, AER) vendas forçadas de casas −27 %; Pulvino (1998, JF) aviões de companhias em aperto −14 %; pv magazine 02-07-2025 RtB Espanha 30–90 k€/MW",
+   "note": "Venda à pressa (resgate ou TRC em risco): ofertas × 0,70 (−30 %; banda 15–40 %). Método base do preço = P24. Referência: NPV de Ourique no mês da FID = 4.33 M€ ≈ 36 k€/MWp a 40 €/MWh (dentro dos 30–90 k€/MW RtB de Espanha 2025, REAL), 4 k€/MWp a 38.",
+   "formula": "offer = P24_price × 0.70"
+  },
+  "rescue_sell_part": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "Antes da LP só existe venda total (sale_full_exit com distressed_sale). 'Parte' só depois da LP e depende do sócio D9 (P46): usar os termos de farm_down_fid_request. Sem € próprio."
+  },
+  "investor_patience_+1": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": -0.1,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json (marcos)",
+   "note": "Peso 1: anula um investor_patience_-1 em patience_level E nas odds que usam investorPatienceHits() (mínimo 0). Há ~6 cartas com −1/−2 e só 5 marcos (3 antes da FID): peso 1 deixa sair da escada, mas não de graça.",
+   "formula": "patience_hits = max(0, Σ(−1) + 2Σ(−2) − Σ(+1))"
+  },
+  "reputation_+1": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; mandate_review_2026_10_03",
+   "note": "Peso 1. Contador para o fecho do ciclo (entra em mandate_step: up_big exige reputação ≥ +3). A meio do jogo não vale dinheiro (Pedro 2026-10-03): o efeito imediato dos marcos é só investor_patience_+1."
+  },
+  "reputation_-1": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "Peso 1. Ver reputation_+1."
+  },
+  "mandate_review_down": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": -0.25,
+   "label": "HIPÓTESE · PENDENTE Pedro (regra 'orçamento só muda no fecho do ciclo')",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; lp-cod-rules endings_stakes_v01.mandate_review_2026_10_03",
+   "note": "Proposta 2026-10-03b (substitui −2,5 de equity a meio do ciclo, que violava a regra do Pedro): A MEIO DO CICLO só odds — P(cash_at_risk_request) −0,25 (0,50 → 0,25) e P(equity_capex_request) −0,10 (0,40 → 0,30). O banco (longer_loan_request) e o sócio garantido não mudam. NO FECHO: força mandate_step_down (ver endings_stakes_v01_economy.mandate_step). Nenhum € muda antes do fecho.",
+   "formula": "mid-cycle: P(cash_at_risk_request) −0.25 ; P(equity_capex_request) −0.10 ; fecho: mandate_step = down"
+  },
+  "fcf_to_next_asset": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": 6.2,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; tools/finais_tensao_v01.json (motor)",
+   "note": "Cash livre do equity da central (receita − opex − serviço da dívida) nos primeiros 36 meses depois do COD, × parte do jogador, vai para a purse_equity do próximo ciclo. Ourique: 6.21 M€ a 40 (2.14/ano no 1.º ano), 5.91 a 38. Com sócio 25 %: × 0,75. Não somar ao burn_cod (o relógio pára no COD em v0.1).",
+   "formula": "purse_next += player_share × Σ FCF_equity(36 meses pós-COD)"
+  },
+  "longer_loan_request": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": 0.6,
+   "label": "HIPÓTESE (âncoras REAL)",
+   "origin": "P9; Hudson Sustainable 2025; IJGlobal Tuin Zonne; A&M/Europa Press 20-10-2025; regras r-es-d9-emprestimo-*",
+   "note": "Pedido ao banco: 15 → 20 anos. P(aceita) 0,60 (0,30 se NPV < 0; −0,10 por investor_patience_-1). Resposta em 2–3 meses (regra GM) e a escolha traz delay_fid_+1. Se aceite → equity_need_down_loan + loan_fee_paid + merchant_tail_exposure. Com a purse 45 só é preciso com juros da obra (38) ou derrapagem.",
+   "formula": "ver longer_loan_granted / equity_need_down_loan"
+  },
+  "farm_down_fid_request": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": 1.0,
+   "label": "HIPÓTESE · TRANCADO Pedro 2026-10-03 (garantido)",
+   "origin": "P46; r-es-d9-socio",
+   "note": "Pedido de sócio na FID: aceita SEMPRE (P 1,0), resposta em 2–3 meses (regra GM) + delay_fid_+1. € em partner_stake_25."
+  },
+  "trc_recovery_plan": {
+   "cash": -0.075,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": -0.2,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; CPA art. 121.º (audiência prévia, REAL)",
+   "note": "Plano de recuperação na audiência: −0,20 em P(TRC caduca) (0,50 → 0,30). Custo: consultor/advogado −0,5U (0,075). Já vem com caducidade_risk_-1 (que só mexe no nível, não nas odds da audiência).",
+   "formula": "P(caducado) −0.20 ; cash −0.5*U"
+  },
+  "trc_kept": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "TRC mantido depois da audiência. Sem €. (Vem com caducidade_risk_-1.)"
+  },
+  "trc_risk_answered": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "Marcador. Sem €. Se faltar na audiência: +0,20 em P(caducado)."
+  },
+  "end_state_won": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "Fim ganho (COD). Números do ecrã: endings_stakes_v01_economy.cod_balance."
+  },
+  "end_state_lost": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "Fim perdido. Ecrã mostra 'Ficaste a X M€ de construir' quando a razão é a falta de equity (X = equity_need − purse_equity)."
+  },
+  "cycle_next": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json",
+   "note": "Próximo leilão com o orçamento do mandate_step + fcf_to_next_asset (se ganhou)."
+  },
+  "cycle_closed": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; mandate_review_2026_10_03",
+   "note": "Fecha o ciclo: calcula mandate_step (up_big / up / same / down) e aplica a nova purse e o novo mandato CAR (ver endings_stakes_v01_economy.mandate_step). Substitui MANDATE_PROMOTE_EFFECTS."
+  },
+  "mandate_step_up_big": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (âncora REAL secundária: Gain.ai 2026 — fundos sucessores 1,35× com IRR < 10 %, 1,59× com > 20 %, mediana 1,43×)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; mandate_review_2026_10_03",
+   "note": "Fecho do ciclo: sobe de tier: boutique → mid (purse mid, mandato CAR mid). Passo 45 → 70 = 1.56×; mid → infra 70 → 100 = 1,43×. Ganhou: + fcf_to_next_asset (Ourique 40 €/MWh: 6,2 × parte do jogador) na purse seguinte.",
+   "formula": "sobe de tier: boutique → mid (purse mid, mandato CAR mid). Passo 45 → 70 = 1.56×; mid → infra 70 → 100 = 1,43×"
+  },
+  "mandate_step_up": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (âncora REAL secundária: Gain.ai 2026 — fundos sucessores 1,35× com IRR < 10 %, 1,59× com > 20 %, mediana 1,43×)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; mandate_review_2026_10_03",
+   "note": "Fecho do ciclo: purse e mandato CAR × 1,15 no mesmo tier (boutique 51,75 / 7,5). Ganhou: + fcf_to_next_asset (Ourique 40 €/MWh: 6,2 × parte do jogador) na purse seguinte.",
+   "formula": "purse e mandato CAR × 1,15 no mesmo tier (boutique 51,75 / 7,5)"
+  },
+  "mandate_step_same": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (âncora REAL secundária: Gain.ai 2026 — fundos sucessores 1,35× com IRR < 10 %, 1,59× com > 20 %, mediana 1,43×)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; mandate_review_2026_10_03",
+   "note": "Fecho do ciclo: × 1,00. Ganhou: + fcf_to_next_asset (Ourique 40 €/MWh: 6,2 × parte do jogador) na purse seguinte.",
+   "formula": "× 1,00"
+  },
+  "mandate_step_down": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (âncora REAL secundária: Gain.ai 2026 — fundos sucessores 1,35× com IRR < 10 %, 1,59× com > 20 %, mediana 1,43×)",
+   "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; mandate_review_2026_10_03",
+   "note": "Fecho do ciclo: × 0,85 (boutique 38,25 / 5,5). Ganhou: + fcf_to_next_asset (Ourique 40 €/MWh: 6,2 × parte do jogador) na purse seguinte.",
+   "formula": "× 0,85 (boutique 38,25 / 5,5)"
+  },
+  "longer_loan_granted": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "r-es-d9-emprestimo-aceite",
+   "note": "Marcador. € em equity_need_down_loan, loan_fee_paid, merchant_tail_exposure (não somar)."
+  },
+  "longer_loan_refused": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "r-es-d9-emprestimo-recusado",
+   "note": "Marcador. Sem €. Uma só tentativa."
+  },
+  "equity_need_down_loan": {
+   "cash": null,
+   "debt": 5.71,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": -5.6,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (motor)",
+   "origin": "tools/finais_tensao_v01.json new_tags_1003b",
+   "note": "Resultado do empréstimo de 20 anos: dívida +5.71 (40) / +5.77 (38). Equity na FID (já com +3 m de D9): 40 → 41.07 → 35.47 (−5.6); 38 → 44.45 → 38.79 (−5.66). Já líquido da comissão.",
+   "formula": "equity −(Δdebt − fee) ; debt +Δdebt (Ourique 40: +5.71 / −5.60 ; 38: +5.77 / −5.66)"
+  },
+  "loan_fee_paid": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (prática de mercado, sem fonte PT) · PEDIR P9",
+   "origin": "finais_tensao_v01 longer_loan (comissão 2 % da dívida extra)",
+   "note": "Comissão de estruturação 2 % sobre a dívida EXTRA, paga pelo equity na FID: Ourique 0.11 M€ (40) / 0.12 (38). Já descontada em equity_need_down_loan (não somar outra vez à equity; aqui só para o registo/ecrã). O juro +0,25 pp está no NPV.",
+   "formula": "fee = 0.02 × Δdebt (Ourique ≈ 0.11)"
+  },
+  "merchant_tail_exposure": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (âncora REAL: captura solar ES 2025 < 35 €/MWh, A&M)",
+   "origin": "finais_tensao_v01 new_tags_1003b.merchant_tail_exposure",
+   "note": "Os anos 16–20 do empréstimo pagam-se com preço de mercado (sem tarifa). Dívida ainda por pagar no início do ano 16: 14.05 M€; serviço 3.26→3.07 M€/ano (15.84 nominal). DSCR mínimo: 2.61 com 36 €/MWh +2 %/ano; 1.12 com 30 plano; DSCR = 1,0 a 28.1 €/MWh plano. A 30 €/MWh: dividendos retidos (lock-up 1,20) custam só −0.07 M€ de NPV. Efeito proposto em v0.1: SEM odds nem € (o ciclo acaba no COD); mostrar no ecrã do COD 'risco de preço depois do ano 15'. v0.2: se houver evento 'preço baixo' (< 28 €/MWh), incumprimento = perda do NPV restante.",
+   "formula": "v0.1: só aviso ; v0.2: evento preço < 28 €/MWh nos anos 16–20 → default"
+  },
+  "partner_stake_25": {
+   "cash": null,
+   "debt": null,
+   "nav": "−0.25 × NPV_asset",
+   "bonding": null,
+   "car": null,
+   "equity": -10.27,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (motor) · TRANCADO Pedro 2026-10-03 (garantido, a custo)",
+   "origin": "r-es-d9-socio; finais_tensao_v01 fid_options.partner",
+   "note": "Sócio fica com s = máx(25 %, o que falta). Entra com a sua parte do equity a custo: 40 → +10.27 (jogador 30.81); 38 → +11.11 (jogador 33.34); paga também 25 % dos juros da obra (0.37). NPV do jogador: 40 → 2.33 (−0.78); 38 → 0.2 (−0.07). Cash da central (FCF 36 m) do jogador: 40 → 4.66; 38 → 4.43 (× 0,75).",
+   "formula": "equity_need ×0.75 ; player_share ×0.75 ; fcf_to_next_asset ×0.75"
+  },
+  "partner_equity_in": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "r-es-d9-socio",
+   "note": "Marcador. € em partner_stake_25 (não somar)."
+  },
+  "partner_npv_share": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "r-es-d9-socio",
+   "note": "Marcador. NPV × (1 − s) em partner_stake_25 (não somar)."
+  },
+  "equity_gap_closed": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "r-es-d9-socio",
+   "note": "Marcador: equity_fit_ok passa a verdadeiro."
+  },
+  "stake_sale_pre_lp": {
+   "cash": 0.8,
+   "debt": null,
+   "nav": "−0.25 × NPV_asset + price",
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (regra do controlo, leitura) · PEDIR P56",
+   "origin": "DL 15/2022 art. 18.º/8, 18.º/9 ('há transmissão sempre que ocorra alteração, direta ou indireta, do controlo'), 18.º/10; pv magazine 02-07-2025 (RtB 30–90 k€/MW); trc-partilha-dl15-2022 §1",
+   "note": "Vender PARTE do projeto antes da LP (resgate / caixa-baixa). Proposta: vender 25 % da SPV (opções 25 % ou 49 %; ≥ 50 % = venda de controlo → usar sale_full_exit). Preço = % × valor do projeto × 0,65 (P de chegar a pronto-a-construir vista pelo comprador, HIPÓTESE). Valor = NPV + CAR já gasto, levado ao mês. Ourique 25 % no M6: 0.8 M€ a 40 €/MWh (27 k€/MWp vendido) · 0.31 a 38 (10 k€/MWp); no M12 a 40: 0.94. Abaixo dos 30–90 k€/MW de RtB (REAL) porque é antes da LP. Depois: o comprador paga 25 % do burn restante (burn do jogador × 0,75) e 25 % da equity na FID; NPV e FCF do jogador × 0,75. Prazo e caução: sem mudança de controlo (< 50 % e sem direitos de veto que deem controlo conjunto) NÃO há transmissão (art. 18.º/9) → sem averbamento e SEM reforço de 50 % da caução; fecho em 1–2 meses (contrato e DD, HIPÓTESE). Com controlo (≥ 50 % ou controlo conjunto) = transmissão: averbamento 1–3 m, odds 0,90/0,10 (0,75/0,25 com oferta fraca) e reforço +50 % do comprador (+0,495) — igual à venda total. Com distressed_sale: preço × 0,70.",
+   "formula": "price = s × V × 0.65 (× 0.70 se distressed) ; s ∈ {0.25, 0.49} ; burn_jogador ×(1−s) ; equity_need ×(1−s) ; player_share ×(1−s) ; s < 0.5: sem averbamento nem caução +50 %, fecho 1–2 m"
   }
  },
  "rule_odds_proposed": {
@@ -4160,7 +4647,7 @@
   },
   {
    "id": "P46",
-   "what": "Equity na FID, motor a 40 €/MWh: Ourique 41,4 > boutique 37,5; Ferreira 62,7 > mid 50; Estremoz 83,4 > infra 75. Os lotes do próprio tier já não cabem sem opções D9. Subir purse_equity0 (P7) ou aceitar que a FID pede sempre D9?",
+   "what": "Equity na FID, motor a 40 €/MWh: Ourique 41,4 > boutique 37,5; Ferreira 62,7 > mid 50; Estremoz 83,4 > infra 75. Os lotes do próprio tier já não cabem sem opções D9. FECHADO Pedro 2026-10-03: boutique 45 (CONFIRMADO) via tools/purse_params.json (+1 com juros da obra) + sócio garantido 25 % a custo; empréstimo 20 anos P 0,60; investidores +5 P 0,40. Mid/infra = PEDIR P55.",
    "tags": [
     "fid_reached",
     "equity_capex_commit",
@@ -4172,6 +4659,1282 @@
  "deprecated_tags": {
   "trc_mw_free_down": "Retirada 2026-09-29 (G27; sell-modes-lock; mail-buyer-offer-01 notes): vender em renda ou partilhar move MW own → reserved, não mexe em mw_free. Nenhuma carta a emite. A label continua em effect-labels.pt.json (GM/UI removem). Sem efeito económico."
  },
+ "endings_stakes_v01_economy": {
+  "_status": "PROPOSTA Economy 2026-10-03 PT (PEDIR_ECONOMY do GM). Ourique só. Nada é live. Não escrito em lp-cod-rules.draft.json (ficheiro GM).",
+  "thresholds": {
+   "cash_ratio_low": {
+    "value": 0.25,
+    "label": "HIPÓTESE",
+    "keep": true,
+    "guard": "só depois da resposta do M0 (carApproved ≠ null). Antes do M0 a Caixa é 1,0 (seed 2,0 − kickoff 1,0) → 1,0/6,5 = 0,15 → aviso falso no arranque.",
+    "why": "Boutique M0 médio: 0,25 × 6,5 = 1,6 M€ ≈ 18–27 meses de burn (0,06–0,09). Plano sem surpresas acaba na FID com ~1,96 (0,30) → só avisa quem já gastou a contingência. M0 pouco (4,5): aviso a 1,1 ≈ 15 meses antes de zerar. Mostrar {{months_left}} = caixa ÷ burn_fase."
+   },
+   "cash_floor": {
+    "value": -0.1,
+    "gm_proposal": -0.25,
+    "label": "HIPÓTESE (âncora REAL: DL 62/2013, prazo B2B 60 dias)",
+    "change": true,
+    "why": "−25 % = −1,6 M€ = ~2 anos de contas por pagar: nenhuma SPV boutique vive assim. −10 % = −0,65 M€ (boutique) ≈ 2 meses de fornecedores (60 dias, DL 62/2013) + um golpe de carta médio. A perda continua a exigir resgate/ultimato antes (regra de justiça)."
+   },
+   "patience": {
+    "warn": 3,
+    "review_down": 5,
+    "label": "HIPÓTESE",
+    "keep": true,
+    "why": "Fontes de −1: pressão 'continuar', FID adiar, CAR, term sheet, arranque obra; −2: review e final_miss de prazos. 3 = um prazo falhado + um adiamento; 5 = dois prazos falhados + um adiamento. Marcos devolvem até 3 antes da FID."
+   },
+   "caducidade": {
+    "warn": 2,
+    "hearing": 4,
+    "label": "HIPÓTESE",
+    "keep": true,
+    "why": "Cada caducidade_risk_+1 = +0,05 em P(caducidade). Nível 2 ≈ +0,10 (um +2: audiência LP ou prazo falhado); nível 4 ≈ +0,20 (duas falhas sérias). Uma só falha não leva a audiência."
+   },
+   "grace_months": {
+    "value": 2,
+    "label": "HIPÓTESE",
+    "keep": true,
+    "why": "= prazo final de REN +2 m; igual ao aviso de prazos (warn 2 m)."
+   },
+   "mandate_review_down_note": "Ver tag mandate_review_down (2026-10-03b): só odds a meio do ciclo; o corte de orçamento passa para o fecho (mandate_step_down). PENDENTE Pedro."
+  },
+  "cuts": {
+   "burn_cut": {
+    "factor": 0.6,
+    "months": 3,
+    "slip_months": 1
+   },
+   "burn_cut_deep": {
+    "factor": 0.4,
+    "months": 3,
+    "slip_months": 2,
+    "lp_dossier_risk": 0.1
+   },
+   "rule": "progresso = fator de burn (cortar 40 % da equipa = 40 % mais devagar). Poupança agora ≈ burn extra depois → corte compra tempo, não dinheiro, e custa NPV e risco de prazos.",
+   "detail": {
+    "burn_cut": {
+     "factor": 0.6,
+     "duration_months": 3,
+     "schedule_slip_months": 1,
+     "slip_raw": 1.2,
+     "pip": {
+      "burn_month_before": 0.06,
+      "burn_month_during": 0.04,
+      "cash_saved_now": 0.07,
+      "extra_burn_later": 0.06,
+      "net_cash": 0.01
+     },
+     "licenca_producao": {
+      "burn_month_before": 0.075,
+      "burn_month_during": 0.04,
+      "cash_saved_now": 0.09,
+      "extra_burn_later": 0.07,
+      "net_cash": 0.01
+     },
+     "aia": {
+      "burn_month_before": 0.09,
+      "burn_month_during": 0.05,
+      "cash_saved_now": 0.11,
+      "extra_burn_later": 0.09,
+      "net_cash": 0.02
+     },
+     "land": {
+      "burn_month_before": 0.06,
+      "burn_month_during": 0.04,
+      "cash_saved_now": 0.07,
+      "extra_burn_later": 0.06,
+      "net_cash": 0.01
+     },
+     "d_npv_bid_38": -0.03,
+     "d_npv_bid_40": -0.04
+    },
+    "burn_cut_deep": {
+     "factor": 0.4,
+     "duration_months": 3,
+     "schedule_slip_months": 2,
+     "slip_raw": 1.8,
+     "pip": {
+      "burn_month_before": 0.06,
+      "burn_month_during": 0.02,
+      "cash_saved_now": 0.11,
+      "extra_burn_later": 0.12,
+      "net_cash": -0.01
+     },
+     "licenca_producao": {
+      "burn_month_before": 0.075,
+      "burn_month_during": 0.03,
+      "cash_saved_now": 0.14,
+      "extra_burn_later": 0.15,
+      "net_cash": -0.01
+     },
+     "aia": {
+      "burn_month_before": 0.09,
+      "burn_month_during": 0.04,
+      "cash_saved_now": 0.16,
+      "extra_burn_later": 0.18,
+      "net_cash": -0.02
+     },
+     "land": {
+      "burn_month_before": 0.06,
+      "burn_month_during": 0.02,
+      "cash_saved_now": 0.11,
+      "extra_burn_later": 0.12,
+      "net_cash": -0.01
+     },
+     "d_npv_bid_38": -0.06,
+     "d_npv_bid_40": -0.08
+    }
+   },
+   "label": "HIPÓTESE"
+  },
+  "rescue": {
+   "bridge": "max(0, −caixa) + 3 × burn_fase, ≤ 0,25 × carApproved",
+   "bridge_ourique_playtest": 0.52,
+   "dilution": "d = clamp(B / (0,8 × V + B), 10 %, 30 %), display 15 %",
+   "examples": {
+    "bid38_M7": {
+     "bridge": 0.52,
+     "pre_money_value": 2.0,
+     "dilution_at_20pct_discount": 0.246
+    },
+    "bid38_M18": {
+     "bridge": 0.52,
+     "pre_money_value": 3.14,
+     "dilution_at_20pct_discount": 0.171
+    },
+    "bid40_M7": {
+     "bridge": 0.52,
+     "pre_money_value": 5.03,
+     "dilution_at_20pct_discount": 0.114
+    },
+    "bid40_M18": {
+     "bridge": 0.52,
+     "pre_money_value": 6.39,
+     "dilution_at_20pct_discount": 0.092
+    }
+   },
+   "distressed_sale_factor": 0.7,
+   "label": "HIPÓTESE (âncoras REAL: Carta 2024 desconto 20 %; Campbell–Giglio–Pathak 2011 −27 %; Pulvino 1998 −14 %)"
+  },
+  "trc_hearing": {
+   "P_caducado_base": 0.5,
+   "P_mantido_base": 0.5,
+   "label": "HIPÓTESE / PEDIR",
+   "down": {
+    "trc_recovery_plan": 0.2,
+    "grid_agreement_signed": 0.15,
+    "lp_request_submitted": 0.1
+   },
+   "up": {
+    "dl_missed_grid_agreement_final": 0.1,
+    "dl_missed_lp_request": 0.15,
+    "no_answer_to_hearing": 0.2
+   },
+   "clamp": [
+    0.15,
+    0.85
+   ],
+   "context_REAL": "CPA art. 121.º: audiência prévia antes de decisão desfavorável. Despacho 170/MAEN/2025 (Macedo Vitorino 21-05-2025): o Governo deu 'uma última' prorrogação de 12 meses aos projetos dos leilões solares 2019/2020 e às LP do DL 15/2022, depois de várias prorrogações em 3 anos — mas por causas externas (Covid, guerra, cadeias). No jogo a audiência vem de falhas do próprio jogador → 0,5 é HIPÓTESE. Igual a deadline_extend_request (0,50).",
+   "why": "Moeda ao ar sem nada; um plano credível pesa mais do que um papel entregue; falhar o prazo final pesa contra.",
+   "note_1003b": "Pedro 2026-10-03: falhar o acordo REN não faz caducar o TRC sozinho (dá delay_ligacao_+1 + caducidade_risk_+1). Como já sobe o nível, o peso nas odds da audiência desce de +0,15 para +0,10."
+  },
+  "weights": {
+   "investor_patience_+1": 1,
+   "reputation_+1": 1,
+   "reputation_-1": 1,
+   "label": "HIPÓTESE"
+  },
+  "reputation_to_budget": {
+   "status": "SUBSTITUÍDO 2026-10-03b por mandate_step (regra Pedro: orçamento só muda no fecho; GM mandate_review_2026_10_03)",
+   "old_multiplier_table_base_purse": {
+    "-1": {
+     "m": 0.9,
+     "won_purse_next_40": 46.7,
+     "lost_purse_next": 34.4,
+     "car_next": 5.85
+    },
+    "0": {
+     "m": 1.0,
+     "won_purse_next_40": 51.2,
+     "lost_purse_next": 38.2,
+     "car_next": 6.5
+    },
+    "2": {
+     "m": 1.1,
+     "won_purse_next_40": 55.7,
+     "lost_purse_next": 42.1,
+     "car_next": 7.15
+    },
+    "4": {
+     "m": 1.2,
+     "won_purse_next_40": 60.2,
+     "lost_purse_next": 45.9,
+     "car_next": 7.8
+    },
+    "6": {
+     "m": 1.3,
+     "won_purse_next_40": 64.7,
+     "lost_purse_next": 49.7,
+     "car_next": 8.45
+    }
+   }
+  },
+  "cod_balance": {
+   "npv_auction": "NPV t0 do motor à oferta (congelado no leilão). Ourique: 38 → 0.3 · 40 → 3.2 M€",
+   "npv_now": "player_share × (npv_auction + Σ ΔNPV) — ΔNPV: −0,04/mês de atraso antes da FID · −0,19/mês de atraso de obra · −0,72 por M€ de Capex a mais · −(CAR gasto − CAR do plano). player_share = (1 − d_resgate) × (1 − s_sócio). Mesmo t0 do leilão (comparável).",
+   "irr": "irr ≈ 8,0 + 0,16 × npv_now (Ourique; erro < 0,1 pp entre −3 e +4 M€). Verde ≥ 8 %, vermelho < 8 %. Motor: 38 → 8.05 % · 40 → 8.52 %",
+   "fcf_to_next_asset": "player_share × FCF do equity em 36 meses pós-COD: 38 → 5.9 · 40 → 6.2 M€ (1.º ano 2.04 / 2.14)",
+   "examples": {
+    "40_on_plan": {
+     "npv_now": 3.2,
+     "irr": 8.5
+    },
+    "40_fid_+3m": {
+     "npv_now": 3.11,
+     "irr": 8.5
+    },
+    "40_build_+3m": {
+     "npv_now": 2.67,
+     "irr": 8.4
+    },
+    "40_capex_+5pct": {
+     "npv_now": 0.03,
+     "irr": 8.0
+    },
+    "40_partner_25pct": {
+     "npv_now": 2.33
+    },
+    "40_rescue_15pct": {
+     "npv_now": 2.8
+    },
+    "38_on_plan": {
+     "npv_now": 0.3,
+     "irr": 8.1
+    },
+    "38_build_+3m": {
+     "npv_now": -0.18,
+     "irr": 8.0
+    }
+   },
+   "label": "HIPÓTESE (motor TRANCADO)"
+  },
+  "fid_options": {
+   "gap_stated": {
+    "40": 3.9,
+    "38": 6.6
+   },
+   "gap_exact_motor": {
+    "40": 3.48,
+    "38": 6.86
+   },
+   "idc_paid_by_equity": {
+    "40": 1.5,
+    "38": 1.39
+   },
+   "longer_loan_20y": {
+    "40": {
+     "tenor": 20,
+     "kd": 0.05,
+     "dscr_merchant": 1.5,
+     "bank_price": "36.0 €/MWh plano (nominal)",
+     "debt": 54.65,
+     "debt_base_same_delay": 48.93,
+     "extra_debt": 5.71,
+     "fee": 0.11,
+     "equity": 35.47,
+     "npv": 4.09,
+     "irr": 8.73,
+     "merchant_ds_per_year": [
+      3.26,
+      3.22,
+      3.17,
+      3.12,
+      3.07
+     ],
+     "min_dscr_mkt_if_tail36_escalated": 2.61,
+     "min_dscr_mkt_if_tail30_flat": 1.12,
+     "closes_gap_37_5_old": true,
+     "equity_minus_purse_37_5_old": -2.03,
+     "headroom_purse": 9.53
+    },
+    "38": {
+     "tenor": 20,
+     "kd": 0.05,
+     "dscr_merchant": 1.5,
+     "bank_price": "36.0 €/MWh plano (nominal)",
+     "debt": 51.33,
+     "debt_base_same_delay": 45.56,
+     "extra_debt": 5.77,
+     "fee": 0.12,
+     "equity": 38.79,
+     "npv": 1.29,
+     "irr": 8.22,
+     "merchant_ds_per_year": [
+      3.26,
+      3.22,
+      3.17,
+      3.12,
+      3.07
+     ],
+     "min_dscr_mkt_if_tail36_escalated": 2.61,
+     "min_dscr_mkt_if_tail30_flat": 1.12,
+     "closes_gap_37_5_old": false,
+     "equity_minus_purse_37_5_old": 1.29,
+     "headroom_purse": 6.21
+    }
+   },
+   "longer_loan_18y_40": {
+    "tenor": 18,
+    "kd": 0.05,
+    "dscr_merchant": 1.5,
+    "bank_price": "36.0 €/MWh plano (nominal)",
+    "debt": 52.31,
+    "debt_base_same_delay": 48.93,
+    "extra_debt": 3.38,
+    "fee": 0.07,
+    "equity": 37.76,
+    "npv": 3.5,
+    "irr": 8.6,
+    "merchant_ds_per_year": [
+     3.26,
+     3.22,
+     3.17
+    ],
+    "min_dscr_mkt_if_tail36_escalated": 2.61,
+    "min_dscr_mkt_if_tail30_flat": 1.13,
+    "closes_gap_37_5_old": false,
+    "equity_minus_purse_37_5_old": 0.26,
+    "headroom_purse": 7.24
+   },
+   "partner_guaranteed": {
+    "40": {
+     "stake": 0.25,
+     "discount_on_npv_share": 1.0,
+     "player_equity": 30.81,
+     "closes_gap_37_5_old": true,
+     "headroom_purse": 14.19,
+     "premium_cash_at_fid": 0.0,
+     "player_npv_t0": 2.33,
+     "npv_lost_vs_no_partner_same_delay": 0.78,
+     "fcf_share_kept": 0.75
+    },
+    "38": {
+     "stake": 0.25,
+     "discount_on_npv_share": 1.0,
+     "player_equity": 33.34,
+     "closes_gap_37_5_old": true,
+     "headroom_purse": 11.66,
+     "premium_cash_at_fid": 0.0,
+     "player_npv_t0": 0.2,
+     "npv_lost_vs_no_partner_same_delay": 0.07,
+     "fcf_share_kept": 0.75
+    }
+   },
+   "partner_fair": {
+    "40": {
+     "stake": 0.25,
+     "discount_on_npv_share": 0.2,
+     "player_equity": 30.81,
+     "closes_gap_37_5_old": true,
+     "headroom_purse": 14.19,
+     "premium_cash_at_fid": 0.85,
+     "player_npv_t0": 2.95,
+     "npv_lost_vs_no_partner_same_delay": 0.16,
+     "fcf_share_kept": 0.75
+    },
+    "38": {
+     "stake": 0.25,
+     "discount_on_npv_share": 0.2,
+     "player_equity": 33.34,
+     "closes_gap_37_5_old": true,
+     "headroom_purse": 11.66,
+     "premium_cash_at_fid": 0.07,
+     "player_npv_t0": 0.25,
+     "npv_lost_vs_no_partner_same_delay": 0.01,
+     "fcf_share_kept": 0.75
+    }
+   },
+   "existing": {
+    "40": {
+     "equity_capex_request_+5_vs_37_5": true,
+     "gearing_push_+10pp_vs_37_5": true,
+     "gearing_push_implied_dscr": 1.06
+    },
+    "38": {
+     "equity_capex_request_+5_vs_37_5": false,
+     "gearing_push_+10pp_vs_37_5": true,
+     "gearing_push_implied_dscr": 1.04
+    }
+   },
+   "all": {
+    "38": {
+     "equity_need": 44.36,
+     "gap": 6.86,
+     "equity_need_after_3m_delay": 44.45,
+     "npv_after_3m_delay": 0.27,
+     "npv_no_delay": 0.34,
+     "longer_loan": {
+      "18y_bank_case": {
+       "tenor": 18,
+       "kd": 0.05,
+       "dscr_merchant": 1.5,
+       "bank_price": "36.0 €/MWh plano (nominal)",
+       "debt": 48.99,
+       "debt_base_same_delay": 45.56,
+       "extra_debt": 3.43,
+       "fee": 0.07,
+       "equity": 41.08,
+       "npv": 0.69,
+       "irr": 8.11,
+       "merchant_ds_per_year": [
+        3.26,
+        3.22,
+        3.17
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 2.61,
+       "min_dscr_mkt_if_tail30_flat": 1.13,
+       "closes_gap_37_5_old": false,
+       "equity_minus_purse_37_5_old": 3.58,
+       "headroom_purse": 3.92
+      },
+      "20y_bank_case": {
+       "tenor": 20,
+       "kd": 0.05,
+       "dscr_merchant": 1.5,
+       "bank_price": "36.0 €/MWh plano (nominal)",
+       "debt": 51.33,
+       "debt_base_same_delay": 45.56,
+       "extra_debt": 5.77,
+       "fee": 0.12,
+       "equity": 38.79,
+       "npv": 1.29,
+       "irr": 8.22,
+       "merchant_ds_per_year": [
+        3.26,
+        3.22,
+        3.17,
+        3.12,
+        3.07
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 2.61,
+       "min_dscr_mkt_if_tail30_flat": 1.12,
+       "closes_gap_37_5_old": false,
+       "equity_minus_purse_37_5_old": 1.29,
+       "headroom_purse": 6.21
+      },
+      "20y_generous": {
+       "tenor": 20,
+       "kd": 0.05,
+       "dscr_merchant": 1.45,
+       "bank_price": "45.0 €/MWh +2 %/ano",
+       "debt": 61.1,
+       "debt_base_same_delay": 45.56,
+       "extra_debt": 15.54,
+       "fee": 0.31,
+       "equity": 29.21,
+       "npv": 3.62,
+       "irr": 8.73,
+       "merchant_ds_per_year": [
+        7.73,
+        7.85,
+        7.97,
+        8.09,
+        8.21
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 1.1,
+       "min_dscr_mkt_if_tail30_flat": 0.42,
+       "closes_gap_37_5_old": true,
+       "equity_minus_purse_37_5_old": -8.29,
+       "headroom_purse": 15.79
+      },
+      "20y_bank_case_dscr175": {
+       "tenor": 20,
+       "kd": 0.05,
+       "dscr_merchant": 1.75,
+       "bank_price": "36.0 €/MWh plano (nominal)",
+       "debt": 50.4,
+       "debt_base_same_delay": 45.56,
+       "extra_debt": 4.84,
+       "fee": 0.1,
+       "equity": 39.7,
+       "npv": 1.07,
+       "irr": 8.18,
+       "merchant_ds_per_year": [
+        2.8,
+        2.76,
+        2.71,
+        2.67,
+        2.63
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 3.05,
+       "min_dscr_mkt_if_tail30_flat": 1.31,
+       "closes_gap_37_5_old": false,
+       "equity_minus_purse_37_5_old": 2.2,
+       "headroom_purse": 5.3
+      }
+     },
+     "partner": {
+      "guaranteed_25pct_at_cost": {
+       "stake": 0.25,
+       "discount_on_npv_share": 1.0,
+       "player_equity": 33.34,
+       "closes_gap_37_5_old": true,
+       "headroom_purse": 11.66,
+       "premium_cash_at_fid": 0.0,
+       "player_npv_t0": 0.2,
+       "npv_lost_vs_no_partner_same_delay": 0.07,
+       "fcf_share_kept": 0.75
+      },
+      "fair_25pct_disc20": {
+       "stake": 0.25,
+       "discount_on_npv_share": 0.2,
+       "player_equity": 33.34,
+       "closes_gap_37_5_old": true,
+       "headroom_purse": 11.66,
+       "premium_cash_at_fid": 0.07,
+       "player_npv_t0": 0.25,
+       "npv_lost_vs_no_partner_same_delay": 0.01,
+       "fcf_share_kept": 0.75
+      },
+      "minimum_stake": {
+       "stake": 0.156,
+       "discount_on_npv_share": 1.0,
+       "player_equity": 37.5,
+       "closes_gap_37_5_old": true,
+       "headroom_purse": 7.5,
+       "premium_cash_at_fid": 0.0,
+       "player_npv_t0": 0.22,
+       "npv_lost_vs_no_partner_same_delay": 0.04,
+       "fcf_share_kept": 0.844
+      }
+     },
+     "existing": {
+      "equity_capex_request_+5_vs_37_5": false,
+      "gearing_push_+10pp_vs_37_5": true,
+      "gearing_push_implied_dscr": 1.04
+     }
+    },
+    "40": {
+     "equity_need": 40.98,
+     "gap": 3.48,
+     "equity_need_after_3m_delay": 41.07,
+     "npv_after_3m_delay": 3.11,
+     "npv_no_delay": 3.24,
+     "longer_loan": {
+      "18y_bank_case": {
+       "tenor": 18,
+       "kd": 0.05,
+       "dscr_merchant": 1.5,
+       "bank_price": "36.0 €/MWh plano (nominal)",
+       "debt": 52.31,
+       "debt_base_same_delay": 48.93,
+       "extra_debt": 3.38,
+       "fee": 0.07,
+       "equity": 37.76,
+       "npv": 3.5,
+       "irr": 8.6,
+       "merchant_ds_per_year": [
+        3.26,
+        3.22,
+        3.17
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 2.61,
+       "min_dscr_mkt_if_tail30_flat": 1.13,
+       "closes_gap_37_5_old": false,
+       "equity_minus_purse_37_5_old": 0.26,
+       "headroom_purse": 7.24
+      },
+      "20y_bank_case": {
+       "tenor": 20,
+       "kd": 0.05,
+       "dscr_merchant": 1.5,
+       "bank_price": "36.0 €/MWh plano (nominal)",
+       "debt": 54.65,
+       "debt_base_same_delay": 48.93,
+       "extra_debt": 5.71,
+       "fee": 0.11,
+       "equity": 35.47,
+       "npv": 4.09,
+       "irr": 8.73,
+       "merchant_ds_per_year": [
+        3.26,
+        3.22,
+        3.17,
+        3.12,
+        3.07
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 2.61,
+       "min_dscr_mkt_if_tail30_flat": 1.12,
+       "closes_gap_37_5_old": true,
+       "equity_minus_purse_37_5_old": -2.03,
+       "headroom_purse": 9.53
+      },
+      "20y_generous": {
+       "tenor": 20,
+       "kd": 0.05,
+       "dscr_merchant": 1.45,
+       "bank_price": "45.0 €/MWh +2 %/ano",
+       "debt": 64.42,
+       "debt_base_same_delay": 48.93,
+       "extra_debt": 15.49,
+       "fee": 0.31,
+       "equity": 25.89,
+       "npv": 6.43,
+       "irr": 9.39,
+       "merchant_ds_per_year": [
+        7.73,
+        7.85,
+        7.97,
+        8.09,
+        8.21
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 1.1,
+       "min_dscr_mkt_if_tail30_flat": 0.42,
+       "closes_gap_37_5_old": true,
+       "equity_minus_purse_37_5_old": -11.61,
+       "headroom_purse": 19.11
+      },
+      "20y_bank_case_dscr175": {
+       "tenor": 20,
+       "kd": 0.05,
+       "dscr_merchant": 1.75,
+       "bank_price": "36.0 €/MWh plano (nominal)",
+       "debt": 53.72,
+       "debt_base_same_delay": 48.93,
+       "extra_debt": 4.79,
+       "fee": 0.1,
+       "equity": 36.38,
+       "npv": 3.87,
+       "irr": 8.68,
+       "merchant_ds_per_year": [
+        2.8,
+        2.76,
+        2.71,
+        2.67,
+        2.63
+       ],
+       "min_dscr_mkt_if_tail36_escalated": 3.05,
+       "min_dscr_mkt_if_tail30_flat": 1.31,
+       "closes_gap_37_5_old": true,
+       "equity_minus_purse_37_5_old": -1.12,
+       "headroom_purse": 8.62
+      }
+     },
+     "partner": {
+      "guaranteed_25pct_at_cost": {
+       "stake": 0.25,
+       "discount_on_npv_share": 1.0,
+       "player_equity": 30.81,
+       "closes_gap_37_5_old": true,
+       "headroom_purse": 14.19,
+       "premium_cash_at_fid": 0.0,
+       "player_npv_t0": 2.33,
+       "npv_lost_vs_no_partner_same_delay": 0.78,
+       "fcf_share_kept": 0.75
+      },
+      "fair_25pct_disc20": {
+       "stake": 0.25,
+       "discount_on_npv_share": 0.2,
+       "player_equity": 30.81,
+       "closes_gap_37_5_old": true,
+       "headroom_purse": 14.19,
+       "premium_cash_at_fid": 0.85,
+       "player_npv_t0": 2.95,
+       "npv_lost_vs_no_partner_same_delay": 0.16,
+       "fcf_share_kept": 0.75
+      },
+      "minimum_stake": {
+       "stake": 0.087,
+       "discount_on_npv_share": 1.0,
+       "player_equity": 37.5,
+       "closes_gap_37_5_old": true,
+       "headroom_purse": 7.5,
+       "premium_cash_at_fid": 0.0,
+       "player_npv_t0": 2.84,
+       "npv_lost_vs_no_partner_same_delay": 0.27,
+       "fcf_share_kept": 0.913
+      }
+     },
+     "existing": {
+      "equity_capex_request_+5_vs_37_5": true,
+      "gearing_push_+10pp_vs_37_5": true,
+      "gearing_push_implied_dscr": 1.06
+     }
+    }
+   },
+   "purse_to_remove_blocker": {
+    "max_equity_good_band_38_40": 44.36,
+    "max_equity_plus_idc": 45.75,
+    "with_capex_overrun_5pct_at_38": 48.86,
+    "with_3m_fid_delay_at_38": 44.45
+   },
+   "recommendation_P46": "FECHADO Pedro 2026-10-03: purse 45 = tools/purse_params.json (+1 com juros da obra) + sócio garantido 25 % a custo; empréstimo 20 anos P 0,60; investidores +5 P 0,40.",
+   "label": "HIPÓTESE / PEDIR (P46, P9)"
+  },
+  "mandate_step": {
+   "label": "HIPÓTESE (âncora REAL secundária: Gain.ai 2026, sucessores 1,35× / 1,59×, mediana 1,43×) · PEDIR P57",
+   "trigger": "cycle_closed (ganho) ou fim de jogo perdido",
+   "rule_gm_with_values": "up_big se npv_ratio ≥ 1 ∧ prazos cumpridos ≥ 0,8 ∧ reputação ≥ +3 ∧ sem cash_rescue_used; up se npv_ratio ≥ 0,8; down se npv_ratio < 0,5 ∨ mandate_review_down ∨ perdeu; senão same",
+   "values": {
+    "up_big": "tier seguinte (boutique 45 / 6,5 → mid 70 / 8,5 proposto)",
+    "up": "× 1,15",
+    "same": "× 1,00",
+    "down": "× 0,85"
+   },
+   "plus_if_won": "fcf_to_next_asset × parte do jogador",
+   "ourique_examples": {
+    "clean_win_40": "up_big → mid 70 (+ 6,2 FCF → 76,2)",
+    "win_with_partner": "npv_ratio = 2,33/3,24 = 0,72 → same → 45 + 4,7",
+    "win_with_rescue": "up_big bloqueado → up ou same",
+    "lost": "down → 38,25"
+   },
+   "why": "Passos discretos são mais claros para o jogador do que um multiplicador contínuo. up_big = 1.56× (≈ 1,59× dos melhores gestores, REAL secundário); up = 1,15× (abaixo da mediana 1,43×, porque um projeto não é um fundo); down = 0,85×."
+  },
+  "purse_boutique": {
+   "status": "Parâmetro único tools/purse_params.json = 45 (único valor). CONFIRMADO Pedro 2026-10-03. +1 se os juros da obra entrarem no teste (P53). Teste com equity EXATA (41,0 / 44,4).",
+   "purse_default": 45.0,
+   "purse_alternatives": [
+    45.0
+   ],
+   "fid_check_ourique": {
+    "purse_default": 45.0,
+    "purse_alternatives": [
+     45.0
+    ],
+    "by_bid": {
+     "38": {
+      "equity_stated": {
+       "need": 44.1,
+       "headroom_default": 0.9,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 1.9,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 0.9,
+       "pass_46": true
+      },
+      "equity_exact": {
+       "need": 44.36,
+       "headroom_default": 0.64,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 1.64,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 0.64,
+       "pass_46": true
+      },
+      "equity_exact_incl_idc": {
+       "need": 45.75,
+       "headroom_default": -0.75,
+       "pass_default": false,
+       "headroom_default_plus_idc_step": 0.25,
+       "pass_default_plus_idc_step": true,
+       "pass_45": false,
+       "headroom_45": -0.75,
+       "pass_46": true
+      },
+      "equity_stated_incl_idc": {
+       "need": 45.49,
+       "headroom_default": -0.49,
+       "pass_default": false,
+       "headroom_default_plus_idc_step": 0.51,
+       "pass_default_plus_idc_step": true,
+       "pass_45": false,
+       "headroom_45": -0.49,
+       "pass_46": true
+      },
+      "capex_+5pct_incl_idc": {
+       "need": 50.25,
+       "headroom_default": -5.25,
+       "pass_default": false,
+       "headroom_default_plus_idc_step": -4.25,
+       "pass_default_plus_idc_step": false,
+       "pass_45": false,
+       "headroom_45": -5.25,
+       "pass_46": false
+      },
+      "after_d9_delay_3m_incl_idc": {
+       "need": 45.84,
+       "headroom_default": -0.84,
+       "pass_default": false,
+       "headroom_default_plus_idc_step": 0.16,
+       "pass_default_plus_idc_step": true,
+       "pass_45": false,
+       "headroom_45": -0.84,
+       "pass_46": true
+      },
+      "loan20_incl_idc": {
+       "need": 40.36,
+       "headroom_default": 4.64,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 5.64,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 4.64,
+       "pass_46": true
+      },
+      "partner25_incl_idc": {
+       "need": 34.38,
+       "headroom_default": 10.62,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 11.62,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 10.62,
+       "pass_46": true
+      },
+      "partner25_capex_+5pct_incl_idc": {
+       "need": 37.69,
+       "headroom_default": 7.31,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 8.31,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 7.31,
+       "pass_46": true
+      },
+      "loan20_capex_+5pct_incl_idc": {
+       "need": 44.6,
+       "headroom_default": 0.4,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 1.4,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 0.4,
+       "pass_46": true
+      },
+      "ask_investors_+5_capex_+5pct_incl_idc": {
+       "need": 45.25,
+       "headroom_default": -0.25,
+       "pass_default": false,
+       "headroom_default_plus_idc_step": 0.75,
+       "pass_default_plus_idc_step": true,
+       "pass_45": false,
+       "headroom_45": -0.25,
+       "pass_46": true
+      }
+     },
+     "40": {
+      "equity_stated": {
+       "need": 41.4,
+       "headroom_default": 3.6,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 4.6,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 3.6,
+       "pass_46": true
+      },
+      "equity_exact": {
+       "need": 40.98,
+       "headroom_default": 4.02,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 5.02,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 4.02,
+       "pass_46": true
+      },
+      "equity_exact_incl_idc": {
+       "need": 42.48,
+       "headroom_default": 2.52,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 3.52,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 2.52,
+       "pass_46": true
+      },
+      "equity_stated_incl_idc": {
+       "need": 42.9,
+       "headroom_default": 2.1,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 3.1,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 2.1,
+       "pass_46": true
+      },
+      "capex_+5pct_incl_idc": {
+       "need": 46.98,
+       "headroom_default": -1.98,
+       "pass_default": false,
+       "headroom_default_plus_idc_step": -0.98,
+       "pass_default_plus_idc_step": false,
+       "pass_45": false,
+       "headroom_45": -1.98,
+       "pass_46": false
+      },
+      "after_d9_delay_3m_incl_idc": {
+       "need": 42.57,
+       "headroom_default": 2.43,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 3.43,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 2.43,
+       "pass_46": true
+      },
+      "loan20_incl_idc": {
+       "need": 37.14,
+       "headroom_default": 7.86,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 8.86,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 7.86,
+       "pass_46": true
+      },
+      "partner25_incl_idc": {
+       "need": 31.93,
+       "headroom_default": 13.07,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 14.07,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 13.07,
+       "pass_46": true
+      },
+      "partner25_capex_+5pct_incl_idc": {
+       "need": 35.24,
+       "headroom_default": 9.76,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 10.76,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 9.76,
+       "pass_46": true
+      },
+      "loan20_capex_+5pct_incl_idc": {
+       "need": 41.38,
+       "headroom_default": 3.62,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 4.62,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 3.62,
+       "pass_46": true
+      },
+      "ask_investors_+5_capex_+5pct_incl_idc": {
+       "need": 41.98,
+       "headroom_default": 3.02,
+       "pass_default": true,
+       "headroom_default_plus_idc_step": 4.02,
+       "pass_default_plus_idc_step": true,
+       "pass_45": true,
+       "headroom_45": 3.02,
+       "pass_46": true
+      }
+     }
+    }
+   },
+   "lots_fit_own_tier": {
+    "Ourique": {
+     "needs": {
+      "best_bid_40": {
+       "equity": 41.4,
+       "idc": 1.49,
+       "equity_incl_idc": 42.9,
+       "equity_capex_+5pct_incl_idc": 47.4
+      },
+      "breakeven_bid_38": {
+       "equity": 44.1,
+       "idc": 1.4,
+       "equity_incl_idc": 45.5,
+       "equity_capex_+5pct_incl_idc": 50.0
+      }
+     },
+     "fit": {
+      "current": {
+       "purse": 45.0,
+       "best_bid_40": {
+        "headroom": 3.6,
+        "headroom_incl_idc": 2.1,
+        "headroom_overrun": -2.4
+       },
+       "breakeven_bid_38": {
+        "headroom": 0.9,
+        "headroom_incl_idc": -0.5,
+        "headroom_overrun": -5.0
+       }
+      },
+      "x1_2": {
+       "purse": 45.0,
+       "best_bid_40": {
+        "headroom": 3.6,
+        "headroom_incl_idc": 2.1,
+        "headroom_overrun": -2.4
+       },
+       "breakeven_bid_38": {
+        "headroom": 0.9,
+        "headroom_incl_idc": -0.5,
+        "headroom_overrun": -5.0
+       }
+      },
+      "proposed": {
+       "purse": 45.0,
+       "best_bid_40": {
+        "headroom": 3.6,
+        "headroom_incl_idc": 2.1,
+        "headroom_overrun": -2.4
+       },
+       "breakeven_bid_38": {
+        "headroom": 0.9,
+        "headroom_incl_idc": -0.5,
+        "headroom_overrun": -5.0
+       }
+      }
+     },
+     "label": "HIPÓTESE (motor; equity com gearing arredondado a 2 casas = valores trancados 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
+    },
+    "Ferreira do Alentejo": {
+     "needs": {
+      "best_bid_40": {
+       "equity": 62.7,
+       "idc": 2.25,
+       "equity_incl_idc": 64.9,
+       "equity_capex_+5pct_incl_idc": 71.8
+      },
+      "breakeven_bid_38": {
+       "equity": 68.2,
+       "idc": 2.08,
+       "equity_incl_idc": 70.3,
+       "equity_capex_+5pct_incl_idc": 77.1
+      }
+     },
+     "fit": {
+      "current": {
+       "purse": 50.0,
+       "best_bid_40": {
+        "headroom": -12.7,
+        "headroom_incl_idc": -14.9,
+        "headroom_overrun": -21.8
+       },
+       "breakeven_bid_38": {
+        "headroom": -18.2,
+        "headroom_incl_idc": -20.3,
+        "headroom_overrun": -27.1
+       }
+      },
+      "x1_2": {
+       "purse": 60.0,
+       "best_bid_40": {
+        "headroom": -2.7,
+        "headroom_incl_idc": -4.9,
+        "headroom_overrun": -11.8
+       },
+       "breakeven_bid_38": {
+        "headroom": -8.2,
+        "headroom_incl_idc": -10.3,
+        "headroom_overrun": -17.1
+       }
+      },
+      "proposed": {
+       "purse": 70.0,
+       "best_bid_40": {
+        "headroom": 7.3,
+        "headroom_incl_idc": 5.1,
+        "headroom_overrun": -1.8
+       },
+       "breakeven_bid_38": {
+        "headroom": 1.8,
+        "headroom_incl_idc": -0.3,
+        "headroom_overrun": -7.1
+       }
+      }
+     },
+     "label": "HIPÓTESE (motor; equity com gearing arredondado a 2 casas = valores trancados 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
+    },
+    "Estremoz": {
+     "needs": {
+      "best_bid_40": {
+       "equity": 83.4,
+       "idc": 3.52,
+       "equity_incl_idc": 86.9,
+       "equity_capex_+5pct_incl_idc": 96.8
+      },
+      "breakeven_bid_37": {
+       "equity": 95.3,
+       "idc": 3.16,
+       "equity_incl_idc": 98.5,
+       "equity_capex_+5pct_incl_idc": 108.4
+      }
+     },
+     "fit": {
+      "current": {
+       "purse": 75.0,
+       "best_bid_40": {
+        "headroom": -8.4,
+        "headroom_incl_idc": -11.9,
+        "headroom_overrun": -21.8
+       },
+       "breakeven_bid_37": {
+        "headroom": -20.3,
+        "headroom_incl_idc": -23.5,
+        "headroom_overrun": -33.4
+       }
+      },
+      "x1_2": {
+       "purse": 90.0,
+       "best_bid_40": {
+        "headroom": 6.6,
+        "headroom_incl_idc": 3.1,
+        "headroom_overrun": -6.8
+       },
+       "breakeven_bid_37": {
+        "headroom": -5.3,
+        "headroom_incl_idc": -8.5,
+        "headroom_overrun": -18.4
+       }
+      },
+      "proposed": {
+       "purse": 100.0,
+       "best_bid_40": {
+        "headroom": 16.6,
+        "headroom_incl_idc": 13.1,
+        "headroom_overrun": 3.2
+       },
+       "breakeven_bid_37": {
+        "headroom": 4.7,
+        "headroom_incl_idc": 1.5,
+        "headroom_overrun": -8.4
+       }
+      }
+     },
+     "label": "HIPÓTESE (motor; equity com gearing arredondado a 2 casas = valores trancados 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
+    }
+   },
+   "tiers": {
+    "current": {
+     "boutique": 45.0,
+     "mid": 50.0,
+     "infra": 75.0
+    },
+    "x1_2_gm": {
+     "boutique": 45.0,
+     "mid": 60,
+     "infra": 90
+    },
+    "proposed_economy": {
+     "boutique": 45.0,
+     "mid": 70.0,
+     "infra": 100.0
+    },
+    "car_mandate": {
+     "boutique": 6.5,
+     "mid": 8.5,
+     "infra": 12.0,
+     "keep": true
+    }
+   },
+   "recommendation_mid_infra": "mid 70 (72 se os juros da obra contarem) e infra 100: mesma regra que deu ~45 à boutique (≈ equity do lote do tier no fundo da faixa boa ≈ 50 % do Capex). ×1,2 (60/90) não chega para Ferreira nem na melhor oferta (62,7 > 60) e Estremoz falha a 37 (95,3 > 90). Os passos 45 → 70 → 100 (1,56× e 1,43×) batem com os passos reais de fundos sucessores.",
+   "thresholds_rescale": "Não: avisos de caixa, chão, ponte e mandato CAR usam o orçamento CAR (6,5), não a purse de equity. Só mexiam na purse: mandate_review_down (−2,5, agora retirado a meio do ciclo) e o mapa de reputação (agora mandate_step).",
+   "pip_m5_no_aia": "Pedro 2026-10-03: sem AIA, PIP sai até M5 → fase pip ~4 meses (não 7): burn_pip × 4 = 0,24 em vez de 0,42 → CAR do caminho sem AIA ~0,2 mais baixo (além de nao_sujeicao −0,3). Limiares não mudam."
+  }
+ },
+ "pedir_open_2026_10_03": [
+  {
+   "id": "P47",
+   "what": "Limiares da tensão: caixa ≤ 0,25 (manter, só depois do M0) · chão −10 % (GM −25 %) · paciência 3/5 · caducidade 2/4 · carência 2 m.",
+   "tags": [
+    "cash_rescue_used"
+   ],
+   "rules": [
+    "r-es-pressao-caixa",
+    "r-es-resgate",
+    "r-es-resgate-ultimato",
+    "r-es-pressao-paciencia",
+    "r-es-trc-aviso",
+    "r-es-trc-audiencia"
+   ]
+  },
+  {
+   "id": "P48",
+   "what": "Cortes 0,6/0,4 durante 3 meses, +1/+2 meses de calendário (corte compra tempo, não dinheiro).",
+   "tags": [
+    "burn_cut",
+    "burn_cut_deep",
+    "dev_slowdown"
+   ]
+  },
+  {
+   "id": "P49",
+   "what": "Resgate: ponte = −caixa + 3 meses de burn; diluição 15 % (10–30 %, fórmula); venda à pressa −30 %.",
+   "tags": [
+    "cash_rescue_used",
+    "rescue_capital_dilution",
+    "distressed_sale"
+   ]
+  },
+  {
+   "id": "P50",
+   "what": "Audiência TRC: P(caduca) 0,50; plano −0,20; acordo REN −0,15; pedido LP −0,10; prazo final falhado +0,15; sem resposta +0,20; limites 0,15–0,85.",
+   "rules": [
+    "r-es-trc-caducado",
+    "r-es-trc-mantido"
+   ]
+  },
+  {
+   "id": "P51",
+   "what": "Reputação → orçamento do próximo ciclo (m = 1 + 0,05R; perder × 0,85; promoção com R ≥ 5) e fcf_to_next_asset (36 meses de FCF).",
+   "tags": [
+    "reputation_+1",
+    "reputation_-1",
+    "fcf_to_next_asset",
+    "cycle_closed"
+   ]
+  },
+  {
+   "id": "P52",
+   "what": "FECHADO Pedro 2026-10-03 (P46 = ambas). Falta só: termos do banco (juro +0,25 pp, comissão 2 %, DSCR 1,50 a 36 €/MWh) = P9.",
+   "tags": [
+    "longer_loan_request",
+    "farm_down_fid_request",
+    "fid_reached"
+   ]
+  },
+  {
+   "id": "P53",
+   "what": "Equity na FID: usar o valor exato do motor (40,98 / 44,36) ou o arredondado (41,4 / 44,1 = Capex × (1 − g a 2 casas))? E contar os juros da obra (1,4–1,5 M€, pagos pelo equity no motor) no teste equity_fit?",
+   "tags": [
+    "equity_capex_commit",
+    "fid_reached"
+   ]
+  },
+  {
+   "id": "P54",
+   "what": "gearing_push (+10 pp) implica DSCR ≈ 1,05 no motor — abaixo do que os bancos aceitam (1,20–1,50). Retirar, ou trocar por longer_loan_request?",
+   "tags": [
+    "gearing_push"
+   ]
+  },
+  {
+   "id": "P55",
+   "what": "Purse mid/infra: actual 50/75; GM ×1,2 = 60/90; Economy propõe 70/100 (72 mid se juros da obra contarem). CAR 6,5/8,5/12,0 mantém-se.",
+   "tags": [
+    "fid_reached",
+    "mandate_step_up_big"
+   ]
+  },
+  {
+   "id": "P56",
+   "what": "Venda parcial antes da LP: confirmar que < 50 % sem controlo conjunto NÃO é transmissão (art. 18.º/9) → sem averbamento nem caução +50 %. Preço: % × valor × 0,65.",
+   "tags": [
+    "stake_sale_pre_lp"
+   ]
+  },
+  {
+   "id": "P57",
+   "what": "mandate_step (up_big tier seguinte / up ×1,15 / same / down ×0,85) e mandate_review_down só com odds a meio do ciclo (PENDENTE Pedro).",
+   "tags": [
+    "mandate_step_up_big",
+    "mandate_step_up",
+    "mandate_step_same",
+    "mandate_step_down",
+    "mandate_review_down"
+   ]
+  }
+ ],
  "no_economy": [
   "aas_eligible_ack",
   "aas_skip",
@@ -4187,7 +5950,9 @@
   "buy_withdrawn",
   "buyer_search_active",
   "camara_meeting_requested",
+  "car_approved_known",
   "car_request_sent",
+  "cash_ultimatum_open",
   "community_benefits_proposed",
   "community_trust_down",
   "community_trust_up",
@@ -4198,6 +5963,7 @@
   "competitor_watch",
   "constraint_reveal",
   "contest_shield",
+  "d9_answer_seen",
   "deadline_rush",
   "delay_env_+0",
   "dgeg_extension_cta",
@@ -4205,12 +5971,18 @@
   "dgeg_obligations_seen",
   "dgeg_status_requested",
   "dica_ack",
+  "dl_final_missed_le_deadline",
+  "dl_final_missed_lp_request",
+  "dl_missed_grid_agreement",
+  "dl_missed_grid_agreement_final",
   "dossier_unlock",
+  "end_screen_open",
   "epc_selected",
   "extension_seen",
   "fa_bess_skip",
   "fa_bess_wait",
   "fid_track_open",
+  "grid_agreement_signed",
   "grid_conditions_accepted",
   "grid_energisation_ready",
   "grid_phasing_request",
@@ -4227,9 +5999,19 @@
   "icnf_via_ca",
   "icnf_vinc_answered",
   "joint_liability_on",
+  "licenca_recusada_final",
   "line_ready",
+  "loan_cost_up",
   "lp_clean",
+  "lp_request_ready",
   "mandate_slot_free",
+  "milestone_acordo_ren",
+  "milestone_cod",
+  "milestone_decisao_final",
+  "milestone_inicio_obra",
+  "milestone_lp_atribuida",
+  "milestone_pip_aprovado",
+  "milestone_seen",
   "mw_own_down",
   "mw_reserved_by_buyer_up",
   "mw_reserved_by_partner_up",
@@ -4240,10 +6022,12 @@
   "partner_sale_negotiate",
   "partner_sale_refused",
   "partner_trc_spun_off",
+  "pressure_answered",
   "punch_list_first",
   "rede_calendar_seen",
   "reequip_defer",
   "ren_status_requested",
+  "rescue_sell_all",
   "risk_media_+1",
   "risk_media_-1",
   "sale_ack",
@@ -4259,9 +6043,13 @@
   "share_refused",
   "share_rent_agreed",
   "shared_benefits_unlock",
+  "stake_sale_started",
   "trc_alteration_approved",
   "trc_alteration_refused",
   "trc_alteration_requested",
-  "trc_remainder_to_grid"
+  "trc_audiencia_open",
+  "trc_lapse_accepted",
+  "trc_remainder_to_grid",
+  "trc_risk_warned"
  ]
 }

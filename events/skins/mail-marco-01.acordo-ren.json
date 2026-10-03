@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-marco-01",
+  "skin_id": "acordo-ren",
+  "draft": true,
+  "when": {
+    "milestone": "acordo-ren"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "Acordo com a REN assinado",
+  "body": "Tens o acordo com a REN para ligar a central à rede. A data da ligação está garantida e o teu Risco para a licença desce. Os investidores estão satisfeitos.",
+  "params": {}
+}

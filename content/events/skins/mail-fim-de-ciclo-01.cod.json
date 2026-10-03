@@ -1,0 +1,10 @@
+{
+  "skeleton_id": "mail-fim-de-ciclo-01",
+  "skin_id": "cod",
+  "draft": true,
+  "when": {},
+  "from_name": "Comité de investimento",
+  "subject": "A central de {{se_name}} está a funcionar: o balanço do ciclo",
+  "body": "A central de {{se_name}} entrou em funcionamento em {{cod_month}}. O plano era {{cod_month_plan}}. Conseguiste.\n\nFechámos as contas deste ciclo:\n• NPV hoje: {{npv_now}}, contra {{npv_auction}} quando ganhaste o leilão.\n• IRR, a rentabilidade por ano do capital próprio: {{irr}}.\n\nA partir de agora, o dinheiro que a central gera, depois de pagar ao banco, ajuda a pagar o teu próximo projeto. A tua reputação junto de nós: {{reputation_word}}. Olhámos para o resultado, para os prazos que cumpriste e para a tua reputação: o orçamento para o próximo ciclo {{mandate_step_word}}. O resto dos números está no balanço.",
+  "params": {}
+}

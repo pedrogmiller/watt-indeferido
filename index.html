@@ -216,6 +216,109 @@
     transition: width 0.5s ease;
   }
 
+  /* Main HUD: cash, licence risk, reputation. Exact figures live under «Ver números». */
+  .metric-pill.cash-ok { background: var(--bg-app); }
+  .metric-pill.cash-warn { background: #fffbeb; border-color: #fcd34d; white-space: normal; border-radius: 16px; }
+  .metric-pill.cash-warn .metric-label,
+  .metric-pill.cash-warn .metric-value { color: #92400e; }
+  .metric-pill.cash-bad { background: #fef2f2; border-color: #fca5a5; white-space: normal; border-radius: 16px; }
+  .metric-pill.cash-bad .metric-label,
+  .metric-pill.cash-bad .metric-value { color: #b91c1c; }
+  #pillCaixa.cash-warn .metric-label,
+  #pillCaixa.cash-bad .metric-label {
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: normal;
+    line-height: 1.25;
+    max-width: 11rem;
+  }
+  #mobileCaixaPill.cash-warn { background: #fffbeb; border-color: #fcd34d; }
+  #mobileCaixaPill.cash-warn .v { color: #92400e; }
+  #mobileCaixaPill.cash-bad { background: #fef2f2; border-color: #fca5a5; }
+  #mobileCaixaPill.cash-bad .v { color: #b91c1c; }
+  .licence-risk {
+    background: var(--bg-app);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 6px 12px 7px;
+    min-width: 168px;
+    flex: 1 1 180px;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .licence-risk-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .licence-risk-word { font-size: 12px; font-weight: 650; color: #334155; line-height: 1.25; text-align: right; }
+  .licence-risk-bar { height: 5px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+  .licence-risk-fill { height: 100%; width: 0; border-radius: 999px; background: #22c55e; transition: width 0.4s ease, background 0.3s ease; }
+  .licence-risk.tone-warn { background: #fffbeb; border-color: #fcd34d; }
+  .licence-risk.tone-warn .licence-risk-word { color: #92400e; }
+  .licence-risk.tone-warn .licence-risk-fill { background: #f59e0b; }
+  .licence-risk.tone-bad { background: #fef2f2; border-color: #fca5a5; }
+  .licence-risk.tone-bad .licence-risk-word { color: #b91c1c; }
+  .licence-risk.tone-bad .licence-risk-fill { background: #dc2626; }
+  .reputation-pill {
+    background: #f8fafc;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+  }
+  .reputation-word { font-size: 13px; font-weight: 700; color: #334155; }
+  .reputation-pill.tone-boa { background: #f0fdf4; border-color: #86efac; }
+  .reputation-pill.tone-boa .reputation-word { color: #166534; }
+  .reputation-pill.tone-fraca { background: #fef2f2; border-color: #fca5a5; }
+  .reputation-pill.tone-fraca .reputation-word { color: #b91c1c; }
+  .ver-numeros { border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+  .ver-numeros > summary {
+    cursor: pointer;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 650;
+    color: #334155;
+    list-style: none;
+  }
+  .ver-numeros > summary::-webkit-details-marker { display: none; }
+  .ver-numeros > summary::before { content: '▸ '; color: #94a3b8; }
+  .ver-numeros[open] > summary::before { content: '▾ '; }
+  .ver-numeros-body { padding: 0 16px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .ver-numeros .asset-money-strip { border-bottom: 0; background: transparent; padding: 0; flex-wrap: wrap; }
+  .ver-numeros-grid { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+  .ver-numeros-grid .bonding-pill { min-width: 160px; flex: 1 1 180px; }
+  .ver-numeros-project .asset-mw-hud,
+  .ver-numeros-project .asset-meta-grid { margin-top: 4px; }
+  .cycle-figures { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cycle-figures .cf {
+    flex: 1 1 140px;
+    min-width: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 8px 10px;
+  }
+  .cycle-figures .k { display: block; font-size: 11px; font-weight: 650; color: #64748b; line-height: 1.3; }
+  .cycle-figures .v { display: block; margin-top: 2px; font-size: 14px; font-weight: 700; color: #0f172a; }
+  @media (max-width: 640px) {
+    .header-metrics { flex-wrap: wrap; align-items: stretch; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+    #pillLicence { order: 3; flex: 1 1 100%; max-width: none; min-width: 0; }
+    .licence-risk-top { flex-wrap: wrap; }
+    .licence-risk-word { text-align: left; }
+    #pillCaixa { order: 1; }
+    #pillReputation { order: 2; }
+    #pillCaixa, #pillReputation {
+      flex: 1 1 calc(50% - 6px);
+      max-width: calc(50% - 6px);
+      min-width: 0;
+    }
+    #pillCaixa.cash-warn .metric-label,
+    #pillCaixa.cash-bad .metric-label { max-width: 100%; }
+    .ver-numeros > summary { padding: 10px 12px; }
+    .ver-numeros-body { padding: 0 12px 12px; }
+  }
+
   /* ── FAB · Próximo Trimestre ── */
   .fab-nextq {
     position: fixed;
@@ -1715,13 +1818,9 @@
       flex: none;
       width: 100%;
       gap: 8px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      overflow: visible;
+      flex-wrap: wrap;
       padding: 2px 0 6px;
-      mask-image: linear-gradient(90deg, #000 92%, transparent);
-      -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent);
     }
 
     .header-metrics::-webkit-scrollbar { display: none; }
@@ -3324,7 +3423,7 @@
   body.footer-mock .header {
     display: flex !important;
     flex-direction: row !important;
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: space-between !important;
     gap: 0 !important;
@@ -3369,13 +3468,27 @@
     font-family: var(--font);
   }
   /* Keep metrics/tutorial/auction/home/inbox out of the row so space-between works */
-  body.footer-mock .header-metrics,
   body.footer-mock #btnTutorial,
   body.footer-mock #btnHeaderHome,
   body.footer-mock #btnInbox,
   body.footer-mock #btnOpenAuction {
     display: none !important;
   }
+  /* The three HUD readings stay on the phone. The old pile of figures does not. */
+  body.footer-mock .header { flex-wrap: wrap !important; }
+  body.footer-mock .header-metrics {
+    display: flex !important;
+    order: 30;
+    flex: 1 0 100%;
+    width: 100%;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    align-items: stretch;
+    overflow: visible;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  body.footer-mock #mobileCaixaPill { display: none !important; }
 
   body.footer-mock .main {
     padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
@@ -3584,8 +3697,8 @@
     .header-metrics {
       order: 3;
       width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: visible;
+      flex-wrap: wrap;
       padding-bottom: 2px;
     }
     .header-home-btn { margin-left: auto; }
@@ -4861,6 +4974,36 @@
   .mail-choice.is-locked .mail-locked-hint { color: #92400e; }
   .mail-lock { font-size: 0.9em; }
   #assetEquityShort { margin-top: 12px; }
+
+  .hud-moment {
+    position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
+    z-index: 8800; display: flex; gap: 10px; align-items: baseline;
+    background: #fffbeb; color: #92400e; border: 1px solid #fcd34d;
+    border-radius: 999px; padding: 8px 16px; box-shadow: var(--shadow-hover);
+    font-size: 13px;
+  }
+  .hud-moment strong { font-weight: 700; }
+  .hud-moment[hidden] { display: none !important; }
+  .end-screen {
+    position: fixed; inset: 0; z-index: 9000; display: flex; align-items: center; justify-content: center;
+    background: rgba(15, 23, 42, 0.45); padding: 24px;
+  }
+  .end-screen[hidden] { display: none !important; }
+  .end-card {
+    width: min(520px, 100%); background: var(--bg-surface); color: var(--text-main);
+    border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-hover); padding: 22px 22px 16px;
+  }
+  .end-card h2 { font-size: 20px; margin-bottom: 8px; }
+  .end-dl { display: grid; grid-template-columns: 11rem 1fr; gap: 6px 12px; font-size: 13px; margin: 12px 0 16px; }
+  .end-dl dt { color: var(--text-muted); }
+  .end-dl dd { margin: 0; }
+  .end-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .end-actions button { font: inherit; border-radius: 10px; padding: 8px 12px; cursor: pointer; }
+  #endScreenRestart { background: #0f172a; color: white; border: 0; }
+  #endScreenMail, #endScreenClose { background: white; border: 1px solid var(--border-subtle); }
+  #btnNextQ.is-ended { opacity: 0.45; cursor: not-allowed; }
+
 </style>
 </head>
 <body>
@@ -4905,35 +5048,20 @@
   <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · T3</span>
 
   <div class="header-metrics" id="coach-header-metrics">
-    <div class="metric-pill" id="pillCaixa">
-      <span class="metric-label" title="Caixa disponível">Caixa</span>
+    <div class="metric-pill cash-ok" id="pillCaixa">
+      <span class="metric-label" id="caixaStatus" title="Caixa disponível">Caixa</span>
       <span class="metric-value num" id="valCaixa">2,0 M€</span>
     </div>
-    <div class="metric-pill" id="pillDivida">
-      <span class="metric-label" title="Dívida total">Dívida</span>
-      <span class="metric-value num" id="valDivida">0 €</span>
-    </div>
-    <div class="metric-pill" id="pillNav">
-      <span class="metric-label" title="Valor estimado da empresa">Valor da empresa</span>
-      <span class="metric-value num" id="valNav">2,0 M€</span>
-    </div>
-    <div class="rating-badge">Orçamento pequeno</div>
-    <div class="mandate-hud-pill" id="pillMandateCar" title="Para desenvolver: o orçamento que os investidores aceitam arriscar para preparares o projeto até decidires construir">
-      <span class="metric-label">Para desenvolver</span>
-      <span class="metric-value num" id="valMandateCar">6,5 M€</span>
-    </div>
-    <div class="mandate-hud-pill" id="pillMandateEquity" title="Capital próprio para construir: o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco">
-      <span class="metric-label">Para construir</span>
-      <span class="metric-value num" id="valMandateEquity">37,5 M€</span>
-    </div>
-    <div class="bonding-pill">
-      <div class="bonding-top">
-        <span class="metric-label" title="Garantias bancárias: cauções que o banco emite por ti para concorreres e manteres TRC">Garantias</span>
-        <span class="metric-value num" style="font-size:12px" id="valBonding">2,0 M€ livres</span>
+    <div class="licence-risk tone-ok" id="pillLicence" title="Risco para a licença">
+      <div class="licence-risk-top">
+        <span class="metric-label">Risco para a licença</span>
+        <span class="licence-risk-word" id="licenceRiskWord">Sem licença em jogo</span>
       </div>
-      <div class="bonding-bar">
-        <div class="bonding-fill" id="bondingFill" style="width:0%"></div>
-      </div>
+      <div class="licence-risk-bar" aria-hidden="true"><div class="licence-risk-fill" id="licenceRiskFill"></div></div>
+    </div>
+    <div class="reputation-pill tone-neutra" id="pillReputation">
+      <span class="metric-label">Reputação</span>
+      <span class="reputation-word" id="valReputation">Neutra</span>
     </div>
   </div>
 
@@ -5208,7 +5336,7 @@
         <div class="mandate-auction-strip" id="auctionMandateStrip" aria-label="O teu orçamento">
           <span class="mandate-chip" id="auctionMandateChip">Orçamento pequeno</span>
           <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">Para desenvolver: 6,5 M€</span>
-          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Para construir: 37,5 M€</span>
+          <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Para construir: 45,0 M€</span>
         </div>
         <div class="auction-clock-row" aria-live="polite">
           <div>
@@ -5360,12 +5488,52 @@
       </button>
     </div>
   </header>
-  <div class="asset-money-strip" id="assetMoneyStrip" aria-label="Dinheiro da empresa" aria-live="polite">
-    <div class="asset-money-cell" id="assetMoneyCaixaCell"><span class="k">Caixa</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span></div>
-    <div class="asset-money-cell" id="assetMoneyNavCell"><span class="k" title="Valor estimado da empresa">Valor da empresa</span><span class="v num" id="assetMoneyNav">—</span><span class="d num" id="assetMoneyNavDelta"></span></div>
-    <div class="asset-money-cell" id="assetMoneyBondingCell"><span class="k" title="Garantias bancárias livres">Garantias</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span></div>
-    <span class="econ-provisional" title="Valores em € provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span>
-  </div>
+  <details class="ver-numeros" id="verNumeros">
+    <summary>Ver números</summary>
+    <div class="ver-numeros-body">
+      <div class="asset-money-strip" id="assetMoneyStrip" aria-label="Dinheiro da empresa" aria-live="polite">
+        <div class="asset-money-cell" id="assetMoneyCaixaCell"><span class="k">Caixa</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span></div>
+        <div class="asset-money-cell" id="assetMoneyNavCell"><span class="k" title="Valor estimado da empresa">Valor da empresa</span><span class="v num" id="assetMoneyNav">—</span><span class="d num" id="assetMoneyNavDelta"></span></div>
+        <div class="asset-money-cell" id="assetMoneyBondingCell"><span class="k" title="Garantias bancárias livres">Garantias</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span></div>
+        <span class="econ-provisional" title="Valores em € provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span>
+      </div>
+      <div class="ver-numeros-grid">
+        <div class="metric-pill" id="pillDivida">
+          <span class="metric-label" title="Dívida total">Dívida</span>
+          <span class="metric-value num" id="valDivida">0 €</span>
+        </div>
+        <div class="metric-pill" id="pillNav">
+          <span class="metric-label" title="Valor estimado da empresa">Valor da empresa</span>
+          <span class="metric-value num" id="valNav">2,0 M€</span>
+        </div>
+        <div class="rating-badge">Orçamento pequeno</div>
+        <div class="mandate-hud-pill" id="pillMandateCar" title="Para desenvolver: o orçamento que os investidores aceitam arriscar para preparares o projeto até decidires construir">
+          <span class="metric-label">Para desenvolver</span>
+          <span class="metric-value num" id="valMandateCar">6,5 M€</span>
+        </div>
+        <div class="mandate-hud-pill" id="pillMandateEquity" title="Capital próprio para construir: o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco">
+          <span class="metric-label">Para construir</span>
+          <span class="metric-value num" id="valMandateEquity">45,0 M€</span>
+        </div>
+        <div class="bonding-pill">
+          <div class="bonding-top">
+            <span class="metric-label" title="Garantias bancárias: cauções que o banco emite por ti para concorreres e manteres TRC">Garantias</span>
+            <span class="metric-value num" style="font-size:12px" id="valBonding">2,0 M€ livres</span>
+          </div>
+          <div class="bonding-bar">
+            <div class="bonding-fill" id="bondingFill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cycle-figures" id="cycleFigures" aria-label="Balanço do ciclo">
+        <div class="cf"><span class="k">Caixa que resta</span><span class="v num" id="valCashLeft">—</span></div>
+        <div class="cf"><span class="k">Meses que a caixa cobre</span><span class="v num" id="valMonthsLeft">—</span></div>
+        <div class="cf"><span class="k">Desenvolvimento gasto</span><span class="v num" id="valCarSpent">—</span></div>
+        <div class="cf"><span class="k">Meses de jogo</span><span class="v num" id="valMonthsPlayed">—</span></div>
+      </div>
+      <div class="ver-numeros-project" id="verNumerosProject"></div>
+    </div>
+  </details>
   <div class="asset-room-scroll" id="assetRoomScroll">
     <div class="asset-room-inner" id="assetRoomBody">
       <!-- preenchido por renderAssetRoom -->
@@ -5380,10 +5548,10 @@
   <div class="mandate-card">
     <div class="mandate-kicker">Antes do leilão</div>
     <h2 id="mandateBriefingTitle">O teu orçamento</h2>
-    <p class="mandate-club" id="mandateBriefingClub">Começas com 2,0 M€ em caixa. Os investidores prometem até 6,5 M€ para desenvolveres um projeto e 37,5 M€ de capital próprio para o construíres. Chega para um lote.</p>
+    <p class="mandate-club" id="mandateBriefingClub">Começas com 2,0 M€ em caixa. Os investidores prometem até 6,5 M€ para desenvolveres um projeto e 45,0 M€ de capital próprio para o construíres. Chega para um lote.</p>
     <div class="mandate-auction-strip" style="margin:0 0 14px" aria-hidden="true">
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">Para desenvolver: 6,5 M€</span>
-      <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Para construir: 37,5 M€</span>
+      <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Para construir: 45,0 M€</span>
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingBands">Máximo: 1 lote</span>
     </div>
     <span id="mandateBriefingCarHint" hidden></span>
@@ -5796,6 +5964,7 @@
 
   function flashPill(id) {
     const el = document.getElementById(id);
+    if (!el) return;
     el.classList.add('flash');
     setTimeout(() => el.classList.remove('flash'), 1200);
   }
@@ -5934,11 +6103,7 @@
     const expanded = nodes.filter((n) => isAwardedTrc(n.id) && !state.minimized.has(n.id));
 
     grid.innerHTML = expanded.map(n => {
-      const t = n.trc;
-      const used = 100 - t.free;
       const th = threatFace(n);
-      const delta = fmtVanDelta(n.vanDelta);
-      const vTone = vanTone(n);
       const classes = [
         'node-card',
         activeId === n.id ? 'is-active' : '',
@@ -5977,33 +6142,14 @@
             <div class="card-tensao tone-${n.tensaoTone}">${n.tensao}</div>
             ${hudPhaseHtml}
 
-            <div class="card-hero">
-              <div class="card-hero-label" title="NPV: quanto vale hoje o projeto para os investidores: receitas menos custos e pagamentos ao banco, a valores de hoje, com 8% ao ano">NPV</div>
-              <div class="card-hero-row">
-                <span class="card-hero-value tone-${vTone} num">${fmtVan(n.van)}</span>
-                ${delta ? `<span class="card-hero-delta tone-${vTone} num">${delta}</span>` : ''}
-              </div>
-              <div class="hud-drivers-line"><strong>Custo de construção</strong>: <span class="num">${nodeDossier(n).capex || 'a definir'}</span></div>
-            </div>
-
             <div class="card-threat">
               <div class="threat-row">
                 <span class="threat-label"${th.tip ? ` data-tip="${th.tip}"` : ''}>${th.label}</span>
-                ${th.value ? `<span class="threat-value tone-${th.tone} num">${th.value}</span>` : ''}
               </div>
               ${n.missionOpen ? `<span class="mission-chip">1 tarefa em curso</span>` : ''}
             </div>
 
-            <div class="trc-face">
-              <div class="trc-bar" aria-hidden="true">
-                <div class="trc-seg" style="width:${used}%;background:#94a3b8"></div>
-              </div>
-              <div class="trc-face-meta">
-                <span class="trc-pct-quiet num">${used}%</span>
-              </div>
-            </div>
-
-            <div class="card-open-hint">Abrir sala do ativo</div>
+            <div class="card-open-hint">Abrir a sala para ver os números</div>
           </div>
         </article>`;
     }).join('');
@@ -6688,12 +6834,12 @@
       L.econChoiceId = ch.id;
       L.econChoiceLabel = fillMailTemplate(ch.label);
     }
-    setTimeout(() => showToast('Plano de sobreequipamento confirmado: +' + String(P.added).replace('.', ',') + ' MWp. A via ambiental passa a ' + (ENV_PATH_PT[P.to] || P.to) + '.'), 0);
+    setTimeout(() => showToast('Plano de sobreequipamento confirmado. A via ambiental muda.'), 0);
   }
   async function blockOverequipCap(node, plannedAcMva) {
     mailLoop.tags = mailLoop.tags || {};
     mailLoop.tags.block_overequip_cap = (mailLoop.tags.block_overequip_cap || 0) + 1;
-    showToast('Injeção acima do limite: no máximo ' + String(overequipInjectionCapMva(node)).replace('.', ',') + ' MVA (1,2 × a potência da ligação). O plano pedia ' + String(plannedAcMva).replace('.', ',') + ' MVA.');
+    showToast('Injeção acima do limite da ligação.');
     try {
       await deliverComposedLetter('mail-trc-mw-full-01', 'limite-sobreequipamento', { open: true, allowDup: true, when: 'Agora' });
     } catch (err) {
@@ -6707,7 +6853,7 @@
     if (plannedPct <= free) return false;
     mailLoop.tags = mailLoop.tags || {};
     mailLoop.tags.block_oversubscribe = (mailLoop.tags.block_oversubscribe || 0) + 1;
-    showToast('Não há potência livre para este plano: precisa de ' + plannedPct + '% e tens ' + free + '% livre');
+    showToast('Não há potência livre para este plano.');
     try {
       await deliverComposedLetter('mail-trc-mw-full-01', 'default', { open: true, allowDup: true, when: 'Agora' });
     } catch (err) {
@@ -6910,7 +7056,7 @@
     const built = phaseIdx >= ((typeof phaseIndex === 'function') ? phaseIndex('obra') : 5);
     const buildReason = built ? 'A obra já começou'
       : (!lpOk ? 'Abre com a licença de produção'
-        : (!eqFit.ok ? ('Falta capital próprio: faltam ' + fmtMoneyAbs(eqFit.gap) + ' (precisas de ' + fmtMoneyAbs(eqFit.need) + '; tens ' + fmtMoneyAbs(eqFit.budget) + ')') : ''));
+        : (!eqFit.ok ? 'Falta capital próprio para construir' : ''));
     ctas.push(cta('construir', 'Construir a central (FID)',
       'Decisão final de investimento: o banco e os investidores põem o dinheiro e a obra começa.',
       built ? 'Em obra' : (buildReason ? 'Fechado' : 'Aberto'), buildReason ? 'gated' : '', !!buildReason, buildReason));
@@ -6922,12 +7068,10 @@
         <h2 class="asset-zone-title">${node.name}</h2>
         <div class="asset-tension tone-${tensionTone}">${tension}</div>
         <div class="asset-meta-grid">
-          <div class="asset-meta-cell"><div class="k">Potência do TRC</div><div class="v num wrap"><span class="nw">${mw}</span> · <span class="nw">${tf.used}% usado</span> · <span class="nw">${tf.free}% livre</span></div></div>
           <div class="asset-meta-cell"><div class="k">Preço de venda da energia</div><div class="v num">${offtake}</div></div>
           <div class="asset-meta-cell"><div class="k">Fase do projeto</div><div class="v">${pd.phase}</div></div>
           <div class="asset-meta-cell"><div class="k">Próximo prazo</div><div class="v">${pd.deadline}</div></div>
         </div>
-        ${renderFreeMwHud(node)}
         ${renderSellModeChips(node)}
       </section>
 
@@ -6957,23 +7101,6 @@
         </div>
       </section>
 
-      <section class="asset-zone" id="assetZoneTrc" aria-label="Uso da ligação">
-        <div class="asset-zone-kicker">Uso da ligação</div>
-        <div class="asset-trc-bar" role="img" aria-label="Uso da ligação por tecnologia">
-          <div class="asset-trc-seg" data-trc-seg="solar" style="width:${t.solar}%;background:var(--solar)" title="Solar ${t.solar}%"></div>
-          <div class="asset-trc-seg" data-trc-seg="wind" style="width:${t.wind}%;background:var(--wind)" title="Eólico ${t.wind}%"></div>
-          <div class="asset-trc-seg" data-trc-seg="bess" style="width:${t.bess}%;background:var(--bess)" title="Baterias ${t.bess}%"></div>
-          <div class="asset-trc-seg" data-trc-seg="free" style="width:${t.free}%;background:#e2e8f0" title="Livre ${t.free}%"></div>
-        </div>
-        <p class="asset-trc-legend">
-          <span><span class="asset-trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</span>
-          ${t.wind ? `<span><span class="asset-trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</span>` : ''}
-          ${t.bess ? `<span><span class="asset-trc-dot" style="background:var(--bess)"></span>Baterias ${t.bess}%</span>` : ''}
-          <span><span class="asset-trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</span>
-        </p>
-        <p class="asset-mw-note">${(t.wind || t.bess) ? 'Inclui o que já juntaste ao solar.' : 'Por agora só tens o solar. Juntar eólica ou baterias usa parte da potência livre.'}</p>
-      </section>
-
       <section class="asset-zone" id="assetZoneActos" aria-label="O que podes fazer">
         <div class="asset-zone-kicker">O que podes fazer</div>
         <div class="asset-cta-list">${ctasHtml}</div>
@@ -6991,8 +7118,30 @@
       </section>
     `;
 
+    const nums = document.getElementById('verNumerosProject');
+    if (nums) {
+      nums.innerHTML = `
+        <div class="asset-meta-grid">
+          <div class="asset-meta-cell"><div class="k">Potência do TRC</div><div class="v num wrap"><span class="nw">${mw}</span> · <span class="nw">${tf.used}% usado</span> · <span class="nw">${tf.free}% livre</span></div></div>
+        </div>
+        ${renderFreeMwHud(node)}
+        <div class="asset-trc-bar" role="img" aria-label="Uso da ligação por tecnologia">
+          <div class="asset-trc-seg" data-trc-seg="solar" style="width:${t.solar}%;background:var(--solar)" title="Solar"></div>
+          <div class="asset-trc-seg" data-trc-seg="wind" style="width:${t.wind}%;background:var(--wind)" title="Eólico"></div>
+          <div class="asset-trc-seg" data-trc-seg="bess" style="width:${t.bess}%;background:var(--bess)" title="Baterias"></div>
+          <div class="asset-trc-seg" data-trc-seg="free" style="width:${t.free}%;background:#e2e8f0" title="Livre"></div>
+        </div>
+        <p class="asset-trc-legend">
+          <span><span class="asset-trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</span>
+          ${t.wind ? `<span><span class="asset-trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</span>` : ''}
+          ${t.bess ? `<span><span class="asset-trc-dot" style="background:var(--bess)"></span>Baterias ${t.bess}%</span>` : ''}
+          <span><span class="asset-trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</span>
+        </p>
+        <p class="asset-mw-note">${(t.wind || t.bess) ? 'Inclui o que já juntaste ao solar.' : 'Por agora só tens o solar. Juntar eólica ou baterias usa parte da potência livre.'}</p>`;
+    }
     try { entDecorateSala(body, node); } catch (_) {}
-    body.querySelectorAll('[data-trc-seg]').forEach((el) => {
+    const segRoot = document.getElementById('verNumerosProject') || body;
+    segRoot.querySelectorAll('[data-trc-seg]').forEach((el) => {
       el.addEventListener('click', () => focusAssetHybridizacao());
     });
     try {
@@ -7012,7 +7161,7 @@
         }
         if (id === 'construir') {
           const fit = projectEquityFit(node.id);
-          if (!fit.ok) { showToast('Falta capital próprio para construir: faltam ' + fmtMoneyAbs(fit.gap) + '.'); return; }
+          if (!fit.ok) { showToast('Falta capital próprio para construir.'); return; }
           // The decision itself is the investors' FID card (mail-investidores-fid-01); the sala only opens it.
           const fidL = (mailState.items || []).filter((m) => mailSkeletonOf(m) === 'mail-investidores-fid-01' && !m.econChoiceId).pop();
           if (fidL && window.WattInbox) { WattInbox.open(); WattInbox.openLetter(fidL.id); }
@@ -7433,16 +7582,90 @@
     assetMoneyLast = { caixa: state.caixa, nav: state.nav, bondingFree: state.bondingFree };
   }
 
+  function cashHudTone() {
+    const caixa = Number(state.caixa) || 0;
+    if (caixa < 0) return 'bad';
+    let line = 1.625;
+    try { if (typeof cashPressureLine === 'function') line = cashPressureLine(); } catch (_) {}
+    if (caixa <= line + 1e-9) return 'warn';
+    return 'ok';
+  }
+  function paintCashHud() {
+    const tone = cashHudTone();
+    const label = tone === 'bad' ? 'A caixa não chega' : (tone === 'warn' ? 'Os investidores estão nervosos' : 'Caixa');
+    ['pillCaixa', 'mobileCaixaPill'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('cash-ok', 'cash-warn', 'cash-bad');
+      el.classList.add('cash-' + tone);
+      if (id === 'mobileCaixaPill') el.title = label;
+    });
+    const st = document.getElementById('caixaStatus');
+    if (st) st.textContent = label;
+  }
+  function paintLicenceRisk() {
+    const el = document.getElementById('pillLicence');
+    const word = document.getElementById('licenceRiskWord');
+    const fill = document.getElementById('licenceRiskFill');
+    if (!el || !word || !fill) return;
+    const loop = (typeof mailLoop !== 'undefined') ? mailLoop : null;
+    const active = !!(loop && loop.active);
+    let level = 0;
+    try { if (typeof caducidadeLevel === 'function') level = caducidadeLevel(); } catch (_) {}
+    const missed = (active && loop.missedDeadlines) ? Object.keys(loop.missedDeadlines).filter((k) => k !== 'cash_recovery').length : 0;
+    let soon = false;
+    if (active && loop.deadlines) {
+      const month = loop.month | 0;
+      Object.keys(loop.deadlines).forEach((k) => {
+        const d = loop.deadlines[k];
+        if (!d || d.atMonth == null || (loop.firedDeadlines || {})[k]) return;
+        const left = (d.atMonth | 0) - month;
+        if (left >= 0 && left <= 2) soon = true;
+      });
+    }
+    const hearing = active && loop.tags && (((loop.tags.trc_audiencia_open | 0) > 0) || ((loop.tags.trc_caducado | 0) > 0));
+    let tone = 'ok';
+    let text = active ? 'A licença está segura' : 'Sem licença em jogo';
+    let pct = active ? 16 : 0;
+    if (hearing || level >= 4) { tone = 'bad'; text = 'A licença está em perigo'; pct = 100; }
+    else if (level >= 2 || missed > 0) { tone = 'bad'; text = 'A licença está em risco'; pct = 72; }
+    else if (level >= 1 || soon) { tone = 'warn'; text = 'A licença está a apertar'; pct = 46; }
+    el.classList.remove('tone-ok', 'tone-warn', 'tone-bad');
+    el.classList.add('tone-' + tone);
+    word.textContent = text;
+    fill.style.width = pct + '%';
+  }
+  function paintReputationHud() {
+    const el = document.getElementById('pillReputation');
+    const word = document.getElementById('valReputation');
+    if (!el || !word) return;
+    let w = 'neutra';
+    try { if (typeof reputationWord === 'function') w = reputationWord(); } catch (_) {}
+    word.textContent = w === 'boa' ? 'Boa' : (w === 'fraca' ? 'Fraca' : 'Neutra');
+    el.classList.remove('tone-boa', 'tone-neutra', 'tone-fraca');
+    el.classList.add('tone-' + (w === 'boa' ? 'boa' : (w === 'fraca' ? 'fraca' : 'neutra')));
+  }
+  /** Toast/activity line for a month of spend. The amount stays in Ver números. */
+  function spendFeeling(drift) {
+    if (!drift || Math.abs(drift.caixa) < 0.0005) return '';
+    if ((Number(state.caixa) || 0) < 0) return ' · A caixa não chega';
+    if (cashHudTone() === 'warn') return ' · Os investidores estão nervosos';
+    return ' · A equipa e os estudos gastaram caixa';
+  }
   function updateHeaderMetrics(doFlash) {
     try { recomputeNav(); } catch (_) {}
-    document.getElementById('valCaixa').textContent = fmtEur(state.caixa);
+    const caixaEl = document.getElementById('valCaixa');
+    if (caixaEl) caixaEl.textContent = fmtEur(state.caixa);
     const mcv = document.getElementById('mobileCaixaVal');
     if (mcv) mcv.textContent = fmtEur(state.caixa);
-    document.getElementById('valDivida').textContent = fmtEur(state.divida);
-    document.getElementById('valNav').textContent = fmtEur(state.nav);
-    document.getElementById('valBonding').textContent = fmtEur(state.bondingFree) + ' livres';
+    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    setText('valDivida', fmtEur(state.divida));
+    setText('valNav', fmtEur(state.nav));
+    setText('valBonding', fmtEur(state.bondingFree) + ' livres');
     const usedPct = state.bondingTotal > 0 ? ((state.bondingTotal - state.bondingFree) / state.bondingTotal) * 100 : 0;
-    document.getElementById('bondingFill').style.width = Math.min(100, Math.max(0, usedPct)) + '%';
+    const bondingFill = document.getElementById('bondingFill');
+    if (bondingFill) bondingFill.style.width = Math.min(100, Math.max(0, usedPct)) + '%';
+    try { paintCashHud(); paintLicenceRisk(); paintReputationHud(); paintCycleFigures(); } catch (_) {}
     const finSet = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = fmtEur(v); };
     finSet('finDebtProject', state.divida);
     finSet('finDebtTotal', state.divida);
@@ -7487,6 +7710,9 @@
     const e = lotEcon(lotId);
     const row = econEngineRow('burn_' + phase);
     let cash = (row && typeof row.cash === 'number') ? row.cash : -(PROJECT_BURN_CAR_PER_MONTH_MEUR[phase] || 0);
+    if (phase !== 'obra' && phase !== 'cod' && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.burnCut && (mailLoop.burnCut.left | 0) > 0) {
+      cash *= mailLoop.burnCut.factor;
+    }
     if (phase === 'cod') cash = 0; // TODO(Economy P9/P10): receita pós-COD (burn_cod) depende de opex e serviço da dívida = PEDIR
     let debt = 0, equity = 0;
     if (phase === 'obra') {
@@ -7516,6 +7742,10 @@
     d.nav = +(recomputeNav() - navBefore).toFixed(3);
     d.caixa = +d.caixa.toFixed(3);
     d.divida = +d.divida.toFixed(3);
+    if (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.burnCut && months > 0) {
+      mailLoop.burnCut.left = (mailLoop.burnCut.left | 0) - 1;
+      if (mailLoop.burnCut.left <= 0) mailLoop.burnCut = null;
+    }
     return d;
   }
   function driftChanged(d) {
@@ -7540,6 +7770,11 @@
       let cappedAtEnd = false;
 
       if (mailActive) {
+        if (typeof playIsLocked === 'function' && playIsLocked()) {
+          btn.classList.remove('loading');
+          if (typeof syncEndPlayLock === 'function') syncEndPlayLock();
+          return;
+        }
         const monthBefore = mailLoop.month | 0;
         let jumpResult = null;
         let scheduleMax = 6;
@@ -7582,15 +7817,24 @@
           }
         }
         const missed = checkMissedDeadlines(mailLoop.month);
+        try {
+          if (typeof silenceFinalMiss === 'function') {
+            silenceFinalMiss(mailLoop.month).forEach((x) => { if (x) missed.push(x); });
+          }
+        } catch (err) { console.warn('[WattStakes] final miss', err); }
         // Project-based monthly drift (placeholders at 0 → nothing moves)
         const drift = monthlyProjectDrift(Math.max(0, (mailLoop.month | 0) - monthBefore));
+        let stakesLetters = [];
+        try {
+          if (typeof runStakesPass === 'function') stakesLetters = runStakesPass(mailLoop.month) || [];
+        } catch (err) { console.warn('[WattStakes] pass', err); }
         const moved = driftChanged(drift);
         updateHeaderMetrics(moved);
         if (moved && Math.abs(drift.divida) >= 0.005) flashPill('pillDivida');
 
         const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · M' + mailLoop.month);
         const jumpNote = jumpResult ? (' (avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ')') : '';
-        const burnNote = (Math.abs(drift.caixa) >= 0.0005) ? (' · Caixa ' + fmtDeltaMEur(drift.caixa) + ' (equipa e estudos)') : '';
+        const burnNote = (typeof spendFeeling === 'function') ? spendFeeling(drift) : '';
         const _showToast = showToast;
         const showToastBurn = (m) => _showToast(m + burnNote);
         activities.unshift({
@@ -7622,7 +7866,8 @@
           activities.unshift({ time: 'Mês ' + mailLoop.month, text: 'Prazo falhado: ' + m.label + ' (mês ' + m.atMonth + '). ' + m.text });
           showToast('Prazo falhado: ' + m.label + '. ' + m.text);
         });
-        if (missed.length) { renderActivity(); try { renderNodes(); } catch (_) {} }
+        if (missed.length || stakesLetters.length) { renderActivity(); try { renderNodes(); } catch (_) {} try { renderInboxBadge(); } catch (_) {} }
+        try { if (typeof syncEndPlayLock === 'function') syncEndPlayLock(); } catch (_) {}
         scheduleSave('next-month-mail');
       } else {
         state.quarter += 1;
@@ -7646,7 +7891,7 @@
 
         btn.classList.remove('loading');
         btn.disabled = false;
-        showToast(`Avançaste para ${state.year} · T${state.quarter}` + ((Math.abs(driftQ.caixa) >= 0.0005) ? (' · Caixa ' + fmtDeltaMEur(driftQ.caixa)) : ''));
+        showToast(`Avançaste para ${state.year} · T${state.quarter}` + ((typeof spendFeeling === 'function') ? spendFeeling(driftQ) : ''));
         scheduleSave('next-quarter');
 
         // Next quarter without a TRC: open the next REN round, but never skip a round that still has lots you can bid on.
@@ -8491,7 +8736,8 @@
    * Todos os valores são HIPÓTESE / provisórios (marca «valores provisórios» no header e na sala). M€. */
   const ECON_TIER = {
     //            seed caixa · mandato CAR (fit) · capital próprio · linha garantias · top-up M0 pouco/médio/muito · factor pedidos extra
-    boutique: { seed: 2.0, carMandate: 6.5, equity: 37.5, bonding: 2.0, m0: { S: 2.5, M: 4.5, L: 6.5 }, reqFactor: 1.0 },
+    // equity: FID purse. Source of truth is content/economy/purse_params.json (boutique_r1_equity_MEUR), applied on load.
+    boutique: { seed: 2.0, carMandate: 6.5, equity: 45.0, bonding: 2.0, m0: { S: 2.5, M: 4.5, L: 6.5 }, reqFactor: 1.0 },
     mid:      { seed: 3.0, carMandate: 8.5, equity: 50,   bonding: 3.0, m0: { S: 3.0, M: 5.5, L: 8.5 }, reqFactor: 1.3 },
     infra:    { seed: 4.5, carMandate: 12.0, equity: 75,  bonding: 4.5, m0: { S: 4.5, M: 7.5, L: 12.0 }, reqFactor: 1.8 }
   };
@@ -8675,20 +8921,6 @@
     recomputeNav();
     return out;
   }
-  /** «caixa −150 k€ · +2 meses» — € deltas ao lado da frase no toast. */
-  function econDeltaBits(d) {
-    if (!d) return '';
-    const bits = [];
-    if (Math.abs(d.cash) >= 0.0005) bits.push('caixa ' + fmtDeltaMEur(d.cash));
-    if (Math.abs(d.bonding) >= 0.0005) bits.push('garantias livres ' + fmtDeltaMEur(-d.bonding));
-    if (Math.abs(d.debt) >= 0.0005) bits.push('dívida ' + fmtDeltaMEur(d.debt));
-    if (Math.abs(d.nav) >= 0.0005) bits.push('NPV ' + fmtDeltaMEur(d.nav));
-    if (Math.abs(d.car) >= 0.0005) bits.push('dinheiro de desenvolvimento ' + fmtDeltaMEur(d.car));
-    if (Math.abs(d.equity) >= 0.0005) bits.push('capital próprio ' + fmtDeltaMEur(d.equity));
-    if (d.months) bits.push((d.months > 0 ? '+' : '−') + Math.abs(d.months) + (Math.abs(d.months) === 1 ? ' mês' : ' meses'));
-    return bits.join(' · ');
-  }
-
   /* ── Gate 1 mandate mock (tiers boutique / mid / infra) ── */
   const BAND_RANK = { S: 1, M: 2, L: 3 };
   /** Internal band words (S/M/L). Player text now shows € (econBudget / lotEcon), not these words. */
@@ -9017,7 +9249,7 @@
       state.bondingFree = +(state.bondingFree + (to.bonding - from.bonding)).toFixed(3);
       try { updateHeaderMetrics(true); } catch (_) {}
       if (typeof showToast === 'function') {
-        showToast('Os investidores aumentaram o teu orçamento: ' + fmtMoneyAbs(to.carMandate) + ' para desenvolver e ' + fmtMoneyAbs(to.equity) + ' para construir. No próximo leilão podes ficar com mais um lote.');
+        showToast('Os investidores aumentaram o teu orçamento. No próximo leilão podes ficar com mais um lote.');
       }
     } catch (_) {}
     try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
@@ -9216,6 +9448,9 @@
   }
   /** Equity after debt at this bid (file: Capex proposed × (1 − gearing_by_bid)). null without the file. */
   function faixaEquityAtBid(id, bid) {
+    const exact = (typeof FID_EQUITY_EXACT_MEUR !== 'undefined') ? FID_EQUITY_EXACT_MEUR[id] : null;
+    const rounded = Math.round(Number(bid));
+    if (exact && bid != null && !isNaN(rounded) && exact[rounded] != null) return exact[rounded];
     const f = faixaLot(id);
     if (!f || !f.gearing_by_bid || !f.capex_MEUR) return null;
     const cap = Number(f.capex_MEUR.proposed != null ? f.capex_MEUR.proposed : f.capex_MEUR.approved_s6);
@@ -9780,10 +10015,14 @@
   }
   function projectEquityFit(lotId) {
     const bid = wonLotBid(lotId);
-    const at = (bid != null) ? faixaEquityAtBid(lotId, bid) : null;
-    const need = at != null ? at : lotEcon(lotId).equityNeed;
+    let need = (bid != null && typeof fidEquityNeed === 'function') ? fidEquityNeed(lotId, bid) : ((bid != null) ? faixaEquityAtBid(lotId, bid) : null);
+    if (need == null) need = lotEcon(lotId).equityNeed;
+    const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
+    if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     const budget = econBudget().equity;
-    return { ok: !(need > budget + 1e-9), need: need, budget: budget, gap: +Math.max(0, need - budget).toFixed(1), bid: bid };
+    const closed = !!(mailLoop && mailLoop.equityGapClosed);
+    const ok = closed || !(need > budget + 1e-9);
+    return { ok: ok, need: need, budget: budget, gap: +Math.max(0, need - budget).toFixed(1), bid: bid, partnerStake: stake };
   }
   function equityAskOdds() {
     const spec = ECON_ROLLED.equity_capex_request;
@@ -9826,7 +10065,7 @@
     try { if (mailLoop && mailLoop.tags) mailLoop.tags.equity_capex_request = (mailLoop.tags.equity_capex_request || 0) + 1; } catch (_) {}
     try { if (mailLoop && mailLoop.active) draftRulesRearmOn('equity_capex_request'); } catch (_) {} // r-fid / r-fid-sem-capital rearm
     showToast(r.ok
-      ? ('Os investidores aceitaram: +' + fmtMoneyAbs(ec.equityAsk.delta) + ' de capital próprio. Tens ' + fmtMoneyAbs(econBudget().equity) + '.')
+      ? 'Os investidores puseram mais capital próprio.'
       : 'Os investidores recusaram pôr mais capital próprio.');
     try { renderMandateHud(); } catch (_) {}
     try { updateConsultant(); } catch (_) {}
@@ -10048,18 +10287,10 @@
 
   function trcAcceptToast(committed) {
     if (!committed.length) return 'O teu TRC está no portefólio';
-    const sum = { kickoff: 0, bondingFree: 0, bondCash: 0 };
-    committed.forEach((c) => {
-      sum.kickoff += c.delta.kickoff || 0; sum.bondingFree += c.delta.bondingFree || 0; sum.bondCash += c.delta.bondCash || 0;
-    });
-    const bits = [];
-    if (sum.kickoff >= 0.0005) bits.push('Caixa ' + fmtDeltaMEur(-sum.kickoff) + ' (arranque do projeto)');
-    if (Math.abs(sum.bondingFree) >= 0.0005) bits.push('Garantias livres ' + fmtDeltaMEur(sum.bondingFree) + ' (caução da rede)');
-    if (sum.bondCash >= 0.0005) bits.push('Caixa ' + fmtDeltaMEur(-sum.bondCash) + ' (caução da rede: a linha de garantias não chegava)');
     const head = committed.length === 1
       ? ('O TRC de ' + committed[0].lot.name + ' está no portefólio')
       : (committed.length + ' TRC estão no portefólio');
-    return head + (bits.length ? (' · ' + bits.join(' · ')) : '');
+    return head + '. A caução da rede ficou prestada e o arranque gastou caixa.';
   }
 
   function goHomeWithTrc() {
@@ -10195,7 +10426,7 @@
     if (typeof lotFitsMandate === 'function') {
       const fit = lotFitsMandate(lot);
       if (!fit.ok) {
-        try { showToast(fit.reason || 'Este lote não cabe no teu orçamento'); } catch (_) {}
+        try { showToast('Este lote não cabe no orçamento para desenvolver.'); } catch (_) {}
         return;
       }
     }
@@ -11115,7 +11346,10 @@
     const skin = args.skin;
     const seSheet = args.seSheet;
     const opts = args.opts || {};
-    const ctx = Object.assign({}, buildTemplateCtx(seSheet), skin.params || {}, opts.ctx || {});
+    const mergedParams = Object.assign({}, skin.params || {}, opts.ctx || {});
+    let livePh = {};
+    try { if (typeof stakesPlaceholderCtx === 'function') livePh = stakesPlaceholderCtx(mergedParams) || {}; } catch (_) {}
+    const ctx = Object.assign({}, buildTemplateCtx(seSheet), mergedParams, livePh);
     // skin.choice_overrides (GM 2026-09-30): per choice id, the skin replaces hint / effects (/ label).
     const ovAll = (skin.choice_overrides && typeof skin.choice_overrides === 'object') ? skin.choice_overrides : {};
     const choices = (skeleton.choices || []).map((c) => {
@@ -11234,6 +11468,10 @@
     pip_camara: 'Prazo do PIP na Câmara',
     main_permit: 'Início da avaliação ambiental',
     grid_agreement: 'Acordo com a REN',
+    grid_agreement_final: 'Acordo com a REN (último prazo)',
+    lp_request: 'Pedido de licença de produção',
+    le_deadline: 'Licença de exploração',
+    cash_recovery: 'Repor a caixa',
     trc_transfer_averbamento: 'Registo do novo titular do TRC (DGEG)',
     lp_transfer_authorization: 'Autorização da DGEG para a venda'
   };
@@ -11275,7 +11513,8 @@
   function seedDefaultDeadlines(envPath) {
     const d = {
       land_option: { label: DEADLINE_LABEL_PT.land_option, atMonth: 1 },
-      grid_agreement: { label: DEADLINE_LABEL_PT.grid_agreement, atMonth: 6 }
+      grid_agreement: { label: DEADLINE_LABEL_PT.grid_agreement, atMonth: 6 },
+      lp_request: { label: DEADLINE_LABEL_PT.lp_request, atMonth: 6, due: 6, ext: 0 }
     };
     if (!landChosen()) return d;
     const p = envPath || currentEnvPath();
@@ -11420,16 +11659,22 @@
   }
 
   /* ── Draft rules (lp-cod-rules.draft.json), only the groups the console runs today ── */
-  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card'];
+  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao'];
   /** Single rules the console runs (group icnf_ca is otherwise not wired; rules without mutex_group). */
   const DRAFT_RULE_IDS = ['r-apa-icnf-vinculativo-aia', 'r-apa-icnf-vinculativo-caso', 'r-sobreequipamento', 'r-nisa-enterrar-linha',
-    'r-consultor-icnf-aviso-aia', 'r-consultor-icnf-aviso-caso', 'r-arranque'];
+    'r-consultor-icnf-aviso-aia', 'r-consultor-icnf-aviso-caso', 'r-arranque',
+    'r-es-d9-emprestimo-aceite', 'r-es-d9-emprestimo-recusado', 'r-es-d9-socio',
+    'r-es-pressao-caixa', 'r-es-resgate', 'r-es-resgate-ultimato', 'r-es-pressao-paciencia',
+    'r-es-trc-aviso', 'r-es-trc-audiencia', 'r-es-trc-mantido', 'r-es-trc-caducado',
+    'r-es-fim-trc-aceite', 'r-es-fim-licenca-pip', 'r-es-fim-licenca-lp', 'r-es-fim-licenca-dia', 'r-es-fim-abandono',
+    'r-es-marco-pip-aprovado', 'r-es-marco-acordo-ren', 'r-es-marco-lp-atribuida', 'r-es-marco-decisao-final', 'r-es-marco-inicio-obra',
+    'r-es-cod'];
   /** Groups whose odds are absolute shares of one outcome (Economy 2026-09-30): the n-th rule rolls p / (1 − earlier p). */
   const ABS_ODDS_GROUPS = { dia_outcome: 1, lp_transfer: 1 };
   /** Group key: mutex_group, else the rule id (a rule without group = its own «once» group). */
   function ruleGroupKey(r) { return (r && (r.mutex_group || r.id)) || '_'; }
   /** Deadlines from deadlines.draft.json that the console runs generically (create/meet/void/extension). */
-  const GENERIC_DEADLINE_IDS = ['lp_transfer_authorization'];
+  const GENERIC_DEADLINE_IDS = ['lp_transfer_authorization', 'grid_agreement_final', 'le_deadline', 'lp_request'];
   function draftDeadlineDefs() {
     const p = window.__wattEventPack;
     const d = p && p.deadlines_draft;
@@ -11460,11 +11705,15 @@
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     defs.forEach((def) => {
       const id = def.id;
-      if (def.create_on && has(def.create_on.effect_any)) {
-        if (!mailLoop.deadlines[id] || def.recreate_if_closed) {
-          const due = (mailLoop.month | 0) + (Number(def.due && def.due.months) || 0);
-          mailLoop.deadlines[id] = { label: def.label || DEADLINE_LABEL_PT[id] || 'Prazo', due: due, atMonth: Math.ceil(due - 1e-9), ext: 0 };
-          delete mailLoop.firedDeadlines[id];
+      if (def.create_on) {
+        const createFx = (def.create_on.effect_any || []).slice();
+        if (def.create_on.effect) createFx.push(def.create_on.effect);
+        if (has(createFx)) {
+          if (!mailLoop.deadlines[id] || def.recreate_if_closed) {
+            const due = (mailLoop.month | 0) + (Number(def.due && def.due.months) || 0);
+            mailLoop.deadlines[id] = { label: def.label || DEADLINE_LABEL_PT[id] || 'Prazo', due: due, atMonth: Math.ceil(due - 1e-9), ext: 0 };
+            delete mailLoop.firedDeadlines[id];
+          }
         }
       }
       if (!mailLoop.deadlines[id]) return;
@@ -11577,6 +11826,30 @@
       if (f) return rule.skeleton === (f === 'exig' ? 'mail-icnf-compensacao-exigente-01' : 'mail-icnf-compensacao-aprovada-01') ? 1 : 0;
       return rule.skeleton === 'mail-icnf-compensacao-exigente-01' ? mod(0.5) : 1; // 0,5 = HIPÓTESE (GM)
     }
+    if (rule.mutex_group === 'es_d9_emprestimo') {
+      if (rule.skin !== 'emprestimo-aceite') return 1;
+      let p = 0.60;
+      try {
+        const n = nodes.find((x) => x.id === (mailLoop.seId || 'ourique'));
+        if (n && typeof n.van === 'number' && n.van < 0) p = 0.30;
+      } catch (_) {}
+      p -= 0.10 * investorPatienceHits();
+      return Math.max(0.05, Math.min(0.95, p));
+    }
+    if (rule.id === 'r-es-d9-socio') return 1;
+    if (rule.id === 'r-es-trc-caducado') {
+      const f = qaParam('trc');
+      if (f === 'lapse' || f === 'lose') return 1;
+      if (f === 'keep') return 0;
+      let p = 0.50;
+      if (on('trc_recovery_plan')) p -= 0.20;
+      if (on('grid_agreement_signed')) p -= 0.15;
+      if (on('lp_request_submitted')) p -= 0.10;
+      if (on('dl_final_missed_lp_request')) p += 0.15;
+      if (on('dl_final_missed_le_deadline')) p += 0.15;
+      if (!on('trc_risk_answered')) p += 0.20;
+      return Math.max(0.15, Math.min(0.85, p));
+    }
     return 1;
   }
   function draftRulesFor(pack) {
@@ -11599,17 +11872,24 @@
     return (q === 'alta' || q === 'media' || q === 'média') && !((t.layout_trim_trees | 0) > 0);
   }
   /** computed_tags (lp-cod-rules): icnf_binding, equity_fit_ok/short, equity_full, land_secured, fid_ready. */
-  const COMPUTED_TAG_KEYS = { icnf_binding: 1, equity_fit_ok: 1, equity_fit_short: 1, equity_full: 1, land_secured: 1, fid_ready: 1 };
+  const COMPUTED_TAG_KEYS = { icnf_binding: 1, equity_fit_ok: 1, equity_fit_short: 1, equity_full: 1, land_secured: 1, fid_ready: 1, lp_request_ready: 1, car_approved_known: 1 };
   function ruleComputed(key, assume) {
     const on = (k) => !!(mailLoop.tags && (mailLoop.tags[k] | 0) > 0);
     const fitOk = () => (assume && assume.equity_fit_ok) || projectEquityFit(mailLoop.seId || 'ourique').ok;
     if (key === 'icnf_binding') return icnfBinding();
     if (key === 'equity_fit_ok') return fitOk();
     if (key === 'equity_fit_short') return !fitOk();
-    if (key === 'equity_full') return fitOk() && on('equity_capex_commit');
+    if (key === 'equity_full') {
+      const closed = !!(mailLoop && (mailLoop.equityGapClosed || (mailLoop.tags && (mailLoop.tags.equity_gap_closed | 0) > 0)));
+      return (fitOk() || closed) && (on('equity_capex_commit') || closed);
+    }
     if (key === 'land_secured') return on('land_option_open') || on('dd_started');
     if (key === 'fid_ready') return on('lp_granted') && on('term_sheet_signed') && on('epc_selected')
       && (on('land_option_open') || on('dd_started')) && fitOk() && !on('sale_full_exit');
+    if (key === 'lp_request_ready') return on('apa_track_start') || on('pip_aprovado');
+    if (key === 'car_approved_known') {
+      try { return econBudget().carApproved != null; } catch (_) { return false; }
+    }
     return undefined;
   }
   /** rule.gate: {computed:{k:v}, se_attrs:{'env_draft.x': v}}. Every listed value must match. */
@@ -11691,6 +11971,7 @@
       if (!months.length) return null;
       m = Math.max(...months) + (Number(ae.months) || 0);
     }
+    if (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.ruleTimerSlip) m += mailLoop.ruleTimerSlip | 0;
     const g = draftRuleGroupState(ruleGroupKey(r));
     if (g.rearmAt != null) m = Math.max(m, g.rearmAt);
     return m;
@@ -11722,6 +12003,7 @@
     const rc = r.requires_computed || {};
     for (const k of Object.keys(rc)) { if (!!ruleComputed(k) !== !!rc[k]) return false; }
     if (r.requires_equity_full === true && !ruleComputed('equity_full')) return false;
+    if (typeof stakesExtraConditionsOk === 'function' && !stakesExtraConditionsOk(r)) return false;
     return true;
   }
   /** wait_for_pending_cards (_fields): wait while a listed card is still pending, up to max_wait_months after this
@@ -11745,11 +12027,11 @@
     if (!draftRuleConditionsOk(r)) return false;
     if (draftRuleFailed(r.id)) return false;
     const g = draftRuleGroupState(ruleGroupKey(r));
-    if (g.delivered) return false;
+    if (g.delivered && !(typeof STAKES_LADDER_GROUPS !== 'undefined' && STAKES_LADDER_GROUPS[ruleGroupKey(r)])) return false;
     const e = draftRuleEarliestMonth(r);
     if (e == null || month < e) return false;
     const waitFor = r.wait_for_answer_if_delivered || [];
-    if (waitFor.length && (mailState.items || []).some((m) => waitFor.indexOf(mailSkeletonOf(m)) !== -1 && !m.econChoiceId)) return false;
+    if (waitFor.length && (mailState.items || []).some((m) => waitFor.indexOf(mailSkeletonOf(m)) !== -1 && !m.econChoiceId && m.skeletonId !== mailLoop._answeringId)) return false;
     if (draftRuleWaitsForPending(r, month)) return false;
     return true;
   }
@@ -11792,14 +12074,24 @@
       const seId = mailLoop.seId || 'ourique';
       // skin by route = the skin of the rule that fires (skeleton.skin_by_route.regra). The consultor skin never replaces
       // the APA card (Pedro 2026-09-30): the early warning is its own card (mail-consultor-icnf-aviso-01); retired skins are skipped.
-      const skinId = pick.skin;
+      let skinId = pick.skin;
+      if (pick.skin_if && typeof pick.skin_if === 'object') {
+        Object.keys(pick.skin_if).forEach((tag) => {
+          if ((mailLoop.tags && (mailLoop.tags[tag] | 0) > 0)) skinId = pick.skin_if[tag];
+        });
+      }
+      if (typeof stakeLetterAlready === 'function' && stakeLetterAlready(pick.skeleton, skinId)) {
+        const gSkip = draftRuleGroupState(gname);
+        if (!(typeof STAKES_LADDER_GROUPS !== 'undefined' && STAKES_LADDER_GROUPS[gname])) gSkip.delivered = true;
+        return;
+      }
       let skin = getSkinById(pick.skeleton, skinId, pack);
       if (skin && skin.when && skin.when.se_id && skin.when.se_id !== seId) skin = null;
       if (!skinActive(skin)) skin = getSkinById(pick.skeleton, pick.skin_fallback || 'default', pack);
       if (!skinActive(skin)) skin = null;
       if (!sk || !skin) { console.warn('[WattMail] draft rule without card', pick.id); return; }
       const id = composedLetterId(pick.skeleton, skin.skin_id) + ':m' + month;
-      const L = composeLetter({ skeleton: sk, skin: skin, seSheet: getSeSheet(seId, pack), opts: { id: id, when: 'Mês ' + month } });
+      const L = composeLetter({ skeleton: sk, skin: skin, seSheet: getSeSheet(seId, pack), opts: { id: id, when: 'Mês ' + month, ctx: pick.params || null } });
       L.ruleId = pick.id;
       out.push(L);
       const g = draftRuleGroupState(gname);
@@ -11812,6 +12104,16 @@
       }
       if (pick.extends_deadline && pick.extends_deadline.id) {
         try { extendDraftDeadline(pick.extends_deadline.id, pick.extends_deadline.adds_months); } catch (_) {}
+      }
+      if (pick.hud_moment && typeof showHudMoment === 'function') showHudMoment(pick);
+      if (pick.end_state && typeof applyRuleEndState === 'function') applyRuleEndState(pick);
+      if (pick.creates_deadline && typeof applyCreatesDeadline === 'function') applyCreatesDeadline(pick);
+      mailLoop.ruleDone = mailLoop.ruleDone || {};
+      if (pick.once) mailLoop.ruleDone[pick.id] = true;
+      mailLoop.ruleLastAt = mailLoop.ruleLastAt || {};
+      mailLoop.ruleLastAt[pick.id] = month | 0;
+      if (typeof STAKES_LADDER_GROUPS !== 'undefined' && STAKES_LADDER_GROUPS[gname]) {
+        g.delivered = false;
       }
       if (pick.rearm_group_after_months != null) {
         g.delivered = false;
@@ -11832,6 +12134,869 @@
     return out;
   }
 
+
+  /* ── Endings & stakes v0.1 ──
+   * Cash ladder watches the CAR mandate (development budget), never the 45 M€ equity purse.
+   * Purse: content/economy/purse_params.json → boutique_r1_equity_MEUR.
+   * TODO(hook 10, pending the owner): do not move MANDATE_PROMOTE_EFFECTS to cycle close in this build.
+   */
+  const CASH_PRESSURE_RATIO = 0.25;
+  /** Game-over floor as a fraction of the CAR mandate. −25% now (−1.625 M€ at 6.5). −10% (−0.65 M€) is under discussion: change only this number. */
+  const CASH_FLOOR_RATIO = -0.25;
+  const RESCUE_BRIDGE_CAP_RATIO = 0.25;
+  const RESCUE_BRIDGE_BURN_MONTHS = 3;
+  const PARTNER_STAKE = 0.25;
+  const RESCUE_DILUTION = 0.15;
+  /** FID equity test, construction interest excluded (P53). Ourique exact need. */
+  const FID_EQUITY_EXACT_MEUR = { ourique: { 38: 44.4, 40: 41.0 } };
+  const STAKES_DEADLINE_IDS = { grid_agreement: 1, grid_agreement_final: 1, lp_request: 1, le_deadline: 1 };
+  const STAKES_LADDER_GROUPS = { es_caixa: 1 };
+  const STAKES_SKIP_ECON = {
+    partner_stake_25: 1, partner_equity_in: 1, partner_npv_share: 1, equity_gap_closed: 1,
+    cash_rescue_used: 1, rescue_capital_dilution: 1, fcf_to_next_asset: 1,
+    mandate_review_down: 1, dev_slowdown: 1, end_state_lost: 1, end_state_won: 1,
+    'investor_patience_+1': 1, 'reputation_+1': 1, 'reputation_-1': 1
+  };
+  const TENSION_RANK = {
+    'r-es-resgate-ultimato': 1,
+    'r-es-trc-audiencia': 1,
+    'r-es-resgate': 2,
+    'r-es-pressao-caixa': 3,
+    'r-es-pressao-paciencia': 3,
+    'r-es-trc-aviso': 3
+  };
+
+  function carMandateBudget() {
+    try {
+      const t = econTier();
+      if (t && typeof t.carMandate === 'number' && t.carMandate > 0) return t.carMandate;
+    } catch (_) {}
+    return 6.5;
+  }
+  function cashPressureLine() { return +(carMandateBudget() * CASH_PRESSURE_RATIO).toFixed(3); }
+  function cashFloorLine() { return +(carMandateBudget() * CASH_FLOOR_RATIO).toFixed(3); }
+  function rescueBridgeCap() { return +(carMandateBudget() * RESCUE_BRIDGE_CAP_RATIO).toFixed(3); }
+
+  function fidEquityNeed(lotId, bid) {
+    const table = FID_EQUITY_EXACT_MEUR[lotId];
+    const b = Math.round(Number(bid));
+    if (table && bid != null && !isNaN(b) && table[b] != null) return table[b];
+    try { return faixaEquityAtBid(lotId, bid); } catch (_) { return null; }
+  }
+  function playerEquityNeed(lotId) {
+    const bid = (typeof wonLotBid === 'function') ? wonLotBid(lotId) : null;
+    let need = fidEquityNeed(lotId, bid);
+    if (need == null) { try { need = lotEcon(lotId).equityNeed; } catch (_) { need = 0; } }
+    const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
+    if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
+    return { need: need, bid: bid };
+  }
+
+  function caducidadeLevel() {
+    const t = (mailLoop && mailLoop.tags) || {};
+    return Math.max(0, (t['caducidade_risk_+1'] | 0) + 2 * (t['caducidade_risk_+2'] | 0) - (t['caducidade_risk_-1'] | 0));
+  }
+  function patienceLevel() {
+    try { return investorPatienceHits(); } catch (_) { return 0; }
+  }
+  function playIsLocked() {
+    const st = mailLoop && mailLoop.end_state;
+    return !!(mailLoop && mailLoop.active && st && st.status && st.status !== 'playing');
+  }
+  function syncEndPlayLock() {
+    const btn = document.getElementById('btnNextQ');
+    const locked = playIsLocked();
+    if (btn) {
+      btn.classList.toggle('is-ended', locked);
+      if (locked) {
+        btn.disabled = true;
+        btn.setAttribute('aria-disabled', 'true');
+        btn.title = 'O mandato acabou. Abre o balanço no Correio.';
+      } else if (!btn.classList.contains('loading')) {
+        btn.disabled = false;
+        btn.removeAttribute('aria-disabled');
+        btn.title = 'Avançar o tempo';
+      }
+    }
+  }
+  function deadlineDef(id) {
+    try {
+      const p = window.__wattEventPack;
+      const d = p && p.deadlines_draft;
+      const list = Array.isArray(d) ? d : ((d && (d.deadlines || d.items)) || []);
+      return list.find((x) => x && x.id === id) || null;
+    } catch (_) { return null; }
+  }
+  function phaseBurnAbs() {
+    try {
+      const b = lotBurnPerMonth((mailLoop && mailLoop.seId) || 'ourique');
+      const raw = Math.abs(b && b.cash) || 0;
+      if (raw > 0.0005) return raw;
+    } catch (_) {}
+    const phase = (mailLoop && mailLoop.projectPhase) || 'trc_won';
+    return PROJECT_BURN_CAR_PER_MONTH_MEUR[phase] || 0.06;
+  }
+  function rescueBridgeAmount() {
+    const burn = phaseBurnAbs();
+    const gap = Math.max(0, -(Number(state.caixa) || 0));
+    return +Math.min(rescueBridgeCap(), gap + RESCUE_BRIDGE_BURN_MONTHS * burn).toFixed(3);
+  }
+  function reputationScore() {
+    const t = (mailLoop && mailLoop.tags) || {};
+    return (t['reputation_+1'] | 0) - (t['reputation_-1'] | 0);
+  }
+  function reputationWord() {
+    const s = reputationScore();
+    if (s >= 3) return 'boa';
+    if (s <= -1) return 'fraca';
+    return 'neutra';
+  }
+  /** Display only. The budget itself still changes with the old milestone promotion until hook 10. */
+  function mandateStepWord() {
+    const t = (mailLoop && mailLoop.tags) || {};
+    if ((t.mandate_review_down | 0) > 0 || reputationScore() < 0) return 'desce';
+    if (reputationScore() >= 3) return 'sobe';
+    return 'mantém-se';
+  }
+  function endReasonText() {
+    const st = (mailLoop && mailLoop.end_state) || {};
+    const map = {
+      trc_caducado: 'O título de reserva de capacidade caducou.',
+      sem_dinheiro: 'Ficaste sem dinheiro para desenvolver o projeto.',
+      licenca_recusada: 'A licença foi recusada em definitivo.',
+      abandonado: 'Abandonaste o projeto.',
+      cod: 'A central entrou em funcionamento.'
+    };
+    const bits = [];
+    if (map[st.reason]) bits.push(map[st.reason]);
+    const missed = mailLoop && mailLoop.missedDeadlines;
+    if (missed) {
+      Object.keys(missed).forEach((k) => {
+        bits.push('Prazo falhado: ' + (DEADLINE_LABEL_PT[k] || k) + '.');
+      });
+    }
+    return bits.join(' ') || 'O mandato chegou ao fim.';
+  }
+  function stakesNpvIrr() {
+    const id = (mailLoop && mailLoop.seId) || 'ourique';
+    let npvAuction = null, irr = null, npvNow = null;
+    try {
+      const bid = (typeof wonLotBid === 'function') ? wonLotBid(id) : null;
+      let lot = null;
+      if (typeof AUCTION_WAVES !== 'undefined') AUCTION_WAVES.forEach((w) => { lot = lot || w.find((l) => l.id === id); });
+      if (bid != null && lot && typeof auctionEconomics === 'function') {
+        const eco = auctionEconomics(bid, lot);
+        npvAuction = eco.van;
+        irr = eco.irr;
+      }
+    } catch (_) {}
+    try {
+      const n = nodes.find((x) => x.id === id);
+      if (n && typeof n.van === 'number') npvNow = n.van;
+    } catch (_) {}
+    if (npvNow == null) npvNow = npvAuction;
+    return { npvAuction: npvAuction, npvNow: npvNow, irr: irr };
+  }
+  function stakesPlaceholderCtx(extra) {
+    extra = extra || {};
+    const ctx = {};
+    try {
+      const sheet = (typeof getSeSheet === 'function') ? getSeSheet((mailLoop && mailLoop.seId) || 'ourique') : null;
+      ctx.se_name = (extra.se_name) || (sheet && sheet.se_name) || 'Ourique';
+    } catch (_) { ctx.se_name = extra.se_name || 'Ourique'; }
+    const caixa = Number(state && state.caixa) || 0;
+    ctx.cash_left = fmtEur(caixa);
+    const burn = phaseBurnAbs();
+    ctx.months_left = burn > 0.0005 ? String(Math.max(0, Math.floor(caixa / burn))) : '0';
+    ctx.cash_gap = fmtEur(rescueBridgeAmount());
+    const dlId = extra.deadline_id || null;
+    let dl = dlId && mailLoop && mailLoop.deadlines ? mailLoop.deadlines[dlId] : null;
+    if (!dl && mailLoop && mailLoop.deadlines) {
+      const open = Object.keys(mailLoop.deadlines).filter((k) => mailLoop.deadlines[k] && !(mailLoop.firedDeadlines || {})[k] && mailLoop.deadlines[k].atMonth != null);
+      open.sort((a, b) => mailLoop.deadlines[a].atMonth - mailLoop.deadlines[b].atMonth);
+      if (open.length) dl = mailLoop.deadlines[open[0]];
+    }
+    ctx.deadline_month = dl && dl.atMonth != null ? ('M' + dl.atMonth) : (extra.deadline_month || '—');
+    ctx.deadline_label = (dlId && DEADLINE_LABEL_PT[dlId]) || (dl && dl.label) || extra.deadline_label || 'Prazo';
+    const reasons = [];
+    const lvl = (typeof caducidadeLevel === 'function') ? caducidadeLevel() : 0;
+    if (lvl > 0) reasons.push('risco de caducidade ' + lvl);
+    if (mailLoop && mailLoop.missedDeadlines) {
+      Object.keys(mailLoop.missedDeadlines).forEach((k) => reasons.push(DEADLINE_LABEL_PT[k] || k));
+    }
+    ctx.risk_reasons = reasons.length ? reasons.join('; ') : 'os prazos que ficaram por cumprir';
+    ctx.end_reason_text = endReasonText();
+    ctx.months_played = String((mailLoop && mailLoop.month) | 0);
+    let spent = 0;
+    try { spent = Number(econState().carSpent) || 0; } catch (_) {}
+    ctx.car_spent = fmtEur(Math.abs(spent));
+    ctx.refusal_authority = extra.refusal_authority || 'A autoridade';
+    const codM = mailLoop && mailLoop.tagMonth && mailLoop.tagMonth.cod_reached;
+    ctx.cod_month = codM != null ? ('M' + codM) : ('M' + ((mailLoop && mailLoop.month) | 0));
+    const le = mailLoop && mailLoop.deadlines && mailLoop.deadlines.le_deadline;
+    ctx.cod_month_plan = le && le.atMonth != null ? ('M' + le.atMonth) : ctx.cod_month;
+    const eco = stakesNpvIrr();
+    ctx.npv_now = eco.npvNow != null ? fmtEur(eco.npvNow) : '—';
+    ctx.npv_auction = eco.npvAuction != null ? fmtEur(eco.npvAuction) : '—';
+    ctx.irr = eco.irr != null ? (Math.round(eco.irr * 10) / 10).toFixed(1).replace('.', ',') + ' %' : '—';
+    ctx.reputation_word = reputationWord();
+    ctx.mandate_step_word = mandateStepWord();
+    ctx.partner_share = Math.round(PARTNER_STAKE * 100) + ' %';
+    return ctx;
+  }
+  function monthsCoverPhrase(raw) {
+    const n = Math.max(0, parseInt(raw, 10) || 0);
+    return n === 1 ? '1 mês' : (n + ' meses');
+  }
+  /** The letters no longer print these. The asset room (Ver números) and the end screen do. */
+  function paintCycleFigures() {
+    let ctx = null;
+    try { ctx = stakesPlaceholderCtx({}); } catch (_) { return; }
+    if (!ctx) return;
+    const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    set('valCashLeft', ctx.cash_left);
+    set('valMonthsLeft', monthsCoverPhrase(ctx.months_left));
+    set('valCarSpent', ctx.car_spent);
+    set('valMonthsPlayed', ctx.months_played);
+  }
+
+  const HUD_MOMENT_LINE = {
+    'acordo-ren': 'A ligação à rede ficou acordada',
+    'pip-aprovado': 'A Câmara aceitou o projeto',
+    'lp-atribuida': 'A licença de produção saiu',
+    'inicio-obra': 'A obra começou',
+    'decisao-final': 'A decisão de construir está tomada'
+  };
+  function showHudMoment(rule) {
+    const el = document.getElementById('hudMoment');
+    if (!el) return;
+    const label = (rule && rule.hud_moment && rule.hud_moment.label_pt) || 'Marco atingido';
+    const line = (rule && HUD_MOMENT_LINE[rule.skin]) || 'O projeto deu um passo em frente';
+    el.hidden = false;
+    el.innerHTML = '<strong>' + escapeHtml(label) + '</strong><span>' + escapeHtml(line) + '</span>';
+    mailLoop.hudMoment = { label: label, line: line, skin: rule && rule.skin, month: mailLoop.month | 0, rule: rule && rule.id };
+  }
+
+  function stakeLetterAlready(skeletonId, skinId) {
+    const id = composedLetterId(skeletonId, skinId);
+    const ids = (mailLoop && mailLoop.deliveredIds) || {};
+    if (ids[id]) return true;
+    return Object.keys(ids).some((k) => k === id || k.indexOf(id + ':') === 0);
+  }
+  function skeletonDeliveredMonth(skeletonId) {
+    const months = (mailLoop && mailLoop.deliveredMonths) || {};
+    let found = null;
+    Object.keys(months).forEach((m) => {
+      const list = months[m] || [];
+      if (list.indexOf(skeletonId) !== -1) {
+        const n = parseInt(m, 10);
+        if (found == null || n < found) found = n;
+      }
+    });
+    if (found != null) return found;
+    const items = (typeof mailState !== 'undefined' && mailState.items) || [];
+    const hit = items.find((m) => m && (m.skeletonId === skeletonId || String(m.id || '').indexOf(skeletonId) === 0));
+    if (hit && mailLoop) return mailLoop.month | 0;
+    return null;
+  }
+  function deliverStakeLetter(skeletonId, skinId, opts) {
+    opts = opts || {};
+    const pack = window.__wattEventPack;
+    if (!pack) { console.warn('[WattStakes] pack not loaded'); return null; }
+    const sk = pack.skeletons.find((s) => s.id === skeletonId);
+    const skin = getSkinById(skeletonId, skinId, pack);
+    if (!sk || !skin) { console.warn('[WattStakes] missing card', skeletonId, skinId); return null; }
+    const baseId = composedLetterId(skeletonId, skin.skin_id);
+    const id = opts.id || (opts.allowRepeat ? (baseId + ':m' + (mailLoop.month | 0)) : baseId);
+    if (!opts.allowRepeat && stakeLetterAlready(skeletonId, skin.skin_id)) return null;
+    if (mailLoop.deliveredIds && mailLoop.deliveredIds[id]) return null;
+    const ctx = Object.assign({}, opts.ctx || {}, skin.params || {});
+    if (opts.deadline_id) ctx.deadline_id = opts.deadline_id;
+    if (opts.params) Object.assign(ctx, opts.params);
+    const L = composeLetter({
+      skeleton: sk,
+      skin: skin,
+      seSheet: getSeSheet(mailLoop.seId || 'ourique', pack),
+      opts: { id: id, when: opts.when || ('Mês ' + (mailLoop.month | 0)), ctx: ctx }
+    });
+    L.ruleId = opts.ruleId || null;
+    L.deadlineId = opts.deadline_id || (skin.params && skin.params.deadline_id) || null;
+    mailLoop.deliveredIds = mailLoop.deliveredIds || {};
+    mailLoop.deliveredIds[id] = true;
+    const mk = String(mailLoop.month | 0);
+    mailLoop.deliveredMonths = mailLoop.deliveredMonths || {};
+    const ds = mailLoop.deliveredMonths[mk] || [];
+    if (ds.indexOf(skeletonId) === -1) ds.push(skeletonId);
+    mailLoop.deliveredMonths[mk] = ds;
+    mailState.items = [L].concat((mailState.items || []).filter((m) => m.id !== id));
+    try { renderInboxBadge(); } catch (_) {}
+    return L;
+  }
+  function applyRuleEndState(rule) {
+    const es = rule && rule.end_state;
+    if (!es) return;
+    let reason = es.reason || null;
+    // "Fechar o projeto" on the rescue letter is a cash loss. The rule reason is abandonado; the skin is sem-dinheiro.
+    if (reason === 'abandonado' && ((mailLoop.tags || {}).cash_rescue_refused | 0)) reason = 'sem_dinheiro';
+    mailLoop.end_state = { status: es.status || 'lost', reason: reason, month: mailLoop.month | 0 };
+    syncEndPlayLock();
+  }
+  function applyCreatesDeadline(rule) {
+    const c = rule && rule.creates_deadline;
+    if (!c || !c.id) return;
+    mailLoop.deadlines = mailLoop.deadlines || {};
+    mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+    const due = (mailLoop.month | 0) + (Number(c.months) || 1);
+    mailLoop.deadlines[c.id] = {
+      label: c.label || DEADLINE_LABEL_PT[c.id] || 'Prazo',
+      atMonth: due,
+      due: due,
+      ext: 0,
+      stakes: true,
+      on_miss_mail: c.on_miss_mail || null,
+      meet_if: c.meet_if || null
+    };
+    delete mailLoop.firedDeadlines[c.id];
+  }
+  function deliverOneRule(rule, month) {
+    if (!rule || mailLoop._deliveringRule === rule.id) return null;
+    mailLoop._deliveringRule = rule.id;
+    try {
+      let skinId = rule.skin;
+      if (rule.skin_if && typeof rule.skin_if === 'object') {
+        Object.keys(rule.skin_if).forEach((tag) => {
+          if ((mailLoop.tags && mailLoop.tags[tag] | 0) > 0) skinId = rule.skin_if[tag];
+        });
+      }
+      const allowRepeat = !rule.once && rule.cooldown_months != null;
+      const L = deliverStakeLetter(rule.skeleton, skinId, {
+        ruleId: rule.id,
+        allowRepeat: allowRepeat,
+        id: allowRepeat ? (composedLetterId(rule.skeleton, skinId) + ':m' + month) : null,
+        params: rule.params || null,
+        when: 'Mês ' + month
+      });
+      if (!L) return null;
+      mailLoop.ruleDone = mailLoop.ruleDone || {};
+      if (rule.once !== false) mailLoop.ruleDone[rule.id] = true;
+      if (!rule.once) delete mailLoop.ruleDone[rule.id];
+      mailLoop.ruleLastAt = mailLoop.ruleLastAt || {};
+      mailLoop.ruleLastAt[rule.id] = month | 0;
+      const gname = ruleGroupKey(rule);
+      if (!STAKES_LADDER_GROUPS[gname]) {
+        const g = draftRuleGroupState(gname);
+        g.delivered = true;
+        g.rearmAt = null;
+      }
+      const fx = (rule.on_deliver_effects || []).slice();
+      if (fx.length) {
+        try { applyMailEffects(fx, { fromRule: rule.id }); } catch (err) { console.warn('[WattStakes] rule effects', rule.id, err); }
+      }
+      applyCreatesDeadline(rule);
+      applyRuleEndState(rule);
+      if (rule.hud_moment) showHudMoment(rule);
+      if (rule.extends_deadline && rule.extends_deadline.id) {
+        try { extendDraftDeadline(rule.extends_deadline.id, rule.extends_deadline.adds_months); } catch (_) {}
+      }
+      return L;
+    } finally {
+      mailLoop._deliveringRule = null;
+    }
+  }
+  function deliverImmediateRules() {
+    const pack = window.__wattEventPack;
+    if (!pack || mailLoop._deliveringImmediate) return [];
+    mailLoop._deliveringImmediate = true;
+    const out = [];
+    try {
+      const month = mailLoop.month | 0;
+      draftRulesFor(pack).forEach((r) => {
+        if (!r || r.state_check) return;
+        const ae = r.after_effect;
+        if (!ae || Number(ae.months) !== 0) return;
+        if (!draftRuleEligible(r, month)) return;
+        const L = deliverOneRule(r, month);
+        if (L) out.push(L);
+      });
+    } catch (err) {
+      console.warn('[WattStakes] immediate', err);
+    } finally {
+      mailLoop._deliveringImmediate = false;
+    }
+    return out;
+  }
+  function stakesRuleEver(id) {
+    return !!(mailLoop.ruleDone && mailLoop.ruleDone[id]) || !!(mailLoop.ruleLastAt && mailLoop.ruleLastAt[id] != null);
+  }
+  function runStakesPass(month) {
+    const pack = window.__wattEventPack;
+    const delivered = [];
+    if (!pack || !mailLoop || !mailLoop.active) return delivered;
+    if (playIsLocked()) return delivered;
+    month = month | 0;
+    try { syncLpRequestDeadline(); } catch (_) {}
+    if (patienceLevel() >= 5 && !((mailLoop.tags || {}).mandate_review_down | 0)) {
+      try { applyMailEffects(['mandate_review_down'], { skipEconomics: true }); } catch (_) {}
+    }
+    // Cash recovery and floor, after this month's spend.
+    try {
+      const d = mailLoop.deadlines && mailLoop.deadlines.cash_recovery;
+      if (d && !(mailLoop.firedDeadlines || {}).cash_recovery) {
+        if (state.caixa >= 0) {
+          mailLoop.firedDeadlines.cash_recovery = true;
+          d.met = true;
+        } else if (month > (d.atMonth | 0) || (state.caixa < cashFloorLine() && (mailLoop.tagMonth || {}).cash_ultimatum_open != null && month > (mailLoop.tagMonth.cash_ultimatum_open | 0))) {
+          mailLoop.firedDeadlines.cash_recovery = true;
+          mailLoop.missedDeadlines = mailLoop.missedDeadlines || {};
+          mailLoop.missedDeadlines.cash_recovery = d.atMonth;
+          const mail = d.on_miss_mail || { skeleton: 'mail-fim-de-jogo-01', skin: 'sem-dinheiro' };
+          const L = deliverStakeLetter(mail.skeleton, mail.skin, { deadline_id: 'cash_recovery' });
+          if (L) delivered.push(L);
+          if (!mailLoop.end_state || mailLoop.end_state.status === 'playing') {
+            mailLoop.end_state = { status: 'lost', reason: 'sem_dinheiro', month: month };
+            syncEndPlayLock();
+          }
+          return delivered;
+        }
+      }
+    } catch (err) { console.warn('[WattStakes] cash recovery', err); }
+
+    const candidates = [];
+    mailLoop._stakesPass = true;
+    try {
+      draftRulesFor(pack).forEach((r) => {
+        if (!r || !r.state_check) return;
+        if (draftRuleEligible(r, month)) candidates.push(r);
+      });
+    } finally {
+      mailLoop._stakesPass = false;
+    }
+    // Fairness: do not skip the cash warning the first time the ladder moves.
+    const rescue = candidates.find((r) => r.id === 'r-es-resgate' || r.id === 'r-es-resgate-ultimato');
+    if (rescue && !stakesRuleEver('r-es-pressao-caixa') && !stakeLetterAlready('mail-investidores-pressao-01', 'caixa-baixa')) {
+      const warn = draftRulesFor(pack).find((r) => r.id === 'r-es-pressao-caixa');
+      if (warn && econBudget().carApproved != null) {
+        candidates.length = 0;
+        candidates.push(warn);
+      }
+    }
+    collectDeadlineWarns(month).forEach((w) => candidates.push(w));
+    if (!candidates.length) return delivered;
+    candidates.sort((a, b) => tensionRank(a) - tensionRank(b));
+    const pick = candidates[0];
+    if (pick && pick._warn) {
+      const L = deliverStakeLetter(pick.def.warn.mail.skeleton, pick.def.warn.mail.skin, { deadline_id: pick.deadlineId, allowRepeat: false });
+      if (L) {
+        pick.deadline.warned = month;
+        delete pick.deadline._warnNow;
+        delivered.push(L);
+      }
+      return delivered;
+    }
+    const L = deliverOneRule(pick, month);
+    if (L) delivered.push(L);
+    return delivered;
+  }
+  function stakesExtraConditionsOk(r) {
+    const t = mailLoop.tags || {};
+    const on = (k) => (t[k] | 0) > 0;
+    if (r.state_check && !mailLoop._stakesPass) return false;
+    if (r.state_check && mailLoop._stakesPass && !stakesCheck(r.state_check)) return false;
+    if (r.requires_count && typeof r.requires_count === 'object') {
+      const bad = Object.keys(r.requires_count).some((k) => (t[k] | 0) < Number(r.requires_count[k]));
+      if (bad) return false;
+    }
+    if (Array.isArray(r.requires_state) && r.requires_state.length && !r.requires_state.every((k) => mailTagOn(k))) return false;
+    if (r.min_gap_after_delivered && r.min_gap_after_delivered.skeleton) {
+      const at = skeletonDeliveredMonth(r.min_gap_after_delivered.skeleton);
+      const gap = Number(r.min_gap_after_delivered.months) || 0;
+      if (at == null || (mailLoop.month | 0) < at + gap) return false;
+    }
+    if (r.cooldown_months && mailLoop.ruleLastAt && mailLoop.ruleLastAt[r.id] != null) {
+      if ((mailLoop.month | 0) - mailLoop.ruleLastAt[r.id] < Number(r.cooldown_months)) return false;
+    }
+    if (r.blocks_for_months_after_effect && mailLoop.tagMonth) {
+      const blocked = Object.keys(r.blocks_for_months_after_effect).some((ef) => {
+        const at = mailLoop.tagMonth[ef];
+        return at != null && (mailLoop.month | 0) - at < Number(r.blocks_for_months_after_effect[ef]);
+      });
+      if (blocked) return false;
+    }
+    if (r.once && mailLoop.ruleDone && mailLoop.ruleDone[r.id]) return false;
+    void on;
+    return true;
+  }
+  function stakesCheck(name) {
+    const approved = (function () { try { return econBudget().carApproved != null; } catch (_) { return false; } })();
+    const ratio = state.caixa / carMandateBudget();
+    if (name === 'cash_ratio_low') {
+      if (!approved) return false;
+      if (state.caixa < 0) return false;
+      return ratio <= CASH_PRESSURE_RATIO + 1e-9;
+    }
+    if (name === 'cash_negative') return state.caixa < 0 || state.caixa < cashFloorLine();
+    if (name === 'cash_floor') return state.caixa < cashFloorLine();
+    if (name === 'patience_low') return patienceLevel() >= 3;
+    if (name === 'caducidade_level_2') return caducidadeLevel() >= 2;
+    if (name === 'caducidade_level_4') return caducidadeLevel() >= 4;
+    return false;
+  }
+  function tensionRank(item) {
+    if (!item) return 9;
+    if (item._warn) return 3;
+    if (item.end_state) return 0;
+    if (TENSION_RANK[item.id] != null) return TENSION_RANK[item.id];
+    return 4;
+  }
+  function collectDeadlineWarns(month) {
+    const out = [];
+    const dls = mailLoop.deadlines || {};
+    Object.keys(dls).forEach((id) => {
+      const d = dls[id];
+      const def = deadlineDef(id);
+      if (!d || !def || !def.warn || !def.warn.mail) return;
+      if ((mailLoop.firedDeadlines || {})[id]) return;
+      if (d.warned && !d._warnNow) return;
+      const before = Number(def.warn.months_before) || 2;
+      const left = (d.atMonth | 0) - (month | 0);
+      if (d._warnNow || (left <= before && left > 0)) {
+        out.push({ _warn: true, deadlineId: id, deadline: d, def: def, id: 'warn:' + id });
+      }
+    });
+    return out;
+  }
+  function syncLpRequestDeadline() {
+    if (!mailLoop || !mailLoop.deadlines) return;
+    mailLoop.deadlines = mailLoop.deadlines || {};
+    const tags = mailLoop.tags || {};
+    let aia = false;
+    try { aia = onAiaRoute(); } catch (_) {}
+    if ((tags.apa_track_start | 0) || (tags.aia_sujeito | 0) || (tags.env_path_aia_obrigatoria | 0)) aia = true;
+    const due = aia ? 12 : 6;
+    const cur = mailLoop.deadlines.lp_request;
+    if (!cur) {
+      mailLoop.deadlines.lp_request = { label: DEADLINE_LABEL_PT.lp_request, atMonth: due, due: due, ext: 0 };
+      return;
+    }
+    if ((mailLoop.firedDeadlines || {}).lp_request) return;
+    if ((cur.ext | 0) > 0) return;
+    if (aia && (cur.atMonth | 0) < 12 && !cur.warned) cur.atMonth = 12;
+  }
+  function stakesConsiderDeadline(k, d, month) {
+    const def = deadlineDef(k) || {};
+    const warn = def.warn && def.warn.mail;
+    if (k === 'cash_recovery') return null;
+    if (d.meet_if === 'state.caixa >= 0' || d.meet_if === 'caixa_nonneg') {
+      if (state.caixa >= 0) {
+        mailLoop.firedDeadlines[k] = true;
+        d.met = true;
+        return null;
+      }
+    }
+    if (warn && !d.warned && (month | 0) > (d.atMonth | 0)) {
+      d.atMonth = month | 0;
+      d._warnNow = true;
+      return null;
+    }
+    if ((month | 0) <= (d.atMonth | 0)) return null;
+    mailLoop.firedDeadlines[k] = true;
+    mailLoop.missedDeadlines[k] = d.atMonth;
+    const effects = (def.on_miss || []).slice();
+    if (!effects.length && DEADLINE_MISS[k] && k !== 'grid_agreement') effects.push.apply(effects, DEADLINE_MISS[k].effects || []);
+    if (effects.length) {
+      try { applyMailEffects(effects, {}); } catch (err) { console.warn('[WattStakes] miss effects', k, err); }
+    }
+    let letter = null;
+    if (def.on_miss_mail && def.on_miss_mail.skeleton) {
+      letter = deliverStakeLetter(def.on_miss_mail.skeleton, def.on_miss_mail.skin, { deadline_id: k });
+    }
+    mailLoop.deadlineFollowup = mailLoop.deadlineFollowup || {};
+    mailLoop.deadlineFollowup[k] = { missMonth: month | 0, final: !def.final_miss };
+    const text = (DEADLINE_MISS[k] && k !== 'grid_agreement' ? DEADLINE_MISS[k].text : null)
+      || (letter ? 'Chegou uma carta sobre este prazo.' : 'O prazo passou sem resposta.');
+    return { id: k, label: DEADLINE_LABEL_PT[k] || d.label || 'Prazo', atMonth: d.atMonth, text: text, letter: letter };
+  }
+  function silenceFinalMiss(month) {
+    const fu = mailLoop.deadlineFollowup || {};
+    const out = [];
+    Object.keys(fu).forEach((id) => {
+      const f = fu[id];
+      if (!f || f.final || f.resolved) return;
+      const def = deadlineDef(id);
+      if (!def || !def.final_miss) return;
+      if ((month | 0) - (f.missMonth | 0) < 1) return;
+      const mailSpec = def.on_miss_mail;
+      if (mailSpec) {
+        const sk = mailSpec.skeleton;
+        const answered = (mailState.items || []).some((m) => (m.skeletonId === sk || String(m.id || '').indexOf(sk) === 0) && m.econChoiceId);
+        if (answered) return;
+      }
+      out.push(triggerFinalMiss(id, def));
+    });
+    return out.filter(Boolean);
+  }
+  function triggerFinalMiss(id, def) {
+    def = def || deadlineDef(id) || {};
+    mailLoop.deadlineFollowup = mailLoop.deadlineFollowup || {};
+    const prev = mailLoop.deadlineFollowup[id] || {};
+    if (prev.final) return null;
+    mailLoop.deadlineFollowup[id] = Object.assign(prev, { final: true });
+    const fx = (def.final_miss || []).slice();
+    if (fx.length) {
+      try { applyMailEffects(fx, {}); } catch (err) { console.warn('[WattStakes] final miss', id, err); }
+    }
+    let letter = null;
+    if (def.final_miss_mail && def.final_miss_mail.skeleton) {
+      letter = deliverStakeLetter(def.final_miss_mail.skeleton, def.final_miss_mail.skin, { deadline_id: id });
+    }
+    return letter ? { id: id, label: DEADLINE_LABEL_PT[id] || 'Prazo', atMonth: mailLoop.month | 0, text: 'A DGEG marcou a audiência.', letter: letter } : null;
+  }
+  function extensionMonths(def) {
+    const band = def && def.extension && def.extension.adds_months && def.extension.adds_months.band;
+    const m = String(band || '').match(/(\d+)\s*[-–]\s*(\d+)/);
+    if (!m) return 4;
+    return Math.round((Number(m[1]) + Number(m[2])) / 2);
+  }
+  function requestDeadlineExtension(id) {
+    const def = deadlineDef(id) || {};
+    const ext = def.extension || {};
+    const d = mailLoop.deadlines && mailLoop.deadlines[id];
+    if (!d) return;
+    const max = ext.max != null ? Number(ext.max) : 1;
+    if ((d.ext | 0) >= max || ext.allowed === false) { denyDeadlineExtension(id, def); return; }
+    let p = 0.55;
+    const t = mailLoop.tags || {};
+    (ext.odds_up_if_any || []).forEach((k) => { if ((t[k] | 0) > 0) p += 0.1; });
+    (ext.odds_down_if_any || []).forEach((k) => { if ((t[k] | 0) > 0) p -= 0.1; });
+    p = Math.max(0.05, Math.min(0.9, p));
+    if (Math.random() >= p) { denyDeadlineExtension(id, def); return; }
+    const add = extensionMonths(def);
+    d.atMonth = (mailLoop.month | 0) + add;
+    d.due = d.atMonth;
+    d.ext = (d.ext | 0) + 1;
+    mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+    delete mailLoop.firedDeadlines[id];
+    mailLoop.deadlineFollowup = mailLoop.deadlineFollowup || {};
+    mailLoop.deadlineFollowup[id] = { resolved: true, extended: true, final: true };
+    if (ext.granted_mail) deliverStakeLetter(ext.granted_mail.skeleton, ext.granted_mail.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(ext.granted_mail.skeleton, ext.granted_mail.skin) + ':m' + (mailLoop.month | 0) });
+  }
+  function denyDeadlineExtension(id, def) {
+    def = def || deadlineDef(id) || {};
+    const denied = def.extension && def.extension.denied_mail;
+    if (denied) deliverStakeLetter(denied.skeleton, denied.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(denied.skeleton, denied.skin) + ':m' + (mailLoop.month | 0) });
+    triggerFinalMiss(id, def);
+  }
+  function rushDeadline(id) {
+    const def = deadlineDef(id) || {};
+    const rush = def.rush || {};
+    const req = rush.requires_state || [];
+    if (req.length && !req.every((k) => mailTagOn(k))) {
+      try { showToast('Ainda não podes entregar o pedido.'); } catch (_) {}
+      return;
+    }
+    const fx = (rush.effects || []).slice();
+    if (fx.length) {
+      try { applyMailEffects(fx, {}); } catch (_) {}
+    }
+    mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+    mailLoop.firedDeadlines[id] = true;
+    mailLoop.deadlineFollowup = mailLoop.deadlineFollowup || {};
+    mailLoop.deadlineFollowup[id] = { resolved: true, final: true };
+  }
+  function deadlineIdOfLetter(letter) {
+    if (!letter) return null;
+    if (letter.deadlineId) return letter.deadlineId;
+    if (letter.params && letter.params.deadline_id) return letter.params.deadline_id;
+    return null;
+  }
+  function handleStakeChoice(letter, effectList) {
+    if (!effectList || !effectList.length) return;
+    const id = deadlineIdOfLetter(letter);
+    if (id && effectList.indexOf('deadline_extend_request') !== -1) requestDeadlineExtension(id);
+    if (id && effectList.indexOf('deadline_rush') !== -1) rushDeadline(id);
+    if (effectList.indexOf('deadline_accept_miss') !== -1) {
+      const dl = id || (mailLoop.deadlineFollowup && Object.keys(mailLoop.deadlineFollowup).filter((k) => !mailLoop.deadlineFollowup[k].final)[0]);
+      if (dl) triggerFinalMiss(dl, deadlineDef(dl));
+    }
+    if (effectList.indexOf('end_screen_open') !== -1) openEndScreen();
+  }
+
+  function openEndScreen() {
+    const modal = document.getElementById('endScreen');
+    if (!modal) return;
+    const st = (mailLoop && mailLoop.end_state) || { status: 'lost', reason: null, month: mailLoop && mailLoop.month };
+    const won = st.status === 'won';
+    const eco = stakesNpvIrr();
+    const ctx = stakesPlaceholderCtx({});
+    const missed = Object.keys((mailLoop && mailLoop.missedDeadlines) || {});
+    const met = Object.keys((mailLoop && mailLoop.firedDeadlines) || {}).filter((k) => !missed.includes(k) && mailLoop.firedDeadlines[k] && k !== 'cash_recovery');
+    const title = document.getElementById('endScreenTitle');
+    const body = document.getElementById('endScreenBody');
+    if (title) title.textContent = won ? 'Ciclo fechado' : 'Mandato terminado';
+    const rows = [
+      ['Resultado', won ? 'Ganhaste: a central está a vender energia.' : (ctx.end_reason_text || 'Perdeste o mandato.')],
+      ['Meses jogados', ctx.months_played],
+      ['Caixa que resta', ctx.cash_left],
+      ['Meses que a caixa ainda cobre', monthsCoverPhrase(ctx.months_left)],
+      ['Dinheiro de desenvolvimento gasto', ctx.car_spent],
+      ['NPV no leilão', ctx.npv_auction],
+      ['NPV agora', won ? ctx.npv_now : ctx.npv_now],
+      ['IRR do capital próprio', won ? ctx.irr : '—'],
+      ['COD', won ? (ctx.cod_month + ' (plano ' + ctx.cod_month_plan + ')') : '—'],
+      ['Prazos cumpridos', met.length ? String(met.length) : '0'],
+      ['Prazos falhados', missed.length ? missed.map((k) => DEADLINE_LABEL_PT[k] || k).join(', ') : 'nenhum'],
+      ['Reputação', ctx.reputation_word],
+      ['Revisão do orçamento', ctx.mandate_step_word + ' (só no fecho; o orçamento a meio do jogo não muda por aqui)']
+    ];
+    if (!won) {
+      let bond = '—';
+      try {
+        const id = mailLoop.seId || 'ourique';
+        bond = fmtEur(lotEcon(id).caucao);
+      } catch (_) {}
+      rows.splice(3, 0, ['Caução perdida', bond]);
+    }
+    if (body) {
+      body.innerHTML = '<dl class="end-dl">' + rows.map((r) => '<dt>' + escapeHtml(r[0]) + '</dt><dd>' + escapeHtml(r[1]) + '</dd>').join('') + '</dl>';
+    }
+    modal.hidden = false;
+    modal.classList.add('open');
+    try { scheduleSave('end-screen'); } catch (_) {}
+  }
+  function closeEndScreen() {
+    const modal = document.getElementById('endScreen');
+    if (!modal) return;
+    modal.hidden = true;
+    modal.classList.remove('open');
+  }
+  function restartMandate() {
+    try { clearSave(); } catch (_) {}
+    try { localStorage.removeItem(SAVE_KEY); } catch (_) {}
+    location.reload();
+  }
+  function initEndScreen() {
+    const restart = document.getElementById('endScreenRestart');
+    const mail = document.getElementById('endScreenMail');
+    const close = document.getElementById('endScreenClose');
+    if (restart && !restart.dataset.bound) {
+      restart.dataset.bound = '1';
+      restart.addEventListener('click', restartMandate);
+    }
+    if (mail && !mail.dataset.bound) {
+      mail.dataset.bound = '1';
+      mail.addEventListener('click', () => { closeEndScreen(); try { openInbox(); } catch (_) {} });
+    }
+    if (close && !close.dataset.bound) {
+      close.dataset.bound = '1';
+      close.addEventListener('click', closeEndScreen);
+    }
+  }
+
+  function stakesSlipFor(effects) {
+    const has = (k) => effects.indexOf(k) !== -1;
+    if (has('burn_cut_deep') && has('dev_slowdown')) return 2;
+    if (has('burn_cut_deep')) return 2;
+    if (has('dev_slowdown') || has('burn_cut')) return 1;
+    return 0;
+  }
+  function stakesApplySpecial(effects) {
+    if (!mailLoop) return;
+    const has = (k) => effects.indexOf(k) !== -1;
+    if (has('partner_stake_25') || has('partner_equity_in') || has('equity_gap_closed')) {
+      mailLoop.partnerStake = PARTNER_STAKE;
+      mailLoop.equityGapClosed = true;
+      mailLoop.tags = mailLoop.tags || {};
+      if (!(mailLoop.tags.equity_gap_closed | 0)) mailLoop.tags.equity_gap_closed = 1;
+      if (!mailLoop.partnerNpvApplied) {
+        try {
+          const n = nodes.find((x) => x.id === (mailLoop.seId || 'ourique'));
+          if (n && typeof n.van === 'number') n.van = +(n.van * (1 - PARTNER_STAKE)).toFixed(2);
+        } catch (_) {}
+        mailLoop.partnerNpvApplied = true;
+      }
+    }
+    if (has('rescue_capital_dilution') && !mailLoop.dilutionApplied) {
+      mailLoop.dilution = RESCUE_DILUTION;
+      mailLoop.dilutionApplied = true;
+      try {
+        const n = nodes.find((x) => x.id === (mailLoop.seId || 'ourique'));
+        if (n && typeof n.van === 'number') n.van = +(n.van * (1 - RESCUE_DILUTION)).toFixed(2);
+      } catch (_) {}
+    }
+    if (has('cash_rescue_used') && !mailLoop.rescueBridgeApplied) {
+      const add = rescueBridgeAmount();
+      state.caixa = +(state.caixa + add).toFixed(3);
+      mailLoop.rescueBridgeApplied = true;
+      mailLoop.lastRescueBridge = add;
+      try { recomputeNav(); } catch (_) {}
+    }
+    const slip = stakesSlipFor(effects);
+    if (slip) mailLoop.ruleTimerSlip = (mailLoop.ruleTimerSlip || 0) + slip;
+    if (has('burn_cut') || has('burn_cut_deep')) {
+      mailLoop.burnCut = { factor: has('burn_cut_deep') ? 0.4 : 0.6, left: 3 };
+    }
+    if (has('fcf_to_next_asset')) {
+      let v = 6.2;
+      if (mailLoop.partnerStake) v = +(v * (1 - mailLoop.partnerStake)).toFixed(3);
+      try {
+        const ec = econState();
+        ec.equityPurseAdj = +((ec.equityPurseAdj || 0) + v).toFixed(3);
+        ec.fcfToNext = v;
+      } catch (_) {}
+    }
+    if ((has('end_state_lost') || has('end_state_won')) && (!mailLoop.end_state || mailLoop.end_state.status === 'playing')) {
+      const won = has('end_state_won');
+      let reason = won ? 'cod' : 'trc_caducado';
+      if (has('cash_rescue_refused') || ((mailLoop.tags || {}).cash_rescue_refused | 0)) reason = 'sem_dinheiro';
+      if (((mailLoop.tags || {}).project_abandoned | 0) && !((mailLoop.tags || {}).cash_rescue_refused | 0)) reason = 'abandonado';
+      if (((mailLoop.tags || {}).licenca_recusada_final | 0)) reason = 'licenca_recusada';
+      mailLoop.end_state = { status: won ? 'won' : 'lost', reason: reason, month: mailLoop.month | 0 };
+      syncEndPlayLock();
+    }
+  }
+
+  const PURSE_PARAMS_URL = 'content/economy/purse_params.json';
+  function applyPurseParams(data) {
+    if (!data || typeof data !== 'object') return;
+    window.__wattPurse = data;
+    if (typeof data.boutique_r1_equity_MEUR === 'number') ECON_TIER.boutique.equity = data.boutique_r1_equity_MEUR;
+    const car = data.car_mandate_MEUR || {};
+    if (typeof car.boutique === 'number') ECON_TIER.boutique.carMandate = car.boutique;
+    if (typeof car.mid === 'number') ECON_TIER.mid.carMandate = car.mid;
+    if (typeof car.infra === 'number') ECON_TIER.infra.carMandate = car.infra;
+    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
+    try { updateHeaderMetrics(false); } catch (_) {}
+  }
+  (async function loadPurseParams() {
+    try {
+      const r = await fetch(PURSE_PARAMS_URL, { cache: 'no-store' });
+      if (!r.ok) { console.warn('[WattEcon] purse_params ' + r.status); return; }
+      applyPurseParams(await r.json());
+    } catch (err) { console.warn('[WattEcon] purse_params failed', err); }
+  })();
+
+  function stakesDebugSnapshot() {
+    const b = carMandateBudget();
+    return {
+      month: mailLoop && mailLoop.month,
+      phase: mailLoop && mailLoop.projectPhase,
+      caixa: state && state.caixa,
+      carMandate: b,
+      pressureLine: cashPressureLine(),
+      floorLine: cashFloorLine(),
+      bridgeCap: rescueBridgeCap(),
+      equityPurse: (function () { try { return econBudget().equity; } catch (_) { return null; } })(),
+      equityNeed: (function () { try { return playerEquityNeed((mailLoop && mailLoop.seId) || 'ourique'); } catch (_) { return null; } })(),
+      end_state: mailLoop && mailLoop.end_state,
+      playLocked: playIsLocked(),
+      tags: mailLoop && mailLoop.tags,
+      deadlines: mailLoop && mailLoop.deadlines,
+      missed: mailLoop && mailLoop.missedDeadlines,
+      letters: (mailState && mailState.items || []).map((m) => m.id),
+      hud: mailLoop && mailLoop.hudMoment
+    };
+  }
+
   let mailLoop = {
     active: false,
     seId: null,
@@ -11842,7 +13007,8 @@
     tags: {},
     deliveredIds: {},
     deliveredMonths: {},
-    lastJokerMonth: -99
+    lastJokerMonth: -99,
+    end_state: { status: 'playing', reason: null, month: null }
   };
 
   function getDevMonth() {
@@ -11903,7 +13069,9 @@
   }
 
   /** Mandate promotion only on completed milestones: land secured (option signed) or PIP submitted.
-   *  NOT: land_talk_+1 (negotiating), risk_camara_-1 (meeting Câmara), dd_started (DD kick-off). */
+   *  NOT: land_talk_+1 (negotiating), risk_camara_-1 (meeting Câmara), dd_started (DD kick-off).
+   *  TODO(endings hook 10, pending the owner): move this promotion to cycle_closed + reputation.
+   *  Milestones already grant reputation_+1; do not remove MANDATE_PROMOTE_EFFECTS in this build. */
   const MANDATE_PROMOTE_EFFECTS = {
     'land_option_open': 'land_secured',
     'pip_request_submitted': 'pip_submitted'
@@ -12035,10 +13203,18 @@
     const out = [];
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     mailLoop.missedDeadlines = mailLoop.missedDeadlines || {};
+    try { if (typeof syncLpRequestDeadline === 'function') syncLpRequestDeadline(); } catch (_) {}
     Object.keys(mailLoop.deadlines || {}).forEach((k) => {
       const d = mailLoop.deadlines[k];
       if (!d || d.atMonth == null || mailLoop.firedDeadlines[k]) return;
-      if (k === 'trc_transfer_averbamento' || k === 'lp_transfer_authorization') return; // resolved by the DGEG letter
+      if (k === 'trc_transfer_averbamento' || k === 'lp_transfer_authorization') return;
+      if ((typeof STAKES_DEADLINE_IDS !== 'undefined' && STAKES_DEADLINE_IDS[k]) || d.stakes || d.on_miss_mail) {
+        if (typeof stakesConsiderDeadline === 'function') {
+          const hit = stakesConsiderDeadline(k, d, month);
+          if (hit) out.push(hit);
+        }
+        return;
+      }
       if ((month | 0) <= (d.atMonth | 0)) return;
       mailLoop.firedDeadlines[k] = true;
       mailLoop.missedDeadlines[k] = d.atMonth;
@@ -12219,7 +13395,6 @@
 
   function toastForMailChoice(choice, effects, res) {
     const list = Array.isArray(effects) ? effects : [];
-    const per = (res && res.economics && res.economics.perTag) || {};
     const notes = (res && res.economics && res.economics.notes) || {};
     const seen = {};
     const labels = [];
@@ -12231,11 +13406,7 @@
       if (!t || seen[t]) return;
       seen[t] = true;
       let line = t.replace(/[.\s]+$/, '');
-      const bits = [];
-      if (notes[key]) bits.push(notes[key]);
-      const eb = econDeltaBits(per[key]);
-      if (eb) bits.push(eb);
-      if (bits.length) line += ' (' + bits.join(' · ') + ')';
+      if (notes[key] && !/[€%]/.test(String(notes[key]))) line += ' (' + notes[key] + ')';
       labels.push(line);
     });
     if (res && res.repeat) labels.push('Já tinhas respondido a esta carta: os valores não mudam');
@@ -12269,7 +13440,9 @@
   };
   function investorPatienceHits() {
     const t = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags) || {};
-    return (t['investor_patience_-1'] || 0) + 2 * (t['investor_patience_-2'] || 0);
+    const neg = (t['investor_patience_-1'] || 0) + 2 * (t['investor_patience_-2'] || 0);
+    const pos = t['investor_patience_+1'] || 0;
+    return Math.max(0, neg - pos);
   }
   function econRng() {
     return Math.random();
@@ -12325,7 +13498,6 @@
       }
     }
     const cash = grantBand ? T.m0[grantBand] : 0;
-    const asked = T.m0[band] || 0;
     if (grantBand) {
       state.caixa = +(state.caixa + cash).toFixed(3);
       ec.carGranted = +((ec.carGranted || 0) + cash).toFixed(3);
@@ -12341,18 +13513,15 @@
     ec.m0 = { band: band, outcome: outcome, grantBand: grantBand, cash: cash, odds: o };
     recomputeNav();
     let message;
-    const f = fmtMoneyAbs;
-    // Lead phrase from effect-labels.pt.json (car_band_s|m|l → «Pediste mais {ask_*}»), never hardcoded.
-    const lead = (mailEffectLabelPt('car_band_' + String(band).toLowerCase()) || ('Pediste mais ' + f(asked))).replace(/[.\s]+$/, '');
     if (outcome === 'accept') {
-      message = lead + '. Os investidores aceitaram: caixa +' + f(cash) + '.';
+      message = 'Os investidores aceitaram o pedido.';
     } else if (outcome === 'plan') {
-      message = lead + '. Os investidores querem ver um plano antes de decidir. Por agora a caixa não muda.';
+      message = 'Os investidores querem ver um plano antes de decidir.';
     } else if (band === 'S') {
       // M8: «cortar» no pedido pequeno não baixa o valor (já é o mínimo): dão o dinheiro mas perdem paciência.
-      message = lead + '. Os investidores deram-te o valor, porque já era o mínimo, mas acharam o pedido mal justificado: caixa +' + f(cash) + '. Ficaram menos pacientes.';
+      message = 'Os investidores deram-te o mínimo, mas ficaram menos pacientes.';
     } else {
-      message = lead + '. Os investidores cortaram o pedido para ' + f(cash) + ': caixa +' + f(cash) + '.' + (patienceHit ? ' Ficaram menos pacientes.' : '');
+      message = 'Os investidores cortaram o pedido.' + (patienceHit ? ' Ficaram menos pacientes.' : '');
     }
     try { console.info('[WattEcon] M0', band, outcome, grantBand, cash, o); } catch (_) {}
     return { band: band, outcome: outcome, grantBand: grantBand, cash: cash, odds: o, message: message };
@@ -12361,6 +13530,11 @@
     const spec = ECON_ROLLED[tag];
     let p = spec.p;
     if (spec.patienceStep) p -= spec.patienceStep * investorPatienceHits();
+    // mandate_review_down changes odds only. It does not cut the equity purse mid-cycle.
+    if (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags && (mailLoop.tags.mandate_review_down | 0) > 0) {
+      if (tag === 'cash_at_risk_request') p -= 0.25;
+      if (tag === 'equity_capex_request') p -= 0.10;
+    }
     if (spec.npvNegative) {
       const n = nodes.find((x) => x.id === lotId);
       if (n && n.van < 0) p += spec.npvNegative;
@@ -12388,6 +13562,7 @@
     const lotId = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.seId) || ECON_REF_LOT;
     (effects || []).forEach((ef) => {
       const tag = String(ef);
+      if (typeof STAKES_SKIP_ECON !== 'undefined' && STAKES_SKIP_ECON[tag]) return;
       if (/^car_band_[sml]$/.test(tag)) return; // M0: resolveM0Ask
       const row = effectEconRow(tag);
       if (!row) return;
@@ -12488,6 +13663,7 @@
     }
     maybeRaisePhaseFromEffects(effects);
     try { draftDeadlinesOnEffects(effects.map(String)); } catch (err) { console.warn('[WattMail] draft deadlines', err); }
+    try { if (typeof stakesApplySpecial === 'function') stakesApplySpecial(effects.map(String)); } catch (err) { console.warn('[WattStakes] effects', err); }
     if (effects.some((e) => LAND_CHOSEN_TAGS.indexOf(String(e)) !== -1 || e === 'reopen_tech_plan' || e === 'design_trim_threshold' || e === 'underground_cable')) {
       try { ensureEnvPath(); } catch (err) { console.warn('[WattMail] env route', err); }
     }
@@ -12499,6 +13675,7 @@
     try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
     try { updateHeaderMetrics(true); } catch (_) {}
     try { renderMandateHud(); } catch (_) {}
+    try { if (typeof deliverImmediateRules === 'function' && !opts.fromRule) deliverImmediateRules(); } catch (err) { console.warn('[WattStakes] immediate', err); }
     try {
       if (assetRoomState && assetRoomState.open && typeof renderAssetRoom === 'function') renderAssetRoom();
     } catch (_) {}
@@ -12744,6 +13921,15 @@
           };
         }
       }
+      if (typeof deadlineDef === 'function' && !d.warned) {
+        const def = deadlineDef(k);
+        if (def && def.warn && def.warn.mail) {
+          const warnAt = (d.atMonth | 0) - (Number(def.warn.months_before) || 2);
+          if (warnAt > fromMonth && warnAt <= fromMonth + maxJump && (!bestDeadline || warnAt < bestDeadline.month)) {
+            bestDeadline = { month: warnAt, jumped: warnAt - fromMonth, hit: true, reason: 'deadline-warn', deadlineId: k, deadlineLabel: d.label };
+          }
+        }
+      }
     });
 
     const ruleM = draftRulesNextMonth(fromMonth);
@@ -12828,6 +14014,11 @@
       mailLoop.lastJokerMonth = -99;
       mailLoop.ruleGroups = {};
       mailLoop.tagMonth = {};
+      mailLoop.end_state = { status: 'playing', reason: null, month: null };
+      mailLoop.ruleDone = {};
+      mailLoop.ruleLastAt = {};
+      mailLoop.partnerStake = 0;
+      mailLoop.equityGapClosed = false;
     } else {
       try { await loadEventPack(); ensureEnvPath(); } catch (_) {}
       if (!mailLoop.projectPhase) mailLoop.projectPhase = 'trc_won';
@@ -13517,6 +14708,7 @@
             setTimeout(() => { try { ensureEnvPath(); } catch (_) {} }, 0);
           }
           const effectList = choiceEffectsFor(letter, choice);
+          if (letter) mailLoop._answeringId = letter.skeletonId || String(letter.id || '').split(':')[0];
           // € once per letter. A deferring answer (hold / mais tempo) keeps the letter open for a real answer later.
           const deferring = isDeferringChoice(choice);
           const repeat = !!(letter && (letter.econChoiceId || (deferring && letter.deferredChoiceId)));
@@ -13527,6 +14719,8 @@
             else { letter.econChoiceId = normalizeChoiceId(choiceId, letter); letter.econChoiceLabel = choice ? fillMailTemplate(choice.label) : ''; }
           }
           if (res && repeat) res.repeat = true;
+          mailLoop._answeringId = null;
+          try { if (typeof handleStakeChoice === 'function') handleStakeChoice(letter, effectList); } catch (err) { console.warn('[WattStakes] choice', err); }
           if (letter && mailSkeletonOf(letter) === 'mail-consultor-nao-sujeicao-risco-01' && mailLoop.overequipPending) {
             try { resolveOverequipTripwire(normalizeChoiceId(choiceId, letter)); } catch (err) { console.warn('[WattMail] tripwire resolve', err); }
           }
@@ -13919,6 +15113,21 @@
       mailLoop.deliveredMonths = (ml.deliveredMonths && typeof ml.deliveredMonths === 'object') ? ml.deliveredMonths : {};
       mailLoop.lastJokerMonth = ml.lastJokerMonth != null ? ml.lastJokerMonth : -99;
       mailLoop.missedDeadlines = (ml.missedDeadlines && typeof ml.missedDeadlines === 'object') ? ml.missedDeadlines : {};
+      mailLoop.end_state = (ml.end_state && ml.end_state.status) ? ml.end_state : { status: 'playing', reason: null, month: null };
+      mailLoop.tagMonth = (ml.tagMonth && typeof ml.tagMonth === 'object') ? ml.tagMonth : {};
+      mailLoop.ruleGroups = (ml.ruleGroups && typeof ml.ruleGroups === 'object') ? ml.ruleGroups : (mailLoop.ruleGroups || {});
+      mailLoop.ruleFailed = (ml.ruleFailed && typeof ml.ruleFailed === 'object') ? ml.ruleFailed : {};
+      mailLoop.ruleDone = (ml.ruleDone && typeof ml.ruleDone === 'object') ? ml.ruleDone : {};
+      mailLoop.ruleLastAt = (ml.ruleLastAt && typeof ml.ruleLastAt === 'object') ? ml.ruleLastAt : {};
+      mailLoop.ruleTimerSlip = ml.ruleTimerSlip | 0;
+      mailLoop.burnCut = ml.burnCut || null;
+      mailLoop.partnerStake = Number(ml.partnerStake) || 0;
+      mailLoop.equityGapClosed = !!ml.equityGapClosed;
+      mailLoop.partnerNpvApplied = !!ml.partnerNpvApplied;
+      mailLoop.dilutionApplied = !!ml.dilutionApplied;
+      mailLoop.rescueBridgeApplied = !!ml.rescueBridgeApplied;
+      mailLoop.deadlineFollowup = (ml.deadlineFollowup && typeof ml.deadlineFollowup === 'object') ? ml.deadlineFollowup : {};
+      mailLoop.hudMoment = ml.hudMoment || null;
       mailLoop.icnfConsultMonth = ml.icnfConsultMonth != null ? ml.icnfConsultMonth : mailLoop.icnfConsultMonth;
       // sale mode renames: old saves keep working
       (nodes || []).forEach((n) => {
@@ -13971,6 +15180,7 @@
     try { if (typeof syncPortfolioEmptyCta === 'function') syncPortfolioEmptyCta(); } catch (_) {}
     try { if (typeof renderAuctionBadge === 'function') renderAuctionBadge(); } catch (_) {}
     try { if (typeof renderInboxBadge === 'function') renderInboxBadge(); } catch (_) {}
+    try { if (typeof syncEndPlayLock === 'function') syncEndPlayLock(); } catch (_) {}
     try { if (typeof syncTabInboxBadge === 'function') syncTabInboxBadge(); } catch (_) {}
     try { if (typeof syncTabAuctionBadge === 'function') syncTabAuctionBadge(); } catch (_) {}
     const sub = document.getElementById('portfolioSubtitle');
@@ -15007,6 +16217,15 @@
     initInbox();
     try { loadEventPack().catch(function (err) { console.warn('[WattEcon] pack preload', err); }); } catch (_) {}
     try { initAssetRoom(); } catch (_) {}
+    try { if (typeof initEndScreen === 'function') initEndScreen(); } catch (_) {}
+    try { if (typeof syncEndPlayLock === 'function') syncEndPlayLock(); } catch (_) {}
+    window.WattDebug = {
+      snapshot: function () { return stakesDebugSnapshot(); },
+      setCash: function (n) { state.caixa = +Number(n).toFixed(3); try { updateHeaderMetrics(true); } catch (_) {} return state.caixa; },
+      setPhase: function (p) { mailLoop.projectPhase = p; try { syncPeriodChrome(); } catch (_) {} return mailLoop.projectPhase; },
+      addTags: function (list) { return applyMailEffects([].concat(list)); },
+      playLocked: function () { return playIsLocked(); }
+    };
 
     if (resumed) {
       applyHydratedUi();
@@ -15044,6 +16263,20 @@
 </script>
 
 
+
+
+<div id="hudMoment" class="hud-moment" hidden role="status"></div>
+<div id="endScreen" class="end-screen" hidden role="dialog" aria-modal="true" aria-labelledby="endScreenTitle">
+  <div class="end-card">
+    <h2 id="endScreenTitle">Mandato terminado</h2>
+    <div id="endScreenBody"></div>
+    <div class="end-actions">
+      <button type="button" id="endScreenRestart">Recomeçar o mandato</button>
+      <button type="button" id="endScreenMail">Ver o Correio</button>
+      <button type="button" id="endScreenClose">Fechar</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

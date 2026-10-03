@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-investidores-pressao-01",
+  "skin_id": "caixa-baixa",
+  "draft": true,
+  "when": {
+    "state_check": "cash_ratio_low"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "Os investidores estão nervosos",
+  "body": "O dinheiro de desenvolvimento está a acabar. Ao ritmo a que gastas, dura poucos meses.\n\nOs investidores estão nervosos. Se a caixa ficar vazia, vamos ter uma conversa difícil sobre o futuro do projeto. Ainda vais a tempo: podes cortar custos, pedir-nos mais dinheiro ou vender um quarto do projeto.",
+  "params": {}
+}

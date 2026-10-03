@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-rede-prazo-01",
+  "skin_id": "ultimo-aviso",
+  "draft": true,
+  "when": {},
+  "from_name": "REN — Ligações à rede",
+  "subject": "Último aviso: o acordo de ligação não foi assinado",
+  "body": "O prazo para assinares o acordo de ligação passou. Ainda podemos assinar até {{deadline_month}}. Depois disso, as obras de ligação passam para o fim da nossa lista e a tua central vai ligar-se mais tarde. Já informámos a DGEG do atraso.",
+  "params": {
+    "deadline_id": "grid_agreement_final"
+  }
+}

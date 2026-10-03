@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-marco-01",
+  "skin_id": "inicio-obra",
+  "draft": true,
+  "when": {
+    "milestone": "inicio-obra"
+  },
+  "from_name": "Comité de investimento",
+  "subject": "A obra começou",
+  "body": "As máquinas entraram no terreno. A partir de agora, o desafio é acabar a tempo e dentro do orçamento.",
+  "params": {}
+}

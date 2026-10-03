@@ -1,0 +1,75 @@
+{
+  "id": "mail-investidores-pressao-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "status_note": "DRAFT 2026-10-03 — endings & stakes v0.1 (Ourique); ver ../endings-stakes-v01.md",
+  "trigger": {
+    "after": "state_check",
+    "state_check": [
+      "cash_ratio_low",
+      "patience_low"
+    ],
+    "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
+      "aia",
+      "licenca_producao"
+    ]
+  },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "heavy": true,
+  "choices": [
+    {
+      "id": "cut_costs",
+      "label": "Cortar custos já",
+      "hint": "Gastas menos por mês, mas o trabalho anda mais devagar. Os prazos da lei e da REN não param.",
+      "effects": [
+        "burn_cut",
+        "dev_slowdown",
+        "pressure_answered"
+      ]
+    },
+    {
+      "id": "ask_more",
+      "label": "Pedir mais orçamento",
+      "hint": "Os investidores podem aceitar ou recusar. Se recusarem, ficam mais nervosos.",
+      "effects": [
+        "cash_at_risk_request",
+        "pressure_answered"
+      ]
+    },
+    {
+      "id": "sell_part",
+      "label": "Vender um quarto do projeto",
+      "hint": "Vendes 25 % da empresa do projeto a um investidor para pagar o desenvolvimento. Continuas a mandar no projeto, mas ficas com três quartos do valor. O dinheiro entra em um a dois meses.",
+      "effects": [
+        "stake_sale_started",
+        "stake_sale_pre_lp",
+        "sale_pipeline_open",
+        "pressure_answered",
+        "stake_sale_25"
+      ],
+      "when": {
+        "blocks": [
+          "stake_sale_started",
+          "sale_full_exit_pending"
+        ]
+      }
+    },
+    {
+      "id": "keep",
+      "label": "Continuar como está",
+      "hint": "Não muda nada agora. Os investidores ficam mais nervosos.",
+      "effects": [
+        "investor_patience_-1",
+        "pressure_answered"
+      ]
+    }
+  ],
+  "notes_for_ui": "Carta de aviso (degrau 1). Placeholders {{cash_left}} {{months_left}} calculados pela consola (caixa e gasto mensal). Ver endings-stakes-v01 §1.",
+  "notes_for_economy": "burn_cut: gasto mensal × fator (PEDIR_ECONOMY, proposta 0,6). dev_slowdown: +1 mês nos temporizadores das regras do jogador (after_effect), NUNCA nos prazos legais. cash_at_risk_request já existe.",
+  "nota_gm": "Sem base legal: pressão comercial dos investidores (mandato). Venda parcial antes da LP fixada em 25 % (Pedro/Economy 2026-10-03): sem mudança de controlo não há transmissão do TRC (DL 15/2022 art. 18.º/9) → sem averbamento DGEG e sem caução adicional. 49 % com direitos de veto (acordo parassocial) pode dar controlo conjunto = transmissão; por isso o jogo não oferece."
+}

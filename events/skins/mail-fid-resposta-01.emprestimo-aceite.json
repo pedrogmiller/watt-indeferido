@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-fid-resposta-01",
+  "skin_id": "emprestimo-aceite",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "when": {},
+  "from_name": "Banco — Financiamento de projetos",
+  "subject": "O banco aceita o empréstimo de 20 anos",
+  "body": "Aceitamos alargar o empréstimo de 15 para 20 anos. Nos últimos cinco anos pagas-nos com o que a central ganhar a vender ao preço de mercado, por isso pedimos mais folga nas contas. Cobramos uma comissão sobre o valor extra.\n\nPrecisas agora de menos capital próprio para a obra. Volta à decisão final de investimento.",
+  "params": {},
+  "from_type_override": "BANCO"
+}

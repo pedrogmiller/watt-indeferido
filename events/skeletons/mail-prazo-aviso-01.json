@@ -1,0 +1,28 @@
+{
+  "id": "mail-prazo-aviso-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "deadline_warn",
+    "when_phase": [
+      "aia",
+      "licenca_producao",
+      "obra"
+    ],
+    "or_deadline": "*"
+  },
+  "priority": "low",
+  "from_type": "SISTEMA",
+  "deadline_ref": "from_deadline",
+  "choices": [
+    {
+      "id": "dismiss",
+      "label": "Arquivar",
+      "effects": []
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Sem €.",
+  "notes_for_ui": "Aviso de prazo crítico (warn.months_before). FYI; conta no cap. A carta herda deadline_ref do deadline que a gerou; ctx: {{deadline_label}}, {{deadline_month}}."
+}

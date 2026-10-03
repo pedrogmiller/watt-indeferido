@@ -136,14 +136,64 @@
         "grid_conditions_accepted"
       ],
       "on_miss": [
-        "caducidade_risk_+1"
+        "dl_missed_grid_agreement"
       ],
-      "on_miss_mail": null,
+      "on_miss_mail": {
+        "skeleton": "mail-rede-prazo-01",
+        "skin": "ultimo-aviso"
+      },
       "void_on_effects": [
         "sale_full_exit",
         "trc_transferred_with_plant"
       ],
-      "note_2026_10_03": "capex_rede_flag deixa de cumprir o prazo: também é posto por enterrar linhas (consultor AIA/não sujeição). Só a assinatura do acordo com a REN cumpre."
+      "note_2026_10_03": "Endings v0.1: aviso 2 meses antes; falha → último aviso da REN e prazo de graça grid_agreement_final (+2 meses). Era só um toast.",
+      "warn": {
+        "months_before": 2,
+        "mail": {
+          "skeleton": "mail-prazo-aviso-01",
+          "skin": "grid-agreement"
+        }
+      },
+      "note_2026_10_03b": "Pedro: falhar o acordo não faz caducar o TRC. Primeira falha: último aviso + prazo final (sem risco de caducidade)."
+    },
+    {
+      "id": "grid_agreement_final",
+      "label": "Acordo com a REN (último prazo)",
+      "kind": "player",
+      "severity": "critical",
+      "create_on": {
+        "effect": "dl_missed_grid_agreement"
+      },
+      "due": {
+        "anchor": "created",
+        "months": 2,
+        "source": "HIPÓTESE / PEDIR_PEDRO (graça antes da DGEG)"
+      },
+      "meet_on_effects": [
+        "grid_agreement_signed",
+        "grid_conditions_accepted"
+      ],
+      "on_miss": [
+        "dl_missed_grid_agreement_final",
+        "delay_ligacao_+1",
+        "caducidade_risk_+1"
+      ],
+      "on_miss_mail": {
+        "skeleton": "mail-rede-prazo-01",
+        "skin": "ligacao-adiada"
+      },
+      "warn": null,
+      "extension": {
+        "allowed": false
+      },
+      "on_meet_mail": null,
+      "void_on_effects": [
+        "sale_full_exit",
+        "trc_transferred_with_plant",
+        "trc_caducado"
+      ],
+      "hud_owner": "tu",
+      "note": "Endings v0.1 (2026-10-03, revisto Pedro): falhar → ligação adiada + caducidade_risk_+1. Sem audiência da DGEG só por isto."
     },
     {
       "id": "lp_request",
@@ -243,16 +293,21 @@
         "effects": [
           "lp_request_submitted",
           "lp_dossier_thin"
+        ],
+        "requires_state": [
+          "lp_request_ready"
         ]
       },
       "final_miss": [
-        "trc_caducado",
-        "caucao_executada",
-        "asset_removed",
-        "car_burn_stop",
-        "mandate_slot_free",
-        "investor_patience_-2"
-      ]
+        "dl_final_missed_lp_request",
+        "caducidade_risk_+2",
+        "trc_audiencia_open"
+      ],
+      "final_miss_mail": {
+        "skeleton": "mail-dgeg-trc-risco-01",
+        "skin": "audiencia"
+      },
+      "note_2026_10_03": "Pedro: sem AIA o PIP é obrigatório no pedido → rush e submissão só com lp_request_ready. A perda do TRC passa pela audiência da DGEG (trc-risco/audiencia → trc-mantido ou fim-de-jogo/trc-caducado), não é imediata."
     },
     {
       "id": "lp_aperfeicoamento",
@@ -550,14 +605,16 @@
         "note": "LE para partes concluídas (definição de licença de exploração, art. 3.º)."
       },
       "final_miss": [
-        "lp_caducada",
-        "trc_caducado",
-        "caucao_executada",
-        "asset_removed",
-        "mandate_slot_free",
-        "investor_patience_-2"
+        "dl_final_missed_le_deadline",
+        "caducidade_risk_+2",
+        "trc_audiencia_open"
       ],
-      "note": "12 meses após LP é apertado face a FID + obra: prorrogação esperada — tensão desenhada, não bug (confirmar com Pedro)."
+      "note": "12 meses após LP é apertado face a FID + obra: prorrogação esperada — tensão desenhada, não bug (confirmar com Pedro).",
+      "final_miss_mail": {
+        "skeleton": "mail-dgeg-trc-risco-01",
+        "skin": "audiencia"
+      },
+      "note_2026_10_03": "Como lp_request: a caducidade passa pela audiência da DGEG."
     },
     {
       "id": "pip_decision",
@@ -794,5 +851,8 @@
       },
       "note": "A venda depois da LP não é instantânea. Durante o prazo o projeto continua do jogador. O elementos-pedidos não fecha o prazo (não está em meet_on_effects)."
     }
-  ]
+  ],
+  "_fields_2026_10_03": {
+    "final_miss_mail": "carta entregue quando final_miss se aplica (deadline_accept_miss ou prorrogação recusada + deixar caducar). Põe end_state lost."
+  }
 }

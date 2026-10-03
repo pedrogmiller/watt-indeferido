@@ -1,0 +1,30 @@
+{
+  "id": "mail-prorrogacao-concedida-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-09-28 — proposta GM; aguarda Gate Pedro (não trancado)",
+  "trigger": {
+    "after": "extension_granted",
+    "when_phase": [
+      "aia",
+      "licenca_producao",
+      "obra"
+    ],
+    "or_deadline": "*"
+  },
+  "priority": "normal",
+  "from_type": "DGEG",
+  "deadline_ref": "from_deadline",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Percebido",
+      "effects": [
+        "extension_seen"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_economy": "Meses adicionados = extension.adds_months do catálogo (banda). Sem €.",
+  "notes_for_ui": "O motor já aplicou dl_extended_<id> e o novo atMonth antes de entregar. HUD: badge 'prorrogado'."
+}

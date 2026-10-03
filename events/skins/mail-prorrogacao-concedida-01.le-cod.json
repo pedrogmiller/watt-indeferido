@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-prorrogacao-concedida-01",
+  "skin_id": "le-cod",
+  "draft": true,
+  "when": {},
+  "from_name": "DGEG — Licenciamento de centros eletroprodutores",
+  "subject": "Prorrogação concedida — licença de exploração",
+  "body": "Prazo da licença de exploração prorrogado até {{deadline_month}}. O despacho regista o motivo. Nova derrapagem já não terá a mesma leitura.",
+  "params": {
+    "deadline_id": "le_deadline"
+  }
+}
