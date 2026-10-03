@@ -216,6 +216,98 @@
     transition: width 0.5s ease;
   }
 
+  /* Main HUD: cash, licence risk, reputation. Exact figures live under «Ver números». */
+  .metric-pill.cash-ok { background: var(--bg-app); }
+  .metric-pill.cash-warn { background: #fffbeb; border-color: #fcd34d; white-space: normal; border-radius: 16px; }
+  .metric-pill.cash-warn .metric-label,
+  .metric-pill.cash-warn .metric-value { color: #92400e; }
+  .metric-pill.cash-bad { background: #fef2f2; border-color: #fca5a5; white-space: normal; border-radius: 16px; }
+  .metric-pill.cash-bad .metric-label,
+  .metric-pill.cash-bad .metric-value { color: #b91c1c; }
+  #pillCaixa.cash-warn .metric-label,
+  #pillCaixa.cash-bad .metric-label {
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: normal;
+    line-height: 1.25;
+    max-width: 11rem;
+  }
+  #mobileCaixaPill.cash-warn { background: #fffbeb; border-color: #fcd34d; }
+  #mobileCaixaPill.cash-warn .v { color: #92400e; }
+  #mobileCaixaPill.cash-bad { background: #fef2f2; border-color: #fca5a5; }
+  #mobileCaixaPill.cash-bad .v { color: #b91c1c; }
+  .licence-risk {
+    background: var(--bg-app);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 6px 12px 7px;
+    min-width: 168px;
+    flex: 1 1 180px;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .licence-risk-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .licence-risk-word { font-size: 12px; font-weight: 650; color: #334155; line-height: 1.25; text-align: right; }
+  .licence-risk-bar { height: 5px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+  .licence-risk-fill { height: 100%; width: 0; border-radius: 999px; background: #22c55e; transition: width 0.4s ease, background 0.3s ease; }
+  .licence-risk.tone-warn { background: #fffbeb; border-color: #fcd34d; }
+  .licence-risk.tone-warn .licence-risk-word { color: #92400e; }
+  .licence-risk.tone-warn .licence-risk-fill { background: #f59e0b; }
+  .licence-risk.tone-bad { background: #fef2f2; border-color: #fca5a5; }
+  .licence-risk.tone-bad .licence-risk-word { color: #b91c1c; }
+  .licence-risk.tone-bad .licence-risk-fill { background: #dc2626; }
+  .reputation-pill {
+    background: #f8fafc;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+  }
+  .reputation-word { font-size: 13px; font-weight: 700; color: #334155; }
+  .reputation-pill.tone-boa { background: #f0fdf4; border-color: #86efac; }
+  .reputation-pill.tone-boa .reputation-word { color: #166534; }
+  .reputation-pill.tone-fraca { background: #fef2f2; border-color: #fca5a5; }
+  .reputation-pill.tone-fraca .reputation-word { color: #b91c1c; }
+  .ver-numeros { border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+  .ver-numeros > summary {
+    cursor: pointer;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 650;
+    color: #334155;
+    list-style: none;
+  }
+  .ver-numeros > summary::-webkit-details-marker { display: none; }
+  .ver-numeros > summary::before { content: '▸ '; color: #94a3b8; }
+  .ver-numeros[open] > summary::before { content: '▾ '; }
+  .ver-numeros-body { padding: 0 16px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .ver-numeros .asset-money-strip { border-bottom: 0; background: transparent; padding: 0; flex-wrap: wrap; }
+  .ver-numeros-grid { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+  .ver-numeros-grid .bonding-pill { min-width: 160px; flex: 1 1 180px; }
+  .ver-numeros-project .asset-mw-hud,
+  .ver-numeros-project .asset-meta-grid { margin-top: 4px; }
+  @media (max-width: 640px) {
+    .header-metrics { flex-wrap: wrap; align-items: stretch; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+    #pillLicence { order: 3; flex: 1 1 100%; max-width: none; min-width: 0; }
+    .licence-risk-top { flex-wrap: wrap; }
+    .licence-risk-word { text-align: left; }
+    #pillCaixa { order: 1; }
+    #pillReputation { order: 2; }
+    #pillCaixa, #pillReputation {
+      flex: 1 1 calc(50% - 6px);
+      max-width: calc(50% - 6px);
+      min-width: 0;
+    }
+    #pillCaixa.cash-warn .metric-label,
+    #pillCaixa.cash-bad .metric-label { max-width: 100%; }
+    .ver-numeros > summary { padding: 10px 12px; }
+    .ver-numeros-body { padding: 0 12px 12px; }
+  }
+
   /* ── FAB · Próximo Trimestre ── */
   .fab-nextq {
     position: fixed;
@@ -1715,13 +1807,9 @@
       flex: none;
       width: 100%;
       gap: 8px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      overflow: visible;
+      flex-wrap: wrap;
       padding: 2px 0 6px;
-      mask-image: linear-gradient(90deg, #000 92%, transparent);
-      -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent);
     }
 
     .header-metrics::-webkit-scrollbar { display: none; }
@@ -3324,7 +3412,7 @@
   body.footer-mock .header {
     display: flex !important;
     flex-direction: row !important;
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: space-between !important;
     gap: 0 !important;
@@ -3369,13 +3457,27 @@
     font-family: var(--font);
   }
   /* Keep metrics/tutorial/auction/home/inbox out of the row so space-between works */
-  body.footer-mock .header-metrics,
   body.footer-mock #btnTutorial,
   body.footer-mock #btnHeaderHome,
   body.footer-mock #btnInbox,
   body.footer-mock #btnOpenAuction {
     display: none !important;
   }
+  /* The three HUD readings stay on the phone. The old pile of figures does not. */
+  body.footer-mock .header { flex-wrap: wrap !important; }
+  body.footer-mock .header-metrics {
+    display: flex !important;
+    order: 30;
+    flex: 1 0 100%;
+    width: 100%;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    align-items: stretch;
+    overflow: visible;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  body.footer-mock #mobileCaixaPill { display: none !important; }
 
   body.footer-mock .main {
     padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
@@ -3584,8 +3686,8 @@
     .header-metrics {
       order: 3;
       width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: visible;
+      flex-wrap: wrap;
       padding-bottom: 2px;
     }
     .header-home-btn { margin-left: auto; }
@@ -4935,35 +5037,20 @@
   <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · T3</span>
 
   <div class="header-metrics" id="coach-header-metrics">
-    <div class="metric-pill" id="pillCaixa">
-      <span class="metric-label" title="Caixa disponível">Caixa</span>
+    <div class="metric-pill cash-ok" id="pillCaixa">
+      <span class="metric-label" id="caixaStatus" title="Caixa disponível">Caixa</span>
       <span class="metric-value num" id="valCaixa">2,0 M€</span>
     </div>
-    <div class="metric-pill" id="pillDivida">
-      <span class="metric-label" title="Dívida total">Dívida</span>
-      <span class="metric-value num" id="valDivida">0 €</span>
-    </div>
-    <div class="metric-pill" id="pillNav">
-      <span class="metric-label" title="Valor estimado da empresa">Valor da empresa</span>
-      <span class="metric-value num" id="valNav">2,0 M€</span>
-    </div>
-    <div class="rating-badge">Orçamento pequeno</div>
-    <div class="mandate-hud-pill" id="pillMandateCar" title="Para desenvolver: o orçamento que os investidores aceitam arriscar para preparares o projeto até decidires construir">
-      <span class="metric-label">Para desenvolver</span>
-      <span class="metric-value num" id="valMandateCar">6,5 M€</span>
-    </div>
-    <div class="mandate-hud-pill" id="pillMandateEquity" title="Capital próprio para construir: o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco">
-      <span class="metric-label">Para construir</span>
-      <span class="metric-value num" id="valMandateEquity">45,0 M€</span>
-    </div>
-    <div class="bonding-pill">
-      <div class="bonding-top">
-        <span class="metric-label" title="Garantias bancárias: cauções que o banco emite por ti para concorreres e manteres TRC">Garantias</span>
-        <span class="metric-value num" style="font-size:12px" id="valBonding">2,0 M€ livres</span>
+    <div class="licence-risk tone-ok" id="pillLicence" title="Risco para a licença">
+      <div class="licence-risk-top">
+        <span class="metric-label">Risco para a licença</span>
+        <span class="licence-risk-word" id="licenceRiskWord">Sem licença em jogo</span>
       </div>
-      <div class="bonding-bar">
-        <div class="bonding-fill" id="bondingFill" style="width:0%"></div>
-      </div>
+      <div class="licence-risk-bar" aria-hidden="true"><div class="licence-risk-fill" id="licenceRiskFill"></div></div>
+    </div>
+    <div class="reputation-pill tone-neutra" id="pillReputation">
+      <span class="metric-label">Reputação</span>
+      <span class="reputation-word" id="valReputation">Neutra</span>
     </div>
   </div>
 
@@ -5390,12 +5477,46 @@
       </button>
     </div>
   </header>
-  <div class="asset-money-strip" id="assetMoneyStrip" aria-label="Dinheiro da empresa" aria-live="polite">
-    <div class="asset-money-cell" id="assetMoneyCaixaCell"><span class="k">Caixa</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span></div>
-    <div class="asset-money-cell" id="assetMoneyNavCell"><span class="k" title="Valor estimado da empresa">Valor da empresa</span><span class="v num" id="assetMoneyNav">—</span><span class="d num" id="assetMoneyNavDelta"></span></div>
-    <div class="asset-money-cell" id="assetMoneyBondingCell"><span class="k" title="Garantias bancárias livres">Garantias</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span></div>
-    <span class="econ-provisional" title="Valores em € provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span>
-  </div>
+  <details class="ver-numeros" id="verNumeros">
+    <summary>Ver números</summary>
+    <div class="ver-numeros-body">
+      <div class="asset-money-strip" id="assetMoneyStrip" aria-label="Dinheiro da empresa" aria-live="polite">
+        <div class="asset-money-cell" id="assetMoneyCaixaCell"><span class="k">Caixa</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span></div>
+        <div class="asset-money-cell" id="assetMoneyNavCell"><span class="k" title="Valor estimado da empresa">Valor da empresa</span><span class="v num" id="assetMoneyNav">—</span><span class="d num" id="assetMoneyNavDelta"></span></div>
+        <div class="asset-money-cell" id="assetMoneyBondingCell"><span class="k" title="Garantias bancárias livres">Garantias</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span></div>
+        <span class="econ-provisional" title="Valores em € provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span>
+      </div>
+      <div class="ver-numeros-grid">
+        <div class="metric-pill" id="pillDivida">
+          <span class="metric-label" title="Dívida total">Dívida</span>
+          <span class="metric-value num" id="valDivida">0 €</span>
+        </div>
+        <div class="metric-pill" id="pillNav">
+          <span class="metric-label" title="Valor estimado da empresa">Valor da empresa</span>
+          <span class="metric-value num" id="valNav">2,0 M€</span>
+        </div>
+        <div class="rating-badge">Orçamento pequeno</div>
+        <div class="mandate-hud-pill" id="pillMandateCar" title="Para desenvolver: o orçamento que os investidores aceitam arriscar para preparares o projeto até decidires construir">
+          <span class="metric-label">Para desenvolver</span>
+          <span class="metric-value num" id="valMandateCar">6,5 M€</span>
+        </div>
+        <div class="mandate-hud-pill" id="pillMandateEquity" title="Capital próprio para construir: o dinheiro teu e dos investidores que entra na obra, além do empréstimo do banco">
+          <span class="metric-label">Para construir</span>
+          <span class="metric-value num" id="valMandateEquity">45,0 M€</span>
+        </div>
+        <div class="bonding-pill">
+          <div class="bonding-top">
+            <span class="metric-label" title="Garantias bancárias: cauções que o banco emite por ti para concorreres e manteres TRC">Garantias</span>
+            <span class="metric-value num" style="font-size:12px" id="valBonding">2,0 M€ livres</span>
+          </div>
+          <div class="bonding-bar">
+            <div class="bonding-fill" id="bondingFill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ver-numeros-project" id="verNumerosProject"></div>
+    </div>
+  </details>
   <div class="asset-room-scroll" id="assetRoomScroll">
     <div class="asset-room-inner" id="assetRoomBody">
       <!-- preenchido por renderAssetRoom -->
@@ -5826,6 +5947,7 @@
 
   function flashPill(id) {
     const el = document.getElementById(id);
+    if (!el) return;
     el.classList.add('flash');
     setTimeout(() => el.classList.remove('flash'), 1200);
   }
@@ -5964,11 +6086,7 @@
     const expanded = nodes.filter((n) => isAwardedTrc(n.id) && !state.minimized.has(n.id));
 
     grid.innerHTML = expanded.map(n => {
-      const t = n.trc;
-      const used = 100 - t.free;
       const th = threatFace(n);
-      const delta = fmtVanDelta(n.vanDelta);
-      const vTone = vanTone(n);
       const classes = [
         'node-card',
         activeId === n.id ? 'is-active' : '',
@@ -6007,33 +6125,14 @@
             <div class="card-tensao tone-${n.tensaoTone}">${n.tensao}</div>
             ${hudPhaseHtml}
 
-            <div class="card-hero">
-              <div class="card-hero-label" title="NPV: quanto vale hoje o projeto para os investidores: receitas menos custos e pagamentos ao banco, a valores de hoje, com 8% ao ano">NPV</div>
-              <div class="card-hero-row">
-                <span class="card-hero-value tone-${vTone} num">${fmtVan(n.van)}</span>
-                ${delta ? `<span class="card-hero-delta tone-${vTone} num">${delta}</span>` : ''}
-              </div>
-              <div class="hud-drivers-line"><strong>Custo de construção</strong>: <span class="num">${nodeDossier(n).capex || 'a definir'}</span></div>
-            </div>
-
             <div class="card-threat">
               <div class="threat-row">
                 <span class="threat-label"${th.tip ? ` data-tip="${th.tip}"` : ''}>${th.label}</span>
-                ${th.value ? `<span class="threat-value tone-${th.tone} num">${th.value}</span>` : ''}
               </div>
               ${n.missionOpen ? `<span class="mission-chip">1 tarefa em curso</span>` : ''}
             </div>
 
-            <div class="trc-face">
-              <div class="trc-bar" aria-hidden="true">
-                <div class="trc-seg" style="width:${used}%;background:#94a3b8"></div>
-              </div>
-              <div class="trc-face-meta">
-                <span class="trc-pct-quiet num">${used}%</span>
-              </div>
-            </div>
-
-            <div class="card-open-hint">Abrir sala do ativo</div>
+            <div class="card-open-hint">Abrir a sala para ver os números</div>
           </div>
         </article>`;
     }).join('');
@@ -6718,12 +6817,12 @@
       L.econChoiceId = ch.id;
       L.econChoiceLabel = fillMailTemplate(ch.label);
     }
-    setTimeout(() => showToast('Plano de sobreequipamento confirmado: +' + String(P.added).replace('.', ',') + ' MWp. A via ambiental passa a ' + (ENV_PATH_PT[P.to] || P.to) + '.'), 0);
+    setTimeout(() => showToast('Plano de sobreequipamento confirmado. A via ambiental muda.'), 0);
   }
   async function blockOverequipCap(node, plannedAcMva) {
     mailLoop.tags = mailLoop.tags || {};
     mailLoop.tags.block_overequip_cap = (mailLoop.tags.block_overequip_cap || 0) + 1;
-    showToast('Injeção acima do limite: no máximo ' + String(overequipInjectionCapMva(node)).replace('.', ',') + ' MVA (1,2 × a potência da ligação). O plano pedia ' + String(plannedAcMva).replace('.', ',') + ' MVA.');
+    showToast('Injeção acima do limite da ligação.');
     try {
       await deliverComposedLetter('mail-trc-mw-full-01', 'limite-sobreequipamento', { open: true, allowDup: true, when: 'Agora' });
     } catch (err) {
@@ -6737,7 +6836,7 @@
     if (plannedPct <= free) return false;
     mailLoop.tags = mailLoop.tags || {};
     mailLoop.tags.block_oversubscribe = (mailLoop.tags.block_oversubscribe || 0) + 1;
-    showToast('Não há potência livre para este plano: precisa de ' + plannedPct + '% e tens ' + free + '% livre');
+    showToast('Não há potência livre para este plano.');
     try {
       await deliverComposedLetter('mail-trc-mw-full-01', 'default', { open: true, allowDup: true, when: 'Agora' });
     } catch (err) {
@@ -6940,7 +7039,7 @@
     const built = phaseIdx >= ((typeof phaseIndex === 'function') ? phaseIndex('obra') : 5);
     const buildReason = built ? 'A obra já começou'
       : (!lpOk ? 'Abre com a licença de produção'
-        : (!eqFit.ok ? ('Falta capital próprio: faltam ' + fmtMoneyAbs(eqFit.gap) + ' (precisas de ' + fmtMoneyAbs(eqFit.need) + '; tens ' + fmtMoneyAbs(eqFit.budget) + ')') : ''));
+        : (!eqFit.ok ? 'Falta capital próprio para construir' : ''));
     ctas.push(cta('construir', 'Construir a central (FID)',
       'Decisão final de investimento: o banco e os investidores põem o dinheiro e a obra começa.',
       built ? 'Em obra' : (buildReason ? 'Fechado' : 'Aberto'), buildReason ? 'gated' : '', !!buildReason, buildReason));
@@ -6952,12 +7051,10 @@
         <h2 class="asset-zone-title">${node.name}</h2>
         <div class="asset-tension tone-${tensionTone}">${tension}</div>
         <div class="asset-meta-grid">
-          <div class="asset-meta-cell"><div class="k">Potência do TRC</div><div class="v num wrap"><span class="nw">${mw}</span> · <span class="nw">${tf.used}% usado</span> · <span class="nw">${tf.free}% livre</span></div></div>
           <div class="asset-meta-cell"><div class="k">Preço de venda da energia</div><div class="v num">${offtake}</div></div>
           <div class="asset-meta-cell"><div class="k">Fase do projeto</div><div class="v">${pd.phase}</div></div>
           <div class="asset-meta-cell"><div class="k">Próximo prazo</div><div class="v">${pd.deadline}</div></div>
         </div>
-        ${renderFreeMwHud(node)}
         ${renderSellModeChips(node)}
       </section>
 
@@ -6987,23 +7084,6 @@
         </div>
       </section>
 
-      <section class="asset-zone" id="assetZoneTrc" aria-label="Uso da ligação">
-        <div class="asset-zone-kicker">Uso da ligação</div>
-        <div class="asset-trc-bar" role="img" aria-label="Uso da ligação por tecnologia">
-          <div class="asset-trc-seg" data-trc-seg="solar" style="width:${t.solar}%;background:var(--solar)" title="Solar ${t.solar}%"></div>
-          <div class="asset-trc-seg" data-trc-seg="wind" style="width:${t.wind}%;background:var(--wind)" title="Eólico ${t.wind}%"></div>
-          <div class="asset-trc-seg" data-trc-seg="bess" style="width:${t.bess}%;background:var(--bess)" title="Baterias ${t.bess}%"></div>
-          <div class="asset-trc-seg" data-trc-seg="free" style="width:${t.free}%;background:#e2e8f0" title="Livre ${t.free}%"></div>
-        </div>
-        <p class="asset-trc-legend">
-          <span><span class="asset-trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</span>
-          ${t.wind ? `<span><span class="asset-trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</span>` : ''}
-          ${t.bess ? `<span><span class="asset-trc-dot" style="background:var(--bess)"></span>Baterias ${t.bess}%</span>` : ''}
-          <span><span class="asset-trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</span>
-        </p>
-        <p class="asset-mw-note">${(t.wind || t.bess) ? 'Inclui o que já juntaste ao solar.' : 'Por agora só tens o solar. Juntar eólica ou baterias usa parte da potência livre.'}</p>
-      </section>
-
       <section class="asset-zone" id="assetZoneActos" aria-label="O que podes fazer">
         <div class="asset-zone-kicker">O que podes fazer</div>
         <div class="asset-cta-list">${ctasHtml}</div>
@@ -7021,8 +7101,30 @@
       </section>
     `;
 
+    const nums = document.getElementById('verNumerosProject');
+    if (nums) {
+      nums.innerHTML = `
+        <div class="asset-meta-grid">
+          <div class="asset-meta-cell"><div class="k">Potência do TRC</div><div class="v num wrap"><span class="nw">${mw}</span> · <span class="nw">${tf.used}% usado</span> · <span class="nw">${tf.free}% livre</span></div></div>
+        </div>
+        ${renderFreeMwHud(node)}
+        <div class="asset-trc-bar" role="img" aria-label="Uso da ligação por tecnologia">
+          <div class="asset-trc-seg" data-trc-seg="solar" style="width:${t.solar}%;background:var(--solar)" title="Solar"></div>
+          <div class="asset-trc-seg" data-trc-seg="wind" style="width:${t.wind}%;background:var(--wind)" title="Eólico"></div>
+          <div class="asset-trc-seg" data-trc-seg="bess" style="width:${t.bess}%;background:var(--bess)" title="Baterias"></div>
+          <div class="asset-trc-seg" data-trc-seg="free" style="width:${t.free}%;background:#e2e8f0" title="Livre"></div>
+        </div>
+        <p class="asset-trc-legend">
+          <span><span class="asset-trc-dot" style="background:var(--solar)"></span>Solar ${t.solar}%</span>
+          ${t.wind ? `<span><span class="asset-trc-dot" style="background:var(--wind)"></span>Eólico ${t.wind}%</span>` : ''}
+          ${t.bess ? `<span><span class="asset-trc-dot" style="background:var(--bess)"></span>Baterias ${t.bess}%</span>` : ''}
+          <span><span class="asset-trc-dot" style="background:#cbd5e1"></span>Livre ${t.free}%</span>
+        </p>
+        <p class="asset-mw-note">${(t.wind || t.bess) ? 'Inclui o que já juntaste ao solar.' : 'Por agora só tens o solar. Juntar eólica ou baterias usa parte da potência livre.'}</p>`;
+    }
     try { entDecorateSala(body, node); } catch (_) {}
-    body.querySelectorAll('[data-trc-seg]').forEach((el) => {
+    const segRoot = document.getElementById('verNumerosProject') || body;
+    segRoot.querySelectorAll('[data-trc-seg]').forEach((el) => {
       el.addEventListener('click', () => focusAssetHybridizacao());
     });
     try {
@@ -7042,7 +7144,7 @@
         }
         if (id === 'construir') {
           const fit = projectEquityFit(node.id);
-          if (!fit.ok) { showToast('Falta capital próprio para construir: faltam ' + fmtMoneyAbs(fit.gap) + '.'); return; }
+          if (!fit.ok) { showToast('Falta capital próprio para construir.'); return; }
           // The decision itself is the investors' FID card (mail-investidores-fid-01); the sala only opens it.
           const fidL = (mailState.items || []).filter((m) => mailSkeletonOf(m) === 'mail-investidores-fid-01' && !m.econChoiceId).pop();
           if (fidL && window.WattInbox) { WattInbox.open(); WattInbox.openLetter(fidL.id); }
@@ -7463,16 +7565,90 @@
     assetMoneyLast = { caixa: state.caixa, nav: state.nav, bondingFree: state.bondingFree };
   }
 
+  function cashHudTone() {
+    const caixa = Number(state.caixa) || 0;
+    if (caixa < 0) return 'bad';
+    let line = 1.625;
+    try { if (typeof cashPressureLine === 'function') line = cashPressureLine(); } catch (_) {}
+    if (caixa <= line + 1e-9) return 'warn';
+    return 'ok';
+  }
+  function paintCashHud() {
+    const tone = cashHudTone();
+    const label = tone === 'bad' ? 'A caixa não chega' : (tone === 'warn' ? 'Os investidores estão nervosos' : 'Caixa');
+    ['pillCaixa', 'mobileCaixaPill'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('cash-ok', 'cash-warn', 'cash-bad');
+      el.classList.add('cash-' + tone);
+      if (id === 'mobileCaixaPill') el.title = label;
+    });
+    const st = document.getElementById('caixaStatus');
+    if (st) st.textContent = label;
+  }
+  function paintLicenceRisk() {
+    const el = document.getElementById('pillLicence');
+    const word = document.getElementById('licenceRiskWord');
+    const fill = document.getElementById('licenceRiskFill');
+    if (!el || !word || !fill) return;
+    const loop = (typeof mailLoop !== 'undefined') ? mailLoop : null;
+    const active = !!(loop && loop.active);
+    let level = 0;
+    try { if (typeof caducidadeLevel === 'function') level = caducidadeLevel(); } catch (_) {}
+    const missed = (active && loop.missedDeadlines) ? Object.keys(loop.missedDeadlines).filter((k) => k !== 'cash_recovery').length : 0;
+    let soon = false;
+    if (active && loop.deadlines) {
+      const month = loop.month | 0;
+      Object.keys(loop.deadlines).forEach((k) => {
+        const d = loop.deadlines[k];
+        if (!d || d.atMonth == null || (loop.firedDeadlines || {})[k]) return;
+        const left = (d.atMonth | 0) - month;
+        if (left >= 0 && left <= 2) soon = true;
+      });
+    }
+    const hearing = active && loop.tags && (((loop.tags.trc_audiencia_open | 0) > 0) || ((loop.tags.trc_caducado | 0) > 0));
+    let tone = 'ok';
+    let text = active ? 'A licença está segura' : 'Sem licença em jogo';
+    let pct = active ? 16 : 0;
+    if (hearing || level >= 4) { tone = 'bad'; text = 'A licença está em perigo'; pct = 100; }
+    else if (level >= 2 || missed > 0) { tone = 'bad'; text = 'A licença está em risco'; pct = 72; }
+    else if (level >= 1 || soon) { tone = 'warn'; text = 'A licença está a apertar'; pct = 46; }
+    el.classList.remove('tone-ok', 'tone-warn', 'tone-bad');
+    el.classList.add('tone-' + tone);
+    word.textContent = text;
+    fill.style.width = pct + '%';
+  }
+  function paintReputationHud() {
+    const el = document.getElementById('pillReputation');
+    const word = document.getElementById('valReputation');
+    if (!el || !word) return;
+    let w = 'neutra';
+    try { if (typeof reputationWord === 'function') w = reputationWord(); } catch (_) {}
+    word.textContent = w === 'boa' ? 'Boa' : (w === 'fraca' ? 'Fraca' : 'Neutra');
+    el.classList.remove('tone-boa', 'tone-neutra', 'tone-fraca');
+    el.classList.add('tone-' + (w === 'boa' ? 'boa' : (w === 'fraca' ? 'fraca' : 'neutra')));
+  }
+  /** Toast/activity line for a month of spend. The amount stays in Ver números. */
+  function spendFeeling(drift) {
+    if (!drift || Math.abs(drift.caixa) < 0.0005) return '';
+    if ((Number(state.caixa) || 0) < 0) return ' · A caixa não chega';
+    if (cashHudTone() === 'warn') return ' · Os investidores estão nervosos';
+    return ' · A equipa e os estudos gastaram caixa';
+  }
   function updateHeaderMetrics(doFlash) {
     try { recomputeNav(); } catch (_) {}
-    document.getElementById('valCaixa').textContent = fmtEur(state.caixa);
+    const caixaEl = document.getElementById('valCaixa');
+    if (caixaEl) caixaEl.textContent = fmtEur(state.caixa);
     const mcv = document.getElementById('mobileCaixaVal');
     if (mcv) mcv.textContent = fmtEur(state.caixa);
-    document.getElementById('valDivida').textContent = fmtEur(state.divida);
-    document.getElementById('valNav').textContent = fmtEur(state.nav);
-    document.getElementById('valBonding').textContent = fmtEur(state.bondingFree) + ' livres';
+    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    setText('valDivida', fmtEur(state.divida));
+    setText('valNav', fmtEur(state.nav));
+    setText('valBonding', fmtEur(state.bondingFree) + ' livres');
     const usedPct = state.bondingTotal > 0 ? ((state.bondingTotal - state.bondingFree) / state.bondingTotal) * 100 : 0;
-    document.getElementById('bondingFill').style.width = Math.min(100, Math.max(0, usedPct)) + '%';
+    const bondingFill = document.getElementById('bondingFill');
+    if (bondingFill) bondingFill.style.width = Math.min(100, Math.max(0, usedPct)) + '%';
+    try { paintCashHud(); paintLicenceRisk(); paintReputationHud(); } catch (_) {}
     const finSet = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = fmtEur(v); };
     finSet('finDebtProject', state.divida);
     finSet('finDebtTotal', state.divida);
@@ -7641,7 +7817,7 @@
 
         const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · M' + mailLoop.month);
         const jumpNote = jumpResult ? (' (avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ')') : '';
-        const burnNote = (Math.abs(drift.caixa) >= 0.0005) ? (' · Caixa ' + fmtDeltaMEur(drift.caixa) + ' (equipa e estudos)') : '';
+        const burnNote = (typeof spendFeeling === 'function') ? spendFeeling(drift) : '';
         const _showToast = showToast;
         const showToastBurn = (m) => _showToast(m + burnNote);
         activities.unshift({
@@ -7698,7 +7874,7 @@
 
         btn.classList.remove('loading');
         btn.disabled = false;
-        showToast(`Avançaste para ${state.year} · T${state.quarter}` + ((Math.abs(driftQ.caixa) >= 0.0005) ? (' · Caixa ' + fmtDeltaMEur(driftQ.caixa)) : ''));
+        showToast(`Avançaste para ${state.year} · T${state.quarter}` + ((typeof spendFeeling === 'function') ? spendFeeling(driftQ) : ''));
         scheduleSave('next-quarter');
 
         // Next quarter without a TRC: open the next REN round, but never skip a round that still has lots you can bid on.
@@ -8728,20 +8904,6 @@
     recomputeNav();
     return out;
   }
-  /** «caixa −150 k€ · +2 meses» — € deltas ao lado da frase no toast. */
-  function econDeltaBits(d) {
-    if (!d) return '';
-    const bits = [];
-    if (Math.abs(d.cash) >= 0.0005) bits.push('caixa ' + fmtDeltaMEur(d.cash));
-    if (Math.abs(d.bonding) >= 0.0005) bits.push('garantias livres ' + fmtDeltaMEur(-d.bonding));
-    if (Math.abs(d.debt) >= 0.0005) bits.push('dívida ' + fmtDeltaMEur(d.debt));
-    if (Math.abs(d.nav) >= 0.0005) bits.push('NPV ' + fmtDeltaMEur(d.nav));
-    if (Math.abs(d.car) >= 0.0005) bits.push('dinheiro de desenvolvimento ' + fmtDeltaMEur(d.car));
-    if (Math.abs(d.equity) >= 0.0005) bits.push('capital próprio ' + fmtDeltaMEur(d.equity));
-    if (d.months) bits.push((d.months > 0 ? '+' : '−') + Math.abs(d.months) + (Math.abs(d.months) === 1 ? ' mês' : ' meses'));
-    return bits.join(' · ');
-  }
-
   /* ── Gate 1 mandate mock (tiers boutique / mid / infra) ── */
   const BAND_RANK = { S: 1, M: 2, L: 3 };
   /** Internal band words (S/M/L). Player text now shows € (econBudget / lotEcon), not these words. */
@@ -9070,7 +9232,7 @@
       state.bondingFree = +(state.bondingFree + (to.bonding - from.bonding)).toFixed(3);
       try { updateHeaderMetrics(true); } catch (_) {}
       if (typeof showToast === 'function') {
-        showToast('Os investidores aumentaram o teu orçamento: ' + fmtMoneyAbs(to.carMandate) + ' para desenvolver e ' + fmtMoneyAbs(to.equity) + ' para construir. No próximo leilão podes ficar com mais um lote.');
+        showToast('Os investidores aumentaram o teu orçamento. No próximo leilão podes ficar com mais um lote.');
       }
     } catch (_) {}
     try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
@@ -9886,7 +10048,7 @@
     try { if (mailLoop && mailLoop.tags) mailLoop.tags.equity_capex_request = (mailLoop.tags.equity_capex_request || 0) + 1; } catch (_) {}
     try { if (mailLoop && mailLoop.active) draftRulesRearmOn('equity_capex_request'); } catch (_) {} // r-fid / r-fid-sem-capital rearm
     showToast(r.ok
-      ? ('Os investidores aceitaram: +' + fmtMoneyAbs(ec.equityAsk.delta) + ' de capital próprio. Tens ' + fmtMoneyAbs(econBudget().equity) + '.')
+      ? 'Os investidores puseram mais capital próprio.'
       : 'Os investidores recusaram pôr mais capital próprio.');
     try { renderMandateHud(); } catch (_) {}
     try { updateConsultant(); } catch (_) {}
@@ -10108,18 +10270,10 @@
 
   function trcAcceptToast(committed) {
     if (!committed.length) return 'O teu TRC está no portefólio';
-    const sum = { kickoff: 0, bondingFree: 0, bondCash: 0 };
-    committed.forEach((c) => {
-      sum.kickoff += c.delta.kickoff || 0; sum.bondingFree += c.delta.bondingFree || 0; sum.bondCash += c.delta.bondCash || 0;
-    });
-    const bits = [];
-    if (sum.kickoff >= 0.0005) bits.push('Caixa ' + fmtDeltaMEur(-sum.kickoff) + ' (arranque do projeto)');
-    if (Math.abs(sum.bondingFree) >= 0.0005) bits.push('Garantias livres ' + fmtDeltaMEur(sum.bondingFree) + ' (caução da rede)');
-    if (sum.bondCash >= 0.0005) bits.push('Caixa ' + fmtDeltaMEur(-sum.bondCash) + ' (caução da rede: a linha de garantias não chegava)');
     const head = committed.length === 1
       ? ('O TRC de ' + committed[0].lot.name + ' está no portefólio')
       : (committed.length + ' TRC estão no portefólio');
-    return head + (bits.length ? (' · ' + bits.join(' · ')) : '');
+    return head + '. A caução da rede ficou prestada e o arranque gastou caixa.';
   }
 
   function goHomeWithTrc() {
@@ -10255,7 +10409,7 @@
     if (typeof lotFitsMandate === 'function') {
       const fit = lotFitsMandate(lot);
       if (!fit.ok) {
-        try { showToast(fit.reason || 'Este lote não cabe no teu orçamento'); } catch (_) {}
+        try { showToast('Este lote não cabe no orçamento para desenvolver.'); } catch (_) {}
         return;
       }
     }
@@ -12174,14 +12328,21 @@
     return ctx;
   }
 
+  const HUD_MOMENT_LINE = {
+    'acordo-ren': 'A ligação à rede ficou acordada',
+    'pip-aprovado': 'A Câmara aceitou o projeto',
+    'lp-atribuida': 'A licença de produção saiu',
+    'inicio-obra': 'A obra começou',
+    'decisao-final': 'A decisão de construir está tomada'
+  };
   function showHudMoment(rule) {
     const el = document.getElementById('hudMoment');
     if (!el) return;
     const label = (rule && rule.hud_moment && rule.hud_moment.label_pt) || 'Marco atingido';
-    const skin = (rule && rule.skin) ? String(rule.skin).replace(/-/g, ' ') : '';
+    const line = (rule && HUD_MOMENT_LINE[rule.skin]) || 'O projeto deu um passo em frente';
     el.hidden = false;
-    el.innerHTML = '<strong>' + escapeHtml(label) + '</strong>' + (skin ? '<span>' + escapeHtml(skin) + '</span>' : '');
-    mailLoop.hudMoment = { label: label, skin: rule && rule.skin, month: mailLoop.month | 0, rule: rule && rule.id };
+    el.innerHTML = '<strong>' + escapeHtml(label) + '</strong><span>' + escapeHtml(line) + '</span>';
+    mailLoop.hudMoment = { label: label, line: line, skin: rule && rule.skin, month: mailLoop.month | 0, rule: rule && rule.id };
   }
 
   function stakeLetterAlready(skeletonId, skinId) {
@@ -13200,7 +13361,6 @@
 
   function toastForMailChoice(choice, effects, res) {
     const list = Array.isArray(effects) ? effects : [];
-    const per = (res && res.economics && res.economics.perTag) || {};
     const notes = (res && res.economics && res.economics.notes) || {};
     const seen = {};
     const labels = [];
@@ -13212,11 +13372,7 @@
       if (!t || seen[t]) return;
       seen[t] = true;
       let line = t.replace(/[.\s]+$/, '');
-      const bits = [];
-      if (notes[key]) bits.push(notes[key]);
-      const eb = econDeltaBits(per[key]);
-      if (eb) bits.push(eb);
-      if (bits.length) line += ' (' + bits.join(' · ') + ')';
+      if (notes[key] && !/[€%]/.test(String(notes[key]))) line += ' (' + notes[key] + ')';
       labels.push(line);
     });
     if (res && res.repeat) labels.push('Já tinhas respondido a esta carta: os valores não mudam');
@@ -13308,7 +13464,6 @@
       }
     }
     const cash = grantBand ? T.m0[grantBand] : 0;
-    const asked = T.m0[band] || 0;
     if (grantBand) {
       state.caixa = +(state.caixa + cash).toFixed(3);
       ec.carGranted = +((ec.carGranted || 0) + cash).toFixed(3);
@@ -13324,18 +13479,15 @@
     ec.m0 = { band: band, outcome: outcome, grantBand: grantBand, cash: cash, odds: o };
     recomputeNav();
     let message;
-    const f = fmtMoneyAbs;
-    // Lead phrase from effect-labels.pt.json (car_band_s|m|l → «Pediste mais {ask_*}»), never hardcoded.
-    const lead = (mailEffectLabelPt('car_band_' + String(band).toLowerCase()) || ('Pediste mais ' + f(asked))).replace(/[.\s]+$/, '');
     if (outcome === 'accept') {
-      message = lead + '. Os investidores aceitaram: caixa +' + f(cash) + '.';
+      message = 'Os investidores aceitaram o pedido.';
     } else if (outcome === 'plan') {
-      message = lead + '. Os investidores querem ver um plano antes de decidir. Por agora a caixa não muda.';
+      message = 'Os investidores querem ver um plano antes de decidir.';
     } else if (band === 'S') {
       // M8: «cortar» no pedido pequeno não baixa o valor (já é o mínimo): dão o dinheiro mas perdem paciência.
-      message = lead + '. Os investidores deram-te o valor, porque já era o mínimo, mas acharam o pedido mal justificado: caixa +' + f(cash) + '. Ficaram menos pacientes.';
+      message = 'Os investidores deram-te o mínimo, mas ficaram menos pacientes.';
     } else {
-      message = lead + '. Os investidores cortaram o pedido para ' + f(cash) + ': caixa +' + f(cash) + '.' + (patienceHit ? ' Ficaram menos pacientes.' : '');
+      message = 'Os investidores cortaram o pedido.' + (patienceHit ? ' Ficaram menos pacientes.' : '');
     }
     try { console.info('[WattEcon] M0', band, outcome, grantBand, cash, o); } catch (_) {}
     return { band: band, outcome: outcome, grantBand: grantBand, cash: cash, odds: o, message: message };
