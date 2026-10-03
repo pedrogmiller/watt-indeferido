@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Watt Indeferido · Consola IPP</title>
+<link rel="icon" type="image/svg+xml" href="brand/isotipo.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -11966,7 +11967,9 @@
         mailLoop.firedDeadlines.main_permit = true;
       }
     }
-    if (effects.some((e) => e === 'capex_rede_flag')) {
+    // Signing the REN agreement (or accepting grid conditions) meets grid_agreement.
+    // capex_rede_flag is cost-only: bury-line choices set it and must not clear this deadline.
+    if (effects.some((e) => e === 'grid_agreement_signed' || e === 'grid_conditions_accepted')) {
       if (mailLoop.deadlines && mailLoop.deadlines.grid_agreement) {
         mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
         mailLoop.firedDeadlines.grid_agreement = true;
@@ -12160,6 +12163,7 @@
     competitor_seen: 'Tomaste nota do rival',
     dica_ack: 'Anotado',
     capex_rede_flag: 'Aceitaste um custo de obras na rede',
+    grid_agreement_signed: 'Acordo com a REN assinado',
     'cash_at_risk_+1': 'Gastaste mais dinheiro de desenvolvimento',
     find_buyers_started: 'Começaste a procurar comprador',
     buyer_search_active: 'Procura de comprador em curso',

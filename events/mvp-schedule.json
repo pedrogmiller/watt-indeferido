@@ -173,6 +173,9 @@
     "6": {
       "label": "M6",
       "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
         "aia",
         "licenca_producao"
       ],
