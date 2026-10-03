@@ -132,7 +132,7 @@
         "source": "SEED_MVP"
       },
       "meet_on_effects": [
-        "capex_rede_flag",
+        "grid_agreement_signed",
         "grid_conditions_accepted"
       ],
       "on_miss": [
@@ -142,7 +142,8 @@
       "void_on_effects": [
         "sale_full_exit",
         "trc_transferred_with_plant"
-      ]
+      ],
+      "note_2026_10_03": "capex_rede_flag deixa de cumprir o prazo: também é posto por enterrar linhas (consultor AIA/não sujeição). Só a assinatura do acordo com a REN cumpre."
     },
     {
       "id": "lp_request",

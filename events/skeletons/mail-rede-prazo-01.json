@@ -5,6 +5,9 @@
     "after": "trc_awarded",
     "month_offset": 6,
     "when_phase": [
+      "trc_won",
+      "land",
+      "pip",
       "aia",
       "licenca_producao"
     ]
@@ -14,8 +17,9 @@
   "choices": [
     {
       "id": "accept",
-      "label": "Aceitar acordo de reforço",
+      "label": "Aceitar o acordo de reforço",
       "effects": [
+        "grid_agreement_signed",
         "capex_rede_flag",
         "caducidade_risk_-1"
       ]
@@ -37,5 +41,5 @@
     }
   ],
   "notes_for_economy": "capex_rede = PEDIR_ECONOMY",
-  "notes_for_ui": "CTA pesado M6"
+  "notes_for_ui": "CTA pesado M6. Tem de chegar em qualquer fase antes da obra (o prazo grid_agreement é M6 para todos, com ou sem AIA). grid_agreement_signed cumpre o prazo; capex_rede_flag é só custo."
 }
