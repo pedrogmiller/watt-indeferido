@@ -42,5 +42,14 @@
   ],
   "notes_for_economy": "capex_rede = PEDIR_ECONOMY",
   "notes_for_ui": "CTA pesado M6. Tem de chegar em qualquer fase antes da obra (o prazo grid_agreement é M6 para todos, com ou sem AIA). grid_agreement_signed cumpre o prazo; capex_rede_flag é só custo.",
-  "nota_gm": " Pedro 2026-10-03: falhar o acordo com a REN não faz caducar o TRC diretamente; atrasa a ligação (delay_ligacao_+1) e soma risco (caducidade_risk). A caducidade vem dos marcos do TRC (pedido de LP), com audiência da DGEG."
+  "nota_gm": " Pedro 2026-10-03: falhar o acordo com a REN não faz caducar o TRC diretamente; atrasa a ligação (delay_ligacao_+1) e soma risco (caducidade_risk). A caducidade vem dos marcos do TRC (pedido de LP), com audiência da DGEG.",
+  "deadline_letter": true,
+  "deadline_id": "by_skin",
+  "deadline_ids": [
+    "grid_agreement",
+    "grid_agreement_final"
+  ],
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

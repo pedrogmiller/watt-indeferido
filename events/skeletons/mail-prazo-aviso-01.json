@@ -24,5 +24,15 @@
   ],
   "heavy": false,
   "notes_for_economy": "Sem €.",
-  "notes_for_ui": "Aviso de prazo crítico (warn.months_before). FYI; conta no cap. A carta herda deadline_ref do deadline que a gerou; ctx: {{deadline_label}}, {{deadline_month}}."
+  "notes_for_ui": "Aviso de prazo crítico (warn.months_before). FYI; conta no cap. A carta herda deadline_ref do deadline que a gerou; ctx: {{deadline_label}}, {{deadline_month}}.",
+  "deadline_letter": true,
+  "deadline_id": "by_skin",
+  "deadline_ids": [
+    "grid_agreement",
+    "lp_request",
+    "le_deadline"
+  ],
+  "deadline_role": "warning",
+  "deadline_kind": "player",
+  "deadline_blocks_play": false
 }

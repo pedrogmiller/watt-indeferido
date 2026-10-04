@@ -469,6 +469,7 @@
       "skeleton": "mail-camara-pip-pedido-01",
       "skin": "ourique",
       "when_phase": [
+        "land",
         "pip",
         "aia"
       ],
@@ -476,24 +477,27 @@
       "relevant": true,
       "once": true,
       "route": "B",
-      "requires_all_effects": [
-        "nao_sujeicao"
-      ],
+      "requires_all_effects": [],
       "blocks_if_any_effects": [
         "pip_request_submitted",
         "env_route_a",
         "aia_sujeito"
       ],
       "after_effect": {
-        "tag": "nao_sujeicao",
-        "months": 0,
-        "band": "0-1",
-        "source": "HIPÓTESE"
+        "tag": "land_option_open|dd_started",
+        "months": 1,
+        "band": "1",
+        "source": "Pedro 2026-10-04: PIP pedido ~1 mês depois de garantir o terreno (Ourique M2)"
       },
       "rearm_on_effects": [
         "pip_request_hold"
       ],
-      "rearm_after_months": 1
+      "rearm_after_months": 1,
+      "requires_any_effects": [
+        "nao_sujeicao",
+        "env_path_nao_sujeito"
+      ],
+      "volume_2026_10_04": "Antes: depois de nao_sujeicao (tag que a consola nunca põe na via Ourique). Agora: aceita env_path_nao_sujeito; chega M2."
     },
     {
       "id": "r-pip-reformulado",
@@ -537,17 +541,16 @@
       "once": true,
       "route": "B",
       "requires_all_effects": [
-        "pip_request_submitted",
-        "nao_sujeicao"
+        "pip_request_submitted"
       ],
       "blocks_if_any_effects": [
         "pip_aprovado"
       ],
       "after_effect": {
         "tag": "pip_request_submitted|pip_hearing|pip_appeal",
-        "months": 3,
-        "band": "2-4 (recurso 6-10)",
-        "source": "HIPÓTESE / PEDIR_PEDRO"
+        "months": 2,
+        "band": "2-3",
+        "source": "RJUE art. 16.º na redação do DL 108/2026 (em vigor 1/10/2026): saneamento 20 dias + consultas externas + 15 dias úteis (PIP simples) / 30 dias úteis (qualificado); deferimento tácito se a Câmara não decidir. VERIFICAR no DR."
       },
       "mutex_group": "pip_outcome",
       "pick": 1,
@@ -580,7 +583,12 @@
         "mail-icnf-quercineas-01",
         "mail-icnf-compensacao-exigente-01",
         "mail-icnf-compensacao-aprovada-01"
-      ]
+      ],
+      "requires_any_effects": [
+        "nao_sujeicao",
+        "env_path_nao_sujeito"
+      ],
+      "volume_2026_10_04": "Antes 3 meses (banda 2-4). Agora 2 (2-3): PIP pedido M2 → decisão M4, no máximo M5."
     },
     {
       "id": "r-pip-condicionado",
@@ -595,17 +603,16 @@
       "once": true,
       "route": "B",
       "requires_all_effects": [
-        "pip_request_submitted",
-        "nao_sujeicao"
+        "pip_request_submitted"
       ],
       "blocks_if_any_effects": [
         "pip_aprovado"
       ],
       "after_effect": {
         "tag": "pip_request_submitted|pip_hearing|pip_appeal",
-        "months": 3,
-        "band": "2-4",
-        "source": "HIPÓTESE / PEDIR_PEDRO"
+        "months": 2,
+        "band": "2-3",
+        "source": "RJUE art. 16.º na redação do DL 108/2026 (em vigor 1/10/2026): saneamento 20 dias + consultas externas + 15 dias úteis (PIP simples) / 30 dias úteis (qualificado); deferimento tácito se a Câmara não decidir. VERIFICAR no DR."
       },
       "mutex_group": "pip_outcome",
       "pick": 2,
@@ -629,7 +636,12 @@
         "mail-icnf-quercineas-01",
         "mail-icnf-compensacao-exigente-01",
         "mail-icnf-compensacao-aprovada-01"
-      ]
+      ],
+      "requires_any_effects": [
+        "nao_sujeicao",
+        "env_path_nao_sujeito"
+      ],
+      "volume_2026_10_04": "Antes 3 meses (banda 2-4). Agora 2 (2-3): PIP pedido M2 → decisão M4, no máximo M5."
     },
     {
       "id": "r-pip-aprovado",
@@ -644,17 +656,16 @@
       "once": true,
       "route": "B",
       "requires_all_effects": [
-        "pip_request_submitted",
-        "nao_sujeicao"
+        "pip_request_submitted"
       ],
       "blocks_if_any_effects": [
         "pip_aprovado"
       ],
       "after_effect": {
         "tag": "pip_request_submitted|pip_hearing|pip_appeal",
-        "months": 3,
-        "band": "2-4",
-        "source": "HIPÓTESE / PEDIR_PEDRO"
+        "months": 2,
+        "band": "2-3",
+        "source": "RJUE art. 16.º na redação do DL 108/2026 (em vigor 1/10/2026): saneamento 20 dias + consultas externas + 15 dias úteis (PIP simples) / 30 dias úteis (qualificado); deferimento tácito se a Câmara não decidir. VERIFICAR no DR."
       },
       "mutex_group": "pip_outcome",
       "pick": 3,
@@ -671,7 +682,12 @@
         "mail-icnf-quercineas-01",
         "mail-icnf-compensacao-exigente-01",
         "mail-icnf-compensacao-aprovada-01"
-      ]
+      ],
+      "requires_any_effects": [
+        "nao_sujeicao",
+        "env_path_nao_sujeito"
+      ],
+      "volume_2026_10_04": "Antes 3 meses (banda 2-4). Agora 2 (2-3): PIP pedido M2 → decisão M4, no máximo M5."
     },
     {
       "id": "r-dia",
@@ -970,6 +986,7 @@
       "skin": "sem-aia",
       "status": "draft_pending_pedro",
       "when_phase": [
+        "land",
         "pip",
         "aia"
       ],
@@ -977,7 +994,6 @@
       "relevant": true,
       "once": true,
       "requires_all_effects": [
-        "nao_sujeicao",
         "pip_aprovado"
       ],
       "blocks_if_any_effects": [
@@ -995,7 +1011,12 @@
         "lp_request_hold"
       ],
       "rearm_after_months": 1,
-      "note": "Ourique: PIP tem de sair até M5 para o pedido entrar antes do prazo M6. Se o PIP atrasar, o prazo lp_request falha e entra a escada (prazo-prorrogacao/lp-pedido → audiência DGEG → caducidade)."
+      "note": "Ourique: PIP tem de sair até M5 para o pedido entrar antes do prazo M6. Se o PIP atrasar, o prazo lp_request falha e entra a escada (prazo-prorrogacao/lp-pedido → audiência DGEG → caducidade).",
+      "requires_any_effects": [
+        "nao_sujeicao",
+        "env_path_nao_sujeito"
+      ],
+      "volume_2026_10_04": "Aceita env_path_nao_sujeito. Com PIP em M4 chega M4/M5; carta absorve o lembrete dgeg-obrigacoes."
     },
     {
       "id": "r-lp-novo-pedido",
@@ -2930,7 +2951,7 @@
         "tag": "longer_loan_request",
         "months": 2,
         "band": "2-3",
-        "source": "Economy §16 8a/8b (+3 meses HIPÓTESE)"
+        "source": "Economy §16/§17.7: a resposta chega 2–3 meses depois, DENTRO do delay_fid_+1 (+3 meses) da escolha"
       },
       "mutex_group": "es_d9_emprestimo",
       "pick": 1,
@@ -2945,7 +2966,8 @@
         "loan_fee_paid",
         "merchant_tail_exposure"
       ],
-      "note": "15 → 20 anos; equity Ourique 40 €/MWh 41,0 → 35,5 (cabe), 38 €/MWh 44,4 → 38,8."
+      "note": "15 → 20 anos; equity Ourique 41,0 → 35,5 (40 €/MWh), 44,4 → 38,8 (38 €/MWh).",
+      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta."
     },
     {
       "id": "r-es-d9-emprestimo-recusado",
@@ -2969,7 +2991,7 @@
         "tag": "longer_loan_request",
         "months": 2,
         "band": "2-3",
-        "source": "Economy §16 8a/8b (+3 meses HIPÓTESE)"
+        "source": "Economy §16/§17.7: a resposta chega 2–3 meses depois, DENTRO do delay_fid_+1 (+3 meses) da escolha"
       },
       "mutex_group": "es_d9_emprestimo",
       "pick": 2,
@@ -2979,7 +3001,8 @@
       "on_deliver_effects": [
         "longer_loan_refused"
       ],
-      "note": "Recusa: só uma tentativa (a escolha fica bloqueada por longer_loan_request)."
+      "note": "Recusa: só uma tentativa (a escolha fica bloqueada por longer_loan_request).",
+      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta."
     },
     {
       "id": "r-es-d9-socio",
@@ -3003,7 +3026,7 @@
         "tag": "farm_down_fid_request",
         "months": 2,
         "band": "2-3",
-        "source": "Economy §16 8a/8b (+3 meses HIPÓTESE)"
+        "source": "Economy §16/§17.7: a resposta chega 2–3 meses depois, DENTRO do delay_fid_+1 (+3 meses) da escolha"
       },
       "mutex_group": "es_d9_socio",
       "pick": 1,
@@ -3016,7 +3039,8 @@
         "partner_npv_share",
         "partner_stake_25"
       ],
-      "note": "s = máx(25 %, o que falta), a custo. NPV e FCF do jogador × (1 − s); {{partner_share}} = s."
+      "note": "25 % fixo (partner_stake_25, garantido), a custo. NPV e FCF do jogador × 0,75 (Economy §17.5).",
+      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta."
     },
     {
       "id": "r-es-pressao-caixa",
@@ -3134,7 +3158,7 @@
         "car_burn_stop",
         "asset_removed"
       ],
-      "follow_up": "Se patience_level ≥ 5 depois desta carta: mandate_review_down (tag) — sem perda; Economy decide o corte (PEDIR_ECONOMY)."
+      "follow_up": "Se patience_level ≥ 5 depois desta carta: mandate_review_down (tag), sem perda e sem corte de dinheiro a meio do ciclo. A meio do ciclo só mexe em odds (Economy §17.4: P(cash_at_risk_request) −0,25, P(equity_capex_request) −0,10). No fecho do ciclo força mandate_step_down."
     },
     {
       "id": "r-es-trc-aviso",
@@ -3542,7 +3566,9 @@
       "hud_moment": {
         "kind": "milestone",
         "label_pt": "Marco atingido"
-      }
+      },
+      "delivery_proposed": "hud_only",
+      "volume_2026_10_04": "Duplica a carta-fonte (PIP aprovado / acordo REN). Proposta: mostrar só no HUD, sem carta. Código Grok Bot."
     },
     {
       "id": "r-es-marco-acordo-ren",
@@ -3569,7 +3595,9 @@
       "hud_moment": {
         "kind": "milestone",
         "label_pt": "Marco atingido"
-      }
+      },
+      "delivery_proposed": "hud_only",
+      "volume_2026_10_04": "Duplica a carta-fonte (PIP aprovado / acordo REN). Proposta: mostrar só no HUD, sem carta. Código Grok Bot."
     },
     {
       "id": "r-es-marco-lp-atribuida",
@@ -3753,6 +3781,10 @@
         "apa_track_start"
       ],
       "note": "mail-apa-01 só para env_path=aia_obrigatoria (ou EIA exigido) e se o EIA ainda não arrancou."
+    },
+    "volume_2026_10_04": {
+      "file": "mvp-schedule.proposed-2026-10-04.json",
+      "summary": "Corte de correio M1–M7 (Ourique): ~20 → ~10 cartas. Ver ficheiro proposto e relatório GM 2026-10-04. Aplicar no mvp-schedule.json (Grok Bot)."
     }
   },
   "env_routing": {
@@ -4015,7 +4047,7 @@
       ],
       "paciencia": [
         "paciencia (aviso)",
-        "mandate_review_down: marca para o fecho do ciclo (sem mexer no orçamento a meio)"
+        "patience_level ≥ 5 → mandate_review_down: só odds a meio do ciclo; no fecho força mandate_step_down (sem € a meio)"
       ],
       "rede": [
         "prazo-aviso/grid-agreement (M−2)",
@@ -4046,7 +4078,8 @@
       "next_step_min_gap_months": 1,
       "priority": "fim-de-jogo > ultimato/audiência > resgate > aviso > marco",
       "note": "Avisos não contam para relevant_per_landing quando o limite já foi atingido: passam para o Play seguinte (overflow).",
-      "slip_cap": "burn_cut_deep + dev_slowdown na mesma escolha = +2 meses no total (Economy §16.3 (7))"
+      "slip_cap": "burn_cut_deep + dev_slowdown na mesma escolha = +2 meses no total (Economy §16.3 (7))",
+      "fid_delay_no_stack": "Opções D9: a resposta (2–3 meses) cabe dentro do delay_fid_+1 (+3 meses). Atraso total da FID +3, não +5–6."
     },
     "fairness": {
       "rule": "Nenhuma perda irreversível sem um aviso da mesma escada entregue pelo menos 1 mês antes. Se a perda chegasse sem aviso (salto grande do relógio), a consola entrega o aviso/ultimato primeiro e adia a perda 1 mês.",
@@ -4097,18 +4130,19 @@
         "reputation": "soma reputation_+1 / reputation_-1",
         "flags": "mandate_review_down (paciência esgotada), cash_rescue_used, distressed_sale"
       },
-      "output": "mandate_step: up_big | up | same | down (tags mandate_step_*); valores e limiares PEDIR_ECONOMY",
+      "output": "mandate_step: up_big | up | same | down (tags mandate_step_*). Valores Economy §17.4: up_big = sobe de tier; up × 1,15; same × 1,00; down × 0,85; se ganhou + fcf_to_next_asset.",
       "proposal_gm": "up_big se npv_ratio ≥ 1 ∧ deadlines_met_ratio ≥ 0,8 ∧ reputação ≥ +3; up se npv_ratio ≥ 0,8; down se npv_ratio < 0,5 ou mandate_review_down; senão same",
-      "code": "Retirar a promoção antecipada (MANDATE_PROMOTE_EFFECTS: land_option_open / pip_request_submitted) do index.html."
+      "code": "Retirar a promoção antecipada (MANDATE_PROMOTE_EFFECTS: land_option_open / pip_request_submitted) do index.html.",
+      "mandate_review_down": "Pendente Pedro, proposta Economy §17.4 aceite pelo GM: a meio do ciclo só odds (cash_at_risk_request −0,25, equity_capex_request −0,10); no fecho força down. Nenhum € muda antes do fecho."
     },
     "p46_resolution_2026_10_03": {
       "pedro": "P46 = ambas",
       "a": "purse de capital próprio da boutique na ronda 1 ~45 M€ (Economy: 45 cobre 38–40 €/MWh; 46 se os juros da obra entrarem no teste)",
-      "b": "opção garantida = SÓCIO (r-es-d9-socio: 25 % ou o que faltar, a custo; cash da central × 0,75). Empréstimo 20 anos P 0,60 (r-es-d9-emprestimo-*). Investidores +5 P 0,40.",
-      "equity_test": "usar equity exata 41,0 / 44,4 (não 41,4 / 44,1); juros da obra 1,4–1,5 M€ fora do teste por agora (PEDIR P53)"
+      "b": "opção garantida = SÓCIO 25 % fixo (partner_stake_25, r-es-d9-socio), a custo; NPV/FCF do jogador × 0,75. Empréstimo 20 anos P 0,60 (r-es-d9-emprestimo-*). Investidores +5 P 0,40.",
+      "equity_test": "equity exata do motor 41,0 (40 €/MWh) / 44,4 (38 €/MWh); juros da obra 1,4–1,5 M€ fora do teste por agora (PEDIR P53)"
     },
     "ren_realism_2026_10_03": "Falhar o acordo com a REN não faz caducar o TRC: grid_agreement → ultimo-aviso + grid_agreement_final; falhar esse → delay_ligacao_+1 + caducidade_risk_+1 (carta REN ligacao-adiada). A caducidade vem dos marcos do TRC (sobretudo lp_request) pela audiência da DGEG.",
-    "partial_sale_2026_10_03": "Venda parcial antes da LP (stake_sale_pre_lp): escolhas «Vender parte do projeto» em resgate e pressao/caixa-baixa. Preço/% PEDIR_ECONOMY.",
+    "partial_sale_2026_10_03": "Venda parcial antes da LP: só 25 % (stake_sale_pre_lp + stake_sale_25), em resgate e pressao/caixa-baixa. Sem mudança de controlo → sem averbamento DGEG nem caução extra; fecho 1–2 meses. Preço = Economy §17.5 (× 0,70 se distressed_sale).",
     "economy_numbers_2026_10_03": "Números em effects-economy.json → endings_stakes_v01_economy (P47–P54). As regras só fazem referência; não copiar valores para aqui."
   }
 }

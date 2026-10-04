@@ -34,5 +34,10 @@
     }
   ],
   "notes_for_economy": "delay_pip = meses; risk_camara = qualitativo até Gate 4",
-  "notes_for_ui": "Tom da skin conforme se-sheet.camara"
+  "notes_for_ui": "Tom da skin conforme se-sheet.camara",
+  "deadline_letter": true,
+  "deadline_id": "pip_camara",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

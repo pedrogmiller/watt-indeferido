@@ -6,5 +6,8 @@
   "body": "Somos a REN, a empresa que gere a rede elétrica de alta tensão e a subestação de Ourique. Com o TRC nesta subestação, as obras de reforço da rede e a ligação da tua central seguem o nosso calendário. Ainda não há datas finais, mas os prazos do TRC já estão a contar.",
   "params": {
     "operator": "REN"
-  }
+  },
+  "retired": true,
+  "retired_reason": "Retirada: apresentação da REN passou para mail-rede-prazo-01.acordo-ou-caducidade.",
+  "volume_2026_10_04": "Retirada: apresentação da REN passou para mail-rede-prazo-01.acordo-ou-caducidade."
 }

@@ -4,5 +4,6 @@
   "from_name": "Advogado — verificação do terreno",
   "subject": "Antes de assinares o terreno",
   "body": "Antes de pagares a entrada, posso fazer a verificação jurídica do terreno: confirmo no registo quem é o dono, se há direitos de passagem e se há dívidas ou encargos sobre o terreno. Sem esta verificação, pagas a entrada sem saber se o terreno tem problemas. A verificação gasta algum dinheiro de desenvolvimento.",
-  "params": {}
+  "params": {},
+  "volume_2026_10_04": "Só quando o jogador negociou o terreno (land_talk_+1); com 'abrir DD' no terreno já é duplicado."
 }

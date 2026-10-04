@@ -8,5 +8,8 @@
   "body": "Aceitámos o teu plano e o TRC mantém-se. Vamos acompanhar os próximos prazos de perto: se voltares a falhar, não haverá segunda audiência.",
   "params": {
     "deadline_id": null
-  }
+  },
+  "deadline_id": "by_context",
+  "deadline_role": "outcome",
+  "deadline_blocks_play": false
 }

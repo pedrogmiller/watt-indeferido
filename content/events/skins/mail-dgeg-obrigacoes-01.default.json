@@ -4,5 +4,8 @@
   "from_name": "DGEG — Direção-Geral de Energia e Geologia",
   "subject": "As obrigações do TRC",
   "body": "Lembrete: o TRC obriga-te a cumprir prazos. Se não os cumprires, podes perder o TRC. Não basta tratar dos papéis: o projeto no terreno tem de avançar ao mesmo ritmo.",
-  "params": {}
+  "params": {},
+  "retired": true,
+  "retired_reason": "Retirada: lembrete passou para mail-dgeg-lp-pedido-01.sem-aia.",
+  "volume_2026_10_04": "Retirada: lembrete passou para mail-dgeg-lp-pedido-01.sem-aia."
 }

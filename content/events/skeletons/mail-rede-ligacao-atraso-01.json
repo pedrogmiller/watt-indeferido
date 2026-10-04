@@ -51,5 +51,10 @@
   ],
   "heavy": true,
   "notes_for_economy": "Odds PEDIR_ECONOMY (sobem com se-sheet rede=congestionada / grid_phasing_request). injection_cap_restricted temporário → P50 do 1º ano.",
-  "notes_for_ui": "grid_slip_operator = atraso imputável ao operador → re-ancora le_deadline (art. 14.º/3 b: LE até 90 dias após a infra da RESP) e empurra grid_connection. CTA pesado (Rede)."
+  "notes_for_ui": "grid_slip_operator = atraso imputável ao operador → re-ancora le_deadline (art. 14.º/3 b: LE até 90 dias após a infra da RESP) e empurra grid_connection. CTA pesado (Rede).",
+  "deadline_letter": true,
+  "deadline_id": "grid_connection",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
 }

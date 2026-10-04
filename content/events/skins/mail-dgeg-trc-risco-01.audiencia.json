@@ -8,5 +8,8 @@
   "from_name": "DGEG — Licenciamento de centros eletroprodutores",
   "subject": "A DGEG vai decidir se perdes o TRC",
   "body": "Falhaste um prazo do teu TRC: {{risk_reasons}}. A DGEG vai decidir se o TRC caduca. Antes disso, ouvimos-te: tens um mês para responder.\n\nSe o TRC caducar, perdes o direito de ligação e a caução que deste no leilão. Podes entregar o que está em falta, apresentar um plano, tentar vender o projeto antes da decisão ou deixar caducar. Se não responderes, decidimos sem te ouvir.",
-  "params": {}
+  "params": {},
+  "deadline_id": "by_context",
+  "deadline_role": "hearing",
+  "deadline_blocks_play": true
 }

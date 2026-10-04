@@ -64,5 +64,10 @@
   ],
   "heavy": true,
   "notes_for_economy": "delay_pip_* = meses; recurso = longo (PEDIR_ECONOMY). Sem €.",
-  "notes_for_ui": "mutex pip_outcome. Odds sobem com risk_camara_+*, risk_community_+1 e se-sheet camara=hostil (Ourique). Sem PIP não há LP na via B; prazos do TRC continuam. CTA pesado (Câmara). 2026-10-03: a 2.ª recusa (pip_indeferido ≥ 2, ou recusa depois de recurso) é final → mail-fim-de-jogo-01/licenca-recusada (r-fim-licenca-pip). Esta carta é o aviso."
+  "notes_for_ui": "mutex pip_outcome. Odds sobem com risk_camara_+*, risk_community_+1 e se-sheet camara=hostil (Ourique). Sem PIP não há LP na via B; prazos do TRC continuam. CTA pesado (Câmara). 2026-10-03: a 2.ª recusa (pip_indeferido ≥ 2, ou recusa depois de recurso) é final → mail-fim-de-jogo-01/licenca-recusada (r-fim-licenca-pip). Esta carta é o aviso.",
+  "deadline_letter": true,
+  "deadline_id": "pip_decision",
+  "deadline_role": "hearing",
+  "deadline_kind": "authority",
+  "deadline_blocks_play": true
 }

@@ -9,5 +9,8 @@
   "params": {
     "deadline_id": "grid_agreement"
   },
-  "from_type_override": "REDE"
+  "from_type_override": "REDE",
+  "deadline_id": "grid_agreement",
+  "deadline_role": "warning",
+  "deadline_blocks_play": false
 }

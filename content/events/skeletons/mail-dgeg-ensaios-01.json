@@ -44,5 +44,10 @@
   ],
   "heavy": false,
   "notes_for_economy": "vistoria_acreditada = custo pequeno, tira risco de atraso DGEG — PEDIR_ECONOMY. Sem €.",
-  "notes_for_ui": "Arts. 32.º (ensaios, com parecer do operador) e 34.º (vistoria ≤30 dias; entidade acreditada se a DGEG falhar)."
+  "notes_for_ui": "Arts. 32.º (ensaios, com parecer do operador) e 34.º (vistoria ≤30 dias; entidade acreditada se a DGEG falhar).",
+  "deadline_letter": true,
+  "deadline_id": "le_deadline",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

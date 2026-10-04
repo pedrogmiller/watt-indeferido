@@ -77,6 +77,7 @@
         "source": "SEED_MVP"
       },
       "meet_on_effects": [
+        "pip_request_submitted",
         "risk_camara_-1"
       ],
       "on_miss": [
@@ -87,7 +88,8 @@
         "sale_full_exit",
         "trc_transferred_with_plant"
       ],
-      "proposal_2026_09_30": "PROPOSTA (regra Pedro): não semear no M0. Criar só com land_secured e só na via sem AIA (nao_sujeicao); até lá o HUD não mostra 'PIP / Câmara'. Código da consola (legacy_seed) — UI decide."
+      "proposal_2026_09_30": "PROPOSTA (regra Pedro): não semear no M0. Criar só com land_secured e só na via sem AIA (nao_sujeicao); até lá o HUD não mostra 'PIP / Câmara'. Código da consola (legacy_seed) — UI decide.",
+      "volume_2026_10_04": "Pedir o PIP também cumpre este prazo (não só reunir com o presidente)."
     },
     {
       "id": "main_permit",
@@ -152,7 +154,10 @@
         "mail": {
           "skeleton": "mail-prazo-aviso-01",
           "skin": "grid-agreement"
-        }
+        },
+        "skip_if_delivered_skeletons": [
+          "mail-rede-prazo-01"
+        ]
       },
       "note_2026_10_03b": "Pedro: falhar o acordo não faz caducar o TRC. Primeira falha: último aviso + prazo final (sem risco de caducidade)."
     },
@@ -249,7 +254,10 @@
         "mail": {
           "skeleton": "mail-prazo-aviso-01",
           "skin": "lp-pedido"
-        }
+        },
+        "skip_if_delivered_skeletons": [
+          "mail-dgeg-lp-pedido-01"
+        ]
       },
       "on_meet": [
         "dl_met_lp_request"
@@ -273,7 +281,12 @@
         "odds": "PEDIR_ECONOMY",
         "odds_up_if_any": [
           "dgeg_late",
-          "grid_slip_operator"
+          "grid_slip_operator",
+          "camara_late",
+          "dl_missed_pip_decision",
+          "delay_pip_+1",
+          "pip_hearing",
+          "pip_appeal"
         ],
         "odds_down_if_any": [
           "risk_camara_+2",
@@ -286,7 +299,8 @@
         "denied_mail": {
           "skeleton": "mail-prorrogacao-recusada-01",
           "skin": "lp-pedido"
-        }
+        },
+        "legal_note_2026_10_04": "DL 15/2022 art. 14.º/5: prorrogação a pedido, uma vez, até 1 ano, se o atraso não for imputável ao requerente (ex.: Câmara atrasou o PIP). Prazo legal conta da emissão do TRC (o jogo usa a adjudicação — diferença de semanas). Número do n.º de caducidade difere entre versões (8 vs 12) — VERIFICAR."
       },
       "rush": {
         "allowed": true,
@@ -622,7 +636,7 @@
       "hud_owner": "Câmara",
       "kind": "authority",
       "severity": "high",
-      "legal_basis": "RJUE (DL 555/99) arts. 14.º e ss. — prazo exacto PEDIR_PEDRO",
+      "legal_basis": "RJUE (DL 555/99) art. 16.º, redação DL 108/2026 (em vigor 1/10/2026): 15 dias úteis (simples) / 30 dias úteis (qualificado) contados da última consulta externa, após saneamento de 20 dias; deferimento tácito. VERIFICAR no DR.",
       "create_on": {
         "effect_any": [
           "pip_request_submitted",
@@ -633,8 +647,8 @@
       "recreate_if_closed": true,
       "due": {
         "anchor": "created",
-        "months_band": "2-4",
-        "months": 3,
+        "months_band": "2-3",
+        "months": 2,
         "variants": [
           {
             "if_any_effects": [
@@ -643,7 +657,7 @@
             "months": 8
           }
         ],
-        "source": "HIPÓTESE / PEDIR_PEDRO"
+        "source": "ver legal_basis"
       },
       "meet_on_effects": [
         "pip_aprovado"
@@ -671,7 +685,8 @@
       "on_miss_mail": null,
       "extension": {
         "allowed": false
-      }
+      },
+      "volume_2026_10_04": "Antes 3 (2-4)."
     },
     {
       "id": "caso_a_caso_decision",
@@ -854,5 +869,8 @@
   ],
   "_fields_2026_10_03": {
     "final_miss_mail": "carta entregue quando final_miss se aplica (deadline_accept_miss ou prorrogação recusada + deixar caducar). Põe end_state lost."
+  },
+  "schema_notes": {
+    "warn.skip_if_delivered_skeletons": "2026-10-04: não entregar o aviso se uma destas cartas já foi entregue (a carta de prazo já diz a data). Código Grok Bot."
   }
 }

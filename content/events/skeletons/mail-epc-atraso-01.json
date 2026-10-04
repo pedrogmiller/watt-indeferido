@@ -44,5 +44,10 @@
   ],
   "heavy": true,
   "notes_for_economy": "Odds PEDIR_ECONOMY (sobem com epc_multi / epc_interface_risk_+1; descem com epc_turnkey). epc_acceleration/overrun = equity extra; LDs = crédito parcial — PEDIR_ECONOMY.",
-  "notes_for_ui": "delay_cod_+N empurra o deadline epc_mechanical_completion (shift_on_effects). CTA pesado (crise)."
+  "notes_for_ui": "delay_cod_+N empurra o deadline epc_mechanical_completion (shift_on_effects). CTA pesado (crise).",
+  "deadline_letter": true,
+  "deadline_id": "epc_mechanical_completion",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
 }

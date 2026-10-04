@@ -26,5 +26,14 @@
   ],
   "heavy": false,
   "notes_for_economy": "Meses adicionados = extension.adds_months do catálogo (banda). Sem €.",
-  "notes_for_ui": "O motor já aplicou dl_extended_<id> e o novo atMonth antes de entregar. HUD: badge 'prorrogado'."
+  "notes_for_ui": "O motor já aplicou dl_extended_<id> e o novo atMonth antes de entregar. HUD: badge 'prorrogado'.",
+  "deadline_letter": true,
+  "deadline_id": "by_skin",
+  "deadline_ids": [
+    "lp_request",
+    "le_deadline"
+  ],
+  "deadline_role": "outcome",
+  "deadline_kind": "authority",
+  "deadline_blocks_play": false
 }

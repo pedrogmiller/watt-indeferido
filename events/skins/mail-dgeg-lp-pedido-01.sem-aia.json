@@ -5,14 +5,18 @@
   "status": "draft_pending_pedro",
   "when": {
     "requires_all": [
-      "nao_sujeicao",
       "pip_aprovado"
+    ],
+    "requires_any": [
+      "nao_sujeicao",
+      "env_path_nao_sujeito"
     ]
   },
   "from_name": "Equipa de licenciamento",
   "subject": "O PIP chegou: agora o pedido de licença de produção",
-  "body": "Com o PIP aprovado, já podemos pedir a licença de produção à DGEG. Sem avaliação ambiental, o PIP é peça obrigatória do pedido: sem ele o pedido não entra. O prazo do TRC termina em {{deadline_month}}.\n\nSubmeter o processo completo custa mais agora. Entrar já com o mínimo poupa tempo, mas a DGEG pode pedir documentos em falta.",
+  "body": "Com o PIP aprovado, já podemos pedir a licença de produção à DGEG. Sem avaliação ambiental, o PIP é peça obrigatória do pedido: sem ele o pedido não entra. O prazo do TRC termina em {{deadline_month}}, e o TRC só se mantém se cumprires os prazos.\n\nSubmeter o processo completo custa mais agora. Entrar já com o mínimo poupa tempo, mas a DGEG pode pedir documentos em falta.",
   "params": {
     "deadline_id": "lp_request"
-  }
+  },
+  "volume_2026_10_04": "Absorve mail-dgeg-obrigacoes-01 (lembrete: o TRC obriga a cumprir prazos)."
 }

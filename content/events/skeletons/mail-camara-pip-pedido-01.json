@@ -44,5 +44,10 @@
   ],
   "heavy": true,
   "notes_for_economy": "cash_at_risk_+1 = peças do PIP/taxas; pip_benefits_offer = compromisso com a freguesia/concelho — PEDIR_ECONOMY.",
-  "notes_for_ui": "Via B: PIP aprovado é condição da LP. Cria deadline pip_decision. 'Segurar' re-arma (pip_request_hold). Skin reformulado re-entrega após indeferimento/condições. CTA pesado (Câmara)."
+  "notes_for_ui": "Via B: PIP aprovado é condição da LP. Cria deadline pip_decision. 'Segurar' re-arma (pip_request_hold). Skin reformulado re-entrega após indeferimento/condições. CTA pesado (Câmara).",
+  "deadline_letter": true,
+  "deadline_id": "pip_camara",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

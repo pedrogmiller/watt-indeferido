@@ -8,5 +8,8 @@
   "body": "A DGEG não aceitou a razão do atraso: entendeu que foi culpa tua. Agora vai decidir se o TRC caduca, depois de te ouvir. Ainda podes responder: entregar o pedido, se o tiveres pronto, ou tentar vender o projeto.",
   "params": {
     "deadline_id": "lp_request"
-  }
+  },
+  "deadline_id": "lp_request",
+  "deadline_role": "final",
+  "deadline_blocks_play": true
 }

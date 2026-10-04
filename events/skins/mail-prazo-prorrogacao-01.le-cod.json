@@ -9,5 +9,8 @@
   "params": {
     "deadline_id": "le_deadline",
     "base_legal": "DL 15/2022 art. 14.º/3 e /5"
-  }
+  },
+  "deadline_id": "le_deadline",
+  "deadline_role": "hearing",
+  "deadline_blocks_play": true
 }
