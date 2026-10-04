@@ -12904,6 +12904,50 @@
     if (Object.keys(months).some((m) => (months[m] || []).indexOf(skeletonId) !== -1)) return true;
     return ((typeof mailState !== 'undefined' && mailState.items) || []).some((it) => mailSkeletonOf(it) === skeletonId);
   }
+  /** Effects a player can still apply from an unanswered letter (holds do not count). */
+  function pendingChoiceEffects() {
+    const fx = [];
+    ((typeof mailState !== 'undefined' && mailState && mailState.items) || []).forEach((letter) => {
+      if (!letter || letter.econChoiceId) return;
+      (letter.choices || []).forEach((c) => {
+        if (!c || (typeof isDeferringChoice === 'function' && isDeferringChoice(c))) return;
+        (c.effects || []).forEach((e) => { if (fx.indexOf(e) === -1) fx.push(e); });
+      });
+    });
+    return fx;
+  }
+  /**
+   * True when a rule that sends this skeleton will land by `horizon`.
+   * A known after_effect clock counts. A letter already in the inbox counts only
+   * when allowPending is set: answering it would start that clock.
+   */
+  function ruleDeliversBy(r, horizon, allowPending) {
+    if (!r || r.delivery_proposed === 'hud_only' || !r.skeleton) return false;
+    const known = (typeof draftRuleEarliestMonth === 'function') ? draftRuleEarliestMonth(r) : null;
+    if (known != null && known <= horizon) {
+      try { if (draftRuleEligible(r, horizon)) return true; } catch (_) {}
+    }
+    if (!allowPending || known != null) return false;
+    const ae = r.after_effect;
+    if (!ae || !ae.tag) return false;
+    const assumed = String(ae.tag).split('|').filter((t) => pendingChoiceEffects().indexOf(t) !== -1);
+    if (!assumed.length) return false;
+    const projected = (mailLoop.month | 0) + (Number(ae.months) || 0);
+    if (projected > horizon) return false;
+    const tags = mailLoop.tags || (mailLoop.tags = {});
+    const added = [];
+    assumed.forEach((k) => { if (!(tags[k] | 0)) { tags[k] = 1; added.push(k); } });
+    let ok = false;
+    try { ok = draftRuleConditionsOk(r); }
+    finally { added.forEach((k) => { delete tags[k]; }); }
+    return ok;
+  }
+  function skeletonArrivesBy(skeletonId, horizon, allowPending) {
+    if (skeletonWasDelivered(skeletonId)) return true;
+    const pack = window.__wattEventPack;
+    if (!pack || typeof draftRulesFor !== 'function') return false;
+    return draftRulesFor(pack).some((r) => r.skeleton === skeletonId && ruleDeliversBy(r, horizon, allowPending));
+  }
   function collectDeadlineWarns(month) {
     const out = [];
     const dls = mailLoop.deadlines || {};
@@ -12914,7 +12958,9 @@
       if ((mailLoop.firedDeadlines || {})[id]) return;
       if (d.warned && !d._warnNow) return;
       const skip = (def.warn.skip_if_delivered_skeletons) || [];
-      if (skip.some((sk) => skeletonWasDelivered(sk))) return;
+      const horizon = (month | 0) + 1;
+      const slack = ((d.atMonth | 0) - (month | 0)) > 1;
+      if (skip.some((sk) => skeletonArrivesBy(sk, horizon, slack))) return;
       const before = Number(def.warn.months_before) || 2;
       const left = (d.atMonth | 0) - (month | 0);
       if (d._warnNow || (left <= before && left > 0)) {

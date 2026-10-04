@@ -152,7 +152,7 @@
           ]
         }
       ],
-      "_rule_letters": "+ r-lp-pedido-sem-aia (mail-dgeg-lp-pedido-01.sem-aia), 0-1 mês depois de pip_aprovado"
+      "_rule_letters": "+ r-lp-pedido-sem-aia (mail-dgeg-lp-pedido-01.sem-aia), 1 mês depois de pip_aprovado (M5 se o PIP for acusado no M4)"
     },
     "6": {
       "label": "M6",

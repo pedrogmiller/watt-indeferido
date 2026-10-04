@@ -1003,9 +1003,9 @@
       ],
       "after_effect": {
         "tag": "pip_aprovado",
-        "months": 0,
-        "band": "0-1",
-        "source": "Pedro 2026-10-03: o PIP é obrigatório no pedido de LP sem AIA; carta logo a seguir ao PIP (~M5 Ourique)"
+        "months": 1,
+        "band": "1",
+        "source": "Pedro 2026-10-03: o PIP é obrigatório no pedido de LP sem AIA. A carta sai na aterragem seguinte (PIP acusado no M4 → pedido no M5), para o M4 ficar em duas cartas."
       },
       "rearm_on_effects": [
         "lp_request_hold"
@@ -1016,7 +1016,7 @@
         "nao_sujeicao",
         "env_path_nao_sujeito"
       ],
-      "volume_2026_10_04": "Aceita env_path_nao_sujeito. Com PIP em M4 chega M4/M5; carta absorve o lembrete dgeg-obrigacoes."
+      "volume_2026_10_04": "Aceita env_path_nao_sujeito. Com o PIP acusado no M4 a carta sai no M5. O aviso do prazo não sai se esta carta já chegou ou está marcada para a aterragem seguinte."
     },
     {
       "id": "r-lp-novo-pedido",
