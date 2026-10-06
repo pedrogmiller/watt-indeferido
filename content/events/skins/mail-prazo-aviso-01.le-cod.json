@@ -8,5 +8,8 @@
   "body": "A licença de exploração tem de estar emitida até {{deadline_month}}. Com a obra onde está, vale a pena preparar já um pedido de prorrogação fundamentado. Só informativo.",
   "params": {
     "deadline_id": "le_deadline"
-  }
+  },
+  "deadline_id": "le_deadline",
+  "deadline_role": "warning",
+  "deadline_blocks_play": false
 }

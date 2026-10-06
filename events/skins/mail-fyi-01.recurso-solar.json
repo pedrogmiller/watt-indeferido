@@ -1,8 +1,11 @@
 {
   "skeleton_id": "mail-fyi-01",
   "skin_id": "recurso-solar",
-  "from_name": "Sistema",
-  "subject": "Nota de recurso — solar",
-  "body": "Estimativa P50 preliminar disponível no dossier. Só informativo — não pede decisão.",
-  "params": {}
+  "from_name": "Dica",
+  "subject": "Estimativa de sol no terreno",
+  "body": "Já tens na ficha do projeto uma primeira estimativa da energia que o parque solar deve produzir num ano normal. É só informação: não tens de decidir nada.",
+  "params": {},
+  "retired": true,
+  "retired_reason": "Retirada da janela M1–M7: só informação; a estimativa já está na ficha do projeto.",
+  "volume_2026_10_04": "Retirada da janela M1–M7: só informação; a estimativa já está na ficha do projeto."
 }

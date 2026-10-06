@@ -54,5 +54,10 @@
     }
   ],
   "notes_for_economy": "cash_at_risk_+1 = sinal/opção — calibrar MEUR capex_linha_+1/+2 = linha média/longa (Capex por km, PEDIR_ECONOMY); servidoes_linha_+1/+2 = mais proprietários no traçado (tempo/custo, PEDIR_ECONOMY).",
-  "notes_for_ui": "Pode disparar N vezes (N parcelas) com skins diferentes 2026-09-30 (TRANCADO): open_dd grava line_km = params.linha_km (km exato até à SE REN do lote, que é fixa pelo TRC; o jogador nunca escolhe a SE) e aplica as tags da banda via effects_if_param. O motor recalcula env_path com o km exato."
+  "notes_for_ui": "Pode disparar N vezes (N parcelas) com skins diferentes 2026-09-30 (TRANCADO): open_dd grava line_km = params.linha_km (km exato até à SE REN do lote, que é fixa pelo TRC; o jogador nunca escolhe a SE) e aplica as tags da banda via effects_if_param. O motor recalcula env_path com o km exato.",
+  "deadline_letter": true,
+  "deadline_id": "land_option",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

@@ -8,5 +8,8 @@
   "body": "Revimos o que a Câmara apontou: implantação, acessos e integração paisagística. Voltamos a submeter. Segunda recusa e a via B fica muito difícil.",
   "params": {
     "attempt": 2
-  }
+  },
+  "deadline_id": "pip_decision",
+  "deadline_role": "hearing",
+  "deadline_blocks_play": true
 }

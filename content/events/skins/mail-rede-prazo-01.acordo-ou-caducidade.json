@@ -2,7 +2,13 @@
   "skeleton_id": "mail-rede-prazo-01",
   "skin_id": "acordo-ou-caducidade",
   "from_name": "REN — prazos de ligação",
-  "subject": "Prazo da ligação e reforço da rede",
-  "body": "Para ligar a tua central, a rede precisa de obras de reforço. O acordo tem um custo para o projeto, mas garante a data da ligação. Sem acordo, a ligação atrasa e o teu Risco para a licença sobe. Podes pedir adiamento, mas perdes tempo. Também podes arriscar o prazo: a decisão é tua.",
-  "params": {}
+  "subject": "REN: acordo da ligação até {{deadline_month}}",
+  "body": "Somos a REN, a empresa que gere a rede elétrica de alta tensão e a subestação de Ourique. Para ligar a tua central, a rede precisa de obras de reforço, e essas obras seguem o nosso calendário.\n\nTens de assinar connosco o acordo dessas obras até {{deadline_month}}. O acordo tem um custo para o projeto, mas garante a data da ligação. Sem acordo, a ligação atrasa e o teu Risco para a licença sobe. Podes pedir adiamento, mas perdes tempo. Também podes arriscar o prazo: a decisão é tua.",
+  "params": {
+    "deadline_id": "grid_agreement"
+  },
+  "deadline_id": "grid_agreement",
+  "deadline_role": "due",
+  "deadline_blocks_play": true,
+  "volume_2026_10_04": "Absorve mail-rede-info-01.calendario (apresentação da REN). Proposta: chegar M4 com prazo M6."
 }

@@ -8,5 +8,8 @@
   "body": "Prazo da licença de exploração prorrogado até {{deadline_month}}. O despacho regista o motivo. Nova derrapagem já não terá a mesma leitura.",
   "params": {
     "deadline_id": "le_deadline"
-  }
+  },
+  "deadline_id": "le_deadline",
+  "deadline_role": "outcome",
+  "deadline_blocks_play": false
 }

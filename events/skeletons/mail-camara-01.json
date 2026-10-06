@@ -7,14 +7,19 @@
     "when_phase": [
       "land",
       "pip"
-    ]
+    ],
+    "requires_any_land_secured": [
+      "land_option_open",
+      "dd_started"
+    ],
+    "min_phase_note": "Só depois de o terreno estar garantido (land_secured). Regra Pedro 2026-09-30: nada antes de o terreno estar garantido (land_secured = land_option_open ∨ dd_started) pode falar de PIP/AIA/EIA/DIA/caso a caso/APA/Câmara-licenciamento ou via ambiental."
   },
   "priority": "high",
   "from_type": "CAMARA",
   "choices": [
     {
       "id": "meet",
-      "label": "Agendar reunião",
+      "label": "Marcar reunião",
       "effects": [
         "risk_camara_-1"
       ]
@@ -29,5 +34,10 @@
     }
   ],
   "notes_for_economy": "delay_pip = meses; risk_camara = qualitativo até Gate 4",
-  "notes_for_ui": "Tom da skin conforme se-sheet.camara"
+  "notes_for_ui": "Tom da skin conforme se-sheet.camara",
+  "deadline_letter": true,
+  "deadline_id": "pip_camara",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

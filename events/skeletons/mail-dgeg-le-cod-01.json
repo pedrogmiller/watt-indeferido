@@ -35,5 +35,10 @@
   ],
   "heavy": false,
   "notes_for_economy": "cod_reached fixa cod_month real (gate5 cod_month). Receita começa. Sem €.",
-  "notes_for_ui": "PHASE_BUMP proposto: cod_reached → cod (gate: line_ready + le_granted). Cumpre le_deadline. Maturidade FA = 'exploracao'. Toast forte; não é CTA pesado."
+  "notes_for_ui": "PHASE_BUMP proposto: cod_reached → cod (gate: line_ready + le_granted). Cumpre le_deadline. Maturidade FA = 'exploracao'. Toast forte; não é CTA pesado.",
+  "deadline_letter": true,
+  "deadline_id": "le_deadline",
+  "deadline_role": "outcome",
+  "deadline_kind": "authority",
+  "deadline_blocks_play": false
 }

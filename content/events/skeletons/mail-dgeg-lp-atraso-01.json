@@ -40,5 +40,10 @@
   ],
   "heavy": true,
   "notes_for_economy": "lp_chase / lp_escalate sobem odds da decisão LP no próximo Play (PEDIR_ECONOMY). risk_dgeg_+1 = qualitativo até Gate 4.",
-  "notes_for_ui": "Chega por on_miss do deadline lp_decision (DGEG fora do prazo legal de 1 ano; sem deferimento tácito com AIA, art. 14.º-B/2). O motor aplica dgeg_late (motivo não imputável → ajuda prorrogações futuras)."
+  "notes_for_ui": "Chega por on_miss do deadline lp_decision (DGEG fora do prazo legal de 1 ano; sem deferimento tácito com AIA, art. 14.º-B/2). O motor aplica dgeg_late (motivo não imputável → ajuda prorrogações futuras).",
+  "deadline_letter": true,
+  "deadline_id": "lp_decision",
+  "deadline_role": "outcome",
+  "deadline_kind": "authority",
+  "deadline_blocks_play": true
 }

@@ -30,5 +30,10 @@
   ],
   "heavy": false,
   "notes_for_economy": "Sem €.",
-  "notes_for_ui": "mutex pip_outcome. pip_aprovado + nao_sujeicao → env_gate_ok (gate da decisão LP na via B)."
+  "notes_for_ui": "mutex pip_outcome. pip_aprovado + nao_sujeicao → env_gate_ok (gate da decisão LP na via B).",
+  "deadline_letter": true,
+  "deadline_id": "pip_decision",
+  "deadline_role": "outcome",
+  "deadline_kind": "authority",
+  "deadline_blocks_play": false
 }

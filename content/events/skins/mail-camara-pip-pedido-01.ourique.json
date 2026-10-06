@@ -8,9 +8,11 @@
     }
   },
   "from_name": "Equipa de licenciamento",
-  "subject": "Não sujeição obtida — agora o PIP",
-  "body": "Sem AIA, a LP depende de um PIP favorável da Câmara de Ourique (o pedido de informação prévia, em que a Câmara diz se aceita a central neste terreno). O executivo continua desconfiado. Podemos submeter o pedido limpo, ou juntar uma proposta de benefícios locais que ajuda o voto mas compromete o projeto. Segurar dá tempo, mas os prazos do TRC continuam.",
+  "subject": "Pedir o PIP à Câmara de Ourique",
+  "body": "O teu projeto não precisa de avaliação ambiental. Nesse caso, a licença de produção só pode ser pedida com um PIP favorável da Câmara (o pedido de informação prévia, em que a Câmara diz se aceita a central neste terreno). O pedido da licença tem de entrar na DGEG até {{deadline_month}}, por isso o PIP tem de sair antes. A Câmara costuma responder em dois a três meses.\n\nA Câmara continua desconfiada. Podes entregar o pedido simples, ou juntar uma proposta de benefícios para a terra, que ajuda o voto mas compromete o projeto. Esperar dá tempo, mas os prazos do TRC continuam a contar.",
   "params": {
-    "base_legal": "RJUE (DL 555/99) arts. 14.º e ss."
-  }
+    "base_legal": "RJUE (DL 555/99) arts. 14.º e ss.",
+    "deadline_id": "lp_request"
+  },
+  "volume_2026_10_04": "Chega M2 (1 mês depois do terreno). Texto simples, sem siglas AIA/LP; diz o prazo do pedido de licença."
 }

@@ -56,5 +56,14 @@
   ],
   "heavy": true,
   "notes_for_economy": "Odds de concessão = PEDIR_ECONOMY (sobem com dgeg_late / grid_slip_operator; descem com risk_*_+2). deadline_rush aplica os rush.effects do deadline (catálogo). deadline_accept_miss aplica final_miss (caducidade).",
-  "notes_for_ui": "on_miss_mail dos deadlines legais (lp_request, le_deadline). O motor liga deadline_ref ao deadline que falhou. Enquanto o pedido de prorrogação está pendente, o deadline fica congelado. CTA pesado. 2026-10-03 (endings v0.1): nova escolha sell_before_lapse; se o jogador deixar caducar (deadline_accept_miss), a consola entrega mail-fim-de-jogo-01/trc-caducado (deadline.final_miss_mail)."
+  "notes_for_ui": "on_miss_mail dos deadlines legais (lp_request, le_deadline). O motor liga deadline_ref ao deadline que falhou. Enquanto o pedido de prorrogação está pendente, o deadline fica congelado. CTA pesado. 2026-10-03 (endings v0.1): nova escolha sell_before_lapse; se o jogador deixar caducar (deadline_accept_miss), a consola entrega mail-fim-de-jogo-01/trc-caducado (deadline.final_miss_mail).",
+  "deadline_letter": true,
+  "deadline_id": "by_skin",
+  "deadline_ids": [
+    "lp_request",
+    "le_deadline"
+  ],
+  "deadline_role": "hearing",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

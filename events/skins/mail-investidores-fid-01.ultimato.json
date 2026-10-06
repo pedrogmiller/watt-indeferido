@@ -8,5 +8,8 @@
   "body": "Passou o prazo que combinámos para a decisão final de investimento. Cada mês sem decisão é dinheiro de desenvolvimento gasto num ativo já licenciado. Ou aprovas, se tiveres todo o capital próprio para a obra, ou trazes um plano de venda. Mais um adiamento e revemos o teu orçamento.",
   "params": {
     "tom": "pressao"
-  }
+  },
+  "deadline_id": "fid_window",
+  "deadline_role": "final",
+  "deadline_blocks_play": true
 }

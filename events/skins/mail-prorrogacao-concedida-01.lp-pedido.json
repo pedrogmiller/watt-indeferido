@@ -8,5 +8,8 @@
   "body": "A DGEG aceitou o fundamento e prorrogou o prazo do pedido de licença de produção até {{deadline_month}}. É uma vez; não contem com segunda.",
   "params": {
     "deadline_id": "lp_request"
-  }
+  },
+  "deadline_id": "lp_request",
+  "deadline_role": "outcome",
+  "deadline_blocks_play": false
 }

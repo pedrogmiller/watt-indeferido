@@ -2,7 +2,8 @@
   "skeleton_id": "mail-consultor-reequip-01",
   "skin_id": "merchant-ppa",
   "from_name": "Consultor de desenvolvimento",
-  "subject": "Reequipamento — merchant ou PPA",
-  "body": "Mais tarde no ciclo: reequipar e vender a preço de mercado ou fechar PPA. Não é o foco do dia 1 — mas o dossier já pode abrir a linha de estudo.",
-  "params": {}
+  "subject": "Renovar o equipamento: preço de mercado ou contrato",
+  "body": "Mais tarde na vida do projeto, podes renovar o equipamento, ou seja, trocar painéis e outras peças por outros mais recentes. Depois, podes vender a energia a preço de mercado, que muda todos os dias, ou fazer um contrato de venda de energia: um acordo com um cliente para lhe venderes energia durante muitos anos, a um preço combinado.\n\nNão é para já, mas podes começar a estudar isto na ficha do projeto.",
+  "params": {},
+  "volume_2026_10_04": "Movida para fase licenca_producao (proposta M9+)."
 }

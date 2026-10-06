@@ -5,9 +5,13 @@
   "when": {},
   "from_name": "Equipa de licenciamento",
   "subject": "Pedido de licença de produção: faltam dois meses",
-  "body": "O pedido de licença de produção tem de entrar na DGEG até {{deadline_month}}. Este prazo é dos mais importantes do TRC: se passar, a DGEG pode tirar-te o TRC. A decisão está na carta do pedido.",
+  "body": "O pedido de licença de produção tem de entrar na DGEG até {{deadline_month}}. Este prazo é dos mais importantes do TRC: se passar, a DGEG pode tirar-te o TRC.\n\nSe o projeto não precisa de avaliação ambiental, o pedido só entra com o PIP aprovado pela Câmara. Se a Câmara ainda não respondeu, insiste já. A decisão está na carta do pedido.",
   "params": {
     "deadline_id": "lp_request",
     "deadline_month": "M12"
-  }
+  },
+  "deadline_id": "lp_request",
+  "deadline_role": "warning",
+  "deadline_blocks_play": false,
+  "volume_2026_10_04": "Lembra que o PIP vem primeiro. Não é entregue se a carta do pedido já chegou (warn.skip_if_delivered_skeletons)."
 }

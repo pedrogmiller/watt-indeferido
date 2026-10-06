@@ -8,5 +8,8 @@
   "from_name": "DGEG — Licenciamento de centros eletroprodutores",
   "subject": "A DGEG quer explicações",
   "body": "Os nossos registos mostram atrasos no teu projeto: {{risk_reasons}}.\n\nO TRC dá-te o direito de ligar a central à rede, mas só enquanto cumprires os prazos. O teu Risco para a licença está a subir. Se os atrasos continuarem, abrimos um processo para retirar esse direito. Ainda vais a tempo de corrigir.",
-  "params": {}
+  "params": {},
+  "deadline_id": "by_context",
+  "deadline_role": "warning",
+  "deadline_blocks_play": false
 }

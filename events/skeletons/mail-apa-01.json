@@ -15,7 +15,7 @@
   "choices": [
     {
       "id": "prepare",
-      "label": "Preparar expediente AIA",
+      "label": "Começar a preparar a AIA",
       "effects": [
         "apa_track_start",
         "delay_env_+0"
@@ -30,5 +30,10 @@
     }
   ],
   "notes_for_economy": "Sem inventar prazos €",
-  "notes_for_ui": "Ourique apa_first; verificar acrónimo AIA/DIA na skin"
+  "notes_for_ui": "Ourique apa_first; verificar acrónimo AIA/DIA na skin",
+  "deadline_letter": true,
+  "deadline_id": "main_permit",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

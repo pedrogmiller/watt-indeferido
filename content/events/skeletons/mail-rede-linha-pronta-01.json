@@ -27,5 +27,10 @@
   ],
   "heavy": false,
   "notes_for_economy": "Sem €. line_ready desbloqueia «Vender a central e alugar a subestação e a linha» e «Vender a parte híbrida e ficar com a central» (com LP) — sell-modes-lock.",
-  "notes_for_ui": "Chega por on_meet de grid_connection (o motor também aplica line_ready, para não depender do clique). Info, não CTA pesado."
+  "notes_for_ui": "Chega por on_meet de grid_connection (o motor também aplica line_ready, para não depender do clique). Info, não CTA pesado.",
+  "deadline_letter": true,
+  "deadline_id": "grid_connection",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": false
 }

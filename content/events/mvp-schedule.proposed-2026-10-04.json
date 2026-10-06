@@ -152,7 +152,7 @@
           ]
         }
       ],
-      "_rule_letters": "+ r-lp-pedido-sem-aia (mail-dgeg-lp-pedido-01.sem-aia), 1 mês depois de pip_aprovado (M5 se o PIP for acusado no M4)"
+      "_rule_letters": "+ r-lp-pedido-sem-aia (mail-dgeg-lp-pedido-01.sem-aia), 0-1 mês depois de pip_aprovado"
     },
     "6": {
       "label": "M6",
@@ -362,7 +362,7 @@
       }
     ]
   },
-  "_status": "Aplicado em 2026-10-04 a partir de mvp-schedule.proposed-2026-10-04.json. A carta da REN fica no M4; o prazo grid_agreement continua no M6. when_phase do M4 inclui trc_won, land e pip.",
+  "_status": "PROPOSTA — não é o ficheiro vivo. Grok Bot aplica no mvp-schedule.json/index.html. Base: mvp-schedule.json vivo (origin/main 00845c6).",
   "_changes_2026_10_04": [
     "M1: retirar mail-fyi-01.recurso-solar (também da M2).",
     "M2: retirar mail-rede-info-01.calendario (texto passou para rede-prazo); advogado-dd só com land_talk_+1 e não se já há land_option_open/dd_started.",

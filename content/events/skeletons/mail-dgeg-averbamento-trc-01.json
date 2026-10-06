@@ -27,5 +27,10 @@
   ],
   "heavy": false,
   "notes_for_economy": "Desfecho sorteado na regra (r-averbamento-ok / r-averbamento-caucao-falhou), odds PEDIR_ECONOMY. Caução +50% = custo do comprador (entra no preço, PEDIR_ECONOMY).",
-  "notes_for_ui": "Os efeitos vêm em on_deliver_effects da regra. Skins: averbado | caucao-em-falta."
+  "notes_for_ui": "Os efeitos vêm em on_deliver_effects da regra. Skins: averbado | caucao-em-falta.",
+  "deadline_letter": true,
+  "deadline_id": "trc_transfer_averbamento",
+  "deadline_role": "outcome",
+  "deadline_kind": "authority",
+  "deadline_blocks_play": false
 }

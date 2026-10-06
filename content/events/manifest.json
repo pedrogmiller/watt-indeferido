@@ -304,6 +304,8 @@
     ],
     "note": "Escadas de tensão (caixa, paciência, REN, LP, TRC), perdas com aviso prévio, marcos e vitória na COD. Regras r-es-* em lp-cod-rules.draft.json (endings_stakes_v01); prazo grid_agreement_final em deadlines.draft.json.",
     "update_2026_10_03b": "Respostas do Pedro: P46 ambas (purse ~45 + sócio/empréstimo sem sorteio); PIP obrigatório no pedido de LP sem AIA (r-lp-pedido-sem-aia, skin sem-aia); REN não faz caducar (skin ligacao-adiada); orçamento só no fecho do ciclo; venda parcial antes da LP.",
-    "update_2026_10_03c": "Economy §16 integrado: sócio garantido (r-es-d9-socio), empréstimo 20 anos P 0,60 (r-es-d9-emprestimo-*), aviso de caixa só depois do M0 e 3 meses depois do resgate, audiência do TRC decide mesmo sem resposta, chão −10 %."
-  }
+    "update_2026_10_03c": "Economy §16 integrado: sócio garantido (r-es-d9-socio), empréstimo 20 anos P 0,60 (r-es-d9-emprestimo-*), aviso de caixa só depois do M0 e 3 meses depois do resgate, audiência do TRC decide mesmo sem resposta, chão −10 %.",
+    "update_2026_10_04": "Economy §17: atraso D9 não soma (+3 no total); mandate_review_down só odds a meio do ciclo; venda parcial só 25 % (stake_sale_25); sócio 25 % fixo; equity exata 41,0/44,4."
+  },
+  "schedule_proposed_2026_10_04": "mvp-schedule.proposed-2026-10-04.json"
 }

@@ -46,5 +46,10 @@
   ],
   "heavy": true,
   "notes_for_economy": "Carta probabilística (odds PEDIR_ECONOMY; sobe com lp_dossier_thin). cash_at_risk_+1 = peças em falta — PEDIR_ECONOMY.",
-  "notes_for_ui": "Ao entregar a carta, o motor cria o deadline lp_aperfeicoamento (+1 mês; art. 25.º: única vez, ≤30 dias). Sem prorrogação."
+  "notes_for_ui": "Ao entregar a carta, o motor cria o deadline lp_aperfeicoamento (+1 mês; art. 25.º: única vez, ≤30 dias). Sem prorrogação.",
+  "deadline_letter": true,
+  "deadline_id": "lp_aperfeicoamento",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

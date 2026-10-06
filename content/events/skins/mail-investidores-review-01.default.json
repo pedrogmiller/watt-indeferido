@@ -3,6 +3,7 @@
   "skin_id": "default",
   "from_name": "Comité de investidores",
   "subject": "Revisão do orçamento: como vai o projeto?",
-  "body": "Queremos ver o teu plano para o terreno, o PIP e as melhorias ao projeto (sobreequipar, hibridizar, baterias). Se não virmos progresso, vamos querer rever o teu orçamento. Explica-nos o atraso, ou pede mais orçamento e diz-nos porquê.",
-  "params": {}
+  "body": "Queremos ver o teu plano para o terreno, o PIP e as melhorias ao projeto (sobreequipar, hibridizar, baterias). Sabemos que há um rival a perguntar por terrenos junto à subestação, e o banco diz que ainda é cedo para falar de empréstimo: só depois do terreno e das licenças.\n\nSe não virmos progresso, vamos querer rever o teu orçamento. Explica-nos o atraso, ou pede mais orçamento e diz-nos porquê.",
+  "params": {},
+  "volume_2026_10_04": "Absorve mail-concorrente-01 e mail-banco-seed-01 (info). Proposta: chegar M3."
 }

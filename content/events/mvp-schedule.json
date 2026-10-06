@@ -1,10 +1,10 @@
 {
-  "version": 2,
+  "version": "2+proposed-2026-10-04",
   "se_id": "ourique",
   "progress": "phase",
   "caps": {
-    "relevant_per_landing": 3,
-    "relevant_per_month": 3,
+    "relevant_per_landing": 2,
+    "relevant_per_month": 2,
     "m0_all": true,
     "max_jump_months": 6
   },
@@ -48,11 +48,6 @@
           "skeleton": "mail-terreno-01",
           "skin": "parcela-b-servidao",
           "relevant": true
-        },
-        {
-          "skeleton": "mail-fyi-01",
-          "skin": "recurso-solar",
-          "relevant": false
         }
       ]
     },
@@ -73,37 +68,24 @@
           "skin": "default",
           "relevant": true,
           "requires_any_effects": [
-            "land_option_open",
             "land_talk_+1"
-          ]
-        },
-        {
-          "skeleton": "mail-rede-info-01",
-          "skin": "calendario",
-          "relevant": true
-        },
-        {
-          "skeleton": "mail-fyi-01",
-          "skin": "recurso-solar",
-          "relevant": false,
-          "requires_any_effects": [
-            "land_option_open"
+          ],
+          "blocks_if_any_effects": [
+            "land_option_open",
+            "dd_started"
           ]
         }
-      ]
+      ],
+      "_rule_letters": "+ r-pip-pedido (mail-camara-pip-pedido-01.ourique), 1 mês depois de land_option_open|dd_started"
     },
     "3": {
       "label": "M3",
       "when_phase": [
+        "land",
         "pip",
         "aia"
       ],
       "entries": [
-        {
-          "skeleton": "mail-consultor-valueadd-01",
-          "skin": "hibrido-bess",
-          "relevant": true
-        },
         {
           "skeleton": "mail-comunidade-01",
           "skin": "ourique",
@@ -123,55 +105,16 @@
           "requires_any_effects": [
             "risk_camara_+1"
           ]
+        },
+        {
+          "skeleton": "mail-investidores-review-01",
+          "skin": "default",
+          "relevant": true
         }
       ]
     },
     "4": {
       "label": "M4",
-      "when_phase": [
-        "pip",
-        "aia"
-      ],
-      "entries": [
-        {
-          "skeleton": "mail-investidores-review-01",
-          "skin": "default",
-          "relevant": true
-        },
-        {
-          "skeleton": "mail-concorrente-01",
-          "skin": "terreno-ou-leilao",
-          "relevant": true
-        },
-        {
-          "skeleton": "mail-consultor-reequip-01",
-          "skin": "merchant-ppa",
-          "relevant": true
-        }
-      ]
-    },
-    "5": {
-      "label": "M5",
-      "when_phase": [
-        "pip",
-        "aia",
-        "licenca_producao"
-      ],
-      "entries": [
-        {
-          "skeleton": "mail-apa-01",
-          "skin": "default",
-          "relevant": true
-        },
-        {
-          "skeleton": "mail-banco-seed-01",
-          "skin": "default",
-          "relevant": true
-        }
-      ]
-    },
-    "6": {
-      "label": "M6",
       "when_phase": [
         "trc_won",
         "land",
@@ -184,11 +127,85 @@
           "skeleton": "mail-rede-prazo-01",
           "skin": "acordo-ou-caducidade",
           "relevant": true
+        }
+      ],
+      "_rule_letters": "+ decisão do PIP (grupo pip_outcome), 2 meses (2-3) depois de pip_request_submitted"
+    },
+    "5": {
+      "label": "M5",
+      "when_phase": [
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-apa-01",
+          "skin": "default",
+          "relevant": true,
+          "blocks_if_any_effects": [
+            "env_path_nao_sujeito",
+            "env_path_caso_a_caso",
+            "env_path_aac_simplificada",
+            "nao_sujeicao",
+            "apa_track_start"
+          ]
+        }
+      ],
+      "_rule_letters": "+ r-lp-pedido-sem-aia (mail-dgeg-lp-pedido-01.sem-aia), 1 mês depois de pip_aprovado (M5 se o PIP for acusado no M4)"
+    },
+    "6": {
+      "label": "M6",
+      "when_phase": [
+        "trc_won",
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "entries": [],
+      "_comment": "Sem cartas fixas. Só prazos falhados / pressão."
+    },
+    "8": {
+      "label": "M8",
+      "when_phase": [
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-consultor-valueadd-01",
+          "skin": "hibrido-bess",
+          "relevant": true,
+          "requires_any_effects": [
+            "lp_request_submitted",
+            "pip_aprovado",
+            "apa_track_start"
+          ]
         },
         {
-          "skeleton": "mail-dgeg-obrigacoes-01",
-          "skin": "default",
+          "skeleton": "mail-concorrente-01",
+          "skin": "terreno-ou-leilao",
+          "relevant": false
+        }
+      ]
+    },
+    "9": {
+      "label": "M9",
+      "when_phase": [
+        "licenca_producao"
+      ],
+      "entries": [
+        {
+          "skeleton": "mail-consultor-reequip-01",
+          "skin": "merchant-ppa",
           "relevant": true
+        },
+        {
+          "skeleton": "mail-banco-seed-01",
+          "skin": "default",
+          "relevant": false
         }
       ]
     }
@@ -216,7 +233,7 @@
   },
   "_comment": "v2 progress=phase. Landings 0..6 = old M0–M6 seed order. Eligibility = phase ∈ landing.when_phase (or skeleton.trigger.when_phase) + requires + not delivered. month/devMonth = pressure clock only.",
   "_comment_apa": "APA/banco landing includes pip so letter can arrive; apa_track_start raises phase to aia. No auto obra/cod in MVP1.",
-  "_comment_caps": "relevant_per_landing=3 (alias relevant_per_month). Terreno pair exception still applies.",
+  "_comment_caps": "Proposta 2026-10-04: 2 cartas relevantes por aterragem (o par do terreno conta como uma). Cartas de regra (PIP, pedido de licença) somam-se.",
   "months": {
     "0": [
       {
@@ -245,11 +262,6 @@
         "skeleton": "mail-terreno-01",
         "skin": "parcela-b-servidao",
         "relevant": true
-      },
-      {
-        "skeleton": "mail-fyi-01",
-        "skin": "recurso-solar",
-        "relevant": false
       }
     ],
     "2": [
@@ -263,30 +275,15 @@
         "skin": "default",
         "relevant": true,
         "requires_any_effects": [
-          "land_option_open",
           "land_talk_+1"
-        ]
-      },
-      {
-        "skeleton": "mail-rede-info-01",
-        "skin": "calendario",
-        "relevant": true
-      },
-      {
-        "skeleton": "mail-fyi-01",
-        "skin": "recurso-solar",
-        "relevant": false,
-        "requires_any_effects": [
-          "land_option_open"
+        ],
+        "blocks_if_any_effects": [
+          "land_option_open",
+          "dd_started"
         ]
       }
     ],
     "3": [
-      {
-        "skeleton": "mail-consultor-valueadd-01",
-        "skin": "hibrido-bess",
-        "relevant": true
-      },
       {
         "skeleton": "mail-comunidade-01",
         "skin": "ourique",
@@ -306,22 +303,17 @@
         "requires_any_effects": [
           "risk_camara_+1"
         ]
-      }
-    ],
-    "4": [
+      },
       {
         "skeleton": "mail-investidores-review-01",
         "skin": "default",
         "relevant": true
-      },
+      }
+    ],
+    "4": [
       {
-        "skeleton": "mail-concorrente-01",
-        "skin": "terreno-ou-leilao",
-        "relevant": true
-      },
-      {
-        "skeleton": "mail-consultor-reequip-01",
-        "skin": "merchant-ppa",
+        "skeleton": "mail-rede-prazo-01",
+        "skin": "acordo-ou-caducidade",
         "relevant": true
       }
     ],
@@ -329,25 +321,55 @@
       {
         "skeleton": "mail-apa-01",
         "skin": "default",
+        "relevant": true,
+        "blocks_if_any_effects": [
+          "env_path_nao_sujeito",
+          "env_path_caso_a_caso",
+          "env_path_aac_simplificada",
+          "nao_sujeicao",
+          "apa_track_start"
+        ]
+      }
+    ],
+    "6": [],
+    "8": [
+      {
+        "skeleton": "mail-consultor-valueadd-01",
+        "skin": "hibrido-bess",
+        "relevant": true,
+        "requires_any_effects": [
+          "lp_request_submitted",
+          "pip_aprovado",
+          "apa_track_start"
+        ]
+      },
+      {
+        "skeleton": "mail-concorrente-01",
+        "skin": "terreno-ou-leilao",
+        "relevant": false
+      }
+    ],
+    "9": [
+      {
+        "skeleton": "mail-consultor-reequip-01",
+        "skin": "merchant-ppa",
         "relevant": true
       },
       {
         "skeleton": "mail-banco-seed-01",
         "skin": "default",
-        "relevant": true
-      }
-    ],
-    "6": [
-      {
-        "skeleton": "mail-rede-prazo-01",
-        "skin": "acordo-ou-caducidade",
-        "relevant": true
-      },
-      {
-        "skeleton": "mail-dgeg-obrigacoes-01",
-        "skin": "default",
-        "relevant": true
+        "relevant": false
       }
     ]
-  }
+  },
+  "_status": "Aplicado em 2026-10-04 a partir de mvp-schedule.proposed-2026-10-04.json. A carta da REN fica no M4; o prazo grid_agreement continua no M6. when_phase do M4 inclui trc_won, land e pip.",
+  "_changes_2026_10_04": [
+    "M1: retirar mail-fyi-01.recurso-solar (também da M2).",
+    "M2: retirar mail-rede-info-01.calendario (texto passou para rede-prazo); advogado-dd só com land_talk_+1 e não se já há land_option_open/dd_started.",
+    "M3: investidores-review vem da M4; consultor-valueadd sai para M8.",
+    "M4: rede-prazo acordo-ou-caducidade vem da M6 (prazo continua M6: 2 meses para agir); concorrente sai para M8; consultor-reequip sai para M9.",
+    "M5: mail-apa-01 bloqueada fora da via AIA; banco-seed sai para M9.",
+    "M6: retirar mail-dgeg-obrigacoes-01 (texto passou para o pedido de licença sem AIA).",
+    "caps: relevant_per_landing 3 → 2."
+  ]
 }

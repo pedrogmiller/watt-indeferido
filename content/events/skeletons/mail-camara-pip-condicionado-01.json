@@ -40,5 +40,10 @@
   ],
   "heavy": true,
   "notes_for_economy": "env_mitigation_flag / pip_conditions = faixas, acessos, integração paisagística — PEDIR_ECONOMY.",
-  "notes_for_ui": "mutex pip_outcome. pip_conditions sobe odds de LP condicionada. CTA pesado (Câmara)."
+  "notes_for_ui": "mutex pip_outcome. pip_conditions sobe odds de LP condicionada. CTA pesado (Câmara).",
+  "deadline_letter": true,
+  "deadline_id": "pip_decision",
+  "deadline_role": "outcome",
+  "deadline_kind": "authority",
+  "deadline_blocks_play": true
 }

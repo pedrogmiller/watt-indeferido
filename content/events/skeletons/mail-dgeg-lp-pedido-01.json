@@ -55,5 +55,10 @@
   "heavy": true,
   "notes_for_economy": "cash_at_risk_+1 = instrução completa (estudos, peças, taxa DGEG) — PEDIR_ECONOMY. lp_dossier_thin sobe odds de aperfeiçoamento/audiência.",
   "notes_for_ui": "Cumpre o deadline lp_request (DL 15/2022 art. 14.º/1). 'Segurar' re-arma a carta no Play seguinte (rearm_on_effects: lp_request_hold). Chip de prazo no cartão via deadline_ref. A decisão ambiental prévia (caso a caso, CCDR/APA) NÃO vai dentro do pedido de LP: vem antes, em carta própria. 2026-10-03 (Pedro): sem AIA (nao_sujeicao), o PIP é elemento obrigatório do pedido de LP → o pedido só entra com pip_aprovado (computed lp_request_ready = apa_track_start ∨ pip_aprovado). Skin sem-aia (regra r-lp-pedido-sem-aia) chega logo a seguir ao PIP, ~M5 em Ourique. Se o PIP atrasar, a escada do prazo lp_request (prorrogação / vender / audiência / caducidade) trata disso. A decisão LP continua a esperar env_gate_ok.",
-  "nota_gm": "Base legal do prazo de 12 meses após o TRC quando há AIA: art. 14.º do DL 15/2022 (retirado do corpo da skin ourique em 2026-09-29). Sem AIA o pedido de LP tem de incluir o PIP favorável (instrução do pedido, DL 15/2022 art. 14.º e anexo; PEDIR_PEDRO confirmar a alínea)."
+  "nota_gm": "Base legal do prazo de 12 meses após o TRC quando há AIA: art. 14.º do DL 15/2022 (retirado do corpo da skin ourique em 2026-09-29). Sem AIA o pedido de LP tem de incluir o PIP favorável (instrução do pedido, DL 15/2022 art. 14.º e anexo; PEDIR_PEDRO confirmar a alínea).",
+  "deadline_letter": true,
+  "deadline_id": "lp_request",
+  "deadline_role": "due",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true
 }

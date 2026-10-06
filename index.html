@@ -5003,6 +5003,82 @@
   #endScreenRestart { background: #0f172a; color: white; border: 0; }
   #endScreenMail, #endScreenClose { background: white; border: 1px solid var(--border-subtle); }
   #btnNextQ.is-ended { opacity: 0.45; cursor: not-allowed; }
+  #btnNextQ.is-action,
+  #btnNextQ.is-action:disabled {
+    background: #c2410c;
+    opacity: 1;
+    cursor: not-allowed;
+    animation: none;
+  }
+  .play-action-gate {
+    position: fixed;
+    z-index: 81;
+    right: 28px;
+    bottom: 136px;
+    width: min(300px, calc(100vw - 24px));
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    box-shadow: 0 10px 28px rgba(154, 52, 18, 0.16);
+    color: #7c2d12;
+    font-family: var(--font);
+  }
+  .play-action-gate[hidden] { display: none !important; }
+  .play-action-gate p {
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .play-action-open {
+    width: 100%;
+    border: 0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    background: #c2410c;
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .play-action-open:hover { background: #9a3412; }
+  .play-action-open:focus-visible { outline: 2px solid #9a3412; outline-offset: 2px; }
+  .mail-row.mail-row-deadline {
+    background: #fff7ed;
+    border-color: #fdba74;
+    box-shadow: inset 3px 0 0 #ea580c;
+  }
+  .mail-row.mail-row-deadline .mail-row-subject { font-weight: 700; color: #7c2d12; }
+  .mail-row-prazo {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #9a3412;
+    background: #ffedd5;
+    border: 1px solid #fdba74;
+    border-radius: 999px;
+    padding: 2px 7px;
+  }
+  @media (max-width: 640px) {
+    .play-action-gate {
+      left: 12px;
+      right: 12px;
+      width: auto;
+      bottom: calc(146px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+  body.footer-mock .play-action-gate {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    bottom: calc(146px + env(safe-area-inset-bottom, 0px));
+  }
+  body.footer-mock:has(.inbox-drawer.open) .play-action-gate,
+  body.footer-mock:has(.asset-room.open) .play-action-gate,
+  body.footer-mock:has(.auction-room.open) .play-action-gate { display: none !important; }
 
 </style>
 </head>
@@ -5272,6 +5348,12 @@
   </div>
 </main>
 
+
+<!-- ═══ Play requires a deadline letter ═══ -->
+<div class="play-action-gate" id="playActionGate" hidden>
+  <p id="playActionText">O tempo está parado até responderes a uma carta de prazo.</p>
+  <button type="button" class="play-action-open" id="playActionOpen">Abrir a carta</button>
+</div>
 
 <!-- ═══ FAB · Próximo Trimestre ═══ -->
 <button class="fab-nextq" id="btnNextQ" type="button"
@@ -7756,25 +7838,33 @@
   // Declared early so nextQuarter guard can close over them (WattCoach fills real values)
   var coachActive = false;
   var coachBlockFab = false;
+  // One Play in flight. A second click while this is set is dropped, not queued.
+  let playBusy = false;
+  let playTicket = 0;
   function nextQuarter() {
+    if (playBusy) return;
     const btn = document.getElementById('btnNextQ');
-    if (btn.disabled) return;
+    if (!btn || btn.disabled) return;
     // During coach spotlight on FAB, target click is intercepted; belt-and-suspenders guard
     if (coachActive && coachBlockFab) return;
+    if (typeof playBlockLetter === 'function' && playBlockLetter()) {
+      try { syncPlayGate(); } catch (_) {}
+      return;
+    }
+    playBusy = true;
+    const ticket = ++playTicket;
     btn.disabled = true;
     btn.classList.add('loading');
 
     setTimeout(async () => {
+      if (ticket !== playTicket) return;
+      try {
       const mailActive = state.auctionWon && typeof mailLoop !== 'undefined' && mailLoop.active;
       let mailDelivered = 0;
       let cappedAtEnd = false;
 
       if (mailActive) {
-        if (typeof playIsLocked === 'function' && playIsLocked()) {
-          btn.classList.remove('loading');
-          if (typeof syncEndPlayLock === 'function') syncEndPlayLock();
-          return;
-        }
+        if (typeof playIsLocked === 'function' && playIsLocked()) return;
         const monthBefore = mailLoop.month | 0;
         let jumpResult = null;
         let scheduleMax = 6;
@@ -7843,8 +7933,6 @@
         });
         renderActivity();
 
-        btn.classList.remove('loading');
-        btn.disabled = false;
         if (cappedAtEnd) {
           showToastBurn(mailDelivered > 0
             ? ('Avançaste para o mês ' + mailLoop.month + ' · ' + cartasNovasPt(mailDelivered) + ' no Correio')
@@ -7867,7 +7955,6 @@
           showToast('Prazo falhado: ' + m.label + '. ' + m.text);
         });
         if (missed.length || stakesLetters.length) { renderActivity(); try { renderNodes(); } catch (_) {} try { renderInboxBadge(); } catch (_) {} }
-        try { if (typeof syncEndPlayLock === 'function') syncEndPlayLock(); } catch (_) {}
         scheduleSave('next-month-mail');
       } else {
         state.quarter += 1;
@@ -7889,8 +7976,6 @@
         });
         renderActivity();
 
-        btn.classList.remove('loading');
-        btn.disabled = false;
         showToast(`Avançaste para ${state.year} · T${state.quarter}` + ((typeof spendFeeling === 'function') ? spendFeeling(driftQ) : ''));
         scheduleSave('next-quarter');
 
@@ -7901,6 +7986,16 @@
           } else {
             startNextAuctionWave({ fromFab: true });
           }
+        }
+      }
+      } catch (err) {
+        console.warn('[WattPlay] advance', err);
+      } finally {
+        if (ticket === playTicket) {
+          playBusy = false;
+          btn.classList.remove('loading');
+          try { if (mailState && mailState.open) renderInboxBody(); } catch (_) {}
+          try { syncPlayGate(); } catch (_) { btn.disabled = false; }
         }
       }
     }, 900);
@@ -11386,7 +11481,12 @@
       gate: (skin.when && skin.when.gate) || null,
       choices: choices,
       cta: choices.length ? choices[0].label : null,
-      effects: choices.length ? (choices[0].effects || []).slice() : []
+      effects: choices.length ? (choices[0].effects || []).slice() : [],
+      deadline_letter: (skin.deadline_letter != null ? skin.deadline_letter : skeleton.deadline_letter) === true,
+      deadline_id: skin.deadline_id || skeleton.deadline_id || null,
+      deadline_role: skin.deadline_role || skeleton.deadline_role || null,
+      deadline_kind: skin.deadline_kind || skeleton.deadline_kind || null,
+      deadline_blocks_play: (typeof skin.deadline_blocks_play === 'boolean') ? skin.deadline_blocks_play : skeleton.deadline_blocks_play
     };
   }
 
@@ -11457,6 +11557,7 @@
     'land_talk_+1': 'land',
     'dd_started': 'land',
     'risk_camara_-1': 'pip',
+    'pip_request_submitted': 'pip',
     'apa_track_start': 'aia',
     'construction_started': 'obra' // phase_bump_proposed: gate LP + env (raiseProjectPhase) + equity fit (Pedro 2026-09-30)
     // placeholders (Economy / later letters): value_add_commit=null; capex_rede_flag / lp_granted → licenca_producao (not wired in MVP1)
@@ -11659,9 +11760,10 @@
   }
 
   /* ── Draft rules (lp-cod-rules.draft.json), only the groups the console runs today ── */
-  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao'];
+  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome'];
   /** Single rules the console runs (group icnf_ca is otherwise not wired; rules without mutex_group). */
   const DRAFT_RULE_IDS = ['r-apa-icnf-vinculativo-aia', 'r-apa-icnf-vinculativo-caso', 'r-sobreequipamento', 'r-nisa-enterrar-linha',
+    'r-pip-pedido', 'r-pip-reformulado', 'r-lp-pedido-sem-aia',
     'r-consultor-icnf-aviso-aia', 'r-consultor-icnf-aviso-caso', 'r-arranque',
     'r-es-d9-emprestimo-aceite', 'r-es-d9-emprestimo-recusado', 'r-es-d9-socio',
     'r-es-pressao-caixa', 'r-es-resgate', 'r-es-resgate-ultimato', 'r-es-pressao-paciencia',
@@ -11837,6 +11939,19 @@
       return Math.max(0.05, Math.min(0.95, p));
     }
     if (rule.id === 'r-es-d9-socio') return 1;
+    if (rule.mutex_group === 'pip_outcome') {
+      // Pack odds are still the string PEDIR_ECONOMY. A numeric base of 1 would make the
+      // first outcome (indeferido) certain and the labelled fallback would never run.
+      // Until Economy sets numbers, earlier outcomes stay off and r-pip-aprovado
+      // (odds.base "fallback do grupo") is the decision. ?pip=ok|cond|no forces one.
+      const f = qaParam('pip');
+      if (f === 'ok' || f === 'aprovado') return rule.id === 'r-pip-aprovado' ? 1 : 0;
+      if (f === 'cond' || f === 'condicionado') return rule.id === 'r-pip-condicionado' ? 1 : 0;
+      if (f === 'no' || f === 'indeferido') return rule.id === 'r-pip-indeferido' ? 1 : 0;
+      const base = rule.odds && rule.odds.base;
+      if (typeof base === 'number') return base;
+      return rule.id === 'r-pip-aprovado' ? 1 : 0;
+    }
     if (rule.id === 'r-es-trc-caducado') {
       const f = qaParam('trc');
       if (f === 'lapse' || f === 'lose') return 1;
@@ -12090,6 +12205,21 @@
       if (!skinActive(skin)) skin = getSkinById(pick.skeleton, pick.skin_fallback || 'default', pack);
       if (!skinActive(skin)) skin = null;
       if (!sk || !skin) { console.warn('[WattMail] draft rule without card', pick.id); return; }
+      if (pick.delivery_proposed === 'hud_only') {
+        const gHud = draftRuleGroupState(gname);
+        gHud.delivered = true;
+        gHud.rearmAt = null;
+        const hudFx = (pick.on_deliver_effects || []).concat(effectsByTagFor(pick.on_deliver_effects_by_tag));
+        if (hudFx.length) {
+          try { applyMailEffects(hudFx, { fromRule: pick.id }); } catch (err) { console.warn('[WattMail] hud rule', pick.id, err); }
+        }
+        if (pick.hud_moment && typeof showHudMoment === 'function') showHudMoment(pick);
+        mailLoop.ruleDone = mailLoop.ruleDone || {};
+        if (pick.once) mailLoop.ruleDone[pick.id] = true;
+        mailLoop.ruleLastAt = mailLoop.ruleLastAt || {};
+        mailLoop.ruleLastAt[pick.id] = month | 0;
+        return;
+      }
       const id = composedLetterId(pick.skeleton, skin.skin_id) + ':m' + month;
       const L = composeLetter({ skeleton: sk, skin: skin, seSheet: getSeSheet(seId, pack), opts: { id: id, when: 'Mês ' + month, ctx: pick.params || null } });
       L.ruleId = pick.id;
@@ -12204,18 +12334,121 @@
     return !!(mailLoop && mailLoop.active && st && st.status && st.status !== 'playing');
   }
   function syncEndPlayLock() {
+    syncPlayGate();
+  }
+  /**
+   * Play stops on a delivered, unanswered deadline letter.
+   * Fields live on the skeleton; the skin overrides them (deadline_letter,
+   * deadline_id, deadline_role, deadline_kind, deadline_blocks_play).
+   * deadline_id may be "by_skin" (see deadline_ids) or "by_context"
+   * (the id deliverStakeLetter passed in).
+   * Role decides the block: due, final and hearing always block; outcome
+   * blocks only when the letter has more than one choice; warning never blocks.
+   * A hold/defer (deferredChoiceId) counts as answered for now.
+   */
+  function letterDeadlineMeta(letter) {
+    const skId = mailSkeletonOf(letter);
+    const pack = window.__wattEventPack;
+    const sk = (letter && letter.deadline_letter != null) ? null : (pack && pack.skeletons ? pack.skeletons.find((x) => x.id === skId) : null);
+    let skin = null;
+    try {
+      if (letter && letter.skinId && typeof getSkinById === 'function') skin = getSkinById(skId, letter.skinId, pack);
+    } catch (_) {}
+    const pick = (key) => {
+      if (skin && skin[key] != null) return skin[key];
+      if (letter && letter[key] != null) return letter[key];
+      if (sk && sk[key] != null) return sk[key];
+      return null;
+    };
+    let deadlineId = pick('deadline_id');
+    if (deadlineId === 'by_context') {
+      deadlineId = (letter && (letter.deadlineId || (letter.params && letter.params.deadline_id))) || null;
+    }
+    return {
+      deadline_letter: pick('deadline_letter') === true,
+      deadline_id: deadlineId,
+      deadline_role: pick('deadline_role'),
+      deadline_kind: pick('deadline_kind'),
+      deadline_blocks_play: pick('deadline_blocks_play')
+    };
+  }
+  function letterSettledForPlay(letter) {
+    if (!letter) return true;
+    if (letter.econChoiceId) return true;
+    if (letter.deferredChoiceId) return true;
+    return false;
+  }
+  function letterBlocksPlay(letter) {
+    if (letterSettledForPlay(letter)) return false;
+    const meta = letterDeadlineMeta(letter);
+    if (!meta.deadline_letter && meta.deadline_blocks_play !== true) return false;
+    const role = meta.deadline_role;
+    if (role === 'warning') return false;
+    if (role === 'outcome') return ((letter.choices || []).length > 1);
+    if (role === 'due' || role === 'final' || role === 'hearing') return true;
+    return meta.deadline_blocks_play === true;
+  }
+  function playBlockLetters() {
+    if (!mailLoop || !mailLoop.active || typeof mailState === 'undefined') return [];
+    const deadlines = mailLoop.deadlines || {};
+    const hits = [];
+    (mailState.items || []).forEach((letter) => {
+      if (!letterBlocksPlay(letter)) return;
+      const meta = letterDeadlineMeta(letter);
+      const d = meta.deadline_id && deadlines[meta.deadline_id];
+      const atMonth = d && d.atMonth != null ? (d.atMonth | 0) : 999;
+      let subject = '';
+      try { subject = fillMailTemplate(letter.subject); } catch (_) { subject = letter.subject || 'Carta'; }
+      hits.push({ letter: letter, subject: subject, deadlineId: meta.deadline_id, atMonth: atMonth, role: meta.deadline_role });
+    });
+    hits.sort((a, b) => a.atMonth - b.atMonth);
+    return hits;
+  }
+  function playBlockLetter() {
+    const hits = playBlockLetters();
+    return hits.length ? hits[0] : null;
+  }
+  function syncPlayGate() {
     const btn = document.getElementById('btnNextQ');
-    const locked = playIsLocked();
+    const gate = document.getElementById('playActionGate');
+    const text = document.getElementById('playActionText');
+    const ended = playIsLocked();
+    const loading = !!(btn && btn.classList.contains('loading')) || playBusy;
+    const block = (!ended && !loading) ? playBlockLetter() : null;
     if (btn) {
-      btn.classList.toggle('is-ended', locked);
-      if (locked) {
+      btn.classList.toggle('is-ended', ended);
+      btn.classList.toggle('is-action', !!block);
+      if (loading) {
+        btn.disabled = true;
+        btn.setAttribute('aria-disabled', 'true');
+      } else if (ended) {
         btn.disabled = true;
         btn.setAttribute('aria-disabled', 'true');
         btn.title = 'O mandato acabou. Abre o balanço no Correio.';
-      } else if (!btn.classList.contains('loading')) {
+      } else if (block) {
+        btn.disabled = true;
+        btn.setAttribute('aria-disabled', 'true');
+        btn.title = 'Responde primeiro: ' + block.subject;
+      } else {
         btn.disabled = false;
         btn.removeAttribute('aria-disabled');
         btn.title = 'Avançar o tempo';
+      }
+    }
+    if (gate) {
+      if (block) {
+        gate.hidden = false;
+        gate.dataset.letterId = block.letter.id;
+        const n = playBlockLetters().length;
+        const named = '«' + block.subject + '»';
+        if (text) {
+          text.textContent = n > 1
+            ? ('O tempo está parado. Há ' + n + ' cartas de prazo por responder. A primeira: ' + named + '.')
+            : ('O tempo está parado. Responde a ' + named + ' para continuar.');
+        }
+      } else {
+        gate.hidden = true;
+        delete gate.dataset.letterId;
       }
     }
   }
@@ -12469,6 +12702,24 @@
         });
       }
       const allowRepeat = !rule.once && rule.cooldown_months != null;
+      if (rule.delivery_proposed === 'hud_only') {
+        mailLoop.ruleDone = mailLoop.ruleDone || {};
+        if (rule.once !== false) mailLoop.ruleDone[rule.id] = true;
+        mailLoop.ruleLastAt = mailLoop.ruleLastAt || {};
+        mailLoop.ruleLastAt[rule.id] = month | 0;
+        const gnameHud = ruleGroupKey(rule);
+        if (!STAKES_LADDER_GROUPS[gnameHud]) {
+          const gHud = draftRuleGroupState(gnameHud);
+          gHud.delivered = true;
+          gHud.rearmAt = null;
+        }
+        const hudFx = (rule.on_deliver_effects || []).slice();
+        if (hudFx.length) {
+          try { applyMailEffects(hudFx, { fromRule: rule.id }); } catch (err) { console.warn('[WattStakes] hud rule', rule.id, err); }
+        }
+        if (rule.hud_moment) showHudMoment(rule);
+        return null;
+      }
       const L = deliverStakeLetter(rule.skeleton, skinId, {
         ruleId: rule.id,
         allowRepeat: allowRepeat,
@@ -12648,6 +12899,55 @@
     if (TENSION_RANK[item.id] != null) return TENSION_RANK[item.id];
     return 4;
   }
+  function skeletonWasDelivered(skeletonId) {
+    const months = (mailLoop && mailLoop.deliveredMonths) || {};
+    if (Object.keys(months).some((m) => (months[m] || []).indexOf(skeletonId) !== -1)) return true;
+    return ((typeof mailState !== 'undefined' && mailState.items) || []).some((it) => mailSkeletonOf(it) === skeletonId);
+  }
+  /** Effects a player can still apply from an unanswered letter (holds do not count). */
+  function pendingChoiceEffects() {
+    const fx = [];
+    ((typeof mailState !== 'undefined' && mailState && mailState.items) || []).forEach((letter) => {
+      if (!letter || letter.econChoiceId) return;
+      (letter.choices || []).forEach((c) => {
+        if (!c || (typeof isDeferringChoice === 'function' && isDeferringChoice(c))) return;
+        (c.effects || []).forEach((e) => { if (fx.indexOf(e) === -1) fx.push(e); });
+      });
+    });
+    return fx;
+  }
+  /**
+   * True when a rule that sends this skeleton will land by `horizon`.
+   * A known after_effect clock counts. A letter already in the inbox counts only
+   * when allowPending is set: answering it would start that clock.
+   */
+  function ruleDeliversBy(r, horizon, allowPending) {
+    if (!r || r.delivery_proposed === 'hud_only' || !r.skeleton) return false;
+    const known = (typeof draftRuleEarliestMonth === 'function') ? draftRuleEarliestMonth(r) : null;
+    if (known != null && known <= horizon) {
+      try { if (draftRuleEligible(r, horizon)) return true; } catch (_) {}
+    }
+    if (!allowPending || known != null) return false;
+    const ae = r.after_effect;
+    if (!ae || !ae.tag) return false;
+    const assumed = String(ae.tag).split('|').filter((t) => pendingChoiceEffects().indexOf(t) !== -1);
+    if (!assumed.length) return false;
+    const projected = (mailLoop.month | 0) + (Number(ae.months) || 0);
+    if (projected > horizon) return false;
+    const tags = mailLoop.tags || (mailLoop.tags = {});
+    const added = [];
+    assumed.forEach((k) => { if (!(tags[k] | 0)) { tags[k] = 1; added.push(k); } });
+    let ok = false;
+    try { ok = draftRuleConditionsOk(r); }
+    finally { added.forEach((k) => { delete tags[k]; }); }
+    return ok;
+  }
+  function skeletonArrivesBy(skeletonId, horizon, allowPending) {
+    if (skeletonWasDelivered(skeletonId)) return true;
+    const pack = window.__wattEventPack;
+    if (!pack || typeof draftRulesFor !== 'function') return false;
+    return draftRulesFor(pack).some((r) => r.skeleton === skeletonId && ruleDeliversBy(r, horizon, allowPending));
+  }
   function collectDeadlineWarns(month) {
     const out = [];
     const dls = mailLoop.deadlines || {};
@@ -12657,6 +12957,10 @@
       if (!d || !def || !def.warn || !def.warn.mail) return;
       if ((mailLoop.firedDeadlines || {})[id]) return;
       if (d.warned && !d._warnNow) return;
+      const skip = (def.warn.skip_if_delivered_skeletons) || [];
+      const horizon = (month | 0) + 1;
+      const slack = ((d.atMonth | 0) - (month | 0)) > 1;
+      if (skip.some((sk) => skeletonArrivesBy(sk, horizon, slack))) return;
       const before = Number(def.warn.months_before) || 2;
       const left = (d.atMonth | 0) - (month | 0);
       if (d._warnNow || (left <= before && left > 0)) {
@@ -13123,7 +13427,7 @@
         mailLoop.firedDeadlines.land_option = true;
       }
     }
-    if (effects.some((e) => e === 'risk_camara_-1')) {
+    if (effects.some((e) => e === 'risk_camara_-1' || e === 'pip_request_submitted')) {
       if (mailLoop.deadlines && mailLoop.deadlines.pip_camara) {
         mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
         mailLoop.firedDeadlines.pip_camara = true;
@@ -13281,6 +13585,7 @@
   }
 
   function scheduleMaxMonth(schedule) {
+    // Every landing key counts, including months after M6 (M8, M9, …).
     const landings = getScheduleLandings(schedule);
     const keys = Object.keys(landings)
       .map((k) => parseInt(k, 10))
@@ -13685,7 +13990,9 @@
   function getSkinById(skeletonId, skinId, pack) {
     pack = pack || window.__wattEventPack;
     if (!pack) return null;
-    return pack.skins.find((s) => s.skeleton_id === skeletonId && s.skin_id === skinId) || null;
+    const skin = pack.skins.find((s) => s.skeleton_id === skeletonId && s.skin_id === skinId) || null;
+    if (skin && skin.retired === true) return null;
+    return skin;
   }
 
   function phaseEligible(whenPhase, loop) {
@@ -13980,6 +14287,7 @@
     if (newLetters.length) {
       mailState.items = newLetters.concat(mailState.items);
       renderInboxBadge();
+      if (mailState.open) { try { renderInboxBody(); } catch (_) {} }
       if (!opts.silentToast) {
         showToast('Correio: ' + cartasNovasPt(newLetters.length) + ' · mês ' + month);
       }
@@ -14261,12 +14569,26 @@
       return;
     }
 
-    body.innerHTML = mailState.items.map((m) => {
+    const pinned = {};
+    try {
+      playBlockLetters().forEach((h, i) => { pinned[h.letter.id] = i; });
+    } catch (_) {}
+    const rows = mailState.items.slice().sort((a, b) => {
+      const ia = Object.prototype.hasOwnProperty.call(pinned, a.id) ? pinned[a.id] : null;
+      const ib = Object.prototype.hasOwnProperty.call(pinned, b.id) ? pinned[b.id] : null;
+      if (ia == null && ib == null) return 0;
+      if (ia == null) return 1;
+      if (ib == null) return -1;
+      return ia - ib;
+    });
+    body.innerHTML = rows.map((m) => {
       const typeLabel = MAIL_TYPE_LABEL[m.type] || m.type;
+      const prazo = Object.prototype.hasOwnProperty.call(pinned, m.id);
       return (
-        '<button type="button" class="mail-row' + (m.read ? '' : ' unread') + '" data-mail-id="' + m.id + '">' +
+        '<button type="button" class="mail-row' + (prazo ? ' mail-row-deadline' : '') + (m.read ? '' : ' unread') + '" data-mail-id="' + m.id + '">' +
           '<div class="mail-row-top">' +
             '<span class="mail-type-chip ' + m.type + '"' + (MAIL_TYPE_TITLE[m.type] ? ' title="' + escapeHtml(MAIL_TYPE_TITLE[m.type]) + '"' : '') + '>' + escapeHtml(typeLabel) + '</span>' +
+            (prazo ? '<span class="mail-row-prazo">Prazo</span>' : '') +
             '<span class="mail-row-time">' + escapeHtml(m.when) + '</span>' +
           '</div>' +
           '<div class="mail-row-subject">' + escapeHtml(fillMailTemplate(m.subject)) + (m.econChoiceId ? ' <span class="mail-row-answered">respondida</span>' : '') + '</div>' +
@@ -14731,6 +15053,7 @@
             : null;
           showToast(toastMsg || 'Escolha registada');
           renderInboxBody();
+          try { if (typeof syncPlayGate === 'function') syncPlayGate(); } catch (_) {}
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
           return;
@@ -14764,6 +15087,7 @@
             : null;
           showToast(toastMsg || (letter && letter.cta) || 'Ação aplicada');
           renderInboxBody();
+          try { if (typeof syncPlayGate === 'function') syncPlayGate(); } catch (_) {}
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
           return;
@@ -14826,6 +15150,8 @@
       nearestDeadline: nearestDeadline,
       playStep: playStep,
       playPacing: playPacing,
+      playBlock: playBlockLetter,
+      syncPlay: syncPlayGate,
       findBuyers: startFindBuyersFlow,
       injectOffer: injectBuyerOfferForQa,
       deliverLetter: deliverComposedLetter,
@@ -16224,14 +16550,24 @@
       setCash: function (n) { state.caixa = +Number(n).toFixed(3); try { updateHeaderMetrics(true); } catch (_) {} return state.caixa; },
       setPhase: function (p) { mailLoop.projectPhase = p; try { syncPeriodChrome(); } catch (_) {} return mailLoop.projectPhase; },
       addTags: function (list) { return applyMailEffects([].concat(list)); },
-      playLocked: function () { return playIsLocked(); }
+      playLocked: function () { return playIsLocked(); },
+      playBlock: function () { return playBlockLetter(); }
     };
 
     if (resumed) {
       applyHydratedUi();
     }
 
-    document.getElementById('btnNextQ').addEventListener('click', nextQuarter);
+    document.getElementById('btnNextQ').addEventListener('click', function (ev) {
+      if (playBusy) { ev.preventDefault(); ev.stopPropagation(); return; }
+      nextQuarter();
+    });
+    const playActionOpen = document.getElementById('playActionOpen');
+    if (playActionOpen) playActionOpen.addEventListener('click', function () {
+      const gate = document.getElementById('playActionGate');
+      const id = gate && gate.dataset.letterId;
+      if (id) openLetter(id);
+    });
     document.getElementById('drawerClose').addEventListener('click', closeDrawer);
     document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
     document.getElementById('btnMinimizeAll').addEventListener('click', minimizeAllNodes);
