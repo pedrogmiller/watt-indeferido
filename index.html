@@ -9347,7 +9347,7 @@
       const from = ECON_TIER[cur] || ECON_TIER.boutique;
       const to = ECON_TIER[next] || from;
       const ec = econState();
-      ec.carGranted = null;
+      // Keep the month-0 answer. Clearing it made the cash warning think the investors had never replied.
       ec.tier = next;
       state.bondingTotal = +(state.bondingTotal + (to.bonding - from.bonding)).toFixed(3);
       state.bondingFree = +(state.bondingFree + (to.bonding - from.bonding)).toFixed(3);
@@ -13619,6 +13619,7 @@
     mailLoop.missedDeadlines = mailLoop.missedDeadlines || {};
     try { ensureOpenDeadlines(); } catch (_) {}
     try { rebaseLeDeadlineToGrid(); } catch (_) {}
+    try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
     Object.keys(mailLoop.deadlines || {}).forEach((k) => {
       const d = mailLoop.deadlines[k];
       if (!d || d.atMonth == null || mailLoop.firedDeadlines[k]) return;
