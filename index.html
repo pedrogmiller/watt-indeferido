@@ -14603,6 +14603,7 @@
     }
     scheduleSave('mail-deliver-M' + month);
     try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
+    try { if (typeof syncPlayGate === 'function') syncPlayGate(); } catch (_) {}
     return newLetters.length;
   }
 
