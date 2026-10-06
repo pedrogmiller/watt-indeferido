@@ -8026,6 +8026,7 @@
         // One Play click advances exactly one month. Never jump over a month,
         // and never skip a month that has a deadline due.
         try { if (typeof ensureOpenDeadlines === 'function') ensureOpenDeadlines(); } catch (_) {}
+        const inboxBefore = (mailState.items || []).length;
         mailLoop.month = monthBefore + 1;
         if (mailLoop.month > scheduleMax) cappedAtEnd = true;
         if (typeof deliverMonthCandidates === 'function') {
@@ -8047,7 +8048,8 @@
         updateHeaderMetrics(moved);
         if (moved && Math.abs(drift.divida) >= 0.005) flashPill('pillDivida');
 
-        const newLettersN = mailDelivered + ((stakesLetters && stakesLetters.length) || 0);
+        const arrivedN = Math.max(0, (mailState.items || []).length - inboxBefore);
+        const newLettersN = Math.max(arrivedN, mailDelivered + ((stakesLetters && stakesLetters.length) || 0));
         const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · M' + mailLoop.month);
         const jumpNote = jumpResult ? (' (avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ')') : '';
         const burnNote = (typeof spendFeeling === 'function') ? spendFeeling(drift) : '';
