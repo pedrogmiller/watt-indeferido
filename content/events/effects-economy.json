@@ -263,6 +263,20 @@
    "origin": "euro-fields-console.md §6.1 / §2",
    "note": "Resumo: car_band_s/m/l dão +2,5 / +4,5 / +6,5 M€ (boutique). Odds §2 mantêm-se.",
    "formula": "ver car_band_*"
+  },
+  "contingencia_obra": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (fatia para cartas)",
+   "origin": "motor leilão (capex_contingency 0,05, HIPÓTESE estudo 5–10 %); Gate 4",
+   "note": "Contingência da obra = os 5 % que já estão no Capex: CAPEX − CAPEX/1,05 = 4.29 M€ (Ourique). Metade (2.15) fica para as cartas da obra; a outra metade é o consumo esperado de riscos sem carta (o motor gasta-a). Regra: tags com pay_from = contingencia_obra saem primeiro daqui: sem caixa, sem equity, ΔNPV só dos meses (nav_months), porque o custo já está no Capex 90. Quando acaba: o resto é Capex extra = equity +100 % (pós-FID) e ΔNPV −0,72 × resto. Sem devolução no COD (o motor conta os 90 todos). Coimas e custos que não são obra (pay_from = caixa) nunca usam a contingência.",
+   "formula": "pool = 0.5*(CAPEX − CAPEX/1.05) = 2.15 (Ourique) ; draw = min(pool, capex_tag) ; equity += capex_tag − draw ; nav += nav_months − 0.72*(capex_tag − draw)"
   }
  },
  "effects": {
@@ -875,7 +889,9 @@
    "label": "HIPÓTESE / PEDIR",
    "origin": "gate5 §7.3",
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
-   "formula": "nav: -0.19*3*k"
+   "formula": "nav: -0.19*3*k",
+   "nav_months": -0.57,
+   "pay_from": null
   },
   "delay_cod_+2": {
    "cash": null,
@@ -889,7 +905,9 @@
    "label": "HIPÓTESE / PEDIR",
    "origin": "gate5 §7.3",
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 6 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -1.5.",
-   "formula": "nav: -0.19*6*k"
+   "formula": "nav: -0.19*6*k",
+   "nav_months": -1.14,
+   "pay_from": null
   },
   "delay_obra_+1": {
    "cash": null,
@@ -903,21 +921,9 @@
    "label": "HIPÓTESE",
    "origin": "gate5 §7",
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
-   "formula": "nav: -0.19*3*k"
-  },
-  "delay_obra_curto": {
-   "cash": null,
-   "debt": null,
-   "nav": -0.19,
-   "bonding": null,
-   "car": null,
-   "equity": null,
-   "months": 1,
-   "prob": null,
-   "label": "HIPÓTESE",
-   "origin": "obra v0.1 shift_on_effects",
-   "note": "Atraso curto que empurra o COD: ΔNPV −0,19/mês × 1. Obra v0.1 (GM 2026-10-06).",
-   "formula": "nav: -0.19*1*k"
+   "formula": "nav: -0.19*3*k",
+   "nav_months": -0.57,
+   "pay_from": null
   },
   "obra_start_deferred": {
    "cash": null,
@@ -931,7 +937,9 @@
    "label": "HIPÓTESE",
    "origin": "gate5 §7",
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
-   "formula": "nav: -0.19*3*k"
+   "formula": "nav: -0.19*3*k",
+   "nav_months": -0.57,
+   "pay_from": null
   },
   "delay_ligacao_+1": {
    "cash": null,
@@ -945,7 +953,9 @@
    "label": "HIPÓTESE",
    "origin": "gate5 delay_rede +1…+6",
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
-   "formula": "nav: -0.19*3*k"
+   "formula": "nav: -0.19*3*k",
+   "nav_months": -0.57,
+   "pay_from": null
   },
   "grid_slip_operator": {
    "cash": null,
@@ -2047,15 +2057,20 @@
   "epc_acceleration": {
    "cash": null,
    "debt": null,
-   "nav": null,
+   "nav": -0.34,
    "bonding": null,
    "car": null,
    "equity": 1.0,
    "months": -2,
    "prob": null,
    "label": "HIPÓTESE / PEDIR",
-   "origin": "skeleton epc-atraso",
-   "note": "Pagar aceleração: +1,0 equity (≈1 % Capex), −2 meses."
+   "origin": "skeletons mail-epc-atraso-01 (accelerate, com delay_obra_+1) e mail-prazo-derrapagem-01 (recover, skins mecanica/marco-passou)",
+   "note": "Pagar aceleração: Capex +1,0 (≈1,1 % do Capex; ~0,5 M€/mês recuperado vs 0,4 dos turnos extra por chuva), −2 meses. ΔNPV = −0,72 + 2 × 0,19 = −0,34 fora da contingência; +0,38 dentro dela (só os meses). Na carta do transformador: delay_obra_+1 (3 m, −0,57) + epc_acceleration (−2 m) = 1 mês líquido (−0,19 de meses). Antes: equity 1.0, nav None, months -2. Já NÃO leva equity_capex_overrun_flag (era 4,5 M€ de Capex a dobrar). Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex: +1.0 ; equity: +1.0*capex (pós-FID) ; nav: -0.72*capex − 0.19*(-2) ; 1.º da contingência da obra (nav só dos meses)",
+   "capex_MEUR": 1.0,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.72,
+   "nav_months": 0.38
   },
   "epc_lds_claimed": {
    "cash": null,
@@ -3632,7 +3647,7 @@
   "partner_stake_25": {
    "cash": null,
    "debt": null,
-   "nav": "−0.25 × NPV_asset",
+   "nav": "−0.25 × max(NPV_asset, 0)",
    "bonding": null,
    "car": null,
    "equity": -10.27,
@@ -3640,8 +3655,8 @@
    "prob": null,
    "label": "HIPÓTESE (motor) · TRANCADO Pedro 2026-10-03 (garantido, a custo)",
    "origin": "r-es-d9-socio; finais_tensao_v01 fid_options.partner",
-   "note": "Sócio fica com s = máx(25 %, o que falta). Entra com a sua parte do equity a custo: 40 → +10.27 (jogador 30.81); 38 → +11.11 (jogador 33.34); paga também 25 % dos juros da obra (0.37). NPV do jogador: 40 → 2.33 (−0.78); 38 → 0.2 (−0.07). Cash da central (FCF 36 m) do jogador: 40 → 4.66; 38 → 4.43 (× 0,75).",
-   "formula": "equity_need ×0.75 ; player_share ×0.75 ; fcf_to_next_asset ×0.75"
+   "note": "Sócio fica com s = máx(25 %, o que falta). Entra com a sua parte do equity a custo: 40 → +10.27 (jogador 30.81); 38 → +11.11 (jogador 33.34); paga também 25 % dos juros da obra (0.37). NPV do jogador: 40 → 2.33 (−0.78); 38 → 0.2 (−0.07). Cash da central (FCF 36 m) do jogador: 40 → 4.66; 38 → 4.43 (× 0,75). GM 2026-10-06: o × 0,75 aplica-se ao NPV SÓ quando NPV > 0. Consola (index.html stakesApplySpecial l. 13258–13268): não mudar node.van; guardar partnerStake e mostrar NPV do jogador = van > 0 ? van × (1 − s) : van (HUD, ecrã final, stakesNpvIrr). Assim um NPV que passa a positivo depois também fica certo. IRR (FIX E) usa van do projeto.",
+   "formula": "equity_need ×0.75 ; player_share ×0.75 ; fcf_to_next_asset ×0.75 ; NPV do jogador = NPV_asset × 0,75 só se NPV_asset > 0 (GM 2026-10-06); se ≤ 0 fica 100 % do jogador"
   },
   "partner_equity_in": {
    "cash": null,
@@ -3695,6 +3710,260 @@
    "origin": "DL 15/2022 art. 18.º/8, 18.º/9 ('há transmissão sempre que ocorra alteração, direta ou indireta, do controlo'), 18.º/10; pv magazine 02-07-2025 (RtB 30–90 k€/MW); trc-partilha-dl15-2022 §1",
    "note": "Vender PARTE do projeto antes da LP (resgate / caixa-baixa). Proposta: vender 25 % da SPV (opções 25 % ou 49 %; ≥ 50 % = venda de controlo → usar sale_full_exit). Preço = % × valor do projeto × 0,65 (P de chegar a pronto-a-construir vista pelo comprador, HIPÓTESE). Valor = NPV + CAR já gasto, levado ao mês. Ourique 25 % no M6: 0.8 M€ a 40 €/MWh (27 k€/MWp vendido) · 0.31 a 38 (10 k€/MWp); no M12 a 40: 0.94. Abaixo dos 30–90 k€/MW de RtB (REAL) porque é antes da LP. Depois: o comprador paga 25 % do burn restante (burn do jogador × 0,75) e 25 % da equity na FID; NPV e FCF do jogador × 0,75. Prazo e caução: sem mudança de controlo (< 50 % e sem direitos de veto que deem controlo conjunto) NÃO há transmissão (art. 18.º/9) → sem averbamento e SEM reforço de 50 % da caução; fecho em 1–2 meses (contrato e DD, HIPÓTESE). Com controlo (≥ 50 % ou controlo conjunto) = transmissão: averbamento 1–3 m, odds 0,90/0,10 (0,75/0,25 com oferta fraca) e reforço +50 % do comprador (+0,495) — igual à venda total. Com distressed_sale: preço × 0,70.",
    "formula": "price = s × V × 0.65 (× 0.70 se distressed) ; s ∈ {0.25, 0.49} ; burn_jogador ×(1−s) ; equity_need ×(1−s) ; player_share ×(1−s) ; s < 0.5: sem averbamento nem caução +50 %, fecho 1–2 m"
+  },
+  "obra_road_repair": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.11,
+   "bonding": null,
+   "car": null,
+   "equity": 0.15,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (dever de repor a via)",
+   "origin": "skeleton mail-obra-comunidade-01; prática municipal (caução/reposição de pavimentos em obras); repavimentação betuminosa ~10–20 €/m² (contratos municipais, SECUNDÁRIO)",
+   "note": "Reparar a estrada municipal estragada pelos camiões: ~1–1,5 km × 6 m ≈ 6–9 mil m² × 15–20 €/m² ≈ 0,10–0,18 → 0,15 M€ (banda 0,05–0,30). Custo de obra: sai da contingência. Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex: +0.15 ; equity: +1.0*capex (pós-FID) ; nav: -0.72*capex ; 1.º da contingência da obra (nav só dos meses)",
+   "capex_MEUR": 0.15,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.11,
+   "nav_months": 0.0
+  },
+  "ren_docs_rush": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.04,
+   "bonding": null,
+   "car": null,
+   "equity": 0.05,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-rede-obras-01",
+   "note": "Papéis da REN à pressa (projetista + certificações + deslocações urgentes): 0,03–0,08 → 0,05 M€. Sai da contingência. Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex: +0.05 ; equity: +1.0*capex (pós-FID) ; nav: -0.72*capex ; 1.º da contingência da obra (nav só dos meses)",
+   "capex_MEUR": 0.05,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.04,
+   "nav_months": 0.0
+  },
+  "epc_supplier_switch": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.72,
+   "bonding": null,
+   "car": null,
+   "equity": 1.0,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE · SECUNDÁRIO (preço módulos)",
+   "origin": "skeleton mail-obra-fornecedor-01; preços spot de módulos UE 2025 ~0,10–0,11 €/Wp (pvXchange, SECUNDÁRIO)",
+   "note": "Trocar de fornecedor de painéis a meio da obra: lote em falta ~40 MWp; prémio de entrega imediata +0,015–0,025 €/Wp (0,6–1,0) + penalização/cancelamento 5–10 % do lote (0,2–0,4) → 1,0 M€ (banda 0,5–1,8). Sem meses. Sai da contingência; acabada a contingência é equity e −0,72 de NPV. Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex: +1.0 ; equity: +1.0*capex (pós-FID) ; nav: -0.72*capex ; 1.º da contingência da obra (nav só dos meses)",
+   "capex_MEUR": 1.0,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.72,
+   "nav_months": 0.0
+  },
+  "obra_extra_shifts": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.29,
+   "bonding": null,
+   "car": null,
+   "equity": 0.4,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (CT art. 268.º)",
+   "origin": "skeleton mail-obra-meteo-01; Código do Trabalho art. 268.º (trabalho suplementar: +25 % 1.ª hora / +37,5 % seguintes em dia útil; +50 % em descanso/feriado; Lei 13/2023: mais acima das 100 h/ano)",
+   "note": "Recuperar ~1 mês de chuva com turnos extra e fins de semana: mão de obra de montagem ~0,45 M€/mês (≈10 % do Capex PV em 16 meses) × prémio ~50–60 % + iluminação/equipamento ~0,1 → 0,4 M€ (banda 0,25–0,7). Mais caro que aceitar 1 mês (−0,19) fora da contingência; dentro dela só custa contingência. Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex: +0.4 ; equity: +1.0*capex (pós-FID) ; nav: -0.72*capex ; 1.º da contingência da obra (nav só dos meses)",
+   "capex_MEUR": 0.4,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.29,
+   "nav_months": 0.0
+  },
+  "epc_standby_paid": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.6,
+   "bonding": null,
+   "car": null,
+   "equity": 0.84,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE / PEDIR (tarifa de standby do contrato EPC)",
+   "origin": "skeleton mail-obra-mecanica-01; prática de contratos EPC (standby/idle time: equipa mínima, estaleiro, seguros, aluguer de equipamento)",
+   "note": "Manter a equipa até a REN ligar: 0,12 M€/mês (banda 0,08–0,25) até line_ready. Ourique: conclusão mecânica ~M24, linha M31 → ~7 meses = 0,84 (valor de topo é este total, para a consola atual). A alternativa (desmobilizar) custa 1 mês no caminho crítico (−0,19). Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex/mês: +0.12*k até line_ready ; total Ourique ≈ 0.12*7 = 0.84 ; contingência primeiro ; fora dela equity +100 % e nav −0.72*capex",
+   "capex_MEUR": 0.84,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.6,
+   "nav_months": 0.0,
+   "capex_per_month": 0.12,
+   "until": "line_ready",
+   "expected_months_ourique": 7
+  },
+  "obra_security_paid": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.18,
+   "bonding": null,
+   "car": null,
+   "equity": 0.245,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (custo-hora CCT segurança privada)",
+   "origin": "skeleton mail-obra-furto-01; segurança privada faturada ~14–17 €/h por posto 24/7 (CCT do sector, SECUNDÁRIO) + torres CCTV ~1,5 k€/mês cada",
+   "note": "Vigilância até ao COD: 1–2 postos 24/7 (~730 h/mês × ~16 €/h ≈ 12 k€ por posto) + patrulha + 4 torres CCTV ≈ 0,035 M€/mês (banda 0,02–0,06). Ourique M26 → COD M33 ≈ 7 meses = 0,245 (total no topo). Tira o 2.º roubo (r-obra-furto-2 só sem vigilância). Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex/mês: +0.035*k até cod_reached ; total Ourique ≈ 0.245 ; contingência primeiro",
+   "capex_MEUR": 0.245,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.18,
+   "nav_months": 0.0,
+   "capex_per_month": 0.035,
+   "until": "cod_reached",
+   "expected_months_ourique": 7
+  },
+  "obra_cable_replace": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.07,
+   "bonding": null,
+   "car": null,
+   "equity": 0.1,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (caso real) / PEDIR (franquia da apólice)",
+   "origin": "skeleton mail-obra-furto-01; caso REAL Herdade da Chaminé, Ferreira do Alentejo, 1.º sem. 2024: 4 500 m de cabo de cobre 185 mm² + 10 000 m de cabo solar 4 mm² furtados; gangue condenado/julgado em Beja com 403 822 € de venda de cobre (JN 02-03-2025; Lidador Notícias)",
+   "note": "Perda bruta ~0,30 M€ (4,5 km × ~25–35 €/m de 185 mm² + cabo solar + reinstalação/terminais). O seguro de obra (CAR/todos os riscos de montagem) paga menos a franquia de furto (HIPÓTESE: 10 % da perda, mín. 50 k€ — PEDIR a apólice) + extras não seguros (entrega urgente) → líquido 0,10 M€ (banda 0,05–0,25). 2.º roubo sem vigilância: a seguradora agrava ou recusa (medidas de prevenção exigidas) → 0,30 (repeat_no_security_capex; a consola aplica se já houve um obra_cable_replace e não há obra_security_paid). Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "capex: +0.10 (1.º) | +0.30 (2.º sem obra_security_paid) ; contingência primeiro",
+   "capex_MEUR": 0.1,
+   "pay_from": "contingencia_obra",
+   "nav_capex": -0.07,
+   "nav_months": 0.0,
+   "gross_loss_MEUR": 0.3,
+   "repeat_no_security_capex": 0.3
+  },
+  "delay_obra_curto": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.19,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 1,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeletons mail-obra-fornecedor-01 / meteo / inspecao / furto.segundo-roubo; deadlines shift_on_effects",
+   "note": "Atraso curto da obra: 1 mês. Mesma fórmula de delay_obra_+1 com m = 1: ΔNPV −0,19 (só se a obra estiver no caminho crítico; ver FIX G). Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "nav: -0.19*1*k ; months: 1 (deadline shift = economy.months)",
+   "pay_from": null,
+   "nav_capex": 0.0,
+   "nav_months": -0.19
+  },
+  "epc_demobilised": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.19,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 1,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-obra-mecanica-01; r-ensaios after_effect.extra_months_if_any",
+   "note": "Desmobilizar o EPC: poupa o standby; testes e vistoria +1 mês (no caminho crítico, depois da linha) → ΔNPV −0,19. O mês é aplicado por r-ensaios (extra_months_if_any), NÃO por shift_on_effects: não somar. Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "nav: -0.19*1*k ; months: 1 (via r-ensaios, não shift)",
+   "pay_from": null,
+   "nav_capex": 0.0,
+   "nav_months": -0.19
+  },
+  "act_fine_risk": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": 0.5,
+   "label": "HIPÓTESE · REAL (escalões e regras citados)",
+   "origin": "skeleton mail-obra-inspecao-01; CT art. 554.º/4 (muito grave), Lei 107/2009 art. 19.º/4, Lei 102/2009 art. 16.º/5, DL 273/2003 art. 25.º, CT art. 562.º, CIRC art. 23.º-A/1 e); UC 102 € em 2026 (Lei 73-A/2025 art. 242.º)",
+   "note": "Continuar a obra depois do aviso da ACT. Sorteio quando a inspeção volta (+1–2 meses): P 0,5 (HIPÓTESE) de encontrar falhas. Se sair: coima −0,10 M€ (banda 0,03–0,18), nome nas notícias (reputation_exposed) e, PROPOSTA ao GM, P 0,25 de suspensão dos trabalhos (+delay_obra_curto). Âncoras REAIS: CT art. 554.º/4 (muito grave, coima por volume de negócios do ano anterior): < 0,5 M€ 20–40 UC negligência / 45–95 UC dolo; ≥ 10 M€ 90–300 / 300–600 UC; 1 UC = 102 €. Lei 107/2009 art. 19.º/4: quem desrespeita as medidas do auto de advertência pode ter a coima elevada até ao mínimo do dolo (é o caso de 'continuar'). Lei 102/2009 art. 16.º/5: o dono da obra responde solidariamente pelas coimas de SST dos trabalhadores das empresas prestadoras no seu estaleiro. DL 273/2003 art. 25.º/4: risco de queda em altura/esmagamento/soterramento = muito grave. Conta: SPV (volume < 0,5 M€) dolo mín. 45 UC = 4.6 k€; EPC (≥ 10 M€) dolo 300–600 UC = 30.6–61.2 k€ por infração; 2–3 infrações → ~0,06–0,18 → 0,10. CT art. 562.º: sanção acessória de publicidade nas muito graves → reputation_exposed. Coima não dedutível (CIRC art. 23.º-A/1 e)) → ΔNPV = −1,0 × coima; sai da caixa, nunca da contingência. Valor esperado −0,05 de NPV contra −0,19 de parar 1 mês: a tensão vem da notícia e da suspensão (PEDIR GM). Topo do row SEM € (a consola atual aplicaria cash sem sorteio). Obra v0.1 (euro-fields §19, 2026-10-06b).",
+   "formula": "roll p=0.5 → on_hit ; on_hit.cash -0.10 ; on_hit.nav -0.10 ; on_hit.effects [reputation_exposed] ; on_hit.suspension_prob 0.25 → delay_obra_curto (PEDIR GM)",
+   "pay_from": "caixa",
+   "on_hit": {
+    "cash": -0.1,
+    "nav": -0.1,
+    "effects": [
+     "reputation_exposed"
+    ],
+    "suspension_prob_proposed": 0.25,
+    "suspension_effects": [
+     "delay_obra_curto"
+    ],
+    "delay_months": [
+     1,
+     2
+    ]
+   },
+   "fine_bands_UC": {
+    "muito_grave_<0.5M": {
+     "neg": [
+      20,
+      40
+     ],
+     "dolo": [
+      45,
+      95
+     ]
+    },
+    "muito_grave_>=10M": {
+     "neg": [
+      90,
+      300
+     ],
+     "dolo": [
+      300,
+      600
+     ]
+    },
+    "grave_<0.5M": {
+     "neg": [
+      6,
+      12
+     ],
+     "dolo": [
+      13,
+      26
+     ]
+    },
+    "grave_>=10M": {
+     "neg": [
+      15,
+      40
+     ],
+     "dolo": [
+      55,
+      95
+     ]
+    },
+    "UC_EUR": 102
+   }
+  },
+  "delay_env_+0": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 0,
+   "prob": null,
+   "label": "REAL (regra)",
+   "origin": "skeletons (via ambiental sem atraso)",
+   "note": "Marcador: a via ambiental não acrescenta meses. months 0 explícito para shift_on_effects. Obra v0.1 (euro-fields §19, 2026-10-06b)."
   }
  },
  "rule_odds_proposed": {
@@ -6246,6 +6515,213 @@
    "after_fix": "3,2 − 0,72 − 1,30 + 1.6 − 0,57 = +2.21"
   }
  },
+ "obra_v01_2026_10_06b": {
+  "_meta": "Economy 2026-10-06b PT · obra v0.1 (handoff GM 2026-10-06) · DRAFT, nada deployed.",
+  "contingency": {
+   "total_MEUR": 4.29,
+   "share_for_letters": 0.5,
+   "pool_MEUR": 2.15,
+   "label": "HIPÓTESE / PEDIR"
+  },
+  "tags": {
+   "obra_road_repair": {
+    "capex_MEUR": 0.15,
+    "equity": 0.15,
+    "cash": null,
+    "nav": -0.11,
+    "nav_capex": -0.11,
+    "nav_months": 0.0,
+    "months": null,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE · REAL (dever de repor a via)"
+   },
+   "ren_docs_rush": {
+    "capex_MEUR": 0.05,
+    "equity": 0.05,
+    "cash": null,
+    "nav": -0.04,
+    "nav_capex": -0.04,
+    "nav_months": 0.0,
+    "months": null,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE"
+   },
+   "epc_supplier_switch": {
+    "capex_MEUR": 1.0,
+    "equity": 1.0,
+    "cash": null,
+    "nav": -0.72,
+    "nav_capex": -0.72,
+    "nav_months": 0.0,
+    "months": null,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE · SECUNDÁRIO (preço módulos)"
+   },
+   "obra_extra_shifts": {
+    "capex_MEUR": 0.4,
+    "equity": 0.4,
+    "cash": null,
+    "nav": -0.29,
+    "nav_capex": -0.29,
+    "nav_months": 0.0,
+    "months": null,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE · REAL (CT art. 268.º)"
+   },
+   "epc_standby_paid": {
+    "capex_MEUR": 0.84,
+    "equity": 0.84,
+    "cash": null,
+    "nav": -0.6,
+    "nav_capex": -0.6,
+    "nav_months": 0.0,
+    "months": null,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE / PEDIR (tarifa de standby do contrato EPC)",
+    "capex_per_month": 0.12,
+    "until": "line_ready",
+    "expected_months_ourique": 7
+   },
+   "obra_security_paid": {
+    "capex_MEUR": 0.245,
+    "equity": 0.245,
+    "cash": null,
+    "nav": -0.18,
+    "nav_capex": -0.18,
+    "nav_months": 0.0,
+    "months": null,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE · REAL (custo-hora CCT segurança privada)",
+    "capex_per_month": 0.035,
+    "until": "cod_reached",
+    "expected_months_ourique": 7
+   },
+   "obra_cable_replace": {
+    "capex_MEUR": 0.1,
+    "equity": 0.1,
+    "cash": null,
+    "nav": -0.07,
+    "nav_capex": -0.07,
+    "nav_months": 0.0,
+    "months": null,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE · REAL (caso real) / PEDIR (franquia da apólice)",
+    "gross_loss_MEUR": 0.3,
+    "repeat_no_security_capex": 0.3
+   },
+   "delay_obra_curto": {
+    "capex_MEUR": null,
+    "equity": null,
+    "cash": null,
+    "nav": -0.19,
+    "nav_capex": 0.0,
+    "nav_months": -0.19,
+    "months": 1,
+    "prob": null,
+    "pay_from": null,
+    "label": "HIPÓTESE"
+   },
+   "epc_demobilised": {
+    "capex_MEUR": null,
+    "equity": null,
+    "cash": null,
+    "nav": -0.19,
+    "nav_capex": 0.0,
+    "nav_months": -0.19,
+    "months": 1,
+    "prob": null,
+    "pay_from": null,
+    "label": "HIPÓTESE"
+   },
+   "act_fine_risk": {
+    "prob": 0.5,
+    "on_hit": {
+     "cash": -0.1,
+     "nav": -0.1,
+     "effects": [
+      "reputation_exposed"
+     ],
+     "suspension_prob_proposed": 0.25,
+     "suspension_effects": [
+      "delay_obra_curto"
+     ],
+     "delay_months": [
+      1,
+      2
+     ]
+    },
+    "pay_from": "caixa",
+    "label": "HIPÓTESE · REAL (escalões e regras citados)"
+   },
+   "epc_acceleration": {
+    "capex_MEUR": 1.0,
+    "equity": 1.0,
+    "cash": null,
+    "nav": -0.34,
+    "nav_capex": -0.72,
+    "nav_months": 0.38,
+    "months": -2,
+    "prob": null,
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE / PEDIR"
+   }
+  },
+  "scenarios_obra_window": {
+   "cuidadosa (papéis da REN à pressa)": {
+    "nav_soma_atual": -0.38,
+    "contingencia_usada": 1.94,
+    "equity_extra": 0.0,
+    "nav_com_FIX_G": -0.19
+   },
+   "cuidadosa (REN atrasa: chase)": {
+    "nav_soma_atual": -0.95,
+    "contingencia_usada": 1.9,
+    "equity_extra": 0.0,
+    "nav_com_FIX_G": -0.76
+   },
+   "paga tudo (standby 7 meses)": {
+    "nav_soma_atual": -0.65,
+    "contingencia_usada": 2.15,
+    "equity_extra": 0.63,
+    "nav_com_FIX_G": -0.46
+   },
+   "desleixada (aceita atrasos, sem vigilância)": {
+    "nav_soma_atual": -1.6,
+    "contingencia_usada": 0.22,
+    "equity_extra": 0.0,
+    "nav_com_FIX_G": -0.76
+   },
+   "desleixada com inspeção 'continuar'": {
+    "nav_soma_atual": -1.46,
+    "contingencia_usada": 0.22,
+    "equity_extra": 0.0,
+    "nav_com_FIX_G": -0.81
+   }
+  },
+  "pacing_odds_review": {
+   "obra_supply 0,5 transformador / painéis": "OK. Transformador ≥ 0,5 é realista: prazos de entrega de transformadores de potência ~128 semanas e de elevadores (GSU) ~143 semanas no 2.º trim. 2025 (Wood Mackenzie, SECUNDÁRIO, sobretudo EUA). Sugestão: 0,5 base, 0,4 com epc_turnkey, 0,65 com epc_multi (já está nas notas do skeleton).",
+   "obra_meio 0,5 chuva / inspeção ACT": "OK (uma das duas chega sempre; a construção é o sector mais inspecionado pela ACT).",
+   "obra_rede 0,4 REN atrasa / papéis": "OK. 0,5 em papeis-atrasados (só com ren_docs_late) também.",
+   "obra_furto 0,5": "OK para estaleiro sem vigilância no Alentejo (furtos de cobre em centrais solares: Ferreira do Alentejo 2024, Alandroal 2025). 2.º roubo 0,4 sem vigilância: OK (revitimização alta).",
+   "noticia-cortes 0,7": "OK (FYI, sem €).",
+   "nota": "Risco total: cada janela entrega uma carta (fallback) → o jogador vê sempre ~5 decisões de custo/atraso na obra; o pool de contingência (2.15) cobre a via cuidadosa (~1,9) mas não 'pagar tudo' com standby (≈2,8)."
+  },
+  "console_changes_needed": [
+   "FIX G (recomendado): o ΔNPV de atrasos sai do deslocamento real do COD = max(conclusão mecânica, linha) + testes: nav = −0,19 × ΔCOD (via moveDeadline do handoff, hook 6). No plano Ourique a linha (M31) é o caminho crítico: atrasos só de obra antes disso não mexem no COD. Até lá, a consola soma nav_months de cada tag (conservador).",
+   "FIX H: contingência da obra: mailLoop.obraContingency = 0,5 × (CAPEX − CAPEX/1,05) no construction_started; em applyEconRow, se row.pay_from === 'contingencia_obra': draw = min(pool, capex); equity += capex − draw; nav = nav_months − 0,72 × (capex − draw). Mostrar 'Contingência da obra: X M€' no painel da obra.",
+   "FIX I: custos mensais (capex_per_month + until): debitar todos os meses até a tag 'until' existir (epc_standby_paid → line_ready; obra_security_paid → cod_reached), via FIX H. Até lá a consola aplica o total do topo (Ourique 0,84 / 0,245).",
+   "FIX J: act_fine_risk = sorteio (novo ECON_ROLLED act_fine_risk {p: 0.5}) 1–2 meses depois; on_hit: cash −0,10, nav −0,10, reputation_exposed; suspensão P 0,25 → delay_obra_curto se o GM aceitar.",
+   "FIX K: obra_cable_replace 2.ª vez sem obra_security_paid → usar repeat_no_security_capex (0,30).",
+   "FIX L: partner_stake_25 × 0,75 só com NPV > 0: em stakesApplySpecial não mexer em node.van; NPV do jogador = van > 0 ? van × (1 − s) : van no HUD / ecrã final / stakesNpvIrr."
+  ]
+ },
  "no_economy": [
   "aas_eligible_ack",
   "aas_skip",
@@ -6254,6 +6730,7 @@
   "asset_added",
   "bank_offer_requested",
   "bank_seed_seen",
+  "bess_study_later",
   "block_overequip_cap",
   "block_oversubscribe",
   "buy_negotiate",
@@ -6276,7 +6753,6 @@
   "contest_shield",
   "d9_answer_seen",
   "deadline_rush",
-  "delay_env_+0",
   "dgeg_extension_cta",
   "dgeg_late",
   "dgeg_obligations_seen",
@@ -6310,12 +6786,16 @@
   "icnf_via_ca",
   "icnf_vinc_answered",
   "joint_liability_on",
+  "le_extension_denied_continue",
+  "le_extension_early",
+  "le_extension_skipped",
   "licenca_recusada_final",
   "line_ready",
   "loan_cost_up",
   "lp_clean",
   "lp_request_ready",
   "mandate_slot_free",
+  "mechanical_completion",
   "milestone_acordo_ren",
   "milestone_cod",
   "milestone_decisao_final",
@@ -6327,6 +6807,9 @@
   "mw_reserved_by_buyer_up",
   "mw_reserved_by_partner_up",
   "mw_reserved_released",
+  "obra_partial_install",
+  "obra_safety_fixed",
+  "obra_theft_risk_+1",
   "offer_band_thin",
   "partner_injection_subordinate",
   "partner_sale_authorized",
@@ -6337,6 +6820,7 @@
   "punch_list_first",
   "rede_calendar_seen",
   "reequip_defer",
+  "ren_docs_late",
   "ren_status_requested",
   "rescue_sell_all",
   "risk_media_+1",
@@ -6354,6 +6838,8 @@
   "share_refused",
   "share_rent_agreed",
   "shared_benefits_unlock",
+  "slip_accepted",
+  "slip_recover",
   "stake_sale_25",
   "stake_sale_started",
   "trc_alteration_approved",
