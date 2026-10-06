@@ -3400,6 +3400,17 @@
     width: 26px;
     height: 26px;
   }
+  body.footer-mock #btnNextQ.has-label {
+    width: auto;
+    min-width: 58px;
+    height: 58px;
+    padding: 0 18px;
+  }
+  body.footer-mock #btnNextQ.loading.has-label {
+    width: 58px;
+    min-width: 58px;
+    padding: 0;
+  }
   body.footer-mock #btnNextQ:active:not(:disabled) {
     transform: translateX(-50%) scale(0.96);
     animation: none;
@@ -5030,12 +5041,66 @@
   #endScreenRestart { background: #0f172a; color: white; border: 0; }
   #endScreenMail, #endScreenClose { background: white; border: 1px solid var(--border-subtle); }
   #btnNextQ.is-ended { opacity: 0.45; cursor: not-allowed; }
-  #btnNextQ.is-action,
-  #btnNextQ.is-action:disabled {
+  #btnNextQ.is-action {
     background: #c2410c;
     opacity: 1;
-    cursor: not-allowed;
+    cursor: pointer;
     animation: none;
+  }
+  #btnNextQ.is-action:disabled { cursor: not-allowed; }
+  .fab-nextq .fab-label {
+    display: none;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .fab-nextq.has-label {
+    width: auto;
+    min-width: 52px;
+    height: 52px;
+    padding: 0 16px;
+    border-radius: 999px;
+    gap: 0;
+  }
+  .fab-nextq.has-label .fab-label { display: inline-block; }
+  .fab-nextq.has-label .fab-icon { display: none; }
+  .fab-nextq.loading .fab-label,
+  .fab-nextq.loading .fab-optional { display: none; }
+  .fab-nextq.loading.has-label {
+    width: 52px;
+    min-width: 52px;
+    padding: 0;
+  }
+  /* Quiet count of choice letters that do not stop the clock. */
+  .fab-nextq .fab-optional {
+    display: none;
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #334155;
+    color: #fff;
+    font-family: var(--font);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    box-shadow: 0 0 0 2px #fff;
+    pointer-events: none;
+  }
+  .fab-nextq.has-optional .fab-optional { display: block; }
+  @media (max-width: 640px) {
+    .fab-nextq.has-label {
+      height: 46px;
+      padding: 0 12px;
+    }
+    .fab-nextq.has-label .fab-label { font-size: 13px; }
+    .fab-nextq.loading.has-label { width: 46px; min-width: 46px; }
   }
   .play-action-gate {
     position: fixed;
@@ -5376,21 +5441,22 @@
 </main>
 
 
-<!-- ═══ Play requires a deadline letter ═══ -->
+<!-- Continue opens a blocking letter itself. This banner stays hidden. -->
 <div class="play-action-gate" id="playActionGate" hidden>
   <p id="playActionText">O tempo está parado até responderes a uma carta de prazo.</p>
   <button type="button" class="play-action-open" id="playActionOpen">Abrir a carta</button>
 </div>
 
-<!-- ═══ FAB · Próximo Trimestre ═══ -->
-<button class="fab-nextq" id="btnNextQ" type="button"
-  aria-label="Avançar o tempo" title="Avançar o tempo">
-  <!-- universal Play triangle in circle -->
+<!-- ═══ FAB · Continuar ═══ -->
+<button class="fab-nextq has-label" id="btnNextQ" type="button"
+  aria-label="Continuar" title="Avançar um mês">
   <svg class="fab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/>
     <path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor" stroke="none"/>
   </svg>
+  <span class="fab-label" id="fabLabel">Continuar</span>
   <span class="spinner" aria-hidden="true"></span>
+  <span class="fab-optional" id="fabOptional"></span>
 </button>
 
 <!-- ═══ ACTIVITY LOG ═══ -->
@@ -6782,6 +6848,7 @@
     }
     mailLoop.deliveredIds = mailLoop.deliveredIds || {};
     mailLoop.deliveredIds[letter.id] = true;
+    stampLetterArrival(letter);
     mailState.items = [letter].concat(mailState.items.filter((m) => m.id !== letter.id));
     renderInboxBadge();
     scheduleSave('mail-player-' + skeletonId);
@@ -7368,6 +7435,7 @@
       if (ds.indexOf(L.skeletonId) === -1) ds.push(L.skeletonId);
     });
     mailLoop.deliveredMonths[mk] = ds;
+    stampLetterArrival(letters);
     mailState.items = letters.concat(mailState.items);
     renderInboxBadge();
     scheduleSave('sala-letter-' + skeletonId);
@@ -7879,7 +7947,9 @@
     if (!btn || btn.disabled) return;
     // During coach spotlight on FAB, target click is intercepted; belt-and-suspenders guard
     if (coachActive && coachBlockFab) return;
+    // Deadline letters first: open the oldest one. Time moves only when none remain.
     if (typeof playBlockLetter === 'function' && playBlockLetter()) {
+      try { openContinueLetter(playBlockLetter()); } catch (_) {}
       try { syncPlayGate(); } catch (_) {}
       return;
     }
@@ -12437,33 +12507,75 @@
     if (role === 'due' || role === 'final' || role === 'hearing') return true;
     return meta.deadline_blocks_play === true;
   }
+  /** Choice letters that do not stop the clock. A badge only — Continue still advances. */
+  function optionalDecisionLetters() {
+    if (!mailLoop || !mailLoop.active || typeof mailState === 'undefined') return [];
+    return (mailState.items || []).filter((letter) => {
+      if (!letter || letterSettledForPlay(letter) || letterBlocksPlay(letter)) return false;
+      return Array.isArray(letter.choices) && letter.choices.length > 0;
+    });
+  }
+  /** Monotonic arrival. Smaller arrivedSeq was delivered earlier (oldest first). */
+  function stampLetterArrival(letters) {
+    if (!mailLoop || !letters) return;
+    const list = Array.isArray(letters) ? letters : [letters];
+    if (mailLoop.arrivalSeq == null) mailLoop.arrivalSeq = 0;
+    list.forEach((L) => {
+      if (!L || L.arrivedSeq != null) return;
+      mailLoop.arrivalSeq = (mailLoop.arrivalSeq | 0) + 1;
+      L.arrivedSeq = mailLoop.arrivalSeq;
+    });
+  }
   function playBlockLetters() {
     if (!mailLoop || !mailLoop.active || typeof mailState === 'undefined') return [];
     const deadlines = mailLoop.deadlines || {};
     const hits = [];
-    (mailState.items || []).forEach((letter) => {
+    (mailState.items || []).forEach((letter, index) => {
       if (!letterBlocksPlay(letter)) return;
       const meta = letterDeadlineMeta(letter);
       const d = meta.deadline_id && deadlines[meta.deadline_id];
       const atMonth = d && d.atMonth != null ? (d.atMonth | 0) : 999;
       let subject = '';
       try { subject = fillMailTemplate(letter.subject); } catch (_) { subject = letter.subject || 'Carta'; }
-      hits.push({ letter: letter, subject: subject, deadlineId: meta.deadline_id, atMonth: atMonth, role: meta.deadline_role });
+      hits.push({ letter: letter, subject: subject, deadlineId: meta.deadline_id, atMonth: atMonth, role: meta.deadline_role, index: index });
     });
-    hits.sort((a, b) => a.atMonth - b.atMonth);
+    // Oldest unanswered first. Arrival stamp wins; otherwise the newest-first inbox puts older mail at a higher index.
+    hits.sort((a, b) => {
+      const as = a.letter && a.letter.arrivedSeq;
+      const bs = b.letter && b.letter.arrivedSeq;
+      if (as != null && bs != null && as !== bs) return as - bs;
+      return b.index - a.index;
+    });
     return hits;
   }
   function playBlockLetter() {
     const hits = playBlockLetters();
     return hits.length ? hits[0] : null;
   }
+  function setFabLabel(btn, text) {
+    if (!btn) return;
+    const label = btn.querySelector('.fab-label');
+    const on = !!text;
+    btn.classList.toggle('has-label', on);
+    if (label) label.textContent = text || '';
+  }
+  function setFabOptionalBadge(btn, n) {
+    if (!btn) return;
+    const badge = btn.querySelector('.fab-optional');
+    const show = n > 0;
+    btn.classList.toggle('has-optional', show);
+    if (!badge) return;
+    badge.textContent = show ? String(n) : '';
+  }
   function syncPlayGate() {
     const btn = document.getElementById('btnNextQ');
     const gate = document.getElementById('playActionGate');
-    const text = document.getElementById('playActionText');
     const ended = playIsLocked();
     const loading = !!(btn && btn.classList.contains('loading')) || playBusy;
-    const block = (!ended && !loading) ? playBlockLetter() : null;
+    const blocks = (!ended && !loading) ? playBlockLetters() : [];
+    const block = blocks.length ? blocks[0] : null;
+    const nBlock = blocks.length;
+    const nOptional = (!ended && !loading) ? optionalDecisionLetters().length : 0;
     if (btn) {
       btn.classList.toggle('is-ended', ended);
       btn.classList.toggle('is-action', !!block);
@@ -12473,33 +12585,41 @@
       } else if (ended) {
         btn.disabled = true;
         btn.setAttribute('aria-disabled', 'true');
+        setFabLabel(btn, '');
+        setFabOptionalBadge(btn, 0);
         btn.title = 'O mandato acabou. Abre o balanço no Correio.';
+        btn.setAttribute('aria-label', 'O mandato acabou');
       } else if (block) {
-        btn.disabled = true;
-        btn.setAttribute('aria-disabled', 'true');
-        btn.title = 'Responde primeiro: ' + block.subject;
+        // Stay enabled: the click opens the letter. It does not advance the month.
+        btn.disabled = false;
+        btn.removeAttribute('aria-disabled');
+        const label = 'Responder carta (' + nBlock + ')';
+        setFabLabel(btn, label);
+        setFabOptionalBadge(btn, nOptional);
+        btn.title = 'Abrir a carta mais antiga por responder: ' + block.subject;
+        btn.setAttribute('aria-label', label + '. Abrir «' + block.subject + '»');
       } else {
         btn.disabled = false;
         btn.removeAttribute('aria-disabled');
-        btn.title = 'Avançar o tempo';
+        setFabLabel(btn, 'Continuar');
+        setFabOptionalBadge(btn, nOptional);
+        btn.title = 'Avançar um mês';
+        btn.setAttribute('aria-label', nOptional
+          ? ('Continuar. ' + nOptional + (nOptional === 1 ? ' decisão opcional no Correio.' : ' decisões opcionais no Correio.'))
+          : 'Continuar');
       }
     }
+    // The click itself opens the letter. Do not park the player on a blocking banner.
     if (gate) {
-      if (block) {
-        gate.hidden = false;
-        gate.dataset.letterId = block.letter.id;
-        const n = playBlockLetters().length;
-        const named = '«' + block.subject + '»';
-        if (text) {
-          text.textContent = n > 1
-            ? ('O tempo está parado. Há ' + n + ' cartas de prazo por responder. A primeira: ' + named + '.')
-            : ('O tempo está parado. Responde a ' + named + ' para continuar.');
-        }
-      } else {
-        gate.hidden = true;
-        delete gate.dataset.letterId;
-      }
+      gate.hidden = true;
+      delete gate.dataset.letterId;
     }
+  }
+  /** Open the oldest blocking letter in the Correio, scrolled into view and focused. Does not move time. */
+  function openContinueLetter(hit) {
+    if (!hit || !hit.letter || typeof openLetter !== 'function') return;
+    mailState._focusChoice = true;
+    openLetter(hit.letter.id);
   }
   function deadlineDef(id) {
     try {
@@ -12710,6 +12830,7 @@
     const ds = mailLoop.deliveredMonths[mk] || [];
     if (ds.indexOf(skeletonId) === -1) ds.push(skeletonId);
     mailLoop.deliveredMonths[mk] = ds;
+    stampLetterArrival(L);
     mailState.items = [L].concat((mailState.items || []).filter((m) => m.id !== id));
     try { renderInboxBadge(); } catch (_) {}
     return L;
@@ -14463,6 +14584,7 @@
     });
 
     if (newLetters.length) {
+      stampLetterArrival(newLetters);
       mailState.items = newLetters.concat(mailState.items);
       if (mailState.open && mailState.view === 'detail' && mailState.activeId) {
         const cur = mailState.items.find((m) => m.id === mailState.activeId);
@@ -14739,12 +14861,23 @@
           '</div>';
         try { entScanLetter(body, letter); } catch (_) {}
         if (mailState._focusLetter) {
-          // L10: move focus into the letter that was just opened
+          // L10: move focus into the letter that was just opened.
+          // Continue asks for the call to action: the first choice, else the subject.
           mailState._focusLetter = false;
+          const wantChoice = !!mailState._focusChoice;
+          mailState._focusChoice = false;
           const subj = document.getElementById('mailDetailSubject');
-          if (subj) { try { subj.focus({ preventScroll: false }); } catch (_) {} }
           const sc = document.getElementById('inboxBody');
           if (sc) sc.scrollTop = 0;
+          const choice = wantChoice ? body.querySelector('.mail-detail-actions button:not([disabled])') : null;
+          const focusEl = choice || subj;
+          if (focusEl) {
+            try { focusEl.focus({ preventScroll: false }); } catch (_) { try { focusEl.focus(); } catch (_) {} }
+          }
+          const intoView = focusEl || subj;
+          if (intoView && intoView.scrollIntoView) {
+            try { intoView.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (_) {}
+          }
         }
         return;
       }
@@ -16800,6 +16933,8 @@
     playBtn.addEventListener('pointerdown', function (ev) {
       if (ev.button != null && ev.button !== 0) return;
       if (playBusy) return;
+      // A blocking letter opens on click, after pointerup, so the drawer cannot steal the click.
+      if (typeof playBlockLetter === 'function' && playBlockLetter()) return;
       nextQuarter();
     });
     playBtn.addEventListener('click', function (ev) {
