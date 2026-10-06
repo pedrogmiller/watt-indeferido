@@ -8058,6 +8058,7 @@
           text: 'Tempo avançado: ' + label + jumpNote + (newLettersN ? (' · ' + cartasNovasPt(newLettersN)) : '') + burnNote,
         });
         renderActivity();
+        try { syncPeriodChrome(); } catch (_) {}
 
         if (cappedAtEnd) {
           showToastBurn(newLettersN > 0
