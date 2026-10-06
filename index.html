@@ -339,8 +339,14 @@
       0 4px 6px -1px rgba(0, 122, 255, 0.28),
       0 10px 24px -4px rgba(0, 102, 214, 0.32),
       0 0 0 1px rgba(0, 122, 255, 0.12);
-    transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-    animation: fab-float 3.2s ease-in-out infinite;
+    transition: background 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    /* Pulse the shadow only. A translate animation moves the hit target and drops clicks. */
+    animation: fab-pulse 2.8s ease-in-out infinite;
+  }
+  .fab-nextq::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
   }
 
   .fab-nextq:hover:not(:disabled) {
@@ -352,7 +358,6 @@
   }
 
   .fab-nextq:active:not(:disabled) {
-    transform: scale(0.96);
     animation: none;
   }
 
@@ -387,9 +392,19 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  @keyframes fab-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+  @keyframes fab-pulse {
+    0%, 100% {
+      box-shadow:
+        0 4px 6px -1px rgba(0, 122, 255, 0.28),
+        0 10px 24px -4px rgba(0, 102, 214, 0.32),
+        0 0 0 1px rgba(0, 122, 255, 0.12);
+    }
+    50% {
+      box-shadow:
+        0 4px 6px -1px rgba(0, 122, 255, 0.28),
+        0 10px 24px -4px rgba(0, 102, 214, 0.32),
+        0 0 0 8px rgba(0, 122, 255, 0.22);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -3371,7 +3386,7 @@
     height: 58px;
     z-index: 92;
     margin: 0;
-    animation: footer-play-float 2.8s ease-in-out infinite;
+    animation: footer-play-pulse 2.8s ease-in-out infinite;
     box-shadow:
       0 6px 18px rgba(0, 122, 255, 0.38),
       0 0 0 4px rgba(255, 255, 255, 0.92),
@@ -3389,9 +3404,19 @@
     transform: translateX(-50%) scale(0.96);
     animation: none;
   }
-  @keyframes footer-play-float {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-5px); }
+  @keyframes footer-play-pulse {
+    0%, 100% {
+      box-shadow:
+        0 6px 18px rgba(0, 122, 255, 0.38),
+        0 0 0 4px rgba(255, 255, 255, 0.92),
+        0 0 0 5px rgba(0, 122, 255, 0.18);
+    }
+    50% {
+      box-shadow:
+        0 6px 18px rgba(0, 122, 255, 0.38),
+        0 0 0 4px rgba(255, 255, 255, 0.92),
+        0 0 0 12px rgba(0, 122, 255, 0.28);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     body.footer-mock #btnNextQ { animation: none; }
@@ -3713,6 +3738,7 @@
     background: rgba(15, 23, 42, 0.25);
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
     transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
     z-index: 220;
   }
@@ -3720,7 +3746,7 @@
   body:has(.asset-room.open) .inbox-backdrop { z-index: 8610; }
   body:has(.asset-room.open) .inbox-drawer { z-index: 8620; }
   body:has(.asset-room.open) .toast { z-index: 8700; }
-  .inbox-backdrop.open { opacity: 1; visibility: visible; }
+  .inbox-backdrop.open { opacity: 1; visibility: visible; pointer-events: auto; }
 
   .inbox-drawer {
     position: fixed;
@@ -3735,8 +3761,9 @@
     z-index: 230;
     display: flex;
     flex-direction: column;
+    pointer-events: none;
   }
-  .inbox-drawer.open { transform: translateX(0); }
+  .inbox-drawer.open { transform: translateX(0); pointer-events: auto; }
   @media (prefers-reduced-motion: reduce) {
     .inbox-backdrop, .inbox-drawer { transition: none; }
   }
@@ -7366,7 +7393,12 @@
       }
       return;
     }
-    const target = res.letters.find((l) => !l.read) || res.letters[0];
+    const target = res.letters.find((l) => !l.econChoiceId && !l.read) || res.letters.find((l) => !l.econChoiceId);
+    if (!target) {
+      showToast('Já trataste das cartas ' + spec.label + '.');
+      openInbox();
+      return;
+    }
     showToast(res.delivered
       ? ('Correio: ' + cartasNovasPt(res.delivered) + ' ' + spec.label + '.')
       : ('Abriste a carta ' + spec.label + '.'));
@@ -7875,36 +7907,13 @@
           }
         } catch (_) {}
 
-        if (mailLoop.month >= scheduleMax) {
-          // After the scripted months the clock still moves one month per Play (deadlines keep running).
-          cappedAtEnd = true;
-          mailLoop.month += 1;
-          if (typeof deliverMonthCandidates === 'function') {
-            mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
-          }
-        } else if ((typeof playPacing === 'function' ? playPacing() : 'event') === 'month') {
-          // Legacy QA pacing: advance play months blindly
-          const step = (typeof playStep === 'function') ? playStep() : 1;
-          for (let i = 0; i < step; i++) {
-            if (mailLoop.month >= scheduleMax) break;
-            mailLoop.month += 1;
-            if (typeof deliverMonthCandidates === 'function') {
-              mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
-            }
-          }
-        } else {
-          // Default: jump to next relevant Correio event (cap max_jump_months)
-          jumpResult = await findNextMailEventMonth(mailLoop.month);
-          if (!(jumpResult.month > mailLoop.month)) {
-            jumpResult = { month: (mailLoop.month | 0) + 1, jumped: 1, hit: false, reason: 'min_step' };
-          }
-          mailLoop.month = jumpResult.month;
-          if (typeof deliverMonthCandidates === 'function') {
-            mailDelivered = (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
-          }
-          if (mailLoop.month >= scheduleMax && !jumpResult.hit && mailDelivered === 0) {
-            // landed on end with nothing — treat as fim on toast below
-          }
+        // One Play click advances exactly one month. Never jump over a month,
+        // and never skip a month that has a deadline due.
+        try { if (typeof ensureOpenDeadlines === 'function') ensureOpenDeadlines(); } catch (_) {}
+        mailLoop.month = monthBefore + 1;
+        if (mailLoop.month > scheduleMax) cappedAtEnd = true;
+        if (typeof deliverMonthCandidates === 'function') {
+          mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
         }
         const missed = checkMissedDeadlines(mailLoop.month);
         try {
@@ -11551,7 +11560,7 @@
     obra: 'Obra',
     cod: 'Em operação'
   };
-  /** Conservative MVP bumps — only from choices that clearly imply the milestone. No obra/cod auto-jump. */
+  /** Phase chain: PIP outcome → licença (fase aia) → LP → obra → COD. */
   const PHASE_BUMP = {
     'land_option_open': 'land',
     'land_talk_+1': 'land',
@@ -11559,8 +11568,10 @@
     'risk_camara_-1': 'pip',
     'pip_request_submitted': 'pip',
     'apa_track_start': 'aia',
-    'construction_started': 'obra' // phase_bump_proposed: gate LP + env (raiseProjectPhase) + equity fit (Pedro 2026-09-30)
-    // placeholders (Economy / later letters): value_add_commit=null; capex_rede_flag / lp_granted → licenca_producao (not wired in MVP1)
+    'pip_aprovado': 'aia', // non-AIA: fase aia = declaração de não sujeição (MASTER-PLAN)
+    'lp_granted': 'licenca_producao',
+    'construction_started': 'obra', // gate LP + env (raiseProjectPhase) + equity fit
+    'cod_reached': 'cod'
   };
 
   /** Player-facing deadline names by id (also relabels older saves). Timing unchanged. */
@@ -11572,6 +11583,8 @@
     grid_agreement_final: 'Acordo com a REN (último prazo)',
     lp_request: 'Pedido de licença de produção',
     le_deadline: 'Licença de exploração',
+    grid_connection: 'Ligação à rede',
+    epc_mechanical_completion: 'Conclusão mecânica',
     cash_recovery: 'Repor a caixa',
     trc_transfer_averbamento: 'Registo do novo titular do TRC (DGEG)',
     lp_transfer_authorization: 'Autorização da DGEG para a venda'
@@ -11760,10 +11773,11 @@
   }
 
   /* ── Draft rules (lp-cod-rules.draft.json), only the groups the console runs today ── */
-  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome'];
+  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome', 'lp_outcome'];
   /** Single rules the console runs (group icnf_ca is otherwise not wired; rules without mutex_group). */
   const DRAFT_RULE_IDS = ['r-apa-icnf-vinculativo-aia', 'r-apa-icnf-vinculativo-caso', 'r-sobreequipamento', 'r-nisa-enterrar-linha',
     'r-pip-pedido', 'r-pip-reformulado', 'r-lp-pedido-sem-aia',
+    'r-rede-parecer', 'r-term-sheet', 'r-epc', 'r-ensaios', 'r-le-cod',
     'r-consultor-icnf-aviso-aia', 'r-consultor-icnf-aviso-caso', 'r-arranque',
     'r-es-d9-emprestimo-aceite', 'r-es-d9-emprestimo-recusado', 'r-es-d9-socio',
     'r-es-pressao-caixa', 'r-es-resgate', 'r-es-resgate-ultimato', 'r-es-pressao-paciencia',
@@ -11776,7 +11790,7 @@
   /** Group key: mutex_group, else the rule id (a rule without group = its own «once» group). */
   function ruleGroupKey(r) { return (r && (r.mutex_group || r.id)) || '_'; }
   /** Deadlines from deadlines.draft.json that the console runs generically (create/meet/void/extension). */
-  const GENERIC_DEADLINE_IDS = ['lp_transfer_authorization', 'grid_agreement_final', 'le_deadline', 'lp_request'];
+  const GENERIC_DEADLINE_IDS = ['lp_transfer_authorization', 'grid_agreement_final', 'le_deadline', 'lp_request', 'grid_connection', 'epc_mechanical_completion'];
   function draftDeadlineDefs() {
     const p = window.__wattEventPack;
     const d = p && p.deadlines_draft;
@@ -11813,7 +11827,15 @@
         if (has(createFx)) {
           if (!mailLoop.deadlines[id] || def.recreate_if_closed) {
             const due = (mailLoop.month | 0) + (Number(def.due && def.due.months) || 0);
-            mailLoop.deadlines[id] = { label: def.label || DEADLINE_LABEL_PT[id] || 'Prazo', due: due, atMonth: Math.ceil(due - 1e-9), ext: 0 };
+            mailLoop.deadlines[id] = {
+              label: def.label || DEADLINE_LABEL_PT[id] || 'Prazo',
+              due: due,
+              atMonth: Math.ceil(due - 1e-9),
+              ext: 0,
+              kind: def.kind || null,
+              on_meet: Array.isArray(def.on_meet) ? def.on_meet.slice() : [],
+              on_meet_mail: def.on_meet_mail || null
+            };
             delete mailLoop.firedDeadlines[id];
           }
         }
@@ -11952,6 +11974,21 @@
       if (typeof base === 'number') return base;
       return rule.id === 'r-pip-aprovado' ? 1 : 0;
     }
+    if (rule.mutex_group === 'lp_outcome') {
+      // Pack odds are still the string PEDIR_ECONOMY. A numeric base of 1 would make
+      // the first outcome (audiência) certain. Until Economy sets numbers: audiência
+      // only on a thin or incomplete file, condicionada only when the grid or the
+      // PIP left conditions, otherwise the fallback r-lp-concedida. ?lp=ok|cond|aud.
+      const f = qaParam('lp');
+      if (f === 'ok' || f === 'concedida') return rule.id === 'r-lp-concedida' ? 1 : 0;
+      if (f === 'cond' || f === 'condicionada') return rule.id === 'r-lp-condicionada' ? 1 : 0;
+      if (f === 'aud' || f === 'audiencia') return rule.id === 'r-lp-audiencia' ? 1 : 0;
+      const base = rule.odds && rule.odds.base;
+      if (typeof base === 'number') return base;
+      if (rule.id === 'r-lp-audiencia') return (on('lp_dossier_thin') || on('lp_elements_missing')) ? 0.65 : 0;
+      if (rule.id === 'r-lp-condicionada') return (on('grid_phasing_request') || on('pip_conditions') || on('lp_hearing_reply')) ? 0.55 : 0;
+      return rule.id === 'r-lp-concedida' ? 1 : 0;
+    }
     if (rule.id === 'r-es-trc-caducado') {
       const f = qaParam('trc');
       if (f === 'lapse' || f === 'lose') return 1;
@@ -11987,7 +12024,7 @@
     return (q === 'alta' || q === 'media' || q === 'média') && !((t.layout_trim_trees | 0) > 0);
   }
   /** computed_tags (lp-cod-rules): icnf_binding, equity_fit_ok/short, equity_full, land_secured, fid_ready. */
-  const COMPUTED_TAG_KEYS = { icnf_binding: 1, equity_fit_ok: 1, equity_fit_short: 1, equity_full: 1, land_secured: 1, fid_ready: 1, lp_request_ready: 1, car_approved_known: 1 };
+  const COMPUTED_TAG_KEYS = { icnf_binding: 1, equity_fit_ok: 1, equity_fit_short: 1, equity_full: 1, land_secured: 1, fid_ready: 1, lp_request_ready: 1, car_approved_known: 1, env_gate_ok: 1 };
   function ruleComputed(key, assume) {
     const on = (k) => !!(mailLoop.tags && (mailLoop.tags[k] | 0) > 0);
     const fitOk = () => (assume && assume.equity_fit_ok) || projectEquityFit(mailLoop.seId || 'ourique').ok;
@@ -12002,6 +12039,7 @@
     if (key === 'fid_ready') return on('lp_granted') && on('term_sheet_signed') && on('epc_selected')
       && (on('land_option_open') || on('dd_started')) && fitOk() && !on('sale_full_exit');
     if (key === 'lp_request_ready') return on('apa_track_start') || on('pip_aprovado');
+    if (key === 'env_gate_ok') return on('dia_emitida') || ((on('nao_sujeicao') || on('env_path_nao_sujeito')) && on('pip_aprovado'));
     if (key === 'car_approved_known') {
       try { return econBudget().carApproved != null; } catch (_) { return false; }
     }
@@ -12089,6 +12127,10 @@
     if (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.ruleTimerSlip) m += mailLoop.ruleTimerSlip | 0;
     const g = draftRuleGroupState(ruleGroupKey(r));
     if (g.rearmAt != null) m = Math.max(m, g.rearmAt);
+    if (r.not_before_month != null) {
+      const nb = Number(r.not_before_month);
+      if (!isNaN(nb)) m = Math.max(m, nb);
+    }
     return m;
   }
   /** after_effect.band «2-5» → last month of the window (tag month + 5). */
@@ -12103,7 +12145,14 @@
   /** Conditions only (phase, tags, gate, route, land): no timing, no waits. */
   function draftRuleConditionsOk(r) {
     const t = mailLoop.tags || {};
-    const on = (k) => (t[k] | 0) > 0;
+    const on = (k) => {
+      if (COMPUTED_TAG_KEYS[k]) {
+        const v = ruleComputed(k);
+        if (v !== undefined) return !!v;
+      }
+      return (t[k] | 0) > 0;
+    };
+    if (r.id === 'r-es-pressao-caixa' && (t.pressure_topup_used | 0) > 0) return false;
     if (r.mutex_group === 'dia_outcome' && !onAiaRoute()) return false;
     if (!draftRuleRouteOk(r)) return false;
     if (!draftRuleGateOk(r)) return false;
@@ -13329,6 +13378,11 @@
   }
 
   function phaseLabelPt(phase) {
+    if (phase === 'aia') {
+      try {
+        if (typeof onAiaRoute === 'function' && !onAiaRoute()) return 'Pedido de licença';
+      } catch (_) {}
+    }
     return PHASE_LABEL_PT[phase] || phase || 'TRC';
   }
 
@@ -13389,6 +13443,20 @@
       const target = PHASE_BUMP[key];
       if (target && raiseProjectPhase(target)) raised = true;
     });
+    // Non-AIA: an approved PIP is the environmental gate (declaração de não sujeição).
+    if (effects.some((e) => String(e) === 'pip_aprovado')) {
+      let aia = false;
+      try { aia = onAiaRoute(); } catch (_) {}
+      if (!aia) {
+        mailLoop.tags = mailLoop.tags || {};
+        mailLoop.tagMonth = mailLoop.tagMonth || {};
+        if (!((mailLoop.tags.nao_sujeicao | 0) > 0)) {
+          mailLoop.tags.nao_sujeicao = 1;
+          mailLoop.tagMonth.nao_sujeicao = mailLoop.month | 0;
+        }
+        mailLoop.tags.env_gate_ok = 1;
+      }
+    }
     const promoteKey = effects.map(String).find((e) => MANDATE_PROMOTE_EFFECTS[e]);
     if (promoteKey) {
       try {
@@ -13503,15 +13571,62 @@
     main_permit: { effects: ['investor_patience_-1'], text: 'A avaliação ambiental ainda não começou. O projeto atrasa.' },
     grid_agreement: { effects: ['caducidade_risk_+1'], text: 'Ainda não tens acordo com a REN (Redes Energéticas Nacionais). O TRC fica em risco de caducar.' }
   };
+  /** Keep the REN and LP deadlines on the clock until the player meets them. */
+  function ensureOpenDeadlines() {
+    if (!mailLoop || !mailLoop.active) return;
+    mailLoop.deadlines = mailLoop.deadlines || {};
+    mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
+    const tags = mailLoop.tags || {};
+    const fired = mailLoop.firedDeadlines;
+    const signed = (tags.grid_agreement_signed | 0) > 0 || (tags.grid_conditions_accepted | 0) > 0;
+    if (!mailLoop.deadlines.grid_agreement && !fired.grid_agreement && !signed) {
+      mailLoop.deadlines.grid_agreement = { label: DEADLINE_LABEL_PT.grid_agreement, atMonth: 6 };
+    }
+    try { if (typeof syncLpRequestDeadline === 'function') syncLpRequestDeadline(); } catch (_) {}
+  }
+  /**
+   * If the grid is still outstanding, the licença de exploração waits until 3 months after it
+   * (DL 15/2022 art. 14.º/3: 90 days after the RESP infrastructure when the network is late).
+   */
+  function rebaseLeDeadlineToGrid() {
+    const dls = mailLoop.deadlines || {};
+    const fired = mailLoop.firedDeadlines || {};
+    const grid = dls.grid_connection;
+    const le = dls.le_deadline;
+    if (!grid || !le || fired.le_deadline || grid.atMonth == null) return;
+    const floor = (grid.atMonth | 0) + 3;
+    if ((le.atMonth | 0) < floor) {
+      le.atMonth = floor;
+      le.due = floor;
+      le.rebased = 'grid_connection+3';
+    }
+  }
+  function meetThirdPartyDeadline(k, d, month) {
+    mailLoop.firedDeadlines[k] = true;
+    d.met = true;
+    const fx = (d.on_meet || []).slice();
+    if (fx.length) {
+      try { applyMailEffects(fx, {}); } catch (err) { console.warn('[WattMail] third party meet', k, err); }
+    }
+    const mail = d.on_meet_mail;
+    if (mail && mail.skeleton && typeof deliverStakeLetter === 'function') {
+      try { deliverStakeLetter(mail.skeleton, mail.skin || 'default', { deadline_id: k, when: 'Mês ' + month }); } catch (err) { console.warn('[WattMail] third party mail', k, err); }
+    }
+  }
   function checkMissedDeadlines(month) {
     const out = [];
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     mailLoop.missedDeadlines = mailLoop.missedDeadlines || {};
-    try { if (typeof syncLpRequestDeadline === 'function') syncLpRequestDeadline(); } catch (_) {}
+    try { ensureOpenDeadlines(); } catch (_) {}
+    try { rebaseLeDeadlineToGrid(); } catch (_) {}
     Object.keys(mailLoop.deadlines || {}).forEach((k) => {
       const d = mailLoop.deadlines[k];
       if (!d || d.atMonth == null || mailLoop.firedDeadlines[k]) return;
       if (k === 'trc_transfer_averbamento' || k === 'lp_transfer_authorization') return;
+      if (d.kind === 'third_party') {
+        if ((month | 0) >= (d.atMonth | 0)) meetThirdPartyDeadline(k, d, month);
+        return;
+      }
       if ((typeof STAKES_DEADLINE_IDS !== 'undefined' && STAKES_DEADLINE_IDS[k]) || d.stakes || d.on_miss_mail) {
         if (typeof stakesConsiderDeadline === 'function') {
           const hit = stakesConsiderDeadline(k, d, month);
@@ -13531,6 +13646,7 @@
 
   function nearestDeadline(loop) {
     loop = loop || mailLoop;
+    try { if (loop === mailLoop) ensureOpenDeadlines(); } catch (_) {}
     const dls = loop.deadlines || {};
     const fired = loop.firedDeadlines || {};
     const clock = loop.month | 0;
@@ -13704,6 +13820,8 @@
     const seen = {};
     const labels = [];
     if (res && res.m0 && res.m0.message) labels.push(res.m0.message.replace(/[.\s]+$/, ''));
+    if (res && res.pressureNote) labels.push(String(res.pressureNote).replace(/[.\s]+$/, ''));
+    if (res && res.planNote) labels.push(String(res.planNote).replace(/[.\s]+$/, ''));
     list.forEach((ef) => {
       const key = String(ef);
       if (res && res.m0 && (/^car_band_[sml]$/.test(key) || key === 'car_request_sent')) return;
@@ -13762,7 +13880,7 @@
     return null;
   }
   /** Carta M0: pedir pouco/médio/muito → sorteio aceitar / plano / cortar (§6.1, §2). Devolve o desfecho e o € posto na Caixa. */
-  const M0_ODDS = { S: { accept: 85, plan: 10, cut: 5 }, M: { accept: 55, plan: 30, cut: 15 }, L: { accept: 0, plan: 40, cut: 60 } };
+  const M0_ODDS = { S: { accept: 95, plan: 0, cut: 5 }, M: { accept: 55, plan: 30, cut: 15 }, L: { accept: 0, plan: 40, cut: 60 } };
   function resolveM0Ask(band) {
     const T = econTier();
     const ec = econState();
@@ -13791,6 +13909,8 @@
     }
     let grantBand = null;
     let patienceHit = false;
+    // The small ask always pays. A "plan" roll on S used to grant nothing.
+    if (band === 'S' && outcome === 'plan') outcome = 'accept';
     if (outcome === 'accept') grantBand = band;
     else if (outcome === 'cut') {
       if (band === 'S') { grantBand = 'S'; patienceHit = true; }
@@ -13815,7 +13935,7 @@
       mailLoop.tags = mailLoop.tags || {};
       mailLoop.tags.investor_plan_requested = 1;
     }
-    ec.m0 = { band: band, outcome: outcome, grantBand: grantBand, cash: cash, odds: o };
+    ec.m0 = { band: band, outcome: outcome, grantBand: grantBand, cash: cash, odds: o, pendingBand: outcome === 'plan' ? band : null, planReleased: false };
     recomputeNav();
     let message;
     if (outcome === 'accept') {
@@ -13859,6 +13979,24 @@
     return { ok: true, delta: d, p: p };
   }
 
+  /** M/L "querem ver um plano": the cash arrives when the player sends the plan. */
+  function releasePendingM0Plan() {
+    const ec = econState();
+    if (!ec.m0 || ec.m0.outcome !== 'plan' || ec.m0.planReleased || ec.m0.grantBand) return null;
+    const band = ec.m0.pendingBand || ec.m0.band;
+    const cash = (econTier().m0 && econTier().m0[band]) || 0;
+    if (cash) {
+      state.caixa = +(state.caixa + cash).toFixed(3);
+      ec.carGranted = +((ec.carGranted || 0) + cash).toFixed(3);
+      try { setCarBandOverride(band); } catch (_) {}
+    }
+    ec.m0.planReleased = true;
+    ec.m0.grantBand = band;
+    ec.m0.cash = cash;
+    try { recomputeNav(); } catch (_) {}
+    return { cash: cash, band: band };
+  }
+
   function applyEffectEconomics(effects, opts) {
     opts = opts || {};
     const sum = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
@@ -13873,9 +14011,27 @@
       if (!row) return;
       let d;
       if (ECON_ROLLED[tag]) {
-        const r = resolveRolledRequest(tag, row, lotId);
-        notes[tag] = r.ok ? 'aceite' : 'recusado';
-        d = r.delta;
+        const pressure = tag === 'cash_at_risk_request' && opts.letter && typeof mailSkeletonOf === 'function' && mailSkeletonOf(opts.letter) === 'mail-investidores-pressao-01';
+        if (pressure) {
+          mailLoop.tags = mailLoop.tags || {};
+          if ((mailLoop.tags.pressure_topup_used | 0) > 0) {
+            notes[tag] = 'já pedida';
+            d = null;
+          } else {
+            const cap = rescueBridgeCap();
+            state.caixa = +(state.caixa + cap).toFixed(3);
+            const ec = econState();
+            ec.carGranted = +((typeof ec.carGranted === 'number' ? ec.carGranted : (econTier().carMandate - econTier().seed)) + cap).toFixed(3);
+            mailLoop.tags.pressure_topup_used = (mailLoop.tags.pressure_topup_used | 0) + 1;
+            notes[tag] = 'ponte';
+            d = { cash: cap, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
+            sum.pressureNote = 'Os investidores adiantaram ' + String(cap).replace('.', ',') + ' M€, o tecto da ponte. Este aviso não se repete.';
+          }
+        } else {
+          const r = resolveRolledRequest(tag, row, lotId);
+          notes[tag] = r.ok ? 'aceite' : 'recusado';
+          d = r.delta;
+        }
       } else if (tag === 'caucao_executada' || tag === 'deadline_accept_miss') {
         const ec = econState();
         if (ec.bondInCash[lotId]) {
@@ -13974,7 +14130,11 @@
     }
     let econ = null;
     if (!opts.skipEconomics) {
-      try { econ = applyEffectEconomics(effects); } catch (err) { console.warn('[WattMail] effect economics', err); }
+      try { econ = applyEffectEconomics(effects, opts); } catch (err) { console.warn('[WattMail] effect economics', err); }
+    }
+    let planRelease = null;
+    if (effects.some((e) => String(e) === 'investor_plan_sent')) {
+      try { planRelease = releasePendingM0Plan(); } catch (err) { console.warn('[WattEcon] plan release', err); }
     }
     try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
     try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
@@ -13984,7 +14144,11 @@
     try {
       if (assetRoomState && assetRoomState.open && typeof renderAssetRoom === 'function') renderAssetRoom();
     } catch (_) {}
-    return { carBand: carBand, messages: messages, economics: econ, m0: m0 };
+    const pressureNote = econ && econ.pressureNote;
+    const planNote = planRelease && planRelease.cash
+      ? ('Os investidores aceitaram o plano e puseram ' + String(planRelease.cash).replace('.', ',') + ' M€ na caixa')
+      : null;
+    return { carBand: carBand, messages: messages, economics: econ, m0: m0, pressureNote: pressureNote, planNote: planNote };
   }
 
   function getSkinById(skeletonId, skinId, pack) {
@@ -14189,6 +14353,7 @@
    * given current phase+tags, OR a deadline atMonth in range. Phase never auto-increments.
    */
   async function findNextMailEventMonth(fromMonth) {
+    try { ensureOpenDeadlines(); } catch (_) {}
     const pack = await loadEventPack();
     const schedule = pack.mvp_schedule;
     if (!schedule) {
@@ -14244,15 +14409,27 @@
       bestLanding = { month: ruleM, jumped: ruleM - fromMonth, hit: true, reason: 'rule' };
     }
     // Prefer whichever comes first; landing wins ties (mail to decide)
+    let result;
     if (bestLanding && bestDeadline) {
-      if (bestDeadline.month < bestLanding.month) return bestDeadline;
-      return bestLanding;
+      result = bestDeadline.month < bestLanding.month ? bestDeadline : bestLanding;
+    } else if (bestLanding) result = bestLanding;
+    else if (bestDeadline) result = bestDeadline;
+    else {
+      const land = Math.min(fromMonth + maxJump, scheduleMax);
+      result = { month: land, jumped: land - fromMonth, hit: false, reason: 'cap' };
     }
-    if (bestLanding) return bestLanding;
-    if (bestDeadline) return bestDeadline;
-
-    const land = Math.min(fromMonth + maxJump, scheduleMax);
-    return { month: land, jumped: land - fromMonth, hit: false, reason: 'cap' };
+    // Never report a jump that skips a month with a deadline due.
+    const firedNow = mailLoop.firedDeadlines || {};
+    let stop = null;
+    Object.keys(mailLoop.deadlines || {}).forEach((k) => {
+      if (firedNow[k]) return;
+      const d = mailLoop.deadlines[k];
+      if (!d || d.atMonth == null) return;
+      const at = d.atMonth | 0;
+      if (at > fromMonth && at < result.month && (stop == null || at < stop)) stop = at;
+    });
+    if (stop != null) return { month: stop, jumped: stop - fromMonth, hit: true, reason: 'deadline' };
+    return result;
   }
 
   async function deliverMonthCandidates(month, opts) {
@@ -14286,6 +14463,15 @@
 
     if (newLetters.length) {
       mailState.items = newLetters.concat(mailState.items);
+      if (mailState.open && mailState.view === 'detail' && mailState.activeId) {
+        const cur = mailState.items.find((m) => m.id === mailState.activeId);
+        if (cur && cur.econChoiceId) {
+          mailState.view = 'list';
+          mailState.activeId = null;
+          const drawer = document.getElementById('inboxDrawer');
+          if (drawer) drawer.dataset.mailView = 'list';
+        }
+      }
       renderInboxBadge();
       if (mailState.open) { try { renderInboxBody(); } catch (_) {} }
       if (!opts.silentToast) {
@@ -15095,11 +15281,25 @@
       });
     }
 
-    document.addEventListener('keydown', (e) => {
+    // Window capture so Escape closes the letter, then the drawer, even if state and the DOM disagree.
+    window.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
-      if (!mailState.open) return;
-      e.stopImmediatePropagation(); // one Escape = one step (don't also close the sala underneath)
-      inboxHeaderBack();
+      const drawer = document.getElementById('inboxDrawer');
+      const drawerOpen = !!(drawer && drawer.classList.contains('open'));
+      if (!mailState.open && !drawerOpen) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (!mailState.open && drawerOpen) {
+        closeInbox();
+        return;
+      }
+      const reading = isInboxReadingLetter() || (drawer && drawer.dataset.mailView === 'detail');
+      if (reading) {
+        mailState.open = true;
+        inboxHeaderBack();
+        return;
+      }
+      closeInbox();
     }, true);
 
     // Default idle icon (open envelope) until seed / mail arrives
@@ -15607,12 +15807,28 @@
   }
 
   function hardResetNewGame() {
+    // Block any in-flight save from writing the old game back after we clear it.
+    _saveOverrideActive = true;
+    if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
     clearSave();
-    // Keep onboarding flag cleared so arrive/demo can run fresh
     try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
-    // Strip query mocks so cold load is a clean new game
-    const url = location.pathname + location.hash;
-    location.replace(url || location.href.split('?')[0]);
+    try { sessionStorage.setItem('watt.forceNewGame', '1'); } catch (_) {}
+    try {
+      mailLoop.active = false;
+      mailLoop.month = -1;
+      mailLoop.seId = null;
+      mailLoop.tags = {};
+      mailLoop.deadlines = {};
+      mailLoop.firedDeadlines = {};
+      mailLoop.deliveredIds = {};
+      mailState.items = [];
+      mailState.open = false;
+      mailState.view = 'list';
+      mailState.activeId = null;
+    } catch (_) {}
+    // A new query forces a real reload. Replacing the same URL often keeps the old loop in memory.
+    const url = location.pathname + '?new=' + Date.now() + location.hash;
+    location.replace(url);
   }
 
   /* ═══ Pesquisa + fichas de entidades (mock local, só leitura) ═══
@@ -16516,10 +16732,30 @@
 
 
   /* ── Init ── */
+  function consumeForceNewGame() {
+    let force = false;
+    try {
+      const params = new URLSearchParams(location.search);
+      if (params.has('new')) force = true;
+      if (sessionStorage.getItem('watt.forceNewGame') === '1') force = true;
+      sessionStorage.removeItem('watt.forceNewGame');
+      if (params.has('new')) {
+        params.delete('new');
+        const q = params.toString();
+        history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash);
+      }
+    } catch (_) {}
+    return force;
+  }
   function init() {
+    const forceNew = consumeForceNewGame();
+    if (forceNew) {
+      clearSave();
+      try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
+    }
     _saveOverrideActive = hasSaveOverrideQuery();
     let resumed = false;
-    if (!_saveOverrideActive) {
+    if (!_saveOverrideActive && !forceNew) {
       const blob = readSaveBlob();
       if (blob) {
         resumed = hydrateFromSave(blob);
@@ -16558,7 +16794,14 @@
       applyHydratedUi();
     }
 
-    document.getElementById('btnNextQ').addEventListener('click', function (ev) {
+    const playBtn = document.getElementById('btnNextQ');
+    // pointerdown so a click lands even if the button moves before mouseup
+    playBtn.addEventListener('pointerdown', function (ev) {
+      if (ev.button != null && ev.button !== 0) return;
+      if (playBusy) return;
+      nextQuarter();
+    });
+    playBtn.addEventListener('click', function (ev) {
       if (playBusy) { ev.preventDefault(); ev.stopPropagation(); return; }
       nextQuarter();
     });
