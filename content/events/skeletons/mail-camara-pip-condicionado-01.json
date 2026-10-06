@@ -27,7 +27,8 @@
         "pip_aprovado",
         "pip_conditions",
         "env_mitigation_flag"
-      ]
+      ],
+      "consequence_pt": "Aceitas as condições: o PIP fica resolvido, mas a central fica um pouco mais cara."
     },
     {
       "id": "reformulate",
@@ -35,7 +36,8 @@
       "effects": [
         "pip_reformulate",
         "delay_pip_+1"
-      ]
+      ],
+      "consequence_pt": "Voltas a pedir sem condições: o PIP atrasa e a caixa paga esse tempo."
     }
   ],
   "heavy": true,
@@ -45,5 +47,6 @@
   "deadline_id": "pip_decision",
   "deadline_role": "outcome",
   "deadline_kind": "authority",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

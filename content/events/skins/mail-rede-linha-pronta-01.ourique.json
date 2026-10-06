@@ -4,10 +4,11 @@
   "draft": true,
   "when": {},
   "from_name": "REN — Ligações à rede",
-  "subject": "A ligação em Ourique está pronta",
-  "body": "A REN acabou as obras na subestação de Ourique e a linha até à tua central está pronta a ligar. Quando a central estiver montada, pedes à DGEG autorização para os testes. Com a licença de produção e a ligação prontas, também passas a poder vender parte do projeto sem perder o TRC.",
+  "subject": "A REN acabou a obra dela em Ourique",
+  "body": "A REN acabou a obra na subestação de Ourique: o painel onde a tua linha vai ligar está pronto. Falta acabares a tua subestação e a tua linha; a data está no painel.",
   "params": {
     "operator": "REN"
   },
-  "obra_v01_2026_10_06": "Linguagem simples."
+  "obra_v01_2026_10_06": "Linguagem simples.",
+  "visibilidade_v01_2026_10_06": "Só a obra da REN; a linha é do jogador."
 }

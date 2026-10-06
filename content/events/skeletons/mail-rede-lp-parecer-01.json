@@ -23,7 +23,8 @@
       "label": "Aceitar condições e calendário",
       "effects": [
         "grid_conditions_accepted"
-      ]
+      ],
+      "consequence_pt": "Aceitas as condições da REN: a data da obra da REN passa a aparecer no painel."
     },
     {
       "id": "phasing",
@@ -31,10 +32,12 @@
       "effects": [
         "grid_phasing_request",
         "delay_ligacao_+1"
-      ]
+      ],
+      "consequence_pt": "Pedes ligação por fases: uma parte liga mais cedo, mas a ligação completa fica para mais tarde."
     }
   ],
   "heavy": true,
   "notes_for_economy": "capex_rede_flag = painel/reforço a cargo do requerente — PEDIR_ECONOMY. grid_phasing_request → LP com restrições de injecção (P50/NPV). 2026-10-06: capex_rede_flag retirado de accept_grid (acordo REN já cobrado em mail-rede-prazo-01).",
-  "notes_for_ui": "Pronúncia do operador à DGEG (art. 26.º). Gate da decisão LP: sem esta carta respondida não há concedida/condicionada. Cria deadline grid_connection. CTA pesado (Rede)."
+  "notes_for_ui": "Pronúncia do operador à DGEG (art. 26.º). Gate da decisão LP: sem esta carta respondida não há concedida/condicionada. Cria deadline grid_connection. CTA pesado (Rede).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

@@ -227,15 +227,17 @@
   "mission_bess": {
    "cash": -0.4,
    "debt": null,
-   "nav": null,
+   "nav": -0.83,
    "bonding": null,
    "car": 0.4,
-   "equity": 2.7,
+   "equity": 2.16,
    "months": 9,
    "prob": null,
-   "label": "HIPÓTESE",
+   "label": "HIPÓTESE · SECUNDÁRIO (receitas Modo) · REAL (capex BNEF via dcac) · PEDIR (carregar da rede)",
    "origin": "euro-fields-console.md §6 / §1.4 / gate6 §B.2",
-   "note": "Ver tag bess_dev_flag (mesmos números). 15 MW/30 MWh, Capex Δ ~9."
+   "note": "Missão BESS 15 MW/30 MWh (2 h) atrás do contador da central: kickoff −0,4 (0,2–0,6), CAR +0,4, +9 meses. Capex 7.2 M€ (antes ~9) → equity +2.16 (convenção 0,3; P43). NPV do BESS a 8 % no mês do leilão, sem apoio: centro -0.83 (banda -3.11 … +2.61); com o apoio de 20 % (fa_bess_awarded): +0.42. Quer dizer: sem apoio o BESS perde um pouco; com apoio fica ligeiramente positivo. Pressupõe carregar da rede (arbitragem) — PEDIR: com TRC de injeção e tarifa de 15 anos, carregar só do solar tira energia à tarifa; só cortes (clipping) nunca paga (dcac_optimo: IRR do BESS negativo em todos os casos). Antes: {'equity': 2.7, 'nav': None, 'cash': -0.4, 'months': 9}. Receita: Modo Energy (SECUNDÁRIO): benchmark ME BESS ES — arbitragem day-ahead TB2 ibérica ~€80k/MW/ano (2024) e ~€130k/MW/ano (2025, preço perfeito); spreads diários €70–90/MWh em 2025; aFRR (banda secundária) a cair: ~€26/MW/h (2024) → ~€13 (2025) → ~€9 (1.º sem. 2026), canibalização já em 2026; Espanha aprovou mercado de capacidade (maio 2026), Portugal não (PEDIR). Centro €65k/MW/ano em € de 2026 (metade do TB2 de 2025: captura real < preço perfeito, frota a crescer até ao COD ~2028–29), −3 %/ano real. Capex: dcac_optimo centro 120 €/kW + 180 €/kWh (âncora BNEF 2025, REAL) = 7,2 M€ para 15 MW/30 MWh. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "capex_MEUR": 7.2,
+   "formula": "nav = NPV_BESS(receita €65k/MW/ano −3 %/ano real, fade 2 %, aumento ano 10 a 40 €/kWh, O&M 2 %/ano, 20 anos, COD M29, Capex M23, 8 %) ; equity +0.3*capex"
   },
   "mission_eolico": {
    "cash": -0.75,
@@ -583,18 +585,22 @@
    "note": "Custo pequeno; −0,10 em P(atraso DGEG na LE)."
   },
   "pip_benefits_offer": {
-   "cash": -0.15,
+   "cash": -0.25,
    "debt": null,
-   "nav": null,
+   "nav": -0.18,
    "bonding": null,
    "car": null,
    "equity": null,
    "months": null,
-   "prob": -0.1,
-   "label": "HIPÓTESE · REAL (regras municipais)",
+   "prob": null,
+   "label": "HIPÓTESE (valores) · REAL (DL 15/2022 art. 49.º; DL 30-A/2022 arts. 4.º e 4.º-B)",
    "origin": "skeleton mail-camara-pip-pedido-01",
-   "note": "Proposta de envolvimento local junto ao PIP: sinal/peças −U e −0,10 em P(PIP recusado). SEM ΔNPV (não é a causa do bug PR #7). REAL: DL 30-A/2022 art. 4.º (centrais ≥ 20 MW instruem o controlo prévio com proposta de envolvimento das comunidades: pastoreio, emprego local, energia para comunidades, coinvestimento; sem valor fixo) · art. 4.º-B (aditado pelo DL 72/2022): 13 500 €/MVA único ao município, PAGO PELO FUNDO AMBIENTAL (não pelo promotor; Ourique 99 MVA → 1,34 M€ para a Câmara) · DL 15/2022 art. 49.º: > 50 MVA cede UPAC de 0,3 % da potência de ligação (Ourique ~0,3 MW, ~0,25–0,30 M€, HIPÓTESE, dentro da contingência de 5 % do Capex); 1–50 MVA: 1 500 €/MVA. Não há regra de '1,5 % da receita' para solar (verificado 2026-10-06). PEDIR: pacote voluntário extra (ex. 0,5 k€/MWp/ano ≈ −0,6 de NPV) se o Pedro quiser que custe.",
-   "formula": "cash: -U"
+   "note": "Pacote voluntário para a freguesia junto ao PIP. Hoje: submit = pip_request_submitted −0,15 + cash_at_risk_+1 −0,15 = −0,30; com benefícios era igual (−0,15 −0,15). Agora: um sinal de 0.25 M€ já (UPAC na escola/lar + eficiência energética, ≈ €2 500/MVA, ~1,7× a compensação em dinheiro do art. 49.º/3) + fundo comunitário 150 €/MVA/ano (≈ 15 k€/ano em Ourique, ~0,2 % da receita) durante 30 anos. O sinal sai do orçamento de desenvolvimento (nav 0, regra de cash_at_risk_+1); o fundo é custo de operação que o motor não tem → ΔNPV −0.18. Escolha com benefícios: cash -0.4 contra −0,30 do PIP simples; NPV −0.18 contra 0. O que compra: −0,10 em P(PIP recusado) (risk_camara_-1; antes somava 2× com o prob desta tag) e reputation_+1. Valor esperado da descida do risco ≈ 0,1 × (delay_pip_+2 −0,38 + refazer −0,3) ≈ +0,07 → em NPV puro não paga; paga em reputação (fecho do ciclo) e em câmara amiga. REAL: DL 15/2022 art. 49.º (red. DL 99/2024): cedência OBRIGATÓRIA de UPAC = 1 % da potência de ligação (Ourique ~0,99 MW) ou, se o município optar, €1 500/MVA em dinheiro (0,15 M€); protocolo assinado é condição da licença de exploração; n.º 9: a câmara NÃO pode pedir outras contrapartidas → o pacote só pode ser oferecido. DL 30-A/2022 art. 4.º-B: compensação ao município de €13 500/MVA (Ourique 1,34 M€), paga pelo Fundo Ambiental, não pelo promotor (Despacho 6119/2025). Antes: {'cash': -0.15, 'nav': None, 'prob': -0.1}. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "cash: −0.25 já (orçamento de desenvolvimento, nav 0 como cash_at_risk_+1) ; nav: −PV(fundo 150 €/MVA/ano × 99 MVA, +2 %/ano, 30 anos desde o COD M29, 8 %) = −0.18 ; P(PIP recusado) −0,10 fica SÓ em risk_camara_-1",
+   "pay_from": "caixa",
+   "community_fund_eur_mva_yr": 150,
+   "community_fund_pv_MEUR": 0.18,
+   "one_off_MEUR": 0.25
   },
   "delay_land_+1": {
    "cash": -0.12,
@@ -891,7 +897,8 @@
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
    "formula": "nav: -0.19*3*k",
    "nav_months": -0.57,
-   "pay_from": null
+   "pay_from": null,
+   "track": "REN+plant (deadlines) → PROPOSTA: tests (direto no COD)"
   },
   "delay_cod_+2": {
    "cash": null,
@@ -907,7 +914,8 @@
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 6 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -1.5.",
    "formula": "nav: -0.19*6*k",
    "nav_months": -1.14,
-   "pay_from": null
+   "pay_from": null,
+   "track": "REN+plant (deadlines) → PROPOSTA: tests (direto no COD)"
   },
   "delay_obra_+1": {
    "cash": null,
@@ -923,7 +931,8 @@
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
    "formula": "nav: -0.19*3*k",
    "nav_months": -0.57,
-   "pay_from": null
+   "pay_from": null,
+   "track": "plant"
   },
   "obra_start_deferred": {
    "cash": null,
@@ -939,23 +948,29 @@
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
    "formula": "nav: -0.19*3*k",
    "nav_months": -0.57,
-   "pay_from": null
+   "pay_from": null,
+   "track": "all (início da obra)"
   },
   "delay_ligacao_+1": {
    "cash": null,
    "debt": null,
-   "nav": -0.57,
+   "nav": -0.76,
    "bonding": null,
    "car": null,
    "equity": null,
-   "months": 3,
+   "months": 4,
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 delay_rede +1…+6",
-   "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
-   "formula": "nav: -0.19*3*k",
-   "nav_months": -0.57,
-   "pay_from": null
+   "note": "A REN atrasa a ligação 4 meses (banda 3–6; GM 2026-10-06c, antes 3). ΔNPV só pelo ΔCOD: numa corrida cuidadosa a REN tem 4 meses de folga sobre a rede do jogador → 4 meses = 0; 5–6 meses = −0,19/−0,38. nav_months -0.76 = valor se a REN fosse crítica (antes nav -0.57). Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "months: 4 (3–6) na pista REN ; nav = −0.19*ΔCOD",
+   "nav_months": -0.76,
+   "pay_from": null,
+   "months_band": [
+    3,
+    6
+   ],
+   "track": "REN"
   },
   "grid_slip_operator": {
    "cash": null,
@@ -2070,33 +2085,38 @@
    "capex_MEUR": 1.0,
    "pay_from": "contingencia_obra",
    "nav_capex": -0.72,
-   "nav_months": 0.38
+   "nav_months": 0.38,
+   "track": "plant"
   },
   "epc_lds_claimed": {
    "cash": null,
    "debt": null,
-   "nav": null,
+   "nav": 0.36,
    "bonding": null,
    "car": null,
    "equity": -0.5,
    "months": null,
    "prob": null,
-   "label": "PEDIR",
+   "label": "HIPÓTESE / PEDIR",
    "origin": "skeleton epc-atraso",
-   "note": "LDs do EPC: crédito parcial ~0,5 (PEDIR; tecto contratual típico 10 % do contrato)."
+   "note": "LDs de atraso do EPC sobre a subestação/linha: ~0,1 %/dia do âmbito (~11 M€) × 90 dias ≈ 1,0, tecto típico 10 % do âmbito; o EPC discute e paga parte → crédito 0,5 (banda 0,3–1,0; PEDIR o contrato). Reduz o Capex pago → equity −0,5 e ΔNPV +0,36 (= 0,72 × 0,5). Antes: equity -0.5, nav None. Em mail-epc-atraso-01: claim −0,57 + 0,36 = −0,21 (+ epc_relationship_-1); accelerate −0,57 + 0,02 = −0,55 (−0,19 dentro da contingência); accept −0,57. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "capex_credit_MEUR": 0.5,
+   "formula": "equity: −0.5 ; nav: +0.72*0.5 = +0.36"
   },
   "bess_dev_flag": {
    "cash": -0.4,
    "debt": null,
-   "nav": null,
+   "nav": -0.83,
    "bonding": null,
    "car": 0.4,
-   "equity": 2.7,
+   "equity": 2.16,
    "months": 9,
    "prob": null,
-   "label": "HIPÓTESE",
+   "label": "HIPÓTESE · SECUNDÁRIO (receitas Modo) · REAL (capex BNEF via dcac) · PEDIR (carregar da rede)",
    "origin": "§1.4; gate6 §B.2",
-   "note": "Missão BESS 15 MW/30 MWh: kickoff −0,4 (0,2–0,6), CAR need +0,4, Capex Δ ~9 → equity +2,7, +9 meses. Caução 0 se dentro do MVA do TRC (PEDIR P13)."
+   "note": "Missão BESS 15 MW/30 MWh (2 h) atrás do contador da central: kickoff −0,4 (0,2–0,6), CAR +0,4, +9 meses. Capex 7.2 M€ (antes ~9) → equity +2.16 (convenção 0,3; P43). NPV do BESS a 8 % no mês do leilão, sem apoio: centro -0.83 (banda -3.11 … +2.61); com o apoio de 20 % (fa_bess_awarded): +0.42. Quer dizer: sem apoio o BESS perde um pouco; com apoio fica ligeiramente positivo. Pressupõe carregar da rede (arbitragem) — PEDIR: com TRC de injeção e tarifa de 15 anos, carregar só do solar tira energia à tarifa; só cortes (clipping) nunca paga (dcac_optimo: IRR do BESS negativo em todos os casos). Antes: {'equity': 2.7, 'nav': None, 'cash': -0.4, 'months': 9}. Receita: Modo Energy (SECUNDÁRIO): benchmark ME BESS ES — arbitragem day-ahead TB2 ibérica ~€80k/MW/ano (2024) e ~€130k/MW/ano (2025, preço perfeito); spreads diários €70–90/MWh em 2025; aFRR (banda secundária) a cair: ~€26/MW/h (2024) → ~€13 (2025) → ~€9 (1.º sem. 2026), canibalização já em 2026; Espanha aprovou mercado de capacidade (maio 2026), Portugal não (PEDIR). Centro €65k/MW/ano em € de 2026 (metade do TB2 de 2025: captura real < preço perfeito, frota a crescer até ao COD ~2028–29), −3 %/ano real. Capex: dcac_optimo centro 120 €/kW + 180 €/kWh (âncora BNEF 2025, REAL) = 7,2 M€ para 15 MW/30 MWh. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "capex_MEUR": 7.2,
+   "formula": "nav = NPV_BESS(receita €65k/MW/ano −3 %/ano real, fade 2 %, aumento ano 10 a 40 €/kWh, O&M 2 %/ano, 20 anos, COD M29, Capex M23, 8 %) ; equity +0.3*capex"
   },
   "hybrid_plan_cancel": {
    "cash": null,
@@ -2148,9 +2168,9 @@
    "equity": null,
    "months": null,
    "prob": null,
-   "label": "PEDIR",
+   "label": "HIPÓTESE · REAL (programa)",
    "origin": "skeleton mail-joker-fa-bess-01 (RP-C21-I08)",
-   "note": "Apoio Fundo Ambiental a baterias: Capex BESS −? (PEDIR), P(ganhar) PEDIR. Placeholder: custo candidatura −0,5U."
+   "note": "Candidatura ao apoio ao armazenamento: consultor + estudo + peças 0,05–0,10 → −0,075 (−0,5U). Sem NPV. REAL: PRR investimento RP-C21-i08 «Flexibilidade de Rede e Armazenamento» — Aviso N.º 01/C21-i08/2024 (30-07-2024, Fundo Ambiental), regulamento Portaria n.º 176-B/2024/1: armazenamento ≥ 1 MVA e ≥ 2 h, junto a centro electroprodutor renovável (mesmo ponto de ligação), apoio até 20 % dos custos elegíveis; dotação 99,75 M€ para ≥ 500 MW; relatório final 03-04-2025 (rect. 09-04-2025): 31 operações, 86,38 M€, 561,6 MW (≈ 0,154 M€/MW); execução até 31-12-2025. ATENÇÃO: este aviso está FECHADO em 2026 → no jogo é um aviso sucessor (HIPÓTESE/PEDIR). Odds GM 0,3 (+0,2 com lp_granted, +0,2 com le_granted): o aviso real teve 31 operações aprovadas; número de candidaturas não encontrado (PEDIR). Visibilidade v0.1 (euro-fields §20, 2026-10-06c)."
   },
   "sobreequip_merchant_energy": {
    "cash": "+0.247/mês (plano médio, ano 1; desde o COD da fatia)",
@@ -3860,7 +3880,8 @@
    "formula": "nav: -0.19*1*k ; months: 1 (deadline shift = economy.months)",
    "pay_from": null,
    "nav_capex": 0.0,
-   "nav_months": -0.19
+   "nav_months": -0.19,
+   "track": "plant"
   },
   "epc_demobilised": {
    "cash": null,
@@ -3877,7 +3898,8 @@
    "formula": "nav: -0.19*1*k ; months: 1 (via r-ensaios, não shift)",
    "pay_from": null,
    "nav_capex": 0.0,
-   "nav_months": -0.19
+   "nav_months": -0.19,
+   "track": "tests"
   },
   "act_fine_risk": {
    "cash": null,
@@ -3964,6 +3986,329 @@
    "label": "REAL (regra)",
    "origin": "skeletons (via ambiental sem atraso)",
    "note": "Marcador: a via ambiental não acrescenta meses. months 0 explícito para shift_on_effects. Obra v0.1 (euro-fields §19, 2026-10-06b)."
+  },
+  "bank_fees_term_sheet": {
+   "cash": -0.35,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE · SECUNDÁRIO (prática de project finance)",
+   "origin": "skeleton mail-banco-term-sheet-01 (sign); motor: kd 5 % = Euribor + margem/comissões (leilao_faixa_npv.json assumptions.project_finance)",
+   "note": "Assinar o term sheet: o banco manda fazer a due diligence à custa do promotor — consultor técnico (LTA) ~0,10–0,15, jurídico (LLA) ~0,08–0,15, seguros + auditoria do modelo ~0,04–0,08 — mais comissão de mandato ~0,2 % de 49 M€ ≈ 0,10 → 0,35 M€ (banda 0,15–0,50). A comissão de estruturação (upfront 1–2 % da dívida ≈ 0,5–1,0 M€) paga-se no financial close e o motor já a tem dentro do kd 5 % → NÃO entra aqui (contaria 2 vezes). Sai da caixa (não é obra; não usa a contingência da obra). NPV: 0 — é custo normal de desenvolvimento de um projeto que o motor já supõe financiado (mesma regra de pip_request_submitted / cash_at_risk_+1: gasto de desenvolvimento sai do orçamento de 6,5 e da contingência do plano, sem ΔNPV). Se o Pedro quiser que morda no NPV: nav −0,35 (≈ 11 % do NPV 3,2, passa o limiar de causa) — mas a corrida cuidadosa desce de ~+1,0 para ~+0,7. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "cash -0.35 (orçamento de desenvolvimento; nav 0 enquanto houver contingência do plano)",
+   "capex_MEUR": 0.0,
+   "pay_from": "caixa",
+   "track": null,
+   "nav_capex": 0.0,
+   "nav_months": 0.0,
+   "nav_cash": 0.0,
+   "band_MEUR": [
+    0.15,
+    0.5
+   ]
+  },
+  "act_fine_paid": {
+   "cash": -0.1,
+   "debt": null,
+   "nav": -0.1,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (escalões e regras citados)",
+   "origin": "skeleton mail-obra-inspecao-01 (keep_going: coima certa); CT art. 554.º/4, Lei 107/2009 art. 19.º/4, Lei 102/2009 art. 16.º/5, DL 273/2003 art. 25.º/4, CT art. 562.º; UC 102 € em 2026 (Lei 73-A/2025 art. 242.º)",
+   "note": "Continuar depois do aviso da ACT = coima certa (substitui act_fine_risk nesta escolha; act_fine_risk fica no JSON). 2–3 infrações muito graves com coima elevada até ao mínimo do dolo (Lei 107/2009 art. 19.º/4): SPV 45 UC = 4.6 k€; EPC 300–600 UC = 30.6–61.2 k€ por infração, com o dono da obra solidário (Lei 102/2009 art. 16.º/5) → 0,10 M€ (banda 0,03–0,18). Sai da caixa, nunca da contingência. ΔNPV −0,10 (1:1). No NPV fica abaixo do limiar de causa; a parte visível é a caixa e a notícia (sanção acessória de publicidade, CT art. 562.º → reputation_exposed, GM). Não traz meses (parar é a outra escolha: delay_obra_curto). Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "cash -0.1 → nav 1:1",
+   "capex_MEUR": 0.0,
+   "pay_from": "caixa",
+   "track": null,
+   "nav_capex": 0.0,
+   "nav_months": 0.0,
+   "nav_cash": -0.1,
+   "band_MEUR": [
+    0.03,
+    0.18
+   ]
+  },
+  "delay_ligacao_curto": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.19,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 1,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-rede-obras-01 (wait, com ren_docs_late); deadlines grid_connection shift_on_effects",
+   "note": "Esperar pelos papéis: a ligação da REN escorrega 1 mês. Só mexe no NPV se a REN for a pista crítica: numa corrida cuidadosa a REN acaba ~M23 e a rede do jogador ~M27 (4 meses de folga) → ΔNPV 0. nav_months −0,19 = valor se crítica. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "months +1 na pista REN → nav = −0.19*ΔCOD (nav_months -0.19 = valor se a pista for crítica)",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "track": "REN",
+   "nav_capex": 0.0,
+   "nav_months": -0.19,
+   "nav_cash": 0.0
+  },
+  "linha_epc": {
+   "cash": null,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-linha-empreiteiro-01 (epc_builds)",
+   "note": "O EPC faz a linha com a equipa/subempreiteiro habitual: preço já no Capex 90 (linha 400 kV 2c 5 km ≈ 5,4 M€ dentro do CAPEX_infra ≈ 16,1, §10). Sem € e sem meses: fica o prazo base de 15 meses. O risco está nas odds do GM (r-epc-atraso 0,5 → delay_subestacao_+1). Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "sem € e sem meses",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "track": "player_grid",
+   "nav_capex": 0.0,
+   "nav_months": 0.0,
+   "nav_cash": 0.0
+  },
+  "linha_especialista": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.05,
+   "bonding": null,
+   "car": null,
+   "equity": 0.6,
+   "months": -2,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (€/km ACER)",
+   "origin": "skeleton mail-linha-empreiteiro-01 (specialist); ACER UIC 2023 Table 3 (400 kV aéreo 0,533–1,635 M€/km, mediana ~1,05; REAL); CAPEX_infra §10",
+   "note": "Empreiteiro especialista em linhas de MAT (equipa própria de apoios e desenrolamento): prémio ~10–15 % sobre a linha (5 km × 1,05 ≈ 5,3 M€ → 0,5–0,8) + mobilização → 0,6 M€ (banda 0,4–0,9). Ganha 2 meses na pista player_grid. Contingência da obra primeiro. ΔNPV fora da contingência −0,43 + 0,38 (se a rede do jogador for crítica) = −0,05; dentro +0,38. Compra folga contra o prazo da licença de exploração (art. 14.º/3). Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "capex +0.6 (pay_from contingencia_obra: contingência primeiro; o resto equity +100 % e nav −0.72*resto) ; months -2 na pista player_grid → nav = −0.19*ΔCOD (nav_months +0.38 = valor se a pista for crítica)",
+   "capex_MEUR": 0.6,
+   "pay_from": "contingencia_obra",
+   "track": "player_grid",
+   "nav_capex": -0.43,
+   "nav_months": 0.38,
+   "nav_cash": 0.0,
+   "band_MEUR": [
+    0.4,
+    0.9
+   ]
+  },
+  "servidao_settlement": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.22,
+   "bonding": null,
+   "car": null,
+   "equity": 0.3,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE · REAL (direito à indemnização)",
+   "origin": "skeleton mail-linha-servidao-01 (pay); grid_line_bands_proposed.servitude_land (400 kV 15–50 k€/km); DL 43335/1960 art. 37.º (indemnização por quaisquer prejuízos da linha; STJ 03-07-2014; TRG 11-01-2024: 15 k€ por um vão de MT sobre um prédio)",
+   "note": "Pagar ao proprietário que bloqueia: a servidão normal do troço (~0,03–0,05 M€) × prémio de resistência 3–8 → 0,30 M€ (banda 0,15–0,60). Sem meses. Capex de obra → contingência primeiro. ΔNPV −0,22 fora da contingência. Risco opcional (GM): precedente — outros donos sobem o preço. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "capex +0.3 (pay_from contingencia_obra: contingência primeiro; o resto equity +100 % e nav −0.72*resto)",
+   "capex_MEUR": 0.3,
+   "pay_from": "contingencia_obra",
+   "track": "player_grid",
+   "nav_capex": -0.22,
+   "nav_months": 0.0,
+   "nav_cash": 0.0,
+   "band_MEUR": [
+    0.15,
+    0.6
+   ]
+  },
+  "servidao_administrativa": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.61,
+   "bonding": null,
+   "car": null,
+   "equity": 0.05,
+   "months": 3,
+   "prob": null,
+   "label": "REAL (regime) · HIPÓTESE (meses, €) · PEDIR (via para linha privada)",
+   "origin": "skeleton mail-linha-servidao-01 (dgeg); DL 15/2022 art. 301.º/2 (mantém o DL 43335/1960 para a implantação de instalações elétricas e a constituição de servidões); DL 43335/1960 art. 51.º (com licença de estabelecimento, a DUP dá o direito de atravessar prédios com linhas aéreas e montar apoios; § 1.º remete para o RLIE, DL 26852/1936) e art. 37.º (indemnização); TRG 11-01-2024 (licença de estabelecimento vale como DUP e é o título da servidão; éditos com 15 dias para reclamar); Código das Expropriações, Lei 168/99, para a expropriação urgente (art. 51.º 5.º)",
+   "note": "Pedir à DGEG a servidão administrativa: éditos + reclamações (15–30 dias) + decisão + notificações → +3 meses (banda 3–6, HIPÓTESE). Custo baixo: processo, peritagem e advogado ~0,05 M€; a indemnização ao dono continua devida (art. 37.º) ao valor da servidão normal, que já está no Capex. ΔNPV −0,04 − 0,57 = −0,61 se a rede do jogador for crítica. PEDIR (jurista): o art. 51.º fala do concessionário; confirmar se a DGEG dá a DUP à linha de ligação de um produtor privado ou se é preciso DUP para expropriação (mais lenta: 6+ meses). O 'DL 43/2013' do pedido não é a base que encontrámos; a base é o DL 43335/1960, mantido pelo DL 15/2022 art. 301.º/2 até haver legislação nova. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "capex +0.05 (pay_from contingencia_obra: contingência primeiro; o resto equity +100 % e nav −0.72*resto) ; months +3 na pista player_grid → nav = −0.19*ΔCOD (nav_months -0.57 = valor se a pista for crítica)",
+   "capex_MEUR": 0.05,
+   "pay_from": "contingencia_obra",
+   "track": "player_grid",
+   "nav_capex": -0.04,
+   "nav_months": -0.57,
+   "nav_cash": 0.0,
+   "band_MEUR": [
+    0.03,
+    0.1
+   ],
+   "months_band": [
+    3,
+    6
+   ]
+  },
+  "linha_desvio": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.58,
+   "bonding": null,
+   "car": null,
+   "equity": 0.8,
+   "months": 0,
+   "prob": null,
+   "label": "REAL (€/km ACER) · HIPÓTESE (km)",
+   "origin": "skeleton mail-linha-servidao-01 (reroute, com delay_linha_curto); ACER UIC 2023 Table 3 (400 kV aéreo, mediana ~1,05 M€/km); servidão 30 k€/km (grid_line_bands_proposed)",
+   "note": "Desviar a linha à volta da parcela: +0,75 km (banda 0,5–1,5) × (1,05 + 0,03 de servidão) ≈ 0,8 M€ (banda 0,5–1,7). O mês do novo projeto e dos novos donos vem em delay_linha_curto (mesma escolha). Contingência primeiro. Fora da contingência e com a rede crítica: −0,58 − 0,19 = −0,77. Ordem na carta: pagar −0,22 · DGEG −0,61 · desviar −0,77. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "capex +0.8 (pay_from contingencia_obra: contingência primeiro; o resto equity +100 % e nav −0.72*resto)",
+   "capex_MEUR": 0.8,
+   "pay_from": "contingencia_obra",
+   "track": "player_grid",
+   "nav_capex": -0.58,
+   "nav_months": 0.0,
+   "nav_cash": 0.0,
+   "band_MEUR": [
+    0.5,
+    1.7
+   ]
+  },
+  "delay_linha_curto": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.19,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 1,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeletons mail-linha-servidao-01 (reroute) e outros; deadlines player_grid shift_on_effects",
+   "note": "A linha do jogador escorrega 1 mês. ΔNPV −0,19 se a rede do jogador for a pista crítica (é, numa corrida cuidadosa). Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "months +1 na pista player_grid → nav = −0.19*ΔCOD (nav_months -0.19 = valor se a pista for crítica)",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "track": "player_grid",
+   "nav_capex": 0.0,
+   "nav_months": -0.19,
+   "nav_cash": 0.0
+  },
+  "delay_linha_+1": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.57,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 3,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "deadlines player_grid shift_on_effects; skeletons da linha",
+   "note": "A linha do jogador escorrega 3 meses (banda 2–4). ΔNPV −0,57 se crítica. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "months +3 na pista player_grid → nav = −0.19*ΔCOD (nav_months -0.57 = valor se a pista for crítica)",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "track": "player_grid",
+   "nav_capex": 0.0,
+   "nav_months": -0.57,
+   "nav_cash": 0.0,
+   "months_band": [
+    2,
+    4
+   ]
+  },
+  "delay_subestacao_+1": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.57,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 3,
+   "prob": null,
+   "label": "HIPÓTESE · SECUNDÁRIO (prazos de transformadores)",
+   "origin": "skeleton mail-epc-atraso-01 (todas as escolhas) e r-epc-atraso; Wood Mackenzie 2025 (transformadores de potência ~128 semanas, elevadores ~143; SECUNDÁRIO, sobretudo EUA); IEA fev. 2025 (grandes transformadores até ~4 anos; SECUNDÁRIO)",
+   "note": "A subestação do jogador atrasa 3 meses (banda 2–6): transformador ou aparelhagem de MAT fora de prazo. Com prazos de entrega de 2–4 anos, um atraso de fábrica de 3 meses é o caso normal. ΔNPV −0,57 se crítica. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "months +3 na pista player_grid → nav = −0.19*ΔCOD (nav_months -0.57 = valor se a pista for crítica)",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "track": "player_grid",
+   "nav_capex": 0.0,
+   "nav_months": -0.57,
+   "nav_cash": 0.0,
+   "months_band": [
+    2,
+    6
+   ]
+  },
+  "subestacao_acceleration": {
+   "cash": null,
+   "debt": null,
+   "nav": 0.02,
+   "bonding": null,
+   "car": null,
+   "equity": 0.5,
+   "months": -2,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeletons mail-epc-atraso-01 (accelerate, com delay_subestacao_+1) e mail-prazo-derrapagem-01 skin rede-propria (recover)",
+   "note": "Pagar aceleração da subestação: turnos extra na montagem e nos ensaios, transporte especial antecipado do transformador, equipa de comissionamento dedicada → 0,5 M€ (banda 0,3–0,9; ~0,25 M€ por mês recuperado, metade da epc_acceleration porque o âmbito é ~11 M€ e não a central toda). Com delay_subestacao_+1 na mesma escolha: +3 − 2 = +1 mês líquido. ΔNPV −0,36 + 0,38 = +0,02 (≈ 0) fora da contingência se crítica; +0,38 dentro. O valor real está no prazo da licença de exploração. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "capex +0.5 (pay_from contingencia_obra: contingência primeiro; o resto equity +100 % e nav −0.72*resto) ; months -2 na pista player_grid → nav = −0.19*ΔCOD (nav_months +0.38 = valor se a pista for crítica)",
+   "capex_MEUR": 0.5,
+   "pay_from": "contingencia_obra",
+   "track": "player_grid",
+   "nav_capex": -0.36,
+   "nav_months": 0.38,
+   "nav_cash": 0.0,
+   "band_MEUR": [
+    0.3,
+    0.9
+   ]
+  },
+  "fa_bess_awarded": {
+   "cash": null,
+   "debt": null,
+   "nav": 1.24,
+   "bonding": null,
+   "car": null,
+   "equity": -0.43,
+   "months": 0,
+   "prob": null,
+   "label": "REAL (taxa 20 %, regras do aviso) · HIPÓTESE (aviso sucessor, montante)",
+   "origin": "skeleton mail-fa-bess-resposta-01 skin aprovado (ack); REAL: PRR investimento RP-C21-i08 «Flexibilidade de Rede e Armazenamento» — Aviso N.º 01/C21-i08/2024 (30-07-2024, Fundo Ambiental), regulamento Portaria n.º 176-B/2024/1: armazenamento ≥ 1 MVA e ≥ 2 h, junto a centro electroprodutor renovável (mesmo ponto de ligação), apoio até 20 % dos custos elegíveis; dotação 99,75 M€ para ≥ 500 MW; relatório final 03-04-2025 (rect. 09-04-2025): 31 operações, 86,38 M€, 561,6 MW (≈ 0,154 M€/MW); execução até 31-12-2025. ATENÇÃO: este aviso está FECHADO em 2026 → no jogo é um aviso sucessor (HIPÓTESE/PEDIR).",
+   "note": "Apoio aprovado: 20 % × Capex BESS 7.2 = 1.44 M€, pago contra faturas na obra → reduz o Capex financiado: equity −0.43 (convenção 0,3) e ΔNPV +1.24 (= 1.44 descontado ao mês do Capex M23). Com o BESS: centro -0.83 → +0.42. Só vale com bess_dev_flag/mission_bess (sem BESS não há apoio: a consola ignora). Referência real: média dos 31 projetos 0,154 M€/MW (15 MW → 2,3) — mais alto porque o Capex de 2024 era mais caro; usamos 20 % do Capex de 2026. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "grant = 0.20*capex_BESS = 1.44 ; equity −0.3*grant ; nav +grant/1.08^(23/12) = +1.24",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "track": null,
+   "nav_capex": 0.0,
+   "nav_months": 0.0,
+   "nav_cash": 0.0,
+   "grant_MEUR": 1.44,
+   "grant_rate": 0.2,
+   "applies_to": "só com bess_dev_flag"
+  },
+  "fa_bess_refused": {
+   "cash": null,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "skeleton mail-fa-bess-resposta-01 skin recusado",
+   "note": "Apoio recusado: sem €. O BESS (se houver) fica com o NPV sem apoio (-0.83 centro). Custo da candidatura já pago em fa_bess_apply. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
+   "formula": "sem € e sem meses",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "track": null,
+   "nav_capex": 0.0,
+   "nav_months": 0.0,
+   "nav_cash": 0.0
   }
  },
  "rule_odds_proposed": {
@@ -6722,6 +7067,565 @@
    "FIX L: partner_stake_25 × 0,75 só com NPV > 0: em stakesApplySpecial não mexer em node.van; NPV do jogador = van > 0 ? van × (1 − s) : van no HUD / ecrã final / stakesNpvIrr."
   ]
  },
+ "visibilidade_v01_2026_10_06c": {
+  "_meta": "Economy 2026-10-06c PT · visibilidade v0.1 (handoff GM v01-visibility-handoff-2026-10-06.md) · DRAFT, nada deployed.",
+  "tags": {
+   "bank_fees_term_sheet": {
+    "cash": -0.35,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": 0.0,
+    "nav_capex": 0.0,
+    "nav_months": 0.0,
+    "nav_cash": 0.0,
+    "months": 0,
+    "track": null,
+    "pay_from": "caixa",
+    "label": "HIPÓTESE · SECUNDÁRIO (prática de project finance)",
+    "band_MEUR": [
+     0.15,
+     0.5
+    ]
+   },
+   "act_fine_paid": {
+    "cash": -0.1,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": -0.1,
+    "nav_capex": 0.0,
+    "nav_months": 0.0,
+    "nav_cash": -0.1,
+    "months": 0,
+    "track": null,
+    "pay_from": "caixa",
+    "label": "HIPÓTESE · REAL (escalões e regras citados)",
+    "band_MEUR": [
+     0.03,
+     0.18
+    ]
+   },
+   "delay_ligacao_curto": {
+    "cash": null,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": -0.19,
+    "nav_capex": 0.0,
+    "nav_months": -0.19,
+    "nav_cash": 0.0,
+    "months": 1,
+    "track": "REN",
+    "pay_from": null,
+    "label": "HIPÓTESE"
+   },
+   "linha_epc": {
+    "cash": null,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": 0.0,
+    "nav_capex": 0.0,
+    "nav_months": 0.0,
+    "nav_cash": 0.0,
+    "months": 0,
+    "track": "player_grid",
+    "pay_from": null,
+    "label": "HIPÓTESE"
+   },
+   "linha_especialista": {
+    "cash": null,
+    "capex_MEUR": 0.6,
+    "equity": 0.6,
+    "nav": -0.05,
+    "nav_capex": -0.43,
+    "nav_months": 0.38,
+    "nav_cash": 0.0,
+    "months": -2,
+    "track": "player_grid",
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE · REAL (€/km ACER)",
+    "band_MEUR": [
+     0.4,
+     0.9
+    ]
+   },
+   "servidao_settlement": {
+    "cash": null,
+    "capex_MEUR": 0.3,
+    "equity": 0.3,
+    "nav": -0.22,
+    "nav_capex": -0.22,
+    "nav_months": 0.0,
+    "nav_cash": 0.0,
+    "months": 0,
+    "track": "player_grid",
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE · REAL (direito à indemnização)",
+    "band_MEUR": [
+     0.15,
+     0.6
+    ]
+   },
+   "servidao_administrativa": {
+    "cash": null,
+    "capex_MEUR": 0.05,
+    "equity": 0.05,
+    "nav": -0.61,
+    "nav_capex": -0.04,
+    "nav_months": -0.57,
+    "nav_cash": 0.0,
+    "months": 3,
+    "track": "player_grid",
+    "pay_from": "contingencia_obra",
+    "label": "REAL (regime) · HIPÓTESE (meses, €) · PEDIR (via para linha privada)",
+    "band_MEUR": [
+     0.03,
+     0.1
+    ],
+    "months_band": [
+     3,
+     6
+    ]
+   },
+   "linha_desvio": {
+    "cash": null,
+    "capex_MEUR": 0.8,
+    "equity": 0.8,
+    "nav": -0.58,
+    "nav_capex": -0.58,
+    "nav_months": 0.0,
+    "nav_cash": 0.0,
+    "months": 0,
+    "track": "player_grid",
+    "pay_from": "contingencia_obra",
+    "label": "REAL (€/km ACER) · HIPÓTESE (km)",
+    "band_MEUR": [
+     0.5,
+     1.7
+    ]
+   },
+   "delay_linha_curto": {
+    "cash": null,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": -0.19,
+    "nav_capex": 0.0,
+    "nav_months": -0.19,
+    "nav_cash": 0.0,
+    "months": 1,
+    "track": "player_grid",
+    "pay_from": null,
+    "label": "HIPÓTESE"
+   },
+   "delay_linha_+1": {
+    "cash": null,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": -0.57,
+    "nav_capex": 0.0,
+    "nav_months": -0.57,
+    "nav_cash": 0.0,
+    "months": 3,
+    "track": "player_grid",
+    "pay_from": null,
+    "label": "HIPÓTESE",
+    "months_band": [
+     2,
+     4
+    ]
+   },
+   "delay_subestacao_+1": {
+    "cash": null,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": -0.57,
+    "nav_capex": 0.0,
+    "nav_months": -0.57,
+    "nav_cash": 0.0,
+    "months": 3,
+    "track": "player_grid",
+    "pay_from": null,
+    "label": "HIPÓTESE · SECUNDÁRIO (prazos de transformadores)",
+    "months_band": [
+     2,
+     6
+    ]
+   },
+   "subestacao_acceleration": {
+    "cash": null,
+    "capex_MEUR": 0.5,
+    "equity": 0.5,
+    "nav": 0.02,
+    "nav_capex": -0.36,
+    "nav_months": 0.38,
+    "nav_cash": 0.0,
+    "months": -2,
+    "track": "player_grid",
+    "pay_from": "contingencia_obra",
+    "label": "HIPÓTESE",
+    "band_MEUR": [
+     0.3,
+     0.9
+    ]
+   },
+   "epc_lds_claimed": {
+    "equity": -0.5,
+    "nav": 0.36,
+    "capex_credit_MEUR": 0.5,
+    "label": "HIPÓTESE / PEDIR",
+    "before": {
+     "equity": -0.5,
+     "nav": null
+    }
+   },
+   "delay_ligacao_+1": {
+    "months": 4,
+    "months_band": [
+     3,
+     6
+    ],
+    "track": "REN",
+    "nav_months": -0.76,
+    "before": {
+     "months": 3,
+     "nav": -0.57
+    }
+   },
+   "pip_benefits_offer": {
+    "cash": -0.25,
+    "nav": -0.18,
+    "prob": null,
+    "community_fund_pv_MEUR": 0.18,
+    "before": {
+     "cash": -0.15,
+     "nav": null,
+     "prob": -0.1
+    },
+    "label": "HIPÓTESE (valores) · REAL (DL 15/2022 art. 49.º; DL 30-A/2022 arts. 4.º e 4.º-B)"
+   },
+   "bess_dev_flag": {
+    "capex_MEUR": 7.2,
+    "equity": 2.16,
+    "nav": -0.83,
+    "before": {
+     "equity": 2.7,
+     "nav": null,
+     "cash": -0.4,
+     "months": 9
+    }
+   },
+   "fa_bess_awarded": {
+    "cash": null,
+    "capex_MEUR": 0.0,
+    "equity": -0.43,
+    "nav": 1.24,
+    "nav_capex": 0.0,
+    "nav_months": 0.0,
+    "nav_cash": 0.0,
+    "months": 0,
+    "track": null,
+    "pay_from": null,
+    "label": "REAL (taxa 20 %, regras do aviso) · HIPÓTESE (aviso sucessor, montante)",
+    "grant_MEUR": 1.44,
+    "grant_rate": 0.2
+   },
+   "fa_bess_refused": {
+    "cash": null,
+    "capex_MEUR": 0.0,
+    "equity": null,
+    "nav": 0.0,
+    "nav_capex": 0.0,
+    "nav_months": 0.0,
+    "nav_cash": 0.0,
+    "months": 0,
+    "track": null,
+    "pay_from": null,
+    "label": "HIPÓTESE"
+   },
+   "fa_bess_apply": {
+    "cash": -0.075,
+    "label": "HIPÓTESE · REAL (programa)"
+   }
+  },
+  "cod_rule": {
+   "formula": "COD = max(player_grid, grid_connection (REN), epc_mechanical_completion (plant)) + testes (2; −1 vistoria_acreditada; +1 epc_demobilised)",
+   "npv": "ΔNPV de meses = −0,19 × ΔCOD (Ourique; ×k noutros lotes). Uma tag de meses numa pista com folga dá 0. Acelerar uma pista que não é crítica dá 0 (só o custo).",
+   "per_tag_fields": "months (número, + atrasa, − acelera) · track ∈ {player_grid, REN, plant, tests} · nav_months = −0,19 × months (valor SÓ se a pista for crítica; a consola nova recalcula pelo COD) · nav = nav_capex + nav_cash + nav_months (legado para a consola atual)",
+   "track_map_existing": {
+    "delay_obra_+1": "plant",
+    "delay_obra_curto": "plant",
+    "epc_acceleration": "plant",
+    "obra_start_deferred": "all (início da obra)",
+    "epc_demobilised": "tests",
+    "delay_cod_+1": "REN+plant (deadlines) → PROPOSTA: tests (direto no COD)",
+    "delay_cod_+2": "REN+plant (deadlines) → PROPOSTA: tests (direto no COD)"
+   },
+   "label": "HIPÓTESE"
+  },
+  "timeline_ourique_careful": {
+   "base": {
+    "construction_started": 12,
+    "grid_conditions_accepted": 7,
+    "player_grid_due": 15,
+    "grid_connection_due": 16,
+    "epc_mechanical_completion_due": 12,
+    "tests": 2
+   },
+   "tracks": {
+    "player_grid": 27,
+    "REN": 23,
+    "plant": 24
+   },
+   "critical": "player_grid",
+   "cod_month": 29,
+   "float_months": {
+    "player_grid": 0,
+    "REN": 4,
+    "plant": 3
+   },
+   "examples": {
+    "REN +4 (delay_ligacao_+1)": {
+     "tracks": {
+      "player_grid": 27,
+      "REN": 27,
+      "plant": 24
+     },
+     "critical": "player_grid",
+     "cod": 29,
+     "dcod": 0,
+     "dnav": -0.0
+    },
+    "REN +6 (topo da banda)": {
+     "tracks": {
+      "player_grid": 27,
+      "REN": 29,
+      "plant": 24
+     },
+     "critical": "REN",
+     "cod": 31,
+     "dcod": 2,
+     "dnav": -0.38
+    },
+    "servidão administrativa +3": {
+     "tracks": {
+      "player_grid": 30,
+      "REN": 23,
+      "plant": 24
+     },
+     "critical": "player_grid",
+     "cod": 32,
+     "dcod": 3,
+     "dnav": -0.57
+    },
+    "subestação +3 e acelerar −2": {
+     "tracks": {
+      "player_grid": 28,
+      "REN": 23,
+      "plant": 24
+     },
+     "critical": "player_grid",
+     "cod": 30,
+     "dcod": 1,
+     "dnav": -0.19
+    },
+    "especialista −2": {
+     "tracks": {
+      "player_grid": 25,
+      "REN": 23,
+      "plant": 24
+     },
+     "critical": "player_grid",
+     "cod": 27,
+     "dcod": -2,
+     "dnav": 0.38
+    },
+    "especialista −2 e REN +4": {
+     "tracks": {
+      "player_grid": 25,
+      "REN": 27,
+      "plant": 24
+     },
+     "critical": "REN",
+     "cod": 29,
+     "dcod": 0,
+     "dnav": -0.0
+    },
+    "obra +3 (delay_obra_+1)": {
+     "tracks": {
+      "player_grid": 27,
+      "REN": 23,
+      "plant": 27
+     },
+     "critical": "player_grid",
+     "cod": 29,
+     "dcod": 0,
+     "dnav": -0.0
+    },
+    "obra +4": {
+     "tracks": {
+      "player_grid": 27,
+      "REN": 23,
+      "plant": 28
+     },
+     "critical": "plant",
+     "cod": 30,
+     "dcod": 1,
+     "dnav": -0.19
+    },
+    "vistoria acreditada −1": {
+     "tracks": {
+      "player_grid": 27,
+      "REN": 23,
+      "plant": 24
+     },
+     "critical": "player_grid",
+     "cod": 28,
+     "dcod": -1,
+     "dnav": 0.19
+    },
+    "EPC desmobilizado +1": {
+     "tracks": {
+      "player_grid": 27,
+      "REN": 23,
+      "plant": 24
+     },
+     "critical": "player_grid",
+     "cod": 30,
+     "dcod": 1,
+     "dnav": -0.19
+    }
+   },
+   "le_deadline": "LE ≤ 1 ano depois da LP (DL 15/2022 art. 14.º/3, REAL). Com LP ~M13–15 o prazo é ~M25–27 e o COD é M29 → é preciso prorrogar. A exceção da alínea b) (90 dias depois da infraestrutura da RESP) só cobre atrasos do operador da rede, não a rede do próprio jogador. Prorrogação: art. 14.º/8 DGEG até 6 meses (circunstâncias extraordinárias) ou art. 14.º/5 ministro, sem limite, circunstâncias excecionais; art. 14.º/7: LP + LE ≤ 2 anos no conjunto (renováveis). Prorrogação pedida cedo = caminho normal (aviso LE−2): OK."
+  },
+  "durations_check": {
+   "player_grid_15m": "Realista SÓ com o transformador encomendado antes do início da obra. Prazos 2025: transformadores de potência ~128 semanas, elevadores ~143 (Wood Mackenzie, SECUNDÁRIO, sobretudo EUA); grandes transformadores até ~4 anos (IEA fev. 2025, SECUNDÁRIO); fabricantes europeus de 2.ª linha ~20–32 meses em 2026 (SECUNDÁRIO). Obra civil + montagem da subestação 9–12 meses e linha aérea 400 kV de 5 km (~12–15 apoios) 6–9 meses, em paralelo; ensaios 1–2 meses → 12–15 meses depois de o transformador estar garantido. Proposta: manter 15 (12–18) assumindo encomenda antecipada no FID−6…−12 (PEDIR Pedro: carta/tag de encomenda antecipada com sinal 10–20 % do transformador ≈ 0,4–0,9 M€ em risco); sem ela, 24+ meses.",
+   "grid_connection_16m": "Plausível para um painel (baía) de 400 kV numa subestação da REN que já existe (banda 14–22 OK). Se for preciso ampliar o barramento ou uma subestação nova da REN, 24–36 meses (PEDIR).",
+   "epc_12m": "OK para 120 MWp (10–16).",
+   "label": "HIPÓTESE · SECUNDÁRIO"
+  },
+  "ren_delay_3_to_4": "OK: 4 meses (3–6). Numa corrida cuidadosa a REN tem exatamente 4 meses de folga → o atraso típico não mexe no COD; 5–6 meses tiram −0,19/−0,38. Se quiserem que o atraso da REN se sinta mais vezes, usar banda 4–6 ou REN 17–18 meses.",
+  "scenarios": {
+   "cuidadosa": {
+    "dnav": 0.05,
+    "cash": -0.35,
+    "contingencia_usada": 2.15,
+    "equity_extra": 0.2,
+    "cod": 28,
+    "critical": "player_grid",
+    "tracks": {
+     "player_grid": 26,
+     "REN": 23,
+     "plant": 25
+    }
+   },
+   "cuidadosa B (reclama LDs, paga a servidão, EPC faz a linha)": {
+    "dnav": -0.21,
+    "cash": -0.35,
+    "contingencia_usada": 0.84,
+    "equity_extra": 0.0,
+    "cod": 32,
+    "critical": "player_grid",
+    "tracks": {
+     "player_grid": 30,
+     "REN": 23,
+     "plant": 25
+    }
+   },
+   "desleixada": {
+    "dnav": -1.43,
+    "cash": -0.45,
+    "contingencia_usada": 0.15,
+    "equity_extra": 0.0,
+    "cod": 36,
+    "critical": "player_grid",
+    "tracks": {
+     "player_grid": 33,
+     "REN": 24,
+     "plant": 25
+    }
+   },
+   "desleixada com desvio da linha": {
+    "dnav": -1.05,
+    "cash": -0.45,
+    "contingencia_usada": 0.8,
+    "equity_extra": 0.0,
+    "cod": 34,
+    "critical": "player_grid",
+    "tracks": {
+     "player_grid": 31,
+     "REN": 24,
+     "plant": 24
+    }
+   },
+   "_nota": "ΔNPV desde o NPV do leilão (3,2) só destas cartas, com a regra nova do COD (FIX G-bis) e a contingência (FIX H). A 2.ª carta de furto (repeat 0,30) e o fecho dos custos mensais não entram. obra_security_paid e obra_extra_shifts entram como Capex de obra; delay_obra_curto não mexe no COD (a central tem folga)."
+  },
+  "bess": {
+   "programme": "REAL: PRR investimento RP-C21-i08 «Flexibilidade de Rede e Armazenamento» — Aviso N.º 01/C21-i08/2024 (30-07-2024, Fundo Ambiental), regulamento Portaria n.º 176-B/2024/1: armazenamento ≥ 1 MVA e ≥ 2 h, junto a centro electroprodutor renovável (mesmo ponto de ligação), apoio até 20 % dos custos elegíveis; dotação 99,75 M€ para ≥ 500 MW; relatório final 03-04-2025 (rect. 09-04-2025): 31 operações, 86,38 M€, 561,6 MW (≈ 0,154 M€/MW); execução até 31-12-2025. ATENÇÃO: este aviso está FECHADO em 2026 → no jogo é um aviso sucessor (HIPÓTESE/PEDIR).",
+   "assumptions": {
+    "MW": 15,
+    "MWh": 30,
+    "c_kw": 120,
+    "c_kwh": 180,
+    "rev_eur_mw_yr": {
+     "low": 45000.0,
+     "centre": 65000.0,
+     "high": 95000.0
+    },
+    "real_decline": -0.03,
+    "infl": 0.02,
+    "fade": 0.02,
+    "aug_year": 10,
+    "aug_eur_kwh": 40,
+    "opex_pct": 0.02,
+    "life": 20,
+    "cod_month": 29,
+    "capex_month": 23,
+    "grant_rate": 0.2
+   },
+   "capex_MEUR": 7.2,
+   "grant_MEUR": 1.44,
+   "grant_nav": 1.24,
+   "npv_table": {
+    "low": {
+     "sem_apoio": -3.11,
+     "com_apoio_20pct": -1.87
+    },
+    "centre": {
+     "sem_apoio": -0.83,
+     "com_apoio_20pct": 0.42
+    },
+    "high": {
+     "sem_apoio": 2.61,
+     "com_apoio_20pct": 3.85
+    },
+    "capex_alto_250kwh_150kw_receita_centro": {
+     "sem_apoio": -3.55,
+     "com_apoio_20pct": -1.87
+    },
+    "capex_baixo_150kwh_80kw_receita_centro": {
+     "sem_apoio": 0.78,
+     "com_apoio_20pct": 1.76
+    }
+   },
+   "sources": "Receita: Modo Energy (SECUNDÁRIO): benchmark ME BESS ES — arbitragem day-ahead TB2 ibérica ~€80k/MW/ano (2024) e ~€130k/MW/ano (2025, preço perfeito); spreads diários €70–90/MWh em 2025; aFRR (banda secundária) a cair: ~€26/MW/h (2024) → ~€13 (2025) → ~€9 (1.º sem. 2026), canibalização já em 2026; Espanha aprovou mercado de capacidade (maio 2026), Portugal não (PEDIR). Centro €65k/MW/ano em € de 2026 (metade do TB2 de 2025: captura real < preço perfeito, frota a crescer até ao COD ~2028–29), −3 %/ano real. Capex: dcac_optimo centro 120 €/kW + 180 €/kWh (âncora BNEF 2025, REAL) = 7,2 M€ para 15 MW/30 MWh.",
+   "verdict": "Sem apoio o BESS de 15 MW/30 MWh perde um pouco no centro (e muito sem poder carregar da rede); o apoio de 20 % põe-no ligeiramente positivo. Isto dá à carta do Fundo Ambiental um efeito visível e honesto."
+  },
+  "pip": {
+   "plain_cash": -0.3,
+   "plain_nav": 0.0,
+   "benefits_cash": -0.4,
+   "benefits_nav": -0.18,
+   "fund_pv": 0.18
+  },
+  "console_changes_needed": [
+   "FIX G-bis (index.html, codMonthOf ~l. 9293 e syncCodNpv l. 9298ff do e8b6528): COD = max(player_grid, grid, epc) + COD_TEST_MONTHS (2; −1 vistoria_acreditada; +1 epc_demobilised). Hoje é max(epc, grid) + 2: falta a pista player_grid (deadline player_grid do deadlines.draft.json, criado em construction_started, 15 meses). Sem isto as tags da linha/subestação não mexem no COD nem no NPV.",
+   "FIX G-bis (cont.): o strip do nav nas rows com nav_months ≠ 0 (l. 14644) passa a cobrir as tags novas (delay_linha_*, delay_subestacao_+1, linha_especialista, servidao_administrativa, subestacao_acceleration, delay_ligacao_curto). Para rows com Capex E meses (linha_especialista, subestacao_acceleration, servidao_administrativa): tirar só nav_months e manter o Capex via priceContingencyTag (l. 9332).",
+   "FIX H (já no e8b6528, priceContingencyTag l. 9332): as tags novas com pay_from 'contingencia_obra' (linha_especialista, servidao_settlement, servidao_administrativa, linha_desvio, subestacao_acceleration) entram no mesmo pool de 2,15. pay_from 'caixa' (bank_fees_term_sheet, act_fine_paid, pip_benefits_offer) nunca usa o pool. bank_fees_term_sheet: cash −0,35 com nav 0 (gasto de desenvolvimento) — a consola só aplica o cash.",
+   "act_fine_paid: row normal (cash −0,10, nav −0,10), sem sorteio — não passar por scheduleActFine (FIX J), que é só para act_fine_risk.",
+   "fa_bess_awarded: aplicar só se bess_dev_flag/mission_bess já arrancou (applies_to); senão ignorar. startBessFromPriorityLetter (e8b6528 l. 14716) faz trc.bess += 8 sem custo nem receita: passar a aplicar a row bess_dev_flag (Capex 7,2, equity 2,16, nav −0,83 a 15 MW; escala por MW se for 8 % do TRC ≈ 8 MW: nav ≈ −0,44) ou a row mission_bess, uma vez.",
+   "epc_lds_claimed: agora tem nav +0,36 (e capex_credit_MEUR 0,5 só informativo) — applyEconRow já soma nav e equity −0,5; não passar pelo pool.",
+   "delay_cod_+1/+2: no deadlines.draft.json deslocam REN e central mas não player_grid → com a rede do jogador crítica dão 0. Proposta ao GM: aplicá-las direto ao COD (pista tests) ou juntar player_grid ao shift.",
+   "Copiar o effects-economy.json regenerado para licenca/events/ e para o repo (o events/effects-economy.json e o e8b6528 têm a versão 1006b)."
+  ]
+ },
  "no_economy": [
   "aas_eligible_ack",
   "aas_skip",
@@ -6760,12 +7664,14 @@
   "dica_ack",
   "dl_final_missed_le_deadline",
   "dl_final_missed_lp_request",
+  "dl_met_player_grid",
   "dl_missed_grid_agreement",
   "dl_missed_grid_agreement_final",
   "dossier_unlock",
   "end_screen_open",
   "epc_selected",
   "extension_seen",
+  "fa_bess_answer_seen",
   "fa_bess_skip",
   "fa_bess_wait",
   "fid_track_open",
@@ -6816,10 +7722,12 @@
   "partner_sale_negotiate",
   "partner_sale_refused",
   "partner_trc_spun_off",
+  "player_grid_ready",
   "pressure_answered",
   "punch_list_first",
   "rede_calendar_seen",
   "reequip_defer",
+  "ren_bay_ready",
   "ren_docs_late",
   "ren_status_requested",
   "rescue_sell_all",

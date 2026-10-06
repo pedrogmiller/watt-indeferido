@@ -13,13 +13,6 @@
   "from_type": "CONSULTOR",
   "choices": [
     {
-      "id": "study_reequip",
-      "label": "Estudar a renovação do equipamento",
-      "effects": [
-        "reequip_study"
-      ]
-    },
-    {
       "id": "not_now",
       "label": "É cedo demais",
       "effects": [
@@ -28,5 +21,19 @@
     }
   ],
   "notes_for_economy": "Sem €",
-  "notes_for_ui": "Primeira menção merchant/PPA — não em M0"
+  "notes_for_ui": "Primeira menção merchant/PPA — não em M0",
+  "retired_choices_v01": [
+    {
+      "id": "study_reequip",
+      "label": "Estudar a renovação do equipamento",
+      "effects": [
+        "reequip_study"
+      ],
+      "retired": true,
+      "retired_reason": "GM 2026-10-06: renovar o equipamento é para daqui a décadas; na v0.1 a carta passa a nota."
+    }
+  ],
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega.",
+  "notes_for_ui_visibilidade_v01_2026_10_06": "Nota. Se a Sala usar esta carta como «oferta», manter só o texto (sem custo)."
 }

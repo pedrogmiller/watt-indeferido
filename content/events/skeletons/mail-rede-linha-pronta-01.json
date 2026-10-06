@@ -20,9 +20,9 @@
       "id": "ack",
       "label": "Percebido",
       "effects": [
-        "line_ready",
-        "grid_energisation_ready"
-      ]
+        "ren_bay_ready"
+      ],
+      "consequence_pt": "A obra da REN está pronta."
     }
   ],
   "heavy": false,
@@ -32,5 +32,8 @@
   "deadline_id": "grid_connection",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": false
+  "deadline_blocks_play": false,
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega.",
+  "notes_for_ui_visibilidade_v01_2026_10_06": "Nota. Skin ourique = obra da REN pronta (ren_bay_ready); skin rede-propria = subestação e linha do jogador (player_grid_ready). O motor junta line_ready + grid_energisation_ready quando as duas estiverem prontas."
 }

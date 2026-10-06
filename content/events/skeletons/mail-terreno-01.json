@@ -35,7 +35,8 @@
             "servidoes_linha_+2"
           ]
         }
-      }
+      },
+      "consequence_pt": "Ficas com a opção do terreno e começas a verificá-lo: sai dinheiro da caixa."
     },
     {
       "id": "negotiate",
@@ -43,14 +44,16 @@
       "effects": [
         "land_talk_+1",
         "delay_land_+1"
-      ]
+      ],
+      "consequence_pt": "Ganhas tempo para negociar, mas o projeto atrasa e a caixa paga esse tempo."
     },
     {
       "id": "pass",
       "label": "Deixar passar",
       "effects": [
         "land_miss_+1"
-      ]
+      ],
+      "consequence_pt": "Deixas este terreno: o projeto atrasa até encontrares outro."
     }
   ],
   "notes_for_economy": "cash_at_risk_+1 = sinal/opção — calibrar MEUR capex_linha_+1/+2 = linha média/longa (Capex por km, PEDIR_ECONOMY); servidoes_linha_+1/+2 = mais proprietários no traçado (tempo/custo, PEDIR_ECONOMY).",
@@ -59,5 +62,6 @@
   "deadline_id": "land_option",
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

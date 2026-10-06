@@ -31,7 +31,8 @@
         "trc_recovery_plan",
         "caducidade_risk_-1",
         "trc_risk_answered"
-      ]
+      ],
+      "consequence_pt": "Apresentas um plano: a DGEG acalma e o risco para a licença desce."
     },
     {
       "id": "submit_lp_late",
@@ -51,7 +52,8 @@
         "blocks": [
           "lp_request_submitted"
         ]
-      }
+      },
+      "consequence_pt": "Entregas o pedido já, mesmo incompleto: o prazo fica cumprido."
     },
     {
       "id": "sell",
@@ -63,20 +65,8 @@
         "buyer_search_active",
         "distressed_sale",
         "trc_risk_answered"
-      ]
-    },
-    {
-      "id": "ack",
-      "label": "Percebi",
-      "hint": "Ficas avisado. Nada muda por agora, mas o teu Risco para a licença continua alto: o próximo atraso pode custar-te o TRC.",
-      "effects": [
-        "trc_risk_answered"
       ],
-      "when": {
-        "blocks": [
-          "trc_audiencia_open"
-        ]
-      }
+      "consequence_pt": "Começas a procurar comprador: com o TRC em risco, as ofertas vão ser baixas."
     },
     {
       "id": "let_lapse",
@@ -94,7 +84,8 @@
         "requires": [
           "trc_audiencia_open"
         ]
-      }
+      },
+      "consequence_pt": "Desistes: perdes o TRC e a caução."
     }
   ],
   "notes_for_ui": "Skins: aviso (caducidade_level ≥ 2) e audiencia. 2026-10-03 (Pedro): a audiência só abre por falha de um marco do próprio TRC — sobretudo o prazo do pedido de LP (lp_request.final_miss_mail) ou da licença de exploração (le_deadline) — ou por caducidade_level ≥ 4 COM um desses prazos falhado. Falhar o acordo com a REN, sozinho, NÃO abre audiência (só atraso da ligação + caducidade_risk_+1). A skin audiencia põe trc_audiencia_open na entrega. submit_lp_late só aparece com dl_missed_lp_request e lp_request_ready (computed: há AIA, ou PIP aprovado). {{risk_reasons}}: lista curta dos prazos falhados (mailLoop.missedDeadlines).",
@@ -108,5 +99,23 @@
   ],
   "deadline_role": "hearing",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "retired_choices_v01": [
+    {
+      "id": "ack",
+      "label": "Percebi",
+      "hint": "Ficas avisado. Nada muda por agora, mas o teu Risco para a licença continua alto: o próximo atraso pode custar-te o TRC.",
+      "effects": [
+        "trc_risk_answered"
+      ],
+      "when": {
+        "blocks": [
+          "trc_audiencia_open"
+        ]
+      },
+      "retired": true,
+      "retired_reason": "GM 2026-10-06: «Percebi» não muda nada; a carta pede uma resposta a sério."
+    }
+  ]
 }

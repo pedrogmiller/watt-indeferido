@@ -2,9 +2,11 @@
   "skeleton_id": "mail-consultor-valueadd-01",
   "skin_id": "hibrido-bess",
   "from_name": "Consultor de desenvolvimento",
-  "subject": "Antes da obra: aproveitar melhor a ligação",
-  "body": "Antes de fechares o projeto da obra, ainda vais a tempo de tirar mais da tua ligação: sobreequipar (mais painéis do que a potência da ligação) ou hibridizar (juntar um parque eólico ou baterias no mesmo ponto). Cada uma custa dinheiro e tempo, mas pode subir o NPV. Renovar o equipamento fica para mais tarde.",
+  "subject": "Baterias para Ourique: preço fixo até à decisão final",
+  "body": "Um fornecedor de baterias fez-nos uma proposta para Ourique: um lote de baterias para o mesmo ponto de ligação, a preço fixo até à decisão final de investimento. Para ficar com esse preço, temos de pagar já o estudo e o desenho e pôr as baterias no projeto da obra. Depois dessa data, o preço volta a ser o do mercado. Há um concurso do Fundo Ambiental que pode pagar parte.",
   "params": {},
   "volume_2026_10_04": "Movida para depois do PIP/pedido de licença (proposta M8+).",
-  "obra_v01_2026_10_06": "Já não repete «Só com solar, o projeto não dá lucro» (dito no M0, e falso para Ourique a 40)."
+  "obra_v01_2026_10_06": "Já não repete «Só com solar, o projeto não dá lucro» (dito no M0, e falso para Ourique a 40).",
+  "visibilidade_v01_2026_10_06": "Reescrita: só baterias (sem eólico), diz o que a escolha faz.",
+  "derrapagem_valueadd_2026_10_06_1152": "Ângulo novo: proposta concreta com prazo (preço fixo até à FID), sem repetir o conselho do M0."
 }

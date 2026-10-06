@@ -4,7 +4,8 @@
   "draft": true,
   "when": {},
   "from_name": "Equipa de engenharia — concurso EPC",
-  "subject": "Propostas EPC — escolher o modelo",
-  "body": "Fechámos o concurso com duas vias. EPC chave-na-mão: preço fixo, penalidades por atraso, o banco gosta. Multi-contrato: módulos, estruturas, restantes obras da central e subestação em separado, mais barato no papel — mas a coordenação entre empreiteiros é nossa, e os atrasos também. Relançar dá melhor preço, talvez, e custa meses.",
-  "params": {}
+  "subject": "Propostas para a obra: escolher o modelo",
+  "body": "Fechámos o concurso da obra com duas opções. Um só empreiteiro faz tudo a preço fechado, com penalidades por atraso: é mais caro, mas o banco gosta. Ou contratas vários: painéis, estruturas, o resto da central e a tua subestação em separado. Fica mais barato no papel, mas a coordenação entre empreiteiros é tua, e os atrasos também. Pedir novas propostas pode dar melhor preço, mas custa meses.",
+  "params": {},
+  "visibilidade_v01_2026_10_06": "Sem «EPC»; linguagem simples."
 }

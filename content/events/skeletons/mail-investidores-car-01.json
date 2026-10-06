@@ -19,7 +19,8 @@
         "car_band_s",
         "car_request_sent"
       ],
-      "hint": "A caixa fica em cerca de {cash_s}. Os investidores aceitam quase sempre."
+      "hint": "A caixa fica em cerca de {cash_s}. Os investidores aceitam quase sempre.",
+      "consequence_pt": "Pedes pouco: é provável que os investidores aceitem, e o dinheiro entra na caixa."
     },
     {
       "id": "ask_car_m",
@@ -28,7 +29,8 @@
         "car_band_m",
         "car_request_sent"
       ],
-      "hint": "A caixa fica em {cash_m}. Aceitam cerca de metade das vezes e marcam uma revisão do projeto."
+      "hint": "A caixa fica em {cash_m}. Aceitam cerca de metade das vezes e marcam uma revisão do projeto.",
+      "consequence_pt": "Pedes um valor médio: o que os investidores aceitarem entra na caixa."
     },
     {
       "id": "ask_car_l",
@@ -37,17 +39,21 @@
         "car_band_l",
         "car_request_sent"
       ],
-      "hint": "A caixa fica em {cash_l}. Quase nunca aceitam logo: podem baixar para o valor médio ou cortar. Se aceitarem, o prazo para garantir o terreno fica mais curto, e se falhares o orçamento é cortado."
+      "hint": "A caixa fica em {cash_l}. Quase nunca aceitam logo: podem baixar para o valor médio ou cortar. Se aceitarem, o prazo para garantir o terreno fica mais curto, e se falhares o orçamento é cortado.",
+      "consequence_pt": "Pedes muito: os investidores podem cortar o valor ou pedir um plano primeiro."
     },
     {
       "id": "delay",
       "label": "Pedir mais tempo para decidir",
       "effects": [
-        "investor_patience_-1"
+        "investor_patience_-1",
+        "reputation_-1"
       ],
-      "hint": "Esperamos, mas ficamos menos pacientes."
+      "hint": "Esperamos, mas ficamos menos pacientes.",
+      "consequence_pt": "Os investidores não gostaram de esperar: a tua reputação desce."
     }
   ],
   "notes_for_economy": "Outcomes aceitar/cortar/plano por banda; M€ = PEDIR_ECONOMY / car-bands-boutique.md. Boutique: S cabe Ourique; L pode ser cortado.",
-  "notes_for_ui": "CTA: bandas S/M/L → HUD car_band + filtro lotes; toast do outcome. Sem metáforas de clube. Sem M€ até Gate €. 2026-09-29 (Pedro): labels, hints e corpo usam placeholders {ask_s} {ask_m} {ask_l} {cash_s} {cash_m} {cash_l} (chaveta simples) substituídos pela consola a partir de Economy §6.1 por nível de mandato; nunca números no conteúdo. 2026-09-30 (Pedro): carta de M0, antes do terreno: sem PIP/AIA/Câmara no texto; o prazo mais curto de ask_car_l é só o do terreno (land_option)."
+  "notes_for_ui": "CTA: bandas S/M/L → HUD car_band + filtro lotes; toast do outcome. Sem metáforas de clube. Sem M€ até Gate €. 2026-09-29 (Pedro): labels, hints e corpo usam placeholders {ask_s} {ask_m} {ask_l} {cash_s} {cash_m} {cash_l} (chaveta simples) substituídos pela consola a partir de Economy §6.1 por nível de mandato; nunca números no conteúdo. 2026-09-30 (Pedro): carta de M0, antes do terreno: sem PIP/AIA/Câmara no texto; o prazo mais curto de ask_car_l é só o do terreno (land_option).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

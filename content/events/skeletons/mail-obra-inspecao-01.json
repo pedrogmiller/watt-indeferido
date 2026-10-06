@@ -19,15 +19,17 @@
         "delay_obra_curto",
         "obra_safety_fixed"
       ],
-      "hint": "A obra perde cerca de um mês. O assunto fica arrumado."
+      "hint": "A obra perde cerca de um mês. O assunto fica arrumado.",
+      "consequence_pt": "A obra para um mês para corrigir. A data de arranque só muda se a central passar a acabar depois da tua linha."
     },
     {
       "id": "keep_going",
       "label": "Corrigir sem parar a obra",
       "effects": [
-        "act_fine_risk"
+        "act_fine_paid"
       ],
-      "hint": "A obra não para. Se a inspeção voltar e encontrar falhas, pagas uma multa e o teu nome pode aparecer nas notícias."
+      "hint": "A obra não para. Se a inspeção voltar e encontrar falhas, pagas uma multa e o teu nome pode aparecer nas notícias.",
+      "consequence_pt": "A obra não para, mas pagas uma multa: o NPV desce um pouco."
     }
   ],
   "heavy": true,
@@ -38,5 +40,6 @@
   "deadline_id": "epc_mechanical_completion",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

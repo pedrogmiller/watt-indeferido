@@ -21,14 +21,16 @@
       "label": "Cumprir já com o que houver",
       "effects": [
         "deadline_rush"
-      ]
+      ],
+      "consequence_pt": "Cumpres já com o que tens: o prazo fica resolvido, com menos potência."
     },
     {
       "id": "let_lapse",
       "label": "Deixar caducar",
       "effects": [
         "deadline_accept_miss"
-      ]
+      ],
+      "consequence_pt": "Desistes do prazo: perdes o TRC e a caução."
     }
   ],
   "heavy": true,
@@ -42,5 +44,6 @@
   ],
   "deadline_role": "final",
   "deadline_kind": "authority",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

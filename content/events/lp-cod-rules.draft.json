@@ -254,7 +254,8 @@
           "mail-icnf-compensacao-exigente-01"
         ],
         "max_wait_months": 4
-      }
+      },
+      "delivery": "note"
     },
     {
       "id": "r-caso-eia",
@@ -367,7 +368,8 @@
       },
       "status": "BACKLOG",
       "route": "AAS",
-      "note": "MVP: AAS sempre favorável (HIPÓTESE); desfavorável = backlog."
+      "note": "MVP: AAS sempre favorável (HIPÓTESE); desfavorável = backlog.",
+      "delivery": "note"
     },
     {
       "id": "r-risco-limiar",
@@ -689,7 +691,8 @@
         "nao_sujeicao",
         "env_path_nao_sujeito"
       ],
-      "volume_2026_10_04": "Antes 3 meses (banda 2-4). Agora 2 (2-3): PIP pedido M2 → decisão M4, no máximo M5."
+      "volume_2026_10_04": "Antes 3 meses (banda 2-4). Agora 2 (2-3): PIP pedido M2 → decisão M4, no máximo M5.",
+      "delivery": "note"
     },
     {
       "id": "r-dia",
@@ -866,7 +869,8 @@
           "mail-icnf-compensacao-exigente-01"
         ],
         "max_wait_months": 3
-      }
+      },
+      "delivery": "note"
     },
     {
       "id": "r-dia-desfavoravel",
@@ -1130,7 +1134,8 @@
         "band": "4-6",
         "source": "filler"
       },
-      "filler": true
+      "filler": true,
+      "delivery": "note"
     },
     {
       "id": "r-lp-audiencia",
@@ -1275,7 +1280,8 @@
       "rearm_on_effects": [
         "lp_indeferido"
       ],
-      "note": "lp_elements_missing só é ultrapassado com lp_hearing_reply (então sai condicionada ou concedida via re-arm)."
+      "note": "lp_elements_missing só é ultrapassado com lp_hearing_reply (então sai condicionada ou concedida via re-arm).",
+      "delivery": "note"
     },
     {
       "id": "r-lp-atraso",
@@ -1441,7 +1447,8 @@
       },
       "filler": true,
       "retired": true,
-      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha."
+      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha.",
+      "delivery": "note"
     },
     {
       "id": "r-fyi-obra-2",
@@ -1464,7 +1471,8 @@
       },
       "filler": true,
       "retired": true,
-      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha."
+      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha.",
+      "delivery": "note"
     },
     {
       "id": "r-fyi-obra-3",
@@ -1487,7 +1495,8 @@
       },
       "filler": true,
       "retired": true,
-      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha."
+      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha.",
+      "delivery": "note"
     },
     {
       "id": "r-epc-atraso",
@@ -1504,15 +1513,15 @@
       ],
       "blocks_if_any_effects": [
         "cod_reached",
-        "mechanical_completion",
+        "player_grid_ready",
         "sale_full_exit",
         "trc_caducado"
       ],
       "after_effect": {
         "tag": "construction_started",
-        "months": 4,
-        "band": "4-6",
-        "source": "GM 2026-10-06 (antes 5, banda 4-8)"
+        "months": 6,
+        "band": "5-7",
+        "source": "GM 2026-10-06: subestação a meio"
       },
       "odds": {
         "base": 0.5,
@@ -1526,8 +1535,8 @@
         }
       },
       "reroll": false,
-      "shifts_deadline": "epc_mechanical_completion",
-      "mutex_group": "obra_supply",
+      "shifts_deadline": "player_grid",
+      "mutex_group": "obra_rede_propria",
       "pick": 1,
       "odds_mode": "numeric",
       "obra_v01_2026_10_06": "Grupo obra_supply com r-obra-fornecedor (fallback): sai sempre uma carta de fornecimento ~4 meses depois do arranque."
@@ -1587,7 +1596,8 @@
       "skin": "ourique",
       "via_deadline": "grid_connection.on_meet_mail",
       "heavy": false,
-      "relevant": true
+      "relevant": true,
+      "delivery": "note"
     },
     {
       "id": "r-ensaios",
@@ -1658,7 +1668,8 @@
       "skin": "<por deadline>",
       "via_deadline": "<deadline>.warn",
       "heavy": false,
-      "relevant": false
+      "relevant": false,
+      "delivery": "note"
     },
     {
       "id": "r-prorrogacao",
@@ -1674,7 +1685,8 @@
       "skin": "<por deadline>",
       "via_deadline": "<deadline>.extension.granted_mail",
       "heavy": false,
-      "relevant": true
+      "relevant": true,
+      "delivery": "note"
     },
     {
       "id": "r-prorrogacao-nao",
@@ -1800,7 +1812,8 @@
       "odds": {
         "base": "fallback do grupo"
       },
-      "reroll": true
+      "reroll": true,
+      "delivery": "note"
     },
     {
       "id": "r-icnf-consulta-util",
@@ -2131,7 +2144,8 @@
       "requires_any_effects": [
         "icnf_via_ca",
         "icnf_vinc_answered"
-      ]
+      ],
+      "delivery": "note"
     },
     {
       "skeleton": "mail-dgeg-averbamento-trc-01",
@@ -2175,7 +2189,8 @@
         "buyer_caution_failed",
         "sale_full_exit_cancelled",
         "sale_pipeline_clear"
-      ]
+      ],
+      "delivery": "note"
     },
     {
       "skeleton": "mail-dgeg-averbamento-trc-01",
@@ -2220,7 +2235,8 @@
         "mandate_slot_free",
         "asset_removed",
         "sale_closed"
-      ]
+      ],
+      "delivery": "note"
     },
     {
       "id": "r-lp-transfer-caucao-falhou",
@@ -2273,7 +2289,8 @@
           "sale_plant_rent_infra_cancelled"
         ]
       },
-      "note": "Só antes da LE (buyer_caution_+50pct só é posto em licenca_producao/obra)."
+      "note": "Só antes da LE (buyer_caution_+50pct só é posto em licenca_producao/obra).",
+      "delivery": "note"
     },
     {
       "id": "r-lp-transfer-elementos",
@@ -2321,7 +2338,8 @@
         "adds_months": 1
       },
       "rearm_group_after_months": 1,
-      "note": "Uma única vez (art. 36.º/4). Depois o grupo volta a sortear só caução/autorizada."
+      "note": "Uma única vez (art. 36.º/4). Depois o grupo volta a sortear só caução/autorizada.",
+      "delivery": "note"
     },
     {
       "id": "r-lp-transfer-ok",
@@ -2389,7 +2407,8 @@
           "mandate_slot_free",
           "sale_closed"
         ]
-      }
+      },
+      "delivery": "note"
     },
     {
       "id": "r-apa-icnf-vinculativo-aia",
@@ -2543,7 +2562,8 @@
       "on_deliver_effects": [
         "icnf_opinion_consultive",
         "risk_icnf_-1"
-      ]
+      ],
+      "delivery": "note"
     },
     {
       "id": "r-apa-icnf-contest-recusada",
@@ -2578,7 +2598,8 @@
       "on_deliver_effects": [
         "icnf_opinion_binding_kept",
         "env_mitigation_flag"
-      ]
+      ],
+      "delivery": "note"
     },
     {
       "id": "r-apa-icnf-escalada-aceite",
@@ -2613,7 +2634,8 @@
       "on_deliver_effects": [
         "icnf_opinion_consultive",
         "risk_icnf_-1"
-      ]
+      ],
+      "delivery": "note"
     },
     {
       "id": "r-apa-icnf-escalada-recusada",
@@ -2648,7 +2670,8 @@
       "on_deliver_effects": [
         "icnf_opinion_binding_kept",
         "env_mitigation_flag"
-      ]
+      ],
+      "delivery": "note"
     },
     {
       "id": "r-icnf-caso-exigente",
@@ -2726,7 +2749,8 @@
       "odds": {
         "base": "fallback do grupo"
       },
-      "reroll": true
+      "reroll": true,
+      "delivery": "note"
     },
     {
       "id": "r-sobreequipamento",
@@ -3002,7 +3026,8 @@
         "merchant_tail_exposure"
       ],
       "note": "15 → 20 anos; equity Ourique 41,0 → 35,5 (40 €/MWh), 44,4 → 38,8 (38 €/MWh).",
-      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta."
+      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta.",
+      "delivery": "note"
     },
     {
       "id": "r-es-d9-emprestimo-recusado",
@@ -3037,7 +3062,8 @@
         "longer_loan_refused"
       ],
       "note": "Recusa: só uma tentativa (a escolha fica bloqueada por longer_loan_request).",
-      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta."
+      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta.",
+      "delivery": "note"
     },
     {
       "id": "r-es-d9-socio",
@@ -3075,7 +3101,8 @@
         "partner_stake_25"
       ],
       "note": "25 % fixo (partner_stake_25, garantido), a custo. NPV e FCF do jogador × 0,75 (Economy §17.5).",
-      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta."
+      "delay_stacking": "não somar: atraso total da FID = +3 meses (delay_fid_+1). A consola não aplica atraso extra pela espera da resposta.",
+      "delivery": "note"
     },
     {
       "id": "r-es-pressao-caixa",
@@ -3302,7 +3329,8 @@
         "tag": "trc_audiencia_open",
         "months": 1,
         "timeout": "decide mesmo sem resposta: se trc_risk_answered não existir, aplica no_answer"
-      }
+      },
+      "delivery": "note"
     },
     {
       "id": "r-es-trc-caducado",
@@ -3659,7 +3687,8 @@
       "hud_moment": {
         "kind": "milestone",
         "label_pt": "Marco atingido"
-      }
+      },
+      "delivery_proposed": "hud_only"
     },
     {
       "id": "r-es-marco-decisao-final",
@@ -3686,7 +3715,8 @@
       "hud_moment": {
         "kind": "milestone",
         "label_pt": "Marco atingido"
-      }
+      },
+      "delivery_proposed": "hud_only"
     },
     {
       "id": "r-es-marco-inicio-obra",
@@ -3713,7 +3743,8 @@
       "hud_moment": {
         "kind": "milestone",
         "label_pt": "Marco atingido"
-      }
+      },
+      "delivery_proposed": "hud_only"
     },
     {
       "id": "r-es-cod",
@@ -3813,7 +3844,7 @@
       "pick": 2,
       "odds": {
         "base": 1.0,
-        "source": "fallback do grupo"
+        "source": "sai sempre (r-epc-atraso saiu do grupo obra_supply)"
       }
     },
     {
@@ -3991,7 +4022,7 @@
         "base": 1.0,
         "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
       },
-      "note": "Marco da conclusão da obra quando a REN ainda não ligou. Com line_ready sai r-ensaios no mesmo mês."
+      "note": "Marco da central montada quando a ligação ainda não está completa (falta a subestação e a linha do jogador ou a obra da REN). Com line_ready (as duas) sai r-ensaios."
     },
     {
       "id": "r-obra-furto",
@@ -4090,7 +4121,146 @@
       "odds": {
         "base": 0.7,
         "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
-      }
+      },
+      "delivery": "note"
+    },
+    {
+      "id": "r-linha-empreiteiro",
+      "skeleton": "mail-linha-empreiteiro-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "player_grid_ready",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 1,
+        "band": "1-2",
+        "source": "GM 2026-10-06"
+      },
+      "odds_mode": "numeric",
+      "odds": {
+        "base": 1.0,
+        "source": "sai sempre"
+      },
+      "shifts_deadline": "player_grid",
+      "visibilidade_v01_2026_10_06": true
+    },
+    {
+      "id": "r-linha-servidao",
+      "skeleton": "mail-linha-servidao-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "player_grid_ready",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 6,
+        "band": "5-7",
+        "source": "GM 2026-10-06"
+      },
+      "odds_mode": "numeric",
+      "odds": {
+        "base": 1.0,
+        "source": "fallback do grupo obra_rede_propria"
+      },
+      "mutex_group": "obra_rede_propria",
+      "pick": 2,
+      "shifts_deadline": "player_grid",
+      "visibilidade_v01_2026_10_06": true
+    },
+    {
+      "id": "r-fa-bess-aprovado",
+      "skeleton": "mail-fa-bess-resposta-01",
+      "skin": "aprovado",
+      "status": "draft_pending_pedro",
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "delivery": "note",
+      "requires_all_effects": [
+        "fa_bess_apply"
+      ],
+      "blocks_if_any_effects": [
+        "fa_bess_answer_seen",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "fa_bess_apply",
+        "months": 3,
+        "band": "2-4",
+        "source": "HIPÓTESE (avisos FA: 2–4 meses)"
+      },
+      "odds_mode": "numeric",
+      "odds": {
+        "base": 0.3,
+        "source": "HIPÓTESE GM — PEDIR_ECONOMY",
+        "up_if_any": {
+          "lp_granted": 0.2,
+          "le_granted": 0.2
+        }
+      },
+      "mutex_group": "fa_bess_outcome",
+      "pick": 1,
+      "visibilidade_v01_2026_10_06": true
+    },
+    {
+      "id": "r-fa-bess-recusado",
+      "skeleton": "mail-fa-bess-resposta-01",
+      "skin": "recusado",
+      "status": "draft_pending_pedro",
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "delivery": "note",
+      "requires_all_effects": [
+        "fa_bess_apply"
+      ],
+      "blocks_if_any_effects": [
+        "fa_bess_answer_seen",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "fa_bess_apply",
+        "months": 3,
+        "band": "2-4",
+        "source": "HIPÓTESE"
+      },
+      "odds_mode": "numeric",
+      "odds": {
+        "base": 1.0,
+        "source": "fallback do grupo fa_bess_outcome"
+      },
+      "mutex_group": "fa_bess_outcome",
+      "pick": 2,
+      "visibilidade_v01_2026_10_06": true
     }
   ],
   "phase_bump_proposed": {
@@ -4549,5 +4719,27 @@
       "C+16": "r-noticia-cortes (0,7, informativa)",
       "C+17": "r-obra-furto-2 (0,4, só sem segurança)"
     }
+  },
+  "visibilidade_v01_2026_10_06": {
+    "resumo": "consequence_pt, notas (delivery note), resposta do Fundo Ambiental, rede própria no caminho crítico.",
+    "grupos": {
+      "obra_rede_propria": [
+        "r-epc-atraso (0,5)",
+        "r-linha-servidao (fallback)"
+      ],
+      "obra_supply": [
+        "r-obra-fornecedor"
+      ],
+      "fa_bess_outcome": [
+        "r-fa-bess-aprovado",
+        "r-fa-bess-recusado"
+      ]
+    },
+    "draft_rule_ids_para_o_codigo": [
+      "r-linha-empreiteiro",
+      "r-linha-servidao",
+      "r-fa-bess-aprovado",
+      "r-fa-bess-recusado"
+    ]
   }
 }

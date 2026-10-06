@@ -23,21 +23,16 @@
       "label": "Candidatar-me",
       "effects": [
         "fa_bess_apply"
-      ]
-    },
-    {
-      "id": "wait",
-      "label": "Preparar e esperar",
-      "effects": [
-        "fa_bess_wait"
-      ]
+      ],
+      "consequence_pt": "Candidatura entregue: sai dinheiro da caixa. A resposta chega dentro de três meses."
     },
     {
       "id": "skip",
       "label": "Ignorar",
       "effects": [
         "fa_bess_skip"
-      ]
+      ],
+      "consequence_pt": "Não te candidatas: as baterias seguem sem apoio."
     }
   ],
   "ui_show_maturity_grid": true,
@@ -59,5 +54,17 @@
     }
   ],
   "notes_for_economy": "Outcome/ranking — PEDIR_ECONOMY; base real RP-C21-I08",
-  "notes_for_ui": "Mostrar grelha como no aviso FA (não só jackpot opaco)"
+  "notes_for_ui": "Mostrar grelha como no aviso FA (não só jackpot opaco)",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "retired_choices_v01": [
+    {
+      "id": "wait",
+      "label": "Preparar e esperar",
+      "effects": [
+        "fa_bess_wait"
+      ],
+      "retired": true,
+      "retired_reason": "GM 2026-10-06: «Preparar e esperar» não tinha seguimento; ficam candidatar ou ignorar."
+    }
+  ]
 }

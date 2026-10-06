@@ -18,24 +18,28 @@
       "effects": [
         "epc_standby_paid"
       ],
-      "hint": "Pagas a equipa até a REN ligar. Os testes começam logo no mês da ligação."
+      "hint": "Pagas a equipa até a ligação estar pronta. Os testes começam logo nesse mês.",
+      "consequence_pt": "A equipa fica à espera, paga todos os meses: os testes começam logo que a ligação estiver pronta."
     },
     {
       "id": "demobilise",
-      "label": "Mandar a equipa embora até a REN ligar",
+      "label": "Mandar a equipa embora até a ligação estar pronta",
       "effects": [
         "epc_demobilised"
       ],
-      "hint": "Poupas esse dinheiro. Os testes e a vistoria começam cerca de um mês mais tarde."
+      "hint": "Poupas esse dinheiro. Os testes e a vistoria começam cerca de um mês mais tarde.",
+      "consequence_pt": "Poupas esse dinheiro, mas os testes começam um mês mais tarde: a data de arranque atrasa um mês."
     }
   ],
   "heavy": true,
-  "deadline_ref": "grid_connection",
+  "deadline_ref": "grid_path",
   "notes_for_ui": "Marco da conclusão da obra quando a ligação ainda não está pronta (com a ligação pronta sai a carta dos testes, mail-dgeg-ensaios-01). epc_demobilised → r-ensaios +1 mês (after_effect.extra_months_if_any).",
   "notes_for_economy": "epc_standby_paid: custo mensal até line_ready (PEDIR_ECONOMY). epc_demobilised: sem €, +1 mês até aos testes.",
   "deadline_letter": true,
   "deadline_id": "epc_mechanical_completion",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "notes_for_ui_visibilidade_v01_2026_10_06": "{{deadline_month}} = max(player_grid, grid_connection) — a última peça da ligação."
 }

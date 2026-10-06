@@ -12,17 +12,20 @@
   "choice_overrides": {
     "rush": {
       "label": "Pedir licença só para a parte pronta",
-      "hint": "A central começa a vender a tempo, mas só com a parte concluída e potência limitada."
+      "hint": "A central começa a vender a tempo, mas só com a parte concluída e potência limitada.",
+      "consequence_pt": "Pedes licença só para a parte pronta: começas a vender a tempo, com menos potência."
     },
     "let_lapse": {
       "label": "Seguir com a obra e tentar cumprir",
       "effects": [
         "le_extension_denied_continue"
       ],
-      "hint": "Se o prazo passar, a DGEG abre uma audiência antes de decidir se tira o TRC."
+      "hint": "Se o prazo passar, a DGEG abre uma audiência antes de decidir se tira o TRC.",
+      "consequence_pt": "Segues com a obra: se não acabares até ao prazo, entras em audiência. O risco para a licença sobe."
     }
   },
   "deadline_id": "le_deadline",
   "deadline_role": "outcome",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere."
 }

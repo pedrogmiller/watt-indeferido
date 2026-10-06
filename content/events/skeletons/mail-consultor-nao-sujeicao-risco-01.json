@@ -26,7 +26,8 @@
       "effects": [
         "env_path_accept_stricter",
         "aia_nao_sujeicao_lost"
-      ]
+      ],
+      "consequence_pt": "Manténs o desenho: mais painéis, mas o projeto passa a precisar de avaliação ambiental e a licença atrasa muitos meses."
     },
     {
       "id": "trim",
@@ -39,7 +40,8 @@
         "requires": [
           "env_trim_possible_planned"
         ]
-      }
+      },
+      "consequence_pt": "Encolhes o projeto para ficar abaixo do limite: o NPV desce, mas a licença segue pela via curta."
     },
     {
       "id": "bury_line",
@@ -53,7 +55,8 @@
         "requires": [
           "env_trigger_line_planned"
         ]
-      }
+      },
+      "consequence_pt": "Enterras ou encurtas a linha: a licença segue pela via curta, mas o NPV desce bastante."
     },
     {
       "id": "split",
@@ -66,10 +69,12 @@
         "requires": [
           "project_kind_new"
         ]
-      }
+      },
+      "consequence_pt": "Licencias primeiro a central sem a ampliação: a ampliação fica para depois."
     }
   ],
   "heavy": true,
   "notes_for_economy": "trim: menos MW de value-add (NPV); bury_line: Capex rede; split: value-add mais tarde (retime NPV) — PEDIR_ECONOMY.",
-  "notes_for_ui": "Tripwire: antes de confirmar um plano (hibridizar / sobreequipar / escolher linha), o motor recalcula env_path_planned. Se ficar mais pesado que env_path actual (ordem nao_sujeito < aac_simplificada < caso_a_caso < aia_obrigatoria), ou se uma alteração pós-LP deixar de cumprir as 3 condições, põe env_path_worsened_planned + env_trigger_*_planned e entrega esta carta. keep_design confirma o plano e fixa o novo env_path. Choices por when (≤3 visíveis). Limiares (2026-09-29, leitura DL 11/2023): solar ≥100 ha de módulos → AIA; em área sensível ≥10 ha ou ≥20 MW por componente → caso a caso; eólico ≥20 aerogeradores, também somando parques a < 2 km → AIA (TRANCADO Pedro 2026-09-30 (DL 11/2023); sem critério em MW); linha aérea ≥220 kV >15 km → AIA, ≥110 kV ≥20 km → caso a caso. Sobreequipar solar num TRC não sobe MW de ligação: o tripwire solar dispara por área (ha), não por MW."
+  "notes_for_ui": "Tripwire: antes de confirmar um plano (hibridizar / sobreequipar / escolher linha), o motor recalcula env_path_planned. Se ficar mais pesado que env_path actual (ordem nao_sujeito < aac_simplificada < caso_a_caso < aia_obrigatoria), ou se uma alteração pós-LP deixar de cumprir as 3 condições, põe env_path_worsened_planned + env_trigger_*_planned e entrega esta carta. keep_design confirma o plano e fixa o novo env_path. Choices por when (≤3 visíveis). Limiares (2026-09-29, leitura DL 11/2023): solar ≥100 ha de módulos → AIA; em área sensível ≥10 ha ou ≥20 MW por componente → caso a caso; eólico ≥20 aerogeradores, também somando parques a < 2 km → AIA (TRANCADO Pedro 2026-09-30 (DL 11/2023); sem critério em MW); linha aérea ≥220 kV >15 km → AIA, ≥110 kV ≥20 km → caso a caso. Sobreequipar solar num TRC não sobe MW de ligação: o tripwire solar dispara por área (ha), não por MW.",
+  "visibilidade_v01_2026_10_06": "consequence_pt (aparece em Ourique com o plano grande de painéis a mais)."
 }

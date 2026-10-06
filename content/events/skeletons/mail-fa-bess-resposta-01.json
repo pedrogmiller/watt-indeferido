@@ -1,0 +1,26 @@
+{
+  "id": "mail-fa-bess-resposta-01",
+  "phase": "opportunity",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — fecha a candidatura ao Fundo Ambiental; proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "fa_bess_apply"
+  },
+  "priority": "normal",
+  "from_type": "FUNDO_AMBIENTAL",
+  "delivery": "note",
+  "choices": [
+    {
+      "id": "ack",
+      "label": "Percebi",
+      "effects": [
+        "fa_bess_answer_seen"
+      ]
+    }
+  ],
+  "heavy": false,
+  "notes_for_ui": "Nota (não caixa de entrada). Efeitos por skin (choice_overrides) aplicados na entrega.",
+  "notes_for_economy": "fa_bess_awarded: apoio a fundo perdido às baterias (reduz o capital próprio das baterias; PEDIR_ECONOMY). fa_bess_refused: sem €.",
+  "nota_gm": "Aviso RP-C21-I08 (PRR/Fundo Ambiental, armazenamento): a pontuação valoriza a maturidade do projeto. Taxas e montantes: PEDIR_ECONOMY.",
+  "visibilidade_v01_2026_10_06": true
+}

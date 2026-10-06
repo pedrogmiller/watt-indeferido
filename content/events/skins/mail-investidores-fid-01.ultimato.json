@@ -11,5 +11,11 @@
   },
   "deadline_id": "fid_window",
   "deadline_role": "final",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere.",
+  "choice_overrides": {
+    "delay_fid": {
+      "consequence_pt": "Adias outra vez: os investidores podem desistir, e a tua reputação desce."
+    }
+  }
 }

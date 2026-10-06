@@ -18,7 +18,8 @@
         "obra_security_paid",
         "delay_obra_curto"
       ],
-      "hint": "Pagas vigilância até ao fim da obra. A obra perde cerca de um mês, mas não volta a acontecer."
+      "hint": "Pagas vigilância até ao fim da obra. A obra perde cerca de um mês, mas não volta a acontecer.",
+      "consequence_pt": "Pagas vigilância e perdes um mês na central. Não volta a acontecer."
     },
     "replace": {
       "effects": [
@@ -26,7 +27,9 @@
         "delay_obra_curto",
         "obra_theft_risk_+1"
       ],
-      "hint": "Gastas menos agora. A obra perde cerca de um mês e o estaleiro continua fácil de assaltar."
+      "hint": "Gastas menos agora. A obra perde cerca de um mês e o estaleiro continua fácil de assaltar.",
+      "consequence_pt": "Repões o cabo e perdes um mês na central. O estaleiro continua desprotegido."
     }
-  }
+  },
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere."
 }

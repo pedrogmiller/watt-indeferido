@@ -35,5 +35,7 @@
   ],
   "notes_for_economy": "Consulta por conta própria: sem €. Desfecho (vaga / sem resposta / indicação útil) e odds = PEDIR_ECONOMY; tags do desfecho aplicadas na entrega (on_deliver_effects), não na escolha.",
   "notes_for_ui": "Resposta à ação do botão 'PIP / ICNF / Câmara' → 'Consultar o ICNF' (a ação dispara icnf_consult_requested). from_type ICNF novo. Skin escolhida pela regra (mutex icnf_consulta).",
-  "nota_gm": "Pedro: sem enquadramento (sem PIP aberto) é difícil obter resposta; o ICNF não se compromete. Melhor caso = pequena redução de risco, nunca garantia."
+  "nota_gm": "Pedro: sem enquadramento (sem PIP aberto) é difícil obter resposta; o ICNF não se compromete. Melhor caso = pequena redução de risco, nunca garantia.",
+  "retired": true,
+  "retired_reason": "GM 2026-10-06 (v0.1): a resposta do ICNF não muda nada no caminho de Ourique sem avaliação ambiental. Esconder o botão da Sala (requestIcnfConsult). Volta quando houver um caminho com ICNF."
 }

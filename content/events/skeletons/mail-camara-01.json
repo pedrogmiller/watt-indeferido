@@ -22,7 +22,8 @@
       "label": "Marcar reunião",
       "effects": [
         "risk_camara_-1"
-      ]
+      ],
+      "consequence_pt": "A Câmara ficou mais recetiva: o risco para a licença desce."
     },
     {
       "id": "ignore",
@@ -30,7 +31,8 @@
       "effects": [
         "risk_camara_+1",
         "delay_pip_+1"
-      ]
+      ],
+      "consequence_pt": "A Câmara ficou ofendida e o PIP vai demorar mais: o risco para a licença sobe."
     }
   ],
   "notes_for_economy": "delay_pip = meses; risk_camara = qualitativo até Gate 4",
@@ -39,5 +41,6 @@
   "deadline_id": "pip_camara",
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

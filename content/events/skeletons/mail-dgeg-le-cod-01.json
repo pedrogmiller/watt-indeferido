@@ -30,7 +30,8 @@
         "le_granted",
         "cod_reached"
       ],
-      "hint": "A central começa a vender energia. Segue-se o balanço do ciclo."
+      "hint": "A central começa a vender energia. Segue-se o balanço do ciclo.",
+      "consequence_pt": "A central está a funcionar."
     }
   ],
   "heavy": false,
@@ -41,5 +42,7 @@
   "deadline_role": "outcome",
   "deadline_kind": "authority",
   "deadline_blocks_play": false,
-  "obra_v01_2026_10_06": "Já não sai como carta: r-le-cod passa a hud_only e aplica le_granted + cod_reached na entrega; a notícia vai na carta final mail-fim-de-ciclo-01.cod. A skin ourique tem de ficar ativa (a consola procura a skin antes do ramo hud_only)."
+  "obra_v01_2026_10_06": "Já não sai como carta: r-le-cod passa a hud_only e aplica le_granted + cod_reached na entrega; a notícia vai na carta final mail-fim-de-ciclo-01.cod. A skin ourique tem de ficar ativa (a consola procura a skin antes do ramo hud_only).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

@@ -24,7 +24,8 @@
       "effects": [
         "commissioning_started"
       ],
-      "hint": "Não pagas nada a mais. A DGEG tem 30 dias para vir."
+      "hint": "Não pagas nada a mais. A DGEG tem 30 dias para vir.",
+      "consequence_pt": "Pedes a vistoria à DGEG: não custa nada, mas a DGEG pode demorar."
     },
     {
       "id": "accredited",
@@ -33,7 +34,8 @@
         "commissioning_started",
         "vistoria_acreditada"
       ],
-      "hint": "Pagas a entidade. A vistoria fica marcada mais depressa."
+      "hint": "Pagas a entidade. A vistoria fica marcada mais depressa.",
+      "consequence_pt": "Pagas a uma entidade autorizada: a vistoria fica feita mais cedo e a data de arranque adianta um mês."
     },
     {
       "id": "punch_list",
@@ -42,7 +44,8 @@
         "punch_list_first",
         "delay_cod_+1"
       ],
-      "hint": "A vistoria corre melhor, mas a central começa a vender mais tarde."
+      "hint": "A vistoria corre melhor, mas a central começa a vender mais tarde.",
+      "consequence_pt": "Fechas os pendentes primeiro: a vistoria corre melhor, mas a data de arranque atrasa."
     }
   ],
   "heavy": false,
@@ -52,5 +55,6 @@
   "deadline_id": "le_deadline",
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

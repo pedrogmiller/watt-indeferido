@@ -17,16 +17,19 @@
       "label": "Reunir com a associação",
       "effects": [
         "risk_community_-1"
-      ]
+      ],
+      "consequence_pt": "Os moradores sentiram-se ouvidos: o risco para a licença desce."
     },
     {
       "id": "ignore",
       "label": "Ignorar",
       "effects": [
         "risk_community_+1"
-      ]
+      ],
+      "consequence_pt": "Os moradores ficaram mais contra o projeto e a Câmara vai saber: o risco para a licença sobe."
     }
   ],
   "notes_for_economy": "Qualitativo até Gate 4",
-  "notes_for_ui": "Alternar com mail-media-01 (só um)"
+  "notes_for_ui": "Alternar com mail-media-01 (só um)",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

@@ -19,8 +19,10 @@
       "id": "chase",
       "label": "Insistir com o gestor do procedimento",
       "effects": [
-        "lp_chase"
-      ]
+        "lp_chase",
+        "cash_at_risk_+1"
+      ],
+      "consequence_pt": "Pagas ao consultor para insistir com a DGEG: sai dinheiro da caixa e a decisão pode chegar mais cedo."
     },
     {
       "id": "escalate",
@@ -28,14 +30,16 @@
       "effects": [
         "lp_escalate",
         "risk_dgeg_+1"
-      ]
+      ],
+      "consequence_pt": "Levas o caso ao Governo: a DGEG fica incomodada e o risco para a licença sobe."
     },
     {
       "id": "wait",
       "label": "Esperar",
       "effects": [
         "delay_lp_+1"
-      ]
+      ],
+      "consequence_pt": "Esperas: a licença atrasa e a caixa paga esse tempo."
     }
   ],
   "heavy": true,
@@ -45,5 +49,6 @@
   "deadline_id": "lp_decision",
   "deadline_role": "outcome",
   "deadline_kind": "authority",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

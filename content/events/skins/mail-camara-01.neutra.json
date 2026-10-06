@@ -11,5 +11,14 @@
   "body": "Para analisarmos o PIP (pedido de informação prévia, em que a Câmara diz se aceita a central neste terreno), precisamos da descrição do projeto e da planta com a localização da central. O prazo para responder é curto.",
   "params": {
     "tom": "admin"
+  },
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere.",
+  "choice_overrides": {
+    "meet": {
+      "consequence_pt": "A Câmara fica do teu lado: o PIP deve correr bem."
+    },
+    "ignore": {
+      "consequence_pt": "A Câmara ficou ofendida e o PIP vai demorar mais: o risco para a licença sobe."
+    }
   }
 }

@@ -4,10 +4,11 @@
   "draft": true,
   "when": {},
   "from_name": "Empreiteiro — direção do projeto",
-  "subject": "O transformador vai chegar atrasado",
-  "body": "A fábrica avisou que o transformador da central, a peça grande que eleva a tensão para a ligar à rede, só sai com cerca de três meses de atraso. Sem ele, a obra não acaba na data prevista.\n\nO contrato prevê penalidades por atraso. Aplicá-las protege-te, mas piora a relação com o empreiteiro a meio da obra. Também podes pagar para trazer um transformador destinado a outro projeto e recuperar parte do tempo. Ou aceitas a nova data.",
+  "subject": "O transformador da tua subestação vai chegar atrasado",
+  "body": "A fábrica avisou que o transformador da tua subestação, a peça grande que eleva a tensão para ligar a central à rede da REN, só sai com cerca de três meses de atraso. Sem ele, a subestação não fica pronta, e é a tua subestação com a linha que marca a data de arranque da central.\n\nO contrato prevê penalidades por atraso. Aplicá-las protege-te, mas piora a relação com o empreiteiro a meio da obra. Também podes pagar para trazer um transformador destinado a outro projeto e perder só um mês. Ou aceitas a nova data.",
   "params": {
-    "deadline_id": "epc_mechanical_completion"
+    "deadline_id": "player_grid"
   },
-  "obra_v01_2026_10_06": "Reescrita (linguagem simples; transformador em vez de módulos — os painéis retidos passaram para mail-obra-fornecedor-01)."
+  "obra_v01_2026_10_06": "Reescrita (linguagem simples; transformador em vez de módulos — os painéis retidos passaram para mail-obra-fornecedor-01).",
+  "visibilidade_v01_2026_10_06": "Transformador da subestação do jogador (caminho crítico)."
 }

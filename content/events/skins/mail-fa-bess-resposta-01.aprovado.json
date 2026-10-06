@@ -1,0 +1,20 @@
+{
+  "skeleton_id": "mail-fa-bess-resposta-01",
+  "skin_id": "aprovado",
+  "draft": true,
+  "when": {},
+  "from_name": "Fundo Ambiental",
+  "subject": "Baterias: candidatura aprovada",
+  "body": "A tua candidatura foi aprovada. O apoio paga parte das baterias e é pago à medida que as fores comprando.",
+  "choice_overrides": {
+    "ack": {
+      "effects": [
+        "fa_bess_awarded",
+        "fa_bess_answer_seen"
+      ],
+      "consequence_pt": "Apoio aprovado: as baterias ficam mais baratas e o NPV sobe."
+    }
+  },
+  "params": {},
+  "visibilidade_v01_2026_10_06": true
+}

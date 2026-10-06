@@ -22,7 +22,8 @@
         "end_screen_open",
         "cycle_closed"
       ],
-      "hint": "Abres o balanço completo: valor do projeto, rentabilidade, prazos e reputação."
+      "hint": "Abres o balanço completo: valor do projeto, rentabilidade, prazos e reputação.",
+      "consequence_pt": "Abre o balanço do ciclo."
     }
   ],
   "notes_for_ui": "Vitória. Na entrega: end_state = {status:'won', reason:'cod'}. Placeholders (Economy calcula, a consola substitui): {{cod_month}} {{cod_month_plan}} {{npv_now}} {{npv_auction}} {{irr}} {{car_spent}} {{months_played}} {{reputation_word}}.",
@@ -40,5 +41,6 @@
       ]
     }
   ],
-  "obra_v01_2026_10_06": "Carta final única: junta a licença de exploração (mail-dgeg-le-cod-01, agora hud_only via r-le-cod) e o balanço. Um só botão abre o ecrã final. «Preparar o próximo leilão» fica para depois da v0.1 (retired_choices_v01)."
+  "obra_v01_2026_10_06": "Carta final única: junta a licença de exploração (mail-dgeg-le-cod-01, agora hud_only via r-le-cod) e o balanço. Um só botão abre o ecrã final. «Preparar o próximo leilão» fica para depois da v0.1 (retired_choices_v01).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

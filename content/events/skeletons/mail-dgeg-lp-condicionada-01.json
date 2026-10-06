@@ -29,7 +29,8 @@
         "lp_conditions",
         "injection_cap_restricted",
         "fid_track_open"
-      ]
+      ],
+      "consequence_pt": "Licença aceite com condições: vais poder ligar menos potência no início, e o NPV desce."
     },
     {
       "id": "amend",
@@ -39,10 +40,12 @@
         "lp_conditions",
         "lp_alteration_request",
         "delay_fid_+1"
-      ]
+      ],
+      "consequence_pt": "Pedes para mudar as condições: a decisão de construir atrasa e a caixa paga esse tempo."
     }
   ],
   "heavy": true,
   "notes_for_economy": "injection_cap_restricted = injecção limitada até reforço (P50/NPV, banco endurece) — PEDIR_ECONOMY. lp_alteration_request remove a restrição mais tarde (art. 35.º).",
-  "notes_for_ui": "Mesmo gate e mutex de concedida. PHASE_BUMP igual (lp_granted). Cria le_deadline e fid_window. Via A ou B: gate env_gate_ok = dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado)."
+  "notes_for_ui": "Mesmo gate e mutex de concedida. PHASE_BUMP igual (lp_granted). Cria le_deadline e fid_window. Via A ou B: gate env_gate_ok = dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

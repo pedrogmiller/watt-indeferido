@@ -23,5 +23,7 @@
   ],
   "heavy": false,
   "notes_for_economy": "Sem €.",
-  "notes_for_ui": "FYI dismiss-only. Conta no cap (máx. 2–3 FYI por aterragem). Usado como filler do teto de 6 meses e como progresso de obra (skins por marco)."
+  "notes_for_ui": "FYI dismiss-only. Conta no cap (máx. 2–3 FYI por aterragem). Usado como filler do teto de 6 meses e como progresso de obra (skins por marco).",
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

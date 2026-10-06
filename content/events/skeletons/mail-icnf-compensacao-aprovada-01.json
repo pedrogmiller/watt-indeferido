@@ -35,5 +35,7 @@
     "aia (Comissão de Avaliação)": "aia",
     "caso_a_caso (apreciação prévia CCDR/APA)": "caso-a-caso",
     "regra": "A skin escolhe-se pela regra que dispara (r-icnf-* → ourique, r-icnf-ca-* → aia, r-icnf-caso-* → caso-a-caso), não pela SE."
-  }
+  },
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

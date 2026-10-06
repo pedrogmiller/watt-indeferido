@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "status": "DRAFT 2026-10-06 — GM; especificação para o código (Grok Bot); aguarda Gate Pedro",
+  "visibilidade_v01_2026_10_06": true,
+  "consequence_toast": {
+    "field": "consequence_pt",
+    "where": "choice (esqueleto) ou skin.choice_overrides[id].consequence_pt (a skin ganha)",
+    "show": "aviso curto (3–5 s) logo depois da resposta; repetir a frase no registo do mês",
+    "append_dates": "se a resposta mexer numa data seguida (player_grid_ready, ren_bay_ready, plant_ready, cod) junta «Arranque previsto: {{mês}} ({{+N}} meses | sem mudança)»",
+    "fallback": "sem consequence_pt: juntar os rótulos de effect-labels.pt.json (como hoje)"
+  },
+  "licence_risk_friction": {
+    "why": "Câmara e moradores tinham escolhas sem efeito visível; o atrito com entidades passa a contar no «Risco para a licença».",
+    "tags": {
+      "camara": [
+        "risk_camara_+1",
+        "risk_camara_+2",
+        "risk_camara_-1"
+      ],
+      "comunidade": [
+        "risk_community_+1",
+        "risk_community_-1",
+        "risk_media_+1",
+        "risk_media_-1"
+      ],
+      "dgeg": [
+        "risk_dgeg_+1",
+        "risk_dgeg_-1"
+      ],
+      "apa": [
+        "risk_apa_+1",
+        "risk_apa_-1"
+      ],
+      "icnf": [
+        "risk_icnf_+1",
+        "risk_icnf_-1"
+      ]
+    },
+    "formula": "friction = Σ por entidade max(0, soma com sinal das tags da entidade) (+2 conta 2); caducidadeLevel_novo = caducidadeLevel_atual + friction",
+    "ladder_pt": {
+      "0": "calmo",
+      "1": "atenção (estado novo)",
+      "2-3": "em risco",
+      ">=4": "em perigo"
+    },
+    "note": "Hoje o nível 1 não aparece; acrescentar o degrau «atenção» para que +1/−1 se veja."
+  },
+  "on_deliver_effects": {
+    "field": "skin.on_deliver_effects (ou skeleton.on_deliver_effects)",
+    "what": "efeitos aplicados quando a carta chega, antes da resposta",
+    "used_by": {
+      "mail-camara-01.hostil": [
+        "risk_camara_+1"
+      ],
+      "mail-comunidade-01.ourique": [
+        "risk_community_+1"
+      ],
+      "mail-media-01.ourique": [
+        "risk_community_+1"
+      ]
+    },
+    "effect": "a carta abre o conflito (risco sobe para «atenção»); a resposta conciliadora volta a pôr a zero; ignorar sobe para «em risco»."
+  },
+  "note_delivery": {
+    "field": "skeleton.delivery = \"note\" (também em regras: rule.delivery = \"note\")",
+    "what": "entra nas notas do painel e no registo do mês; não entra na caixa de entrada; não bloqueia «Jogar»; não conta para os limites de cartas",
+    "effects": "aplica na entrega os efeitos da escolha única (com choice_overrides da skin); mostra consequence_pt se existir",
+    "deadline_letters": "deadline_blocks_play = false em todas as notas",
+    "marcos": "regras r-es-marco-* e r-le-cod usam o ramo hud_only que já existe (delivery_proposed)"
+  },
+  "obra_hud": {
+    "required_v01": "Durante a obra a caixa não mexe (os custos são capital próprio) e muitos custos ficam abaixo do limiar do aviso do NPV. Mostrar no painel «Capital próprio da obra que resta» (gastos da obra a descer) e a data de arranque prevista. Todo o ΔNPV, mesmo pequeno, entra no registo do mês; o aviso no painel só acima do limiar.",
+    "meet_then_start_hook": "shiftMechanicalCompletionForObraDelay: o mês de atraso de «Reunir com a Câmara e arrancar» também empurra player_grid +1 (a obra toda começa um mês depois).",
+    "tracked_dates": "ver deadlines.draft.json → tracked_dates_visibilidade_v01_2026_10_06"
+  },
+  "visibility_rule": "Cada escolha do caminho de Ourique (M0–M33) mexe em: caixa, risco para a licença, reputação, uma data seguida, ou o NPV (com o aviso do NPV de npv-causes.pt.json). Escolhas de modelo da obra (empreiteiro, painéis a mais) ficam visíveis pelo NPV.",
+  "icnf_consult": "Retirada da v0.1: esconder o botão da Sala (requestIcnfConsult / ICNF_CONSULT_SKELETON)."
+}

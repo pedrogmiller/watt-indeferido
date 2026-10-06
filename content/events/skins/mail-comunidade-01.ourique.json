@@ -4,5 +4,9 @@
   "from_name": "Associação de Moradores — Ourique",
   "subject": "Queremos ser ouvidos",
   "body": "O projeto junto à subestação preocupa-nos: a sombra, os acessos e o barulho das obras. Uma reunião custa-te pouco. Se nos ignorares, a Câmara vai saber, e isso piora a tua relação com ela.",
-  "params": {}
+  "params": {},
+  "on_deliver_effects": [
+    "risk_community_+1"
+  ],
+  "visibilidade_v01_2026_10_06": "on_deliver_effects: abre o conflito no painel («Risco para a licença» sobe ao chegar a carta); a resposta conciliadora volta a baixá-lo. Campo novo — ver hud-effects.draft.json."
 }

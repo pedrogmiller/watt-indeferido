@@ -29,7 +29,8 @@
       "requires_state": [
         "lp_request_ready"
       ],
-      "locked_hint": "Sem PIP aprovado o pedido não entra: sem avaliação ambiental, o PIP é obrigatório no pedido de licença de produção."
+      "locked_hint": "Sem PIP aprovado o pedido não entra: sem avaliação ambiental, o PIP é obrigatório no pedido de licença de produção.",
+      "consequence_pt": "Pedido completo entregue: o prazo fica cumprido e sai dinheiro da caixa."
     },
     {
       "id": "submit_thin",
@@ -41,7 +42,8 @@
       "requires_state": [
         "lp_request_ready"
       ],
-      "locked_hint": "Sem PIP aprovado o pedido não entra: sem avaliação ambiental, o PIP é obrigatório no pedido de licença de produção."
+      "locked_hint": "Sem PIP aprovado o pedido não entra: sem avaliação ambiental, o PIP é obrigatório no pedido de licença de produção.",
+      "consequence_pt": "Pedido entregue a tempo e sem custo extra, mas a DGEG pode pedir o que falta."
     },
     {
       "id": "hold",
@@ -49,7 +51,8 @@
       "effects": [
         "lp_request_hold",
         "delay_lp_+1"
-      ]
+      ],
+      "consequence_pt": "Seguras mais um mês: o prazo aproxima-se e a caixa paga esse mês."
     }
   ],
   "heavy": true,
@@ -60,5 +63,6 @@
   "deadline_id": "lp_request",
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

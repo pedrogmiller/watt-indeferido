@@ -18,7 +18,8 @@
       "effects": [
         "epc_supplier_switch"
       ],
-      "hint": "Gastas mais capital próprio. A obra segue quase sem atraso."
+      "hint": "Gastas mais capital próprio. A obra segue quase sem atraso.",
+      "consequence_pt": "Os painéis chegam a tempo, mas mais caros: o NPV desce um pouco."
     },
     {
       "id": "wait",
@@ -26,7 +27,8 @@
       "effects": [
         "delay_obra_+1"
       ],
-      "hint": "Não pagas nada a mais. A obra acaba cerca de três meses mais tarde."
+      "hint": "Não pagas nada a mais. A obra acaba cerca de três meses mais tarde.",
+      "consequence_pt": "A central acaba três meses mais tarde. A data de arranque só muda se passar a acabar depois da tua linha."
     },
     {
       "id": "partial",
@@ -35,7 +37,8 @@
         "delay_obra_curto",
         "obra_partial_install"
       ],
-      "hint": "Não pagas nada a mais. A obra acaba cerca de um mês mais tarde, e montar por partes complica o trabalho das equipas."
+      "hint": "Não pagas nada a mais. A obra acaba cerca de um mês mais tarde, e montar por partes complica o trabalho das equipas.",
+      "consequence_pt": "A central perde só um mês. A data de arranque só muda se passar a acabar depois da tua linha."
     }
   ],
   "heavy": true,
@@ -46,5 +49,6 @@
   "deadline_id": "epc_mechanical_completion",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

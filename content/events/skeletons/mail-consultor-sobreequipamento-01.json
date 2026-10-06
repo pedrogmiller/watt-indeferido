@@ -24,7 +24,8 @@
         "overequip_plan_commit",
         "sobreequip_merchant_energy",
         "reopen_tech_plan"
-      ]
+      ],
+      "consequence_pt": "Plano pequeno: o NPV sobe um pouco e a obra fica um pouco mais cara."
     },
     {
       "id": "overequip_medium",
@@ -36,7 +37,8 @@
         "sobreequip_merchant_energy",
         "clipping_risk_+1",
         "reopen_tech_plan"
-      ]
+      ],
+      "consequence_pt": "Plano médio: mais energia, mas a energia a mais é vendida barata e parte é cortada. O NPV desce um pouco e a obra fica mais cara."
     },
     {
       "id": "overequip_large",
@@ -48,18 +50,21 @@
         "sobreequip_merchant_energy",
         "clipping_risk_+2",
         "reopen_tech_plan"
-      ]
+      ],
+      "consequence_pt": "Plano grande: muita energia cortada nas horas de sol. O NPV desce muito e a obra fica muito mais cara."
     },
     {
       "id": "later",
       "label": "Ainda não",
       "effects": [
         "value_add_delay_+1"
-      ]
+      ],
+      "consequence_pt": "Fica para depois: o desenho mantém-se e a caixa paga um mês de estudo."
     }
   ],
   "heavy": false,
   "nota_gm": "Sobreequipamento: DL 15/2022 art. 3.º sss) (até 20 % da potência de ligação da LP inicial), art. 64.º/2 (potência de ligação inalterada), art. 66.º (energia a preço de mercado), art. 65.º (interrupção pelo gestor do SEN), art. 70.º (intransmissível). Leitura de jogo (Pedro, HIPÓTESE): o limite aplica-se à injeção (99 + 19,8 = 118,8 MVA em Ourique), não aos MWp. Licenciamento da alteração: RJAIA alterações (≤20 % potência e área, sem linha nova → não sujeição); acima disso o projeto total volta ao algoritmo env_routing (≥100 ha de módulos → AIA; em área sensível ≥10 ha → caso a caso).",
   "notes_for_economy": "Tamanhos em params.overequip_added_mwp da skin; o otimizador DC/AC da Economy calcula energia, corte (clipping), Capex e NPV. Injeção máxima = potência de ligação × 1,2. sobreequip_merchant_energy: energia extra a preço de mercado. clipping_risk_+1/+2 = só indicativo para a copy. € = Economy. 2026-09-30: ΔNPV por tamanho no sobreequip-bess.md §7 (Economy). Sem opção de baterias neste cartão (baterias = hibridização).",
-  "notes_for_ui": "Cada escolha grava overequip_added_mwp = params.overequip_added_mwp[<tamanho>] e recalcula env_path_planned ANTES de confirmar (tripwire mail-consultor-nao-sujeicao-risco-01). Se a área de módulos do total ≥100 ha → overequip_area_aia; se toca área sensível com ≥10 ha → overequip_area_caso. Injeção limitada a 1,2 × potência de ligação (não aos MWp)."
+  "notes_for_ui": "Cada escolha grava overequip_added_mwp = params.overequip_added_mwp[<tamanho>] e recalcula env_path_planned ANTES de confirmar (tripwire mail-consultor-nao-sujeicao-risco-01). Se a área de módulos do total ≥100 ha → overequip_area_aia; se toca área sensível com ≥10 ha → overequip_area_caso. Injeção limitada a 1,2 × potência de ligação (não aos MWp).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

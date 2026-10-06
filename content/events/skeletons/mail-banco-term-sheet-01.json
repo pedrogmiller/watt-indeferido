@@ -21,8 +21,10 @@
       "label": "Assinar a proposta de condições",
       "effects": [
         "term_sheet_signed",
-        "gearing_band_base"
-      ]
+        "gearing_band_base",
+        "bank_fees_term_sheet"
+      ],
+      "consequence_pt": "Assinas com o banco: pagas as despesas do contrato e o empréstimo fica reservado."
     },
     {
       "id": "negotiate",
@@ -31,7 +33,8 @@
         "term_sheet_negotiate",
         "gearing_push",
         "delay_fid_+1"
-      ]
+      ],
+      "consequence_pt": "Pedes um empréstimo maior: precisas de menos capital próprio se o banco aceitar, mas a decisão de construir atrasa."
     },
     {
       "id": "defer",
@@ -39,11 +42,14 @@
       "effects": [
         "term_sheet_defer",
         "delay_fid_+1",
-        "investor_patience_-1"
-      ]
+        "investor_patience_-1",
+        "reputation_-1"
+      ],
+      "consequence_pt": "Adias o banco: a decisão de construir atrasa e a tua reputação desce."
     }
   ],
   "heavy": false,
   "notes_for_economy": "gearing_band_base|high = % dívida — PEDIR_ECONOMY. negotiate: Economy resolve em 1–2 meses → term_sheet_signed + gearing_band_(base|high) (toast, sem carta nova). Merchant do híbrido com haircut.",
-  "notes_for_ui": "Structuration date no dossier. 'Adiar' re-arma (rearm_on_effects: term_sheet_defer)."
+  "notes_for_ui": "Structuration date no dossier. 'Adiar' re-arma (rearm_on_effects: term_sheet_defer).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

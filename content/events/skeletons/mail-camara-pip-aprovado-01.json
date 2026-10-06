@@ -25,7 +25,8 @@
       "label": "Seguir para a LP",
       "effects": [
         "pip_aprovado"
-      ]
+      ],
+      "consequence_pt": "PIP aprovado: já podes pedir a licença de produção."
     }
   ],
   "heavy": false,
@@ -35,5 +36,8 @@
   "deadline_id": "pip_decision",
   "deadline_role": "outcome",
   "deadline_kind": "authority",
-  "deadline_blocks_play": false
+  "deadline_blocks_play": false,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

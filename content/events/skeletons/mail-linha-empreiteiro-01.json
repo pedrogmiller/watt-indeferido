@@ -1,0 +1,45 @@
+{
+  "id": "mail-linha-empreiteiro-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — rede própria no caminho crítico (v0.1 Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EPC",
+  "choices": [
+    {
+      "id": "epc_builds",
+      "label": "Deixar com o empreiteiro da central",
+      "effects": [
+        "linha_epc"
+      ],
+      "hint": "Não pagas nada a mais. A subestação e a linha ficam prontas na data prevista.",
+      "consequence_pt": "A tua subestação e a linha ficam com a data prevista: são elas que marcam a data de arranque."
+    },
+    {
+      "id": "specialist",
+      "label": "Contratar uma empresa de linhas e subestações",
+      "effects": [
+        "linha_especialista"
+      ],
+      "hint": "Pagas mais capital próprio. A subestação e a linha ficam prontas cerca de dois meses mais cedo.",
+      "consequence_pt": "A tua subestação e a linha adiantam dois meses, e a data de arranque adianta com elas se a REN e a central estiverem prontas."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "player_grid",
+  "deadline_letter": true,
+  "deadline_id": "player_grid",
+  "deadline_role": "decision",
+  "deadline_kind": "player_works",
+  "deadline_blocks_play": true,
+  "notes_for_ui": "Mostrar a data de player_grid na carta ({{deadline_month}}). linha_especialista puxa player_grid −2 meses.",
+  "notes_for_economy": "linha_epc: sem €. linha_especialista: capital próprio extra (PEDIR_ECONOMY), months −2 em player_grid; ΔNPV só pelo COD que mexer.",
+  "nota_gm": "DL 15/2022 + Regulamento de Relações Comerciais: depois do TRC, o produtor pede à REN as condições de ligação; a REN apresenta uma proposta técnico-comercial com prazos e encargos das obras na subestação dela (painel/baía onde a linha liga). A subestação do produtor (elevadora) e a linha de uso exclusivo até ao ponto de ligação são do produtor, que as constrói e paga; a licença de exploração abrange a central e as infraestruturas de ligação de serviço particular. Fronteira no ponto de ligação. Art. 24.º-26.º (acordo/condições) e art. 14.º/3 (prazo da LE só se ajusta a atrasos da RESP, não da linha do produtor). VERIFICADO em parte (pgdlisboa, mercado.ren.pt, manual E-REDES por analogia); números de artigo da responsabilidade da linha do produtor e prazos típicos da REN: INCERTO — PEDIR_PEDRO.",
+  "visibilidade_v01_2026_10_06": true
+}

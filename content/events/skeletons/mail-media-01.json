@@ -16,17 +16,22 @@
       "id": "respond",
       "label": "Responder à imprensa",
       "effects": [
-        "risk_media_-1"
-      ]
+        "risk_media_-1",
+        "risk_community_-1"
+      ],
+      "consequence_pt": "Explicaste o projeto na notícia: a terra fica mais calma e o risco para a licença desce."
     },
     {
       "id": "silence",
       "label": "Não comentar",
       "effects": [
-        "risk_media_+1"
-      ]
+        "risk_media_+1",
+        "reputation_-1"
+      ],
+      "consequence_pt": "Saiu só a versão da Câmara: a tua reputação desce."
     }
   ],
   "notes_for_economy": "Qualitativo",
-  "notes_for_ui": "Alternar com comunidade"
+  "notes_for_ui": "Alternar com comunidade",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }
