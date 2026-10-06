@@ -5939,6 +5939,22 @@
   function fmtEur(n) {
     return fmtSigned(n, false);
   }
+  /** Upgrade NPV line: the mission row in effects-economy.json when nav is a number; otherwise hide «a definir». */
+  function upgradeNavText(action) {
+    if (!action) return '';
+    const mission = { sobre: 'mission_sobreequipamento', bess: 'mission_bess', eolica: 'mission_eolico' }[action.id];
+    if (mission) {
+      let nav = null;
+      try {
+        const row = (typeof econEngineRow === 'function') ? econEngineRow(mission) : null;
+        nav = row && row.nav;
+      } catch (_) {}
+      if (typeof nav === 'number' && Number.isFinite(nav)) return fmtSigned(nav, true);
+      return '';
+    }
+    if (action.nav == null || action.nav === '' || action.nav === 'a definir') return '';
+    return String(action.nav);
+  }
 
   function fmtVan(n) {
     return fmtSigned(n, false);
@@ -6021,11 +6037,21 @@
       try {
         if (mailLoop.active && mailLoop.seId === n.id && mailLoop.deadlines && mailLoop.deadlines.pip_camara) {
           const d = mailLoop.deadlines.pip_camara;
+          const tags = mailLoop.tags || {};
+          const on = (k) => (tags[k] | 0) > 0;
           const missed = mailLoop.missedDeadlines && mailLoop.missedDeadlines.pip_camara != null;
-          const done = (mailLoop.firedDeadlines || {}).pip_camara && !missed;
+          const camaraOpen = (typeof mailState !== 'undefined' && mailState.items || []).some((m) => {
+            return mailSkeletonOf(m) === 'mail-camara-01' && !m.econChoiceId;
+          });
           const now = mailLoop.month | 0;
+          // The deadline also fires when the PIP is filed, so "tratado" was a lie while the risk letter was still open.
+          if (on('pip_aprovado')) return { label: 'PIP: aprovado', value: '', tone: 'green', tip: tip };
+          if (on('pip_indeferido')) return { label: 'PIP: recusado', value: '', tone: 'red', tip: tip };
+          if (camaraOpen) return { label: 'PIP: em risco', value: '', tone: 'red', tip: tip };
+          if (on('pip_request_submitted')) return { label: 'PIP: pedido feito', value: '', tone: 'amber', tip: tip };
           if (missed) return { label: 'PIP: prazo falhado (mês ' + d.atMonth + ')', value: '', tone: 'red', tip: tip };
-          if (done) return { label: 'PIP: tratado', value: '', tone: 'green', tip: tip };
+          const metByMeeting = (mailLoop.firedDeadlines || {}).pip_camara && !missed;
+          if (metByMeeting) return { label: 'PIP: ainda por pedir', value: '', tone: 'amber', tip: tip };
           const left = (d.atMonth | 0) - now;
           return { label: left <= 0 ? 'PIP: vence este mês' : ('PIP: mês ' + d.atMonth + ' (' + faltaMeses(left) + ')'), value: '', tone: left <= 1 ? 'red' : 'amber', tip: tip };
         }
@@ -6507,13 +6533,13 @@
                 <span class="action-meta-label">Licenciamento</span>
                 <span class="action-meta-value">${a.tempo}</span>
               </div>
-              <div class="action-meta-item">
+              ${upgradeNavText(a) ? `<div class="action-meta-item">
                 <span class="action-meta-label">Impacto NPV</span>
-                <span class="action-meta-value positive num">${a.nav}</span>
-              </div>
+                <span class="action-meta-value positive num">${upgradeNavText(a)}</span>
+              </div>` : ''}
             </div>
-            <button class="btn-confirm" type="button" data-confirm="${nodeId}:${a.id}" ${done ? 'disabled' : ''}>
-              ${done ? 'Feito' : 'Começar'}
+            <button class="btn-confirm${(!done && assetRoomState.armedKey === (nodeId + ':' + a.id)) ? ' is-armed' : ''}" type="button" data-confirm="${nodeId}:${a.id}" ${done ? 'disabled' : ''}>
+              ${done ? 'Feito' : actionStartLabel(nodeId, a)}
             </button>
           </div>`;
       }).join('')}
@@ -6546,7 +6572,7 @@
   }
 
   /* ═══ Sala do ativo ═══ */
-  const assetRoomState = { open: false, nodeId: null, focus: null };
+  const assetRoomState = { open: false, nodeId: null, focus: null, armedKey: null };
 
   function assetOfftakeLabel(node) {
     const lr = (typeof auctionState !== 'undefined') ? auctionState.lastResult : null;
@@ -6804,8 +6830,10 @@
       ? nodes.find((n) => n.id === mailLoop.seId)
       : null;
     return choices.filter((c) => {
+      // Approve FID only when equity fits. While it is short, the partner and loan choices (equity_fit_short) show instead.
+      if (c.requires_state && c.requires_state.indexOf('equity_fit_ok') !== -1 && !mailTagOn('equity_fit_ok')) return false;
       if (!(c.requires_state && c.requires_state.length)) return choiceWhenPasses(c.when, node, letter);
-      // requires_state: the choice stays visible (locked, with locked_hint) when only that state is missing
+      // Other requires_state: the choice stays visible (locked, with locked_hint) when only that state is missing
       mailTagAssume = {}; c.requires_state.forEach((k) => { mailTagAssume[k] = true; });
       try { return choiceWhenPasses(c.when, node, letter); } finally { mailTagAssume = null; }
     });
@@ -6853,6 +6881,7 @@
     renderInboxBadge();
     scheduleSave('mail-player-' + skeletonId);
     if (opts.open) openLetter(letter.id);
+    else if (mailState.open) renderInboxBody();
     return letter;
   }
 
@@ -7119,8 +7148,11 @@
       const isFarm = a.id === 'farm';
       const blockedFarm = isFarm && !(node.van > 0);
       const disabled = done || blockedFarm;
-      let btnLabel = done ? 'Feito' : 'Começar';
+      let btnLabel = actionStartLabel(nodeId, a);
+      if (done) btnLabel = 'Feito';
       if (blockedFarm && !done) btnLabel = 'Bloqueado: o projeto perde dinheiro';
+      const armed = !done && assetRoomState.armedKey === (nodeId + ':' + a.id);
+      const navTxt = upgradeNavText(a);
       return `
         <div class="asset-opt-card${done ? ' done' : ''}" data-asset-opt="${a.id}">
           <h4>${a.title}${done ? ' ✓' : ''}</h4>
@@ -7128,9 +7160,9 @@
           <div class="asset-opt-meta">
             <span>Custo <strong class="num">${a.capex}</strong></span>
             <span>Licenciamento <strong>${a.tempo}</strong></span>
-            <span>Impacto NPV <strong class="num">${a.nav}</strong></span>
+            ${navTxt ? `<span>Impacto NPV <strong class="num">${navTxt}</strong></span>` : ''}
           </div>
-          <button type="button" class="btn-confirm" data-asset-confirm="${nodeId}:${a.id}" ${disabled ? 'disabled' : ''}>${btnLabel}</button>
+          <button type="button" class="btn-confirm${armed ? ' is-armed' : ''}" data-asset-confirm="${nodeId}:${a.id}" ${disabled ? 'disabled' : ''}>${btnLabel}</button>
         </div>`;
     }).join('');
   }
@@ -7614,25 +7646,39 @@
   }
 
 
-  /** L7: «Começar» spends money, so the first tap only arms the button and shows the cost; the second tap confirms. */
+  /** Cost phrase on an armed upgrade button. Empty when there is nothing to pay now. */
+  function actionConfirmPhrase(action) {
+    const cost = action && action.capex && action.capex !== '—' ? String(action.capex).split('·')[0].trim() : '';
+    if (!cost) return '';
+    return 'Confirmar: gastas ' + cost.replace(/\s*agora$/, '') + ' agora';
+  }
+  function actionStartLabel(nodeId, action) {
+    if (!action) return 'Começar';
+    if (assetRoomState.armedKey === (nodeId + ':' + action.id)) return actionConfirmPhrase(action) || 'Começar';
+    return 'Começar';
+  }
+  /** «Começar» spends money. The first tap arms the button and it stays armed until the second tap confirms. */
   function armActionConfirm(btn, nodeId, actionId) {
-    if (btn.dataset.armed === '1') {
-      clearTimeout(btn._armT);
-      btn.dataset.armed = '';
+    const key = nodeId + ':' + actionId;
+    if (assetRoomState.armedKey === key) {
+      assetRoomState.armedKey = null;
       return true;
     }
     const act = (actions[nodeId] || actions.ourique || []).find((a) => a.id === actionId);
-    const cost = act && act.capex && act.capex !== '—' ? String(act.capex).split('·')[0].trim() : '';
-    if (!cost) return true; // nothing to pay now
-    btn.dataset.armed = '1';
-    btn.dataset.label = btn.textContent.trim();
-    btn.textContent = 'Confirmar: gastas ' + cost.replace(/\s*agora$/, '') + ' agora';
+    const phrase = actionConfirmPhrase(act);
+    if (!phrase) return true; // nothing to pay now
+    assetRoomState.armedKey = key;
+    document.querySelectorAll('.btn-confirm.is-armed').forEach((other) => {
+      if (other === btn) return;
+      other.classList.remove('is-armed');
+      const raw = other.getAttribute('data-confirm') || other.getAttribute('data-asset-confirm') || '';
+      const bits = raw.split(':');
+      const otherAct = (actions[bits[0]] || []).find((a) => a.id === bits[1]);
+      other.textContent = (otherAct && otherAct.id === 'farm' && other.textContent.indexOf('Bloqueado') === 0) ? other.textContent : 'Começar';
+    });
+    btn.textContent = phrase;
     btn.classList.add('is-armed');
-    btn._armT = setTimeout(() => {
-      btn.dataset.armed = '';
-      btn.classList.remove('is-armed');
-      btn.textContent = btn.dataset.label || 'Começar';
-    }, 6000);
+    try { showToast('Clica outra vez para confirmar o gasto.'); } catch (_) {}
     return false;
   }
 
@@ -8001,6 +8047,7 @@
         updateHeaderMetrics(moved);
         if (moved && Math.abs(drift.divida) >= 0.005) flashPill('pillDivida');
 
+        const newLettersN = mailDelivered + ((stakesLetters && stakesLetters.length) || 0);
         const label = (typeof periodLabelText === 'function') ? periodLabelText() : (state.year + ' · M' + mailLoop.month);
         const jumpNote = jumpResult ? (' (avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ')') : '';
         const burnNote = (typeof spendFeeling === 'function') ? spendFeeling(drift) : '';
@@ -8008,24 +8055,24 @@
         const showToastBurn = (m) => _showToast(m + burnNote);
         activities.unshift({
           time: 'Agora',
-          text: 'Tempo avançado: ' + label + jumpNote + (mailDelivered ? (' · ' + cartasNovasPt(mailDelivered)) : '') + burnNote,
+          text: 'Tempo avançado: ' + label + jumpNote + (newLettersN ? (' · ' + cartasNovasPt(newLettersN)) : '') + burnNote,
         });
         renderActivity();
 
         if (cappedAtEnd) {
-          showToastBurn(mailDelivered > 0
-            ? ('Avançaste para o mês ' + mailLoop.month + ' · ' + cartasNovasPt(mailDelivered) + ' no Correio')
+          showToastBurn(newLettersN > 0
+            ? ('Avançaste para o mês ' + mailLoop.month + ' · ' + cartasNovasPt(newLettersN) + ' no Correio')
             : ('Avançaste para o mês ' + mailLoop.month + '. Não há cartas novas.'));
         } else if (jumpResult) {
           if (jumpResult.hit) {
-            showToastBurn('Avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ' (mês ' + jumpResult.month + ') · ' + cartasNovasPt(mailDelivered) + ' no Correio');
-          } else if (jumpResult.month >= scheduleMax && mailDelivered === 0) {
+            showToastBurn('Avançaste ' + jumpResult.jumped + (jumpResult.jumped === 1 ? ' mês' : ' meses') + ' (mês ' + jumpResult.month + ') · ' + cartasNovasPt(newLettersN) + ' no Correio');
+          } else if (jumpResult.month >= scheduleMax && newLettersN === 0) {
             showToastBurn('Por agora não há mais cartas.');
           } else {
             showToastBurn('Avançaste ' + jumpResult.jumped + ' meses. Não há cartas novas.');
           }
-        } else if (mailDelivered > 0) {
-          showToastBurn('Avançaste para ' + label + ' · ' + cartasNovasPt(mailDelivered) + ' no Correio');
+        } else if (newLettersN > 0) {
+          showToastBurn('Avançaste para ' + label + ' · ' + cartasNovasPt(newLettersN) + ' no Correio');
         } else {
           showToastBurn('Avançaste para ' + label);
         }
@@ -8823,6 +8870,11 @@
 
   function initCoach() {
     document.getElementById('wattCoachBtn').addEventListener('click', () => {
+      const btnEl = document.getElementById('wattCoachBtn');
+      if (btnEl && String(btnEl.textContent || '').trim().toLowerCase() === 'saltar') {
+        hideCoach({ persist: true, clearQueue: true });
+        return;
+      }
       const last = (document.getElementById('wattCoach')._coachLast || {});
       const kind = (last.data && last.data.kind) || (coachTargetEl ? 'tutorial' : 'storytelling');
       const hasTarget = !!(coachTargetEl || last.target);
@@ -9091,6 +9143,9 @@
     }
     if (out.car) state.carCommitted = +((state.carCommitted || 0) + out.car).toFixed(3);
     if (out.equity) state.equityCommitted = +((state.equityCommitted || 0) + out.equity).toFixed(3);
+    if (out.cash < 0 && phase !== 'obra' && phase !== 'cod') {
+      ec.carSpent = +((ec.carSpent || 0) - out.cash).toFixed(3);
+    }
     if (out.months && typeof mailLoop !== 'undefined') mailLoop.econDelayMonths = (mailLoop.econDelayMonths || 0) + out.months;
     recomputeNav();
     return out;
@@ -10191,6 +10246,7 @@
     const bid = wonLotBid(lotId);
     let need = (bid != null && typeof fidEquityNeed === 'function') ? fidEquityNeed(lotId, bid) : ((bid != null) ? faixaEquityAtBid(lotId, bid) : null);
     if (need == null) need = lotEcon(lotId).equityNeed;
+    need = +(Number(need) + Math.max(0, Number(state.equityCommitted) || 0)).toFixed(2);
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
     if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     const budget = econBudget().equity;
@@ -11426,14 +11482,15 @@
   }
 
   /** M0 top-up placeholders (Economy §6.1, M0 table in ECON_TIER): {ask_s|m|l} = reforço pedido,
-   *  {cash_s|m|l} = caixa inicial do nível + reforço («2,5 M€»). Always the CURRENT mandate tier. */
+   *  {cash_s|m|l} = caixa actual + reforço. The TRC kickoff has already left the seed, so seed+top-up overstates cash. */
   function econPlaceholderCtx() {
     const T = econTier();
+    const base = Number(state.caixa) || 0;
     const out = {};
     ['s', 'm', 'l'].forEach((b) => {
       const top = T.m0[b.toUpperCase()] || 0;
       out['ask_' + b] = fmtMoneyAbs(top);
-      out['cash_' + b] = fmtMoneyAbs(+(T.seed + top).toFixed(3));
+      out['cash_' + b] = fmtMoneyAbs(+(base + top).toFixed(3));
     });
     return out;
   }
@@ -12770,13 +12827,25 @@
     'decisao-final': 'A decisão de construir está tomada'
   };
   function showHudMoment(rule) {
-    const el = document.getElementById('hudMoment');
-    if (!el) return;
     const label = (rule && rule.hud_moment && rule.hud_moment.label_pt) || 'Marco atingido';
     const line = (rule && HUD_MOMENT_LINE[rule.skin]) || 'O projeto deu um passo em frente';
-    el.hidden = false;
-    el.innerHTML = '<strong>' + escapeHtml(label) + '</strong><span>' + escapeHtml(line) + '</span>';
     mailLoop.hudMoment = { label: label, line: line, skin: rule && rule.skin, month: mailLoop.month | 0, rule: rule && rule.id };
+    refreshHudMoment();
+  }
+  /** Milestone banners stay for the month they fire and the next one, then clear. */
+  function refreshHudMoment() {
+    const el = document.getElementById('hudMoment');
+    if (!el) return;
+    const hm = (typeof mailLoop !== 'undefined' && mailLoop) ? mailLoop.hudMoment : null;
+    const age = hm && hm.month != null ? ((mailLoop.month | 0) - (hm.month | 0)) : 99;
+    if (!hm || age >= 2) {
+      if (mailLoop) mailLoop.hudMoment = null;
+      el.hidden = true;
+      el.innerHTML = '';
+      return;
+    }
+    el.hidden = false;
+    el.innerHTML = '<strong>' + escapeHtml(hm.label || 'Marco atingido') + '</strong><span>' + escapeHtml(hm.line || '') + '</span>';
   }
 
   function stakeLetterAlready(skeletonId, skinId) {
@@ -12833,6 +12902,7 @@
     stampLetterArrival(L);
     mailState.items = [L].concat((mailState.items || []).filter((m) => m.id !== id));
     try { renderInboxBadge(); } catch (_) {}
+    try { if (mailState.open) renderInboxBody(); } catch (_) {}
     return L;
   }
   function applyRuleEndState(rule) {
@@ -14188,6 +14258,28 @@
     return sum;
   }
 
+  /** The priority letter pays bess_dev_flag (−0,4 M€). Move 8% of the TRC into batteries without a second mission charge. */
+  function startBessFromPriorityLetter() {
+    const nodeId = (mailLoop && mailLoop.seId) || 'ourique';
+    if (!state.appliedActions[nodeId]) state.appliedActions[nodeId] = new Set();
+    if (state.appliedActions[nodeId].has('bess')) return;
+    const node = (typeof nodes !== 'undefined') ? nodes.find((n) => n.id === nodeId) : null;
+    state.appliedActions[nodeId].add('bess');
+    if (node && node.trc && node.trc.free >= 8) {
+      node.trc.bess = (node.trc.bess || 0) + 8;
+      node.trc.free -= 8;
+    }
+  }
+  /** «Reunir com a Câmara e arrancar» costs one month. Shift the mechanical-completion deadline by that month, without using the one-time slip. */
+  function shiftMechanicalCompletionForObraDelay(effects) {
+    if (!effects || !effects.some((e) => String(e) === 'delay_obra_+1')) return;
+    const d = mailLoop.deadlines && mailLoop.deadlines.epc_mechanical_completion;
+    if (!d || (mailLoop.firedDeadlines || {}).epc_mechanical_completion) return;
+    const base = d.due != null ? Number(d.due) : Number(d.atMonth);
+    if (!Number.isFinite(base)) return;
+    d.due = base + 1;
+    d.atMonth = Math.ceil(d.due - 1e-9);
+  }
   function applyMailEffects(effects, opts) {
     opts = opts || {};
     if (!Array.isArray(effects) || !effects.length) return { carBand: null, messages: [] };
@@ -14237,6 +14329,10 @@
     if ((mailLoop.tags.value_add_commit || mailLoop.tags.bess_dev_flag) && !mailLoop.tags.bess_dev_started) {
       mailLoop.tags.bess_dev_started = 1;
     }
+    // «Dar prioridade ao eólico e às baterias» pays bess_dev_flag already. Start the battery upgrade once, without charging mission_bess again.
+    if (effects.some((e) => String(e) === 'bess_dev_flag')) {
+      try { startBessFromPriorityLetter(); } catch (err) { console.warn('[WattMail] bess priority', err); }
+    }
     // Keep sounding also sets buyer_search_active (already in effects); ensure pipeline open
     if (effects.indexOf('sale_pipeline_open') !== -1 && !mailLoop.tags.buyer_search_active) {
       mailLoop.tags.buyer_search_active = 1;
@@ -14246,6 +14342,7 @@
     }
     maybeRaisePhaseFromEffects(effects);
     try { draftDeadlinesOnEffects(effects.map(String)); } catch (err) { console.warn('[WattMail] draft deadlines', err); }
+    try { shiftMechanicalCompletionForObraDelay(effects); } catch (err) { console.warn('[WattMail] obra delay', err); }
     try { if (typeof stakesApplySpecial === 'function') stakesApplySpecial(effects.map(String)); } catch (err) { console.warn('[WattStakes] effects', err); }
     if (effects.some((e) => LAND_CHOSEN_TAGS.indexOf(String(e)) !== -1 || e === 'reopen_tech_plan' || e === 'design_trim_threshold' || e === 'underground_cable')) {
       try { ensureEnvPath(); } catch (err) { console.warn('[WattMail] env route', err); }
@@ -14789,6 +14886,7 @@
     const reading = mailState.view === 'detail' && !!mailState.activeId;
     if (drawer) drawer.dataset.mailView = reading ? 'detail' : 'list';
     const n = unreadMailCount();
+    try { renderInboxBadge(); } catch (_) {}
     if (sub) {
       sub.textContent = n
         ? (n + ' por ler · ' + mailState.items.length + (mailState.items.length === 1 ? ' carta' : ' cartas'))
@@ -15828,6 +15926,7 @@
     if (pl) pl.textContent = label;
     const fmp = document.getElementById('footerMockPeriod');
     if (fmp) fmp.textContent = label;
+    try { if (typeof refreshHudMoment === 'function') refreshHudMoment(); } catch (_) {}
   }
 
   function applyHydratedUi() {

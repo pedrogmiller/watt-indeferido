@@ -210,27 +210,7 @@
       ]
     }
   },
-  "joker": {
-    "skeleton": "mail-joker-fa-bess-01",
-    "skin": "default",
-    "when_phase": [
-      "land",
-      "pip",
-      "aia",
-      "licenca_producao"
-    ],
-    "requires_any_effects": [
-      "bess_dev_started",
-      "bess_dev_flag",
-      "value_add_commit"
-    ],
-    "min_gap_months": 3,
-    "block_if_delivered_same_month_skeletons": [
-      "mail-rede-prazo-01",
-      "mail-camara-01",
-      "mail-camara-followup-01"
-    ]
-  },
+  "joker": null,
   "_comment": "v2 progress=phase. Landings 0..6 = old M0–M6 seed order. Eligibility = phase ∈ landing.when_phase (or skeleton.trigger.when_phase) + requires + not delivered. month/devMonth = pressure clock only.",
   "_comment_apa": "APA/banco landing includes pip so letter can arrive; apa_track_start raises phase to aia. No auto obra/cod in MVP1.",
   "_comment_caps": "Proposta 2026-10-04: 2 cartas relevantes por aterragem (o par do terreno conta como uma). Cartas de regra (PIP, pedido de licença) somam-se.",
