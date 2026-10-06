@@ -3,10 +3,11 @@
   "skin_id": "ourique",
   "draft": true,
   "when": {},
-  "from_name": "REN — Ligações à RNT",
-  "subject": "Ligação pronta na SE Ourique",
-  "body": "Painel e linha de ligação concluídos, prontos a energizar. Quando a central estiver mecanicamente concluída, pedes à DGEG autorização para ensaios. Com LP e linha prontas, abrem-se também os modos de venda que mantêm o TRC.",
+  "from_name": "REN — Ligações à rede",
+  "subject": "A ligação em Ourique está pronta",
+  "body": "A REN acabou as obras na subestação de Ourique e a linha até à tua central está pronta a ligar. Quando a central estiver montada, pedes à DGEG autorização para os testes. Com a licença de produção e a ligação prontas, também passas a poder vender parte do projeto sem perder o TRC.",
   "params": {
     "operator": "REN"
-  }
+  },
+  "obra_v01_2026_10_06": "Linguagem simples."
 }

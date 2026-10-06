@@ -20,26 +20,29 @@
   "choices": [
     {
       "id": "dgeg",
-      "label": "Pedir ensaios e vistoria DGEG",
+      "label": "Pedir os testes e a vistoria à DGEG",
       "effects": [
         "commissioning_started"
-      ]
+      ],
+      "hint": "Não pagas nada a mais. A DGEG tem 30 dias para vir."
     },
     {
       "id": "accredited",
-      "label": "Ensaios e vistoria por entidade acreditada",
+      "label": "Testes e vistoria por uma entidade autorizada",
       "effects": [
         "commissioning_started",
         "vistoria_acreditada"
-      ]
+      ],
+      "hint": "Pagas a entidade. A vistoria fica marcada mais depressa."
     },
     {
       "id": "punch_list",
-      "label": "Fechar pendentes primeiro",
+      "label": "Fechar primeiro os trabalhos pendentes",
       "effects": [
         "punch_list_first",
         "delay_cod_+1"
-      ]
+      ],
+      "hint": "A vistoria corre melhor, mas a central começa a vender mais tarde."
     }
   ],
   "heavy": false,

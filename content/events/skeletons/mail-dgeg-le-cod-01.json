@@ -40,5 +40,6 @@
   "deadline_id": "le_deadline",
   "deadline_role": "outcome",
   "deadline_kind": "authority",
-  "deadline_blocks_play": false
+  "deadline_blocks_play": false,
+  "obra_v01_2026_10_06": "Já não sai como carta: r-le-cod passa a hud_only e aplica le_granted + cod_reached na entrega; a notícia vai na carta final mail-fim-de-ciclo-01.cod. A skin ourique tem de ficar ativa (a consola procura a skin antes do ramo hud_only)."
 }

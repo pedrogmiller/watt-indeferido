@@ -4,12 +4,13 @@
   "draft": true,
   "when": {},
   "from_name": "DGEG — Licenciamento de centros eletroprodutores",
-  "subject": "Prorrogação concedida — licença de exploração",
-  "body": "Prazo da licença de exploração prorrogado até {{deadline_month}}. O despacho regista o motivo. Nova derrapagem já não terá a mesma leitura.",
+  "subject": "Licença de exploração: prazo prorrogado",
+  "body": "A DGEG aceitou o teu pedido: o prazo da licença de exploração passa para {{deadline_month}}. Fica registado porquê. Não há segunda prorrogação: se voltar a atrasar, a DGEG será menos compreensiva.",
   "params": {
     "deadline_id": "le_deadline"
   },
   "deadline_id": "le_deadline",
   "deadline_role": "outcome",
-  "deadline_blocks_play": false
+  "deadline_blocks_play": false,
+  "obra_v01_2026_10_06": "Linguagem simples."
 }

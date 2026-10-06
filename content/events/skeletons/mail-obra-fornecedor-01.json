@@ -1,0 +1,50 @@
+{
+  "id": "mail-obra-fornecedor-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EPC",
+  "choices": [
+    {
+      "id": "switch",
+      "label": "Mudar para o outro fornecedor",
+      "effects": [
+        "epc_supplier_switch"
+      ],
+      "hint": "Gastas mais capital próprio. A obra segue quase sem atraso."
+    },
+    {
+      "id": "wait",
+      "label": "Esperar pelo navio",
+      "effects": [
+        "delay_obra_+1"
+      ],
+      "hint": "Não pagas nada a mais. A obra acaba cerca de três meses mais tarde."
+    },
+    {
+      "id": "partial",
+      "label": "Montar já o que chegou e esperar pelo resto",
+      "effects": [
+        "delay_obra_curto",
+        "obra_partial_install"
+      ],
+      "hint": "Não pagas nada a mais. A obra acaba cerca de um mês mais tarde, e montar por partes complica o trabalho das equipas."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "epc_mechanical_completion",
+  "notes_for_economy": "epc_supplier_switch: equity extra (PEDIR_ECONOMY), sem meses. delay_obra_curto: 1 mês (mesma fórmula de delay_obra_+1 com m=1). obra_partial_install: sem € (sabor).",
+  "nota_gm": "Retenção aduaneira de painéis (controlo de origem / trabalho forçado, regras UE) é realista; sem referência legal na carta.",
+  "deadline_letter": true,
+  "deadline_id": "epc_mechanical_completion",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
+}

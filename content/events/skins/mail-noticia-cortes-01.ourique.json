@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-noticia-cortes-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Imprensa — energia",
+  "subject": "Energia a preço zero ao meio-dia",
+  "body": "Nos dias de muito sol, já há horas em que a energia vale zero, ou menos, no mercado. A REN também pediu a algumas centrais solares que reduzissem a produção, porque a rede não aguentava tanta energia ao meio-dia.\n\nA tua central vende ao preço que ganhaste no leilão, mas a energia que a rede manda cortar pode não ser paga. Mais tarde, baterias junto à central permitiriam guardar essa energia e vendê-la ao fim do dia.",
+  "params": {}
+}

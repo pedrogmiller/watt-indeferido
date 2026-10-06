@@ -1,0 +1,34 @@
+{
+  "skeleton_id": "mail-prazo-derrapagem-01",
+  "skin_id": "ligacao",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "REN — Ligações à rede",
+  "subject": "Ligação à rede: passa de {{old_month}} para {{new_month}}",
+  "body": "A data da ligação da tua central mudou de {{old_month}} para {{new_month}}. Motivo: {{cause}}.\n\nSem ligação, a central não produz, mesmo com a obra pronta. Quando o atraso é da rede, a lei dá-te mais tempo para a licença de exploração, mas convém que o atraso fique registado por escrito.",
+  "params": {
+    "deadline_id": "grid_connection"
+  },
+  "choice_overrides": {
+    "recover": {
+      "label": "Exigir à REN um calendário por escrito",
+      "effects": [
+        "grid_chase",
+        "grid_slip_operator"
+      ],
+      "hint": "Não custa nada. Fica escrito que o atraso é da REN, o que ajuda num pedido de prorrogação."
+    },
+    "accept": {
+      "label": "Aceitar a nova data",
+      "effects": [
+        "slip_accepted"
+      ],
+      "hint": "Não fazes nada. Sem registo escrito, será mais difícil provar à DGEG que o atraso não foi teu."
+    }
+  },
+  "deadline_id": "grid_connection",
+  "deadline_role": "warning",
+  "deadline_blocks_play": true
+}

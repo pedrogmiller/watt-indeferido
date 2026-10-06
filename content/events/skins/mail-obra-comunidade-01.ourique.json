@@ -1,0 +1,12 @@
+{
+  "skeleton_id": "mail-obra-comunidade-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Junta de Freguesia de Ourique",
+  "subject": "Camiões da obra na estrada da aldeia",
+  "body": "O estaleiro já está montado e os camiões da tua obra passam todos os dias pela estrada municipal, ao lado da escola. Há buracos novos, muito pó, e os moradores já se queixaram na Junta. A Câmara está atenta: se a estrada ficar estragada, vai lembrar-se disso.\n\nPodes pagar a reparação da estrada e mandar regar o caminho de terra, ou cumprir só o que a licença da obra obriga.",
+  "params": {}
+}

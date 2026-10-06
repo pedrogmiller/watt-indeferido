@@ -18,12 +18,17 @@
     {
       "id": "open_balance",
       "label": "Ver o balanço do ciclo",
-      "hint": "Abres o balanço completo: valor do projeto, rentabilidade, prazos e reputação.",
       "effects": [
         "end_screen_open",
         "cycle_closed"
-      ]
-    },
+      ],
+      "hint": "Abres o balanço completo: valor do projeto, rentabilidade, prazos e reputação."
+    }
+  ],
+  "notes_for_ui": "Vitória. Na entrega: end_state = {status:'won', reason:'cod'}. Placeholders (Economy calcula, a consola substitui): {{cod_month}} {{cod_month_plan}} {{npv_now}} {{npv_auction}} {{irr}} {{car_spent}} {{months_played}} {{reputation_word}}.",
+  "notes_for_economy": "NPV hoje vs NPV no leilão, IRR do capital próprio, CAR gasto: motor Economy. fcf_to_next_asset: o fluxo de caixa livre da central entra na caixa do próximo ciclo (PEDIR_ECONOMY). Revisão do mandato a partir de reputation (PEDIR_ECONOMY/Pedro).",
+  "nota_gm": "Ciclo de jogo acordado: balanço → memória → fluxo de caixa livre financia os ativos seguintes.",
+  "retired_choices_v01": [
     {
       "id": "next_cycle",
       "label": "Preparar o próximo leilão",
@@ -35,7 +40,5 @@
       ]
     }
   ],
-  "notes_for_ui": "Vitória. Na entrega: end_state = {status:'won', reason:'cod'}. Placeholders (Economy calcula, a consola substitui): {{cod_month}} {{cod_month_plan}} {{npv_now}} {{npv_auction}} {{irr}} {{car_spent}} {{months_played}} {{reputation_word}}.",
-  "notes_for_economy": "NPV hoje vs NPV no leilão, IRR do capital próprio, CAR gasto: motor Economy. fcf_to_next_asset: o fluxo de caixa livre da central entra na caixa do próximo ciclo (PEDIR_ECONOMY). Revisão do mandato a partir de reputation (PEDIR_ECONOMY/Pedro).",
-  "nota_gm": "Ciclo de jogo acordado: balanço → memória → fluxo de caixa livre financia os ativos seguintes."
+  "obra_v01_2026_10_06": "Carta final única: junta a licença de exploração (mail-dgeg-le-cod-01, agora hud_only via r-le-cod) e o balanço. Um só botão abre o ecrã final. «Preparar o próximo leilão» fica para depois da v0.1 (retired_choices_v01)."
 }

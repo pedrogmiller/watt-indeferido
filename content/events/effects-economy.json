@@ -905,6 +905,20 @@
    "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
    "formula": "nav: -0.19*3*k"
   },
+  "delay_obra_curto": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.19,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 1,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "obra v0.1 shift_on_effects",
+   "note": "Atraso curto que empurra o COD: ΔNPV −0,19/mês × 1. Obra v0.1 (GM 2026-10-06).",
+   "formula": "nav: -0.19*1*k"
+  },
   "obra_start_deferred": {
    "cash": null,
    "debt": null,

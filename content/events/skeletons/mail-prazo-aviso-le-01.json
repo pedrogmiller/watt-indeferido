@@ -1,0 +1,46 @@
+{
+  "id": "mail-prazo-aviso-le-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "deadline_warn",
+    "when_phase": [
+      "licenca_producao",
+      "obra"
+    ],
+    "or_deadline": "le_deadline"
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "deadline_ref": "le_deadline",
+  "choices": [
+    {
+      "id": "extend_now",
+      "label": "Pedir já a prorrogação",
+      "effects": [
+        "deadline_extend_request",
+        "le_extension_early"
+      ],
+      "hint": "A DGEG responde por carta. As hipóteses são melhores se os atrasos foram da REN ou da DGEG e ficaram registados."
+    },
+    {
+      "id": "risk",
+      "label": "Arriscar: a obra acaba a tempo",
+      "effects": [
+        "le_extension_skipped"
+      ],
+      "hint": "Não pedes nada. Se a vistoria não chegar a tempo, a DGEG abre uma audiência antes de decidir se tira o TRC."
+    }
+  ],
+  "heavy": true,
+  "deadline_letter": true,
+  "deadline_id": "le_deadline",
+  "deadline_role": "warning",
+  "deadline_kind": "player",
+  "deadline_blocks_play": true,
+  "replaces": "mail-prazo-aviso-01.le-cod (só «Arquivar»)",
+  "notes_for_ui": "le_deadline.warn.mail aponta para esta carta (2 meses antes). «Pedir já» usa requestDeadlineExtension (fluxo existente). Gancho: pedido ANTES do fim do prazo e recusado → carta mail-prorrogacao-recusada-01.antecipada e NÃO triggerFinalMiss (o prazo mantém-se; a escada normal continua se depois falhar).",
+  "notes_for_economy": "Sem €.",
+  "nota_gm": "DL 15/2022 art. 14.º/5: prorrogação a pedido fundamentado, uma vez, se o atraso não for imputável ao requerente. Pedir antes do fim do prazo é o caminho normal."
+}

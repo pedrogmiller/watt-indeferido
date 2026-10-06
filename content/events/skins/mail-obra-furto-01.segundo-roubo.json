@@ -1,0 +1,32 @@
+{
+  "skeleton_id": "mail-obra-furto-01",
+  "skin_id": "segundo-roubo",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Direção de obra",
+  "subject": "Voltaram a roubar cabo",
+  "body": "Voltaram a entrar no estaleiro e levaram mais cabo. Desta vez cortaram também ligações já feitas, que têm de ser refeitas e testadas de novo. A obra vai atrasar.\n\nPodes, agora, reforçar a segurança do estaleiro, ou voltar a repor só o cabo.",
+  "params": {
+    "deadline_id": "epc_mechanical_completion"
+  },
+  "choice_overrides": {
+    "security": {
+      "effects": [
+        "obra_cable_replace",
+        "obra_security_paid",
+        "delay_obra_curto"
+      ],
+      "hint": "Pagas vigilância até ao fim da obra. A obra perde cerca de um mês, mas não volta a acontecer."
+    },
+    "replace": {
+      "effects": [
+        "obra_cable_replace",
+        "delay_obra_curto",
+        "obra_theft_risk_+1"
+      ],
+      "hint": "Gastas menos agora. A obra perde cerca de um mês e o estaleiro continua fácil de assaltar."
+    }
+  }
+}

@@ -8037,6 +8037,7 @@
         try { if (typeof ensureOpenDeadlines === 'function') ensureOpenDeadlines(); } catch (_) {}
         const inboxBefore = (mailState.items || []).length;
         mailLoop.month = monthBefore + 1;
+        mailLoop._slipLetterThisPlay = false;
         if (mailLoop.month > scheduleMax) cappedAtEnd = true;
         if (typeof deliverMonthCandidates === 'function') {
           mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
@@ -11892,7 +11893,7 @@
   }
 
   /* ── Draft rules (lp-cod-rules.draft.json), only the groups the console runs today ── */
-  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome', 'lp_outcome'];
+  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome', 'lp_outcome', 'obra_supply', 'obra_meio', 'obra_rede', 'obra_furto'];
   /** Single rules the console runs (group icnf_ca is otherwise not wired; rules without mutex_group). */
   const DRAFT_RULE_IDS = ['r-apa-icnf-vinculativo-aia', 'r-apa-icnf-vinculativo-caso', 'r-sobreequipamento', 'r-nisa-enterrar-linha',
     'r-pip-pedido', 'r-pip-reformulado', 'r-lp-pedido-sem-aia',
@@ -11903,7 +11904,8 @@
     'r-es-trc-aviso', 'r-es-trc-audiencia', 'r-es-trc-mantido', 'r-es-trc-caducado',
     'r-es-fim-trc-aceite', 'r-es-fim-licenca-pip', 'r-es-fim-licenca-lp', 'r-es-fim-licenca-dia', 'r-es-fim-abandono',
     'r-es-marco-pip-aprovado', 'r-es-marco-acordo-ren', 'r-es-marco-lp-atribuida', 'r-es-marco-decisao-final', 'r-es-marco-inicio-obra',
-    'r-es-cod'];
+    'r-es-cod',
+    'r-obra-comunidade', 'r-rede-papeis-atraso', 'r-obra-mecanica', 'r-obra-furto-2', 'r-noticia-cortes'];
   /** Groups whose odds are absolute shares of one outcome (Economy 2026-09-30): the n-th rule rolls p / (1 − earlier p). */
   const ABS_ODDS_GROUPS = { dia_outcome: 1, lp_transfer: 1 };
   /** Group key: mutex_group, else the rule id (a rule without group = its own «once» group). */
@@ -11927,10 +11929,177 @@
     if ((d.ext | 0) >= max) return false;
     const add = Number(months != null ? months : (ext.adds_months && ext.adds_months.months)) || 0;
     if (!add) return false;
-    d.due = (d.due != null ? d.due : d.atMonth) + add;
-    d.atMonth = Math.ceil(d.due - 1e-9);
+    const newDue = (d.due != null ? d.due : d.atMonth) + add;
+    const newMonth = Math.ceil(newDue - 1e-9);
     d.ext = (d.ext | 0) + 1;
+    if (SLIP_DEADLINE_IDS[id]) {
+      moveDeadline(id, newMonth, 'extension', { extension: true });
+      return true;
+    }
+    d.due = newDue;
+    d.atMonth = newMonth;
     return true;
+  }
+  /** Dates the slip letter follows. Every atMonth change of these three goes through moveDeadline. */
+  const SLIP_DEADLINE_IDS = { le_deadline: 1, epc_mechanical_completion: 1, grid_connection: 1 };
+  function effectEconomyMonths(tag) {
+    try {
+      const row = (typeof effectEconRow === 'function') ? effectEconRow(tag) : null;
+      if (row && typeof row.months === 'number') return row.months;
+    } catch (_) {}
+    const econ = window.__wattEventPack && window.__wattEventPack.effects_economy;
+    const row2 = econ && econ[tag];
+    return (row2 && typeof row2.months === 'number') ? row2.months : null;
+  }
+  function slipCauseText(causeTag) {
+    const pack = window.__wattEventPack;
+    const sk = pack && pack.skeletons && pack.skeletons.find((s) => s.id === 'mail-prazo-derrapagem-01');
+    const map = (sk && sk.cause_pt) || {};
+    return map[causeTag] || map.default || 'atrasos nos trabalhos';
+  }
+  /** True when this letter is about that deadline (deadline id, by_skin/by_context, or deadline_ref). */
+  function letterRefsDeadline(letter, id) {
+    if (!letter || !id) return false;
+    if (letter.deadlineId === id) return true;
+    if (letter.deadline_id === id) return true;
+    const params = letter.params || {};
+    if (params.deadline_id === id) return true;
+    if (Array.isArray(params.deadline_ids) && params.deadline_ids.indexOf(id) !== -1 && (letter.deadlineId == null || letter.deadlineId === id)) return true;
+    let sk = null;
+    try {
+      const pack = window.__wattEventPack;
+      const skId = letter.skeletonId || (typeof mailSkeletonOf === 'function' ? mailSkeletonOf(letter) : null);
+      sk = pack && pack.skeletons && pack.skeletons.find((s) => s.id === skId);
+    } catch (_) {}
+    if (!sk) return false;
+    if (sk.deadline_ref === id || sk.deadline_id === id) return true;
+    if ((letter.deadline_id === 'by_skin' || letter.deadline_id === 'by_context' || sk.deadline_id === 'by_skin' || sk.deadline_id === 'by_context') && letter.deadlineId === id) return true;
+    if (Array.isArray(sk.deadline_ids) && sk.deadline_ids.indexOf(id) !== -1 && letter.deadlineId === id) return true;
+    return false;
+  }
+  function milestoneBlocked(id) {
+    const items = (typeof mailState !== 'undefined' && mailState && mailState.items) || [];
+    return items.some((letter) => letter && !letter.econChoiceId && letterRefsDeadline(letter, id));
+  }
+  function slipToastOnly(causeTag, opts) {
+    opts = opts || {};
+    if (opts.extension || causeTag === 'extension') return true;
+    if (opts.letter && !opts.fromRule) return true;
+    return false;
+  }
+  function showSlipToast(id, oldMonth, newMonth) {
+    const d = mailLoop.deadlines && mailLoop.deadlines[id];
+    const label = (d && d.label) || DEADLINE_LABEL_PT[id] || 'Prazo';
+    try { showToast(label + ': M' + oldMonth + ' → M' + newMonth); } catch (_) {}
+  }
+  /**
+   * Single path for atMonth changes of le_deadline, epc_mechanical_completion and grid_connection.
+   * A system move queues mail-prazo-derrapagem-01 (one letter per Play, the largest move).
+   * The player's own choice, and an extension, only toast «prazo: M24 → M27».
+   */
+  function moveDeadline(id, newMonth, causeTag, opts) {
+    opts = opts || {};
+    if (!SLIP_DEADLINE_IDS[id]) return false;
+    const d = mailLoop.deadlines && mailLoop.deadlines[id];
+    if (!d || (mailLoop.firedDeadlines || {})[id]) return false;
+    newMonth = newMonth | 0;
+    const oldMonth = d.atMonth | 0;
+    if (newMonth === oldMonth) return false;
+    d.atMonth = newMonth;
+    d.due = newMonth;
+    if (causeTag === 'rebase_grid') d.rebased = 'grid_connection+3';
+    if (slipToastOnly(causeTag, opts)) {
+      showSlipToast(id, oldMonth, newMonth);
+      return true;
+    }
+    const def = (typeof deadlineDef === 'function' ? deadlineDef(id) : null) || {};
+    let skin = def.slip_mail && def.slip_mail.skin;
+    if (causeTag === 'unmet' && def.unmet_mail && def.unmet_mail.skin) skin = def.unmet_mail.skin;
+    mailLoop._slipQueue = mailLoop._slipQueue || [];
+    mailLoop._slipQueue.push({
+      id: id, oldMonth: oldMonth, newMonth: newMonth, causeTag: causeTag, skin: skin,
+      abs: Math.abs(newMonth - oldMonth)
+    });
+    return true;
+  }
+  function sendSlipLetter(entry) {
+    const d = mailLoop.deadlines && mailLoop.deadlines[entry.id];
+    const le = mailLoop.deadlines && mailLoop.deadlines.le_deadline;
+    const params = {
+      deadline_id: entry.id,
+      deadline_label: (d && d.label) || DEADLINE_LABEL_PT[entry.id] || 'Prazo',
+      old_month: 'M' + entry.oldMonth,
+      new_month: 'M' + entry.newMonth,
+      cause: slipCauseText(entry.causeTag),
+      le_month: (le && le.atMonth != null) ? ('M' + le.atMonth) : '—'
+    };
+    try {
+      deliverStakeLetter('mail-prazo-derrapagem-01', entry.skin, {
+        deadline_id: entry.id,
+        allowRepeat: true,
+        id: 'mail-prazo-derrapagem-01:' + (entry.skin || 'default') + ':m' + (mailLoop.month | 0) + ':' + entry.id,
+        params: params,
+        when: 'Mês ' + (mailLoop.month | 0)
+      });
+    } catch (err) { console.warn('[WattMail] slip', entry.id, err); }
+  }
+  function flushSlipQueue() {
+    if (!mailLoop || mailLoop._deferSlipFlush) return;
+    const q = mailLoop._slipQueue || [];
+    mailLoop._slipQueue = [];
+    if (!q.length) return;
+    q.sort((a, b) => b.abs - a.abs);
+    let sent = !!mailLoop._slipLetterThisPlay;
+    q.forEach((entry) => {
+      if (!sent && entry.skin) {
+        sendSlipLetter(entry);
+        sent = true;
+        mailLoop._slipLetterThisPlay = true;
+      } else showSlipToast(entry.id, entry.oldMonth, entry.newMonth);
+    });
+  }
+  /** shift_on_effects: "economy.months" reads the tag's months in effects-economy.json. A numeric 0 does not move the date. */
+  function shiftDeadlinesForEffects(effects, opts) {
+    opts = opts || {};
+    const defs = draftDeadlineDefs();
+    if (!defs.length) return;
+    (effects || []).map(String).forEach((tag) => {
+      defs.forEach((def) => {
+        const map = def.shift_on_effects;
+        if (!map || !Object.prototype.hasOwnProperty.call(map, tag)) return;
+        const id = def.id;
+        if (!SLIP_DEADLINE_IDS[id]) return;
+        const d = mailLoop.deadlines && mailLoop.deadlines[id];
+        if (!d || (mailLoop.firedDeadlines || {})[id]) return;
+        if (def.shift_only_if_letter_ref && !letterRefsDeadline(opts.letter, id)) return;
+        const spec = map[tag];
+        let months = null;
+        if (spec === 'economy.months') months = effectEconomyMonths(tag);
+        else if (typeof spec === 'number') months = spec;
+        if (months == null || months === 0) return;
+        moveDeadline(id, (d.atMonth | 0) + months, tag, opts);
+      });
+    });
+  }
+  /** Letters still to come later this month (third-party meet/unmet, and one deadline warning). */
+  function reservedFollowupLetters(month) {
+    let n = 0;
+    const dls = (mailLoop && mailLoop.deadlines) || {};
+    const fired = (mailLoop && mailLoop.firedDeadlines) || {};
+    Object.keys(dls).forEach((k) => {
+      const d = dls[k];
+      if (!d || fired[k] || d.kind !== 'third_party' || d.atMonth == null) return;
+      if ((month | 0) < (d.atMonth | 0)) return;
+      const def = (typeof deadlineDef === 'function' ? deadlineDef(k) : null) || {};
+      const meetMail = d.on_meet_mail || def.on_meet_mail;
+      if (milestoneBlocked(k)) {
+        if (def.unmet_mail && def.unmet_mail.skeleton) n += 1;
+      } else if (meetMail && meetMail.skeleton) n += 1;
+    });
+    try {
+      if (typeof collectDeadlineWarns === 'function' && collectDeadlineWarns(month).length) n += 1;
+    } catch (_) {}
+    return n;
   }
   function draftDeadlinesOnEffects(effects) {
     const defs = draftDeadlineDefs();
@@ -12121,11 +12290,17 @@
       if (!on('trc_risk_answered')) p += 0.20;
       return Math.max(0.15, Math.min(0.85, p));
     }
+    // odds_mode "numeric": base must be a number. A PEDIR_ECONOMY string is not certainty.
+    if (rule.odds_mode === 'numeric') {
+      const p = numericRuleOdds(rule.odds, on);
+      if (p != null) return p;
+      return 0;
+    }
     return 1;
   }
   function draftRulesFor(pack) {
     const rs = (pack && pack.rules_draft && Array.isArray(pack.rules_draft.rules)) ? pack.rules_draft.rules : [];
-    return rs.filter((r) => r && (DRAFT_RULE_IDS.indexOf(r.id) !== -1 || (DRAFT_RULE_GROUPS.indexOf(r.mutex_group) !== -1 && r.mutex_group !== 'icnf_ca')));
+    return rs.filter((r) => r && r.retired !== true && (DRAFT_RULE_IDS.indexOf(r.id) !== -1 || (DRAFT_RULE_GROUPS.indexOf(r.mutex_group) !== -1 && r.mutex_group !== 'icnf_ca')));
   }
   function qaParam(k) {
     try {
@@ -12242,6 +12417,12 @@
       const months = tags.map((t) => (mailLoop.tagMonth && mailLoop.tagMonth[t] != null) ? mailLoop.tagMonth[t] : null).filter((x) => x != null);
       if (!months.length) return null;
       m = Math.max(...months) + (Number(ae.months) || 0);
+      const extra = ae.extra_months_if_any;
+      if (extra && typeof extra === 'object' && !Array.isArray(extra)) {
+        Object.keys(extra).forEach((tag) => {
+          if ((mailLoop.tags && (mailLoop.tags[tag] | 0) > 0)) m += Number(extra[tag]) || 0;
+        });
+      }
     }
     if (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.ruleTimerSlip) m += mailLoop.ruleTimerSlip | 0;
     const g = draftRuleGroupState(ruleGroupKey(r));
@@ -12333,16 +12514,36 @@
   }
   /** Skins marked retired: true (e.g. the consultor skin of mail-apa-icnf-vinculativo-01) are never delivered. */
   function skinActive(s) { return !!s && s.retired !== true; }
-  async function draftRuleLettersFor(month) {
+  async function draftRuleLettersFor(month, budgetOpts) {
     const pack = await loadEventPack();
     const rules = draftRulesFor(pack);
     if (!rules.length) return [];
     const out = [];
     const groups = {};
     rules.forEach((r) => { const k = ruleGroupKey(r); (groups[k] = groups[k] || []).push(r); });
-    Object.keys(groups).forEach((gname) => {
+    const obraPhase = (mailLoop.projectPhase || '') === 'obra';
+    let room = Infinity;
+    if (obraPhase) {
+      const already = (budgetOpts && budgetOpts.already) | 0;
+      let reserve = 0;
+      try { reserve = reservedFollowupLetters(month); } catch (_) {}
+      room = Math.max(0, 2 - already - reserve);
+    }
+    let used = 0;
+    const groupNames = Object.keys(groups);
+    if (obraPhase) {
+      const earliestOf = (list) => list.reduce((best, r) => {
+        if (!draftRuleEligible(r, month)) return best;
+        const e = draftRuleEarliestMonth(r);
+        return (e != null && (best == null || e < best)) ? e : best;
+      }, null);
+      groupNames.sort((a, b) => (earliestOf(groups[a]) == null ? 9999 : earliestOf(groups[a])) - (earliestOf(groups[b]) == null ? 9999 : earliestOf(groups[b])));
+    }
+    groupNames.forEach((gname) => {
       const list = groups[gname].filter((r) => draftRuleEligible(r, month)).sort((a, b) => (a.pick || 99) - (b.pick || 99));
       if (!list.length) return;
+      const hudOnly = list.every((r) => r.delivery_proposed === 'hud_only');
+      if (obraPhase && !hudOnly && used >= room) return;
       let pick = null;
       let rem = 1; // ABS_ODDS_GROUPS: probability mass not yet used by earlier outcomes
       for (const r of list) {
@@ -12379,7 +12580,7 @@
         gHud.rearmAt = null;
         const hudFx = (pick.on_deliver_effects || []).concat(effectsByTagFor(pick.on_deliver_effects_by_tag));
         if (hudFx.length) {
-          try { applyMailEffects(hudFx, { fromRule: pick.id }); } catch (err) { console.warn('[WattMail] hud rule', pick.id, err); }
+          try { applyMailEffects(hudFx, pick.id === 'r-le-cod' ? {} : { fromRule: pick.id }); } catch (err) { console.warn('[WattMail] hud rule', pick.id, err); }
         }
         if (pick.hud_moment && typeof showHudMoment === 'function') showHudMoment(pick);
         mailLoop.ruleDone = mailLoop.ruleDone || {};
@@ -12392,6 +12593,7 @@
       const L = composeLetter({ skeleton: sk, skin: skin, seSheet: getSeSheet(seId, pack), opts: { id: id, when: 'Mês ' + month, ctx: pick.params || null } });
       L.ruleId = pick.id;
       out.push(L);
+      used += 1;
       const g = draftRuleGroupState(gname);
       g.delivered = true;
       g.rearmAt = null;
@@ -12531,7 +12733,7 @@
       return null;
     };
     let deadlineId = pick('deadline_id');
-    if (deadlineId === 'by_context') {
+    if (deadlineId === 'by_context' || deadlineId === 'by_skin') {
       deadlineId = (letter && (letter.deadlineId || (letter.params && letter.params.deadline_id))) || null;
     }
     return {
@@ -12553,7 +12755,7 @@
     const meta = letterDeadlineMeta(letter);
     if (!meta.deadline_letter && meta.deadline_blocks_play !== true) return false;
     const role = meta.deadline_role;
-    if (role === 'warning') return false;
+    if (role === 'warning' && meta.deadline_blocks_play !== true) return false;
     if (role === 'outcome') return ((letter.choices || []).length > 1);
     if (role === 'due' || role === 'final' || role === 'hearing') return true;
     return meta.deadline_blocks_play === true;
@@ -13307,27 +13509,39 @@
     const ext = def.extension || {};
     const d = mailLoop.deadlines && mailLoop.deadlines[id];
     if (!d) return;
+    const early = (mailLoop.month | 0) < (d.atMonth | 0);
     const max = ext.max != null ? Number(ext.max) : 1;
-    if ((d.ext | 0) >= max || ext.allowed === false) { denyDeadlineExtension(id, def); return; }
+    if ((d.ext | 0) >= max || ext.allowed === false) { denyDeadlineExtension(id, def, { early: early }); return; }
     let p = 0.55;
     const t = mailLoop.tags || {};
     (ext.odds_up_if_any || []).forEach((k) => { if ((t[k] | 0) > 0) p += 0.1; });
     (ext.odds_down_if_any || []).forEach((k) => { if ((t[k] | 0) > 0) p -= 0.1; });
     p = Math.max(0.05, Math.min(0.9, p));
-    if (Math.random() >= p) { denyDeadlineExtension(id, def); return; }
+    if (Math.random() >= p) { denyDeadlineExtension(id, def, { early: early }); return; }
     const add = extensionMonths(def);
-    d.atMonth = (mailLoop.month | 0) + add;
-    d.due = d.atMonth;
+    const newMonth = (mailLoop.month | 0) + add;
     d.ext = (d.ext | 0) + 1;
+    if (SLIP_DEADLINE_IDS[id]) moveDeadline(id, newMonth, 'extension', { extension: true });
+    else { d.atMonth = newMonth; d.due = newMonth; }
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     delete mailLoop.firedDeadlines[id];
     mailLoop.deadlineFollowup = mailLoop.deadlineFollowup || {};
     mailLoop.deadlineFollowup[id] = { resolved: true, extended: true, final: true };
     if (ext.granted_mail) deliverStakeLetter(ext.granted_mail.skeleton, ext.granted_mail.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(ext.granted_mail.skeleton, ext.granted_mail.skin) + ':m' + (mailLoop.month | 0) });
   }
-  function denyDeadlineExtension(id, def) {
+  function denyDeadlineExtension(id, def, opts) {
+    opts = opts || {};
     def = def || deadlineDef(id) || {};
-    const denied = def.extension && def.extension.denied_mail;
+    const ext = def.extension || {};
+    const d = mailLoop.deadlines && mailLoop.deadlines[id];
+    const early = opts.early != null ? !!opts.early : !!(d && (mailLoop.month | 0) < (d.atMonth | 0));
+    const earlyReq = ext.early_request;
+    if (early && earlyReq && earlyReq.denied_mail) {
+      const earlyDenied = earlyReq.denied_mail;
+      deliverStakeLetter(earlyDenied.skeleton, earlyDenied.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(earlyDenied.skeleton, earlyDenied.skin) + ':m' + (mailLoop.month | 0) });
+      if (earlyReq.denial_triggers_final_miss === false) return;
+    }
+    const denied = ext.denied_mail;
     if (denied) deliverStakeLetter(denied.skeleton, denied.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(denied.skeleton, denied.skin) + ':m' + (mailLoop.month | 0) });
     triggerFinalMiss(id, def);
   }
@@ -13768,11 +13982,7 @@
     const le = dls.le_deadline;
     if (!grid || !le || fired.le_deadline || grid.atMonth == null) return;
     const floor = (grid.atMonth | 0) + 3;
-    if ((le.atMonth | 0) < floor) {
-      le.atMonth = floor;
-      le.due = floor;
-      le.rebased = 'grid_connection+3';
-    }
+    if ((le.atMonth | 0) < floor) moveDeadline('le_deadline', floor, 'rebase_grid');
   }
   function meetThirdPartyDeadline(k, d, month) {
     mailLoop.firedDeadlines[k] = true;
@@ -13790,6 +14000,8 @@
     const out = [];
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     mailLoop.missedDeadlines = mailLoop.missedDeadlines || {};
+    mailLoop._deferSlipFlush = true;
+    try {
     try { ensureOpenDeadlines(); } catch (_) {}
     try { rebaseLeDeadlineToGrid(); } catch (_) {}
     try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
@@ -13798,7 +14010,10 @@
       if (!d || d.atMonth == null || mailLoop.firedDeadlines[k]) return;
       if (k === 'trc_transfer_averbamento' || k === 'lp_transfer_authorization') return;
       if (d.kind === 'third_party') {
-        if ((month | 0) >= (d.atMonth | 0)) meetThirdPartyDeadline(k, d, month);
+        if ((month | 0) >= (d.atMonth | 0)) {
+          if (milestoneBlocked(k)) moveDeadline(k, (d.atMonth | 0) + 1, 'unmet');
+          else meetThirdPartyDeadline(k, d, month);
+        }
         return;
       }
       if ((typeof STAKES_DEADLINE_IDS !== 'undefined' && STAKES_DEADLINE_IDS[k]) || d.stakes || d.on_miss_mail) {
@@ -13816,6 +14031,10 @@
       out.push({ id: k, label: DEADLINE_LABEL_PT[k] || d.label || 'Prazo', atMonth: d.atMonth, text: miss.text });
     });
     return out;
+    } finally {
+      mailLoop._deferSlipFlush = false;
+      try { flushSlipQueue(); } catch (_) {}
+    }
   }
 
   function nearestDeadline(loop) {
@@ -14310,9 +14529,9 @@
       node.trc.free -= 8;
     }
   }
-  /** «Reunir com a Câmara e arrancar» costs one month. Shift the mechanical-completion deadline by that month, without using the one-time slip. */
+  /** «Reunir com a Câmara e arrancar» costs one month. That choice creates the EPC deadline in the same call and does not name it, so the general shifter skips it. Move mechanical completion by one month and do not spend the slip letter. Later letters that name the deadline are shifted by shiftDeadlinesForEffects. */
   function shiftMechanicalCompletionForObraDelay(effects) {
-    if (!effects || !effects.some((e) => String(e) === 'delay_obra_+1')) return;
+    if (!effects || !effects.some((e) => String(e) === 'construction_started') || !effects.some((e) => String(e) === 'delay_obra_+1')) return;
     const d = mailLoop.deadlines && mailLoop.deadlines.epc_mechanical_completion;
     if (!d || (mailLoop.firedDeadlines || {}).epc_mechanical_completion) return;
     const base = d.due != null ? Number(d.due) : Number(d.atMonth);
@@ -14322,6 +14541,7 @@
   }
   function applyMailEffects(effects, opts) {
     opts = opts || {};
+    if (opts.letter && !opts.fromRule && mailLoop) mailLoop._slipLetterThisPlay = false;
     if (!Array.isArray(effects) || !effects.length) return { carBand: null, messages: [] };
     const messages = [];
     let carBand = null;
@@ -14382,6 +14602,9 @@
     }
     maybeRaisePhaseFromEffects(effects);
     try { draftDeadlinesOnEffects(effects.map(String)); } catch (err) { console.warn('[WattMail] draft deadlines', err); }
+    try { shiftDeadlinesForEffects(effects.map(String), opts); } catch (err) { console.warn('[WattMail] deadline shift', err); }
+    try { rebaseLeDeadlineToGrid(); } catch (err) { console.warn('[WattMail] rebase LE', err); }
+    try { flushSlipQueue(); } catch (err) { console.warn('[WattMail] slip flush', err); }
     try { shiftMechanicalCompletionForObraDelay(effects); } catch (err) { console.warn('[WattMail] obra delay', err); }
     try { if (typeof stakesApplySpecial === 'function') stakesApplySpecial(effects.map(String)); } catch (err) { console.warn('[WattStakes] effects', err); }
     if (effects.some((e) => LAND_CHOSEN_TAGS.indexOf(String(e)) !== -1 || e === 'reopen_tech_plan' || e === 'design_trim_threshold' || e === 'underground_cable')) {
@@ -14694,11 +14917,11 @@
   async function deliverMonthCandidates(month, opts) {
     opts = opts || {};
     const plan = await planMonthDelivery(month);
-    const newLetters = (plan.letters || []).concat(
-      (typeof icnfConsultReplyFor === 'function') ? await icnfConsultReplyFor(month) : [],
-      await averbamentoLetterFor(month),
-      await draftRuleLettersFor(month)
-    );
+    const icnfLetters = (typeof icnfConsultReplyFor === 'function') ? await icnfConsultReplyFor(month) : [];
+    const averbLetters = await averbamentoLetterFor(month);
+    const already = (plan.letters || []).length + icnfLetters.length + averbLetters.length;
+    const ruleLetters = await draftRuleLettersFor(month, { already: already });
+    const newLetters = (plan.letters || []).concat(icnfLetters, averbLetters, ruleLetters);
     const monthKey = String(month);
 
     const deliveredSkels = mailLoop.deliveredMonths[monthKey] || [];

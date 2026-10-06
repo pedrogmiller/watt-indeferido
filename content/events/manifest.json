@@ -80,7 +80,17 @@
     "skeletons/mail-fim-de-jogo-01.json",
     "skeletons/mail-marco-01.json",
     "skeletons/mail-fim-de-ciclo-01.json",
-    "skeletons/mail-fid-resposta-01.json"
+    "skeletons/mail-fid-resposta-01.json",
+    "skeletons/mail-obra-comunidade-01.json",
+    "skeletons/mail-obra-fornecedor-01.json",
+    "skeletons/mail-obra-meteo-01.json",
+    "skeletons/mail-obra-inspecao-01.json",
+    "skeletons/mail-rede-obras-01.json",
+    "skeletons/mail-obra-mecanica-01.json",
+    "skeletons/mail-obra-furto-01.json",
+    "skeletons/mail-noticia-cortes-01.json",
+    "skeletons/mail-prazo-derrapagem-01.json",
+    "skeletons/mail-prazo-aviso-le-01.json"
   ],
   "skins": [
     "skins/mail-advogado-dd-01.default.json",
@@ -224,7 +234,23 @@
     "skins/mail-rede-prazo-01.ligacao-adiada.json",
     "skins/mail-fid-resposta-01.emprestimo-aceite.json",
     "skins/mail-fid-resposta-01.emprestimo-recusado.json",
-    "skins/mail-fid-resposta-01.socio-entra.json"
+    "skins/mail-fid-resposta-01.socio-entra.json",
+    "skins/mail-obra-comunidade-01.ourique.json",
+    "skins/mail-obra-fornecedor-01.ourique.json",
+    "skins/mail-obra-meteo-01.ourique-chuva.json",
+    "skins/mail-obra-inspecao-01.ourique-act.json",
+    "skins/mail-rede-obras-01.ourique.json",
+    "skins/mail-obra-mecanica-01.ourique.json",
+    "skins/mail-obra-furto-01.ourique.json",
+    "skins/mail-obra-furto-01.segundo-roubo.json",
+    "skins/mail-noticia-cortes-01.ourique.json",
+    "skins/mail-rede-ligacao-atraso-01.papeis-atrasados.json",
+    "skins/mail-prazo-derrapagem-01.mecanica.json",
+    "skins/mail-prazo-derrapagem-01.ligacao.json",
+    "skins/mail-prazo-derrapagem-01.licenca.json",
+    "skins/mail-prazo-derrapagem-01.marco-passou.json",
+    "skins/mail-prazo-aviso-le-01.ourique.json",
+    "skins/mail-prorrogacao-recusada-01.antecipada.json"
   ],
   "se_sheets": [
     "se-sheets/ferreira-do-alentejo.json",
@@ -307,5 +333,37 @@
     "update_2026_10_03c": "Economy §16 integrado: sócio garantido (r-es-d9-socio), empréstimo 20 anos P 0,60 (r-es-d9-emprestimo-*), aviso de caixa só depois do M0 e 3 meses depois do resgate, audiência do TRC decide mesmo sem resposta, chão −10 %.",
     "update_2026_10_04": "Economy §17: atraso D9 não soma (+3 no total); mandate_review_down só odds a meio do ciclo; venda parcial só 25 % (stake_sale_25); sócio 25 % fixo; equity exata 41,0/44,4."
   },
-  "schedule_proposed_2026_10_04": "mvp-schedule.proposed-2026-10-04.json"
+  "schedule_proposed_2026_10_04": "mvp-schedule.proposed-2026-10-04.json",
+  "obra_v01_2026_10_06": {
+    "skeletons": [
+      "skeletons/mail-obra-comunidade-01.json",
+      "skeletons/mail-obra-fornecedor-01.json",
+      "skeletons/mail-obra-meteo-01.json",
+      "skeletons/mail-obra-inspecao-01.json",
+      "skeletons/mail-rede-obras-01.json",
+      "skeletons/mail-obra-mecanica-01.json",
+      "skeletons/mail-obra-furto-01.json",
+      "skeletons/mail-noticia-cortes-01.json",
+      "skeletons/mail-prazo-derrapagem-01.json",
+      "skeletons/mail-prazo-aviso-le-01.json"
+    ],
+    "skins": [
+      "skins/mail-obra-comunidade-01.ourique.json",
+      "skins/mail-obra-fornecedor-01.ourique.json",
+      "skins/mail-obra-meteo-01.ourique-chuva.json",
+      "skins/mail-obra-inspecao-01.ourique-act.json",
+      "skins/mail-rede-obras-01.ourique.json",
+      "skins/mail-obra-mecanica-01.ourique.json",
+      "skins/mail-obra-furto-01.ourique.json",
+      "skins/mail-obra-furto-01.segundo-roubo.json",
+      "skins/mail-noticia-cortes-01.ourique.json",
+      "skins/mail-rede-ligacao-atraso-01.papeis-atrasados.json",
+      "skins/mail-prazo-derrapagem-01.mecanica.json",
+      "skins/mail-prazo-derrapagem-01.ligacao.json",
+      "skins/mail-prazo-derrapagem-01.licenca.json",
+      "skins/mail-prazo-derrapagem-01.marco-passou.json",
+      "skins/mail-prazo-aviso-le-01.ourique.json",
+      "skins/mail-prorrogacao-recusada-01.antecipada.json"
+    ]
+  }
 }

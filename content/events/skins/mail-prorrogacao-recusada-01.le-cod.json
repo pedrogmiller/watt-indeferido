@@ -4,12 +4,13 @@
   "draft": true,
   "when": {},
   "from_name": "DGEG — Licenciamento de centros eletroprodutores",
-  "subject": "Prorrogação recusada — licença de exploração",
-  "body": "Prorrogação indeferida. Resta pedir licença para as partes já concluídas, com injeção limitada, ou deixar caducar licença e título.",
+  "subject": "Licença de exploração: prorrogação recusada",
+  "body": "A DGEG recusou a prorrogação. Resta pedir licença só para a parte da central que já está pronta, com potência limitada, ou deixar caducar a licença e o TRC.",
   "params": {
     "deadline_id": "le_deadline"
   },
   "deadline_id": "le_deadline",
   "deadline_role": "final",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "obra_v01_2026_10_06": "Linguagem simples."
 }

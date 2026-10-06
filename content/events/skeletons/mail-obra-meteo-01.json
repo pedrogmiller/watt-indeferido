@@ -1,0 +1,40 @@
+{
+  "id": "mail-obra-meteo-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "extra_shifts",
+      "label": "Pagar turnos extra",
+      "effects": [
+        "obra_extra_shifts"
+      ],
+      "hint": "Gastas mais capital próprio. A obra recupera o tempo perdido."
+    },
+    {
+      "id": "accept",
+      "label": "Aceitar o atraso",
+      "effects": [
+        "delay_obra_curto"
+      ],
+      "hint": "Não pagas nada a mais. A obra acaba cerca de um mês mais tarde."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "epc_mechanical_completion",
+  "notes_for_economy": "obra_extra_shifts: equity extra (PEDIR_ECONOMY), sem meses.",
+  "deadline_letter": true,
+  "deadline_id": "epc_mechanical_completion",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
+}
