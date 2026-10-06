@@ -5432,7 +5432,7 @@
           <div class="debt-amount num" style="color:var(--success)" id="finBondFree">2,0 M€</div>
         </div>
         <div class="farmdown-box">
-          <h4>Vender parte do projeto (49%)</h4>
+          <h4>Vender parte do projeto (25%)</h4>
           <p id="farmdownBoxText">Ainda não é possível: primeiro ganha um TRC no leilão.</p>
         </div>
       </div>
@@ -5885,7 +5885,7 @@
         preco: null,
         dscr: '—',
         bonding: null,
-        farmdown: 'Só quando o NPV for positivo',
+        farmdown: '25% · 0,80 M€ no mês 6 a 40 €/MWh',
       },
     },
   ];
@@ -5895,7 +5895,7 @@
       { id: 'sobre', title: '+ Sobreequipar o solar (+20% MWp)', desc: 'Instalar mais painéis do que a potência da ligação, para produzir durante mais horas. Não precisas de mais TRC.', capex: '300 k€ agora · +5,1 M€ de capital próprio', tempo: '7–9 meses', nav: 'a definir' },
       { id: 'bess', title: '+ Juntar baterias', desc: 'Baterias de 15 MW / 30 MWh. Reduzem os cortes de produção impostos pela rede e guardam energia quando está barata para a vender quando está cara.', capex: '400 k€ agora · +2,7 M€ de capital próprio', tempo: '11–13 meses', nav: 'a definir' },
       { id: 'eolica', title: '+ Juntar um parque eólico', desc: 'Parque eólico de 15 MW no mesmo ponto de ligação. Produz em horas diferentes do solar.', capex: '750 k€ agora · +6,9 M€ de capital próprio', tempo: '16–20 meses', nav: 'a definir' },
-      { id: 'farm', title: 'Vender parte do projeto (49%)', desc: 'Vendes 49% do projeto a outro investidor. Só é possível quando o projeto der lucro.', capex: '—', tempo: 'Quando o NPV for positivo', nav: '6,9 M€ de caixa' },
+      { id: 'farm', title: 'Vender parte do projeto (25%)', desc: 'Vendes 25% da empresa do projeto. O título fica no mesmo titular. É a mesma venda das cartas dos investidores.', capex: '—', tempo: 'Antes da licença de produção', nav: '0,80 M€ de caixa no mês 6 a 40 €/MWh · ficas com 75% do NPV' },
     ],
   };
 
@@ -5958,6 +5958,26 @@
 
   function fmtVan(n) {
     return fmtSigned(n, false);
+  }
+  /** Player NPV. The partner takes 25% only while the project NPV is positive (FIX L). node.van stays the project value. */
+  function playerNpv(van) {
+    const v = Number(van);
+    if (!Number.isFinite(v)) return van;
+    const stake = (typeof mailLoop !== 'undefined' && mailLoop && Number(mailLoop.partnerStake)) || 0;
+    if (stake > 0 && v > 0) return +(v * (1 - stake)).toFixed(2);
+    return v;
+  }
+  /** Remaining construction contingency, once the obra has started (FIX H). */
+  function contingencyHudHtml() {
+    if (typeof mailLoop === 'undefined' || !mailLoop || typeof mailLoop.obraContingency !== 'number') return '';
+    const phase = mailLoop.projectPhase || '';
+    if (phase !== 'obra' && phase !== 'cod') return '';
+    return '<span class="hud-next-crit" id="obraContingencyHud">Contingência da obra: <strong>' + fmtMoney2(mailLoop.obraContingency) + '</strong></span>';
+  }
+  function contingencyVitalCard(phase) {
+    if (typeof mailLoop === 'undefined' || !mailLoop || typeof mailLoop.obraContingency !== 'number') return '';
+    if (phase !== 'obra' && phase !== 'cod') return '';
+    return '<div class="asset-vital-card" id="obraContingencyCard"><div class="k">Contingência da obra</div><div class="v num">' + fmtMoney2(mailLoop.obraContingency) + '</div><div class="sub">O que ainda podes gastar sem mexer no capital próprio</div></div>';
   }
 
   function fmtVanDelta(d) {
@@ -6322,10 +6342,12 @@
           const when = (typeof deadlineWhenPt === 'function') ? deadlineWhenPt(nd.atMonth, clock) : ('mês ' + nd.atMonth);
           nextCrit = nd.label + ' · ' + when;
         }
+        const contHtml = (typeof contingencyHudHtml === 'function') ? contingencyHudHtml() : '';
         hudPhaseHtml = `
             <div class="hud-phase-row">
               <span class="hud-phase-pill"><span class="hud-phase-dot" aria-hidden="true"></span>${phaseLbl}</span>
               <span class="hud-next-crit">Próximo prazo: <strong>${nextCrit}</strong></span>
+              ${contHtml}
             </div>`;
       }
       return `
@@ -6409,11 +6431,13 @@
     const fdb = document.getElementById('farmdownBoxText');
     if (fdb) {
       const won = (auctionState.wonLots || []).map((id) => nodes.find((n) => n.id === id)).filter(Boolean);
+      const sold = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags
+        && (((mailLoop.tags.stake_sale_25 | 0) > 0) || ((mailLoop.tags.stake_sale_pre_lp | 0) > 0)));
       fdb.textContent = !won.length
         ? 'Ainda não é possível: primeiro ganha um TRC no leilão.'
-        : (won.some((n) => n.van > 0)
-          ? 'Já é possível para os projetos com NPV positivo. Abre a sala do projeto.'
-          : 'Ainda não é possível: ' + won.map((n) => n.name).join(', ') + ' está a perder dinheiro (NPV negativo).');
+        : (sold
+          ? 'Já vendeste 25%. Ficas com 75% do NPV.'
+          : 'Na sala do projeto, ou numa carta dos investidores. No mês 6, com a oferta a 40 €/MWh, entram 0,80 M€ e ficas com 75% do NPV.');
     }
     if (locked || !listEl) return;
     listEl.innerHTML = pipeline.map(p => `
@@ -6494,7 +6518,7 @@
             <div class="dossier-value num">${d.bonding || '—'}</div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">Venda de 49%</div>
+            <div class="dossier-label">Venda de 25%</div>
             <div class="dossier-value">${d.farmdown || '—'}</div>
           </div>
         </div>
@@ -7147,11 +7171,13 @@
       const done = applied.has(a.id);
       const isFarm = a.id === 'farm';
       const blockedFarm = isFarm && !(node.van > 0);
-      const disabled = done || blockedFarm;
+      const soldStake = isFarm && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags
+        && (((mailLoop.tags.stake_sale_25 | 0) > 0) || ((mailLoop.tags.stake_sale_pre_lp | 0) > 0));
+      const disabled = done || blockedFarm || soldStake;
       let btnLabel = actionStartLabel(nodeId, a);
-      if (done) btnLabel = 'Feito';
-      if (blockedFarm && !done) btnLabel = 'Bloqueado: o projeto perde dinheiro';
-      const armed = !done && assetRoomState.armedKey === (nodeId + ':' + a.id);
+      if (done || soldStake) btnLabel = 'Feito';
+      if (blockedFarm && !done && !soldStake) btnLabel = 'Bloqueado: o projeto perde dinheiro';
+      const armed = !done && !soldStake && assetRoomState.armedKey === (nodeId + ':' + a.id);
       const navTxt = upgradeNavText(a);
       return `
         <div class="asset-opt-card${done ? ' done' : ''}" data-asset-opt="${a.id}">
@@ -7188,10 +7214,14 @@
     const pd = assetPhaseDeadline();
     const offtake = assetOfftakeLabel(node);
     const mw = assetMwLabel(node);
-    const vTone = (typeof vanTone === 'function') ? vanTone(node) : (node.van > 0 ? 'green' : 'red');
+    const shownVan = (typeof playerNpv === 'function') ? playerNpv(node.van) : node.van;
+    const vTone = (typeof vanTone === 'function') ? vanTone({ van: shownVan, vanTrend: node.vanTrend }) : (shownVan > 0 ? 'green' : 'red');
     const tension = node.tensao || 'Ganhaste barato: agora tens de melhorar o projeto';
     const tensionTone = node.tensaoTone || 'red';
-    const npvStr = (typeof fmtVan === 'function') ? fmtVan(node.van) : (String(node.van).replace('.', ',') + ' M€');
+    const npvStr = (typeof fmtVan === 'function') ? fmtVan(shownVan) : (String(shownVan).replace('.', ',') + ' M€');
+    const npvSub = (typeof mailLoop !== 'undefined' && mailLoop && Number(mailLoop.partnerStake) > 0 && node.van > 0)
+      ? 'A tua parte, com o sócio'
+      : 'Quanto o projeto vale hoje';
     const carBand = assetCarBandLabel();
     const missionOpen = !!node.missionOpen;
     const phase = (typeof mailLoop !== 'undefined' && mailLoop.active)
@@ -7289,8 +7319,9 @@
           <div class="asset-vital-card">
             <div class="k" title="NPV: quanto vale hoje o projeto para os investidores: receitas menos custos e pagamentos ao banco, a valores de hoje, com 8% ao ano">NPV</div>
             <div class="v tone-${vTone} num">${npvStr}</div>
-            <div class="sub">Quanto o projeto vale hoje</div>
+            <div class="sub">${npvSub}</div>
           </div>
+          ${contingencyVitalCard(phase)}
           <div class="asset-vital-card">
             <div class="k">Preço recebido</div>
             <div class="v num">${nodeDossier(node).preco || '—'}</div>
@@ -7712,15 +7743,20 @@
     state.appliedActions[nodeId].add(actionId);
 
     // € das missões: engine_events.mission_* de effects-economy.json (§7). NAV é recalculado (sem ΔNPV até P3).
-    // TODO(Economy P17): farm-down 49 % — preço de venda = PEDIR; mantém o mock antigo até haver valor.
+    // Venda de 25%: stake_sale_pre_lp (0,80 M€ no mês 6 a 40 €/MWh) + o jogador fica com 75% do NPV.
     const MISSION_EVENT = { sobre: 'mission_sobreequipamento', bess: 'mission_bess', eolica: 'mission_eolico' };
     if (MISSION_EVENT[actionId]) {
       try { applyEconRow(econEngineRow(MISSION_EVENT[actionId]), nodeId); } catch (err) { console.warn('[WattEcon] mission', err); }
     }
     if (actionId === 'farm') {
-      state.caixa += 6.9;
-      state.bondingFree += 1.5;
-      bumpVan(node, -0.8);
+      const tg = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags) || {};
+      if (!((tg.stake_sale_25 | 0) > 0) && !((tg.stake_sale_pre_lp | 0) > 0)) {
+        try { applyMailEffects(['stake_sale_pre_lp', 'stake_sale_25']); } catch (err) { console.warn('[WattEcon] stake sale', err); }
+        if (node && typeof node.van === 'number') {
+          node.van = +(node.van * 0.75).toFixed(2);
+          try { recomputeNav(); } catch (_) {}
+        }
+      }
     } else if (actionId === 'sobre') {
       // more panels behind the same connection: the connection mix and the free power do not change
       // step of +20 % of the installed MWp; no MWp cap (the limit is on the AC injection)
@@ -8028,6 +8064,10 @@
         try { if (typeof ensureOpenDeadlines === 'function') ensureOpenDeadlines(); } catch (_) {}
         const inboxBefore = (mailState.items || []).length;
         mailLoop.month = monthBefore + 1;
+        mailLoop._slipLetterThisPlay = false;
+        // Running obra costs and the ACT fine land as the month starts, before a deadline is met.
+        try { chargeObraMonth(); } catch (err) { console.warn('[WattEcon] obra month', err); }
+        try { resolvePendingFines(); } catch (err) { console.warn('[WattEcon] fine', err); }
         if (mailLoop.month > scheduleMax) cappedAtEnd = true;
         if (typeof deliverMonthCandidates === 'function') {
           mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
@@ -9153,6 +9193,159 @@
     recomputeNav();
     return out;
   }
+  /** Ourique COD slope (euro-fields §18/§19): −0,19 M€ per month the real COD moves. Scales with lot k. */
+  const COD_TEST_MONTHS = 2;
+  const COD_NPV_PER_MONTH = -0.19;
+  const OBRA_CONTINGENCY_OURIQUE = 2.15;
+  const OBRA_CAPEX_NPV_PER_MEUR = -0.72;
+  function obraCapexScale(lotId) {
+    const e = lotEcon(lotId || (mailLoop && mailLoop.seId) || ECON_REF_LOT);
+    const ref = lotEcon(ECON_REF_LOT);
+    if (!e || !ref || !ref.capex) return 1;
+    return e.capex / ref.capex;
+  }
+  /** Half of the 5% already inside Capex. Ourique CAPEX 90 → 2,15. No refund at COD. */
+  function ensureObraContingency(lotId) {
+    if (typeof mailLoop === 'undefined' || !mailLoop) return 0;
+    if (typeof mailLoop.obraContingency === 'number') return mailLoop.obraContingency;
+    const tags = mailLoop.tags || {};
+    if (!((tags.construction_started | 0) > 0)) return 0;
+    const pool = +(OBRA_CONTINGENCY_OURIQUE * obraCapexScale(lotId || mailLoop.seId)).toFixed(2);
+    mailLoop.obraContingency = pool;
+    mailLoop.obraContingencyInitial = pool;
+    return pool;
+  }
+  /**
+   * Draw construction capex from the contingency pool first (FIX H).
+   * Covered M€: no cash, no equity, no NPV. The rest is 100% equity and −0,72 NPV per M€.
+   * Fines never come through here.
+   */
+  function drawObraCapex(amount, lotId) {
+    const zero = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
+    amount = +Number(amount).toFixed(3);
+    if (!(amount > 0)) return zero;
+    ensureObraContingency(lotId);
+    const pool = (mailLoop && typeof mailLoop.obraContingency === 'number') ? mailLoop.obraContingency : 0;
+    const draw = Math.min(Math.max(pool, 0), amount);
+    const rest = +(amount - draw).toFixed(3);
+    if (mailLoop && typeof mailLoop.obraContingency === 'number') mailLoop.obraContingency = +(pool - draw).toFixed(3);
+    const nav = rest ? +(OBRA_CAPEX_NPV_PER_MEUR * rest).toFixed(3) : 0;
+    return applyEconRow({ equity: rest || null, nav: nav || null }, lotId);
+  }
+  function registerObraMeter(tag, row, lotId) {
+    const zero = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
+    if (!mailLoop) return zero;
+    mailLoop.obraMeters = mailLoop.obraMeters || {};
+    if (mailLoop.obraMeters[tag] && mailLoop.obraMeters[tag].active) return zero;
+    const per = +((Number(row.capex_per_month) || 0) * obraCapexScale(lotId)).toFixed(3);
+    mailLoop.obraMeters[tag] = { per: per, until: row.until, active: true, spent: 0 };
+    return zero;
+  }
+  /** Monthly standby / security (FIX I). The lump capex_MEUR on the row is not posted. */
+  function chargeObraMonth() {
+    if (!mailLoop || !mailLoop.obraMeters) return;
+    const tags = mailLoop.tags || {};
+    const lotId = mailLoop.seId || ECON_REF_LOT;
+    Object.keys(mailLoop.obraMeters).forEach((tag) => {
+      const m = mailLoop.obraMeters[tag];
+      if (!m || !m.active) return;
+      if ((tags[m.until] | 0) > 0) { m.active = false; return; }
+      const d = drawObraCapex(m.per, lotId);
+      m.spent = +((m.spent || 0) + (m.per || 0)).toFixed(3);
+      if (d && d.equity) {
+        const ec = econState();
+        ec.letterCapexEquity = +((ec.letterCapexEquity || 0) + d.equity).toFixed(3);
+      }
+    });
+  }
+  /** ACT fine (FIX J): rolled 1–2 months after the tag, from cash, never from contingency. */
+  function scheduleActFine(row) {
+    if (!mailLoop) return;
+    const spec = (typeof ECON_ROLLED !== 'undefined' && ECON_ROLLED.act_fine_risk) || { p: 0.5 };
+    const p = (row && typeof row.prob === 'number') ? row.prob : spec.p;
+    const wait = (typeof econRng === 'function' && econRng() < 0.5) ? 1 : 2;
+    mailLoop.pendingFines = mailLoop.pendingFines || [];
+    mailLoop.pendingFines.push({ due: (mailLoop.month | 0) + wait, p: p });
+  }
+  function resolvePendingFines() {
+    if (!mailLoop || !mailLoop.pendingFines || !mailLoop.pendingFines.length) return;
+    const month = mailLoop.month | 0;
+    const keep = [];
+    mailLoop.pendingFines.forEach((item) => {
+      if ((item.due | 0) > month) { keep.push(item); return; }
+      const forced = (typeof forcedRoll === 'function') ? forcedRoll('req') : null;
+      const hit = forced ? forced === 'accept' : ((typeof econRng === 'function' ? econRng() : Math.random()) < (Number(item.p) || 0.5));
+      mailLoop.tags = mailLoop.tags || {};
+      if (hit) {
+        applyEconRow({ cash: -0.10, nav: -0.10 }, mailLoop.seId || ECON_REF_LOT);
+        mailLoop.tags.reputation_exposed = (mailLoop.tags.reputation_exposed | 0) + 1;
+        mailLoop.tags.act_fine_hit = (mailLoop.tags.act_fine_hit | 0) + 1;
+        mailLoop.tagMonth = mailLoop.tagMonth || {};
+        mailLoop.tagMonth.reputation_exposed = month;
+        try { if (typeof draftRulesRearmOn === 'function') draftRulesRearmOn('reputation_exposed'); } catch (_) {}
+        try { showToast('A ACT multou a obra: 0,10 M€.'); } catch (_) {}
+      } else {
+        mailLoop.tags.act_fine_miss = (mailLoop.tags.act_fine_miss | 0) + 1;
+      }
+    });
+    mailLoop.pendingFines = keep;
+  }
+  function codMonthOf(epcMonth, gridMonth, extra) {
+    if (epcMonth == null || gridMonth == null) return null;
+    return Math.max(epcMonth | 0, gridMonth | 0) + COD_TEST_MONTHS + (extra | 0);
+  }
+  /**
+   * FIX G: delay NPV is −0,19 × the real COD shift.
+   * COD = max(mechanical completion, REN line) + tests. A construction delay or an acceleration
+   * changes NPV only when that date moves past the line. epc_demobilised adds one test month
+   * on the critical path. The plan is the dates the deadlines were created at.
+   */
+  function syncCodNpv() {
+    if (!mailLoop || !mailLoop.deadlines) return;
+    const epc = mailLoop.deadlines.epc_mechanical_completion;
+    const grid = mailLoop.deadlines.grid_connection;
+    if (!epc || !grid || epc.atMonth == null || grid.atMonth == null) return;
+    if (epc.planMonth == null) epc.planMonth = epc.atMonth | 0;
+    if (grid.planMonth == null) grid.planMonth = grid.atMonth | 0;
+    const extra = (mailLoop.tags && (mailLoop.tags.epc_demobilised | 0) > 0) ? 1 : 0;
+    const plan = codMonthOf(epc.planMonth, grid.planMonth, 0);
+    const now = codMonthOf(epc.atMonth, grid.atMonth, extra);
+    if (plan == null || now == null) return;
+    const lotId = mailLoop.seId || ECON_REF_LOT;
+    const e = lotEcon(lotId);
+    const k = (e && e.k) || 1;
+    const price = (delta) => {
+      if (!delta) return;
+      applyEconRow({ nav: +(COD_NPV_PER_MONTH * k * delta).toFixed(3) }, lotId);
+    };
+    if (mailLoop.codPricedMonth == null) {
+      mailLoop.codPlanMonth = plan;
+      price(now - plan);
+      mailLoop.codPricedMonth = now;
+      return;
+    }
+    const delta = now - (mailLoop.codPricedMonth | 0);
+    if (!delta) return;
+    price(delta);
+    mailLoop.codPricedMonth = now;
+  }
+  /** pay_from contingencia_obra (FIX H/I/K). Month NPV is left to syncCodNpv. */
+  function priceContingencyTag(tag, row, lotId) {
+    if (typeof row.capex_per_month === 'number' && row.until) return registerObraMeter(tag, row, lotId);
+    let capex = Number(row.capex_MEUR) || 0;
+    if (tag === 'obra_cable_replace' && mailLoop && mailLoop.tags) {
+      const n = mailLoop.tags.obra_cable_replace | 0;
+      // Tags are counted before economics. Security bought on this same letter does not cover the theft already in it.
+      const secured = !!mailLoop._obraSecurityBefore;
+      if (n > 1 && !secured && typeof row.repeat_no_security_capex === 'number') capex = row.repeat_no_security_capex;
+    }
+    const d = drawObraCapex(capex * obraCapexScale(lotId), lotId);
+    if (typeof row.months === 'number' && row.months && mailLoop) {
+      d.months = row.months;
+      mailLoop.econDelayMonths = (mailLoop.econDelayMonths || 0) + row.months;
+    }
+    return d;
+  }
   /* ── Gate 1 mandate mock (tiers boutique / mid / infra) ── */
   const BAND_RANK = { S: 1, M: 2, L: 3 };
   /** Internal band words (S/M/L). Player text now shows € (econBudget / lotEcon), not these words. */
@@ -9340,7 +9533,7 @@
     const m = currentMandate();
     const body = document.getElementById('mandateLetterBody');
     if (!body) return;
-    // Texto §3 (LANGUAGE-AUDIT.md), grafia AO90. Promoção: ver MANDATE_PROMOTE_EFFECTS.
+    // Texto §3 (LANGUAGE-AUDIT.md), grafia AO90. O orçamento só muda no fecho do ciclo.
     let txt;
     const T = ECON_TIER[m.id] || ECON_TIER.boutique;
     const f = fmtMoneyAbs;
@@ -9361,7 +9554,7 @@
         'Começas com ' + f(T.seed) + ' em caixa. Para desenvolveres um projeto até decidires construir, prometemos até ' + f(T.carMandate) + '. Para a obra, pomos até ' + f(T.equity) + ' de capital próprio; o resto vem do banco. Tens ainda uma linha de garantias bancárias de ' + f(T.bonding) + ' para a caução da rede.\n\n' +
         'Isto chega para um só projeto, por isso só podes ficar com um lote neste leilão. Começa por Ourique: precisa de cerca de ' + fmtMoney2(o.carNeed) + ' para desenvolver. Os lotes a cinzento precisam de mais do que tens para desenvolver.\n\n' +
         (o.equityNeed > T.equity + 1e-9 ? ('Para construir Ourique, a um bom preço, são precisos cerca de ' + f(o.equityNeed) + ' de capital próprio, mais do que prometemos. Se ganhares, falamos: podes pedir-nos mais, ou procurar outras soluções.\n\n') : '') +
-        'Quando o projeto de Ourique avançar — por exemplo, quando fizeres a opção sobre o terreno — os investidores aumentam o teu orçamento e podes ficar com mais um lote, incluindo lotes mais caros.\n\n' +
+        'Este orçamento fica igual até ao fecho do ciclo. Não sobe quando fechas o terreno nem quando entregas o PIP.\n\n' +
         'Logo depois de ganhares o lote, escrevemos-te para decidirmos contigo quanto dinheiro pomos na caixa: mais ' + f(T.m0.S) + ', ' + f(T.m0.M) + ' ou ' + f(T.m0.L) + '.';
     }
     body.textContent = txt;
@@ -9462,35 +9655,6 @@
     } catch (_) {}
   }
 
-  /** Progression stub: play well → raise purse/tier → unlock greys (market "levels"). */
-  function maybePromoteMandate(reason) {
-    const cur = (mandateState && mandateState.tier) || 'boutique';
-    let next = null;
-    if (cur === 'boutique') next = 'mid';
-    else if (cur === 'mid') next = null; // mid → infra later optional
-    if (!next || !MANDATE_TIERS[next]) return false;
-    mandateState.tier = next;
-    try {
-      // € on promotion (§6.1/§6.2): new tier mandate + equity; bonding line grows by the difference; cash unchanged.
-      const from = ECON_TIER[cur] || ECON_TIER.boutique;
-      const to = ECON_TIER[next] || from;
-      const ec = econState();
-      // Keep the month-0 answer. Clearing it made the cash warning think the investors had never replied.
-      ec.tier = next;
-      state.bondingTotal = +(state.bondingTotal + (to.bonding - from.bonding)).toFixed(3);
-      state.bondingFree = +(state.bondingFree + (to.bonding - from.bonding)).toFixed(3);
-      try { updateHeaderMetrics(true); } catch (_) {}
-      if (typeof showToast === 'function') {
-        showToast('Os investidores aumentaram o teu orçamento. No próximo leilão podes ficar com mais um lote.');
-      }
-    } catch (_) {}
-    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
-    try { if (typeof renderAuctionLots === 'function') renderAuctionLots(); } catch (_) {}
-    try { if (typeof scheduleSave === 'function') scheduleSave('mandate-promote'); } catch (_) {}
-    try { console.info('[WattMandate] promote', cur, '→', next, reason || ''); } catch (_) {}
-    return true;
-  }
-
   window.WattEcon = {
     tiers: ECON_TIER, lots: LOT_ECONOMY, lot: lotEcon, budget: econBudget, state: econState,
     nav: recomputeNav, fmt: fmtEur, burn: lotBurnPerMonth,
@@ -9503,8 +9667,7 @@
     state: function () { return mandateState; },
     current: currentMandate,
     fits: lotFitsMandate,
-    renderHud: renderMandateHud,
-    maybePromote: maybePromoteMandate
+    renderHud: renderMandateHud
   };
 
 
@@ -10245,11 +10408,21 @@
     const l = (typeof AUCTION_WAVES !== 'undefined') ? [].concat(...AUCTION_WAVES).find((x) => x.id === lotId) : null;
     return l ? rivalBest(l) : null;
   }
+  /** Equity already posted by letter capex (capex_MEUR × the row's equity share). */
+  function letterCapexEquityExtra() {
+    try {
+      const v = Number(econState().letterCapexEquity) || 0;
+      return Number.isFinite(v) ? v : 0;
+    } catch (_) { return 0; }
+  }
   function projectEquityFit(lotId) {
     const bid = wonLotBid(lotId);
     let need = (bid != null && typeof fidEquityNeed === 'function') ? fidEquityNeed(lotId, bid) : ((bid != null) ? faixaEquityAtBid(lotId, bid) : null);
     if (need == null) need = lotEcon(lotId).equityNeed;
-    need = +(Number(need) + Math.max(0, Number(state.equityCommitted) || 0)).toFixed(2);
+    // Letter capex (rows with capex_MEUR) raises the FID need. state.equityCommitted
+    // also holds overequip plans, which have equity and no capex_MEUR, so it is not added here.
+    const extra = letterCapexEquityExtra();
+    if (extra) need = +(Number(need) + extra).toFixed(2);
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
     if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     const budget = econBudget().equity;
@@ -11903,7 +12076,7 @@
   }
 
   /* ── Draft rules (lp-cod-rules.draft.json), only the groups the console runs today ── */
-  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome', 'lp_outcome'];
+  const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome', 'lp_outcome', 'obra_supply', 'obra_meio', 'obra_rede', 'obra_furto'];
   /** Single rules the console runs (group icnf_ca is otherwise not wired; rules without mutex_group). */
   const DRAFT_RULE_IDS = ['r-apa-icnf-vinculativo-aia', 'r-apa-icnf-vinculativo-caso', 'r-sobreequipamento', 'r-nisa-enterrar-linha',
     'r-pip-pedido', 'r-pip-reformulado', 'r-lp-pedido-sem-aia',
@@ -11914,7 +12087,8 @@
     'r-es-trc-aviso', 'r-es-trc-audiencia', 'r-es-trc-mantido', 'r-es-trc-caducado',
     'r-es-fim-trc-aceite', 'r-es-fim-licenca-pip', 'r-es-fim-licenca-lp', 'r-es-fim-licenca-dia', 'r-es-fim-abandono',
     'r-es-marco-pip-aprovado', 'r-es-marco-acordo-ren', 'r-es-marco-lp-atribuida', 'r-es-marco-decisao-final', 'r-es-marco-inicio-obra',
-    'r-es-cod'];
+    'r-es-cod',
+    'r-obra-comunidade', 'r-rede-papeis-atraso', 'r-obra-mecanica', 'r-obra-furto-2', 'r-noticia-cortes'];
   /** Groups whose odds are absolute shares of one outcome (Economy 2026-09-30): the n-th rule rolls p / (1 − earlier p). */
   const ABS_ODDS_GROUPS = { dia_outcome: 1, lp_transfer: 1 };
   /** Group key: mutex_group, else the rule id (a rule without group = its own «once» group). */
@@ -11938,10 +12112,177 @@
     if ((d.ext | 0) >= max) return false;
     const add = Number(months != null ? months : (ext.adds_months && ext.adds_months.months)) || 0;
     if (!add) return false;
-    d.due = (d.due != null ? d.due : d.atMonth) + add;
-    d.atMonth = Math.ceil(d.due - 1e-9);
+    const newDue = (d.due != null ? d.due : d.atMonth) + add;
+    const newMonth = Math.ceil(newDue - 1e-9);
     d.ext = (d.ext | 0) + 1;
+    if (SLIP_DEADLINE_IDS[id]) {
+      moveDeadline(id, newMonth, 'extension', { extension: true });
+      return true;
+    }
+    d.due = newDue;
+    d.atMonth = newMonth;
     return true;
+  }
+  /** Dates the slip letter follows. Every atMonth change of these three goes through moveDeadline. */
+  const SLIP_DEADLINE_IDS = { le_deadline: 1, epc_mechanical_completion: 1, grid_connection: 1 };
+  function effectEconomyMonths(tag) {
+    try {
+      const row = (typeof effectEconRow === 'function') ? effectEconRow(tag) : null;
+      if (row && typeof row.months === 'number') return row.months;
+    } catch (_) {}
+    const econ = window.__wattEventPack && window.__wattEventPack.effects_economy;
+    const row2 = econ && econ[tag];
+    return (row2 && typeof row2.months === 'number') ? row2.months : null;
+  }
+  function slipCauseText(causeTag) {
+    const pack = window.__wattEventPack;
+    const sk = pack && pack.skeletons && pack.skeletons.find((s) => s.id === 'mail-prazo-derrapagem-01');
+    const map = (sk && sk.cause_pt) || {};
+    return map[causeTag] || map.default || 'atrasos nos trabalhos';
+  }
+  /** True when this letter is about that deadline (deadline id, by_skin/by_context, or deadline_ref). */
+  function letterRefsDeadline(letter, id) {
+    if (!letter || !id) return false;
+    if (letter.deadlineId === id) return true;
+    if (letter.deadline_id === id) return true;
+    const params = letter.params || {};
+    if (params.deadline_id === id) return true;
+    if (Array.isArray(params.deadline_ids) && params.deadline_ids.indexOf(id) !== -1 && (letter.deadlineId == null || letter.deadlineId === id)) return true;
+    let sk = null;
+    try {
+      const pack = window.__wattEventPack;
+      const skId = letter.skeletonId || (typeof mailSkeletonOf === 'function' ? mailSkeletonOf(letter) : null);
+      sk = pack && pack.skeletons && pack.skeletons.find((s) => s.id === skId);
+    } catch (_) {}
+    if (!sk) return false;
+    if (sk.deadline_ref === id || sk.deadline_id === id) return true;
+    if ((letter.deadline_id === 'by_skin' || letter.deadline_id === 'by_context' || sk.deadline_id === 'by_skin' || sk.deadline_id === 'by_context') && letter.deadlineId === id) return true;
+    if (Array.isArray(sk.deadline_ids) && sk.deadline_ids.indexOf(id) !== -1 && letter.deadlineId === id) return true;
+    return false;
+  }
+  function milestoneBlocked(id) {
+    const items = (typeof mailState !== 'undefined' && mailState && mailState.items) || [];
+    return items.some((letter) => letter && !letter.econChoiceId && letterRefsDeadline(letter, id));
+  }
+  function slipToastOnly(causeTag, opts) {
+    opts = opts || {};
+    if (opts.extension || causeTag === 'extension') return true;
+    if (opts.letter && !opts.fromRule) return true;
+    return false;
+  }
+  function showSlipToast(id, oldMonth, newMonth) {
+    const d = mailLoop.deadlines && mailLoop.deadlines[id];
+    const label = (d && d.label) || DEADLINE_LABEL_PT[id] || 'Prazo';
+    try { showToast(label + ': M' + oldMonth + ' → M' + newMonth); } catch (_) {}
+  }
+  /**
+   * Single path for atMonth changes of le_deadline, epc_mechanical_completion and grid_connection.
+   * A system move queues mail-prazo-derrapagem-01 (one letter per Play, the largest move).
+   * The player's own choice, and an extension, only toast «prazo: M24 → M27».
+   */
+  function moveDeadline(id, newMonth, causeTag, opts) {
+    opts = opts || {};
+    if (!SLIP_DEADLINE_IDS[id]) return false;
+    const d = mailLoop.deadlines && mailLoop.deadlines[id];
+    if (!d || (mailLoop.firedDeadlines || {})[id]) return false;
+    newMonth = newMonth | 0;
+    const oldMonth = d.atMonth | 0;
+    if (newMonth === oldMonth) return false;
+    d.atMonth = newMonth;
+    d.due = newMonth;
+    if (causeTag === 'rebase_grid') d.rebased = 'grid_connection+3';
+    if (slipToastOnly(causeTag, opts)) {
+      showSlipToast(id, oldMonth, newMonth);
+      return true;
+    }
+    const def = (typeof deadlineDef === 'function' ? deadlineDef(id) : null) || {};
+    let skin = def.slip_mail && def.slip_mail.skin;
+    if (causeTag === 'unmet' && def.unmet_mail && def.unmet_mail.skin) skin = def.unmet_mail.skin;
+    mailLoop._slipQueue = mailLoop._slipQueue || [];
+    mailLoop._slipQueue.push({
+      id: id, oldMonth: oldMonth, newMonth: newMonth, causeTag: causeTag, skin: skin,
+      abs: Math.abs(newMonth - oldMonth)
+    });
+    return true;
+  }
+  function sendSlipLetter(entry) {
+    const d = mailLoop.deadlines && mailLoop.deadlines[entry.id];
+    const le = mailLoop.deadlines && mailLoop.deadlines.le_deadline;
+    const params = {
+      deadline_id: entry.id,
+      deadline_label: (d && d.label) || DEADLINE_LABEL_PT[entry.id] || 'Prazo',
+      old_month: 'M' + entry.oldMonth,
+      new_month: 'M' + entry.newMonth,
+      cause: slipCauseText(entry.causeTag),
+      le_month: (le && le.atMonth != null) ? ('M' + le.atMonth) : '—'
+    };
+    try {
+      deliverStakeLetter('mail-prazo-derrapagem-01', entry.skin, {
+        deadline_id: entry.id,
+        allowRepeat: true,
+        id: 'mail-prazo-derrapagem-01:' + (entry.skin || 'default') + ':m' + (mailLoop.month | 0) + ':' + entry.id,
+        params: params,
+        when: 'Mês ' + (mailLoop.month | 0)
+      });
+    } catch (err) { console.warn('[WattMail] slip', entry.id, err); }
+  }
+  function flushSlipQueue() {
+    if (!mailLoop || mailLoop._deferSlipFlush) return;
+    const q = mailLoop._slipQueue || [];
+    mailLoop._slipQueue = [];
+    if (!q.length) return;
+    q.sort((a, b) => b.abs - a.abs);
+    let sent = !!mailLoop._slipLetterThisPlay;
+    q.forEach((entry) => {
+      if (!sent && entry.skin) {
+        sendSlipLetter(entry);
+        sent = true;
+        mailLoop._slipLetterThisPlay = true;
+      } else showSlipToast(entry.id, entry.oldMonth, entry.newMonth);
+    });
+  }
+  /** shift_on_effects: "economy.months" reads the tag's months in effects-economy.json. A numeric 0 does not move the date. */
+  function shiftDeadlinesForEffects(effects, opts) {
+    opts = opts || {};
+    const defs = draftDeadlineDefs();
+    if (!defs.length) return;
+    (effects || []).map(String).forEach((tag) => {
+      defs.forEach((def) => {
+        const map = def.shift_on_effects;
+        if (!map || !Object.prototype.hasOwnProperty.call(map, tag)) return;
+        const id = def.id;
+        if (!SLIP_DEADLINE_IDS[id]) return;
+        const d = mailLoop.deadlines && mailLoop.deadlines[id];
+        if (!d || (mailLoop.firedDeadlines || {})[id]) return;
+        if (def.shift_only_if_letter_ref && !letterRefsDeadline(opts.letter, id)) return;
+        const spec = map[tag];
+        let months = null;
+        if (spec === 'economy.months') months = effectEconomyMonths(tag);
+        else if (typeof spec === 'number') months = spec;
+        if (months == null || months === 0) return;
+        moveDeadline(id, (d.atMonth | 0) + months, tag, opts);
+      });
+    });
+  }
+  /** Letters still to come later this month (third-party meet/unmet, and one deadline warning). */
+  function reservedFollowupLetters(month) {
+    let n = 0;
+    const dls = (mailLoop && mailLoop.deadlines) || {};
+    const fired = (mailLoop && mailLoop.firedDeadlines) || {};
+    Object.keys(dls).forEach((k) => {
+      const d = dls[k];
+      if (!d || fired[k] || d.kind !== 'third_party' || d.atMonth == null) return;
+      if ((month | 0) < (d.atMonth | 0)) return;
+      const def = (typeof deadlineDef === 'function' ? deadlineDef(k) : null) || {};
+      const meetMail = d.on_meet_mail || def.on_meet_mail;
+      if (milestoneBlocked(k)) {
+        if (def.unmet_mail && def.unmet_mail.skeleton) n += 1;
+      } else if (meetMail && meetMail.skeleton) n += 1;
+    });
+    try {
+      if (typeof collectDeadlineWarns === 'function' && collectDeadlineWarns(month).length) n += 1;
+    } catch (_) {}
+    return n;
   }
   function draftDeadlinesOnEffects(effects) {
     const defs = draftDeadlineDefs();
@@ -11957,10 +12298,12 @@
         if (has(createFx)) {
           if (!mailLoop.deadlines[id] || def.recreate_if_closed) {
             const due = (mailLoop.month | 0) + (Number(def.due && def.due.months) || 0);
+            const createdMonth = Math.ceil(due - 1e-9);
             mailLoop.deadlines[id] = {
               label: def.label || DEADLINE_LABEL_PT[id] || 'Prazo',
               due: due,
-              atMonth: Math.ceil(due - 1e-9),
+              atMonth: createdMonth,
+              planMonth: createdMonth,
               ext: 0,
               kind: def.kind || null,
               on_meet: Array.isArray(def.on_meet) ? def.on_meet.slice() : [],
@@ -12132,11 +12475,17 @@
       if (!on('trc_risk_answered')) p += 0.20;
       return Math.max(0.15, Math.min(0.85, p));
     }
+    // odds_mode "numeric": base must be a number. A PEDIR_ECONOMY string is not certainty.
+    if (rule.odds_mode === 'numeric') {
+      const p = numericRuleOdds(rule.odds, on);
+      if (p != null) return p;
+      return 0;
+    }
     return 1;
   }
   function draftRulesFor(pack) {
     const rs = (pack && pack.rules_draft && Array.isArray(pack.rules_draft.rules)) ? pack.rules_draft.rules : [];
-    return rs.filter((r) => r && (DRAFT_RULE_IDS.indexOf(r.id) !== -1 || (DRAFT_RULE_GROUPS.indexOf(r.mutex_group) !== -1 && r.mutex_group !== 'icnf_ca')));
+    return rs.filter((r) => r && r.retired !== true && (DRAFT_RULE_IDS.indexOf(r.id) !== -1 || (DRAFT_RULE_GROUPS.indexOf(r.mutex_group) !== -1 && r.mutex_group !== 'icnf_ca')));
   }
   function qaParam(k) {
     try {
@@ -12253,6 +12602,12 @@
       const months = tags.map((t) => (mailLoop.tagMonth && mailLoop.tagMonth[t] != null) ? mailLoop.tagMonth[t] : null).filter((x) => x != null);
       if (!months.length) return null;
       m = Math.max(...months) + (Number(ae.months) || 0);
+      const extra = ae.extra_months_if_any;
+      if (extra && typeof extra === 'object' && !Array.isArray(extra)) {
+        Object.keys(extra).forEach((tag) => {
+          if ((mailLoop.tags && (mailLoop.tags[tag] | 0) > 0)) m += Number(extra[tag]) || 0;
+        });
+      }
     }
     if (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.ruleTimerSlip) m += mailLoop.ruleTimerSlip | 0;
     const g = draftRuleGroupState(ruleGroupKey(r));
@@ -12344,16 +12699,36 @@
   }
   /** Skins marked retired: true (e.g. the consultor skin of mail-apa-icnf-vinculativo-01) are never delivered. */
   function skinActive(s) { return !!s && s.retired !== true; }
-  async function draftRuleLettersFor(month) {
+  async function draftRuleLettersFor(month, budgetOpts) {
     const pack = await loadEventPack();
     const rules = draftRulesFor(pack);
     if (!rules.length) return [];
     const out = [];
     const groups = {};
     rules.forEach((r) => { const k = ruleGroupKey(r); (groups[k] = groups[k] || []).push(r); });
-    Object.keys(groups).forEach((gname) => {
+    const obraPhase = (mailLoop.projectPhase || '') === 'obra';
+    let room = Infinity;
+    if (obraPhase) {
+      const already = (budgetOpts && budgetOpts.already) | 0;
+      let reserve = 0;
+      try { reserve = reservedFollowupLetters(month); } catch (_) {}
+      room = Math.max(0, 2 - already - reserve);
+    }
+    let used = 0;
+    const groupNames = Object.keys(groups);
+    if (obraPhase) {
+      const earliestOf = (list) => list.reduce((best, r) => {
+        if (!draftRuleEligible(r, month)) return best;
+        const e = draftRuleEarliestMonth(r);
+        return (e != null && (best == null || e < best)) ? e : best;
+      }, null);
+      groupNames.sort((a, b) => (earliestOf(groups[a]) == null ? 9999 : earliestOf(groups[a])) - (earliestOf(groups[b]) == null ? 9999 : earliestOf(groups[b])));
+    }
+    groupNames.forEach((gname) => {
       const list = groups[gname].filter((r) => draftRuleEligible(r, month)).sort((a, b) => (a.pick || 99) - (b.pick || 99));
       if (!list.length) return;
+      const hudOnly = list.every((r) => r.delivery_proposed === 'hud_only');
+      if (obraPhase && !hudOnly && used >= room) return;
       let pick = null;
       let rem = 1; // ABS_ODDS_GROUPS: probability mass not yet used by earlier outcomes
       for (const r of list) {
@@ -12390,7 +12765,7 @@
         gHud.rearmAt = null;
         const hudFx = (pick.on_deliver_effects || []).concat(effectsByTagFor(pick.on_deliver_effects_by_tag));
         if (hudFx.length) {
-          try { applyMailEffects(hudFx, { fromRule: pick.id }); } catch (err) { console.warn('[WattMail] hud rule', pick.id, err); }
+          try { applyMailEffects(hudFx, pick.id === 'r-le-cod' ? {} : { fromRule: pick.id }); } catch (err) { console.warn('[WattMail] hud rule', pick.id, err); }
         }
         if (pick.hud_moment && typeof showHudMoment === 'function') showHudMoment(pick);
         mailLoop.ruleDone = mailLoop.ruleDone || {};
@@ -12403,6 +12778,7 @@
       const L = composeLetter({ skeleton: sk, skin: skin, seSheet: getSeSheet(seId, pack), opts: { id: id, when: 'Mês ' + month, ctx: pick.params || null } });
       L.ruleId = pick.id;
       out.push(L);
+      used += 1;
       const g = draftRuleGroupState(gname);
       g.delivered = true;
       g.rearmAt = null;
@@ -12447,7 +12823,7 @@
   /* ── Endings & stakes v0.1 ──
    * Cash ladder watches the CAR mandate (development budget), never the 45 M€ equity purse.
    * Purse: content/economy/purse_params.json → boutique_r1_equity_MEUR.
-   * TODO(hook 10, pending the owner): do not move MANDATE_PROMOTE_EFFECTS to cycle close in this build.
+   * The equity purse and the development budget stay on the opening mandate until the cycle closes.
    */
   const CASH_PRESSURE_RATIO = 0.25;
   /** Game-over floor as a fraction of the CAR mandate. −25% now (−1.625 M€ at 6.5). −10% (−0.65 M€) is under discussion: change only this number. */
@@ -12496,6 +12872,8 @@
     const bid = (typeof wonLotBid === 'function') ? wonLotBid(lotId) : null;
     let need = fidEquityNeed(lotId, bid);
     if (need == null) { try { need = lotEcon(lotId).equityNeed; } catch (_) { need = 0; } }
+    const extra = (typeof letterCapexEquityExtra === 'function') ? letterCapexEquityExtra() : 0;
+    if (extra) need = +(need + extra).toFixed(2);
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
     if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     return { need: need, bid: bid };
@@ -12540,7 +12918,7 @@
       return null;
     };
     let deadlineId = pick('deadline_id');
-    if (deadlineId === 'by_context') {
+    if (deadlineId === 'by_context' || deadlineId === 'by_skin') {
       deadlineId = (letter && (letter.deadlineId || (letter.params && letter.params.deadline_id))) || null;
     }
     return {
@@ -12562,7 +12940,7 @@
     const meta = letterDeadlineMeta(letter);
     if (!meta.deadline_letter && meta.deadline_blocks_play !== true) return false;
     const role = meta.deadline_role;
-    if (role === 'warning') return false;
+    if (role === 'warning' && meta.deadline_blocks_play !== true) return false;
     if (role === 'outcome') return ((letter.choices || []).length > 1);
     if (role === 'due' || role === 'final' || role === 'hearing') return true;
     return meta.deadline_blocks_play === true;
@@ -12713,7 +13091,7 @@
     if (s <= -1) return 'fraca';
     return 'neutra';
   }
-  /** Display only. The budget itself still changes with the old milestone promotion until hook 10. */
+  /** Display only. The budget itself does not move until the cycle closes. */
   function mandateStepWord() {
     const t = (mailLoop && mailLoop.tags) || {};
     if ((t.mandate_review_down | 0) > 0 || reputationScore() < 0) return 'desce';
@@ -12752,11 +13130,19 @@
         irr = eco.irr;
       }
     } catch (_) {}
-    try {
+      try {
       const n = nodes.find((x) => x.id === id);
       if (n && typeof n.van === 'number') npvNow = n.van;
     } catch (_) {}
     if (npvNow == null) npvNow = npvAuction;
+    // IRR uses the project NPV. Rescue dilution rewrites node.van; the partner does not (FIX L).
+    let irrBase = npvNow;
+    const dilution = (mailLoop && Number(mailLoop.dilution)) || 0;
+    if (irrBase != null && mailLoop && mailLoop.dilutionApplied && dilution > 0 && dilution < 1) {
+      irrBase = irrBase / (1 - dilution);
+    }
+    if (npvNow != null) npvNow = playerNpv(npvNow);
+    if (irrBase != null) irr = 8 + 0.16 * irrBase;
     return { npvAuction: npvAuction, npvNow: npvNow, irr: irr };
   }
   function stakesPlaceholderCtx(extra) {
@@ -13309,27 +13695,40 @@
     const ext = def.extension || {};
     const d = mailLoop.deadlines && mailLoop.deadlines[id];
     if (!d) return;
+    const early = (mailLoop.month | 0) < (d.atMonth | 0);
     const max = ext.max != null ? Number(ext.max) : 1;
-    if ((d.ext | 0) >= max || ext.allowed === false) { denyDeadlineExtension(id, def); return; }
+    if ((d.ext | 0) >= max || ext.allowed === false) { denyDeadlineExtension(id, def, { early: early }); return; }
     let p = 0.55;
     const t = mailLoop.tags || {};
     (ext.odds_up_if_any || []).forEach((k) => { if ((t[k] | 0) > 0) p += 0.1; });
     (ext.odds_down_if_any || []).forEach((k) => { if ((t[k] | 0) > 0) p -= 0.1; });
     p = Math.max(0.05, Math.min(0.9, p));
-    if (Math.random() >= p) { denyDeadlineExtension(id, def); return; }
+    if (Math.random() >= p) { denyDeadlineExtension(id, def, { early: early }); return; }
     const add = extensionMonths(def);
-    d.atMonth = (mailLoop.month | 0) + add;
-    d.due = d.atMonth;
+    const newMonth = (mailLoop.month | 0) + add;
     d.ext = (d.ext | 0) + 1;
+    if (SLIP_DEADLINE_IDS[id]) moveDeadline(id, newMonth, 'extension', { extension: true });
+    else { d.atMonth = newMonth; d.due = newMonth; }
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     delete mailLoop.firedDeadlines[id];
     mailLoop.deadlineFollowup = mailLoop.deadlineFollowup || {};
     mailLoop.deadlineFollowup[id] = { resolved: true, extended: true, final: true };
     if (ext.granted_mail) deliverStakeLetter(ext.granted_mail.skeleton, ext.granted_mail.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(ext.granted_mail.skeleton, ext.granted_mail.skin) + ':m' + (mailLoop.month | 0) });
+    try { syncCodNpv(); } catch (err) { console.warn('[WattEcon] cod extension', err); }
   }
-  function denyDeadlineExtension(id, def) {
+  function denyDeadlineExtension(id, def, opts) {
+    opts = opts || {};
     def = def || deadlineDef(id) || {};
-    const denied = def.extension && def.extension.denied_mail;
+    const ext = def.extension || {};
+    const d = mailLoop.deadlines && mailLoop.deadlines[id];
+    const early = opts.early != null ? !!opts.early : !!(d && (mailLoop.month | 0) < (d.atMonth | 0));
+    const earlyReq = ext.early_request;
+    if (early && earlyReq && earlyReq.denied_mail) {
+      const earlyDenied = earlyReq.denied_mail;
+      deliverStakeLetter(earlyDenied.skeleton, earlyDenied.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(earlyDenied.skeleton, earlyDenied.skin) + ':m' + (mailLoop.month | 0) });
+      if (earlyReq.denial_triggers_final_miss === false) return;
+    }
+    const denied = ext.denied_mail;
     if (denied) deliverStakeLetter(denied.skeleton, denied.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(denied.skeleton, denied.skin) + ':m' + (mailLoop.month | 0) });
     triggerFinalMiss(id, def);
   }
@@ -13454,13 +13853,7 @@
       mailLoop.equityGapClosed = true;
       mailLoop.tags = mailLoop.tags || {};
       if (!(mailLoop.tags.equity_gap_closed | 0)) mailLoop.tags.equity_gap_closed = 1;
-      if (!mailLoop.partnerNpvApplied) {
-        try {
-          const n = nodes.find((x) => x.id === (mailLoop.seId || 'ourique'));
-          if (n && typeof n.van === 'number') n.van = +(n.van * (1 - PARTNER_STAKE)).toFixed(2);
-        } catch (_) {}
-        mailLoop.partnerNpvApplied = true;
-      }
+      // FIX L: leave node.van as the project NPV. The player sees van × 0.75 only while van > 0.
     }
     if (has('rescue_capital_dilution') && !mailLoop.dilutionApplied) {
       mailLoop.dilution = RESCUE_DILUTION;
@@ -13615,19 +14008,8 @@
       mailLoop.projectPhase = next;
     }
     const raised = phaseIndex(mailLoop.projectPhase) > ci;
-    // Mandate promotion is NOT tied to phase raises (land talk / Câmara meeting raise phase
-    // but are not completed milestones). See MANDATE_PROMOTE_EFFECTS.
     return raised;
   }
-
-  /** Mandate promotion only on completed milestones: land secured (option signed) or PIP submitted.
-   *  NOT: land_talk_+1 (negotiating), risk_camara_-1 (meeting Câmara), dd_started (DD kick-off).
-   *  TODO(endings hook 10, pending the owner): move this promotion to cycle_closed + reputation.
-   *  Milestones already grant reputation_+1; do not remove MANDATE_PROMOTE_EFFECTS in this build. */
-  const MANDATE_PROMOTE_EFFECTS = {
-    'land_option_open': 'land_secured',
-    'pip_request_submitted': 'pip_submitted'
-  };
 
   function maybeRaisePhaseFromEffects(effects) {
     if (!Array.isArray(effects) || !effects.length) return false;
@@ -13650,14 +14032,6 @@
         }
         mailLoop.tags.env_gate_ok = 1;
       }
-    }
-    const promoteKey = effects.map(String).find((e) => MANDATE_PROMOTE_EFFECTS[e]);
-    if (promoteKey) {
-      try {
-        if (typeof maybePromoteMandate === 'function') {
-          maybePromoteMandate('milestone:' + MANDATE_PROMOTE_EFFECTS[promoteKey] + ' (' + promoteKey + ')');
-        }
-      } catch (_) {}
     }
     // Full sale before the LP: pending until DGEG registers the new TRC holder (deadline trc_transfer_averbamento, ~2 months).
     if (effects.some((e) => e === 'trc_transfer_averbamento_requested')) {
@@ -13789,11 +14163,7 @@
     const le = dls.le_deadline;
     if (!grid || !le || fired.le_deadline || grid.atMonth == null) return;
     const floor = (grid.atMonth | 0) + 3;
-    if ((le.atMonth | 0) < floor) {
-      le.atMonth = floor;
-      le.due = floor;
-      le.rebased = 'grid_connection+3';
-    }
+    if ((le.atMonth | 0) < floor) moveDeadline('le_deadline', floor, 'rebase_grid');
   }
   function meetThirdPartyDeadline(k, d, month) {
     mailLoop.firedDeadlines[k] = true;
@@ -13811,6 +14181,8 @@
     const out = [];
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     mailLoop.missedDeadlines = mailLoop.missedDeadlines || {};
+    mailLoop._deferSlipFlush = true;
+    try {
     try { ensureOpenDeadlines(); } catch (_) {}
     try { rebaseLeDeadlineToGrid(); } catch (_) {}
     try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
@@ -13819,7 +14191,10 @@
       if (!d || d.atMonth == null || mailLoop.firedDeadlines[k]) return;
       if (k === 'trc_transfer_averbamento' || k === 'lp_transfer_authorization') return;
       if (d.kind === 'third_party') {
-        if ((month | 0) >= (d.atMonth | 0)) meetThirdPartyDeadline(k, d, month);
+        if ((month | 0) >= (d.atMonth | 0)) {
+          if (milestoneBlocked(k)) moveDeadline(k, (d.atMonth | 0) + 1, 'unmet');
+          else meetThirdPartyDeadline(k, d, month);
+        }
         return;
       }
       if ((typeof STAKES_DEADLINE_IDS !== 'undefined' && STAKES_DEADLINE_IDS[k]) || d.stakes || d.on_miss_mail) {
@@ -13837,6 +14212,11 @@
       out.push({ id: k, label: DEADLINE_LABEL_PT[k] || d.label || 'Prazo', atMonth: d.atMonth, text: miss.text });
     });
     return out;
+    } finally {
+      mailLoop._deferSlipFlush = false;
+      try { flushSlipQueue(); } catch (_) {}
+      try { syncCodNpv(); } catch (_) {}
+    }
   }
 
   function nearestDeadline(loop) {
@@ -14054,7 +14434,8 @@
   const ECON_ROLLED = {
     cash_at_risk_request: { p: 0.50, patienceStep: 0.10 },
     equity_capex_request: { p: 0.40, patienceStep: 0.10 }, // D9 (leilao-faixa §4): −0,10 per investor_patience_-1 · HIPÓTESE / PEDIR P7
-    gearing_push: { p: 0.40, npvNegative: -0.20 }
+    gearing_push: { p: 0.40, npvNegative: -0.20 },
+    act_fine_risk: { p: 0.50 } // FIX J: rolled 1–2 months later; on hit, cash and NPV −0,10 plus reputation_exposed
   };
   function investorPatienceHits() {
     const t = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags) || {};
@@ -14192,20 +14573,79 @@
     return { cash: cash, band: band };
   }
 
+  const LINE_CAPEX_TAGS = { 'capex_linha_+1': 1, 'capex_linha_+2': 1, 'servidoes_linha_+1': 1, 'servidoes_linha_+2': 1 };
+  /** km of the parcel being optioned on this letter, or null. */
+  function letterOptionKm(effects, opts) {
+    if (!(effects || []).some((e) => String(e) === 'land_option_open')) return null;
+    const raw = opts && opts.letter && opts.letter.params && opts.letter.params.linha_km;
+    const km = Number(raw);
+    return (km > 0 && isFinite(km)) ? km : null;
+  }
+  /** A later, shorter option replaces the line: give back the long-line NPV and equity already posted. */
+  function reverseStoredLineCapex(lotId, sum, perTag) {
+    const ec = econState();
+    const rec = ec.lineCapex;
+    if (!rec || !rec.tags) return;
+    Object.keys(rec.tags).forEach((tag) => {
+      const prev = rec.tags[tag];
+      if (!prev) return;
+      const neg = {};
+      ECON_FIELDS.forEach((f) => {
+        if (typeof prev[f] === 'number' && prev[f]) neg[f] = -prev[f];
+      });
+      const d = applyEconRow(neg, lotId);
+      if (typeof prev.equity === 'number' && prev.equity) {
+        ec.letterCapexEquity = +((ec.letterCapexEquity || 0) - prev.equity).toFixed(3);
+      }
+      perTag['revert_' + tag] = d;
+      Object.keys(sum).forEach((k) => { if (typeof d[k] === 'number') sum[k] = +(sum[k] + d[k]).toFixed(3); });
+    });
+    ec.lineCapex = null;
+  }
+
   function applyEffectEconomics(effects, opts) {
     opts = opts || {};
     const sum = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
     const perTag = {};
     const notes = {};
     const lotId = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.seId) || ECON_REF_LOT;
+    try { ensureObraContingency(lotId); } catch (_) {}
+    const ecLine = econState();
+    const optionKm = letterOptionKm(effects, opts);
+    let skipLine = false;
+    if (optionKm != null && ecLine.lineKm != null) {
+      if (optionKm < ecLine.lineKm - 1e-9) reverseStoredLineCapex(lotId, sum, perTag);
+      else skipLine = true;
+    }
     (effects || []).forEach((ef) => {
       const tag = String(ef);
       if (typeof STAKES_SKIP_ECON !== 'undefined' && STAKES_SKIP_ECON[tag]) return;
       if (/^car_band_[sml]$/.test(tag)) return; // M0: resolveM0Ask
+      // The project line is the shortest optioned parcel. A longer option does not add line capex.
+      if (LINE_CAPEX_TAGS[tag] && skipLine) {
+        notes[tag] = 'parcela mais curta já opcionada';
+        return;
+      }
+      // capex_rede_flag is one grid agreement. Tags are counted before economics, so a repeat is already > 1.
+      if (tag === 'capex_rede_flag' && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags && (mailLoop.tags.capex_rede_flag | 0) > 1) {
+        notes[tag] = 'já contado';
+        return;
+      }
       const row = effectEconRow(tag);
       if (!row) return;
       let d;
-      if (ECON_ROLLED[tag]) {
+      if (tag === 'act_fine_risk') {
+        scheduleActFine(row);
+        notes[tag] = 'sorteio';
+        d = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
+      } else if (row.pay_from === 'contingencia_obra') {
+        d = priceContingencyTag(tag, row, lotId);
+        notes[tag] = 'contingencia';
+      } else if (typeof row.nav_months === 'number' && row.nav_months !== 0) {
+        // FIX G: the month slice of NPV comes from the real COD shift, not from this row.
+        d = applyEconRow(Object.assign({}, row, { nav: null }), lotId);
+        notes[tag] = 'cod';
+      } else if (ECON_ROLLED[tag]) {
         const pressure = tag === 'cash_at_risk_request' && opts.letter && typeof mailSkeletonOf === 'function' && mailSkeletonOf(opts.letter) === 'mail-investidores-pressao-01';
         if (pressure) {
           mailLoop.tags = mailLoop.tags || {};
@@ -14252,9 +14692,20 @@
         }
       }
       if (!d) return;
+      if (row && typeof row.capex_MEUR === 'number' && typeof d.equity === 'number' && d.equity) {
+        const ec = econState();
+        ec.letterCapexEquity = +((ec.letterCapexEquity || 0) + d.equity).toFixed(3);
+      }
+      if (LINE_CAPEX_TAGS[tag]) {
+        const ec = econState();
+        ec.lineCapex = ec.lineCapex || { km: optionKm, tags: {} };
+        ec.lineCapex.km = optionKm;
+        ec.lineCapex.tags[tag] = d;
+      }
       perTag[tag] = d;
       Object.keys(sum).forEach((k) => { if (typeof d[k] === 'number') sum[k] = +(sum[k] + d[k]).toFixed(3); });
     });
+    if (optionKm != null) ecLine.lineKm = ecLine.lineKm == null ? optionKm : Math.min(ecLine.lineKm, optionKm);
     recomputeNav();
     sum.perTag = perTag;
     sum.notes = notes;
@@ -14273,9 +14724,9 @@
       node.trc.free -= 8;
     }
   }
-  /** «Reunir com a Câmara e arrancar» costs one month. Shift the mechanical-completion deadline by that month, without using the one-time slip. */
+  /** «Reunir com a Câmara e arrancar» costs one month. That choice creates the EPC deadline in the same call and does not name it, so the general shifter skips it. Move mechanical completion by one month and do not spend the slip letter. Later letters that name the deadline are shifted by shiftDeadlinesForEffects. */
   function shiftMechanicalCompletionForObraDelay(effects) {
-    if (!effects || !effects.some((e) => String(e) === 'delay_obra_+1')) return;
+    if (!effects || !effects.some((e) => String(e) === 'construction_started') || !effects.some((e) => String(e) === 'delay_obra_+1')) return;
     const d = mailLoop.deadlines && mailLoop.deadlines.epc_mechanical_completion;
     if (!d || (mailLoop.firedDeadlines || {}).epc_mechanical_completion) return;
     const base = d.due != null ? Number(d.due) : Number(d.atMonth);
@@ -14285,10 +14736,12 @@
   }
   function applyMailEffects(effects, opts) {
     opts = opts || {};
+    if (opts.letter && !opts.fromRule && mailLoop) mailLoop._slipLetterThisPlay = false;
     if (!Array.isArray(effects) || !effects.length) return { carBand: null, messages: [] };
     const messages = [];
     let carBand = null;
     mailLoop.tags = mailLoop.tags || {};
+    mailLoop._obraSecurityBefore = (mailLoop.tags.obra_security_paid | 0) > 0;
     effects.forEach((ef) => {
       if (!ef) return;
       const key = String(ef);
@@ -14345,6 +14798,9 @@
     }
     maybeRaisePhaseFromEffects(effects);
     try { draftDeadlinesOnEffects(effects.map(String)); } catch (err) { console.warn('[WattMail] draft deadlines', err); }
+    try { shiftDeadlinesForEffects(effects.map(String), opts); } catch (err) { console.warn('[WattMail] deadline shift', err); }
+    try { rebaseLeDeadlineToGrid(); } catch (err) { console.warn('[WattMail] rebase LE', err); }
+    try { flushSlipQueue(); } catch (err) { console.warn('[WattMail] slip flush', err); }
     try { shiftMechanicalCompletionForObraDelay(effects); } catch (err) { console.warn('[WattMail] obra delay', err); }
     try { if (typeof stakesApplySpecial === 'function') stakesApplySpecial(effects.map(String)); } catch (err) { console.warn('[WattStakes] effects', err); }
     if (effects.some((e) => LAND_CHOSEN_TAGS.indexOf(String(e)) !== -1 || e === 'reopen_tech_plan' || e === 'design_trim_threshold' || e === 'underground_cable')) {
@@ -14354,6 +14810,7 @@
     if (!opts.skipEconomics) {
       try { econ = applyEffectEconomics(effects, opts); } catch (err) { console.warn('[WattMail] effect economics', err); }
     }
+    try { syncCodNpv(); } catch (err) { console.warn('[WattEcon] cod', err); }
     let planRelease = null;
     if (effects.some((e) => String(e) === 'investor_plan_sent')) {
       try { planRelease = releasePendingM0Plan(); } catch (err) { console.warn('[WattEcon] plan release', err); }
@@ -14657,11 +15114,11 @@
   async function deliverMonthCandidates(month, opts) {
     opts = opts || {};
     const plan = await planMonthDelivery(month);
-    const newLetters = (plan.letters || []).concat(
-      (typeof icnfConsultReplyFor === 'function') ? await icnfConsultReplyFor(month) : [],
-      await averbamentoLetterFor(month),
-      await draftRuleLettersFor(month)
-    );
+    const icnfLetters = (typeof icnfConsultReplyFor === 'function') ? await icnfConsultReplyFor(month) : [];
+    const averbLetters = await averbamentoLetterFor(month);
+    const already = (plan.letters || []).length + icnfLetters.length + averbLetters.length;
+    const ruleLetters = await draftRuleLettersFor(month, { already: already });
+    const newLetters = (plan.letters || []).concat(icnfLetters, averbLetters, ruleLetters);
     const monthKey = String(month);
 
     const deliveredSkels = mailLoop.deliveredMonths[monthKey] || [];
@@ -14737,6 +15194,12 @@
       mailLoop.ruleLastAt = {};
       mailLoop.partnerStake = 0;
       mailLoop.equityGapClosed = false;
+      mailLoop.obraContingency = null;
+      mailLoop.obraContingencyInitial = null;
+      mailLoop.obraMeters = {};
+      mailLoop.pendingFines = [];
+      mailLoop.codPricedMonth = null;
+      mailLoop.codPlanMonth = null;
     } else {
       try { await loadEventPack(); ensureEnvPath(); } catch (_) {}
       if (!mailLoop.projectPhase) mailLoop.projectPhase = 'trc_won';
@@ -15886,7 +16349,14 @@
       mailLoop.partnerStake = Number(ml.partnerStake) || 0;
       mailLoop.equityGapClosed = !!ml.equityGapClosed;
       mailLoop.partnerNpvApplied = !!ml.partnerNpvApplied;
+      mailLoop.dilution = Number(ml.dilution) || 0;
       mailLoop.dilutionApplied = !!ml.dilutionApplied;
+      mailLoop.obraContingency = (typeof ml.obraContingency === 'number') ? ml.obraContingency : null;
+      mailLoop.obraContingencyInitial = (typeof ml.obraContingencyInitial === 'number') ? ml.obraContingencyInitial : null;
+      mailLoop.obraMeters = (ml.obraMeters && typeof ml.obraMeters === 'object') ? ml.obraMeters : {};
+      mailLoop.pendingFines = Array.isArray(ml.pendingFines) ? ml.pendingFines : [];
+      mailLoop.codPricedMonth = (typeof ml.codPricedMonth === 'number') ? ml.codPricedMonth : null;
+      mailLoop.codPlanMonth = (typeof ml.codPlanMonth === 'number') ? ml.codPlanMonth : null;
       mailLoop.rescueBridgeApplied = !!ml.rescueBridgeApplied;
       mailLoop.deadlineFollowup = (ml.deadlineFollowup && typeof ml.deadlineFollowup === 'object') ? ml.deadlineFollowup : {};
       mailLoop.hudMoment = ml.hudMoment || null;

@@ -91,9 +91,6 @@
         "delay_fid_+1"
       ],
       "when": {
-        "requires": [
-          "equity_fit_short"
-        ],
         "blocks": [
           "farm_down_fid_request"
         ]
@@ -114,7 +111,7 @@
   ],
   "heavy": true,
   "notes_for_economy": "FID = CAR burn pára (car_burn_stop) + equity Capex comprometida (equity_capex_commit ≈ Capex×(1−gearing)). fid_ready/equity_fit_* = cálculo Economy (gate5 §4.2). Sem €. 2026-10-03: valores em effects-economy.json → endings_stakes_v01_economy (8a empréstimo 20 anos P 0,60; 8b sócio garantido 25 % a custo).",
-  "notes_for_ui": "Choices filtradas por when (máx. 3 visíveis: approve e ask_equity são exclusivos). Cumpre fid_window. Skin 'ultimato' chega por on_miss de fid_window. sell_rtb = Sell the project (modo 1), não contradiz sell-modes-lock. 2026-09-30 (Pedro): sem todo o capital próprio não há obra. approve_fid tem requires_state [equity_fit_ok]: se equity_fit_short, a escolha aparece bloqueada com locked_hint. A regra r-fid-sem-capital entrega a skin falta-capital-proprio em vez da ourique. Ganhar o leilão NÃO depende do capital próprio (a UI não deve pôr lotes a cinza por equity). 2026-10-03: escolhas D9 longer_loan e bring_partner só aparecem com equity_fit_short (choice.when.requires; computed). Valores PEDIR P9/P46. 2026-10-03 (Pedro P46 = ambas + Economy §16): (a) purse de capital próprio da boutique na ronda 1 ~45 M€; (b) a opção garantida é o SÓCIO (bring_partner → farm_down_fid_request → r-es-d9-socio, aceita sempre: 25 % fixo (partner_stake_25), a custo; cash da central × 0,75). O empréstimo mais longo (15 → 20 anos) continua com sorteio (P 0,60, r-es-d9-emprestimo-*). Pedir aos investidores +5 continua P 0,40. Teste equity_fit: usar a equity EXATA do motor (Ourique 41,0 a 40 €/MWh / 44,4 a 38) e decidir se os juros da obra (1,4–1,5 M€) entram no teste (PEDIR P53; com eles 38 €/MWh precisa de ~46).",
+  "notes_for_ui": "Choices filtradas por when (máx. 3 visíveis: approve e ask_equity são exclusivos). Cumpre fid_window. Skin 'ultimato' chega por on_miss de fid_window. sell_rtb = Sell the project (modo 1), não contradiz sell-modes-lock. 2026-09-30 (Pedro): sem todo o capital próprio não há obra. approve_fid tem requires_state [equity_fit_ok]: se equity_fit_short, a escolha aparece bloqueada com locked_hint. A regra r-fid-sem-capital entrega a skin falta-capital-proprio em vez da ourique. Ganhar o leilão NÃO depende do capital próprio (a UI não deve pôr lotes a cinza por equity). 2026-10-06: bring_partner está sempre visível (when = {blocks: [farm_down_fid_request]}, sem equity_fit_short). longer_loan e ask_equity só aparecem com equity_fit_short. Valores PEDIR P9/P46. 2026-10-03 (Pedro P46 = ambas + Economy §16): (a) purse de capital próprio da boutique na ronda 1 ~45 M€; (b) a opção garantida é o SÓCIO (bring_partner → farm_down_fid_request → r-es-d9-socio, aceita sempre: 25 % fixo (partner_stake_25), a custo; cash da central × 0,75). O empréstimo mais longo (15 → 20 anos) continua com sorteio (P 0,60, r-es-d9-emprestimo-*). Pedir aos investidores +5 continua P 0,40. Teste equity_fit: usar a equity EXATA do motor (Ourique 41,0 a 40 €/MWh / 44,4 a 38) e decidir se os juros da obra (1,4–1,5 M€) entram no teste (PEDIR P53; com eles 38 €/MWh precisa de ~46).",
   "deadline_letter": true,
   "deadline_id": "fid_window",
   "deadline_role": "due",

@@ -22,8 +22,7 @@
       "id": "accept_grid",
       "label": "Aceitar condições e calendário",
       "effects": [
-        "grid_conditions_accepted",
-        "capex_rede_flag"
+        "grid_conditions_accepted"
       ]
     },
     {
@@ -36,6 +35,6 @@
     }
   ],
   "heavy": true,
-  "notes_for_economy": "capex_rede_flag = painel/reforço a cargo do requerente — PEDIR_ECONOMY. grid_phasing_request → LP com restrições de injecção (P50/NPV).",
+  "notes_for_economy": "capex_rede_flag = painel/reforço a cargo do requerente — PEDIR_ECONOMY. grid_phasing_request → LP com restrições de injecção (P50/NPV). 2026-10-06: capex_rede_flag retirado de accept_grid (acordo REN já cobrado em mail-rede-prazo-01).",
   "notes_for_ui": "Pronúncia do operador à DGEG (art. 26.º). Gate da decisão LP: sem esta carta respondida não há concedida/condicionada. Cria deadline grid_connection. CTA pesado (Rede)."
 }

@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-obra-inspecao-01",
+  "skin_id": "ourique-act",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Direção de obra",
+  "subject": "Inspeção do trabalho na obra",
+  "body": "A Autoridade para as Condições do Trabalho fez uma visita surpresa à obra. Encontrou andaimes sem proteção e trabalhadores de uma subempreitada sem formação de segurança. Deu dez dias para corrigir.\n\nPodes parar essa parte da obra e corrigir tudo já, ou corrigir aos poucos sem parar e arriscar uma multa e uma nova visita.",
+  "params": {
+    "deadline_id": "epc_mechanical_completion"
+  }
+}

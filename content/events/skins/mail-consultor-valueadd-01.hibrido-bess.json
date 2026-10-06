@@ -2,8 +2,9 @@
   "skeleton_id": "mail-consultor-valueadd-01",
   "skin_id": "hibrido-bess",
   "from_name": "Consultor de desenvolvimento",
-  "subject": "Só com solar, o projeto não dá lucro",
-  "body": "Só com painéis solares, o NPV deste projeto não chega para dar lucro.\n\nEnquanto o TRC é teu, aproveita a ligação: sobreequipa (mais painéis do que a potência da ligação) e hibridiza (junta um parque eólico ou baterias no mesmo ponto). Renovar o equipamento fica para mais tarde.",
+  "subject": "Antes da obra: aproveitar melhor a ligação",
+  "body": "Antes de fechares o projeto da obra, ainda vais a tempo de tirar mais da tua ligação: sobreequipar (mais painéis do que a potência da ligação) ou hibridizar (juntar um parque eólico ou baterias no mesmo ponto). Cada uma custa dinheiro e tempo, mas pode subir o NPV. Renovar o equipamento fica para mais tarde.",
   "params": {},
-  "volume_2026_10_04": "Movida para depois do PIP/pedido de licença (proposta M8+)."
+  "volume_2026_10_04": "Movida para depois do PIP/pedido de licença (proposta M8+).",
+  "obra_v01_2026_10_06": "Já não repete «Só com solar, o projeto não dá lucro» (dito no M0, e falso para Ourique a 40)."
 }

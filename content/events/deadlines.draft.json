@@ -469,9 +469,9 @@
         "source": "HIPÓTESE / PEDIR_PEDRO"
       },
       "shift_on_effects": {
-        "delay_cod_+1": "PEDIR_ECONOMY (meses)",
-        "delay_cod_+2": "PEDIR_ECONOMY (meses)",
-        "delay_ligacao_+1": "PEDIR_ECONOMY (meses)"
+        "delay_ligacao_+1": "economy.months",
+        "delay_cod_+1": "economy.months",
+        "delay_cod_+2": "economy.months"
       },
       "shift_only_if_letter_ref": true,
       "void_on_effects": [
@@ -490,10 +490,20 @@
       "on_miss": [],
       "on_miss_mail": null,
       "risk_card": {
+        "rule_group": "obra_rede",
         "skeleton": "mail-rede-ligacao-atraso-01",
         "skin": "ourique"
       },
-      "note": "third_party: no atMonth resolve como met; a derrapagem vem antes, pela carta de risco (regra r-grid-slip) que empurra atMonth."
+      "note": "third_party: no atMonth resolve como met; a derrapagem vem antes, pela carta de risco (regra r-grid-slip) que empurra atMonth.",
+      "slip_mail": {
+        "skeleton": "mail-prazo-derrapagem-01",
+        "skin": "ligacao"
+      },
+      "unmet_mail": {
+        "skeleton": "mail-prazo-derrapagem-01",
+        "skin": "marco-passou"
+      },
+      "obra_v01_2026_10_06": "Como epc_mechanical_completion. delay_cod_* mantém-se por compatibilidade com cartas antigas."
     },
     {
       "id": "epc_mechanical_completion",
@@ -512,9 +522,11 @@
         "source": "HIPÓTESE / PEDIR_ECONOMY (120 MWp solar + híbrido)"
       },
       "shift_on_effects": {
-        "delay_obra_+1": "PEDIR_ECONOMY (meses)",
-        "delay_cod_+1": "PEDIR_ECONOMY (meses)",
-        "delay_cod_+2": "PEDIR_ECONOMY (meses)",
+        "delay_obra_+1": "economy.months",
+        "delay_obra_curto": "economy.months",
+        "epc_acceleration": "economy.months",
+        "delay_cod_+1": "economy.months",
+        "delay_cod_+2": "economy.months",
         "punch_list_first": 0
       },
       "shift_only_if_letter_ref": true,
@@ -532,7 +544,17 @@
       "risk_card": {
         "skeleton": "mail-epc-atraso-01",
         "skin": "ourique"
-      }
+      },
+      "slip_mail": {
+        "skeleton": "mail-prazo-derrapagem-01",
+        "skin": "mecanica"
+      },
+      "unmet_mail": {
+        "skeleton": "mail-prazo-derrapagem-01",
+        "skin": "marco-passou"
+      },
+      "meet_letter_rule": "r-obra-mecanica (se a ligação ainda não está pronta) ou r-ensaios (se já está)",
+      "obra_v01_2026_10_06": "shift_on_effects lê os meses da linha do effects-economy.json (campo months). Mudanças de data entregam slip_mail (ou só aviso no HUD, ver mail-prazo-derrapagem-01.notes_for_ui)."
     },
     {
       "id": "le_deadline",
@@ -568,8 +590,8 @@
       "warn": {
         "months_before": 2,
         "mail": {
-          "skeleton": "mail-prazo-aviso-01",
-          "skin": "le-cod"
+          "skeleton": "mail-prazo-aviso-le-01",
+          "skin": "ourique"
         }
       },
       "on_meet": [
@@ -595,7 +617,9 @@
         "odds_up_if_any": [
           "dgeg_late",
           "grid_slip_operator",
-          "lp_conditions"
+          "lp_conditions",
+          "grid_chase",
+          "le_extension_early"
         ],
         "odds_down_if_any": [
           "obra_start_deferred",
@@ -608,6 +632,15 @@
         "denied_mail": {
           "skeleton": "mail-prorrogacao-recusada-01",
           "skin": "le-cod"
+        },
+        "early_request": {
+          "allowed": true,
+          "denied_mail": {
+            "skeleton": "mail-prorrogacao-recusada-01",
+            "skin": "antecipada"
+          },
+          "denial_triggers_final_miss": false,
+          "note": "Pedido antes do fim do prazo: se recusado, o prazo mantém-se e não há audiência; a escada normal (on_miss_mail) continua se o prazo passar."
         }
       },
       "rush": {
@@ -628,7 +661,12 @@
         "skeleton": "mail-dgeg-trc-risco-01",
         "skin": "audiencia"
       },
-      "note_2026_10_03": "Como lp_request: a caducidade passa pela audiência da DGEG."
+      "note_2026_10_03": "Como lp_request: a caducidade passa pela audiência da DGEG.",
+      "slip_mail": {
+        "skeleton": "mail-prazo-derrapagem-01",
+        "skin": "licenca"
+      },
+      "obra_v01_2026_10_06": "Aviso com escolha real (mail-prazo-aviso-le-01). rebaseLeDeadlineToGrid passa a chamar moveDeadline(..., 'rebase_grid') → carta licenca."
     },
     {
       "id": "pip_decision",
@@ -871,6 +909,10 @@
     "final_miss_mail": "carta entregue quando final_miss se aplica (deadline_accept_miss ou prorrogação recusada + deixar caducar). Põe end_state lost."
   },
   "schema_notes": {
-    "warn.skip_if_delivered_skeletons": "2026-10-04: não entregar o aviso se uma destas cartas já foi entregue (a carta de prazo já diz a data). Código Grok Bot."
+    "warn.skip_if_delivered_skeletons": "2026-10-04: não entregar o aviso se uma destas cartas já foi entregue (a carta de prazo já diz a data). Código Grok Bot.",
+    "slip_mail": "2026-10-06: carta quando o atMonth muda (moveDeadline). params: deadline_label, old_month, new_month, cause, le_month.",
+    "unmet_mail": "2026-10-06: carta quando chega o atMonth de um prazo de terceiros e o marco não está cumprido (a data passa e não é dada por cumprida em silêncio).",
+    "shift_on_effects: economy.months": "2026-10-06: o deslocamento em meses vem do campo months da linha da tag no effects-economy.json.",
+    "extension.early_request": "2026-10-06: pedido de prorrogação antes do fim do prazo; recusa não abre a audiência."
   }
 }

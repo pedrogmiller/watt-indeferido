@@ -19,35 +19,39 @@
   "choices": [
     {
       "id": "claim_lds",
-      "label": "Aplicar penalidades contratuais",
+      "label": "Aplicar as penalidades do contrato",
       "effects": [
         "epc_lds_claimed",
-        "delay_cod_+1",
+        "delay_obra_+1",
         "epc_relationship_-1"
-      ]
+      ],
+      "hint": "O empreiteiro paga-te parte do prejuízo, mas a obra atrasa na mesma e a relação piora."
     },
     {
       "id": "accelerate",
-      "label": "Pagar aceleração",
+      "label": "Pagar para recuperar parte do tempo",
       "effects": [
-        "epc_acceleration",
-        "equity_capex_overrun_flag"
-      ]
+        "delay_obra_+1",
+        "epc_acceleration"
+      ],
+      "hint": "Gastas mais capital próprio. A obra atrasa cerca de um mês, em vez de três."
     },
     {
       "id": "accept",
-      "label": "Aceitar o novo prazo",
+      "label": "Aceitar a nova data",
       "effects": [
-        "delay_cod_+2"
-      ]
+        "delay_obra_+1"
+      ],
+      "hint": "Não pagas nada a mais. A obra acaba cerca de três meses mais tarde."
     }
   ],
   "heavy": true,
   "notes_for_economy": "Odds PEDIR_ECONOMY (sobem com epc_multi / epc_interface_risk_+1; descem com epc_turnkey). epc_acceleration/overrun = equity extra; LDs = crédito parcial — PEDIR_ECONOMY.",
-  "notes_for_ui": "delay_cod_+N empurra o deadline epc_mechanical_completion (shift_on_effects). CTA pesado (crise).",
+  "notes_for_ui": "delay_obra_+1 / epc_acceleration empurram/puxam epc_mechanical_completion (shift_on_effects, meses do effects-economy). CTA pesado.",
   "deadline_letter": true,
   "deadline_id": "epc_mechanical_completion",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "obra_v01_2026_10_06": "Antes: accept → delay_cod_+2 (6 meses), claim_lds → delay_cod_+1, accelerate → epc_acceleration + equity_capex_overrun_flag (+5 % Capex). Agora: atraso base delay_obra_+1 (3 meses) em todas; accelerate soma epc_acceleration (−2 meses) → ~1 mês líquido; sem equity_capex_overrun_flag (ver pedido ao Economy)."
 }

@@ -1,0 +1,41 @@
+{
+  "id": "mail-obra-mecanica-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "keep_crew",
+      "label": "Manter a equipa no local",
+      "effects": [
+        "epc_standby_paid"
+      ],
+      "hint": "Pagas a equipa até a REN ligar. Os testes começam logo no mês da ligação."
+    },
+    {
+      "id": "demobilise",
+      "label": "Mandar a equipa embora até a REN ligar",
+      "effects": [
+        "epc_demobilised"
+      ],
+      "hint": "Poupas esse dinheiro. Os testes e a vistoria começam cerca de um mês mais tarde."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "grid_connection",
+  "notes_for_ui": "Marco da conclusão da obra quando a ligação ainda não está pronta (com a ligação pronta sai a carta dos testes, mail-dgeg-ensaios-01). epc_demobilised → r-ensaios +1 mês (after_effect.extra_months_if_any).",
+  "notes_for_economy": "epc_standby_paid: custo mensal até line_ready (PEDIR_ECONOMY). epc_demobilised: sem €, +1 mês até aos testes.",
+  "deadline_letter": true,
+  "deadline_id": "epc_mechanical_completion",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
+}

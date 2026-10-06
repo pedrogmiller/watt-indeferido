@@ -1,0 +1,42 @@
+{
+  "id": "mail-obra-inspecao-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "stop_fix",
+      "label": "Parar e corrigir já",
+      "effects": [
+        "delay_obra_curto",
+        "obra_safety_fixed"
+      ],
+      "hint": "A obra perde cerca de um mês. O assunto fica arrumado."
+    },
+    {
+      "id": "keep_going",
+      "label": "Corrigir sem parar a obra",
+      "effects": [
+        "act_fine_risk"
+      ],
+      "hint": "A obra não para. Se a inspeção voltar e encontrar falhas, pagas uma multa e o teu nome pode aparecer nas notícias."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "epc_mechanical_completion",
+  "notes_for_economy": "act_fine_risk: multa com probabilidade (PEDIR_ECONOMY: valor e P; sugestão GM: sorteio como ECON_ROLLED). Se sair: cash − e reputation_exposed.",
+  "nota_gm": "ACT — Lei n.º 107/2009 (contraordenações laborais); prazos de correção fixados pelo inspetor. Valores das coimas: PEDIR_ECONOMY.",
+  "deadline_letter": true,
+  "deadline_id": "epc_mechanical_completion",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
+}

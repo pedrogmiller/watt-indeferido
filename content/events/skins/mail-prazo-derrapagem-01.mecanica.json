@@ -1,0 +1,34 @@
+{
+  "skeleton_id": "mail-prazo-derrapagem-01",
+  "skin_id": "mecanica",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Direção de obra",
+  "subject": "Fim da obra: passa de {{old_month}} para {{new_month}}",
+  "body": "A data prevista para acabar a obra da central mudou de {{old_month}} para {{new_month}}. Motivo: {{cause}}.\n\nDepois de a obra acabar, ainda faltam os testes e a vistoria da DGEG, cerca de dois meses. A licença de exploração tem de estar emitida até {{le_month}}. Podes pagar ao empreiteiro para recuperar parte do atraso, ou aceitar a nova data.",
+  "params": {
+    "deadline_id": "epc_mechanical_completion"
+  },
+  "choice_overrides": {
+    "recover": {
+      "label": "Pagar ao empreiteiro para recuperar parte do atraso",
+      "effects": [
+        "epc_acceleration",
+        "slip_recover"
+      ],
+      "hint": "Gastas mais capital próprio. Recuperas cerca de dois meses."
+    },
+    "accept": {
+      "label": "Aceitar a nova data",
+      "effects": [
+        "slip_accepted"
+      ],
+      "hint": "Não pagas nada a mais. Se a nova data deixar pouco tempo para a vistoria, prepara um pedido de prorrogação."
+    }
+  },
+  "deadline_id": "epc_mechanical_completion",
+  "deadline_role": "warning",
+  "deadline_blocks_play": true
+}

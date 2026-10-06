@@ -6,6 +6,6 @@
   "when": {},
   "from_name": "Comité de investimento",
   "subject": "Temos sócio: a obra pode avançar",
-  "body": "Encontrámos um sócio para a obra. Fica com {{partner_share}} do projeto e põe a parte dele do capital próprio ao mesmo custo que tu.\n\nO capital próprio para a obra está completo. Em troca, a tua parte do valor do projeto e do dinheiro que a central vai gerar fica menor. Volta à decisão final de investimento.",
+  "body": "Encontrámos um sócio para a obra. Fica com um quarto (25 %) do projeto e põe a parte dele do capital próprio ao mesmo custo que tu.\n\nO capital próprio para a obra está completo. Em troca, a tua parte do valor do projeto e do dinheiro que a central vai gerar fica menor. Volta à decisão final de investimento.",
   "params": {}
 }

@@ -49,7 +49,9 @@
     "end_state": "ao entregar, mailLoop.end_state = {status, reason, month}; o relógio do projeto para; o botão da carta abre o ecrã de fim.",
     "hud_moment": "momento visual no HUD no mesmo Play (faixa curta), além da carta.",
     "skin_if": "{tag: skin}: troca de skin se a tag existir.",
-    "params": "placeholders fixos passados à skin (ex.: refusal_authority)."
+    "params": "placeholders fixos passados à skin (ex.: refusal_authority).",
+    "odds_mode": "2026-10-06: «numeric» = a consola usa numericRuleOdds(odds) (base + up_if_any/down_if_any em mapa {tag: Δ}, floor/cap). Sem este campo, mantém-se o comportamento atual.",
+    "after_effect.extra_months_if_any": "2026-10-06: {tag: meses} somados ao after_effect quando a tag está ligada."
   },
   "rules": [
     {
@@ -1437,7 +1439,9 @@
         "band": "1-3",
         "source": "HIPÓTESE"
       },
-      "filler": true
+      "filler": true,
+      "retired": true,
+      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha."
     },
     {
       "id": "r-fyi-obra-2",
@@ -1458,7 +1462,9 @@
         "band": "5-8",
         "source": "HIPÓTESE"
       },
-      "filler": true
+      "filler": true,
+      "retired": true,
+      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha."
     },
     {
       "id": "r-fyi-obra-3",
@@ -1479,7 +1485,9 @@
         "band": "8-11",
         "source": "HIPÓTESE"
       },
-      "filler": true
+      "filler": true,
+      "retired": true,
+      "retired_reason": "2026-10-06: só informativas; substituídas pelas cartas de obra com escolha."
     },
     {
       "id": "r-epc-atraso",
@@ -1495,26 +1503,34 @@
         "construction_started"
       ],
       "blocks_if_any_effects": [
-        "mechanical_completion"
+        "cod_reached",
+        "mechanical_completion",
+        "sale_full_exit",
+        "trc_caducado"
       ],
       "after_effect": {
         "tag": "construction_started",
-        "months": 5,
-        "band": "4-8",
-        "source": "HIPÓTESE"
+        "months": 4,
+        "band": "4-6",
+        "source": "GM 2026-10-06 (antes 5, banda 4-8)"
       },
       "odds": {
-        "base": "PEDIR_ECONOMY",
-        "up_if_any": [
-          "epc_multi",
-          "epc_interface_risk_+1"
-        ],
-        "down_if_any": [
-          "epc_turnkey"
-        ]
+        "base": 0.5,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY",
+        "up_if_any": {
+          "epc_multi": 0.15,
+          "epc_interface_risk_+1": 0.1
+        },
+        "down_if_any": {
+          "epc_turnkey": -0.15
+        }
       },
       "reroll": false,
-      "shifts_deadline": "epc_mechanical_completion"
+      "shifts_deadline": "epc_mechanical_completion",
+      "mutex_group": "obra_supply",
+      "pick": 1,
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": "Grupo obra_supply com r-obra-fornecedor (fallback): sai sempre uma carta de fornecimento ~4 meses depois do arranque."
     },
     {
       "id": "r-grid-slip",
@@ -1535,27 +1551,35 @@
         "capex_rede_flag"
       ],
       "blocks_if_any_effects": [
-        "line_ready"
+        "cod_reached",
+        "line_ready",
+        "sale_full_exit",
+        "trc_caducado"
       ],
       "after_effect": {
         "tag": "construction_started",
-        "months": 7,
-        "band": "5-10",
-        "source": "HIPÓTESE"
+        "months": 9,
+        "band": "8-10",
+        "source": "GM 2026-10-06 (antes 7, banda 5-10)"
       },
       "odds": {
-        "base": "PEDIR_ECONOMY",
-        "up_if_any": [
-          "se:rede=congestionada",
-          "grid_phasing_request"
-        ],
-        "down_if_any": [
-          "grid_chase"
-        ]
+        "base": 0.4,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY",
+        "up_if_any": {
+          "grid_phasing_request": 0.15,
+          "capex_rede_flag": 0.1
+        },
+        "down_if_any": {
+          "grid_chase": -0.1
+        }
       },
       "reroll": false,
       "shifts_deadline": "grid_connection",
-      "note": "Não no mesmo mês que r-epc-atraso (cap de CTA pesado 2, mas evitar duas crises juntas)."
+      "note": "Não no mesmo mês que r-epc-atraso (cap de CTA pesado 2, mas evitar duas crises juntas).",
+      "mutex_group": "obra_rede",
+      "pick": 1,
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": "Grupo obra_rede com r-rede-obras (fallback): sai sempre uma carta da REN ~9 meses depois do arranque."
     },
     {
       "id": "r-linha-pronta",
@@ -1587,8 +1611,12 @@
         "tag": "mechanical_completion",
         "months": 0,
         "band": "0-1",
-        "source": "mesma aterragem"
-      }
+        "source": "mesma aterragem",
+        "extra_months_if_any": {
+          "epc_demobilised": 1
+        }
+      },
+      "obra_v01_2026_10_06": "epc_demobilised (mail-obra-mecanica-01) atrasa os testes 1 mês — campo novo after_effect.extra_months_if_any (código)."
     },
     {
       "id": "r-le-cod",
@@ -1616,7 +1644,13 @@
         "months": 2,
         "band": "1-3",
         "source": "LEGAL art. 34.º (vistoria ≤30 dias) + ensaios HIPÓTESE; vistoria_acreditada → -1"
-      }
+      },
+      "delivery_proposed": "hud_only",
+      "on_deliver_effects": [
+        "le_granted",
+        "cod_reached"
+      ],
+      "obra_v01_2026_10_06": "Já não entrega carta: aplica le_granted + cod_reached; a carta final é r-es-cod (mail-fim-de-ciclo-01.cod), no mesmo Play (r-le-cod vem antes de r-es-cod na lista)."
     },
     {
       "id": "r-aviso",
@@ -3713,6 +3747,349 @@
       "end_state": {
         "status": "won",
         "reason": "cod"
+      },
+      "obra_v01_2026_10_06": "Carta final única (abre o balanço no único botão). wait_for_answer_if_delivered deixa de ter efeito (a carta da DGEG já não sai)."
+    },
+    {
+      "id": "r-obra-comunidade",
+      "skeleton": "mail-obra-comunidade-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 2,
+        "band": "2-3",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "odds": {
+        "base": 1.0,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
+      }
+    },
+    {
+      "id": "r-obra-fornecedor",
+      "skeleton": "mail-obra-fornecedor-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 4,
+        "band": "4-6",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "mutex_group": "obra_supply",
+      "pick": 2,
+      "odds": {
+        "base": 1.0,
+        "source": "fallback do grupo"
+      }
+    },
+    {
+      "id": "r-obra-meteo",
+      "skeleton": "mail-obra-meteo-01",
+      "skin": "ourique-chuva",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 7,
+        "band": "6-8",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "mutex_group": "obra_meio",
+      "pick": 1,
+      "reroll": false,
+      "odds": {
+        "base": 0.5,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
+      }
+    },
+    {
+      "id": "r-obra-inspecao",
+      "skeleton": "mail-obra-inspecao-01",
+      "skin": "ourique-act",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 7,
+        "band": "6-8",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "mutex_group": "obra_meio",
+      "pick": 2,
+      "odds": {
+        "base": 1.0,
+        "source": "fallback do grupo"
+      }
+    },
+    {
+      "id": "r-rede-obras",
+      "skeleton": "mail-rede-obras-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado",
+        "line_ready"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 9,
+        "band": "8-10",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "mutex_group": "obra_rede",
+      "pick": 2,
+      "odds": {
+        "base": 1.0,
+        "source": "fallback do grupo"
+      },
+      "requires_any_effects": [
+        "grid_conditions_accepted",
+        "grid_phasing_request",
+        "capex_rede_flag",
+        "grid_agreement_signed"
+      ]
+    },
+    {
+      "id": "r-rede-papeis-atraso",
+      "skeleton": "mail-rede-ligacao-atraso-01",
+      "skin": "papeis-atrasados",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "ren_docs_late"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado",
+        "line_ready"
+      ],
+      "after_effect": {
+        "tag": "ren_docs_late",
+        "months": 2,
+        "band": "2-3",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "odds": {
+        "base": 0.5,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
+      }
+    },
+    {
+      "id": "r-obra-mecanica",
+      "skeleton": "mail-obra-mecanica-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "mechanical_completion"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado",
+        "line_ready"
+      ],
+      "after_effect": {
+        "tag": "mechanical_completion",
+        "months": 0,
+        "band": "0",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "odds": {
+        "base": 1.0,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
+      },
+      "note": "Marco da conclusão da obra quando a REN ainda não ligou. Com line_ready sai r-ensaios no mesmo mês."
+    },
+    {
+      "id": "r-obra-furto",
+      "skeleton": "mail-obra-furto-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 14,
+        "band": "13-15",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "mutex_group": "obra_furto",
+      "pick": 1,
+      "odds": {
+        "base": 0.5,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
+      }
+    },
+    {
+      "id": "r-obra-furto-2",
+      "skeleton": "mail-obra-furto-01",
+      "skin": "segundo-roubo",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": [
+        "obra_theft_risk_+1"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado",
+        "obra_security_paid"
+      ],
+      "after_effect": {
+        "tag": "obra_theft_risk_+1",
+        "months": 3,
+        "band": "3-4",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "odds": {
+        "base": 0.4,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
+      }
+    },
+    {
+      "id": "r-noticia-cortes",
+      "skeleton": "mail-noticia-cortes-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": [
+        "obra"
+      ],
+      "heavy": false,
+      "relevant": false,
+      "once": true,
+      "requires_all_effects": [
+        "construction_started"
+      ],
+      "blocks_if_any_effects": [
+        "cod_reached",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "construction_started",
+        "months": 16,
+        "band": "15-17",
+        "source": "GM 2026-10-06: ~1 carta a cada 2–3 meses de obra"
+      },
+      "odds_mode": "numeric",
+      "obra_v01_2026_10_06": true,
+      "odds": {
+        "base": 0.7,
+        "source": "HIPÓTESE GM (ritmo da obra) — PEDIR_ECONOMY"
       }
     }
   ],
@@ -4145,5 +4522,32 @@
     "ren_realism_2026_10_03": "Falhar o acordo com a REN não faz caducar o TRC: grid_agreement → ultimo-aviso + grid_agreement_final; falhar esse → delay_ligacao_+1 + caducidade_risk_+1 (carta REN ligacao-adiada). A caducidade vem dos marcos do TRC (sobretudo lp_request) pela audiência da DGEG.",
     "partial_sale_2026_10_03": "Venda parcial antes da LP: só 25 % (stake_sale_pre_lp + stake_sale_25), em resgate e pressao/caixa-baixa. Sem mudança de controlo → sem averbamento DGEG nem caução extra; fecho 1–2 meses. Preço = Economy §17.5 (× 0,70 se distressed_sale).",
     "economy_numbers_2026_10_03": "Números em effects-economy.json → endings_stakes_v01_economy (P47–P54). As regras só fazem referência; não copiar valores para aqui."
+  },
+  "obra_v01_2026_10_06": {
+    "wire_rule_ids": [
+      "r-obra-comunidade",
+      "r-rede-papeis-atraso",
+      "r-obra-mecanica",
+      "r-obra-furto-2",
+      "r-noticia-cortes"
+    ],
+    "wire_groups": [
+      "obra_supply",
+      "obra_meio",
+      "obra_rede",
+      "obra_furto"
+    ],
+    "cap": "Na fase obra, no máximo 2 cartas por mês (as cartas de regra elegíveis esperam pelo mês seguinte; não perdem a vez).",
+    "timeline_C_eq_construction_started": {
+      "C+2": "r-obra-comunidade",
+      "C+4": "obra_supply (transformador 0,5 / painéis)",
+      "C+7": "obra_meio (chuva 0,5 / inspeção do trabalho)",
+      "C+9": "obra_rede (atraso REN 0,4 / papéis para a REN)",
+      "C+11": "r-rede-papeis-atraso (0,5, só com ren_docs_late)",
+      "conclusão mecânica": "r-obra-mecanica (se a REN ainda não ligou)",
+      "C+14": "r-obra-furto (0,5)",
+      "C+16": "r-noticia-cortes (0,7, informativa)",
+      "C+17": "r-obra-furto-2 (0,4, só sem segurança)"
+    }
   }
 }

@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-prazo-aviso-le-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Equipa de licenciamento",
+  "subject": "Licença de exploração até {{deadline_month}}: pedir já a prorrogação?",
+  "body": "A licença de exploração tem de estar emitida até {{deadline_month}}. Antes disso, a obra tem de estar pronta, a REN tem de ligar a central e a DGEG tem de fazer a vistoria. Com a obra onde está, pode não dar tempo.\n\nPodes pedir já à DGEG uma prorrogação, explicando os atrasos que não foram teus. A DGEG só a dá uma vez. Se arriscares e o prazo passar, a DGEG abre uma audiência antes de decidir se tira o TRC.",
+  "params": {
+    "deadline_id": "le_deadline"
+  },
+  "deadline_id": "le_deadline",
+  "deadline_role": "warning",
+  "deadline_blocks_play": true
+}

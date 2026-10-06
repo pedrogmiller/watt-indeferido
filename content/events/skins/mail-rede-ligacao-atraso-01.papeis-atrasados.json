@@ -1,0 +1,35 @@
+{
+  "skeleton_id": "mail-rede-ligacao-atraso-01",
+  "skin_id": "papeis-atrasados",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "REN — Ligações à rede",
+  "subject": "A tua ligação passou para depois",
+  "body": "Os papéis da tua subestação chegaram tarde e a nossa equipa já passou para outra ligação. A tua central só pode ser ligada cerca de três meses mais tarde do que o previsto. Este atraso não é da REN.\n\nPodes pedir-nos uma data por escrito, ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
+  "params": {
+    "deadline_id": "grid_connection"
+  },
+  "choice_overrides": {
+    "chase": {
+      "label": "Pedir uma data por escrito",
+      "effects": [
+        "grid_chase",
+        "delay_ligacao_+1"
+      ],
+      "hint": "Ficas com uma data certa. O atraso foi teu, por isso não ajuda num pedido de prorrogação."
+    },
+    "phased": {
+      "effects": [
+        "grid_phased_energisation",
+        "injection_cap_restricted",
+        "delay_ligacao_+1"
+      ],
+      "hint": "Uma parte da central liga mais cedo, com potência limitada. O resto espera pela equipa da REN."
+    },
+    "accept": {
+      "hint": "Não fazes nada. A ligação atrasa cerca de três meses."
+    }
+  }
+}

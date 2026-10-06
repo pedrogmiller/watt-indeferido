@@ -1,0 +1,34 @@
+{
+  "id": "mail-noticia-cortes-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "normal",
+  "from_type": "MEDIA",
+  "choices": [
+    {
+      "id": "study",
+      "label": "Estudar baterias para mais tarde",
+      "effects": [
+        "bess_study_later"
+      ],
+      "hint": "Não custa nada agora. O tema volta quando a central estiver a funcionar."
+    },
+    {
+      "id": "dismiss",
+      "label": "Arquivar",
+      "effects": [],
+      "hint": "Só informação."
+    }
+  ],
+  "heavy": false,
+  "notes_for_ui": "Carta só informativa (relevant=false). Não conta para o limite de cartas importantes.",
+  "notes_for_economy": "Sem €. bess_study_later: só memória para depois da entrada em funcionamento (fora da v0.1).",
+  "nota_gm": "Cortes de produção (curtailment) e preços zero/negativos no MIBEL 2024–2026: factual. Se a energia cortada é paga ao abrigo do contrato do leilão de 2019/2020 depende do regime (remuneração garantida vs contribuição ao sistema) — INCERTO, por isso a carta diz «pode não ser paga». PEDIR_PEDRO."
+}

@@ -23,7 +23,7 @@
       ]
     }
   ],
-  "notes_for_ui": "Skins: emprestimo-aceite e emprestimo-recusado (from_type_override BANCO), socio-entra. Os efeitos vêm das regras r-es-d9-* (on_deliver_effects). Depois desta carta, r-fid / r-fid-sem-capital voltam a armar (rearm_on_effects) e a carta da decisão final reaparece com equity_fit recalculado.",
-  "notes_for_economy": "Ver effects-economy.json → endings_stakes_v01_economy 8a/8b. Empréstimo: +5,7 M€ de dívida, comissão 2 % da dívida extra, juro 5,25 %. Sócio: s = máx(25 %, falta), paga a custo; NPV e FCF do jogador × (1 − s).",
+  "notes_for_ui": "Skins: emprestimo-aceite e emprestimo-recusado (from_type_override BANCO), socio-entra. Os efeitos vêm das regras r-es-d9-* (on_deliver_effects). Depois desta carta, r-fid / r-fid-sem-capital voltam a armar (rearm_on_effects) e a carta da decisão final reaparece com equity_fit recalculado. Tempo: a resposta (2–3 meses) cabe dentro do delay_fid_+1 (+3 meses) da escolha; o atraso total da FID é +3, não +5–6.",
+  "notes_for_economy": "Ver effects-economy.json → endings_stakes_v01_economy 8a/8b. Empréstimo: +5,7 M€ de dívida, comissão 2 % da dívida extra, juro 5,25 %. Sócio: 25 % fixo (partner_stake_25), garantido, a custo; NPV e FCF do jogador × (1 − s).",
   "nota_gm": "Empréstimo mais longo: o banco aceita pagar-se nos anos 16–20 com receita de mercado só com cobertura folgada (DSCR 1,50). Venda de parte a um sócio antes da obra = venda de participação na sociedade titular; o TRC não muda de titular (HIPÓTESE sobre comunicação à DGEG)."
 }
