@@ -537,9 +537,23 @@
       },
       "due": {
         "anchor": "created",
-        "months_band": "12-18",
         "months": 15,
-        "source": "HIPÓTESE GM 2026-10-06 (transformador de potência + linha curta) — PEDIR_ECONOMY/Pedro"
+        "months_band": "12-18",
+        "source": "HIPÓTESE GM 2026-10-06 · Pedro 2026-10-06: 15 meses com encomenda no M6 (transformer_order_early ou default se ainda sem carta)",
+        "variants": [
+          {
+            "if_any_effects": ["transformer_order_early"],
+            "months": 15,
+            "months_band": "12-18",
+            "source": "Encomenda no M6: prazo normal."
+          },
+          {
+            "if_any_effects": ["transformer_order_late"],
+            "months": 24,
+            "months_band": "24-30",
+            "source": "Pedro 2026-10-06: sem encomenda no M6 → ~24 meses depois do arranque da obra."
+          }
+        ]
       },
       "shift_on_effects": {
         "delay_subestacao_+1": "economy.months",
@@ -548,7 +562,9 @@
         "servidao_administrativa": "economy.months",
         "delay_linha_curto": "economy.months",
         "delay_linha_+1": "economy.months",
-        "linha_desvio": 0
+        "linha_desvio": 0,
+        "transformer_order_late": "economy.months",
+        "transformer_order_early": 0
       },
       "shift_only_if_letter_ref": false,
       "void_on_effects": [
@@ -575,7 +591,8 @@
         "rule_group": "obra_rede_propria"
       },
       "visibilidade_v01_2026_10_06": "Novo. Cumpre-se sozinho na data (como third_party), mas é do jogador: as cartas mail-linha-empreiteiro-01, mail-epc-atraso-01 e mail-linha-servidao-01 mexem-lhe. Não ajusta o prazo da licença de exploração.",
-      "note_economy_1006c_2026_10_06_1202": "linha_desvio = 0 explícito: o mês vem só de delay_linha_curto (mesma escolha)."
+      "note_economy_1006c_2026_10_06_1202": "linha_desvio = 0 explícito: o mês vem só de delay_linha_curto (mesma escolha).",
+      "transformador_m6_2026_10_06": "due.variants: early/default 15; late 24. O plano da data fica nos 15: os +9 só entram no COD uma vez, quando a variante alonga a data. shift transformer_order_late = economy.months (+9) só se a carta chegar depois da criação — a consola não soma os dois."
     },
     {
       "id": "epc_mechanical_completion",
@@ -996,7 +1013,11 @@
       "deadline": "player_grid",
       "label_pt": "A tua subestação e a linha",
       "created_on": "construction_started",
-      "default": "arranque da obra + 15 meses"
+      "default": "arranque da obra + 15 meses (24 se transformer_order_late)",
+      "variants_tag": {
+        "transformer_order_early": 15,
+        "transformer_order_late": 24
+      }
     },
     "ren_bay_ready": {
       "deadline": "grid_connection",
@@ -1027,7 +1048,7 @@
       "note_economy_1006c_2026_10_06_1202": "Economy 1006c §20.2/§20.8 n.º 8. delay_cod_+1/+2 aplicam-se uma vez, ao COD (pista tests), e já não à REN nem à central. Antes: com a rede do jogador crítica davam 0."
     },
     "npv_rule": "Os atrasos (delay_*) só custam NPV pelos meses que mexerem no cod; um atraso numa peça que não é a última não muda o NPV. PEDIR_ECONOMY: ΔNPV = −0,19 M€ × Δcod (meses).",
-    "example_ourique": "Condições M8 → REN M24; arranque da obra M12 → central M24, subestação e linha M27; cod M29.",
+    "example_ourique": "PIP ~M4 → carta transformador M6. Encomenda: condições M8 → REN M24; arranque obra M12 → central M24, subestação e linha M27; cod M29. Sem encomenda: subestação M36; cod M38.",
     "double_count_review_economy_1006c_2026_10_06_1202": {
       "delay_cod_+1/+2": "antes em grid_connection E epc_mechanical_completion (2 pistas) → agora só no COD.",
       "linha_desvio + delay_linha_curto (servidão → desviar)": "linha_desvio 0 meses; +1 só de delay_linha_curto.",
@@ -1036,7 +1057,8 @@
       "ren_docs_late → delay_ligacao_curto (+1 já) e r-rede-papeis-atraso (50 %, delay_ligacao_+1 +4)": "dois acontecimentos (papéis tarde; a REN perde a vaga). Não é a mesma conta, mas pode somar +5 na REN. GM mantém; Economy confirmar.",
       "obra_start_deferred (track all, months 3)": "não está em nenhum shift_on_effects: o adiamento já atrasa construction_started de verdade. A consola NÃO deve somar também os 3 meses ao COD (senão conta duas vezes) — Grok Bot/Economy.",
       "delay_obra_+1 em «Reunir com a Câmara e arrancar»": "sem deadline_ref na carta → shift_on_effects não corre; só o +1 do shiftMechanicalCompletionForObraDelay (código). Não soma 3.",
-      "grid_phasing_request + delay_ligacao_+1 (parecer → fases)": "a mesma escolha cria grid_connection e empurra-a: +4 sobre a data criada (de propósito: ligação completa mais tarde). Confirmar ordem no código."
+      "grid_phasing_request + delay_ligacao_+1 (parecer → fases)": "a mesma escolha cria grid_connection e empurra-a: +4 sobre a data criada (de propósito: ligação completa mais tarde). Confirmar ordem no código.",
+      "transformer_order_late": "due.variants põe 24 na criação (o plano fica em 15, o COD cobra +9 uma vez). O shift economy.months não corre em cima dessa variante. Economy §20.10: REN +1 e +4 continuam a somar."
     }
   }
 }

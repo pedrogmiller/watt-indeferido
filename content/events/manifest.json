@@ -93,7 +93,8 @@
     "skeletons/mail-prazo-aviso-le-01.json",
     "skeletons/mail-linha-empreiteiro-01.json",
     "skeletons/mail-linha-servidao-01.json",
-    "skeletons/mail-fa-bess-resposta-01.json"
+    "skeletons/mail-fa-bess-resposta-01.json",
+    "skeletons/mail-transformador-encomenda-01.json"
   ],
   "skins": [
     "skins/mail-advogado-dd-01.default.json",
@@ -258,6 +259,7 @@
     "skins/mail-linha-servidao-01.ourique.json",
     "skins/mail-fa-bess-resposta-01.aprovado.json",
     "skins/mail-fa-bess-resposta-01.recusado.json",
+    "skins/mail-transformador-encomenda-01.ourique.json",
     "skins/mail-rede-linha-pronta-01.rede-propria.json",
     "skins/mail-prazo-derrapagem-01.rede-propria.json"
   ],

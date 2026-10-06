@@ -86,7 +86,9 @@
     "act_fine_paid": "pagaste uma multa da inspeção do trabalho",
     "bank_fees_term_sheet": "pagaste as despesas do contrato com o banco",
     "fa_bess_awarded": "o Fundo Ambiental paga parte das baterias",
-    "bess_dev_flag": "as baterias entraram no plano da central"
+    "bess_dev_flag": "as baterias entraram no plano da central",
+    "transformer_order_early": "o sinal do transformador saiu da caixa",
+    "transformer_order_late": "o transformador encomendado tarde atrasa a tua subestação"
   },
   "engine_causes": {
     "cod_shift": "a data de arranque mudou ({{months}} meses)",

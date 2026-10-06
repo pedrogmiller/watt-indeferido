@@ -4261,6 +4261,30 @@
       "mutex_group": "fa_bess_outcome",
       "pick": 2,
       "visibilidade_v01_2026_10_06": true
+    },
+    {
+      "id": "r-transformador-encomenda",
+      "skeleton": "mail-transformador-encomenda-01",
+      "skin": "ourique",
+      "status": "draft_pending_pedro",
+      "when_phase": ["land", "pip", "aia", "licenca_producao"],
+      "heavy": true,
+      "relevant": true,
+      "once": true,
+      "requires_all_effects": ["pip_aprovado"],
+      "requires_any_effects": ["nao_sujeicao", "env_path_nao_sujeito"],
+      "blocks_if_any_effects": ["transformer_order_early", "transformer_order_late", "fid_reached", "construction_started", "sale_full_exit", "trc_caducado"],
+      "after_effect": {
+        "tag": "pip_aprovado",
+        "months": 2,
+        "band": "1-2",
+        "source": "Pedro 2026-10-06: M6 depois do PIP. PIP ~M4 → +2 ≈ M6 (não partilha o M5 com o pedido de LP)."
+      },
+      "odds_mode": "numeric",
+      "odds": { "base": 1.0, "source": "sai sempre no caminho Ourique" },
+      "wait_for_answer_if_delivered": true,
+      "transformador_m6_2026_10_06": true,
+      "note": "Ourique only (requires nao_sujeicao). when_phase includes aia and licenca_producao because pip_aprovado immediately raises the console phase to aia, and the LP can land before the two-month wait ends. Blocks stop the letter at FID and at construction."
     }
   ],
   "phase_bump_proposed": {
@@ -4741,5 +4765,10 @@
       "r-fa-bess-aprovado",
       "r-fa-bess-recusado"
     ]
+  },
+  "transformador_m6_2026_10_06": {
+    "rule": "r-transformador-encomenda",
+    "pedro": "baterias+FA ficam; transformador no M6 depois do PIP; cedência ainda não",
+    "economy": "§20.11 sinal 0,75 (banda 0,50–1,20); late +9 meses sem double-count com due.variants"
   }
 }

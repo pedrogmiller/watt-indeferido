@@ -10592,6 +10592,17 @@
       return Number.isFinite(v) ? v : 0;
     } catch (_) { return 0; }
   }
+  /** Early transformer deposit already paid from development cash. At FID it is capex already inside the 90, so equity need drops by this amount once. */
+  function transformerDepositCredit() {
+    if (typeof mailLoop === 'undefined' || !mailLoop || !mailLoop.tags) return 0;
+    if (!((mailLoop.tags.transformer_order_early | 0) > 0)) return 0;
+    let cash = -0.75;
+    try {
+      const row = (typeof effectEconRow === 'function') ? effectEconRow('transformer_order_early') : null;
+      if (row && typeof row.cash === 'number') cash = row.cash;
+    } catch (_) {}
+    return cash < 0 ? +(-cash).toFixed(3) : 0;
+  }
   function projectEquityFit(lotId) {
     const bid = wonLotBid(lotId);
     let need = (bid != null && typeof fidEquityNeed === 'function') ? fidEquityNeed(lotId, bid) : ((bid != null) ? faixaEquityAtBid(lotId, bid) : null);
@@ -10600,6 +10611,8 @@
     // also holds overequip plans, which have equity and no capex_MEUR, so it is not added here.
     const extra = letterCapexEquityExtra();
     if (extra) need = +(Number(need) + extra).toFixed(2);
+    const deposit = (typeof transformerDepositCredit === 'function') ? transformerDepositCredit() : 0;
+    if (deposit) need = +(Number(need) - deposit).toFixed(2);
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
     if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     const budget = econBudget().equity;
@@ -12295,7 +12308,8 @@
     'r-es-marco-pip-aprovado', 'r-es-marco-acordo-ren', 'r-es-marco-lp-atribuida', 'r-es-marco-decisao-final', 'r-es-marco-inicio-obra',
     'r-es-cod',
     'r-obra-comunidade', 'r-rede-papeis-atraso', 'r-obra-mecanica', 'r-obra-furto-2', 'r-noticia-cortes',
-    'r-epc-atraso', 'r-linha-empreiteiro', 'r-linha-servidao', 'r-fa-bess-aprovado', 'r-fa-bess-recusado'];
+    'r-epc-atraso', 'r-linha-empreiteiro', 'r-linha-servidao', 'r-fa-bess-aprovado', 'r-fa-bess-recusado',
+    'r-transformador-encomenda'];
   /** Groups whose odds are absolute shares of one outcome (Economy 2026-09-30): the n-th rule rolls p / (1 − earlier p). */
   const ABS_ODDS_GROUPS = { dia_outcome: 1, lp_transfer: 1 };
   /** Group key: mutex_group, else the rule id (a rule without group = its own «once» group). */
@@ -12490,6 +12504,8 @@
         if (!SLIP_DEADLINE_IDS[id]) return;
         const d = mailLoop.deadlines && mailLoop.deadlines[id];
         if (!d || (mailLoop.firedDeadlines || {})[id]) return;
+        // A late transformer order already set player_grid to 24 months via due.variants. Do not also add the tag's +9.
+        if (tag === 'transformer_order_late' && d.variantTag === 'transformer_order_late') return;
         if (def.shift_only_if_letter_ref && !letterRefsDeadline(opts.letter, id)) return;
         const spec = map[tag];
         let months = null;
@@ -12526,6 +12542,23 @@
     } catch (_) {}
     return n;
   }
+  /** due.months, or the last matching due.variants entry (early 15 / late 24 on player_grid). */
+  function deadlineDueMonths(def) {
+    const due = (def && def.due) || {};
+    const base = Number(due.months) || 0;
+    let months = base;
+    let variantTag = null;
+    const tags = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags) || {};
+    (due.variants || []).forEach((v) => {
+      const keys = v.if_any_effects || [];
+      const hit = keys.find((k) => (tags[k] | 0) > 0);
+      if (hit && typeof v.months === 'number') {
+        months = v.months;
+        variantTag = hit;
+      }
+    });
+    return { months: months, base: base, variantTag: variantTag };
+  }
   function draftDeadlinesOnEffects(effects) {
     const defs = draftDeadlineDefs();
     if (!defs.length) return;
@@ -12539,13 +12572,17 @@
         if (def.create_on.effect) createFx.push(def.create_on.effect);
         if (has(createFx)) {
           if (!mailLoop.deadlines[id] || def.recreate_if_closed) {
-            const due = (mailLoop.month | 0) + (Number(def.due && def.due.months) || 0);
-            const createdMonth = Math.ceil(due - 1e-9);
+            const spec = deadlineDueMonths(def);
+            const at = (mailLoop.month | 0) + spec.months;
+            const plan = (mailLoop.month | 0) + spec.base;
+            const atMonth = Math.ceil(at - 1e-9);
+            const planMonth = Math.ceil(plan - 1e-9);
             mailLoop.deadlines[id] = {
               label: def.label || DEADLINE_LABEL_PT[id] || 'Prazo',
-              due: due,
-              atMonth: createdMonth,
-              planMonth: createdMonth,
+              due: atMonth,
+              atMonth: atMonth,
+              planMonth: planMonth,
+              variantTag: spec.variantTag,
               ext: 0,
               kind: def.kind || null,
               on_meet: Array.isArray(def.on_meet) ? def.on_meet.slice() : [],
@@ -13139,6 +13176,8 @@
     if (need == null) { try { need = lotEcon(lotId).equityNeed; } catch (_) { need = 0; } }
     const extra = (typeof letterCapexEquityExtra === 'function') ? letterCapexEquityExtra() : 0;
     if (extra) need = +(need + extra).toFixed(2);
+    const deposit = (typeof transformerDepositCredit === 'function') ? transformerDepositCredit() : 0;
+    if (deposit) need = +(need - deposit).toFixed(2);
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
     if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     return { need: need, bid: bid };
@@ -15131,6 +15170,20 @@
     return sum;
   }
 
+  /** The early deposit left the development box. On FID it counts as capex already inside the 90, so the equity reservation is not charged for it again. */
+  function creditTransformerDepositAgainstCapex(effects) {
+    if (!mailLoop || mailLoop._transformerDepositCredited) return;
+    const hit = (effects || []).some((e) => {
+      const k = String(e);
+      return k === 'equity_capex_commit' || k === 'fid_reached';
+    });
+    if (!hit) return;
+    const deposit = transformerDepositCredit();
+    if (!(deposit > 0)) return;
+    mailLoop._transformerDepositCredited = true;
+    state.equityCommitted = +((state.equityCommitted || 0) + deposit).toFixed(3);
+  }
+
   /** Battery economics are the 15 MW row. The letter and the sala place 8 MW, so the row is applied once at 8/15. */
   const BESS_ROW_MW = 15;
   const BESS_SLICE_MW = 8;
@@ -15275,6 +15328,7 @@
     if (!opts.skipEconomics) {
       try { econ = applyEffectEconomics(effects, opts); } catch (err) { console.warn('[WattMail] effect economics', err); }
     }
+    try { creditTransformerDepositAgainstCapex(effects); } catch (err) { console.warn('[WattMail] transformer deposit', err); }
     try { syncCodNpv(); } catch (err) { console.warn('[WattEcon] cod', err); }
     let planRelease = null;
     if (effects.some((e) => String(e) === 'investor_plan_sent')) {
