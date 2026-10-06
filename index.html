@@ -5432,7 +5432,7 @@
           <div class="debt-amount num" style="color:var(--success)" id="finBondFree">2,0 M€</div>
         </div>
         <div class="farmdown-box">
-          <h4>Vender parte do projeto (49%)</h4>
+          <h4>Vender parte do projeto (25%)</h4>
           <p id="farmdownBoxText">Ainda não é possível: primeiro ganha um TRC no leilão.</p>
         </div>
       </div>
@@ -5885,7 +5885,7 @@
         preco: null,
         dscr: '—',
         bonding: null,
-        farmdown: 'Só quando o NPV for positivo',
+        farmdown: '25% · 0,80 M€ no mês 6 a 40 €/MWh',
       },
     },
   ];
@@ -5895,7 +5895,7 @@
       { id: 'sobre', title: '+ Sobreequipar o solar (+20% MWp)', desc: 'Instalar mais painéis do que a potência da ligação, para produzir durante mais horas. Não precisas de mais TRC.', capex: '300 k€ agora · +5,1 M€ de capital próprio', tempo: '7–9 meses', nav: 'a definir' },
       { id: 'bess', title: '+ Juntar baterias', desc: 'Baterias de 15 MW / 30 MWh. Reduzem os cortes de produção impostos pela rede e guardam energia quando está barata para a vender quando está cara.', capex: '400 k€ agora · +2,7 M€ de capital próprio', tempo: '11–13 meses', nav: 'a definir' },
       { id: 'eolica', title: '+ Juntar um parque eólico', desc: 'Parque eólico de 15 MW no mesmo ponto de ligação. Produz em horas diferentes do solar.', capex: '750 k€ agora · +6,9 M€ de capital próprio', tempo: '16–20 meses', nav: 'a definir' },
-      { id: 'farm', title: 'Vender parte do projeto (49%)', desc: 'Vendes 49% do projeto a outro investidor. Só é possível quando o projeto der lucro.', capex: '—', tempo: 'Quando o NPV for positivo', nav: '6,9 M€ de caixa' },
+      { id: 'farm', title: 'Vender parte do projeto (25%)', desc: 'Vendes 25% da empresa do projeto. O título fica no mesmo titular. É a mesma venda das cartas dos investidores.', capex: '—', tempo: 'Antes da licença de produção', nav: '0,80 M€ de caixa no mês 6 a 40 €/MWh · ficas com 75% do NPV' },
     ],
   };
 
@@ -6409,11 +6409,13 @@
     const fdb = document.getElementById('farmdownBoxText');
     if (fdb) {
       const won = (auctionState.wonLots || []).map((id) => nodes.find((n) => n.id === id)).filter(Boolean);
+      const sold = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags
+        && (((mailLoop.tags.stake_sale_25 | 0) > 0) || ((mailLoop.tags.stake_sale_pre_lp | 0) > 0)));
       fdb.textContent = !won.length
         ? 'Ainda não é possível: primeiro ganha um TRC no leilão.'
-        : (won.some((n) => n.van > 0)
-          ? 'Já é possível para os projetos com NPV positivo. Abre a sala do projeto.'
-          : 'Ainda não é possível: ' + won.map((n) => n.name).join(', ') + ' está a perder dinheiro (NPV negativo).');
+        : (sold
+          ? 'Já vendeste 25%. Ficas com 75% do NPV.'
+          : 'Na sala do projeto, ou numa carta dos investidores. No mês 6, com a oferta a 40 €/MWh, entram 0,80 M€ e ficas com 75% do NPV.');
     }
     if (locked || !listEl) return;
     listEl.innerHTML = pipeline.map(p => `
@@ -6494,7 +6496,7 @@
             <div class="dossier-value num">${d.bonding || '—'}</div>
           </div>
           <div class="dossier-cell">
-            <div class="dossier-label">Venda de 49%</div>
+            <div class="dossier-label">Venda de 25%</div>
             <div class="dossier-value">${d.farmdown || '—'}</div>
           </div>
         </div>
@@ -7147,11 +7149,13 @@
       const done = applied.has(a.id);
       const isFarm = a.id === 'farm';
       const blockedFarm = isFarm && !(node.van > 0);
-      const disabled = done || blockedFarm;
+      const soldStake = isFarm && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags
+        && (((mailLoop.tags.stake_sale_25 | 0) > 0) || ((mailLoop.tags.stake_sale_pre_lp | 0) > 0));
+      const disabled = done || blockedFarm || soldStake;
       let btnLabel = actionStartLabel(nodeId, a);
-      if (done) btnLabel = 'Feito';
-      if (blockedFarm && !done) btnLabel = 'Bloqueado: o projeto perde dinheiro';
-      const armed = !done && assetRoomState.armedKey === (nodeId + ':' + a.id);
+      if (done || soldStake) btnLabel = 'Feito';
+      if (blockedFarm && !done && !soldStake) btnLabel = 'Bloqueado: o projeto perde dinheiro';
+      const armed = !done && !soldStake && assetRoomState.armedKey === (nodeId + ':' + a.id);
       const navTxt = upgradeNavText(a);
       return `
         <div class="asset-opt-card${done ? ' done' : ''}" data-asset-opt="${a.id}">
@@ -7712,15 +7716,20 @@
     state.appliedActions[nodeId].add(actionId);
 
     // € das missões: engine_events.mission_* de effects-economy.json (§7). NAV é recalculado (sem ΔNPV até P3).
-    // TODO(Economy P17): farm-down 49 % — preço de venda = PEDIR; mantém o mock antigo até haver valor.
+    // Venda de 25%: stake_sale_pre_lp (0,80 M€ no mês 6 a 40 €/MWh) + o jogador fica com 75% do NPV.
     const MISSION_EVENT = { sobre: 'mission_sobreequipamento', bess: 'mission_bess', eolica: 'mission_eolico' };
     if (MISSION_EVENT[actionId]) {
       try { applyEconRow(econEngineRow(MISSION_EVENT[actionId]), nodeId); } catch (err) { console.warn('[WattEcon] mission', err); }
     }
     if (actionId === 'farm') {
-      state.caixa += 6.9;
-      state.bondingFree += 1.5;
-      bumpVan(node, -0.8);
+      const tg = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags) || {};
+      if (!((tg.stake_sale_25 | 0) > 0) && !((tg.stake_sale_pre_lp | 0) > 0)) {
+        try { applyMailEffects(['stake_sale_pre_lp', 'stake_sale_25']); } catch (err) { console.warn('[WattEcon] stake sale', err); }
+        if (node && typeof node.van === 'number') {
+          node.van = +(node.van * 0.75).toFixed(2);
+          try { recomputeNav(); } catch (_) {}
+        }
+      }
     } else if (actionId === 'sobre') {
       // more panels behind the same connection: the connection mix and the free power do not change
       // step of +20 % of the installed MWp; no MWp cap (the limit is on the AC injection)
@@ -9340,7 +9349,7 @@
     const m = currentMandate();
     const body = document.getElementById('mandateLetterBody');
     if (!body) return;
-    // Texto §3 (LANGUAGE-AUDIT.md), grafia AO90. Promoção: ver MANDATE_PROMOTE_EFFECTS.
+    // Texto §3 (LANGUAGE-AUDIT.md), grafia AO90. O orçamento só muda no fecho do ciclo.
     let txt;
     const T = ECON_TIER[m.id] || ECON_TIER.boutique;
     const f = fmtMoneyAbs;
@@ -9361,7 +9370,7 @@
         'Começas com ' + f(T.seed) + ' em caixa. Para desenvolveres um projeto até decidires construir, prometemos até ' + f(T.carMandate) + '. Para a obra, pomos até ' + f(T.equity) + ' de capital próprio; o resto vem do banco. Tens ainda uma linha de garantias bancárias de ' + f(T.bonding) + ' para a caução da rede.\n\n' +
         'Isto chega para um só projeto, por isso só podes ficar com um lote neste leilão. Começa por Ourique: precisa de cerca de ' + fmtMoney2(o.carNeed) + ' para desenvolver. Os lotes a cinzento precisam de mais do que tens para desenvolver.\n\n' +
         (o.equityNeed > T.equity + 1e-9 ? ('Para construir Ourique, a um bom preço, são precisos cerca de ' + f(o.equityNeed) + ' de capital próprio, mais do que prometemos. Se ganhares, falamos: podes pedir-nos mais, ou procurar outras soluções.\n\n') : '') +
-        'Quando o projeto de Ourique avançar — por exemplo, quando fizeres a opção sobre o terreno — os investidores aumentam o teu orçamento e podes ficar com mais um lote, incluindo lotes mais caros.\n\n' +
+        'Este orçamento fica igual até ao fecho do ciclo. Não sobe quando fechas o terreno nem quando entregas o PIP.\n\n' +
         'Logo depois de ganhares o lote, escrevemos-te para decidirmos contigo quanto dinheiro pomos na caixa: mais ' + f(T.m0.S) + ', ' + f(T.m0.M) + ' ou ' + f(T.m0.L) + '.';
     }
     body.textContent = txt;
@@ -9462,35 +9471,6 @@
     } catch (_) {}
   }
 
-  /** Progression stub: play well → raise purse/tier → unlock greys (market "levels"). */
-  function maybePromoteMandate(reason) {
-    const cur = (mandateState && mandateState.tier) || 'boutique';
-    let next = null;
-    if (cur === 'boutique') next = 'mid';
-    else if (cur === 'mid') next = null; // mid → infra later optional
-    if (!next || !MANDATE_TIERS[next]) return false;
-    mandateState.tier = next;
-    try {
-      // € on promotion (§6.1/§6.2): new tier mandate + equity; bonding line grows by the difference; cash unchanged.
-      const from = ECON_TIER[cur] || ECON_TIER.boutique;
-      const to = ECON_TIER[next] || from;
-      const ec = econState();
-      // Keep the month-0 answer. Clearing it made the cash warning think the investors had never replied.
-      ec.tier = next;
-      state.bondingTotal = +(state.bondingTotal + (to.bonding - from.bonding)).toFixed(3);
-      state.bondingFree = +(state.bondingFree + (to.bonding - from.bonding)).toFixed(3);
-      try { updateHeaderMetrics(true); } catch (_) {}
-      if (typeof showToast === 'function') {
-        showToast('Os investidores aumentaram o teu orçamento. No próximo leilão podes ficar com mais um lote.');
-      }
-    } catch (_) {}
-    try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
-    try { if (typeof renderAuctionLots === 'function') renderAuctionLots(); } catch (_) {}
-    try { if (typeof scheduleSave === 'function') scheduleSave('mandate-promote'); } catch (_) {}
-    try { console.info('[WattMandate] promote', cur, '→', next, reason || ''); } catch (_) {}
-    return true;
-  }
-
   window.WattEcon = {
     tiers: ECON_TIER, lots: LOT_ECONOMY, lot: lotEcon, budget: econBudget, state: econState,
     nav: recomputeNav, fmt: fmtEur, burn: lotBurnPerMonth,
@@ -9503,8 +9483,7 @@
     state: function () { return mandateState; },
     current: currentMandate,
     fits: lotFitsMandate,
-    renderHud: renderMandateHud,
-    maybePromote: maybePromoteMandate
+    renderHud: renderMandateHud
   };
 
 
@@ -10245,11 +10224,21 @@
     const l = (typeof AUCTION_WAVES !== 'undefined') ? [].concat(...AUCTION_WAVES).find((x) => x.id === lotId) : null;
     return l ? rivalBest(l) : null;
   }
+  /** Equity already posted by letter capex (capex_MEUR × the row's equity share). */
+  function letterCapexEquityExtra() {
+    try {
+      const v = Number(econState().letterCapexEquity) || 0;
+      return Number.isFinite(v) ? v : 0;
+    } catch (_) { return 0; }
+  }
   function projectEquityFit(lotId) {
     const bid = wonLotBid(lotId);
     let need = (bid != null && typeof fidEquityNeed === 'function') ? fidEquityNeed(lotId, bid) : ((bid != null) ? faixaEquityAtBid(lotId, bid) : null);
     if (need == null) need = lotEcon(lotId).equityNeed;
-    need = +(Number(need) + Math.max(0, Number(state.equityCommitted) || 0)).toFixed(2);
+    // Letter capex (rows with capex_MEUR) raises the FID need. state.equityCommitted
+    // also holds overequip plans, which have equity and no capex_MEUR, so it is not added here.
+    const extra = letterCapexEquityExtra();
+    if (extra) need = +(Number(need) + extra).toFixed(2);
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
     if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     const budget = econBudget().equity;
@@ -12447,7 +12436,7 @@
   /* ── Endings & stakes v0.1 ──
    * Cash ladder watches the CAR mandate (development budget), never the 45 M€ equity purse.
    * Purse: content/economy/purse_params.json → boutique_r1_equity_MEUR.
-   * TODO(hook 10, pending the owner): do not move MANDATE_PROMOTE_EFFECTS to cycle close in this build.
+   * The equity purse and the development budget stay on the opening mandate until the cycle closes.
    */
   const CASH_PRESSURE_RATIO = 0.25;
   /** Game-over floor as a fraction of the CAR mandate. −25% now (−1.625 M€ at 6.5). −10% (−0.65 M€) is under discussion: change only this number. */
@@ -12496,6 +12485,8 @@
     const bid = (typeof wonLotBid === 'function') ? wonLotBid(lotId) : null;
     let need = fidEquityNeed(lotId, bid);
     if (need == null) { try { need = lotEcon(lotId).equityNeed; } catch (_) { need = 0; } }
+    const extra = (typeof letterCapexEquityExtra === 'function') ? letterCapexEquityExtra() : 0;
+    if (extra) need = +(need + extra).toFixed(2);
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.partnerStake) || 0;
     if (stake > 0) need = +(need * (1 - stake)).toFixed(2);
     return { need: need, bid: bid };
@@ -12713,7 +12704,7 @@
     if (s <= -1) return 'fraca';
     return 'neutra';
   }
-  /** Display only. The budget itself still changes with the old milestone promotion until hook 10. */
+  /** Display only. The budget itself does not move until the cycle closes. */
   function mandateStepWord() {
     const t = (mailLoop && mailLoop.tags) || {};
     if ((t.mandate_review_down | 0) > 0 || reputationScore() < 0) return 'desce';
@@ -12757,6 +12748,13 @@
       if (n && typeof n.van === 'number') npvNow = n.van;
     } catch (_) {}
     if (npvNow == null) npvNow = npvAuction;
+    // §16 7c: IRR tracks NPV agora. share undoes the partner and rescue haircuts already in node.van.
+    if (npvNow != null) {
+      const partner = (mailLoop && Number(mailLoop.partnerStake)) || 0;
+      const dilution = (mailLoop && Number(mailLoop.dilution)) || 0;
+      const share = (1 - partner) * (1 - dilution);
+      irr = 8 + 0.16 * (npvNow / (share > 1e-6 ? share : 1));
+    }
     return { npvAuction: npvAuction, npvNow: npvNow, irr: irr };
   }
   function stakesPlaceholderCtx(extra) {
@@ -13615,19 +13613,8 @@
       mailLoop.projectPhase = next;
     }
     const raised = phaseIndex(mailLoop.projectPhase) > ci;
-    // Mandate promotion is NOT tied to phase raises (land talk / Câmara meeting raise phase
-    // but are not completed milestones). See MANDATE_PROMOTE_EFFECTS.
     return raised;
   }
-
-  /** Mandate promotion only on completed milestones: land secured (option signed) or PIP submitted.
-   *  NOT: land_talk_+1 (negotiating), risk_camara_-1 (meeting Câmara), dd_started (DD kick-off).
-   *  TODO(endings hook 10, pending the owner): move this promotion to cycle_closed + reputation.
-   *  Milestones already grant reputation_+1; do not remove MANDATE_PROMOTE_EFFECTS in this build. */
-  const MANDATE_PROMOTE_EFFECTS = {
-    'land_option_open': 'land_secured',
-    'pip_request_submitted': 'pip_submitted'
-  };
 
   function maybeRaisePhaseFromEffects(effects) {
     if (!Array.isArray(effects) || !effects.length) return false;
@@ -13650,14 +13637,6 @@
         }
         mailLoop.tags.env_gate_ok = 1;
       }
-    }
-    const promoteKey = effects.map(String).find((e) => MANDATE_PROMOTE_EFFECTS[e]);
-    if (promoteKey) {
-      try {
-        if (typeof maybePromoteMandate === 'function') {
-          maybePromoteMandate('milestone:' + MANDATE_PROMOTE_EFFECTS[promoteKey] + ' (' + promoteKey + ')');
-        }
-      } catch (_) {}
     }
     // Full sale before the LP: pending until DGEG registers the new TRC holder (deadline trc_transfer_averbamento, ~2 months).
     if (effects.some((e) => e === 'trc_transfer_averbamento_requested')) {
@@ -14192,16 +14171,63 @@
     return { cash: cash, band: band };
   }
 
+  const LINE_CAPEX_TAGS = { 'capex_linha_+1': 1, 'capex_linha_+2': 1, 'servidoes_linha_+1': 1, 'servidoes_linha_+2': 1 };
+  /** km of the parcel being optioned on this letter, or null. */
+  function letterOptionKm(effects, opts) {
+    if (!(effects || []).some((e) => String(e) === 'land_option_open')) return null;
+    const raw = opts && opts.letter && opts.letter.params && opts.letter.params.linha_km;
+    const km = Number(raw);
+    return (km > 0 && isFinite(km)) ? km : null;
+  }
+  /** A later, shorter option replaces the line: give back the long-line NPV and equity already posted. */
+  function reverseStoredLineCapex(lotId, sum, perTag) {
+    const ec = econState();
+    const rec = ec.lineCapex;
+    if (!rec || !rec.tags) return;
+    Object.keys(rec.tags).forEach((tag) => {
+      const prev = rec.tags[tag];
+      if (!prev) return;
+      const neg = {};
+      ECON_FIELDS.forEach((f) => {
+        if (typeof prev[f] === 'number' && prev[f]) neg[f] = -prev[f];
+      });
+      const d = applyEconRow(neg, lotId);
+      if (typeof prev.equity === 'number' && prev.equity) {
+        ec.letterCapexEquity = +((ec.letterCapexEquity || 0) - prev.equity).toFixed(3);
+      }
+      perTag['revert_' + tag] = d;
+      Object.keys(sum).forEach((k) => { if (typeof d[k] === 'number') sum[k] = +(sum[k] + d[k]).toFixed(3); });
+    });
+    ec.lineCapex = null;
+  }
+
   function applyEffectEconomics(effects, opts) {
     opts = opts || {};
     const sum = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
     const perTag = {};
     const notes = {};
     const lotId = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.seId) || ECON_REF_LOT;
+    const ecLine = econState();
+    const optionKm = letterOptionKm(effects, opts);
+    let skipLine = false;
+    if (optionKm != null && ecLine.lineKm != null) {
+      if (optionKm < ecLine.lineKm - 1e-9) reverseStoredLineCapex(lotId, sum, perTag);
+      else skipLine = true;
+    }
     (effects || []).forEach((ef) => {
       const tag = String(ef);
       if (typeof STAKES_SKIP_ECON !== 'undefined' && STAKES_SKIP_ECON[tag]) return;
       if (/^car_band_[sml]$/.test(tag)) return; // M0: resolveM0Ask
+      // The project line is the shortest optioned parcel. A longer option does not add line capex.
+      if (LINE_CAPEX_TAGS[tag] && skipLine) {
+        notes[tag] = 'parcela mais curta já opcionada';
+        return;
+      }
+      // capex_rede_flag is one grid agreement. Tags are counted before economics, so a repeat is already > 1.
+      if (tag === 'capex_rede_flag' && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags && (mailLoop.tags.capex_rede_flag | 0) > 1) {
+        notes[tag] = 'já contado';
+        return;
+      }
       const row = effectEconRow(tag);
       if (!row) return;
       let d;
@@ -14252,9 +14278,20 @@
         }
       }
       if (!d) return;
+      if (row && typeof row.capex_MEUR === 'number' && typeof d.equity === 'number' && d.equity) {
+        const ec = econState();
+        ec.letterCapexEquity = +((ec.letterCapexEquity || 0) + d.equity).toFixed(3);
+      }
+      if (LINE_CAPEX_TAGS[tag]) {
+        const ec = econState();
+        ec.lineCapex = ec.lineCapex || { km: optionKm, tags: {} };
+        ec.lineCapex.km = optionKm;
+        ec.lineCapex.tags[tag] = d;
+      }
       perTag[tag] = d;
       Object.keys(sum).forEach((k) => { if (typeof d[k] === 'number') sum[k] = +(sum[k] + d[k]).toFixed(3); });
     });
+    if (optionKm != null) ecLine.lineKm = ecLine.lineKm == null ? optionKm : Math.min(ecLine.lineKm, optionKm);
     recomputeNav();
     sum.perTag = perTag;
     sum.notes = notes;

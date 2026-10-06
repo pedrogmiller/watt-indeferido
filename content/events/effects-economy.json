@@ -37,9 +37,9 @@
    },
    "g": "gearing do motor de leilão à oferta ganha (dívida = min(80 % Capex, o que a tarifa paga a DSCR 1,25)): Ourique 0,54 a 40 €/MWh, 0,51 a 38 (HIPÓTESE / PEDIR P9). A regra antiga g 0,70 deixou de ser usada no Capex base.",
    "equity_need": {
-    "Ourique": 41.4,
-    "Ferreira": 62.7,
-    "Estremoz": 83.4
+    "Ourique": 41.0,
+    "Ferreira": 62.5,
+    "Estremoz": 84.0
    },
    "U": "U = 0.15*k (Ourique 0.15 M€; k = 1.00 Ourique / 1.25 Ferreira / 1.76 Estremoz)"
   },
@@ -182,16 +182,16 @@
   },
   "burn_obra": {
    "cash": 0.0,
-   "debt": 3.04,
+   "debt": 3.06,
    "nav": null,
    "bonding": null,
    "car": null,
-   "equity": -2.59,
+   "equity": -2.56,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §3.2; estudo §1.1 (obra 16 meses, Sobreira de Baixo REAL)",
-   "note": "Pós-FID: CAR pára (car_burn_stop). Por mês: purse_equity −equity/16 e dívida +Capex×g/16. Capex do motor de leilão TRANCADO (tools/leilao_faixa_npv.py: 580 €/kWp + rede + 5 %): Ourique 90.0 (antes §6 103,0); equity = Capex × (1 − gearing do motor à oferta; dívida por DSCR 1,25, máx. 80 %): Ourique a 40 €/MWh g 0.54 → equity 41.4, dívida 48.6 → equity −2.59/mês, dívida +3.04/mês (antes @g 0,70 com 103: −1,93 / +4,51). Só arranca com equity_full.",
+   "note": "Pós-FID: CAR pára (car_burn_stop). Por mês: purse_equity −equity/16 e dívida +Capex×g/16. Capex do motor de leilão TRANCADO (tools/leilao_faixa_npv.py: 580 €/kWp + rede + 5 %): Ourique 90.0 (antes §6 103,0); equity = Capex × (1 − gearing do motor à oferta; dívida por DSCR 1,25, máx. 80 %): Ourique a 40 €/MWh g 0.544 → equity 41.0, dívida 49.0 → equity −2.56/mês, dívida +3.06/mês (antes @g 0,70 com 103: −1,93 / +4,51). Só arranca com equity_full.",
    "formula": "equity/mês: -CAPEX*(1-g_bid)/16 ; debt/mês: +CAPEX*g_bid/16 (g_bid = leilao_faixa_npv.json gearing_by_bid[oferta])",
    "phase": "obra"
   },
@@ -248,7 +248,7 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "euro-fields-console.md §6 / §1.4 / gate6 §B.3",
-   "note": "15 MW, Capex Δ 18–29 (~23). Kickoff 0,3–1,2. Na FID/obra (não no leilão): Ourique 41.4 + 6,9 = 48.3 > purse boutique 45 (2026-10-03b; era 37,5) → precisa de D9 (sócio garantido, empréstimo 20 anos, investidores +5). (+6,9 = convenção 0,3 × ΔCapex; motor ≈ +23, PEDIR P43.)"
+   "note": "15 MW, Capex Δ 18–29 (~23). Kickoff 0,3–1,2. Na FID/obra (não no leilão): Ourique 41.0 + 6,9 = 47.9 > purse boutique 45 (2026-10-03b; era 37,5) → precisa de D9 (sócio garantido, empréstimo 20 anos, investidores +5). (+6,9 = convenção 0,3 × ΔCapex; motor ≈ +23, PEDIR P43.)"
   },
   "m0_ask_table": {
    "cash": null,
@@ -577,9 +577,9 @@
    "equity": null,
    "months": null,
    "prob": -0.1,
-   "label": "PEDIR",
+   "label": "HIPÓTESE · REAL (regras municipais)",
    "origin": "skeleton mail-camara-pip-pedido-01",
-   "note": "Compromisso local (freguesia/concelho). € = PEDIR; HIPÓTESE placeholder −U e −0,10 em P(PIP recusado).",
+   "note": "Proposta de envolvimento local junto ao PIP: sinal/peças −U e −0,10 em P(PIP recusado). SEM ΔNPV (não é a causa do bug PR #7). REAL: DL 30-A/2022 art. 4.º (centrais ≥ 20 MW instruem o controlo prévio com proposta de envolvimento das comunidades: pastoreio, emprego local, energia para comunidades, coinvestimento; sem valor fixo) · art. 4.º-B (aditado pelo DL 72/2022): 13 500 €/MVA único ao município, PAGO PELO FUNDO AMBIENTAL (não pelo promotor; Ourique 99 MVA → 1,34 M€ para a Câmara) · DL 15/2022 art. 49.º: > 50 MVA cede UPAC de 0,3 % da potência de ligação (Ourique ~0,3 MW, ~0,25–0,30 M€, HIPÓTESE, dentro da contingência de 5 % do Capex); 1–50 MVA: 1 500 €/MVA. Não há regra de '1,5 % da receita' para solar (verificado 2026-10-06). PEDIR: pacote voluntário extra (ex. 0,5 k€/MWp/ano ≈ −0,6 de NPV) se o Pedro quiser que custe.",
    "formula": "cash: -U"
   },
   "delay_land_+1": {
@@ -866,7 +866,7 @@
   "delay_cod_+1": {
    "cash": null,
    "debt": null,
-   "nav": -0.75,
+   "nav": -0.57,
    "bonding": null,
    "car": null,
    "equity": null,
@@ -874,13 +874,13 @@
    "prob": null,
    "label": "HIPÓTESE / PEDIR",
    "origin": "gate5 §7.3",
-   "note": "Pós-FID: sem burn CAR. Custo = NPV retimado + juros intercalares (IDC, PEDIR P9). ΔNPV Ourique ≈ −(0,5…1,0)×m/3 M€ HIPÓTESE (receita adiada a 8 %).",
-   "formula": "nav: -0.25*3*k (ordem de grandeza)"
+   "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
+   "formula": "nav: -0.19*3*k"
   },
   "delay_cod_+2": {
    "cash": null,
    "debt": null,
-   "nav": -1.5,
+   "nav": -1.14,
    "bonding": null,
    "car": null,
    "equity": null,
@@ -888,13 +888,13 @@
    "prob": null,
    "label": "HIPÓTESE / PEDIR",
    "origin": "gate5 §7.3",
-   "note": "Pós-FID: sem burn CAR. Custo = NPV retimado + juros intercalares (IDC, PEDIR P9). ΔNPV Ourique ≈ −(0,5…1,0)×m/3 M€ HIPÓTESE (receita adiada a 8 %).",
-   "formula": "nav: -0.25*6*k (ordem de grandeza)"
+   "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 6 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -1.5.",
+   "formula": "nav: -0.19*6*k"
   },
   "delay_obra_+1": {
    "cash": null,
    "debt": null,
-   "nav": -0.75,
+   "nav": -0.57,
    "bonding": null,
    "car": null,
    "equity": null,
@@ -902,13 +902,13 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §7",
-   "note": "Atraso de obra 2–4 meses. IDC PEDIR.",
-   "formula": "nav: -0.25*3*k"
+   "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
+   "formula": "nav: -0.19*3*k"
   },
   "obra_start_deferred": {
    "cash": null,
    "debt": null,
-   "nav": -0.75,
+   "nav": -0.57,
    "bonding": null,
    "car": null,
    "equity": null,
@@ -916,13 +916,13 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §7",
-   "note": "Adiar início da obra.",
-   "formula": "nav: -0.25*3*k"
+   "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
+   "formula": "nav: -0.19*3*k"
   },
   "delay_ligacao_+1": {
    "cash": null,
    "debt": null,
-   "nav": -0.75,
+   "nav": -0.57,
    "bonding": null,
    "car": null,
    "equity": null,
@@ -930,7 +930,8 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 delay_rede +1…+6",
-   "note": "Ligação atrasa; se pré-FID aplica burn da fase."
+   "note": "Atraso que empurra o COD: ΔNPV −0,19/mês × 3 (motor build_+3m −0,57 a 40 €/MWh). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.75.",
+   "formula": "nav: -0.19*3*k"
   },
   "grid_slip_operator": {
    "cash": null,
@@ -1505,7 +1506,7 @@
   "env_mitigation_flag": {
    "cash": null,
    "debt": null,
-   "nav": -1.5,
+   "nav": -1.08,
    "bonding": null,
    "car": null,
    "equity": 0.45,
@@ -1513,13 +1514,14 @@
    "prob": null,
    "label": "PEDIR",
    "origin": "skeleton apa-dia",
-   "note": "Medidas DIA → Capex +1,5 (0,5–3 HIPÓTESE) e Opex PEDIR.",
-   "formula": "equity: +0.3*1.5*k"
+   "note": "ΔNPV = −0,72 × ΔCapex (1.5 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -1.5.",
+   "formula": "equity: +0.3*1.5*k ; nav: -0.72*1.5*k",
+   "capex_MEUR": 1.5
   },
   "dia_conditions_accepted": {
    "cash": null,
    "debt": null,
-   "nav": -1.5,
+   "nav": -1.08,
    "bonding": null,
    "car": null,
    "equity": 0.45,
@@ -1527,7 +1529,9 @@
    "prob": null,
    "label": "PEDIR",
    "origin": "skeleton apa-dia",
-   "note": "= env_mitigation_flag (não somar duas vezes se vierem juntas)."
+   "note": "ΔNPV = −0,72 × ΔCapex (1.5 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -1.5.",
+   "capex_MEUR": 1.5,
+   "formula": "equity: +0.3*1.5*k ; nav: -0.72*1.5*k (não somar com env_mitigation_flag)"
   },
   "design_trim_threshold": {
    "cash": null,
@@ -1572,7 +1576,7 @@
   "underground_cable": {
    "cash": null,
    "debt": null,
-   "nav": -4.0,
+   "nav": -2.88,
    "bonding": null,
    "car": null,
    "equity": 1.2,
@@ -1580,22 +1584,24 @@
    "prob": null,
    "label": "REAL (unitário) / HIPÓTESE (km)",
    "origin": "Gate 4 §6.1–6.2 ACER UIC 2023",
-   "note": "Tag genérica. Enterrar 150 kV 2c: 0,85–3,06 M€/km vs aéreo 0,22–0,39 → Δ ~0,6–2,7 M€/km × 3 km = +2…+8, display +4 Capex. Na carta mail-camara-linha-enterrada-01 vem junto com line_undergrounded_km_short/_long: aí vale 0 (o km da carta manda; não somar).",
-   "formula": "equity: +0.3*ΔCapex ; ΔCapex = km*(0.6…2.7) ; 0 se vier com line_undergrounded_km_*"
+   "note": "ΔNPV = −0,72 × ΔCapex (4.0 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -4.0.",
+   "formula": "equity: +0.3*ΔCapex ; nav: -0.72*ΔCapex ; ΔCapex = km*(0.6…2.7) ; 0 se vier com line_undergrounded_km_*",
+   "capex_MEUR": 4.0
   },
   "capex_rede_flag": {
    "cash": null,
    "debt": null,
-   "nav": -5.0,
+   "nav": -0.72,
    "bonding": null,
    "car": null,
-   "equity": 1.5,
+   "equity": 0.3,
    "months": null,
    "prob": null,
-   "label": "REAL (unitário) / PEDIR",
+   "label": "HIPÓTESE · REAL (componentes ACER já no Capex)",
    "origin": "§3.2 (trafo 400/110 3,6–4,7 + baía 1,2–5,2, ACER)",
-   "note": "Reforço de rede a cargo do promotor: Capex +5 (2–10). Atenção GM: a escolha accept_underground (mail-camara-linha-enterrada-01) traz esta tag, mas enterrar a linha não é reforço de rede → somaria +5 M€ a mais. Propomos tirá-la dessa escolha (ou o motor ignora-a quando vem com line_undergrounded).",
-   "formula": "equity: +0.3*5"
+   "note": "Acordo com a REN num TRC de leilão: a SE própria 30/400 (5–10) e o painel na SE REN (1,15–5,24, ACER) JÁ estão no Capex 90 (grid_centre 16,1, a meio da banda). Fica só o âmbito que a REN pede acima do meio da banda (protecções, telecomando, contagem): +1,0 M€ Capex (0,5–2,0) → ΔNPV −0,72, equity +0,3. Reforço de rede a sério (rede congestionada) já entra no Capex do lote no leilão (Ferreira +7,4). Conta UMA vez por projecto (consola: 2.ª carta REN não soma). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -5.0, equity 1.5.",
+   "formula": "capex: +1.0 ; equity: +0.3*capex ; nav: -0.72*capex (uma vez por projecto)",
+   "capex_MEUR": 1.0
   },
   "injection_cap_restricted": {
    "cash": null,
@@ -1881,7 +1887,7 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §4.1; tools/leilao_faixa_npv.json",
-   "note": "Gearing do motor (dívida por DSCR 1,25, máx. 80 %). equity = Capex × (1 − gearing do motor à oferta; dívida por DSCR 1,25, máx. 80 %): Ourique a 40 €/MWh g 0.54 → equity 41.4, dívida 48.6. A 38 €/MWh: g 0.51 → equity 44.1. Antes: g 0,70 → 30,9 / 72,1 com Capex 103.",
+   "note": "Gearing do motor (dívida por DSCR 1,25, máx. 80 %). equity = Capex × (1 − gearing do motor à oferta; dívida por DSCR 1,25, máx. 80 %): Ourique a 40 €/MWh g 0.544 → equity 41.0, dívida 49.0. A 38 €/MWh: g 0.51 → equity 44.4. Antes: g 0,70 → 30,9 / 72,1 com Capex 103.",
    "formula": "equity = CAPEX*(1-g_bid)"
   },
   "gearing_push": {
@@ -1895,7 +1901,7 @@
    "prob": 0.4,
    "label": "HIPÓTESE / PEDIR",
    "origin": "gate5 §4.1; P9",
-   "note": "Banco empresta +10 pp do Capex (no motor = aceitar DSCR mais baixo ou prazo mais longo, porque a dívida está presa ao DSCR): equity need −9.0, dívida +9.0 (na FID). Ourique a 40: 41.4 → 32.4 (≤ purse 45 ✓). Banco aceita P=0,40 HIPÓTESE (−0,20 se NPV<0). Antes −10,3 com Capex 103. ATENÇÃO 2026-10-03: no motor +10 pp = DSCR 1.06 (40) — irrealista (PEDIR P54).",
+   "note": "Banco empresta +10 pp do Capex (no motor = aceitar DSCR mais baixo ou prazo mais longo, porque a dívida está presa ao DSCR): equity need −9.0, dívida +9.0 (na FID). Ourique a 40: 41.0 → 32.0 (≤ purse 45 ✓). Banco aceita P=0,40 HIPÓTESE (−0,20 se NPV<0). Antes −10,3 com Capex 103. ATENÇÃO 2026-10-03: no motor +10 pp = DSCR 1.06 (40) — irrealista (PEDIR P54).",
    "formula": "equity: -0.10*CAPEX ; debt: +0.10*CAPEX"
   },
   "term_sheet_signed": {
@@ -1910,7 +1916,7 @@
    "label": "HIPÓTESE",
    "origin": "gate5 §4",
    "note": "Dívida disponível (não sacada) = CAPEX×g do motor. Sem cash.",
-   "formula": "debt_available: +CAPEX*g_bid (48.6 Ourique a 40 €/MWh)"
+   "formula": "debt_available: +CAPEX*g_bid (49.0 Ourique a 40 €/MWh)"
   },
   "financial_close": {
    "cash": null,
@@ -1923,7 +1929,7 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §4",
-   "note": "Linha fechada; saques mensais em burn_obra (+3.04/mês Ourique).",
+   "note": "Linha fechada; saques mensais em burn_obra (+3.06/mês Ourique).",
    "formula": "debt/mês: +CAPEX*g_bid/16"
   },
   "fid_reached": {
@@ -1945,18 +1951,18 @@
    "nav": null,
    "bonding": null,
    "car": null,
-   "equity": -41.4,
+   "equity": -41.0,
    "months": null,
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "gate5 §3.2; lp-cod-rules computed_tags.equity_full",
-   "note": "purse_equity reservada = equity need (Ourique −41.4 a 40 €/MWh; antes −30,9), sacada em 16 meses. Com equity_fit_ok dá equity_full → a obra pode arrancar.",
+   "note": "purse_equity reservada = equity need (Ourique −41.0 a 40 €/MWh; antes −30,9), sacada em 16 meses. Com equity_fit_ok dá equity_full → a obra pode arrancar.",
    "formula": "purse_equity: -CAPEX*(1-g_bid)"
   },
   "equity_capex_overrun_flag": {
    "cash": null,
    "debt": null,
-   "nav": -4.5,
+   "nav": -3.24,
    "bonding": null,
    "car": null,
    "equity": 4.5,
@@ -1964,8 +1970,9 @@
    "prob": null,
    "label": "HIPÓTESE",
    "origin": "Gate 4 contingência 5–10 %",
-   "note": "Derrapagem +5 % Capex, 100 % equity: +4.5 Ourique (antes 5,2 com 103).",
-   "formula": "equity: +0.05*CAPEX"
+   "note": "ΔNPV = −0,72 × ΔCapex (4.5 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -4.5.",
+   "formula": "equity: +0.05*CAPEX ; nav: -0.72*0.05*CAPEX",
+   "capex_MEUR": 4.5
   },
   "equity_capex_need_stop": {
    "cash": null,
@@ -1983,21 +1990,22 @@
   "epc_turnkey": {
    "cash": null,
    "debt": null,
-   "nav": -4.5,
+   "nav": -1.3,
    "bonding": null,
    "car": null,
-   "equity": 1.35,
+   "equity": 0.54,
    "months": null,
    "prob": -0.1,
    "label": "HIPÓTESE / PEDIR",
    "origin": "skeleton epc-propostas",
-   "note": "Preço fechado: Capex +5 % (+4.5), −0,10 em P(atraso obra).",
-   "formula": "equity: +0.3*0.05*CAPEX"
+   "note": "Preço fechado (EPC turnkey): o Capex 90 já tem 5 % de contingência; o empreiteiro fica com esse risco e cobra o prémio de embrulho. Líquido +2 % (+1.8 M€; banda 1–4 %) → ΔNPV -1.3. −0,10 em P(atraso obra) mantém-se. Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -4.5, equity 1.35.",
+   "formula": "capex: +0.02*CAPEX ; equity: +0.3*0.02*CAPEX ; nav: -0.72*0.02*CAPEX",
+   "capex_MEUR": 1.8
   },
   "epc_multi": {
    "cash": null,
    "debt": null,
-   "nav": 2.7,
+   "nav": 1.94,
    "bonding": null,
    "car": null,
    "equity": -0.81,
@@ -2005,8 +2013,9 @@
    "prob": 0.15,
    "label": "HIPÓTESE / PEDIR",
    "origin": "skeleton epc-propostas",
-   "note": "Multi-contrato: Capex −3 % (−2.7), +0,15 em P(atraso obra).",
-   "formula": "equity: -0.3*0.03*CAPEX"
+   "note": "ΔNPV = −0,72 × ΔCapex (-2.7 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav 2.7.",
+   "formula": "equity: -0.3*0.03*CAPEX ; nav: +0.72*0.03*CAPEX",
+   "capex_MEUR": -2.7
   },
   "epc_retender": {
    "cash": -0.15,
@@ -2131,44 +2140,44 @@
   "overequip_plan_small": {
    "cash": null,
    "debt": null,
-   "nav": 8.8,
+   "nav": 1.6,
    "bonding": null,
    "car": null,
    "equity": 3.15,
    "months": null,
    "prob": null,
-   "label": "HIPÓTESE / PEDIR (custo AC da subida de injeção)",
+   "label": "HIPÓTESE · REAL (art. 64.º/2; captura 2025) / PEDIR (subida de injeção P38)",
    "origin": "skeleton mail-consultor-sobreequipamento-01; tools/dcac_optimo.py plans_card",
-   "note": "Plano small: +20 MWp → 140 MWp, DC/AC 1.18 vs 118,8 MVA. Energia ano 1 +35473 MWh vs base; corte 0.41 % (NREL tecto 0.54 %). Capex só DC 9.0–12.0 (centro 10.5) M€. Área de módulos 60–67 ha (AIA ≥ 100 ha: não). ΔNPV (bid 38, extra a mercado, custo AC 0 = tecto) +8.8 M€; se a energia extra tivesse tarifa +4.3. Só com 99 MVA (sem subir injeção): +4.8.",
-   "formula": "equity: +0.3*10.5 ; nav: ΔNPV do plano (bid 38; ver dcac_optimo.json plans_card.small)"
+   "note": "ΔNPV do plano +20 MWp na MESMA ligação de 99 MVA (DC/AC 1.41), energia extra a 36 €/MWh 2026 +2 %/ano (captura solar 2025 REAL ≈ 35,7: gate3-curvas-mercado.md §2.2/§5/§6). Antes: tecto com injeção 118,8 MVA a custo AC 0 e 45 €/MWh. Alternativas (M€): 118,8@45 +8.8 · 118,8@36 +4.8 · 99@45 +4.8. Igual a 38 e 40 €/MWh (energia extra é toda a mercado). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav 8.8.",
+   "formula": "equity: +0.3*10.5 ; nav: ΔNPV dcac_optimo.NPV(bid, 120+20 MWp, 99 MVA, tail=36) − base"
   },
   "overequip_plan_medium": {
    "cash": null,
    "debt": null,
-   "nav": 14.8,
+   "nav": -0.7,
    "bonding": null,
    "car": null,
    "equity": 6.3,
    "months": null,
    "prob": null,
-   "label": "HIPÓTESE / PEDIR (custo AC da subida de injeção)",
+   "label": "HIPÓTESE · REAL (art. 64.º/2; captura 2025) / PEDIR (subida de injeção P38)",
    "origin": "skeleton mail-consultor-sobreequipamento-01; tools/dcac_optimo.py plans_card",
-   "note": "Plano medium: +40 MWp → 160 MWp, DC/AC 1.35 vs 118,8 MVA. Energia ano 1 +65862 MWh vs base; corte 2.1 % (NREL tecto 4.05 %). Capex só DC 18.0–24.0 (centro 21.0) M€. Área de módulos 69–77 ha (AIA ≥ 100 ha: não). ΔNPV (bid 38, extra a mercado, custo AC 0 = tecto) +14.8 M€; se a energia extra tivesse tarifa +6.4. Só com 99 MVA (sem subir injeção): +4.7.",
-   "formula": "equity: +0.3*21.0 ; nav: ΔNPV do plano (bid 38; ver dcac_optimo.json plans_card.medium)"
+   "note": "ΔNPV do plano +40 MWp na MESMA ligação de 99 MVA (DC/AC 1.62), energia extra a 36 €/MWh 2026 +2 %/ano (captura solar 2025 REAL ≈ 35,7: gate3-curvas-mercado.md §2.2/§5/§6). Antes: tecto com injeção 118,8 MVA a custo AC 0 e 45 €/MWh. Alternativas (M€): 118,8@45 +14.8 · 118,8@36 +7.4 · 99@45 +4.7. Igual a 38 e 40 €/MWh (energia extra é toda a mercado). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav 14.8.",
+   "formula": "equity: +0.3*21.0 ; nav: ΔNPV dcac_optimo.NPV(bid, 120+40 MWp, 99 MVA, tail=36) − base"
   },
   "overequip_plan_large": {
    "cash": null,
    "debt": null,
-   "nav": 12.9,
+   "nav": -17.3,
    "bonding": null,
    "car": null,
    "equity": 14.17,
    "months": null,
    "prob": null,
-   "label": "HIPÓTESE / PEDIR (custo AC da subida de injeção)",
+   "label": "HIPÓTESE · REAL (art. 64.º/2; captura 2025) / PEDIR (subida de injeção P38)",
    "origin": "skeleton mail-consultor-sobreequipamento-01; tools/dcac_optimo.py plans_card",
-   "note": "Plano large: +90 MWp → 210 MWp, DC/AC 1.77 vs 118,8 MVA. Energia ano 1 +111710 MWh vs base; corte 13.03 % (NREL tecto 18.52 %). Capex só DC 40.5–54.0 (centro 47.25) M€. Área de módulos 90–101 ha (AIA ≥ 100 ha: no limite: passa os 100 ha se a eficiência dos módulos for ≤ 21.0 %). ΔNPV (bid 38, extra a mercado, custo AC 0 = tecto) +12.9 M€; se a energia extra tivesse tarifa -1.4. Só com 99 MVA (sem subir injeção): -9.2.",
-   "formula": "equity: +0.3*47.25 ; nav: ΔNPV do plano (bid 38; ver dcac_optimo.json plans_card.large)"
+   "note": "ΔNPV do plano +90 MWp na MESMA ligação de 99 MVA (DC/AC 2.12), energia extra a 36 €/MWh 2026 +2 %/ano (captura solar 2025 REAL ≈ 35,7: gate3-curvas-mercado.md §2.2/§5/§6). Antes: tecto com injeção 118,8 MVA a custo AC 0 e 45 €/MWh. Alternativas (M€): 118,8@45 +12.9 · 118,8@36 +0.3 · 99@45 -9.2. Igual a 38 e 40 €/MWh (energia extra é toda a mercado). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav 12.9.",
+   "formula": "equity: +0.3*47.25 ; nav: ΔNPV dcac_optimo.NPV(bid, 120+90 MWp, 99 MVA, tail=36) − base"
   },
   "overequip_plan_commit": {
    "cash": null,
@@ -2290,7 +2299,7 @@
   "capex_linha_+1": {
    "cash": null,
    "debt": null,
-   "nav": -10.5,
+   "nav": -7.56,
    "bonding": null,
    "car": null,
    "equity": 3.15,
@@ -2298,13 +2307,14 @@
    "prob": null,
    "label": "REAL (€/km ACER) / HIPÓTESE (km)",
    "origin": "grid_line_bands_proposed; ACER UIC 2023 Table 3",
-   "note": "Linha média: ΔCapex = (km_exato − km do lote no Capex) × €/km. Ourique (400 kV 2c, 5 km no Capex) a 15 km: +10.5 M€ (mediana 1,05 M€/km; banda 5.3–16.4). Lotes 150 kV: × 0,26 (0,224–0,393). equity +0,3 × ΔCapex; ΔNPV ≈ −ΔCapex.",
-   "formula": "equity: +0.3*(km−km_lote)*€/km ; nav: −(km−km_lote)*€/km"
+   "note": "ΔNPV = −0,72 × ΔCapex (10.5 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -10.5.",
+   "formula": "equity: +0.3*(km−km_lote)*€/km ; nav: −0.72*(km−km_lote)*€/km",
+   "capex_MEUR": 10.5
   },
   "capex_linha_+2": {
    "cash": null,
    "debt": null,
-   "nav": -23.6,
+   "nav": -16.99,
    "bonding": null,
    "car": null,
    "equity": 7.09,
@@ -2312,13 +2322,14 @@
    "prob": null,
    "label": "REAL (€/km ACER) / HIPÓTESE (km)",
    "origin": "grid_line_bands_proposed; ACER UIC 2023 Table 3",
-   "note": "Linha longa: ΔCapex = (km_exato − km do lote no Capex) × €/km. Ourique (400 kV 2c, 5 km no Capex) a 27.5 km: +23.6 M€ (mediana 1,05 M€/km; banda 12.0–36.8). Lotes 150 kV: × 0,26 (0,224–0,393). equity +0,3 × ΔCapex; ΔNPV ≈ −ΔCapex.",
-   "formula": "equity: +0.3*(km−km_lote)*€/km ; nav: −(km−km_lote)*€/km"
+   "note": "ΔNPV = −0,72 × ΔCapex (23.6 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -23.6.",
+   "formula": "equity: +0.3*(km−km_lote)*€/km ; nav: −0.72*(km−km_lote)*€/km",
+   "capex_MEUR": 23.6
   },
   "servidoes_linha_+1": {
    "cash": -0.06,
    "debt": null,
-   "nav": -0.45,
+   "nav": -0.32,
    "bonding": null,
    "car": null,
    "equity": 0.14,
@@ -2326,14 +2337,15 @@
    "prob": 0.05,
    "label": "HIPÓTESE / PEDIR P33",
    "origin": "grid_line_bands_proposed.servitude_land (âncoras REN FAQ, Provedor, TRL 2018, TRP 2020, STJ 2022)",
-   "note": "Mais proprietários no traçado: servidão 400 kV 15–50 k€/km (150 kV 10–30) → ~0.45 M€ a 15 km (400 kV display 30 k€/km); paga na obra (Capex). +1 mês de negociação (land) e +0.05 em P(atraso de terreno/arbitragem DGEG).",
-   "formula": "equity: +0.3*km*servidão ; nav: −km*servidão ; cash: −0.06*k*meses",
-   "phase": "land"
+   "note": "ΔNPV = −0,72 × ΔCapex (0.45 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.45.",
+   "formula": "equity: +0.3*km*servidão ; nav: −0.72*km*servidão ; cash: −0.06*k*meses",
+   "phase": "land",
+   "capex_MEUR": 0.45
   },
   "servidoes_linha_+2": {
    "cash": -0.12,
    "debt": null,
-   "nav": -0.82,
+   "nav": -0.59,
    "bonding": null,
    "car": null,
    "equity": 0.25,
@@ -2341,9 +2353,10 @@
    "prob": 0.1,
    "label": "HIPÓTESE / PEDIR P33",
    "origin": "grid_line_bands_proposed.servitude_land (âncoras REN FAQ, Provedor, TRL 2018, TRP 2020, STJ 2022)",
-   "note": "Mais proprietários no traçado: servidão 400 kV 15–50 k€/km (150 kV 10–30) → ~0.82 M€ a 27.5 km (400 kV display 30 k€/km); paga na obra (Capex). +2 mês de negociação (land) e +0.10 em P(atraso de terreno/arbitragem DGEG).",
-   "formula": "equity: +0.3*km*servidão ; nav: −km*servidão ; cash: −0.06*k*meses",
-   "phase": "land"
+   "note": "ΔNPV = −0,72 × ΔCapex (0.82 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.82.",
+   "formula": "equity: +0.3*km*servidão ; nav: −0.72*km*servidão ; cash: −0.06*k*meses",
+   "phase": "land",
+   "capex_MEUR": 0.82
   },
   "line_undergrounded": {
    "cash": null,
@@ -2445,7 +2458,7 @@
   "line_reroute_negotiated": {
    "cash": -0.06,
    "debt": null,
-   "nav": -0.8,
+   "nav": -0.59,
    "bonding": null,
    "car": null,
    "equity": 0.25,
@@ -2453,9 +2466,10 @@
    "prob": null,
    "label": "REAL (€/km aéreo) / HIPÓTESE (km, servidão, meses)",
    "origin": "skeleton mail-camara-linha-enterrada-01; lp-cod-rules r-nisa-enterrar-linha; ACER UIC 2023 Table 4 (enterrado 150 kV 2c 0,85–3,06 M€/km, média 2,23; REAL) e Table 3 (aéreo 0,224–0,393; REAL); tools/leilao_faixa_npv.json lots.falagueira.breakeven_sensitivities; grid_line_bands_proposed.servitude_land",
-   "note": "Traçado aéreo mais longo, longe das zonas que preocupam a Câmara: +2–3 km (mostrar +2.5). Linha +0.45–1.18 M€ (mostrar +0.77) + servidão 0.02–0.09 (mostrar 0.05) = +0.82 M€ de Capex. Atraso: +1 mês de terreno aqui (novo traçado, novos donos) + 2 de delay_land_+1 = +3 meses. Break-even Falagueira 36.6 → 37.1 €/MWh; NPV a 40: +4.2 → +3.4. A regra volta a sortear 2 meses depois com P × 0,5 = 0,20 (a Câmara pode voltar a pedir a linha enterrada). Atenção GM: a mesma escolha traz capex_linha_+1 e servidoes_linha_+1; com o km exacto (8 + 2,5 = 10,5 km) elas dão este mesmo Capex → não somar (propomos tirá-las da escolha; ou o motor usa só esta tag).",
+   "note": "ΔNPV = −0,72 × ΔCapex (0.82 M€), como o motor (antes 1:1). Rebalance 2026-10-06 (bug PR #7 «NPV agora»; euro-fields §18). Antes: nav -0.8.",
    "formula": "ΔCapex = 2.5 km × 0,3085 + 2.5 km × 0,020 (servidão) = +0.82 ; cash: −0.06*k (1 mês de burn_land; k Falagueira ≈ 0.96) ; equity +0.3*ΔCapex",
-   "phase": "land"
+   "phase": "land",
+   "capex_MEUR": 0.82
   },
   "line_underground_refused": {
    "cash": -0.17,
@@ -4647,7 +4661,7 @@
   },
   {
    "id": "P46",
-   "what": "Equity na FID, motor a 40 €/MWh: Ourique 41,4 > boutique 37,5; Ferreira 62,7 > mid 50; Estremoz 83,4 > infra 75. Os lotes do próprio tier já não cabem sem opções D9. FECHADO Pedro 2026-10-03: boutique 45 (CONFIRMADO) via tools/purse_params.json (+1 com juros da obra) + sócio garantido 25 % a custo; empréstimo 20 anos P 0,60; investidores +5 P 0,40. Mid/infra = PEDIR P55.",
+   "what": "Equity na FID, motor a 40 €/MWh (exata, 2026-10-06): Ourique 41,0 > boutique 37,5; Ferreira 62,5 > mid 50; Estremoz 84,0 > infra 75. Os lotes do próprio tier já não cabem sem opções D9. FECHADO Pedro 2026-10-03: boutique 45 (CONFIRMADO) via tools/purse_params.json (+1 com juros da obra) + sócio garantido 25 % a custo; empréstimo 20 anos P 0,60; investidores +5 P 0,40. Mid/infra = PEDIR P55.",
    "tags": [
     "fid_reached",
     "equity_capex_commit",
@@ -4920,8 +4934,8 @@
   },
   "fid_options": {
    "gap_stated": {
-    "40": 3.9,
-    "38": 6.6
+    "40": 3.5,
+    "38": 6.9
    },
    "gap_exact_motor": {
     "40": 3.48,
@@ -5403,16 +5417,6 @@
     ],
     "by_bid": {
      "38": {
-      "equity_stated": {
-       "need": 44.1,
-       "headroom_default": 0.9,
-       "pass_default": true,
-       "headroom_default_plus_idc_step": 1.9,
-       "pass_default_plus_idc_step": true,
-       "pass_45": true,
-       "headroom_45": 0.9,
-       "pass_46": true
-      },
       "equity_exact": {
        "need": 44.36,
        "headroom_default": 0.64,
@@ -5431,16 +5435,6 @@
        "pass_default_plus_idc_step": true,
        "pass_45": false,
        "headroom_45": -0.75,
-       "pass_46": true
-      },
-      "equity_stated_incl_idc": {
-       "need": 45.49,
-       "headroom_default": -0.49,
-       "pass_default": false,
-       "headroom_default_plus_idc_step": 0.51,
-       "pass_default_plus_idc_step": true,
-       "pass_45": false,
-       "headroom_45": -0.49,
        "pass_46": true
       },
       "capex_+5pct_incl_idc": {
@@ -5515,16 +5509,6 @@
       }
      },
      "40": {
-      "equity_stated": {
-       "need": 41.4,
-       "headroom_default": 3.6,
-       "pass_default": true,
-       "headroom_default_plus_idc_step": 4.6,
-       "pass_default_plus_idc_step": true,
-       "pass_45": true,
-       "headroom_45": 3.6,
-       "pass_46": true
-      },
       "equity_exact": {
        "need": 40.98,
        "headroom_default": 4.02,
@@ -5543,16 +5527,6 @@
        "pass_default_plus_idc_step": true,
        "pass_45": true,
        "headroom_45": 2.52,
-       "pass_46": true
-      },
-      "equity_stated_incl_idc": {
-       "need": 42.9,
-       "headroom_default": 2.1,
-       "pass_default": true,
-       "headroom_default_plus_idc_step": 3.1,
-       "pass_default_plus_idc_step": true,
-       "pass_45": true,
-       "headroom_45": 2.1,
        "pass_46": true
       },
       "capex_+5pct_incl_idc": {
@@ -5632,176 +5606,176 @@
     "Ourique": {
      "needs": {
       "best_bid_40": {
-       "equity": 41.4,
+       "equity": 41.0,
        "idc": 1.49,
-       "equity_incl_idc": 42.9,
-       "equity_capex_+5pct_incl_idc": 47.4
+       "equity_incl_idc": 42.5,
+       "equity_capex_+5pct_incl_idc": 47.0
       },
       "breakeven_bid_38": {
-       "equity": 44.1,
+       "equity": 44.4,
        "idc": 1.4,
-       "equity_incl_idc": 45.5,
-       "equity_capex_+5pct_incl_idc": 50.0
+       "equity_incl_idc": 45.8,
+       "equity_capex_+5pct_incl_idc": 50.3
       }
      },
      "fit": {
       "current": {
        "purse": 45.0,
        "best_bid_40": {
-        "headroom": 3.6,
-        "headroom_incl_idc": 2.1,
-        "headroom_overrun": -2.4
+        "headroom": 4.0,
+        "headroom_incl_idc": 2.5,
+        "headroom_overrun": -2.0
        },
        "breakeven_bid_38": {
-        "headroom": 0.9,
-        "headroom_incl_idc": -0.5,
-        "headroom_overrun": -5.0
+        "headroom": 0.6,
+        "headroom_incl_idc": -0.8,
+        "headroom_overrun": -5.3
        }
       },
       "x1_2": {
        "purse": 45.0,
        "best_bid_40": {
-        "headroom": 3.6,
-        "headroom_incl_idc": 2.1,
-        "headroom_overrun": -2.4
+        "headroom": 4.0,
+        "headroom_incl_idc": 2.5,
+        "headroom_overrun": -2.0
        },
        "breakeven_bid_38": {
-        "headroom": 0.9,
-        "headroom_incl_idc": -0.5,
-        "headroom_overrun": -5.0
+        "headroom": 0.6,
+        "headroom_incl_idc": -0.8,
+        "headroom_overrun": -5.3
        }
       },
       "proposed": {
        "purse": 45.0,
        "best_bid_40": {
-        "headroom": 3.6,
-        "headroom_incl_idc": 2.1,
-        "headroom_overrun": -2.4
+        "headroom": 4.0,
+        "headroom_incl_idc": 2.5,
+        "headroom_overrun": -2.0
        },
        "breakeven_bid_38": {
-        "headroom": 0.9,
-        "headroom_incl_idc": -0.5,
-        "headroom_overrun": -5.0
+        "headroom": 0.6,
+        "headroom_incl_idc": -0.8,
+        "headroom_overrun": -5.3
        }
       }
      },
-     "label": "HIPÓTESE (motor; equity com gearing arredondado a 2 casas = valores trancados 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
+     "label": "HIPÓTESE (motor; equity EXATA = Capex − dívida, 2026-10-06; antes arredondada 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
     },
     "Ferreira do Alentejo": {
      "needs": {
       "best_bid_40": {
-       "equity": 62.7,
+       "equity": 62.5,
        "idc": 2.25,
-       "equity_incl_idc": 64.9,
-       "equity_capex_+5pct_incl_idc": 71.8
+       "equity_incl_idc": 64.7,
+       "equity_capex_+5pct_incl_idc": 71.6
       },
       "breakeven_bid_38": {
-       "equity": 68.2,
+       "equity": 67.6,
        "idc": 2.08,
-       "equity_incl_idc": 70.3,
-       "equity_capex_+5pct_incl_idc": 77.1
+       "equity_incl_idc": 69.7,
+       "equity_capex_+5pct_incl_idc": 76.5
       }
      },
      "fit": {
       "current": {
        "purse": 50.0,
        "best_bid_40": {
-        "headroom": -12.7,
-        "headroom_incl_idc": -14.9,
-        "headroom_overrun": -21.8
+        "headroom": -12.5,
+        "headroom_incl_idc": -14.7,
+        "headroom_overrun": -21.6
        },
        "breakeven_bid_38": {
-        "headroom": -18.2,
-        "headroom_incl_idc": -20.3,
-        "headroom_overrun": -27.1
+        "headroom": -17.6,
+        "headroom_incl_idc": -19.7,
+        "headroom_overrun": -26.5
        }
       },
       "x1_2": {
        "purse": 60.0,
        "best_bid_40": {
-        "headroom": -2.7,
-        "headroom_incl_idc": -4.9,
-        "headroom_overrun": -11.8
+        "headroom": -2.5,
+        "headroom_incl_idc": -4.7,
+        "headroom_overrun": -11.6
        },
        "breakeven_bid_38": {
-        "headroom": -8.2,
-        "headroom_incl_idc": -10.3,
-        "headroom_overrun": -17.1
+        "headroom": -7.6,
+        "headroom_incl_idc": -9.7,
+        "headroom_overrun": -16.5
        }
       },
       "proposed": {
        "purse": 70.0,
        "best_bid_40": {
-        "headroom": 7.3,
-        "headroom_incl_idc": 5.1,
-        "headroom_overrun": -1.8
+        "headroom": 7.5,
+        "headroom_incl_idc": 5.3,
+        "headroom_overrun": -1.6
        },
        "breakeven_bid_38": {
-        "headroom": 1.8,
-        "headroom_incl_idc": -0.3,
-        "headroom_overrun": -7.1
+        "headroom": 2.4,
+        "headroom_incl_idc": 0.3,
+        "headroom_overrun": -6.5
        }
       }
      },
-     "label": "HIPÓTESE (motor; equity com gearing arredondado a 2 casas = valores trancados 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
+     "label": "HIPÓTESE (motor; equity EXATA = Capex − dívida, 2026-10-06; antes arredondada 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
     },
     "Estremoz": {
      "needs": {
       "best_bid_40": {
-       "equity": 83.4,
+       "equity": 84.0,
        "idc": 3.52,
-       "equity_incl_idc": 86.9,
-       "equity_capex_+5pct_incl_idc": 96.8
+       "equity_incl_idc": 87.5,
+       "equity_capex_+5pct_incl_idc": 97.4
       },
       "breakeven_bid_37": {
-       "equity": 95.3,
+       "equity": 95.8,
        "idc": 3.16,
-       "equity_incl_idc": 98.5,
-       "equity_capex_+5pct_incl_idc": 108.4
+       "equity_incl_idc": 99.0,
+       "equity_capex_+5pct_incl_idc": 108.9
       }
      },
      "fit": {
       "current": {
        "purse": 75.0,
        "best_bid_40": {
-        "headroom": -8.4,
-        "headroom_incl_idc": -11.9,
-        "headroom_overrun": -21.8
+        "headroom": -9.0,
+        "headroom_incl_idc": -12.5,
+        "headroom_overrun": -22.4
        },
        "breakeven_bid_37": {
-        "headroom": -20.3,
-        "headroom_incl_idc": -23.5,
-        "headroom_overrun": -33.4
+        "headroom": -20.8,
+        "headroom_incl_idc": -24.0,
+        "headroom_overrun": -33.9
        }
       },
       "x1_2": {
        "purse": 90.0,
        "best_bid_40": {
-        "headroom": 6.6,
-        "headroom_incl_idc": 3.1,
-        "headroom_overrun": -6.8
+        "headroom": 6.0,
+        "headroom_incl_idc": 2.5,
+        "headroom_overrun": -7.4
        },
        "breakeven_bid_37": {
-        "headroom": -5.3,
-        "headroom_incl_idc": -8.5,
-        "headroom_overrun": -18.4
+        "headroom": -5.8,
+        "headroom_incl_idc": -9.0,
+        "headroom_overrun": -18.9
        }
       },
       "proposed": {
        "purse": 100.0,
        "best_bid_40": {
-        "headroom": 16.6,
-        "headroom_incl_idc": 13.1,
-        "headroom_overrun": 3.2
+        "headroom": 16.0,
+        "headroom_incl_idc": 12.5,
+        "headroom_overrun": 2.6
        },
        "breakeven_bid_37": {
-        "headroom": 4.7,
-        "headroom_incl_idc": 1.5,
-        "headroom_overrun": -8.4
+        "headroom": 4.2,
+        "headroom_incl_idc": 1.0,
+        "headroom_overrun": -8.9
        }
       }
      },
-     "label": "HIPÓTESE (motor; equity com gearing arredondado a 2 casas = valores trancados 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
+     "label": "HIPÓTESE (motor; equity EXATA = Capex − dívida, 2026-10-06; antes arredondada 41,4/44,1). Juros da obra = dívida × juro mensal × 7,5 (saques pro rata em 16 meses). boutique = tools/purse_params.json (45 CONFIRMADO Pedro 2026-10-03); mid/infra PENDENTE (actual 50/75; ×1,2 = 60/90; proposta 70/100)"
     }
    },
    "tiers": {
@@ -5895,7 +5869,7 @@
   },
   {
    "id": "P53",
-   "what": "Equity na FID: usar o valor exato do motor (40,98 / 44,36) ou o arredondado (41,4 / 44,1 = Capex × (1 − g a 2 casas))? E contar os juros da obra (1,4–1,5 M€, pagos pelo equity no motor) no teste equity_fit?",
+   "what": "FECHADO GM 2026-10-06: equity EXATA do motor (40,98 / 44,36 → 41,0 / 44,4); o arredondado antigo (Capex × (1 − g a 2 casas)) saiu. Ainda PEDIR: contar os juros da obra (1,4–1,5 M€, pagos pelo equity no motor) no teste equity_fit?",
    "tags": [
     "equity_capex_commit",
     "fid_reached"
@@ -5935,6 +5909,329 @@
    ]
   }
  ],
+ "rebalance_2026_10_06": {
+  "_meta": "Economy 2026-10-06 PT · bug PR #7 «NPV agora» · DRAFT. Replay: tools/npv_now_replay_v01.py(.json).",
+  "slopes": {
+   "npv_per_capex_MEUR": -0.72,
+   "npv_per_build_month": -0.19,
+   "npv_per_prefid_month": -0.04,
+   "label": "HIPÓTESE (motor TRANCADO, Ourique 40 €/MWh; finais_tensao_v01.json sensitivities)"
+  },
+  "changes": [
+   {
+    "tag": "capex_rede_flag",
+    "tier": "1",
+    "old": {
+     "nav": -5.0,
+     "equity": 1.5,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.72,
+     "equity": 0.3,
+     "capex_MEUR": 1.0
+    }
+   },
+   {
+    "tag": "epc_turnkey",
+    "tier": "1",
+    "old": {
+     "nav": -4.5,
+     "equity": 1.35,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -1.3,
+     "equity": 0.54,
+     "capex_MEUR": 1.8
+    }
+   },
+   {
+    "tag": "capex_linha_+1",
+    "tier": "2",
+    "old": {
+     "nav": -10.5,
+     "equity": 3.15,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -7.56,
+     "equity": 3.15,
+     "capex_MEUR": 10.5
+    }
+   },
+   {
+    "tag": "capex_linha_+2",
+    "tier": "2",
+    "old": {
+     "nav": -23.6,
+     "equity": 7.09,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -16.99,
+     "equity": 7.09,
+     "capex_MEUR": 23.6
+    }
+   },
+   {
+    "tag": "servidoes_linha_+1",
+    "tier": "2",
+    "old": {
+     "nav": -0.45,
+     "equity": 0.14,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.32,
+     "equity": 0.14,
+     "capex_MEUR": 0.45
+    }
+   },
+   {
+    "tag": "servidoes_linha_+2",
+    "tier": "2",
+    "old": {
+     "nav": -0.82,
+     "equity": 0.25,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.59,
+     "equity": 0.25,
+     "capex_MEUR": 0.82
+    }
+   },
+   {
+    "tag": "underground_cable",
+    "tier": "2",
+    "old": {
+     "nav": -4.0,
+     "equity": 1.2,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -2.88,
+     "equity": 1.2,
+     "capex_MEUR": 4.0
+    }
+   },
+   {
+    "tag": "env_mitigation_flag",
+    "tier": "2",
+    "old": {
+     "nav": -1.5,
+     "equity": 0.45,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -1.08,
+     "equity": 0.45,
+     "capex_MEUR": 1.5
+    }
+   },
+   {
+    "tag": "dia_conditions_accepted",
+    "tier": "2",
+    "old": {
+     "nav": -1.5,
+     "equity": 0.45,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -1.08,
+     "equity": 0.45,
+     "capex_MEUR": 1.5
+    }
+   },
+   {
+    "tag": "equity_capex_overrun_flag",
+    "tier": "2",
+    "old": {
+     "nav": -4.5,
+     "equity": 4.5,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -3.24,
+     "equity": 4.5,
+     "capex_MEUR": 4.5
+    }
+   },
+   {
+    "tag": "epc_multi",
+    "tier": "2",
+    "old": {
+     "nav": 2.7,
+     "equity": -0.81,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": 1.94,
+     "equity": -0.81,
+     "capex_MEUR": -2.7
+    }
+   },
+   {
+    "tag": "line_reroute_negotiated",
+    "tier": "2",
+    "old": {
+     "nav": -0.8,
+     "equity": 0.25,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.59,
+     "equity": 0.25,
+     "capex_MEUR": 0.82
+    }
+   },
+   {
+    "tag": "delay_cod_+1",
+    "tier": "2",
+    "old": {
+     "nav": -0.75,
+     "equity": null,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.57,
+     "equity": null,
+     "capex_MEUR": null
+    }
+   },
+   {
+    "tag": "delay_cod_+2",
+    "tier": "2",
+    "old": {
+     "nav": -1.5,
+     "equity": null,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -1.14,
+     "equity": null,
+     "capex_MEUR": null
+    }
+   },
+   {
+    "tag": "delay_obra_+1",
+    "tier": "2",
+    "old": {
+     "nav": -0.75,
+     "equity": null,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.57,
+     "equity": null,
+     "capex_MEUR": null
+    }
+   },
+   {
+    "tag": "obra_start_deferred",
+    "tier": "2",
+    "old": {
+     "nav": -0.75,
+     "equity": null,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.57,
+     "equity": null,
+     "capex_MEUR": null
+    }
+   },
+   {
+    "tag": "delay_ligacao_+1",
+    "tier": "2",
+    "old": {
+     "nav": -0.75,
+     "equity": null,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.57,
+     "equity": null,
+     "capex_MEUR": null
+    }
+   },
+   {
+    "tag": "overequip_plan_small",
+    "tier": "1b",
+    "old": {
+     "nav": 8.8,
+     "equity": 3.15,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": 1.6,
+     "equity": 3.15,
+     "capex_MEUR": null
+    }
+   },
+   {
+    "tag": "overequip_plan_medium",
+    "tier": "1b",
+    "old": {
+     "nav": 14.8,
+     "equity": 6.3,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -0.7,
+     "equity": 6.3,
+     "capex_MEUR": null
+    }
+   },
+   {
+    "tag": "overequip_plan_large",
+    "tier": "1b",
+    "old": {
+     "nav": 12.9,
+     "equity": 14.17,
+     "capex_MEUR": null
+    },
+    "new": {
+     "nav": -17.3,
+     "equity": 14.17,
+     "capex_MEUR": null
+    }
+   }
+  ],
+  "console_changes_needed": [
+   "FIX A: capex_linha_*/servidoes_linha_* só para o terreno com a linha mais curta já com opção (abrir 2.ª opção mais longe não soma; abrir uma mais perto devolve)",
+   "FIX B: capex_rede_flag uma vez por projecto (mail-rede-prazo-01 accept + mail-rede-lp-parecer-01 accept_grid = mesmo acordo)",
+   "FIX C (recomendado): projectEquityFit soma state.equityCommitted (Capex extra das cartas) ao need",
+   "FIX D (conflito de regras): tirar MANDATE_PROMOTE_EFFECTS (promoção a mid no land_option_open/pip_request_submitted) e a carta 'Vender 49 %'",
+   "FIX E: stakesNpvIrr (index.html l. 12562–12581): irr = 8,0 + 0,16 × (npv_now / share), share = (1 − partnerStake)(1 − dilution) (§16 7c); hoje devolve auctionEconomics(bid).irr (IRR do leilão, nunca muda)",
+   "FIX F (regra GM, não consola): mail-investidores-fid-01 bring_partner.when = {blocks: [farm_down_fid_request]} (tirar requires [equity_fit_short]) → opção voluntária sempre visível; r-fid já rearma com partner_equity_in"
+  ],
+  "overequip_alternatives_MEUR": {
+   "small": {
+    "118.8MVA_45": 8.83,
+    "118.8MVA_36": 4.85,
+    "99MVA_45": 4.76,
+    "99MVA_36 (novo)": 1.6
+   },
+   "medium": {
+    "118.8MVA_45": 14.81,
+    "118.8MVA_36": 7.42,
+    "99MVA_45": 4.7,
+    "99MVA_36 (novo)": -0.66
+   },
+   "large": {
+    "118.8MVA_45": 12.87,
+    "118.8MVA_36": 0.35,
+    "99MVA_45": -9.15,
+    "99MVA_36 (novo)": -17.27
+   }
+  },
+  "run_2026_10_06b": {
+   "what": "Grok Bot, live PR #7, bid 40, cuidadosa, PIP simples, turnkey + sobreequipamento pequeno M11: +3,2 → −6,8 (M9) → −3,3 (COD M33). Reconstrução (sem log): M4 capex_rede_flag −5 + M7 capex_rede_flag −5 = −10,0; M11 epc_turnkey −4,5 + overequip_plan_small +8,8; 1 atraso −0,75 (provável mail-rede-ligacao-atraso-01 chase → delay_cod_+1) → −3,25 (mostra −3,3). Sem decaimento no tempo, sem burn no NPV, sem re-desconto mensal.",
+   "after_fix": "3,2 − 0,72 − 1,30 + 1.6 − 0,57 = +2.21"
+  }
+ },
  "no_economy": [
   "aas_eligible_ack",
   "aas_skip",
@@ -6043,6 +6340,7 @@
   "share_refused",
   "share_rent_agreed",
   "shared_benefits_unlock",
+  "stake_sale_25",
   "stake_sale_started",
   "trc_alteration_approved",
   "trc_alteration_refused",
