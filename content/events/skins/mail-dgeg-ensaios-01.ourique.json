@@ -4,9 +4,10 @@
   "draft": true,
   "when": {},
   "from_name": "Direção de obra",
-  "subject": "Conclusão mecânica — pedir ensaios e vistoria",
-  "body": "A central está mecanicamente concluída e a linha está pronta. Próximo passo: autorização de ensaios da DGEG, com parecer do operador, e depois vistoria para a licença de exploração. A DGEG tem 30 dias para vistoriar; se falhar, uma entidade acreditada pode fazê-lo, a nosso custo. O EPC ainda tem uma lista de pendentes.",
+  "subject": "Obra pronta: pedir os testes e a vistoria",
+  "body": "A central está montada e a ligação está pronta. Agora são precisos os testes, com autorização da DGEG e parecer da REN, e depois a vistoria para a licença de exploração. A DGEG tem 30 dias para fazer a vistoria; se não a fizer, uma entidade autorizada pode fazê-la, paga por ti. O empreiteiro ainda tem uma lista de pequenos trabalhos por fechar.",
   "params": {
     "base_legal": "DL 15/2022 arts. 32.º e 34.º"
-  }
+  },
+  "obra_v01_2026_10_06": "Linguagem simples."
 }

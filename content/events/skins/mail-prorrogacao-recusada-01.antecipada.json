@@ -1,0 +1,28 @@
+{
+  "skeleton_id": "mail-prorrogacao-recusada-01",
+  "skin_id": "antecipada",
+  "draft": true,
+  "when": {},
+  "from_name": "DGEG — Licenciamento de centros eletroprodutores",
+  "subject": "Prorrogação recusada: o prazo mantém-se em {{deadline_month}}",
+  "body": "A DGEG recusou o pedido de prorrogação: entende que os atrasos não justificam mais tempo. O prazo da licença de exploração mantém-se em {{deadline_month}}.\n\nAinda podes cumprir. Se a obra não estiver toda pronta a tempo, podes pedir licença só para a parte concluída.",
+  "params": {
+    "deadline_id": "le_deadline"
+  },
+  "choice_overrides": {
+    "rush": {
+      "label": "Pedir licença só para a parte pronta",
+      "hint": "A central começa a vender a tempo, mas só com a parte concluída e potência limitada."
+    },
+    "let_lapse": {
+      "label": "Seguir com a obra e tentar cumprir",
+      "effects": [
+        "le_extension_denied_continue"
+      ],
+      "hint": "Se o prazo passar, a DGEG abre uma audiência antes de decidir se tira o TRC."
+    }
+  },
+  "deadline_id": "le_deadline",
+  "deadline_role": "outcome",
+  "deadline_blocks_play": true
+}

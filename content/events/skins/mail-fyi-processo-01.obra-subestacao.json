@@ -9,5 +9,7 @@
   "params": {
     "filler_for_phase": "obra",
     "marco": "subestacao"
-  }
+  },
+  "retired": true,
+  "retired_reason": "2026-10-06: carta só informativa substituída por cartas de obra com escolha (mail-obra-*). O estaleiro passou para mail-obra-comunidade-01."
 }

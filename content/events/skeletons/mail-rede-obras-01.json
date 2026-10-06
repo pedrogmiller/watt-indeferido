@@ -1,0 +1,41 @@
+{
+  "id": "mail-rede-obras-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "REDE",
+  "choices": [
+    {
+      "id": "rush_docs",
+      "label": "Pagar para entregar já",
+      "effects": [
+        "ren_docs_rush"
+      ],
+      "hint": "Gastas algum dinheiro. A data da ligação fica garantida."
+    },
+    {
+      "id": "wait",
+      "label": "Entregar quando estiverem prontos",
+      "effects": [
+        "ren_docs_late"
+      ],
+      "hint": "Não pagas nada. Se a REN passar a equipa para outra ligação, a tua atrasa."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "grid_connection",
+  "notes_for_economy": "ren_docs_rush: custo pequeno (PEDIR_ECONOMY). ren_docs_late: sem €; arma r-rede-papeis-atraso (P 0,5 HIPÓTESE).",
+  "nota_gm": "Ensaios e documentação do posto de corte exigidos pelo operador da RNT antes da energização (procedimento REN). Sem referência legal na carta.",
+  "deadline_letter": true,
+  "deadline_id": "grid_connection",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
+}

@@ -1,0 +1,33 @@
+{
+  "skeleton_id": "mail-prazo-derrapagem-01",
+  "skin_id": "licenca",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Equipa de licenciamento",
+  "subject": "Licença de exploração: o prazo passa para {{new_month}}",
+  "body": "O prazo para teres a licença de exploração mudou de {{old_month}} para {{new_month}}. Motivo: {{cause}}.\n\nQuando a ligação atrasa por causa da REN, a licença pode ser emitida até três meses depois de a REN ligar a central. Ganhas folga, mas a obra também tem de estar pronta a tempo.",
+  "params": {
+    "deadline_id": "le_deadline"
+  },
+  "choice_overrides": {
+    "recover": {
+      "label": "Pedir à REN que antecipe a ligação",
+      "effects": [
+        "grid_chase"
+      ],
+      "hint": "Não custa nada. A REN raramente antecipa, mas fica registado que pediste."
+    },
+    "accept": {
+      "label": "Seguir com o novo calendário",
+      "effects": [
+        "slip_accepted"
+      ],
+      "hint": "A obra segue o novo calendário."
+    }
+  },
+  "deadline_id": "le_deadline",
+  "deadline_role": "warning",
+  "deadline_blocks_play": true
+}

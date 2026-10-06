@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-obra-fornecedor-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Empreiteiro — direção do projeto",
+  "subject": "Painéis retidos no porto",
+  "body": "Dois navios com painéis para a tua central ficaram retidos no porto de Sines: a alfândega quer mais papéis sobre a origem das peças. O fornecedor diz que isto pode demorar meses.\n\nHá outro fornecedor com painéis em armazém, prontos a sair, mas mais caros. Podes mudar já, esperar pelo navio, ou começar a montar os painéis que já chegaram e deixar o resto para o fim.",
+  "params": {
+    "deadline_id": "epc_mechanical_completion"
+  }
+}

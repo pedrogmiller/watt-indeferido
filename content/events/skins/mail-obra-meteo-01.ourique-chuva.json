@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-obra-meteo-01",
+  "skin_id": "ourique-chuva",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Direção de obra",
+  "subject": "Chuva forte parou a obra",
+  "body": "Choveu três semanas quase sem parar. As valas dos cabos encheram de água e as máquinas não conseguem entrar no terreno. A obra está parada até o chão secar.\n\nPodes pagar turnos extra, também aos fins de semana, para recuperar o tempo perdido, ou aceitar o atraso.",
+  "params": {
+    "deadline_id": "epc_mechanical_completion"
+  }
+}

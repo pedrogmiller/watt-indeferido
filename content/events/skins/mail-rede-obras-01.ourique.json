@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-rede-obras-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "REN — Ligações à rede",
+  "subject": "A ligação segue no prazo, faltam os teus papéis",
+  "body": "As obras da REN na subestação de Ourique seguem no prazo. Para ligarmos a tua central em {{deadline_month}}, precisamos do projeto final da tua subestação e da linha, e dos resultados dos testes às proteções elétricas. O teu empreiteiro diz que só os entrega daqui a dois meses.\n\nPodes pagar ao projetista para os entregar já, ou esperar. Se os papéis chegarem tarde, a nossa equipa passa para outra ligação e a tua fica para depois.",
+  "params": {
+    "deadline_id": "grid_connection"
+  }
+}

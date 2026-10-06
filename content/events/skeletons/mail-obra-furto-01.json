@@ -1,0 +1,43 @@
+{
+  "id": "mail-obra-furto-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "security",
+      "label": "Reforçar a segurança",
+      "effects": [
+        "obra_cable_replace",
+        "obra_security_paid"
+      ],
+      "hint": "Pagas vigilância até ao fim da obra. O risco de novo roubo fica muito mais baixo."
+    },
+    {
+      "id": "replace",
+      "label": "Repor só o cabo",
+      "effects": [
+        "obra_cable_replace",
+        "obra_theft_risk_+1"
+      ],
+      "hint": "Gastas menos agora. Se voltarem, a obra atrasa outra vez."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "epc_mechanical_completion",
+  "notes_for_economy": "obra_cable_replace: custo do cabo menos o seguro (PEDIR_ECONOMY). obra_security_paid: custo mensal até cod_reached (PEDIR_ECONOMY). obra_theft_risk_+1: sem €; arma r-obra-furto-2 (P 0,4 HIPÓTESE).",
+  "nota_gm": "Furto de cobre em centrais solares no Alentejo: frequente (notícias GNR 2023–2025). Sem base legal.",
+  "deadline_letter": true,
+  "deadline_id": "epc_mechanical_completion",
+  "deadline_role": "outcome",
+  "deadline_kind": "third_party",
+  "deadline_blocks_play": true
+}

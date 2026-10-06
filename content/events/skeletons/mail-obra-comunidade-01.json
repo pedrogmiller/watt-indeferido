@@ -1,0 +1,38 @@
+{
+  "id": "mail-obra-comunidade-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — obra v0.1 (Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "COMUNIDADE",
+  "choices": [
+    {
+      "id": "repair",
+      "label": "Pagar a reparação e regar o caminho",
+      "effects": [
+        "obra_road_repair",
+        "risk_community_-1",
+        "risk_camara_-1"
+      ],
+      "hint": "Gastas dinheiro agora. Os moradores e a Câmara ficam do teu lado até ao fim da obra."
+    },
+    {
+      "id": "minimum",
+      "label": "Cumprir só o mínimo",
+      "effects": [
+        "risk_community_+1",
+        "risk_camara_+1"
+      ],
+      "hint": "Não gastas nada agora. As queixas continuam e a Câmara fica menos disponível para te ajudar."
+    }
+  ],
+  "heavy": true,
+  "notes_for_economy": "obra_road_repair: custo pequeno (PEDIR_ECONOMY; caixa ou contingência da obra?).",
+  "nota_gm": "Sem base legal específica; licença de obra municipal (RJUE) e circulação de pesados. Absorve a carta só informativa do estaleiro (mail-fyi-processo-01.obra-estaleiro)."
+}

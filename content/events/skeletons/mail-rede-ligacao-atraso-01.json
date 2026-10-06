@@ -24,29 +24,31 @@
   "choices": [
     {
       "id": "chase",
-      "label": "Exigir calendário formal",
+      "label": "Exigir um calendário por escrito",
       "effects": [
         "grid_chase",
         "grid_slip_operator",
-        "delay_cod_+1"
-      ]
+        "delay_ligacao_+1"
+      ],
+      "hint": "A ligação atrasa na mesma, mas fica escrito que o atraso é da REN. Isso ajuda num pedido de prorrogação à DGEG."
     },
     {
       "id": "phased",
-      "label": "Pedir energização faseada",
+      "label": "Ligar já uma parte, com potência limitada",
       "effects": [
         "grid_phased_energisation",
         "grid_slip_operator",
         "injection_cap_restricted"
-      ]
+      ],
+      "hint": "A central começa a vender a tempo, mas só parte da energia até a REN acabar a obra."
     },
     {
       "id": "accept",
-      "label": "Aceitar nova data",
+      "label": "Aceitar a nova data",
       "effects": [
-        "grid_slip_operator",
-        "delay_cod_+2"
-      ]
+        "delay_ligacao_+1"
+      ],
+      "hint": "Não fazes nada. A ligação atrasa cerca de três meses e, sem nada por escrito, será mais difícil provar à DGEG que o atraso não foi teu."
     }
   ],
   "heavy": true,
@@ -56,5 +58,7 @@
   "deadline_id": "grid_connection",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "obra_v01_2026_10_06": "Antes: chase/accept com delay_cod_+1/+2 e grid_slip_operator em todas. Agora: atraso = delay_ligacao_+1 (3 meses, move grid_connection); grid_slip_operator (ajuda a prorrogação da LE) só com escrito ou ligação por fases.",
+  "nota_gm": "DL 15/2022 art. 14.º/3 b): se a ligação da RESP atrasar, a LE conta 90 dias depois da infraestrutura. A prova escrita do atraso do operador conta para a prorrogação (art. 14.º/5: atraso não imputável ao requerente)."
 }

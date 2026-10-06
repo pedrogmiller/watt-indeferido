@@ -3,11 +3,12 @@
   "skin_id": "ourique",
   "draft": true,
   "when": {},
-  "from_name": "REN — Ligações à RNT",
-  "subject": "Reforço da SE Ourique atrasado",
-  "body": "O painel novo e o reforço do transformador derrapam: licenciamento da linha e entrega do transformador. A central pode ficar pronta antes da rede. Podes exigir calendário formal, pedir energização faseada com injeção limitada, ou aceitar a nova data. Atraso do operador conta a teu favor nos prazos da DGEG.",
+  "from_name": "REN — Ligações à rede",
+  "subject": "A ligação em Ourique vai atrasar",
+  "body": "As obras da REN na subestação de Ourique atrasaram: o transformador novo chegou tarde e a licença da linha ainda não saiu. A ligação da tua central passa para cerca de três meses depois do previsto, e a central pode ficar pronta antes da rede.\n\nPodes exigir-nos um calendário por escrito, pedir para ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
   "params": {
-    "base_legal": "DL 15/2022 art. 14.º/3 b)",
+    "deadline_id": "grid_connection",
     "operator": "REN"
-  }
+  },
+  "obra_v01_2026_10_06": "Reescrita simples; base legal passa para nota_gm do esqueleto."
 }

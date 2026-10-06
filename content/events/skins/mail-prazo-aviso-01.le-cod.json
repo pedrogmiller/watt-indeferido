@@ -11,5 +11,7 @@
   },
   "deadline_id": "le_deadline",
   "deadline_role": "warning",
-  "deadline_blocks_play": false
+  "deadline_blocks_play": false,
+  "retired": true,
+  "retired_reason": "2026-10-06: substituída por mail-prazo-aviso-le-01.ourique (com escolha real)."
 }

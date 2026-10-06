@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-obra-furto-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Direção de obra",
+  "subject": "Roubaram cabo de cobre da obra",
+  "body": "Esta noite entraram no estaleiro e levaram vários quilómetros de cabo de cobre já estendido nas valas. A GNR já registou a queixa. Os roubos de cobre são frequentes nas centrais solares do Alentejo, e quem rouba uma vez costuma voltar.\n\nO seguro paga parte do cabo, mas não o tempo perdido. Podes reforçar a segurança do estaleiro, com vigilância à noite e câmaras, ou repor só o cabo roubado.",
+  "params": {
+    "deadline_id": "epc_mechanical_completion"
+  }
+}
