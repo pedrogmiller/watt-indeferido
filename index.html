@@ -9424,7 +9424,7 @@
     if (ren && ren.atMonth != null) parts.push({ label: 'a obra da REN', at: ren.atMonth | 0 });
     if (epc && epc.atMonth != null) parts.push({ label: 'a central', at: epc.atMonth | 0 });
     let crit = null;
-    parts.forEach((p) => { if (!crit || p.at >= crit.at) crit = p; });
+    parts.forEach((p) => { if (!crit || p.at > crit.at) crit = p; });
     return { month: month, critical: crit };
   }
   function npvCausePack() {
@@ -12844,9 +12844,13 @@
       const months = tags.map((t) => (mailLoop.tagMonth && mailLoop.tagMonth[t] != null) ? mailLoop.tagMonth[t] : null).filter((x) => x != null);
       if (!months.length) return null;
       m = Math.max(...months) + (Number(ae.months) || 0);
+      // Same test months as the COD card: −1 accredited inspection, +1 if the EPC stood down, plus delay_cod_*. The base 2 is after_effect.months.
+      if (r.id === 'r-le-cod' && typeof codTestExtra === 'function') m += codTestExtra();
       const extra = ae.extra_months_if_any;
       if (extra && typeof extra === 'object' && !Array.isArray(extra)) {
         Object.keys(extra).forEach((tag) => {
+          // Demobilising waits in the test months above. Counting it again on the test letter would add the month twice when the plant is last.
+          if (r.id === 'r-ensaios' && tag === 'epc_demobilised') return;
           if ((mailLoop.tags && (mailLoop.tags[tag] | 0) > 0)) m += Number(extra[tag]) || 0;
         });
       }
@@ -14059,6 +14063,12 @@
     queueHudLine('Prorrogação aceite: M' + base + ' → M' + newMonth);
     mailLoop.firedDeadlines = mailLoop.firedDeadlines || {};
     delete mailLoop.firedDeadlines[id];
+    if (mailLoop.missedDeadlines) delete mailLoop.missedDeadlines[id];
+    // The miss tag is what opens the hearing. A granted extension closes that path.
+    if (mailLoop.tags) {
+      if (id === 'le_deadline') mailLoop.tags.dl_missed_le_deadline = 0;
+      if (id === 'lp_request') mailLoop.tags.dl_missed_lp_request = 0;
+    }
     mailLoop.deadlineFollowup = mailLoop.deadlineFollowup || {};
     mailLoop.deadlineFollowup[id] = { resolved: true, extended: true, final: true };
     if (ext.granted_mail) deliverStakeLetter(ext.granted_mail.skeleton, ext.granted_mail.skin, { deadline_id: id, allowRepeat: true, id: composedLetterId(ext.granted_mail.skeleton, ext.granted_mail.skin) + ':m' + (mailLoop.month | 0) });
