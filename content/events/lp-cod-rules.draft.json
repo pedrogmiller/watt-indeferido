@@ -4769,6 +4769,6 @@
   "transformador_m6_2026_10_06": {
     "rule": "r-transformador-encomenda",
     "pedro": "baterias+FA ficam; transformador no M6 depois do PIP; cedência ainda não",
-    "economy": "§20.11 sinal 0,75 (banda 0,50–1,20); late +9 meses sem double-count com due.variants"
+    "economy": "§20.11 sinal 0,25 (banda 0,15–0,40, REAL); late +9 meses sem double-count com due.variants"
   }
 }

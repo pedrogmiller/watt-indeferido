@@ -7,7 +7,7 @@
   },
   "from_name": "Consultor de desenvolvimento",
   "subject": "Encomenda antecipada do transformador",
-  "body": "O transformador da tua subestação, a peça grande que eleva a tensão para ligar a central à rede da REN, é hoje o equipamento mais difícil de conseguir: as fábricas têm filas de mais de dois anos.\n\nSe encomendares já, com o PIP aprovado, o transformador chega a tempo de a tua subestação ficar pronta cerca de 15 meses depois do arranque da obra. Pagas um sinal agora, e esse dinheiro perde-se se o projeto não chegar à obra.\n\nSe esperares pela decisão final de investimento, a encomenda só entra na fila mais tarde: a tua subestação passa a demorar cerca de 24 meses depois do arranque, e é ela que atrasa a data de arranque da central.",
+  "body": "O transformador da tua subestação, a peça grande que eleva a tensão para ligar a central à rede da REN, é hoje o equipamento mais difícil de conseguir: as fábricas têm filas de mais de dois anos.\n\nSe encomendares já, com o PIP aprovado, o transformador chega a tempo de a tua subestação ficar pronta cerca de 15 meses depois do arranque da obra. Pagas um sinal de 0,25 M€ agora, e esse dinheiro perde-se se o projeto não chegar à decisão final de investimento.\n\nSe esperares pela decisão final de investimento, a encomenda só entra na fila mais tarde: a tua subestação passa a demorar cerca de 24 meses depois do arranque, e é ela que atrasa a data de arranque da central.",
   "params": {
     "deadline_id": "player_grid"
   },

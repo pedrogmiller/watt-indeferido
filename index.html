@@ -10592,16 +10592,33 @@
       return Number.isFinite(v) ? v : 0;
     } catch (_) { return 0; }
   }
-  /** Early transformer deposit already paid from development cash. At FID it is capex already inside the 90, so equity need drops by this amount once. */
+  /** Cash on transformer_order_early, read from effects-economy.json. Negative. Zero when the row is missing. */
+  function transformerOrderEarlyCash() {
+    let row = null;
+    try { row = (typeof effectEconRow === 'function') ? effectEconRow('transformer_order_early') : null; } catch (_) {}
+    if (!row) {
+      try {
+        const p = (typeof econPack === 'function') ? econPack() : null;
+        row = p && p.effects && p.effects.transformer_order_early;
+      } catch (_) {}
+    }
+    return (row && typeof row.cash === 'number' && Number.isFinite(row.cash)) ? row.cash : 0;
+  }
+  /** Absolute deposit already paid. Counts against FID equity for the whole life of the project. */
   function transformerDepositCredit() {
     if (typeof mailLoop === 'undefined' || !mailLoop || !mailLoop.tags) return 0;
     if (!((mailLoop.tags.transformer_order_early | 0) > 0)) return 0;
-    let cash = -0.75;
-    try {
-      const row = (typeof effectEconRow === 'function') ? effectEconRow('transformer_order_early') : null;
-      if (row && typeof row.cash === 'number') cash = row.cash;
-    } catch (_) {}
+    const cash = transformerOrderEarlyCash();
     return cash < 0 ? +(-cash).toFixed(3) : 0;
+  }
+  /** Deposit still lost: ordered early, and the project died before FID. */
+  function transformerDepositLost() {
+    if (typeof mailLoop === 'undefined' || !mailLoop || !mailLoop.tags) return 0;
+    if (!((mailLoop.tags.transformer_order_early | 0) > 0)) return 0;
+    if ((mailLoop.tags.fid_reached | 0) > 0) return 0;
+    const st = mailLoop.end_state;
+    if (!st || st.status === 'won' || st.status === 'playing') return 0;
+    return transformerDepositCredit();
   }
   function projectEquityFit(lotId) {
     const bid = wonLotBid(lotId);
@@ -13448,6 +13465,8 @@
         bits.push('Prazo falhado: ' + (DEADLINE_LABEL_PT[k] || k) + '.');
       });
     }
+    const lostDeposit = (typeof transformerDepositLost === 'function') ? transformerDepositLost() : 0;
+    if (lostDeposit > 0) bits.push('O sinal do transformador, ' + fmtEur(lostDeposit) + ', ficou perdido.');
     return bits.join(' ') || 'O mandato chegou ao fim.';
   }
   function stakesNpvIrr() {
@@ -14198,6 +14217,8 @@
         bond = fmtEur(lotEcon(id).caucao);
       } catch (_) {}
       rows.splice(3, 0, ['Caução perdida', bond]);
+      const lostDeposit = (typeof transformerDepositLost === 'function') ? transformerDepositLost() : 0;
+      if (lostDeposit > 0) rows.splice(4, 0, ['Sinal do transformador perdido', fmtEur(lostDeposit)]);
     }
     if (body) {
       body.innerHTML = '<dl class="end-dl">' + rows.map((r) => '<dt>' + escapeHtml(r[0]) + '</dt><dd>' + escapeHtml(r[1]) + '</dd>').join('') + '</dl>';

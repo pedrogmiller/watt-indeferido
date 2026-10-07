@@ -4311,7 +4311,7 @@
    "nav_cash": 0.0
   },
   "transformer_order_early": {
-   "cash": -0.75,
+   "cash": -0.25,
    "debt": null,
    "nav": 0.0,
    "bonding": null,
@@ -4319,10 +4319,10 @@
    "equity": null,
    "months": 0,
    "prob": null,
-   "label": "HIPÓTESE (depósito %) · REAL (unidade ~5 M€, Pedro) · SECUNDÁRIO (prazos)",
+   "label": "REAL",
    "origin": "skeleton mail-transformador-encomenda-01 (order_now, M6 depois do PIP); Pedro 2026-10-06e (unidade ~5 M€); ACER UIC 2023 trafo 400 kV 3,6–4,7 (SECUNDÁRIO, provavelmente baixo em 2025–26); IndexBox UE 100–250 MVA ~1,5–4,0 (SECUNDÁRIO); Energinet 2025 4×600 MVA 400/150 kV ≈ 7,3 M€/unid (REAL OJEU 405960-2025); Wood Mackenzie Q2 2025; IEA fev. 2025; depósito mercado ~10–20 % / 15 % non-refundable (SECUNDÁRIO)",
-   "note": "Encomendar no M6: sinal 0.75 M€ da caixa (banda 0.5–1.2 = ~10–20 % de uma unidade ~5 M€; centro 15 %). Unidade: Pedro «~5 M€» (REAL domínio) → centro 5 (banda 4–8 delivered; HIPÓTESE). ACER 3,6–4,7 fica como piso antigo. Alternativa rejeitada por agora: o Pedro quis dizer que o SINAL é 5 M€ (esgotaria o CAR 6,5) — PEDIR se for o caso. A banda GM 0,4–0,9 (§20.10) escalou com o preço da unidade. Perdido se o projeto cair. Na FID → Capex já nos 90 (SE ~7,5 inclui o trafo). NPV enquanto vive: 0. Custo de oportunidade M6→FID ~0,03–0,05. player_grid 15 meses. Visibilidade v0.1 (euro-fields §20, 2026-10-06c).",
-   "formula": "cash: −0.75 (orçamento desenvolvimento; nav 0) ; unidade ~5 ; na FID → Capex já nos 90 ; months: 0 ; player_grid due 15",
+   "note": "Encomendar no M6: sinal 0.25 M€ da caixa (banda 0.15–0.40). Pedro 2026-10-07 cortou o depósito (era 0.75, banda 0.50–1.20). Perdido se o projeto cair antes da FID. Na FID o sinal passa a Capex (já está nos 90: SE própria inclui o trafo) → não soma duas vezes, sem equity a mais. NPV enquanto o projeto vive: 0 (REAL). player_grid fica nos 15 meses. Sem meses. Visibilidade v0.1 (euro-fields §20.11).",
+   "formula": "cash: −0.25 (orçamento desenvolvimento; nav 0, REAL) ; na FID → Capex já nos 90 ; months: 0 ; player_grid due 15",
    "capex_MEUR": 0.0,
    "pay_from": "caixa",
    "track": null,
@@ -4330,8 +4330,8 @@
    "nav_months": 0.0,
    "nav_cash": 0.0,
    "band_MEUR": [
-    0.5,
-    1.2
+    0.15,
+    0.4
    ]
   },
   "transformer_order_late": {
@@ -7393,7 +7393,7 @@
     "label": "HIPÓTESE · REAL (programa)"
    },
    "transformer_order_early": {
-    "cash": -0.75,
+    "cash": -0.25,
     "capex_MEUR": 0.0,
     "equity": null,
     "nav": 0.0,
@@ -7403,10 +7403,10 @@
     "months": 0,
     "track": null,
     "pay_from": "caixa",
-    "label": "HIPÓTESE (depósito %) · REAL (unidade ~5 M€, Pedro) · SECUNDÁRIO (prazos)",
+    "label": "REAL",
     "band_MEUR": [
-     0.5,
-     1.2
+     0.15,
+     0.4
     ]
    },
    "transformer_order_late": {
@@ -7642,7 +7642,7 @@
   "scenarios": {
    "cuidadosa (encomenda early)": {
     "dnav": 0.05,
-    "cash": -1.1,
+    "cash": -0.6,
     "contingencia_usada": 2.15,
     "equity_extra": 0.2,
     "cod": 28,
@@ -7655,7 +7655,7 @@
    },
    "cuidadosa B (reclama LDs, paga a servidão, EPC faz a linha)": {
     "dnav": -0.21,
-    "cash": -1.1,
+    "cash": -0.6,
     "contingencia_usada": 0.84,
     "equity_extra": 0.0,
     "cod": 32,
@@ -7681,7 +7681,7 @@
    },
    "desleixada (early + papéis REN)": {
     "dnav": -1.43,
-    "cash": -1.2,
+    "cash": -0.7,
     "contingencia_usada": 0.15,
     "equity_extra": 0.0,
     "cod": 36,
@@ -7707,7 +7707,7 @@
    },
    "desleixada com desvio da linha": {
     "dnav": -1.05,
-    "cash": -1.2,
+    "cash": -0.7,
     "contingencia_usada": 0.8,
     "equity_extra": 0.0,
     "cod": 34,
@@ -7780,10 +7780,10 @@
   },
   "transformer_m6_2026_10_06d": {
    "early": {
-    "cash": -0.75,
+    "cash": -0.25,
     "band_MEUR": [
-     0.5,
-     1.2
+     0.15,
+     0.4
     ],
     "nav": 0.0,
     "months": 0,
@@ -7806,8 +7806,8 @@
     4.0,
     8.0
    ],
-   "anchors": "unidade ~5 M€ (Pedro) · depósito 15 % = 0,75 (0,50–1,20) · ACER piso · Energinet 7,3/unid 600 MVA · WoodMac/IEA",
-   "console": "Na criação do player_grid: due.variants (15 early / 24 late). NÃO somar shift +9 se variants já pôs 24. Sinal early: cash −0,75, nav 0; na FID creditar contra Capex (não double-count)."
+   "anchors": "sinal 0,25 M€ (banda 0,15–0,40), REAL (Pedro 2026-10-07) · player_grid 15 / 24",
+   "console": "Na criação do player_grid: due.variants (15 early / 24 late). NÃO somar shift +9 se variants já pôs 24. Sinal early: cash −0,25, nav 0 (REAL); na FID creditar contra Capex (não double-count). Se o projeto cair antes da FID, o sinal perdido é o cash da row."
   },
   "ren_papers_stack": {
    "answer": "Sim, são dois eventos diferentes e somam correctamente na pista REN.",
@@ -7823,7 +7823,7 @@
    "epc_lds_claimed: agora tem nav +0,36 (e capex_credit_MEUR 0,5 só informativo) — applyEconRow já soma nav e equity −0,5; não passar pelo pool.",
    "delay_cod_+1/+2: no deadlines.draft.json deslocam REN e central mas não player_grid → com a rede do jogador crítica dão 0. Proposta ao GM: aplicá-las direto ao COD (pista tests) ou juntar player_grid ao shift.",
    "Copiar o effects-economy.json regenerado para licenca/events/ e para o repo (o events/effects-economy.json e o e8b6528 têm a versão 1006b).",
-   "transformer_order_late: na criação do player_grid usar due.variants (24) OU shift +9, nunca os dois. transformer_order_early: cash −0,75 nav 0; na FID creditar o sinal contra Capex (não double-count)."
+   "transformer_order_late: na criação do player_grid usar due.variants (24) OU shift +9, nunca os dois. transformer_order_early: cash −0,25 nav 0; na FID creditar o sinal contra Capex (não double-count)."
   ]
  },
  "no_economy": [

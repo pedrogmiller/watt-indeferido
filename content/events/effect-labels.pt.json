@@ -397,6 +397,6 @@
   "fa_bess_awarded": "O Fundo Ambiental aprovou o apoio às baterias",
   "fa_bess_refused": "O Fundo Ambiental recusou a candidatura",
   "fa_bess_answer_seen": "",
-  "transformer_order_early": "Encomendaste o transformador depois do PIP",
+  "transformer_order_early": "Encomendaste o transformador: saíram 0,25 M€ da caixa",
   "transformer_order_late": "Deixaste a encomenda do transformador para depois da decisão final"
 }

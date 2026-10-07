@@ -22,8 +22,8 @@
       "effects": [
         "transformer_order_early"
       ],
-      "hint": "Pagas já um sinal da caixa, que perdes se o projeto não avançar. A tua subestação fica pronta cerca de 15 meses depois do arranque da obra.",
-      "consequence_pt": "Transformador encomendado: sai dinheiro da caixa, que perdes se o projeto cair. A tua subestação mantém o prazo de 15 meses."
+      "hint": "Pagas já 0,25 M€ da caixa, que perdes se o projeto não chegar à decisão final. A tua subestação fica pronta cerca de 15 meses depois do arranque da obra.",
+      "consequence_pt": "Transformador encomendado: saem 0,25 M€ da caixa, que perdes se o projeto cair antes da decisão final. A tua subestação mantém o prazo de 15 meses."
     },
     {
       "id": "wait",
@@ -38,7 +38,7 @@
   "deadline_ref": "player_grid",
   "deadline_letter": false,
   "notes_for_ui": "Carta M6 (depois do PIP). transformer_order_early: player_grid fica nos 15 meses. transformer_order_late: player_grid.due = 24 meses (variante no deadlines.draft.json, lida na criação em construction_started). Mostrar no aviso a data de arranque prevista.",
-  "notes_for_economy": "Economy §20.11: transformer_order_early = caixa −0,75 (banda 0,50–1,20; 15 % de uma unidade ~5 M€), NPV 0 enquanto o projeto vive; na FID o sinal credita o Capex já incluído nos 90 (sem equity a mais). transformer_order_late = +9 meses na pista player_grid (due 24). A consola usa due.variants na criação e não soma também o shift de +9. ΔNPV só pelos meses que o COD mexer de verdade.",
+  "notes_for_economy": "Economy §20.11: transformer_order_early = caixa −0,25 (banda 0,15–0,40), NPV 0 (REAL) enquanto o projeto vive; na FID o sinal credita o Capex já incluído nos 90 (sem equity a mais). Se o projeto cair antes da FID, o sinal perdido é esse cash. transformer_order_late = +9 meses na pista player_grid (due 24). A consola usa due.variants na criação e não soma também o shift de +9.",
   "nota_gm": "Prazos de transformadores de potência em 2025: ~128–143 semanas / ~30–33 meses (Wood Mackenzie); até ~4 anos (IEA fev. 2025). Pedro 2026-10-06: a carta sai no M6 (depois do PIP), não antes da FID com «vaga de fabrico». Com encomenda no M6 (~mês 6) e obra a arrancar ~M12–18, há ~18–24 meses até à subestação — alinhado com o prazo real. Sem encomenda, player_grid sobe para 24 meses depois do arranque (COD muito mais tarde). Baterias e Fundo Ambiental ficam na v0.1 (aprovado no mesmo pedido).",
   "transformador_m6_2026_10_06": true
 }
