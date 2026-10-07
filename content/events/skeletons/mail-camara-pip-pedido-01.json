@@ -23,15 +23,19 @@
       "effects": [
         "pip_request_submitted",
         "cash_at_risk_+1"
-      ]
+      ],
+      "consequence_pt": "PIP entregue: sai dinheiro da caixa e a Câmara tem dois a três meses para responder."
     },
     {
       "id": "submit_benefits",
       "label": "Submeter com proposta de benefícios locais",
       "effects": [
         "pip_request_submitted",
-        "pip_benefits_offer"
-      ]
+        "pip_benefits_offer",
+        "risk_camara_-1",
+        "reputation_+1"
+      ],
+      "consequence_pt": "PIP entregue com benefícios para a terra: custa mais, mas a Câmara fica do teu lado e a tua reputação sobe."
     },
     {
       "id": "hold",
@@ -39,7 +43,8 @@
       "effects": [
         "pip_request_hold",
         "delay_pip_+1"
-      ]
+      ],
+      "consequence_pt": "Seguras mais um mês: o PIP atrasa e a caixa paga esse mês."
     }
   ],
   "heavy": true,
@@ -49,5 +54,6 @@
   "deadline_id": "pip_camara",
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

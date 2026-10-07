@@ -18,9 +18,11 @@
       "effects": [
         "obra_road_repair",
         "risk_community_-1",
-        "risk_camara_-1"
+        "risk_camara_-1",
+        "reputation_+1"
       ],
-      "hint": "Gastas dinheiro agora. Os moradores e a Câmara ficam do teu lado até ao fim da obra."
+      "hint": "Gastas dinheiro agora. Os moradores e a Câmara ficam do teu lado até ao fim da obra.",
+      "consequence_pt": "Estrada arranjada: a aldeia e a Câmara ficam do teu lado e a tua reputação sobe."
     },
     {
       "id": "minimum",
@@ -29,10 +31,12 @@
         "risk_community_+1",
         "risk_camara_+1"
       ],
-      "hint": "Não gastas nada agora. As queixas continuam e a Câmara fica menos disponível para te ajudar."
+      "hint": "Não gastas nada agora. As queixas continuam e a Câmara fica menos disponível para te ajudar.",
+      "consequence_pt": "A aldeia ficou zangada e a Câmara também: o risco para a licença sobe."
     }
   ],
   "heavy": true,
   "notes_for_economy": "obra_road_repair: custo pequeno (PEDIR_ECONOMY; caixa ou contingência da obra?).",
-  "nota_gm": "Sem base legal específica; licença de obra municipal (RJUE) e circulação de pesados. Absorve a carta só informativa do estaleiro (mail-fyi-processo-01.obra-estaleiro)."
+  "nota_gm": "Sem base legal específica; licença de obra municipal (RJUE) e circulação de pesados. Absorve a carta só informativa do estaleiro (mail-fyi-processo-01.obra-estaleiro).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

@@ -6,9 +6,10 @@
     "se_id": "ourique"
   },
   "from_name": "Direção de obra",
-  "subject": "A central está montada: falta a ligação da REN",
-  "body": "A obra da central está concluída: painéis, inversores, cabos e transformador estão no lugar. Falta a REN ligar a subestação, o que está previsto para {{deadline_month}}. Até lá, a central não pode produzir.\n\nO empreiteiro pergunta o que fazer com a equipa. Mantê-la no local custa dinheiro todos os meses, mas os testes começam logo que a REN ligar. Se a mandares embora, poupas, mas a equipa demora cerca de um mês a voltar.",
+  "subject": "A central está montada: falta a ligação",
+  "body": "A obra da central está concluída: painéis, inversores e cabos estão no lugar. Falta a ligação à rede: a tua subestação e a linha, e a obra da REN na subestação dela. A ligação completa está prevista para {{deadline_month}}. Até lá, a central não pode produzir.\n\nO empreiteiro pergunta o que fazer com a equipa. Mantê-la no local custa dinheiro todos os meses, mas os testes começam logo que a ligação estiver pronta. Se a mandares embora, poupas, mas a equipa demora cerca de um mês a voltar.",
   "params": {
     "deadline_id": "grid_connection"
-  }
+  },
+  "visibilidade_v01_2026_10_06": "Espera pela ligação completa (rede própria + REN)."
 }

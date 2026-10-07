@@ -8,5 +8,7 @@
   "from_name": "Equipa de desenvolvimento",
   "subject": "O ICNF não respondeu",
   "body": "Pedimos ao ICNF, o instituto do Estado que protege a natureza e as florestas, uma opinião sobre os sobreiros e azinheiras do terreno. Passou um mês e não houve resposta. Sem um processo aberto na Câmara, é normal o ICNF não responder.",
-  "params": {}
+  "params": {},
+  "retired": true,
+  "retired_reason": "GM 2026-10-06: consulta ao ICNF fora da v0.1."
 }

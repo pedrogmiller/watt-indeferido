@@ -5,9 +5,10 @@
   "when": {},
   "from_name": "Direção de obra",
   "subject": "Obra pronta: pedir os testes e a vistoria",
-  "body": "A central está montada e a ligação está pronta. Agora são precisos os testes, com autorização da DGEG e parecer da REN, e depois a vistoria para a licença de exploração. A DGEG tem 30 dias para fazer a vistoria; se não a fizer, uma entidade autorizada pode fazê-la, paga por ti. O empreiteiro ainda tem uma lista de pequenos trabalhos por fechar.",
+  "body": "A central, a tua subestação e a linha estão montadas, e a REN já acabou a parte dela. Agora são precisos os testes, com autorização da DGEG e parecer da REN, e depois a vistoria para a licença de exploração. A DGEG tem 30 dias para fazer a vistoria; se não a fizer, uma entidade autorizada pode fazê-la, paga por ti. O empreiteiro ainda tem uma lista de pequenos trabalhos por fechar.",
   "params": {
     "base_legal": "DL 15/2022 arts. 32.º e 34.º"
   },
-  "obra_v01_2026_10_06": "Linguagem simples."
+  "obra_v01_2026_10_06": "Linguagem simples.",
+  "visibilidade_v01_2026_10_06": "Ligação = subestação e linha do jogador + obra da REN."
 }

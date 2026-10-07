@@ -15,43 +15,49 @@
   },
   "priority": "high",
   "from_type": "EPC",
-  "deadline_ref": "epc_mechanical_completion",
+  "deadline_ref": "player_grid",
   "choices": [
     {
       "id": "claim_lds",
       "label": "Aplicar as penalidades do contrato",
       "effects": [
         "epc_lds_claimed",
-        "delay_obra_+1",
+        "delay_subestacao_+1",
         "epc_relationship_-1"
       ],
-      "hint": "O empreiteiro paga-te parte do prejuízo, mas a obra atrasa na mesma e a relação piora."
+      "hint": "O empreiteiro paga-te parte do prejuízo, mas a subestação atrasa na mesma e a relação piora.",
+      "consequence_pt": "O empreiteiro paga-te parte do prejuízo, mas a tua subestação atrasa na mesma, e a data de arranque com ela."
     },
     {
       "id": "accelerate",
       "label": "Pagar para recuperar parte do tempo",
       "effects": [
-        "delay_obra_+1",
-        "epc_acceleration"
+        "delay_subestacao_+1",
+        "subestacao_acceleration"
       ],
-      "hint": "Gastas mais capital próprio. A obra atrasa cerca de um mês, em vez de três."
+      "hint": "Gastas mais capital próprio. A subestação atrasa cerca de um mês, em vez de três.",
+      "consequence_pt": "Pagas mais capital próprio e a tua subestação perde só um mês: a data de arranque quase não mexe."
     },
     {
       "id": "accept",
       "label": "Aceitar a nova data",
       "effects": [
-        "delay_obra_+1"
+        "delay_subestacao_+1"
       ],
-      "hint": "Não pagas nada a mais. A obra acaba cerca de três meses mais tarde."
+      "hint": "Não pagas nada a mais. A subestação fica pronta cerca de três meses mais tarde.",
+      "consequence_pt": "Não pagas nada a mais: a tua subestação, e a data de arranque, atrasam cerca de três meses."
     }
   ],
   "heavy": true,
   "notes_for_economy": "Odds PEDIR_ECONOMY (sobem com epc_multi / epc_interface_risk_+1; descem com epc_turnkey). epc_acceleration/overrun = equity extra; LDs = crédito parcial — PEDIR_ECONOMY.",
   "notes_for_ui": "delay_obra_+1 / epc_acceleration empurram/puxam epc_mechanical_completion (shift_on_effects, meses do effects-economy). CTA pesado.",
   "deadline_letter": true,
-  "deadline_id": "epc_mechanical_completion",
+  "deadline_id": "player_grid",
   "deadline_role": "outcome",
-  "deadline_kind": "third_party",
+  "deadline_kind": "player_works",
   "deadline_blocks_play": true,
-  "obra_v01_2026_10_06": "Antes: accept → delay_cod_+2 (6 meses), claim_lds → delay_cod_+1, accelerate → epc_acceleration + equity_capex_overrun_flag (+5 % Capex). Agora: atraso base delay_obra_+1 (3 meses) em todas; accelerate soma epc_acceleration (−2 meses) → ~1 mês líquido; sem equity_capex_overrun_flag (ver pedido ao Economy)."
+  "obra_v01_2026_10_06": "Antes: accept → delay_cod_+2 (6 meses), claim_lds → delay_cod_+1, accelerate → epc_acceleration + equity_capex_overrun_flag (+5 % Capex). Agora: atraso base delay_obra_+1 (3 meses) em todas; accelerate soma epc_acceleration (−2 meses) → ~1 mês líquido; sem equity_capex_overrun_flag (ver pedido ao Economy).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "notes_for_ui_visibilidade_v01_2026_10_06": "Passou a ser o transformador da subestação do jogador: mexe em player_grid (não na conclusão da central). delay_subestacao_+1 = +3 meses; subestacao_acceleration = −2 meses (meses do effects-economy).",
+  "nota_gm": "DL 15/2022 + Regulamento de Relações Comerciais: depois do TRC, o produtor pede à REN as condições de ligação; a REN apresenta uma proposta técnico-comercial com prazos e encargos das obras na subestação dela (painel/baía onde a linha liga). A subestação do produtor (elevadora) e a linha de uso exclusivo até ao ponto de ligação são do produtor, que as constrói e paga; a licença de exploração abrange a central e as infraestruturas de ligação de serviço particular. Fronteira no ponto de ligação. Art. 24.º-26.º (acordo/condições) e art. 14.º/3 (prazo da LE só se ajusta a atrasos da RESP, não da linha do produtor). VERIFICADO em parte (pgdlisboa, mercado.ren.pt, manual E-REDES por analogia); números de artigo da responsabilidade da linha do produtor e prazos típicos da REN: INCERTO — PEDIR_PEDRO. Transformadores de potência: prazos de entrega longos (12–24 meses em 2024–2026) — factual em geral."
 }

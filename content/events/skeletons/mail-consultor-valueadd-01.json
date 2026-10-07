@@ -14,20 +14,28 @@
   "choices": [
     {
       "id": "start_hybrid",
-      "label": "Dar prioridade ao eólico e às baterias",
+      "label": "Aceitar a proposta e juntar as baterias",
       "effects": [
         "value_add_commit",
         "bess_dev_flag"
-      ]
+      ],
+      "consequence_pt": "Aceitas a proposta: sai dinheiro da caixa, as baterias entram no plano da central e podes pedir apoio ao Fundo Ambiental.",
+      "hint": "Pagas já o estudo e o desenho. As baterias entram no projeto da obra, com o preço fixo."
     },
     {
       "id": "later",
-      "label": "Ainda não",
+      "label": "Deixar passar",
       "effects": [
         "value_add_delay_+1"
-      ]
+      ],
+      "consequence_pt": "Deixas passar a proposta: a central segue só com painéis.",
+      "hint": "A central segue só com painéis. Se mais tarde quiseres baterias, pagas o preço do mercado."
     }
   ],
   "notes_for_economy": "Sem € directo; Economy reage a bess_dev_flag",
-  "notes_for_ui": "Sem reequipamento nesta carta"
+  "notes_for_ui": "Sem reequipamento nesta carta",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "notes_for_ui_visibilidade_v01_2026_10_06": "bess_dev_flag já arranca as baterias no código (startBessFromPriorityLetter: 8 % do TRC para baterias). Mostrar no painel/ficha da central «Baterias: em projeto» depois desta escolha. O eólico sai da carta (fora da v0.1).",
+  "notes_for_economy_derrapagem_valueadd_2026_10_06_1152": "O «preço fixo até à FID» é só enquadramento; se Economy quiser, bess_dev_flag depois da FID pode custar mais (PEDIR_ECONOMY).",
+  "derrapagem_valueadd_2026_10_06_1152": "Mantida (não retirada): é a única porta para as baterias e para a candidatura ao Fundo Ambiental; a carta de sobreequipamento só trata de painéis."
 }

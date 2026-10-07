@@ -1,0 +1,21 @@
+{
+  "skeleton_id": "mail-rede-linha-pronta-01",
+  "skin_id": "rede-propria",
+  "draft": true,
+  "when": {},
+  "from_name": "Empreiteiro — direção do projeto",
+  "subject": "A tua subestação e a linha estão prontas",
+  "body": "A tua subestação está montada e a linha já chega à subestação da REN. Quando a central e a REN estiverem prontas, pedes os testes.",
+  "choice_overrides": {
+    "ack": {
+      "effects": [
+        "player_grid_ready"
+      ],
+      "consequence_pt": "A tua subestação e a linha estão prontas."
+    }
+  },
+  "params": {
+    "deadline_id": "player_grid"
+  },
+  "visibilidade_v01_2026_10_06": true
+}

@@ -7,16 +7,26 @@
   },
   "from_name": "Direção de obra",
   "subject": "{{deadline_label}}: a data de {{old_month}} passou",
-  "body": "Estava previsto para {{old_month}}: {{deadline_label}}. A data passou e isso ainda não aconteceu. Motivo: {{cause}}. A nova previsão é {{new_month}}.\n\nA licença de exploração tem de estar emitida até {{le_month}}. Podes pagar para recuperar parte do atraso, ou aceitar a nova previsão.",
+  "body": "Estava previsto para {{old_month}}: {{deadline_label}}. A data passou e isso ainda não aconteceu. Motivo: {{cause}}. A nova previsão é {{new_month}}. Meses de atraso: {{months}}.\n\nA licença de exploração tem de estar emitida até {{le_month}}. Podes pagar para recuperar o atraso, ou aceitar a nova previsão.",
   "params": {},
   "choice_overrides": {
     "recover": {
-      "label": "Pagar ao empreiteiro para recuperar parte do atraso",
+      "label": "Pagar ao empreiteiro para recuperar o atraso",
       "effects": [
         "epc_acceleration",
         "slip_recover"
       ],
-      "hint": "Gastas mais capital próprio. Recuperas cerca de dois meses."
+      "hint": "Gastas mais capital próprio. Recuperas o atraso, até dois meses no máximo, sem passar da data antiga.",
+      "before_derrapagem_valueadd_2026_10_06_1152": {
+        "label": "Pagar ao empreiteiro para recuperar parte do atraso",
+        "hint": "Gastas mais capital próprio. Recuperas cerca de dois meses.",
+        "consequence_pt": null
+      },
+      "consequence_pt": "Pagas mais capital próprio e recuperas o atraso, até dois meses: o NPV desce um pouco.",
+      "before_economy_1006c_2026_10_06_1202": {
+        "hint": "Gastas mais capital próprio. Recuperas o atraso, ou parte dele se for longo.",
+        "consequence_pt": "Pagas mais capital próprio e recuperas o atraso, ou parte dele se for longo: o NPV desce um pouco."
+      }
     },
     "accept": {
       "label": "Aceitar a nova data",
@@ -28,5 +38,10 @@
   },
   "deadline_id": "by_context",
   "deadline_role": "warning",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere.",
+  "body_before_derrapagem_valueadd_2026_10_06_1152": "Estava previsto para {{old_month}}: {{deadline_label}}. A data passou e isso ainda não aconteceu. Motivo: {{cause}}. A nova previsão é {{new_month}}.\n\nA licença de exploração tem de estar emitida até {{le_month}}. Podes pagar para recuperar parte do atraso, ou aceitar a nova previsão.",
+  "derrapagem_valueadd_2026_10_06_1152": "Sem «cerca de dois meses»: o atraso real pode ser de 1 mês.",
+  "body_before_economy_1006c_2026_10_06_1202": "Estava previsto para {{old_month}}: {{deadline_label}}. A data passou e isso ainda não aconteceu. Motivo: {{cause}}. A nova previsão é {{new_month}}.\n\nA licença de exploração tem de estar emitida até {{le_month}}. Podes pagar para recuperar o atraso, ou aceitar a nova previsão.",
+  "economy_1006c_2026_10_06_1202": "Meses de atraso: {{months}} (parâmetro novo do código)."
 }

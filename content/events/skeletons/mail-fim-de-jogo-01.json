@@ -25,10 +25,12 @@
       "hint": "Abres o resumo do projeto: o que correu mal, quanto tempo durou e quanto gastaste.",
       "effects": [
         "end_screen_open"
-      ]
+      ],
+      "consequence_pt": "Abre o balanço."
     }
   ],
   "notes_for_ui": "Carta final de derrota. Na entrega a consola põe end_state = {status:'lost', reason:<skin>}, para o relógio do projeto e abre o ecrã de fim ao clicar. Placeholders: {{se_name}} {{end_reason_text}} {{months_played}} {{car_spent}} {{caucao_lost}} {{refusal_authority}}.",
   "notes_for_economy": "Sem efeitos € próprios: os € da perda vêm das tags que a causaram (trc_caducado, caucao_executada…).",
-  "nota_gm": "Regra de justiça (Pedro 2026-10-03): nenhuma destas cartas sai sem um aviso da mesma via entregue pelo menos 1 mês antes (ver endings_stakes_v01.fairness em lp-cod-rules)."
+  "nota_gm": "Regra de justiça (Pedro 2026-10-03): nenhuma destas cartas sai sem um aviso da mesma via entregue pelo menos 1 mês antes (ver endings_stakes_v01.fairness em lp-cod-rules).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

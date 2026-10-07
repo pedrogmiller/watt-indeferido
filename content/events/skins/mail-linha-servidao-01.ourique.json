@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-linha-servidao-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Advogado do projeto",
+  "subject": "Um vizinho não deixa passar a linha",
+  "body": "A linha até à subestação da REN é curta, mas atravessa um terreno vizinho. O dono não deixa entrar as máquinas e pede uma indemnização muito acima do normal.\n\nPodes pagar o que pede, e a obra da linha segue. Podes pedir à DGEG que imponha a passagem, com uma indemnização fixada por peritos: pagas o justo, mas o processo leva meses e a linha fica parada. Ou desvias a linha pelo caminho público, mais comprida e mais cara.",
+  "params": {
+    "deadline_id": "player_grid"
+  },
+  "visibilidade_v01_2026_10_06": true
+}

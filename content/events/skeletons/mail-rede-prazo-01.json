@@ -22,7 +22,8 @@
         "grid_agreement_signed",
         "capex_rede_flag",
         "caducidade_risk_-1"
-      ]
+      ],
+      "consequence_pt": "Acordo assinado: o prazo da REN fica cumprido e o risco para a licença desce. As obras na rede custam dinheiro."
     },
     {
       "id": "defer",
@@ -30,14 +31,16 @@
       "effects": [
         "delay_ligacao_+1",
         "caducidade_risk_+1"
-      ]
+      ],
+      "consequence_pt": "A REN dá mais tempo, mas a tua ligação fica para mais tarde e o risco para a licença sobe."
     },
     {
       "id": "risk",
       "label": "Arriscar o prazo",
       "effects": [
         "caducidade_risk_+2"
-      ]
+      ],
+      "consequence_pt": "Não assinas: se o prazo passar, podes perder o TRC. O risco para a licença sobe muito."
     }
   ],
   "notes_for_economy": "capex_rede = PEDIR_ECONOMY",
@@ -51,5 +54,6 @@
   ],
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

@@ -4,5 +4,9 @@
   "from_name": "Redação regional",
   "subject": "Pedido de comentário: central em Ourique",
   "body": "Estamos a preparar uma notícia sobre o novo projeto e o conflito com a população local. Queres dar uma declaração, ou publicamos só a versão da Câmara?",
-  "params": {}
+  "params": {},
+  "on_deliver_effects": [
+    "risk_community_+1"
+  ],
+  "visibilidade_v01_2026_10_06": "on_deliver_effects: abre o conflito no painel («Risco para a licença» sobe ao chegar a carta); a resposta conciliadora volta a baixá-lo. Campo novo — ver hud-effects.draft.json."
 }

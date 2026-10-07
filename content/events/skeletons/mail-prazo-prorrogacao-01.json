@@ -21,14 +21,16 @@
       "label": "Pedir prorrogação fundamentada",
       "effects": [
         "deadline_extend_request"
-      ]
+      ],
+      "consequence_pt": "Pedes prorrogação: a DGEG decide. Se recusar, o TRC fica em jogo."
     },
     {
       "id": "rush",
       "label": "Cumprir já com o que houver",
       "effects": [
         "deadline_rush"
-      ]
+      ],
+      "consequence_pt": "Cumpres já com o que tens: o prazo fica resolvido, mas com menos potência ou um processo mais fraco."
     },
     {
       "id": "sell_before_lapse",
@@ -44,14 +46,16 @@
         "blocks": [
           "sale_pipeline_open"
         ]
-      }
+      },
+      "consequence_pt": "Começas a procurar comprador: com o prazo falhado, as ofertas vão ser baixas."
     },
     {
       "id": "let_lapse",
       "label": "Deixar caducar",
       "effects": [
         "deadline_accept_miss"
-      ]
+      ],
+      "consequence_pt": "Desistes do prazo: perdes o TRC e a caução."
     }
   ],
   "heavy": true,
@@ -65,5 +69,6 @@
   ],
   "deadline_role": "hearing",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

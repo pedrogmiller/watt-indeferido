@@ -30,7 +30,8 @@
         "requires": [
           "fid_reached"
         ]
-      }
+      },
+      "consequence_pt": "Reúnes com a Câmara antes de arrancar: a obra começa um mês depois, mas a Câmara fica do teu lado."
     },
     {
       "id": "start_now",
@@ -43,18 +44,22 @@
         "requires": [
           "fid_reached"
         ]
-      }
+      },
+      "consequence_pt": "A obra arranca já, mas a Câmara ficou ofendida: o risco para a licença sobe."
     },
     {
       "id": "defer",
       "label": "Adiar arranque",
       "effects": [
         "obra_start_deferred",
-        "investor_patience_-1"
-      ]
+        "investor_patience_-1",
+        "reputation_-1"
+      ],
+      "consequence_pt": "Adias a obra: a data de arranque da central atrasa e a tua reputação desce."
     }
   ],
   "heavy": false,
   "notes_for_economy": "delay_obra_+1 = meses (tabela delay_*). Sem €.",
-  "notes_for_ui": "PHASE_BUMP proposto: construction_started → obra (gate: fid_reached + LP + aia|pip+nao_sujeicao). Cria deadline epc_mechanical_completion. 'Adiar' re-arma (obra_start_deferred)."
+  "notes_for_ui": "PHASE_BUMP proposto: construction_started → obra (gate: fid_reached + LP + aia|pip+nao_sujeicao). Cria deadline epc_mechanical_completion. 'Adiar' re-arma (obra_start_deferred).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

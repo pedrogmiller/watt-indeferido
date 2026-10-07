@@ -18,7 +18,8 @@
       "effects": [
         "risk_camara_-1",
         "cash_at_risk_+1"
-      ]
+      ],
+      "consequence_pt": "Reunião feita: a Câmara acalma e o risco para a licença desce. Sai algum dinheiro da caixa."
     },
     {
       "id": "ignore_again",
@@ -26,9 +27,11 @@
       "effects": [
         "risk_camara_+2",
         "delay_pip_+2"
-      ]
+      ],
+      "consequence_pt": "A Câmara deixou de te atender: o PIP vai demorar muito e o risco para a licença sobe."
     }
   ],
   "notes_for_economy": "cash_at_risk se pagar taxa/acelerar — PEDIR_ECONOMY",
-  "notes_for_ui": "Só se ignorou mail-camara-01"
+  "notes_for_ui": "Só se ignorou mail-camara-01",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

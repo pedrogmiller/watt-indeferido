@@ -26,7 +26,8 @@
       "effects": [
         "lp_elements_sent",
         "cash_at_risk_+1"
-      ]
+      ],
+      "consequence_pt": "Mandas tudo o que a DGEG pediu: sai dinheiro da caixa e o pedido segue."
     },
     {
       "id": "send_min",
@@ -34,14 +35,17 @@
       "effects": [
         "lp_elements_sent",
         "lp_dossier_thin"
-      ]
+      ],
+      "consequence_pt": "Mandas o mínimo: não gastas nada, mas a DGEG pode ficar com dúvidas."
     },
     {
       "id": "let_go",
       "label": "Deixar passar",
       "effects": [
-        "lp_elements_missing"
-      ]
+        "lp_elements_missing",
+        "caducidade_risk_+1"
+      ],
+      "consequence_pt": "Não respondes: a DGEG pode arquivar o pedido. O risco para a licença sobe."
     }
   ],
   "heavy": true,
@@ -51,5 +55,6 @@
   "deadline_id": "lp_aperfeicoamento",
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

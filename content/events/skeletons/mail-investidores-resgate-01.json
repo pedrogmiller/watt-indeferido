@@ -34,7 +34,8 @@
         "blocks": [
           "cash_rescue_used"
         ]
-      }
+      },
+      "consequence_pt": "Entra dinheiro na caixa, mas os investidores ficam com uma parte maior e a tua reputação desce."
     },
     {
       "id": "rescue_sell",
@@ -47,7 +48,8 @@
         "distressed_sale",
         "rescue_sell_all",
         "cash_rescue_used"
-      ]
+      ],
+      "consequence_pt": "Começas a procurar comprador para o projeto todo: as ofertas vão ser baixas."
     },
     {
       "id": "rescue_sell_part",
@@ -67,7 +69,8 @@
           "stake_sale_started",
           "sale_full_exit_pending"
         ]
-      }
+      },
+      "consequence_pt": "Vendes um quarto do projeto: entra dinheiro na caixa, a preço baixo."
     },
     {
       "id": "rescue_cut",
@@ -78,7 +81,8 @@
         "dev_slowdown",
         "cash_rescue_used"
       ],
-      "slip_cap_months": 2
+      "slip_cap_months": 2,
+      "consequence_pt": "Cortas a fundo: a caixa dura mais, mas o projeto atrasa."
     },
     {
       "id": "close",
@@ -92,7 +96,8 @@
         "car_burn_stop",
         "mandate_slot_free",
         "asset_removed"
-      ]
+      ],
+      "consequence_pt": "Fechas o projeto: perdes o TRC e a caução."
     }
   ],
   "notes_for_ui": "Degrau 2 (resgate) e 3 (ultimato). Placeholders {{cash_gap}} e {{deadline_month}} (consola). No ultimato, rescue_capital fica escondida (when.blocks cash_rescue_used). A consola põe end_state se o jogador escolher close.",
@@ -103,5 +108,6 @@
   "deadline_role": "due",
   "deadline_kind": "player",
   "deadline_blocks_play": true,
-  "deadline_note": "cash_recovery é prazo da consola (deliverStakeLetter), não está em deadlines.draft.json."
+  "deadline_note": "cash_recovery é prazo da consola (deliverStakeLetter), não está em deadlines.draft.json.",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

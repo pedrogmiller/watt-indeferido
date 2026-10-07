@@ -18,16 +18,19 @@
       "effects": [
         "dd_started",
         "cash_at_risk_+1"
-      ]
+      ],
+      "consequence_pt": "A verificação do terreno começou: sai dinheiro da caixa."
     },
     {
       "id": "later",
       "label": "Mais tarde",
       "effects": [
         "dd_delay_+1"
-      ]
+      ],
+      "consequence_pt": "Poupas agora, mas a verificação fica para depois e o projeto atrasa."
     }
   ],
   "notes_for_economy": "cash_at_risk DD legal — PEDIR_ECONOMY",
-  "notes_for_ui": "Trigger: após open_dd ou negotiate em mail-terreno-01"
+  "notes_for_ui": "Trigger: após open_dd ou negotiate em mail-terreno-01",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

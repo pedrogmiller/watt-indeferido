@@ -7,7 +7,7 @@
   },
   "from_name": "REN — Ligações à rede",
   "subject": "Ligação à rede: passa de {{old_month}} para {{new_month}}",
-  "body": "A data da ligação da tua central mudou de {{old_month}} para {{new_month}}. Motivo: {{cause}}.\n\nSem ligação, a central não produz, mesmo com a obra pronta. Quando o atraso é da rede, a lei dá-te mais tempo para a licença de exploração, mas convém que o atraso fique registado por escrito.",
+  "body": "A data da ligação da tua central mudou de {{old_month}} para {{new_month}}. Meses de atraso: {{months}}. Motivo: {{cause}}.\n\nSem ligação, a central não produz, mesmo com a obra pronta. Quando o atraso é da rede, a lei dá-te mais tempo para a licença de exploração, mas convém que o atraso fique registado por escrito.",
   "params": {
     "deadline_id": "grid_connection"
   },
@@ -18,17 +18,22 @@
         "grid_chase",
         "grid_slip_operator"
       ],
-      "hint": "Não custa nada. Fica escrito que o atraso é da REN, o que ajuda num pedido de prorrogação."
+      "hint": "Não custa nada. Fica escrito que o atraso é da REN, o que ajuda num pedido de prorrogação.",
+      "consequence_pt": "Fica escrito que o atraso é da REN: ajuda num pedido de prorrogação."
     },
     "accept": {
       "label": "Aceitar a nova data",
       "effects": [
         "slip_accepted"
       ],
-      "hint": "Não fazes nada. Sem registo escrito, será mais difícil provar à DGEG que o atraso não foi teu."
+      "hint": "Não fazes nada. Sem registo escrito, será mais difícil provar à DGEG que o atraso não foi teu.",
+      "consequence_pt": "Aceitas a nova data da REN. A data de arranque só muda se a REN passar a acabar depois da tua linha."
     }
   },
   "deadline_id": "grid_connection",
   "deadline_role": "warning",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere.",
+  "body_before_economy_1006c_2026_10_06_1202": "A data da ligação da tua central mudou de {{old_month}} para {{new_month}}. Motivo: {{cause}}.\n\nSem ligação, a central não produz, mesmo com a obra pronta. Quando o atraso é da rede, a lei dá-te mais tempo para a licença de exploração, mas convém que o atraso fique registado por escrito.",
+  "economy_1006c_2026_10_06_1202": "Meses de atraso: {{months}} (parâmetro novo do código)."
 }

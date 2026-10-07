@@ -90,7 +90,11 @@
     "skeletons/mail-obra-furto-01.json",
     "skeletons/mail-noticia-cortes-01.json",
     "skeletons/mail-prazo-derrapagem-01.json",
-    "skeletons/mail-prazo-aviso-le-01.json"
+    "skeletons/mail-prazo-aviso-le-01.json",
+    "skeletons/mail-linha-empreiteiro-01.json",
+    "skeletons/mail-linha-servidao-01.json",
+    "skeletons/mail-fa-bess-resposta-01.json",
+    "skeletons/mail-transformador-encomenda-01.json"
   ],
   "skins": [
     "skins/mail-advogado-dd-01.default.json",
@@ -250,7 +254,14 @@
     "skins/mail-prazo-derrapagem-01.licenca.json",
     "skins/mail-prazo-derrapagem-01.marco-passou.json",
     "skins/mail-prazo-aviso-le-01.ourique.json",
-    "skins/mail-prorrogacao-recusada-01.antecipada.json"
+    "skins/mail-prorrogacao-recusada-01.antecipada.json",
+    "skins/mail-linha-empreiteiro-01.ourique.json",
+    "skins/mail-linha-servidao-01.ourique.json",
+    "skins/mail-fa-bess-resposta-01.aprovado.json",
+    "skins/mail-fa-bess-resposta-01.recusado.json",
+    "skins/mail-transformador-encomenda-01.ourique.json",
+    "skins/mail-rede-linha-pronta-01.rede-propria.json",
+    "skins/mail-prazo-derrapagem-01.rede-propria.json"
   ],
   "se_sheets": [
     "se-sheets/ferreira-do-alentejo.json",
@@ -365,5 +376,7 @@
       "skins/mail-prazo-aviso-le-01.ourique.json",
       "skins/mail-prorrogacao-recusada-01.antecipada.json"
     ]
-  }
+  },
+  "npv_causes": "npv-causes.pt.json",
+  "hud_effects": "hud-effects.draft.json"
 }

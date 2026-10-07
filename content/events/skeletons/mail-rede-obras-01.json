@@ -18,15 +18,18 @@
       "effects": [
         "ren_docs_rush"
       ],
-      "hint": "Gastas algum dinheiro. A data da ligação fica garantida."
+      "hint": "Gastas algum dinheiro. A data da ligação fica garantida.",
+      "consequence_pt": "Os papéis seguem já: a REN mantém a data dela."
     },
     {
       "id": "wait",
       "label": "Entregar quando estiverem prontos",
       "effects": [
-        "ren_docs_late"
+        "ren_docs_late",
+        "delay_ligacao_curto"
       ],
-      "hint": "Não pagas nada. Se a REN passar a equipa para outra ligação, a tua atrasa."
+      "hint": "Não pagas nada. Se a REN passar a equipa para outra ligação, a tua atrasa.",
+      "consequence_pt": "A REN só marca a ligação quando tiver os papéis: a obra da REN passa um mês para a frente."
     }
   ],
   "heavy": true,
@@ -37,5 +40,6 @@
   "deadline_id": "grid_connection",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

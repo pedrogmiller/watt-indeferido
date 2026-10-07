@@ -30,7 +30,8 @@
         "grid_slip_operator",
         "delay_ligacao_+1"
       ],
-      "hint": "A ligação atrasa na mesma, mas fica escrito que o atraso é da REN. Isso ajuda num pedido de prorrogação à DGEG."
+      "hint": "A ligação atrasa na mesma, mas fica escrito que o atraso é da REN. Isso ajuda num pedido de prorrogação à DGEG.",
+      "consequence_pt": "Fica escrito que o atraso é da REN. A data de arranque só muda se a REN passar a acabar depois da tua linha."
     },
     {
       "id": "phased",
@@ -40,7 +41,8 @@
         "grid_slip_operator",
         "injection_cap_restricted"
       ],
-      "hint": "A central começa a vender a tempo, mas só parte da energia até a REN acabar a obra."
+      "hint": "A central começa a vender a tempo, mas só parte da energia até a REN acabar a obra.",
+      "consequence_pt": "Uma parte da central liga mais cedo, com menos potência: o NPV desce um pouco."
     },
     {
       "id": "accept",
@@ -48,7 +50,9 @@
       "effects": [
         "delay_ligacao_+1"
       ],
-      "hint": "Não fazes nada. A ligação atrasa cerca de três meses e, sem nada por escrito, será mais difícil provar à DGEG que o atraso não foi teu."
+      "hint": "Não fazes nada. A ligação atrasa cerca de quatro meses e, sem nada por escrito, será mais difícil provar à DGEG que o atraso não foi teu.",
+      "consequence_pt": "A obra da REN atrasa. A data de arranque só muda se a REN passar a acabar depois da tua linha.",
+      "hint_before_economy_1006c_2026_10_06_1202": "Não fazes nada. A ligação atrasa cerca de três meses e, sem nada por escrito, será mais difícil provar à DGEG que o atraso não foi teu."
     }
   ],
   "heavy": true,
@@ -60,5 +64,7 @@
   "deadline_kind": "third_party",
   "deadline_blocks_play": true,
   "obra_v01_2026_10_06": "Antes: chase/accept com delay_cod_+1/+2 e grid_slip_operator em todas. Agora: atraso = delay_ligacao_+1 (3 meses, move grid_connection); grid_slip_operator (ajuda a prorrogação da LE) só com escrito ou ligação por fases.",
-  "nota_gm": "DL 15/2022 art. 14.º/3 b): se a ligação da RESP atrasar, a LE conta 90 dias depois da infraestrutura. A prova escrita do atraso do operador conta para a prorrogação (art. 14.º/5: atraso não imputável ao requerente)."
+  "nota_gm": "DL 15/2022 + Regulamento de Relações Comerciais: depois do TRC, o produtor pede à REN as condições de ligação; a REN apresenta uma proposta técnico-comercial com prazos e encargos das obras na subestação dela (painel/baía onde a linha liga). A subestação do produtor (elevadora) e a linha de uso exclusivo até ao ponto de ligação são do produtor, que as constrói e paga; a licença de exploração abrange a central e as infraestruturas de ligação de serviço particular. Fronteira no ponto de ligação. Art. 24.º-26.º (acordo/condições) e art. 14.º/3 (prazo da LE só se ajusta a atrasos da RESP, não da linha do produtor). VERIFICADO em parte (pgdlisboa, mercado.ren.pt, manual E-REDES por analogia); números de artigo da responsabilidade da linha do produtor e prazos típicos da REN: INCERTO — PEDIR_PEDRO.",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "economy_1006c_2026_10_06_1202": "delay_ligacao_+1 = 4 meses."
 }

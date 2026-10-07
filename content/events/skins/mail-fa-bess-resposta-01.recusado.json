@@ -1,0 +1,20 @@
+{
+  "skeleton_id": "mail-fa-bess-resposta-01",
+  "skin_id": "recusado",
+  "draft": true,
+  "when": {},
+  "from_name": "Fundo Ambiental",
+  "subject": "Baterias: candidatura recusada",
+  "body": "A tua candidatura não foi aprovada: outros projetos tinham mais pontos, por estarem mais avançados. Podes voltar a candidatar-te num próximo concurso.",
+  "choice_overrides": {
+    "ack": {
+      "effects": [
+        "fa_bess_refused",
+        "fa_bess_answer_seen"
+      ],
+      "consequence_pt": "Candidatura recusada: as baterias seguem sem apoio."
+    }
+  },
+  "params": {},
+  "visibilidade_v01_2026_10_06": true
+}

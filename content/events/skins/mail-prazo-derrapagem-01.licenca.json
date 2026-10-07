@@ -17,17 +17,20 @@
       "effects": [
         "grid_chase"
       ],
-      "hint": "Não custa nada. A REN raramente antecipa, mas fica registado que pediste."
+      "hint": "Não custa nada. A REN raramente antecipa, mas fica registado que pediste.",
+      "consequence_pt": "Fica registado que pediste. A REN raramente antecipa."
     },
     "accept": {
       "label": "Seguir com o novo calendário",
       "effects": [
         "slip_accepted"
       ],
-      "hint": "A obra segue o novo calendário."
+      "hint": "A obra segue o novo calendário.",
+      "consequence_pt": "O prazo da licença de exploração passa para a nova data."
     }
   },
   "deadline_id": "le_deadline",
   "deadline_role": "warning",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere."
 }

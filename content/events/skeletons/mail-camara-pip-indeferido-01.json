@@ -27,7 +27,8 @@
         "pip_indeferido",
         "pip_reformulate",
         "delay_pip_+2"
-      ]
+      ],
+      "consequence_pt": "Voltas a pedir com o projeto corrigido: o PIP atrasa e a caixa paga esse tempo."
     },
     {
       "id": "hearing",
@@ -37,7 +38,8 @@
         "pip_hearing",
         "risk_camara_-1",
         "delay_pip_+1"
-      ]
+      ],
+      "consequence_pt": "A Câmara aceita ouvir-te de novo e fica mais recetiva, mas o PIP atrasa um mês."
     },
     {
       "id": "appeal",
@@ -47,7 +49,8 @@
         "pip_appeal",
         "risk_camara_+1",
         "delay_pip_+2"
-      ]
+      ],
+      "consequence_pt": "Recorres: pode demorar muitos meses e a Câmara fica contra ti. O risco para a licença sobe."
     },
     {
       "id": "sell_lot",
@@ -59,7 +62,8 @@
         "sale_pipeline_open",
         "buyer_search_active",
         "distressed_sale"
-      ]
+      ],
+      "consequence_pt": "Começas a procurar comprador: com o PIP recusado, as ofertas vão ser baixas."
     }
   ],
   "heavy": true,
@@ -69,5 +73,6 @@
   "deadline_id": "pip_decision",
   "deadline_role": "hearing",
   "deadline_kind": "authority",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

@@ -38,7 +38,8 @@
       "requires_state": [
         "equity_fit_ok"
       ],
-      "locked_hint": "Falta capital próprio para a obra. Pede reforço, vende o projeto ou adia."
+      "locked_hint": "Falta capital próprio para a obra. Pede reforço, vende o projeto ou adia.",
+      "consequence_pt": "Obra aprovada: o capital próprio fica reservado e a caixa deixa de pagar o desenvolvimento."
     },
     {
       "id": "ask_equity",
@@ -52,7 +53,8 @@
           "equity_fit_short"
         ]
       },
-      "hint": "Pedes aos investidores o capital próprio que falta. A decisão atrasa e eles podem dizer que não."
+      "hint": "Pedes aos investidores o capital próprio que falta. A decisão atrasa e eles podem dizer que não.",
+      "consequence_pt": "Os investidores vão decidir se põem mais capital: a decisão de construir atrasa."
     },
     {
       "id": "delay_fid",
@@ -60,9 +62,11 @@
       "effects": [
         "fid_defer",
         "delay_fid_+1",
-        "investor_patience_-1"
+        "investor_patience_-1",
+        "reputation_-1"
       ],
-      "hint": "Ganhas tempo, mas continuas a gastar dinheiro de desenvolvimento e os investidores ficam menos pacientes."
+      "hint": "Ganhas tempo, mas continuas a gastar dinheiro de desenvolvimento e os investidores ficam menos pacientes.",
+      "consequence_pt": "Adias a decisão: a data de arranque atrasa e a tua reputação desce."
     },
     {
       "id": "longer_loan",
@@ -80,7 +84,8 @@
           "longer_loan_request"
         ]
       },
-      "delay_note": "delay_fid_+1 = +3 meses no total; a carta de resposta (2–3 meses) chega dentro desse atraso. Não somar."
+      "delay_note": "delay_fid_+1 = +3 meses no total; a carta de resposta (2–3 meses) chega dentro desse atraso. Não somar.",
+      "consequence_pt": "O banco responde dentro de dois a três meses: a decisão de construir espera."
     },
     {
       "id": "bring_partner",
@@ -96,7 +101,8 @@
         ]
       },
       "guaranteed": true,
-      "delay_note": "delay_fid_+1 = +3 meses no total; a carta de resposta (2–3 meses) chega dentro desse atraso. Não somar."
+      "delay_note": "delay_fid_+1 = +3 meses no total; a carta de resposta (2–3 meses) chega dentro desse atraso. Não somar.",
+      "consequence_pt": "O sócio entra, mas fica com um quarto do projeto. A decisão de construir espera dois a três meses."
     },
     {
       "id": "sell_rtb",
@@ -106,7 +112,8 @@
         "sale_pipeline_open",
         "buyer_search_active"
       ],
-      "hint": "Procuras um comprador para o projeto pronto a construir. Não é logo uma venda: só começas a procurar."
+      "hint": "Procuras um comprador para o projeto pronto a construir. Não é logo uma venda: só começas a procurar.",
+      "consequence_pt": "Começas a procurar comprador para o projeto pronto a construir."
     }
   ],
   "heavy": true,
@@ -116,5 +123,6 @@
   "deadline_id": "fid_window",
   "deadline_role": "due",
   "deadline_kind": "player",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

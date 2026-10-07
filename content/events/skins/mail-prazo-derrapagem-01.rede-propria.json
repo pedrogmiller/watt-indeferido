@@ -1,0 +1,45 @@
+{
+  "skeleton_id": "mail-prazo-derrapagem-01",
+  "skin_id": "rede-propria",
+  "draft": true,
+  "when": {},
+  "from_name": "Empreiteiro — direção do projeto",
+  "subject": "A tua subestação e a linha: passam de {{old_month}} para {{new_month}}",
+  "body": "A data prevista para a tua subestação e a linha mudou de {{old_month}} para {{new_month}}. Meses de atraso: {{months}}. Motivo: {{cause}}. Enquanto forem a última peça a ficar pronta, a data de arranque da central atrasa com elas.",
+  "choice_overrides": {
+    "recover": {
+      "label": "Pagar para recuperar o atraso",
+      "effects": [
+        "subestacao_acceleration",
+        "slip_recover"
+      ],
+      "hint": "Gastas mais capital próprio. Recuperas o atraso, até dois meses no máximo, sem passar da data antiga.",
+      "consequence_pt": "Recuperas o atraso, até dois meses: a data de arranque adianta se a REN e a central estiverem prontas.",
+      "before_derrapagem_valueadd_2026_10_06_1152": {
+        "label": "Pagar para recuperar parte do atraso",
+        "hint": "Gastas mais capital próprio. Recuperas cerca de dois meses.",
+        "consequence_pt": "Recuperas cerca de dois meses: a data de arranque adianta se a REN e a central estiverem prontas."
+      },
+      "before_economy_1006c_2026_10_06_1202": {
+        "hint": "Gastas mais capital próprio. Recuperas o atraso, ou parte dele se for longo.",
+        "consequence_pt": "Recuperas o atraso, ou parte dele se for longo: a data de arranque adianta se a REN e a central estiverem prontas."
+      }
+    },
+    "accept": {
+      "label": "Aceitar a nova data",
+      "effects": [
+        "slip_accepted"
+      ],
+      "hint": "Não pagas nada a mais.",
+      "consequence_pt": "Aceitas a nova data: a data de arranque atrasa com ela."
+    }
+  },
+  "params": {
+    "deadline_id": "player_grid"
+  },
+  "visibilidade_v01_2026_10_06": true,
+  "derrapagem_valueadd_2026_10_06_1152": "Sem «cerca de dois meses»: o atraso real pode ser de 1 mês.",
+  "body_before_derrapagem_valueadd_2026_10_06_1152": "{{cause_pt}} A tua subestação e a linha só ficam prontas em {{new_month}}. Enquanto forem a última peça a ficar pronta, a data de arranque da central atrasa com elas.",
+  "body_before_economy_1006c_2026_10_06_1202": "A data prevista para a tua subestação e a linha mudou de {{old_month}} para {{new_month}}. Motivo: {{cause}}. Enquanto forem a última peça a ficar pronta, a data de arranque da central atrasa com elas.",
+  "economy_1006c_2026_10_06_1202": "Meses de atraso: {{months}} (parâmetro novo do código)."
+}

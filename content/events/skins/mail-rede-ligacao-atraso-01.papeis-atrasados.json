@@ -7,7 +7,7 @@
   },
   "from_name": "REN — Ligações à rede",
   "subject": "A tua ligação passou para depois",
-  "body": "Os papéis da tua subestação chegaram tarde e a nossa equipa já passou para outra ligação. A tua central só pode ser ligada cerca de três meses mais tarde do que o previsto. Este atraso não é da REN.\n\nPodes pedir-nos uma data por escrito, ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
+  "body": "Os papéis da tua subestação chegaram tarde e a nossa equipa já passou para outra ligação. A tua central só pode ser ligada cerca de quatro meses mais tarde do que o previsto. Este atraso não é da REN.\n\nPodes pedir-nos uma data por escrito, ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
   "params": {
     "deadline_id": "grid_connection"
   },
@@ -18,7 +18,8 @@
         "grid_chase",
         "delay_ligacao_+1"
       ],
-      "hint": "Ficas com uma data certa. O atraso foi teu, por isso não ajuda num pedido de prorrogação."
+      "hint": "Ficas com uma data certa. O atraso foi teu, por isso não ajuda num pedido de prorrogação.",
+      "consequence_pt": "Ficas com uma data certa. O atraso foi teu, por isso não ajuda num pedido de prorrogação."
     },
     "phased": {
       "effects": [
@@ -26,10 +27,16 @@
         "injection_cap_restricted",
         "delay_ligacao_+1"
       ],
-      "hint": "Uma parte da central liga mais cedo, com potência limitada. O resto espera pela equipa da REN."
+      "hint": "Uma parte da central liga mais cedo, com potência limitada. O resto espera pela equipa da REN.",
+      "consequence_pt": "Uma parte da central liga mais cedo, com menos potência: o NPV desce um pouco."
     },
     "accept": {
-      "hint": "Não fazes nada. A ligação atrasa cerca de três meses."
+      "hint": "Não fazes nada. A ligação atrasa cerca de quatro meses.",
+      "consequence_pt": "A obra da REN atrasa. A data de arranque só muda se a REN passar a acabar depois da tua linha.",
+      "hint_before_economy_1006c_2026_10_06_1202": "Não fazes nada. A ligação atrasa cerca de três meses."
     }
-  }
+  },
+  "visibilidade_v01_2026_10_06": "consequence_pt por skin onde o efeito difere.",
+  "body_before_economy_1006c_2026_10_06_1202": "Os papéis da tua subestação chegaram tarde e a nossa equipa já passou para outra ligação. A tua central só pode ser ligada cerca de três meses mais tarde do que o previsto. Este atraso não é da REN.\n\nPodes pedir-nos uma data por escrito, ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
+  "economy_1006c_2026_10_06_1202": "delay_ligacao_+1 = 4 meses."
 }

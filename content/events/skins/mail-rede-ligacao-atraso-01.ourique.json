@@ -5,10 +5,14 @@
   "when": {},
   "from_name": "REN — Ligações à rede",
   "subject": "A ligação em Ourique vai atrasar",
-  "body": "As obras da REN na subestação de Ourique atrasaram: o transformador novo chegou tarde e a licença da linha ainda não saiu. A ligação da tua central passa para cerca de três meses depois do previsto, e a central pode ficar pronta antes da rede.\n\nPodes exigir-nos um calendário por escrito, pedir para ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
+  "body": "As obras da REN na subestação de Ourique atrasaram: o equipamento do painel onde a tua linha vai ligar chegou tarde. A obra da REN passa para cerca de quatro meses depois do previsto.\n\nComo a tua subestação e a tua linha ainda não estão prontas, este atraso só muda a data de arranque se a REN passar a acabar depois de ti.\n\nPodes exigir-nos um calendário por escrito, pedir para ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
   "params": {
     "deadline_id": "grid_connection",
     "operator": "REN"
   },
-  "obra_v01_2026_10_06": "Reescrita simples; base legal passa para nota_gm do esqueleto."
+  "obra_v01_2026_10_06": "Reescrita simples; base legal passa para nota_gm do esqueleto.",
+  "body_before_visibilidade_v01_2026_10_06": "As obras da REN na subestação de Ourique atrasaram: o transformador novo chegou tarde e a licença da linha ainda não saiu. A ligação da tua central passa para cerca de três meses depois do previsto, e a central pode ficar pronta antes da rede.\n\nPodes exigir-nos um calendário por escrito, pedir para ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
+  "visibilidade_v01_2026_10_06": "A linha é do jogador; a REN só atrasa a parte dela.",
+  "body_before_economy_1006c_2026_10_06_1202": "As obras da REN na subestação de Ourique atrasaram: o equipamento do painel onde a tua linha vai ligar chegou tarde. A obra da REN passa para cerca de três meses depois do previsto.\n\nComo a tua subestação e a tua linha ainda não estão prontas, este atraso só muda a data de arranque se a REN passar a acabar depois de ti.\n\nPodes exigir-nos um calendário por escrito, pedir para ligar já uma parte da central com potência limitada, ou aceitar a nova data.",
+  "economy_1006c_2026_10_06_1202": "delay_ligacao_+1 = 4 meses (Economy 1006c)."
 }

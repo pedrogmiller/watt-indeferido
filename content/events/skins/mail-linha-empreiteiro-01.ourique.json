@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-linha-empreiteiro-01",
+  "skin_id": "ourique",
+  "draft": true,
+  "when": {},
+  "from_name": "Empreiteiro — direção do projeto",
+  "subject": "Quem constrói a tua subestação e a linha?",
+  "body": "Para a central produzir, precisas de uma subestação tua, que eleva a tensão, e de uma linha curta até à subestação da REN, ao lado do terreno. A REN só faz a parte dela, dentro da subestação dela, e costuma acabar antes. A tua parte é a que marca a data de arranque: está prevista para {{deadline_month}}.\n\nPodemos fazer tudo nós, ao preço do contrato. Uma empresa especializada em linhas e subestações cobra mais, mas trabalha ao mesmo tempo que nós na central e acaba cerca de dois meses mais cedo.",
+  "params": {
+    "deadline_id": "player_grid"
+  },
+  "visibilidade_v01_2026_10_06": true
+}

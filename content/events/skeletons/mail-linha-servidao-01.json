@@ -1,0 +1,55 @@
+{
+  "id": "mail-linha-servidao-01",
+  "phase": "crisis",
+  "draft": true,
+  "status": "DRAFT 2026-10-06 — rede própria no caminho crítico (v0.1 Ourique); proposta GM; aguarda Gate Pedro",
+  "trigger": {
+    "after": "construction_started",
+    "when_phase": [
+      "obra"
+    ]
+  },
+  "priority": "high",
+  "from_type": "ADVOGADO",
+  "choices": [
+    {
+      "id": "pay",
+      "label": "Pagar o que o vizinho pede",
+      "effects": [
+        "servidao_settlement"
+      ],
+      "hint": "Pagas mais do que é justo, mas a obra da linha segue sem parar.",
+      "consequence_pt": "Pagas e a obra da linha segue: a data de arranque não muda."
+    },
+    {
+      "id": "dgeg",
+      "label": "Pedir à DGEG que imponha a passagem",
+      "effects": [
+        "servidao_administrativa"
+      ],
+      "hint": "A indemnização é fixada por peritos, mas a linha fica parada cerca de três meses.",
+      "consequence_pt": "Poupas dinheiro, mas a linha fica parada cerca de três meses, e a data de arranque atrasa com ela."
+    },
+    {
+      "id": "reroute",
+      "label": "Desviar a linha pelo caminho público",
+      "effects": [
+        "linha_desvio",
+        "delay_linha_curto"
+      ],
+      "hint": "A linha fica mais comprida e mais cara, e perde cerca de um mês.",
+      "consequence_pt": "A linha fica mais cara e perde um mês: a data de arranque atrasa um mês."
+    }
+  ],
+  "heavy": true,
+  "deadline_ref": "player_grid",
+  "deadline_letter": true,
+  "deadline_id": "player_grid",
+  "deadline_role": "risk",
+  "deadline_kind": "player_works",
+  "deadline_blocks_play": true,
+  "notes_for_ui": "servidao_administrativa → player_grid +3 meses; delay_linha_curto → +1 mês.",
+  "notes_for_economy": "servidao_settlement: capital próprio (PEDIR_ECONOMY, acima da tabela de servidões). linha_desvio: capex da linha (PEDIR_ECONOMY; ordem de servidoes_linha_+1). servidao_administrativa: months 3, € baixo (indemnização arbitrada).",
+  "nota_gm": "DL 15/2022 + Regulamento de Relações Comerciais: depois do TRC, o produtor pede à REN as condições de ligação; a REN apresenta uma proposta técnico-comercial com prazos e encargos das obras na subestação dela (painel/baía onde a linha liga). A subestação do produtor (elevadora) e a linha de uso exclusivo até ao ponto de ligação são do produtor, que as constrói e paga; a licença de exploração abrange a central e as infraestruturas de ligação de serviço particular. Fronteira no ponto de ligação. Art. 24.º-26.º (acordo/condições) e art. 14.º/3 (prazo da LE só se ajusta a atrasos da RESP, não da linha do produtor). VERIFICADO em parte (pgdlisboa, mercado.ren.pt, manual E-REDES por analogia); números de artigo da responsabilidade da linha do produtor e prazos típicos da REN: INCERTO — PEDIR_PEDRO. Servidões das linhas elétricas: regime antigo (Regulamento de Licenças para Instalações Elétricas, DL 26 852/1936, e DL 43 335/1960), com declaração de utilidade pública e indemnização; prazo de meses — INCERTO, PEDIR_PEDRO. Ourique: o terreno é junto à subestação da REN, por isso a linha é curta e só atravessa um vizinho.",
+  "visibilidade_v01_2026_10_06": true
+}

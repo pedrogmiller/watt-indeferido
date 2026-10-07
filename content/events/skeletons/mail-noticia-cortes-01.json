@@ -13,14 +13,6 @@
   "from_type": "MEDIA",
   "choices": [
     {
-      "id": "study",
-      "label": "Estudar baterias para mais tarde",
-      "effects": [
-        "bess_study_later"
-      ],
-      "hint": "Não custa nada agora. O tema volta quando a central estiver a funcionar."
-    },
-    {
       "id": "dismiss",
       "label": "Arquivar",
       "effects": [],
@@ -30,5 +22,19 @@
   "heavy": false,
   "notes_for_ui": "Carta só informativa (relevant=false). Não conta para o limite de cartas importantes.",
   "notes_for_economy": "Sem €. bess_study_later: só memória para depois da entrada em funcionamento (fora da v0.1).",
-  "nota_gm": "Cortes de produção (curtailment) e preços zero/negativos no MIBEL 2024–2026: factual. Se a energia cortada é paga ao abrigo do contrato do leilão de 2019/2020 depende do regime (remuneração garantida vs contribuição ao sistema) — INCERTO, por isso a carta diz «pode não ser paga». PEDIR_PEDRO."
+  "nota_gm": "Cortes de produção (curtailment) e preços zero/negativos no MIBEL 2024–2026: factual. Se a energia cortada é paga ao abrigo do contrato do leilão de 2019/2020 depende do regime (remuneração garantida vs contribuição ao sistema) — INCERTO, por isso a carta diz «pode não ser paga». PEDIR_PEDRO.",
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega.",
+  "retired_choices_v01": [
+    {
+      "id": "study",
+      "label": "Estudar baterias para mais tarde",
+      "effects": [
+        "bess_study_later"
+      ],
+      "hint": "Não custa nada agora. O tema volta quando a central estiver a funcionar.",
+      "retired": true,
+      "retired_reason": "GM 2026-10-06: não mudava nada; a carta passa a nota."
+    }
+  ]
 }

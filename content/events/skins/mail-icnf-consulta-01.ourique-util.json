@@ -8,5 +8,7 @@
   "from_name": "ICNF — Instituto da Conservação da Natureza e das Florestas",
   "subject": "O ICNF deu uma indicação",
   "body": "Somos o ICNF, o instituto do Estado que protege a natureza e as florestas. Sem um processo aberto na Câmara, não podemos dar uma posição oficial. Mas, pelo que vemos no mapa, a parte do terreno mais perto da subestação tem poucas árvores. A parte mais afastada é montado denso, com quercíneas (sobreiros e azinheiras) protegidas por lei. Isto não é uma garantia.",
-  "params": {}
+  "params": {},
+  "retired": true,
+  "retired_reason": "GM 2026-10-06: consulta ao ICNF fora da v0.1."
 }

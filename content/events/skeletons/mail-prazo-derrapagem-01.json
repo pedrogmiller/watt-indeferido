@@ -17,12 +17,19 @@
   "choices": [
     {
       "id": "recover",
-      "label": "Pagar para recuperar parte do atraso",
+      "label": "Pagar para recuperar o atraso",
       "effects": [
         "epc_acceleration",
         "slip_recover"
       ],
-      "hint": "Gastas mais capital próprio. Recuperas cerca de dois meses."
+      "hint": "Gastas mais capital próprio. Recuperas o atraso, até dois meses no máximo, sem passar da data antiga.",
+      "consequence_pt": "Pagas mais capital próprio e recuperas o atraso, até dois meses: o NPV desce um pouco.",
+      "hint_before_derrapagem_valueadd_2026_10_06_1152": "Gastas mais capital próprio. Recuperas cerca de dois meses.",
+      "consequence_pt_before_derrapagem_valueadd_2026_10_06_1152": "Pagas mais capital próprio e recuperas cerca de dois meses: o NPV desce um pouco.",
+      "before_economy_1006c_2026_10_06_1202": {
+        "hint": "Gastas mais capital próprio. Recuperas o atraso, ou parte dele se for longo.",
+        "consequence_pt": "Pagas mais capital próprio e recuperas o atraso, ou parte dele se for longo: o NPV desce um pouco."
+      }
     },
     {
       "id": "accept",
@@ -30,7 +37,8 @@
       "effects": [
         "slip_accepted"
       ],
-      "hint": "Não pagas nada a mais."
+      "hint": "Não pagas nada a mais.",
+      "consequence_pt": "Aceitas a nova data. A data de arranque só muda se esta passar a ser a última peça a ficar pronta."
     }
   ],
   "heavy": true,
@@ -50,7 +58,8 @@
     "old_month",
     "new_month",
     "cause",
-    "le_month"
+    "le_month",
+    "months"
   ],
   "cause_pt": {
     "grid_slip_operator": "a REN atrasou as obras na subestação",
@@ -67,5 +76,8 @@
   },
   "notes_for_ui": "Gancho de código: sempre que o atMonth de um prazo seguido (le_deadline, epc_mechanical_completion, grid_connection) muda, chamar moveDeadline(id, novo, causa) → deliverStakeLetter('mail-prazo-derrapagem-01', skin por prazo, {deadline_id, allowRepeat:true, params:{deadline_label, old_month:'M'+antigo, new_month:'M'+novo, cause: cause_pt[causa]||cause_pt.default, le_month:'M'+le_deadline.atMonth}}). Sem carta (só aviso no HUD «<prazo>: M24 → M27») quando a mudança vem de uma escolha do jogador neste Play numa carta que já explicava o atraso, ou de uma prorrogação (já tem carta própria). Skin marco-passou: data de um marco de terceiros chegou e o marco não está cumprido. Máx. 1 carta destas por Play; se houver várias mudanças, junta-as numa (a de maior atraso) e o resto vai para o aviso do HUD.",
   "notes_for_economy": "recover = epc_acceleration (equity +1,0, −2 meses; PEDIR_ECONOMY) só nas skins mecanica e marco-passou. Nas skins da REN e da licença não há custo.",
-  "nota_gm": "Prazo legal da LE: DL 15/2022 art. 14.º/3 (12 meses após a LP; se a RESP atrasar, 90 dias após a infraestrutura). Os prazos da obra e da REN são contratuais."
+  "nota_gm": "Prazo legal da LE: DL 15/2022 art. 14.º/3 (12 meses após a LP; se a RESP atrasar, 90 dias após a infraestrutura). Os prazos da obra e da REN são contratuais.",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "notes_for_ui_derrapagem_valueadd_2026_10_06_1152": "Sem número fixo: sendSlipLetter só expõe deadline_id, deadline_label, old_month, new_month, cause, le_month (não há {{months}}). Pedido ao código: (1) expor months = |novo − antigo|; (2) slip_recover/epc_acceleration/subestacao_acceleration não podem pôr a data antes de old_month (hoje −2 meses fixos: M26→M27 com recuperar dá M25).",
+  "notes_for_ui_economy_1006c_2026_10_06_1202": "{{months}} = |new_month − old_month| (Grok Bot). Escrito como «Meses de atraso: {{months}}.» para não depender de singular/plural. Recuperar: epc_acceleration/subestacao_acceleration = −2, limitado a old_month → «até dois meses no máximo»."
 }

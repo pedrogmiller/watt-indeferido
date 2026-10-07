@@ -11,5 +11,9 @@
   "body": "O PIP (pedido de informação prévia) é o pedido em que a Câmara diz se aceita a central neste terreno. O presidente da Câmara quer reunir contigo. Sem acordo com a Câmara, a resposta ao PIP vai demorar, e os prazos do TRC continuam a contar.",
   "params": {
     "tom": "pressao"
-  }
+  },
+  "on_deliver_effects": [
+    "risk_camara_+1"
+  ],
+  "visibilidade_v01_2026_10_06": "on_deliver_effects: abre o conflito no painel («Risco para a licença» sobe ao chegar a carta); a resposta conciliadora volta a baixá-lo. Campo novo — ver hud-effects.draft.json."
 }

@@ -18,7 +18,8 @@
       "effects": [
         "obra_extra_shifts"
       ],
-      "hint": "Gastas mais capital próprio. A obra recupera o tempo perdido."
+      "hint": "Gastas mais capital próprio. A obra recupera o tempo perdido.",
+      "consequence_pt": "Recuperas o tempo, mas pagas os turnos: o NPV desce um pouco."
     },
     {
       "id": "accept",
@@ -26,7 +27,8 @@
       "effects": [
         "delay_obra_curto"
       ],
-      "hint": "Não pagas nada a mais. A obra acaba cerca de um mês mais tarde."
+      "hint": "Não pagas nada a mais. A obra acaba cerca de um mês mais tarde.",
+      "consequence_pt": "A central acaba um mês mais tarde. A data de arranque só muda se passar a acabar depois da tua linha."
     }
   ],
   "heavy": true,
@@ -36,5 +38,6 @@
   "deadline_id": "epc_mechanical_completion",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

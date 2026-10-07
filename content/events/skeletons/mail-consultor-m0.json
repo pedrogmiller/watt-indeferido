@@ -18,9 +18,12 @@
       "effects": [
         "hint_value_add",
         "dossier_unlock"
-      ]
+      ],
+      "consequence_pt": "O dossiê do projeto está aberto."
     }
   ],
   "notes_for_economy": "Sem €. Só flags de UI/estado.",
-  "notes_for_ui": "M0 sem Play; uma de três cartas ao ganhar TRC"
+  "notes_for_ui": "M0 sem Play; uma de três cartas ao ganhar TRC",
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

@@ -18,31 +18,35 @@
   "choices": [
     {
       "id": "turnkey",
-      "label": "EPC chave-na-mão",
+      "label": "Um só empreiteiro, a preço fechado",
       "effects": [
         "epc_selected",
         "epc_turnkey"
-      ]
+      ],
+      "consequence_pt": "Preço fechado: pagas mais e o NPV desce, mas os atrasos da obra ficam por conta do empreiteiro."
     },
     {
       "id": "multi",
-      "label": "Multi-contrato",
+      "label": "Vários empreiteiros",
       "effects": [
         "epc_selected",
         "epc_multi",
         "epc_interface_risk_+1"
-      ]
+      ],
+      "consequence_pt": "Vários empreiteiros: a obra fica mais barata e o NPV sobe, mas há mais risco de atrasos."
     },
     {
       "id": "retender",
-      "label": "Relançar concurso",
+      "label": "Pedir novas propostas",
       "effects": [
         "epc_retender",
         "delay_fid_+1"
-      ]
+      ],
+      "consequence_pt": "Novas propostas: a decisão de construir atrasa três meses e a caixa paga esse tempo."
     }
   ],
   "heavy": false,
   "notes_for_economy": "epc_turnkey = Capex mais alto, contingência baixa; epc_multi = Capex mais baixo, odds de atraso sobem — PEDIR_ECONOMY.",
-  "notes_for_ui": "from_type EPC é novo (FROM_TYPE_TO_MAIL → 'epc'). 'Relançar' re-arma (epc_retender)."
+  "notes_for_ui": "from_type EPC é novo (FROM_TYPE_TO_MAIL → 'epc'). 'Relançar' re-arma (epc_retender).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

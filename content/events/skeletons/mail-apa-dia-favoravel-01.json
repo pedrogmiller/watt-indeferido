@@ -24,11 +24,14 @@
       "effects": [
         "dia_emitida",
         "dia_favoravel"
-      ]
+      ],
+      "consequence_pt": "Decisão ambiental favorável: segues para a licença de produção."
     }
   ],
   "heavy": true,
   "nota_gm": "DIA favorável sem condicionantes (RJAIA, DL 151-B/2013, art. 18.º). A DIA é condição da decisão da LP (DL 15/2022). Validade da DIA: 4 anos (RJAIA art. 23.º — HIPÓTESE, não reverificado). Rara em solar grande; a condicionada é o caso normal.",
   "notes_for_economy": "Sem custo novo. Odds do grupo dia_outcome: PEDIR_ECONOMY.",
-  "notes_for_ui": "Regra r-dia-favoravel (grupo dia_outcome, pick 2). Fecha o ramo AIA; não muda fase."
+  "notes_for_ui": "Regra r-dia-favoravel (grupo dia_outcome, pick 2). Fecha o ramo AIA; não muda fase.",
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

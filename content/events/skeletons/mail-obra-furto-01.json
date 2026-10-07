@@ -19,7 +19,8 @@
         "obra_cable_replace",
         "obra_security_paid"
       ],
-      "hint": "Pagas vigilância até ao fim da obra. O risco de novo roubo fica muito mais baixo."
+      "hint": "Pagas vigilância até ao fim da obra. O risco de novo roubo fica muito mais baixo.",
+      "consequence_pt": "Pagas vigilância até ao fim da obra: o NPV desce um pouco, mas não volta a acontecer."
     },
     {
       "id": "replace",
@@ -28,7 +29,8 @@
         "obra_cable_replace",
         "obra_theft_risk_+1"
       ],
-      "hint": "Gastas menos agora. Se voltarem, a obra atrasa outra vez."
+      "hint": "Gastas menos agora. Se voltarem, a obra atrasa outra vez.",
+      "consequence_pt": "Repões só o cabo: gastas pouco, mas o estaleiro continua desprotegido."
     }
   ],
   "heavy": true,
@@ -39,5 +41,6 @@
   "deadline_id": "epc_mechanical_completion",
   "deadline_role": "outcome",
   "deadline_kind": "third_party",
-  "deadline_blocks_play": true
+  "deadline_blocks_play": true,
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta)."
 }

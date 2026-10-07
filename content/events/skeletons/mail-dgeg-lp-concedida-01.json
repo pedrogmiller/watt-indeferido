@@ -28,10 +28,14 @@
         "lp_granted",
         "lp_clean",
         "fid_track_open"
-      ]
+      ],
+      "consequence_pt": "Licença de produção atribuída: começa a contar o prazo da licença de exploração."
     }
   ],
   "heavy": false,
   "notes_for_economy": "lp_granted: fim da fase de licença no risco de desenvolvimento; banco/EPC abrem. Ver fid_window. Sem €.",
-  "notes_for_ui": "PHASE_BUMP proposto: lp_granted → licenca_producao. Cria deadlines le_deadline e fid_window; cumpre lp_decision. Desbloqueia sell modes 2–3 quando também line_ready. Maturidade FA = 'producao'. Via A ou B: gate env_gate_ok = dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado)."
+  "notes_for_ui": "PHASE_BUMP proposto: lp_granted → licenca_producao. Cria deadlines le_deadline e fid_window; cumpre lp_decision. Desbloqueia sell modes 2–3 quando também line_ready. Maturidade FA = 'producao'. Via A ou B: gate env_gate_ok = dia_emitida ∨ (nao_sujeicao ∧ pip_aprovado).",
+  "visibilidade_v01_2026_10_06": "consequence_pt em todas as escolhas (aviso curto depois da resposta).",
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

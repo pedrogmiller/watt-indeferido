@@ -21,5 +21,7 @@
     }
   ],
   "notes_for_economy": "Sem €",
-  "notes_for_ui": "Info; skin terreno vs leilão"
+  "notes_for_ui": "Info; skin terreno vs leilão",
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }

@@ -34,5 +34,7 @@
   ],
   "deadline_role": "warning",
   "deadline_kind": "player",
-  "deadline_blocks_play": false
+  "deadline_blocks_play": false,
+  "delivery": "note",
+  "delivery_note_visibilidade_v01_2026_10_06": "Nota no painel e no registo, não na caixa de entrada; não bloqueia «Jogar»; não conta para o limite de cartas. Os efeitos da escolha única aplicam-se na entrega."
 }
