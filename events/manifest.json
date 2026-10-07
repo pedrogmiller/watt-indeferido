@@ -50,5 +50,6 @@
     "se-sheets/ferreira-do-alentejo.json",
     "se-sheets/ourique.json"
   ],
-  "mvp_schedule": "mvp-schedule.json"
+  "mvp_schedule": "mvp-schedule.json",
+  "tutorial": "tutorial.v01.json"
 }

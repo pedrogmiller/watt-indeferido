@@ -1,0 +1,26 @@
+/* Event-driven tips. Text comes from content/events/tutorial.v01.json. */
+.tut-root{position:fixed;inset:0;z-index:2147483000;pointer-events:none;display:none}
+.tut-root.open{display:block}
+.tut-dim{position:fixed;background:rgba(15,23,42,.62);pointer-events:auto}
+.tut-ring{position:fixed;border-radius:10px;box-shadow:0 0 0 2px #fbbf24,0 0 0 6px rgba(251,191,36,.28);pointer-events:none}
+.tut-bubble{position:fixed;pointer-events:auto;background:#fff;color:#0f172a;border-radius:12px;padding:12px 14px 10px;box-shadow:0 12px 32px rgba(0,0,0,.28);font:14px/1.4 var(--font,system-ui,-apple-system,"Segoe UI",sans-serif);width:max-content;max-width:340px;box-sizing:border-box}
+.tut-title{font-weight:700;font-size:15px;margin-bottom:4px}
+.tut-body{font-size:14px;line-height:1.4}
+.tut-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.tut-actions button{font:600 13px var(--font,system-ui,sans-serif);border-radius:8px;padding:8px 12px;border:1px solid #cbd5e1;background:#fff;color:#334155;cursor:pointer;min-height:36px}
+.tut-actions .tut-ok{background:#0f172a;color:#fff;border-color:#0f172a}
+.tut-arrow{position:absolute;width:12px;height:12px;background:#fff;transform:rotate(45deg)}
+.tut-bubble[data-side=below] .tut-arrow{top:-6px}
+.tut-bubble[data-side=above] .tut-arrow{bottom:-6px}
+.tut-bubble[data-side=right] .tut-arrow{left:-6px}
+.tut-bubble[data-side=left] .tut-arrow{right:-6px}
+.tut-welcome{position:fixed;inset:0;z-index:2147483001;background:rgba(15,23,42,.66);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+.tut-w-card{background:#fff;color:#0f172a;border-radius:16px;padding:22px 20px 18px;width:100%;max-width:560px;max-height:calc(100vh - 32px);overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.35);font:15px/1.45 var(--font,system-ui,-apple-system,"Segoe UI",sans-serif);box-sizing:border-box}
+.tut-w-card h2{margin:0 0 12px;font-size:22px}
+.tut-w-card ul{margin:0 0 18px;padding-left:18px}
+.tut-w-card li{margin:0 0 8px}
+.tut-w-actions{display:flex;gap:10px;flex-wrap:wrap}
+.tut-w-btn{flex:1 1 200px;font:600 15px var(--font,system-ui,sans-serif);padding:12px 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#0f172a;cursor:pointer;min-height:44px}
+.tut-w-btn.primary{background:#0f172a;color:#fff;border-color:#0f172a}
+@media (max-width:600px){.tut-w-card{padding:18px 16px 14px;font-size:14px}.tut-w-card h2{font-size:20px}.tut-w-actions{flex-direction:column}.tut-w-btn{flex:none;width:100%}}
+.settings-tut{border-top:1px solid var(--border-subtle,#e2e8f0);border-bottom:1px solid var(--border-subtle,#e2e8f0);padding:8px 0;margin:6px 0;display:flex;flex-direction:column;gap:8px}

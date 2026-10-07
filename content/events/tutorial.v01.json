@@ -1,0 +1,325 @@
+{
+  "version": 1,
+  "status": "DRAFT 2026-10-07 — GM; para o Pedro com a maquete da UI. Targets = nomes PROVISÓRIOS da UI.",
+  "sources_checked": {
+    "live": "origin/main e8b6528 (11:42 de 2026-10-06): ECON_TIER.boutique = seed 2,0 · carMandate 6,5 · equity 45,0 · bonding 2,0; mid equity 50; AUCTION_CLOCK_S 120 (o relógio pára quando a dica está aberta: auctionState.clockPaused); CASH_FLOOR_RATIO −0,25 do mandato.",
+    "ipp_console_light_index": "cópia local mais antiga: boutique equity 37,5 (antes de Pedro 2026-10-03 subir para 45).",
+    "endings": "mail-fim-de-jogo-01: trc-caducado, sem-dinheiro («Os investidores fecharam o projeto»), licenca-recusada, abandonado. Paciência dos investidores baixa as hipóteses, mas não tem final próprio: a retirada dos investidores é o final sem-dinheiro.",
+    "hud": "Header hoje: Caixa · Valor da empresa · Garantias; NPV na ficha do projeto e no leilão (consultor)."
+  },
+  "welcome": {
+    "title": "Watt Indeferido",
+    "lines": [
+      "Objetivo: ganhar um TRC no leilão e pôr a central a produzir (COD) antes de o prazo acabar, sem perder dinheiro.",
+      "Tens 6,5 M€ dos investidores para desenvolver o projeto. Para construir precisas de capital próprio, cerca de 45 M€, conforme o preço; explicamos isso na decisão final de investimento.",
+      "Perdes se o TRC caducar, se uma licença for recusada de vez, ou se a caixa ficar vazia e os investidores fecharem o projeto.",
+      "Em cima vês a Caixa, a tua Reputação e o Risco para a licença. Na ficha do projeto vês o NPV: quanto vale hoje o projeto para os investidores."
+    ],
+    "buttons": [
+      {
+        "id": "start_tutorial",
+        "label": "Começar com tutorial",
+        "primary": true
+      },
+      {
+        "id": "start_no_tutorial",
+        "label": "Começar sem tutorial",
+        "primary": false
+      }
+    ],
+    "nota_gm": "Por defeito desde 2026-10-07 (UI 0fee34b): HUD Caixa · Reputação · Risco para a licença (aprovado pelo Pedro). Versão antiga em welcome_retired. 6,5 = ECON_TIER.boutique.carMandate; 45 = equity boutique no live."
+  },
+  "welcome_hud_alt": {
+    "replaces_line": 4,
+    "line": "Em cima vês a Caixa, o Risco para a licença e a tua reputação. Na ficha do projeto vês o NPV: quanto vale hoje o projeto para os investidores.",
+    "nota_gm": "Promovida a welcome (2026-10-07).",
+    "retired": true
+  },
+  "steps": [
+    {
+      "id": "tut-leilao-lotes",
+      "trigger": {
+        "screen": "auction",
+        "on": "first_open",
+        "tag": "",
+        "effect": "",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "auction.lots",
+      "title": "Os lotes do leilão",
+      "body": "Cada lote é o direito de ligar uma central numa subestação. Escolhe um que caiba no teu orçamento.",
+      "blocks_play": false,
+      "order": 10,
+      "body_long": "Cada lote é um direito de ligar uma central à rede numa subestação. Escolhe um lote que caiba no teu orçamento.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-leilao-oferta",
+      "trigger": {
+        "screen": "auction",
+        "on": "first_open",
+        "tag": "",
+        "effect": "",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "auction.bid",
+      "title": "A tua oferta em €/MWh",
+      "body": "Ganha a oferta mais baixa em €/MWh. Se baixares demais, o NPV do consultor fica negativo.",
+      "blocks_play": false,
+      "order": 20,
+      "nota_gm": "Leilão inverso: oferta mais baixa ganha (dica do live: «sobe a oferta até o NPV ficar positivo», 8 % ao ano).",
+      "body_long": "Ofereces o preço a que vendes a energia. Ganha a oferta mais baixa, mas, se fores baixo demais, o NPV que o consultor mostra fica negativo e o projeto perde dinheiro.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-leilao-relogio",
+      "trigger": {
+        "screen": "auction",
+        "on": "first_open",
+        "tag": "",
+        "effect": "",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "auction.timer",
+      "title": "Tens dois minutos",
+      "body": "Tens 2:00 para decidir. Enquanto esta dica estiver aberta, o relógio está parado.",
+      "blocks_play": false,
+      "order": 30,
+      "nota_gm": "AUCTION_CLOCK_S = 120; clockPaused enquanto a dica está aberta (live).",
+      "body_long": "O relógio conta 2:00 para decidires. Enquanto esta dica estiver aberta, o relógio está parado.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-leilao-fora",
+      "trigger": {
+        "screen": "auction",
+        "on": "first_effect",
+        "tag": "",
+        "effect": "auction_lost",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "auction.fora_card",
+      "title": "Ficaste de fora",
+      "body": "Os rivais ganharam os lotes. Não perdeste dinheiro: carrega em «Abrir o próximo leilão».",
+      "blocks_play": false,
+      "order": 40,
+      "nota_gm": "Ecrã «Fora deste leilão» → «Abrir o próximo leilão». effect provisório.",
+      "body_long": "Os rivais ganharam os lotes. Não perdeste dinheiro: espera pelo próximo leilão e tenta outra vez.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-trc-aceitar",
+      "trigger": {
+        "screen": "auction",
+        "on": "phase",
+        "tag": "",
+        "effect": "",
+        "phase": "trc_won",
+        "min_month": 0
+      },
+      "target": "trc.accept",
+      "title": "Ganhaste um TRC",
+      "body": "Carrega em «Aceitar TRC e sair» para o projeto entrar no portefólio. Os prazos começam a contar.",
+      "blocks_play": false,
+      "order": 50,
+      "body_long": "Carrega em «Aceitar TRC e sair» para o projeto entrar no teu portefólio. A partir daqui, os prazos começam a contar.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-primeira-carta",
+      "trigger": {
+        "screen": "correio",
+        "on": "first_open",
+        "tag": "",
+        "effect": "",
+        "phase": "trc_won",
+        "min_month": 0
+      },
+      "target": "correio.first_choice",
+      "title": "As cartas pedem decisões",
+      "body": "Cada carta pede uma escolha. Depois aparece uma frase a dizer o que mudou.",
+      "blocks_play": false,
+      "order": 60,
+      "body_long": "Cada carta tem escolhas. Depois de responderes, aparece uma frase a dizer o que mudou: caixa, prazos, risco ou NPV.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-play",
+      "trigger": {
+        "screen": "home",
+        "on": "first_open",
+        "tag": "",
+        "effect": "",
+        "phase": "trc_won",
+        "min_month": 0
+      },
+      "target": "play",
+      "title": "Jogar avança o tempo",
+      "body": "«Jogar» salta para o próximo acontecimento. Fica bloqueado se houver uma carta com prazo por responder.",
+      "blocks_play": false,
+      "order": 70,
+      "body_long": "«Jogar» salta para o próximo acontecimento. Fica bloqueado enquanto houver uma carta com prazo por responder.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-prazos",
+      "trigger": {
+        "screen": "home",
+        "on": "first_tag",
+        "tag": "land_option_open",
+        "effect": "",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "deadlines",
+      "title": "Os teus prazos",
+      "body": "Aqui vês os prazos. Se falhares um, o projeto atrasa ou podes perder o TRC.",
+      "blocks_play": false,
+      "order": 80,
+      "nota_gm": "Primeiro prazo real: land_option (M1). Se land_option_open não vier, usar phase=land.",
+      "body_long": "Aqui vês os prazos do projeto e quanto falta para cada um. Se falhares um, o projeto atrasa ou a DGEG pode abrir uma audiência para te tirar o TRC.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-terreno",
+      "trigger": {
+        "screen": "correio",
+        "on": "first_open",
+        "tag": "",
+        "effect": "",
+        "phase": "land",
+        "min_month": 1
+      },
+      "target": "correio.first_choice",
+      "title": "Escolher o terreno",
+      "body": "Perto da subestação poupas linha. O sítio e a área decidem se precisas de avaliação ambiental.",
+      "blocks_play": false,
+      "order": 90,
+      "body_long": "Um terreno perto da subestação poupa linha e vizinhos. A área e o sítio também decidem se precisas de avaliação ambiental, que pode levar mais de um ano.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-npv-muda",
+      "trigger": {
+        "screen": "home",
+        "on": "first_effect",
+        "tag": "",
+        "effect": "npv_note_shown",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "npv.cause",
+      "title": "O NPV mudou",
+      "body": "Quando o NPV mexe muito, aparece aqui a causa: a escolha ou o atraso que pesou.",
+      "blocks_play": false,
+      "order": 100,
+      "nota_gm": "Liga à nota de npv-causes.pt.json (≥0,5 M€ ou ≥10 %). effect provisório.",
+      "body_long": "Quando o NPV mexe muito, aparece uma nota com a causa. Assim sabes que escolha ou que atraso pesou nas contas.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-caminho-critico",
+      "trigger": {
+        "screen": "sala",
+        "on": "first_open",
+        "tag": "",
+        "effect": "",
+        "phase": "licenca_producao",
+        "min_month": 0
+      },
+      "target": "hud.cod_date",
+      "title": "O que marca a data de arranque",
+      "body": "A central só produz quando a REN, a tua rede e a central estão prontas. A última marca o COD.",
+      "blocks_play": false,
+      "order": 110,
+      "nota_gm": "tracked_dates em deadlines.draft.json (player_grid, grid_connection, epc_mechanical_completion).",
+      "body_long": "A central só produz quando três coisas estão prontas: a obra da REN, a tua subestação com a linha, e a central. A última a ficar pronta marca a data de arranque (COD), mais os testes.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-fid",
+      "trigger": {
+        "screen": "sala",
+        "on": "first_tag",
+        "tag": "fid_track_open",
+        "effect": "",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "sala.fid",
+      "title": "A decisão final de investimento",
+      "body": "O banco empresta uma parte; o resto é capital próprio. Se faltar, a obra não arranca.",
+      "blocks_play": false,
+      "order": 120,
+      "nota_gm": "equity_full = equity_fit_ok ∧ equity_capex_commit (live bloqueia a obra sem isto). Valores de equity: boutique 45 no live, 37,5 na cópia antiga; Ourique a 40 €/MWh precisa de ~41 (euro-fields §6.3).",
+      "body_long": "Para construir, o banco empresta uma parte e o resto é capital próprio, cerca de 45 M€ conforme a tua oferta e o projeto. Se não chegar, pedes mais aos investidores, um empréstimo mais longo ou um sócio; sem isso, a obra não arranca.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-obra",
+      "trigger": {
+        "screen": "home",
+        "on": "phase",
+        "tag": "",
+        "effect": "",
+        "phase": "obra",
+        "min_month": 0
+      },
+      "target": "hud.cod_date",
+      "title": "A obra e os atrasos",
+      "body": "Na obra há atrasos. Só vale a pena pagar para acelerar a parte que marca o COD.",
+      "blocks_play": false,
+      "order": 130,
+      "body_long": "Durante a obra chegam atrasos: chuva, fornecedores, a REN. Só vale a pena pagar para acelerar se essa parte for a que marca a data de arranque.",
+      "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-le-prazo",
+      "trigger": {
+        "screen": "correio",
+        "on": "first_effect",
+        "tag": "",
+        "effect": "deliver:mail-prazo-aviso-le-01",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "correio.first_choice",
+      "title": "O prazo da licença de exploração",
+      "body": "Se a REN atrasar, o prazo da licença avança sozinho. Se o atraso for teu, pede a prorrogação a tempo.",
+      "blocks_play": false,
+      "order": 140,
+      "nota_gm": "Aviso 4 meses antes (le_deadline.warn). effect provisório.",
+      "body_long": "A licença de exploração tem prazo. Se a REN atrasar, o prazo avança sozinho; se o atraso for teu, tens de pedir a prorrogação a tempo, e quanto mais cedo, melhor.",
+      "ui_tut_0fee34b_2026_10_07": true
+    }
+  ],
+  "tutorial_v01_2026_10_07": true,
+  "welcome_retired": {
+    "title": "Watt Indeferido",
+    "lines": [
+      "Objetivo: ganhar um TRC no leilão e pôr a central a produzir (COD) antes de o prazo acabar, sem perder dinheiro.",
+      "Tens 6,5 M€ dos investidores para desenvolver o projeto: terreno, licenças, estudos e equipa. Para construir precisas de capital próprio, cerca de 45 M€; explicamos isso quando chegares à decisão final de investimento.",
+      "Perdes se o TRC caducar, se uma licença for recusada de vez, ou se a caixa ficar vazia e os investidores fecharem o projeto.",
+      "Em cima vês a Caixa, o Valor da empresa e as Garantias. Na ficha do projeto vês o NPV: quanto vale hoje o projeto para os investidores."
+    ],
+    "buttons": [
+      {
+        "id": "start_tutorial",
+        "label": "Começar com tutorial",
+        "primary": true
+      },
+      {
+        "id": "start_no_tutorial",
+        "label": "Começar sem tutorial",
+        "primary": false
+      }
+    ],
+    "nota_gm": "Números: 6,5 M€ = ECON_TIER.boutique.carMandate (live e8b6528). Capital próprio: live diz 45 (boutique, Pedro 2026-10-03), cópia antiga 37,5, mid 50 → o texto diz «cerca de 45 M€» como pedido, sem «bolsa de ~45». O Pedro tinha aprovado um HUD com Caixa, «Risco para a licença» e reputação: ainda não está feito no código. Quando estiver, usar welcome.hud_alt.",
+    "retired": true
+  },
+  "ui_tut_0fee34b_2026_10_07": "Alvos data-tut finais; bodies ≤120 car. (antigos em body_long); welcome = ex-hud_alt."
+}

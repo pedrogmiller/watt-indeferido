@@ -325,6 +325,7 @@
     "equity_rule_2026_09_30": "Sem todo o capital próprio não há obra (r-arranque requires_equity_full; r-fid-sem-capital → skin falta-capital-proprio). O leilão não depende do capital próprio. Skin consultor do vinculativo retirada; aviso = mail-consultor-icnf-aviso-01."
   },
   "effect_labels": "effect-labels.pt.json",
+  "tutorial": "tutorial.v01.json",
   "entities_draft": "entities.draft.json",
   "effects_economy": "effects-economy.json",
   "endings_stakes_v01": {
