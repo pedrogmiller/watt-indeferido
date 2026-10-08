@@ -5176,6 +5176,7 @@
   body.footer-mock:has(.auction-room.open) .play-action-gate { display: none !important; }
 
 </style>
+<link rel="stylesheet" href="tut.css" />
 </head>
 <body>
 
@@ -5215,11 +5216,11 @@
       <span class="econ-provisional econ-provisional-brand" id="econProvisional" title="Os valores em € do header e da sala são provisórios: estimativas de trabalho, ainda podem mudar.">€ · valores provisórios</span>
     </div>
   </div>
-  <span class="mobile-caixa-pill" id="mobileCaixaPill" title="Caixa disponível"><span class="k">Caixa</span> <span class="v num" id="mobileCaixaVal">2,0 M€</span><span class="pill-prov" title="Os valores em € são provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span></span>
+  <span class="mobile-caixa-pill" id="mobileCaixaPill" data-tut="hud.cash" title="Caixa disponível"><span class="k">Caixa</span> <span class="v num" id="mobileCaixaVal">2,0 M€</span><span class="pill-prov" title="Os valores em € são provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span></span>
   <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · T3</span>
 
   <div class="header-metrics" id="coach-header-metrics">
-    <div class="metric-pill cash-ok" id="pillCaixa">
+    <div class="metric-pill cash-ok" id="pillCaixa" data-tut="hud.cash">
       <span class="metric-label" id="caixaStatus" title="Caixa disponível">Caixa</span>
       <span class="metric-value num" id="valCaixa">2,0 M€</span>
     </div>
@@ -5238,11 +5239,11 @@
 
   <button type="button" class="header-home-btn" id="btnHeaderHome" title="Início" aria-label="Início"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="header-home-label">Início</span></button>
   <button type="button" class="header-auction-btn" id="btnOpenAuction" title="Leilão" aria-label="Leilão"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg><span class="header-auction-label">Leilão</span><span class="inbox-badge pulse" id="auctionBadge" hidden>0</span></button>
-  <button type="button" class="header-inbox-btn" id="btnInbox" title="Correio" aria-label="Correio">
+  <button type="button" class="header-inbox-btn" id="btnInbox" data-tut="correio.tab" title="Correio" aria-label="Correio">
     <span class="inbox-icon" id="inboxIcon" aria-hidden="true"></span>
     <span class="inbox-badge pulse" id="inboxBadge" hidden>0</span>
   </button>
-  <button type="button" class="header-help" id="btnTutorial" title="Abrir tutorial">Tutorial</button>
+  <button type="button" class="header-help" id="btnTutorial" title="Ver outra vez">Ver outra vez</button>
   <button type="button" class="header-settings-btn header-search-btn" id="btnSearch" title="Pesquisar" aria-label="Pesquisar" aria-haspopup="dialog" aria-expanded="false" aria-controls="entPanel">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg>
   </button>
@@ -5451,7 +5452,7 @@
 </div>
 
 <!-- ═══ FAB · Continuar ═══ -->
-<button class="fab-nextq has-label" id="btnNextQ" type="button"
+<button class="fab-nextq has-label" id="btnNextQ" data-tut="play" type="button"
   aria-label="Continuar" title="Avançar um mês">
   <svg class="fab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/>
@@ -5516,7 +5517,7 @@
           <span class="mandate-chip mandate-chip-band" id="auctionMandateCar">Para desenvolver: 6,5 M€</span>
           <span class="mandate-chip mandate-chip-band" id="auctionMandateEquity">Para construir: 45,0 M€</span>
         </div>
-        <div class="auction-clock-row" aria-live="polite">
+        <div class="auction-clock-row" aria-live="polite" data-tut="auction.timer">
           <div>
             <div class="auction-clock-label">Tempo restante</div>
             <div class="auction-clock-val" id="auctionClockVal">2:00</div>
@@ -5524,7 +5525,7 @@
         </div>
       </div>
       <div class="auction-rivals" id="auctionRivals" aria-label="Empresas rivais presentes"></div>
-      <div class="auction-lot-list" id="auction-lot-list" role="listbox" aria-label="Lotes"></div>
+      <div class="auction-lot-list" id="auction-lot-list" data-tut="auction.lots" role="listbox" aria-label="Lotes"></div>
       <div style="padding:10px 12px 14px;border-top:1px solid var(--border-subtle)">
         <div class="auction-leftover" id="auctionLeftoverNote" hidden></div>
         <button type="button" class="btn-auction-ghost auction-home-rail" id="auctionExitLots" title="Início" aria-label="Início" style="width:100%;margin-top:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg><span class="auction-home-rail-label">Início</span></button>
@@ -5537,7 +5538,7 @@
         <div>
           <div class="auction-kicker-row">
             <div class="auction-kicker">Lote selecionado</div>
-            <div class="auction-clock-mini" id="auctionClockMini" role="timer" aria-label="Tempo restante"><span class="auction-clock-mini-label">Tempo restante</span><span class="auction-clock-val" id="auctionClockValMini">2:00</span></div>
+            <div class="auction-clock-mini" id="auctionClockMini" data-tut="auction.timer" role="timer" aria-label="Tempo restante"><span class="auction-clock-mini-label">Tempo restante</span><span class="auction-clock-val" id="auctionClockValMini">2:00</span></div>
           </div>
           <div class="auction-title" id="auctionTitle">SE Ourique · Leilão</div>
           <div class="auction-sub" id="auctionSub" title="kV: tensão da ligação do lote · MWp: potência máxima dos painéis">400 kV · zona de muito sol · 120 MWp · Câmara hostil</div>
@@ -5545,21 +5546,21 @@
         <div class="auction-head-actions">
           <span class="auction-pay-pill" title="Se ganhares, recebes por cada MWh o preço que ofereceste. Ganha quem oferecer o preço mais baixo.">Recebes o preço que ofereces</span>
           <button type="button" class="auction-tutorial-btn auction-home-btn" id="btnAuctionHome" title="Início" aria-label="Início"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></button>
-          <button type="button" class="auction-tutorial-btn" id="btnAuctionTutorial" title="Abrir tutorial">Tutorial</button>
+          <button type="button" class="auction-tutorial-btn" id="btnAuctionTutorial" title="Ver outra vez">Ver outra vez</button>
           <button type="button" class="auction-close" id="auctionClose" aria-label="Fechar o leilão" title="Fechar">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
       </header>
 
-      <div class="auction-lot-chips" id="auction-lot-chips" role="listbox" aria-label="Lotes SE · telemóvel"></div>
+      <div class="auction-lot-chips" id="auction-lot-chips" data-tut="auction.lots" role="listbox" aria-label="Lotes SE · telemóvel"></div>
       </div>
 
       <div class="auction-body">
         <!-- Mesa: oferta + consultor -->
         <div class="auction-screen active" id="auctionScreenBid" data-screen="bid">
           <div class="auction-bid-scroll auction-swipe-surface" id="auctionBidSwipe">
-          <div class="auction-offer" id="auction-bid-offer">
+          <div class="auction-offer" id="auction-bid-offer" data-tut="auction.bid">
             <div class="auction-bid-huge num" id="auctionBidValue">30</div>
             <div class="auction-bid-unit">€/MWh · a tua oferta</div>
             <div class="auction-slider-wrap">
@@ -5569,7 +5570,7 @@
             </div>
           </div>
 
-          <div class="auction-consult" id="auction-consultant">
+          <div class="auction-consult" id="auction-consultant" data-tut="auction.consultor">
             <div class="auction-consultant-label">Consultor <span class="prov-mark">valores provisórios</span></div>
             <div class="auction-consultant-line" id="auctionConsultantLine">Se fechares a 30 €/MWh → NPV —</div>
             <div class="auction-irony" aria-label="As tuas contas e o preço dos rivais">
@@ -5588,14 +5589,14 @@
               <span class="k" title="IRR: rentabilidade por ano do dinheiro dos investidores (capital próprio), depois de pagar ao banco. Exigem pelo menos 8%.">IRR · rentabilidade por ano <span style="font-weight:500;color:var(--text-muted)">· mínimo 8%</span></span>
               <span class="v good num" id="auctionIrr">10,4%</span>
             </div>
-            <p class="npv-note" id="npvFirstNote" hidden><b>NPV</b> = quanto vale hoje o projeto para os investidores, depois de pagar ao banco. <b>IRR</b> = rentabilidade por ano do dinheiro deles (mínimo 8%).<button type="button" id="npvFirstNoteOk">Percebi</button></p>
+            <p class="npv-note" id="npvFirstNote" data-tut="npv.note" hidden><b>NPV</b> = quanto vale hoje o projeto para os investidores, depois de pagar ao banco. <b>IRR</b> = rentabilidade por ano do dinheiro deles (mínimo 8%).<button type="button" id="npvFirstNoteOk">Percebi</button></p>
             <div class="equity-short" id="auctionEquityShort" hidden></div>
             <p class="auction-honest" id="auctionHonestHint">Em 2019 os vencedores ofereceram 15–25 €/MWh. Hoje construir e pedir dinheiro emprestado custa mais: os rivais pedem mais.</p>
           </div>
           </div>
 
           <div class="auction-actions">
-            <button type="button" class="btn-auction-primary" id="auction-confirm">Enviar a oferta</button>
+            <button type="button" class="btn-auction-primary" id="auction-confirm" data-tut="auction.send">Enviar a oferta</button>
           </div>
         </div>
 
@@ -5625,7 +5626,7 @@
             <p class="auction-trap-pending" id="auctionTrapPending" hidden>Por aceitar: o TRC só entra no portefólio quando carregares em «Aceitar TRC e sair».</p>
             <p id="auctionTrapNote" style="font-size:12px;color:#94a3b8">Podes aceitar o TRC e sair, ou continuar a licitar os lotes que faltam.</p>
             <div class="auction-actions" style="justify-content:flex-start;flex-wrap:wrap">
-              <button type="button" class="btn-auction-primary" id="auctionTrapDone">Aceitar TRC e sair</button>
+              <button type="button" class="btn-auction-primary" id="auctionTrapDone" data-tut="trc.accept">Aceitar TRC e sair</button>
               <button type="button" class="btn-auction-ghost" id="auctionTrapAgain">Continuar no leilão</button>
             </div>
           </div>
@@ -5633,7 +5634,7 @@
 
         <!-- Fora (lose-all) -->
         <div class="auction-screen" id="auctionScreenFora" data-screen="fora">
-          <div class="auction-fora-card">
+          <div class="auction-fora-card" data-tut="auction.fora_card">
             <div class="auction-trap-badge" style="background:#f1f5f9;color:#334155">Fora deste leilão</div>
             <h3>Não ganhaste nenhum lote.</h3>
             <p id="auctionForaBody">Os rivais ganharam os lotes. Não perdeste dinheiro e o jogo continua. Espera pelo próximo leilão.</p>
@@ -5670,9 +5671,9 @@
     <summary>Ver números</summary>
     <div class="ver-numeros-body">
       <div class="asset-money-strip" id="assetMoneyStrip" aria-label="Dinheiro da empresa" aria-live="polite">
-        <div class="asset-money-cell" id="assetMoneyCaixaCell"><span class="k">Caixa</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span></div>
-        <div class="asset-money-cell" id="assetMoneyNavCell"><span class="k" title="Valor estimado da empresa">Valor da empresa</span><span class="v num" id="assetMoneyNav">—</span><span class="d num" id="assetMoneyNavDelta"></span></div>
-        <div class="asset-money-cell" id="assetMoneyBondingCell"><span class="k" title="Garantias bancárias livres">Garantias</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span></div>
+        <div class="asset-money-cell" id="assetMoneyCaixaCell" data-tut="hud.cash"><span class="k">Caixa</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span></div>
+        <div class="asset-money-cell" id="assetMoneyNavCell" data-tut="hud.value"><span class="k" title="Valor estimado da empresa">Valor da empresa</span><span class="v num" id="assetMoneyNav">—</span><span class="d num" id="assetMoneyNavDelta"></span></div>
+        <div class="asset-money-cell" id="assetMoneyBondingCell" data-tut="hud.guarantees"><span class="k" title="Garantias bancárias livres">Garantias</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span></div>
         <span class="econ-provisional" title="Valores em € provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span>
       </div>
       <div class="ver-numeros-grid">
@@ -5680,7 +5681,7 @@
           <span class="metric-label" title="Dívida total">Dívida</span>
           <span class="metric-value num" id="valDivida">0 €</span>
         </div>
-        <div class="metric-pill" id="pillNav">
+        <div class="metric-pill" id="pillNav" data-tut="hud.value">
           <span class="metric-label" title="Valor estimado da empresa">Valor da empresa</span>
           <span class="metric-value num" id="valNav">2,0 M€</span>
         </div>
@@ -5693,7 +5694,7 @@
           <span class="metric-label">Para construir</span>
           <span class="metric-value num" id="valMandateEquity">45,0 M€</span>
         </div>
-        <div class="bonding-pill">
+        <div class="bonding-pill" data-tut="hud.guarantees">
           <div class="bonding-top">
             <span class="metric-label" title="Garantias bancárias: cauções que o banco emite por ti para concorreres e manteres TRC">Garantias</span>
             <span class="metric-value num" style="font-size:12px" id="valBonding">2,0 M€ livres</span>
@@ -5800,6 +5801,11 @@
     <button type="button" class="settings-btn primary" id="btnExportSave">Exportar jogo</button>
     <button type="button" class="settings-btn" id="btnImportSave">Importar jogo</button>
     <input type="file" id="importSaveInput" accept="application/json,.json" hidden />
+    <div class="settings-tut" aria-label="Dicas">
+      <p class="settings-hint" id="tutSettingsState">Dicas ligadas.</p>
+      <button type="button" class="settings-btn" id="btnTutReplay" data-tut="settings.replay">Ver outra vez</button>
+      <button type="button" class="settings-btn" id="btnTutToggle" data-tut="settings.toggle">Desligar dicas</button>
+    </div>
     <button type="button" class="settings-btn danger" id="btnNewGame">Novo jogo</button>
   </div>
 </aside>
@@ -5822,12 +5828,12 @@
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
     <span>Início</span>
   </button>
-  <button type="button" class="mobile-tabbar-btn" id="tabInbox" title="Correio" aria-label="Correio">
+  <button type="button" class="mobile-tabbar-btn" id="tabInbox" data-tut="correio.tab" title="Correio" aria-label="Correio">
     <span class="inbox-badge pulse tab-badge" id="tabInboxBadge" hidden>0</span>
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
     <span>Correio</span>
   </button>
-  <button type="button" class="mobile-tabbar-btn" id="tabAuction" title="Leilão" aria-label="Leilão">
+  <button type="button" class="mobile-tabbar-btn" id="tabAuction" data-tut="auction.tab" title="Leilão" aria-label="Leilão">
     <span class="inbox-badge pulse tab-badge" id="tabAuctionBadge" hidden>0</span>
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5"/><path d="M12 7l5 5"/><path d="M3 21l7-7"/><path d="M14 3l7 7-3.5 3.5L10.5 6.5 14 3z"/><path d="M5 21h6"/></svg>
     <span>Leilão</span>
@@ -5996,13 +6002,14 @@
     try { fc = (typeof codForecast === 'function') ? codForecast() : null; } catch (_) { return ''; }
     if (!fc || fc.month == null) return '';
     const who = fc.critical && fc.critical.label ? (' · a marcar a data: ' + fc.critical.label) : '';
-    return '<span class="hud-next-crit" id="codForecastHud">Arranque previsto: <strong>mês ' + fc.month + '</strong>' + who + '</span>';
+    return '<span class="hud-next-crit" id="codForecastHud" data-tut="hud.cod_date">Arranque previsto: <strong>mês ' + fc.month + '</strong>' + who + '</span>';
   }
   function npvCauseHudHtml() {
     const note = (typeof mailLoop !== 'undefined' && mailLoop) ? mailLoop.npvNote : null;
     if (!note || !note.text) return '';
     if (((mailLoop.month | 0) - (note.month | 0)) > 1) return '';
-    return '<span class="hud-next-crit" id="npvCauseNote">' + escapeHtml(note.text) + '</span>';
+    if (window.__tut && window.__tutNpvSeen !== note.text) { window.__tutNpvSeen = note.text; tutEmit('effect', 'npv_note_shown', 600); }
+    return '<span class="hud-next-crit" id="npvCauseNote" data-tut="npv.cause">' + escapeHtml(note.text) + '</span>';
   }
   function contingencyVitalCard(phase) {
     if (typeof mailLoop === 'undefined' || !mailLoop || typeof mailLoop.obraContingency !== 'number') return '';
@@ -6379,7 +6386,7 @@
         hudPhaseHtml = `
             <div class="hud-phase-row">
               <span class="hud-phase-pill"><span class="hud-phase-dot" aria-hidden="true"></span>${phaseLbl}</span>
-              <span class="hud-next-crit">Próximo prazo: <strong>${nextCrit}</strong></span>
+              <span class="hud-next-crit" data-tut="deadlines">Próximo prazo: <strong>${nextCrit}</strong></span>
               ${codHtml}
               ${eqHtml}
               ${contHtml}
@@ -6387,7 +6394,7 @@
             </div>`;
       }
       return `
-        <article class="${classes}" id="card-${n.id}" data-node="${n.id}">
+        <article class="${classes}" id="card-${n.id}" data-node="${n.id}" data-tut="sala.open">
           <div class="window-titlebar">
             <button type="button" class="btn-minimize-node" data-minimize="${n.id}"
               aria-label="Minimizar" title="Minimizar"></button>
@@ -6938,6 +6945,7 @@
     mailLoop.deliveredIds[letter.id] = true;
     stampLetterArrival(letter);
     mailState.items = [letter].concat(mailState.items.filter((m) => m.id !== letter.id));
+    tutEmit('effect', 'deliver:' + skeletonId, 300);
     renderInboxBadge();
     scheduleSave('mail-player-' + skeletonId);
     if (opts.open) openLetter(letter.id);
@@ -7274,7 +7282,7 @@
       const gatedAttr = disabled
         ? `aria-disabled="true" data-gated-reason="${String(reason || 'Ainda não disponível').replace(/"/g, '&quot;')}"`
         : '';
-      return `<button type="button" class="asset-cta${disabled ? ' is-gated' : ''}" data-asset-cta="${id}" ${gatedAttr}>
+      return `<button type="button" class="asset-cta${disabled ? ' is-gated' : ''}" data-asset-cta="${id}" ${({terrenos:'data-tut="sala.land"',construir:'data-tut="sala.fid"'})[id]||''} ${gatedAttr}>
         <span><div class="asset-cta-title">${title}</div><div class="asset-cta-sub">${subText}</div></span>
         ${chipHtml}
       </button>`;
@@ -7537,6 +7545,7 @@
     mailLoop.deliveredMonths[mk] = ds;
     stampLetterArrival(letters);
     mailState.items = letters.concat(mailState.items);
+    letters.forEach((L) => tutEmit('effect', 'deliver:' + (L.skeletonId || ''), 300));
     renderInboxBadge();
     scheduleSave('sala-letter-' + skeletonId);
     return { letters: letters, delivered: letters.length };
@@ -7663,6 +7672,7 @@
     }
     renderAssetRoom();
     lockPageScroll();
+    tutEmit('open', 'sala', 300);
     try { renderAssetMoneyStrip({ reset: true }); } catch (_) {}
     const scroll = document.getElementById('assetRoomScroll');
     if (scroll && !opts.focus) scroll.scrollTop = 0;
@@ -7683,6 +7693,7 @@
   }
 
   function closeAssetRoom() {
+    tutEmit('open', 'home', 400);
     setTimeout(syncPageScrollLock, 0);
     assetRoomState.open = false;
     assetRoomState.nodeId = null;
@@ -8962,11 +8973,6 @@
 
   function initCoach() {
     document.getElementById('wattCoachBtn').addEventListener('click', () => {
-      const btnEl = document.getElementById('wattCoachBtn');
-      if (btnEl && String(btnEl.textContent || '').trim().toLowerCase() === 'saltar') {
-        hideCoach({ persist: true, clearQueue: true });
-        return;
-      }
       const last = (document.getElementById('wattCoach')._coachLast || {});
       const kind = (last.data && last.data.kind) || (coachTargetEl ? 'tutorial' : 'storytelling');
       const hasTarget = !!(coachTargetEl || last.target);
@@ -9003,7 +9009,11 @@
 
     function wireTutorialLaunch(id) {
       const el = document.getElementById(id);
-      if (el) el.addEventListener('click', () => startDemoSequence());
+      if (!el) return;
+      el.addEventListener('click', () => {
+        if (window.__tut && window.__tut.replay) window.__tut.replay();
+        else window.__tutWantReplay = true;
+      });
     }
     wireTutorialLaunch('btnTutorial');
     wireTutorialLaunch('btnAuctionTutorial');
@@ -9038,7 +9048,10 @@
       try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
       requestAnimationFrame(() => startDemoSequence());
     } else if (!isOnboardingDone() && !screenshotAuctionOnly) {
-      requestAnimationFrame(() => startDemoSequence());
+      requestAnimationFrame(() => {
+        if (window.__tut) window.__tut.showWelcome();
+        else window.__tutWantWelcome = true;
+      });
     } else if (screenshotAuctionOnly) {
       requestAnimationFrame(() => { if (typeof openAuctionRoom === 'function') openAuctionRoom(); });
     }
@@ -10212,7 +10225,7 @@
   function syncAuctionClockPause() {
     // Pause: coach, abertura/result/fora, or no open lots. Bid + lots left → run even after a win.
     const lotsLeft = typeof availableAuctionLots === 'function' ? availableAuctionLots().length : 0;
-    if (typeof coachActive !== 'undefined' && coachActive) {
+    if ((typeof coachActive !== 'undefined' && coachActive) || window.__tutOpen) {
       auctionState.clockPaused = true;
     } else if (auctionState.screen === 'abertura' || auctionState.screen === 'trap' || auctionState.screen === 'fora') {
       auctionState.clockPaused = true;
@@ -11028,6 +11041,7 @@
     activities.unshift({ time: 'Agora', text: 'Fora deste leilão · não perdeste dinheiro' });
     renderActivity();
     setAuctionScreen('fora');
+    tutEmit('effect', 'auction_lost', 200);
     renderAuctionLots();
     renderAuctionRivals();
     syncAuctionExitGates();
@@ -11194,6 +11208,7 @@
         badge.style.color = '';
       }
       title.textContent = outcome === 'trap' ? 'Ganhaste, mas o projeto perde dinheiro.' : 'Ganhaste. O projeto ainda tem riscos.';
+      tutEmit('phase', 'trc_won', 250);
       body.textContent = outcome === 'trap'
         ? ('Recebes o preço que propuseste: ' + result.bid + ' €/MWh em ' + result.lot.name + '. A este preço, o projeto perde dinheiro. Agora tens de o melhorar sem gastar demasiado.')
         : ('Ganhaste a ' + result.bid + ' €/MWh (a tua oferta). O TRC é teu e o jogo continua com este projeto.');
@@ -11251,6 +11266,7 @@
     }
     document.getElementById('auctionRoom').classList.add('open');
     document.getElementById('auctionRoom').setAttribute('aria-hidden', 'false');
+    tutEmit('open', 'auction', 80);
     const kicker = document.getElementById('auctionWaveKicker');
     if (kicker) kicker.textContent = 'Ligações à rede · ronda ' + (auctionState.wave + 1);
     try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
@@ -11359,6 +11375,7 @@
   }
 
   function closeAuctionRoom() {
+    tutEmit('open', 'home', 400);
     // Always allowed — room, not the game
     clearTimeout(auctionAberturaTimer);
     clearInterval(auctionAberturaAnim);
@@ -14425,6 +14442,7 @@
         } catch (_) {}
       }
       mailLoop.projectPhase = next;
+      tutEmit('phase', next, 300);
     }
     const raised = phaseIndex(mailLoop.projectPhase) > ci;
     return raised;
@@ -15283,6 +15301,7 @@
     effects.forEach((ef) => {
       if (!ef) return;
       const key = String(ef);
+      tutEmit('tag', key, 400);
       // Clear tags: remove pipeline flags instead of incrementing
       if (key === 'sale_pipeline_clear') {
         mailLoop.tags.sale_pipeline_open = 0;
@@ -15694,6 +15713,7 @@
       stampLetterArrival(newLetters);
       newLetters.forEach((L) => { try { applyLetterArrivalEffects(L); } catch (_) {} });
       mailState.items = newLetters.concat(mailState.items);
+      newLetters.forEach((L) => tutEmit('effect', 'deliver:' + (L.skeletonId || String(L.id || '').split(':')[0]), 300));
       if (mailState.open && mailState.view === 'detail' && mailState.activeId) {
         const cur = mailState.items.find((m) => m.id === mailState.activeId);
         if (cur && cur.econChoiceId) {
@@ -15852,6 +15872,7 @@
   }
 
   function closeInbox() {
+    tutEmit('open', 'home', 400);
     mailState.open = false;
     mailState.view = 'list';
     mailState.activeId = null;
@@ -15880,6 +15901,7 @@
     toastPlacement();
     if (backdrop) backdrop.classList.add('open');
     renderInboxBody();
+    tutEmit('open', 'correio', 250);
   }
 
   function openLetter(id) {
@@ -15949,7 +15971,7 @@
             if (isDeferred) cls += ' is-deferred';
             if (locked) cls = 'mail-cta-secondary is-locked';
             const label = fillMailTemplate(c.label);
-            const btn = '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(cid) + '" data-mail-letter="' + escapeHtml(letter.id) + '"' +
+            const btn = '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(cid) + '"' + (i === 0 ? ' data-tut="correio.first_choice"' : '') + ' data-mail-letter="' + escapeHtml(letter.id) + '"' +
               ((isChosen || off || isDeferred || locked) ? ' disabled aria-disabled="true"' : '') + (isChosen ? ' aria-pressed="true"' : '') + '>' +
               (locked ? '<span class="mail-lock" aria-hidden="true">🔒</span> ' : '') + (isChosen ? '✓ ' : '') + escapeHtml(label) + (isChosen ? ' <span class="mail-chosen-tag">escolheste</span>' : '') +
               (isDeferred ? ' <span class="mail-chosen-tag">escolheste antes</span>' : '') + '</button>';
@@ -16758,7 +16780,8 @@
       nodes: JSON.parse(JSON.stringify(nodes)),
       activities: JSON.parse(JSON.stringify(activities)),
       actions: actionsCopy,
-      flags: { onboardingDone: onboardingDone }
+      flags: { onboardingDone: onboardingDone },
+      tutorial: (window.__tut && window.__tut.exportState) ? window.__tut.exportState() : (window.__tutSaved || null)
     };
   }
 
@@ -16803,6 +16826,12 @@
 
   function hydrateFromSave(blob) {
     if (!blob || blob.v !== 1 || !blob.state) return false;
+    try {
+      if (blob.tutorial) {
+        window.__tutSaved = blob.tutorial;
+        if (window.__tut && window.__tut.importState) window.__tut.importState(blob.tutorial);
+      }
+    } catch (_) {}
     const s = blob.state;
     state.quarter = s.quarter != null ? s.quarter : state.quarter;
     state.year = s.year != null ? s.year : state.year;
@@ -17069,6 +17098,7 @@
     if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
     clearSave();
     try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
+    try { localStorage.removeItem('watt-tut-v01'); window.__tutSaved = null; } catch (_) {}
     try { sessionStorage.setItem('watt.forceNewGame', '1'); } catch (_) {}
     try {
       mailLoop.active = false;
@@ -18009,6 +18039,7 @@
     if (forceNew) {
       clearSave();
       try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
+      try { localStorage.removeItem('watt-tut-v01'); window.__tutSaved = null; } catch (_) {}
     }
     _saveOverrideActive = hasSaveOverrideQuery();
     let resumed = false;
@@ -18096,9 +18127,27 @@
     });
   }
 
+  function tutEmit(kind, val, delay) {
+    setTimeout(function () { if (window.__tut) window.__tut.emit(kind, val); }, delay == null ? 280 : delay);
+  }
+  window.__tutApi = {
+    phase: () => (typeof mailLoop !== 'undefined' && mailLoop.active ? (mailLoop.projectPhase || 'trc_won') : ''),
+    month: () => (typeof mailLoop !== 'undefined' ? (mailLoop.month | 0) : 0),
+    markOnboarded: () => { try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {} },
+    save: () => { try { persistSave('tutorial'); } catch (_) {} },
+    openAuction: () => openAuctionRoom(), closeAuction: () => closeAuctionRoom(),
+    openInbox: () => openInbox(), closeInbox: () => closeInbox(), openLetter: (id) => openLetter(id),
+    mailItems: () => mailState.items, inboxOpen: () => !!mailState.open,
+    auctionOpen: () => !!auctionState.open, salaOpen: () => !!assetRoomState.open,
+    openSala: (id) => openAssetRoom(id || (nodes.find((n) => isAwardedTrc(n.id)) || nodes[0]).id),
+    closeSala: () => closeAssetRoom(), syncClock: () => { try { syncAuctionClockPause(); } catch (_) {} },
+    closeSettings: () => closeSettingsSheet()
+  };
+
   init();
 })();
 </script>
+<script src="tut.js"></script>
 
 
 
