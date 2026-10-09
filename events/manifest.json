@@ -51,5 +51,6 @@
     "se-sheets/ourique.json"
   ],
   "mvp_schedule": "mvp-schedule.json",
-  "tutorial": "tutorial.v01.json"
+  "tutorial": "tutorial.v01.json",
+  "auction_consultor": "auction-consultor.v01.json"
 }

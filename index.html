@@ -2925,6 +2925,13 @@
   .auction-consultant-line .tone-warn { color: #b45309; }
   .auction-consultant-line .tone-anemic { color: #64748b; }
   .auction-consultant-line .tone-good { color: #15803d; }
+  .auction-consultor-line {
+    margin: -4px 0 12px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: #334155;
+  }
 
   .auction-irony {
     display: grid;
@@ -5573,6 +5580,7 @@
           <div class="auction-consult" id="auction-consultant" data-tut="auction.consultor">
             <div class="auction-consultant-label">Consultor <span class="prov-mark">valores provisórios</span></div>
             <div class="auction-consultant-line" id="auctionConsultantLine">Se fechares a 30 €/MWh → NPV —</div>
+            <p class="auction-consultor-line" id="auctionConsultorLine" hidden></p>
             <div class="auction-irony" aria-label="As tuas contas e o preço dos rivais">
               <div class="auction-irony-good">
                 <div class="k" title="NPV: quanto vale hoje o projeto para os investidores: receitas menos custos e pagamentos ao banco, a valores de hoje, com 8% ao ano">NPV · valor do projeto hoje</div>
@@ -6945,6 +6953,7 @@
     mailLoop.deliveredIds[letter.id] = true;
     stampLetterArrival(letter);
     mailState.items = [letter].concat(mailState.items.filter((m) => m.id !== letter.id));
+    // deliver:<skeleton id> for every letter. A step such as tut-sala-hibrido stays dormant until that id exists.
     tutEmit('effect', 'deliver:' + skeletonId, 300);
     renderInboxBadge();
     scheduleSave('mail-player-' + skeletonId);
@@ -7545,6 +7554,7 @@
     mailLoop.deliveredMonths[mk] = ds;
     stampLetterArrival(letters);
     mailState.items = letters.concat(mailState.items);
+    // deliver:<skeleton id> for every letter, not a fixed list of ids.
     letters.forEach((L) => tutEmit('effect', 'deliver:' + (L.skeletonId || ''), 300));
     renderInboxBadge();
     scheduleSave('sala-letter-' + skeletonId);
@@ -10111,6 +10121,30 @@
       applyLeilaoFaixa(await r.json());
     } catch (err) { console.warn('[WattAuction] leilao_faixa failed', err); }
   })();
+  /* Lines under the consultant NPV sentence. Copy: content/events/auction-consultor.v01.json (manifest auction_consultor). */
+  const AUCTION_CONSULTOR_FALLBACK = 'content/events/auction-consultor.v01.json';
+  var AUCTION_CONSULTOR = null;
+  let auctionConsultorFollowNpv = false;
+  (async function loadAuctionConsultor() {
+    try {
+      let url = AUCTION_CONSULTOR_FALLBACK;
+      try {
+        const manRes = await fetch('content/events/manifest.json', { cache: 'no-store' });
+        if (manRes.ok) {
+          const man = await manRes.json();
+          if (man && typeof man.auction_consultor === 'string' && man.auction_consultor) {
+            url = 'content/events/' + String(man.auction_consultor).replace(/^\//, '');
+          }
+        }
+      } catch (_) {}
+      const r = await fetch(url, { cache: 'no-store' });
+      if (!r.ok) { console.warn('[WattAuction] consultor lines missing (' + r.status + ')'); return; }
+      const data = await r.json();
+      if (!data || !data.lines) { console.warn('[WattAuction] consultor lines empty'); return; }
+      AUCTION_CONSULTOR = data;
+      try { if (auctionState && auctionState.open) updateConsultant(); } catch (_) {}
+    } catch (err) { console.warn('[WattAuction] consultor lines', err); }
+  })();
   const AUCTION_MOCK_BREAKEVEN_BID = 33;            // €/MWh · valor já existente na curva mock · PEDIR_ECONOMY (M-NPV)
   const AUCTION_MOCK_NPV_SLOPE = 0.32;              // M€ por €/MWh em Ourique · valor já existente · PEDIR_ECONOMY
   const AUCTION_MOCK_YEARS = 25;                    // anos de receita no mock · PEDIR_ECONOMY
@@ -10415,6 +10449,7 @@
       auctionState.bid = AUCTION_DEFAULT_BID;
       const slider = document.getElementById('auctionBidSlider');
       if (slider) slider.value = String(AUCTION_DEFAULT_BID);
+      auctionConsultorFollowNpv = false;
     }
     const fit = (typeof lotFitsMandate === 'function') ? lotFitsMandate(lot) : { ok: true, reason: '' };
     document.getElementById('auctionTitle').textContent = lot.name + ' · Leilão';
@@ -10555,6 +10590,7 @@
         if (auctionState.screen !== 'bid') return;
         auctionState.bid = Number(btn.dataset.bid);
         document.getElementById('auctionBidSlider').value = String(auctionState.bid);
+        auctionConsultorFollowNpv = true;
         updateConsultant();
       });
     });
@@ -10715,6 +10751,7 @@
         (lot ? ('Em ' + lot.name + ' (' + lotMwp(lot) + ' MWp), se') : 'Se') + ' fechares a <span class="num">' + bid + ' €/MWh</span> → NPV <span class="tone-' + eco.tone + ' num">' +
         auctionFmtVan(eco.van) + '</span> · IRR <span class="tone-' + eco.tone + ' num">' + auctionFmtIrr(eco.irr) + '</span>';
     }
+    paintAuctionConsultorLine(eco);
     const vanEl = document.getElementById('auctionVan');
     const irrEl = document.getElementById('auctionIrr');
     if (vanEl) {
@@ -10763,6 +10800,22 @@
     });
     const slider = document.getElementById('auctionBidSlider');
     if (slider) slider.disabled = auctionState.screen !== 'bid';
+  }
+
+  /** default when the offer opens; after the bid moves, the line follows the solar-only NPV already on the consultant line. */
+  function paintAuctionConsultorLine(eco) {
+    const el = document.getElementById('auctionConsultorLine');
+    if (!el) return;
+    const lines = AUCTION_CONSULTOR && AUCTION_CONSULTOR.lines;
+    if (!lines) { el.hidden = true; el.textContent = ''; delete el.dataset.line; return; }
+    const van = eco && eco.van;
+    const negative = !(van >= 0) || Object.is(van, -0);
+    const key = auctionConsultorFollowNpv ? (negative ? 'bid_npv_negative' : 'bid_npv_positive') : 'default';
+    const text = lines[key];
+    if (!text) { el.hidden = true; el.textContent = ''; delete el.dataset.line; return; }
+    el.hidden = false;
+    el.textContent = text;
+    el.dataset.line = key;
   }
 
   /** Commit a won lot to the portfolio. Idempotent: a second call for the same lot only re-shows the card
@@ -11297,6 +11350,7 @@
       setAuctionScreen('trap');
     } else {
       if (auctionState.screen === 'trap') auctionState.screen = 'bid';
+      auctionConsultorFollowNpv = false;
       selectAuctionLot(auctionState.selectedId, { keepBid: true });
       syncAuctionSliderToBid();
       setAuctionScreen('bid');
@@ -11671,6 +11725,7 @@
     document.getElementById('auctionBidSlider').addEventListener('input', (e) => {
       if (auctionState.screen !== 'bid') return;
       auctionState.bid = Number(e.target.value);
+      auctionConsultorFollowNpv = true;
       updateConsultant();
     });
     document.getElementById('auction-confirm').addEventListener('click', confirmAuctionBid);
@@ -15713,6 +15768,7 @@
       stampLetterArrival(newLetters);
       newLetters.forEach((L) => { try { applyLetterArrivalEffects(L); } catch (_) {} });
       mailState.items = newLetters.concat(mailState.items);
+      // Same hook as deliver:mail-prazo-aviso-le-01: any skeleton id, so deliver:mail-consultor-hibrido-01 fires when that letter arrives.
       newLetters.forEach((L) => tutEmit('effect', 'deliver:' + (L.skeletonId || String(L.id || '').split(':')[0]), 300));
       if (mailState.open && mailState.view === 'detail' && mailState.activeId) {
         const cur = mailState.items.find((m) => m.id === mailState.activeId);

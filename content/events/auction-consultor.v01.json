@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "status": "APROVADO Pedro 2026-10-09 23:10 PT",
+  "slot": "auction.consultor",
+  "slot_why": "O consultor já fala nesse campo durante a oferta («Se fechares a X €/MWh → NPV …»); a frase nova entra ali, por baixo da linha do NPV, sem nota extra nem mais um clique antes de um relógio de 2:00.",
+  "lines": {
+    "default": "Os rivais estão a licitar entre 20 e 30 €/MWh. A esse preço, só com solar, perdes dinheiro todos os anos.",
+    "bid_npv_negative": "A este preço, só com solar, o projeto perde dinheiro todos os anos. Vais ter de tirar mais da ligação.",
+    "bid_npv_positive": "A este preço o solar já se paga."
+  },
+  "show_rule": "default ao abrir a oferta; depois bid_npv_negative ou bid_npv_positive conforme o NPV só com solar da oferta atual (o mesmo número da linha do consultor).",
+  "nota_gm": "Contexto 2026-10-09: rivais licitam 20–30 €/MWh (regra nova da Economy, regeneração a caminho); só com solar o projeto perde dinheiro; o híbrido (eólica + baterias, regra 75/25) salva-o. Sem valores em € além do preço da oferta (€/MWh), que é a unidade do leilão.",
+  "hybrid_hint_v01_2026_10_09": true,
+  "lines_before_rivais_2026_10_09": {
+    "default": "Os rivais estão a licitar entre 20 e 30 €/MWh. A esse preço, só com solar, perdes dinheiro todos os anos. Quem ganha assim só se salva juntando eólica e baterias depois do leilão.",
+    "bid_npv_negative": "A este preço, só com solar, o projeto perde dinheiro todos os anos. Só compensa se juntares eólica e baterias depois de ganhar.",
+    "bid_npv_positive": "A este preço o solar já se paga. Com eólica e baterias, ganhas mais."
+  }
+}
