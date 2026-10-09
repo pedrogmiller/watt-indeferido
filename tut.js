@@ -75,9 +75,13 @@
   }
   function currentScreen() {
     const a = api();
-    if (a.auctionOpen && a.auctionOpen()) return 'auction';
-    if (a.salaOpen && a.salaOpen()) return 'sala';
-    if (a.inboxOpen && a.inboxOpen()) return 'correio';
+    const sala = a.salaOpen && a.salaOpen();
+    const auction = a.auctionOpen && a.auctionOpen();
+    const inbox = a.inboxOpen && a.inboxOpen();
+    // The asset room paints above the auction. Correio paints above the asset room.
+    if (sala) return inbox ? 'correio' : 'sala';
+    if (auction) return 'auction';
+    if (inbox) return 'correio';
     return 'home';
   }
   function goHome() {
@@ -117,18 +121,61 @@
     if (name.indexOf('hud.') === 0 && api().salaOpen && api().salaOpen()) return 'sala';
     return 'home';
   }
+  function sameScreen(name) { return !!name && screenOf(name) === currentScreen(); }
+  /* Something the player can actually see: on this screen, in the viewport, not under another room. */
+  function exposed(el) {
+    if (!visible(el)) return false;
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    if (r.bottom <= 1 || r.top >= innerHeight - 1 || r.right <= 1 || r.left >= innerWidth - 1) return false;
+    const x = Math.max(0, Math.min(innerWidth - 1, r.left + r.width / 2));
+    const y = Math.max(0, Math.min(innerHeight - 1, r.top + Math.min(r.height / 2, 36)));
+    let stack;
+    try { stack = document.elementsFromPoint(x, y); } catch (_) { return true; }
+    if (!stack || !stack.length) return false;
+    for (let i = 0; i < stack.length; i++) {
+      const n = stack[i];
+      if (!n || n === document.documentElement || n === document.body) continue;
+      if (root && root.contains(n)) continue;
+      if (n === el || el.contains(n)) return true;
+      let cs;
+      try { cs = getComputedStyle(n); } catch (_) { return false; }
+      if (!cs || cs.pointerEvents === 'none' || cs.visibility === 'hidden' || cs.display === 'none' || Number(cs.opacity) === 0) continue;
+      return false;
+    }
+    return false;
+  }
+  const PHASE_RANK = { trc_won: 0, land: 1, pip: 2, aia: 3, licenca_producao: 4, obra: 5, cod: 6 };
+  function phasePassed(s) {
+    const t = (s && s.trigger) || {};
+    if (!t.phase || t.phase === 'trc_won') return false;
+    const p = (api().phase && api().phase()) || '';
+    if (!p || p === t.phase) return false;
+    const pi = PHASE_RANK[p], ti = PHASE_RANK[t.phase];
+    if (pi == null || ti == null) return false;
+    return pi > ti;
+  }
+  const holdOff = {};
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   async function resolve(name) {
-    const want = screenOf(name);
-    let el = want === currentScreen() ? find(name) : null;
-    for (let i = 0; i < 10 && !el; i++) {
-      try { opener(name); } catch (e) { console.info('[tut] opener', name, e && e.message); }
-      await wait(150);
-      el = find(name);
+    if (!sameScreen(name)) return null;
+    // Open the letter only when Correio is already the screen. Never switch rooms to force a tip.
+    if (name === 'correio.first_choice' && !find(name)) {
+      for (let i = 0; i < 8 && !find(name); i++) {
+        if (!sameScreen(name)) return null;
+        try { opener(name); } catch (e) { console.info('[tut] opener', name, e && e.message); }
+        await wait(150);
+      }
     }
+    let el = find(name);
     const FB = { 'hud.value': ['npv.cause', 'sala.open'], 'hud.cod_date': ['deadlines'] };
-    if (!el) (FB[name] || []).some((n) => { el = find(n); return !!el; });
-    return el;
+    if (!el) (FB[name] || []).some((n) => { if (!sameScreen(n)) return false; el = find(n); return !!el; });
+    if (el && !exposed(el)) {
+      try { el.scrollIntoView({ block: 'center', inline: 'nearest' }); } catch (_) {}
+      await wait(60);
+      if (!sameScreen(name) || !exposed(el)) el = null;
+    }
+    return el && exposed(el) ? el : null;
   }
 
   function phaseOk(s) {
@@ -169,9 +216,32 @@
     window.__tutOpen = next;
     try { if (api().syncClock) api().syncClock(); } catch (_) {}
   }
+  function targetWaiting(s) {
+    if (!s || st.seen[s.id] || phasePassed(s) || earlierScreenPending(s)) return false;
+    if (holdOff[s.id] && Date.now() < holdOff[s.id]) return false;
+    return !!(s.target && sameScreen(s.target) && find(s.target));
+  }
   function refreshClockHold() {
-    const showable = queue.some((s) => s && !st.seen[s.id] && !earlierScreenPending(s));
+    const showable = queue.some(targetWaiting);
     holdClock(!!(cur || welcomeUp() || showable));
+  }
+  function dropPassed() {
+    let dropped = false;
+    for (let i = queue.length - 1; i >= 0; i--) {
+      if (!phasePassed(queue[i])) continue;
+      st.seen[queue[i].id] = 1;
+      queue.splice(i, 1);
+      dropped = true;
+    }
+    if (dropped) persist();
+  }
+  function requeue(s) {
+    if (!s || st.seen[s.id]) return;
+    holdOff[s.id] = Date.now() + 600;
+    if (queue.indexOf(s) === -1) {
+      queue.push(s);
+      queue.sort((a, b) => a.order - b.order);
+    }
   }
 
   function emit(kind, val) {
@@ -196,19 +266,15 @@
   let pumping = false;
   async function pump() {
     if (cur || pumping || !queue.length || st.off || welcomeUp()) return;
-    const s0 = queue[0];
-    if (!s0 || st.seen[s0.id] || earlierScreenPending(s0)) {
-      if (s0 && st.seen[s0.id]) { queue.shift(); pump(); }
-      else refreshClockHold();
-      return;
-    }
+    dropPassed();
+    const s = queue.find(targetWaiting);
+    if (!s) { refreshClockHold(); return; }
     pumping = true;
     for (let i = 0; i < 40 && toastUp(); i++) await wait(250);
     pumping = false;
-    if (cur || !queue.length || st.off || welcomeUp()) return;
-    const s = queue[0];
-    if (!s || st.seen[s.id] || earlierScreenPending(s)) return;
-    queue.shift();
+    if (cur || st.off || welcomeUp() || !targetWaiting(s)) { refreshClockHold(); return; }
+    const idx = queue.indexOf(s);
+    if (idx !== -1) queue.splice(idx, 1);
     show(s);
   }
 
@@ -232,8 +298,29 @@
     root.querySelector('.tut-off').addEventListener('click', () => done(true));
     window.addEventListener('resize', place);
     window.addEventListener('scroll', place, true);
-    setInterval(() => { if (cur) place(); }, 400);
   }
+  function parkTip() {
+    const s = cur;
+    cur = null;
+    targetEl = null;
+    if (root) root.classList.remove('open');
+    if (!s) { refreshClockHold(); return; }
+    if (phasePassed(s)) { st.seen[s.id] = 1; persist(); }
+    else requeue(s);
+    refreshClockHold();
+  }
+  setInterval(() => {
+    if (st.off || welcomeUp()) return;
+    if (cur) {
+      const still = cur.target && sameScreen(cur.target) && targetEl && exposed(targetEl);
+      if (still) { place(); return; }
+      const again = cur.target && sameScreen(cur.target) ? find(cur.target) : null;
+      if (again && exposed(again)) { targetEl = again; place(); return; }
+      parkTip();
+      return;
+    }
+    if (queue.length) pump();
+  }, 400);
   function dismissTip() {
     cur = null;
     targetEl = null;
@@ -245,18 +332,20 @@
     holdClock(true);
     targetEl = await resolve(s.target);
     if (cur !== s) return;
-    if (targetEl) {
-      try { targetEl.scrollIntoView({ block: 'center', inline: 'nearest' }); } catch (_) {}
-      await wait(80);
-      if (!visible(targetEl)) targetEl = find(s.target) || targetEl;
+    if (!targetEl || !sameScreen(s.target) || !exposed(targetEl)) {
+      cur = null;
+      targetEl = null;
+      if (phasePassed(s)) { st.seen[s.id] = 1; persist(); }
+      else requeue(s);
+      refreshClockHold();
+      return;
     }
-    if (cur !== s) return;
     if (!root) build();
     root.querySelector('.tut-title').textContent = s.title || '';
     root.querySelector('.tut-body').textContent = s.body || '';
     root.dataset.step = s.id;
     root.dataset.target = s.target;
-    root.dataset.found = targetEl ? '1' : '0';
+    root.dataset.found = '1';
     root.classList.add('open');
     place();
   }

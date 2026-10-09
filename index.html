@@ -18282,15 +18282,14 @@
     }
     return entries[entries.length - 1].k;
   }
-  function prospRef(oppId) {
-    const gm = prospPack();
-    return (gm && gm.economy_ref && gm.economy_ref[oppId]) || {};
-  }
-  function prospSite(oppId) {
+  function prospUi(oppId) {
     const econ = prospEcon();
-    const ref = prospRef(oppId);
-    if (!econ || !ref.site) return null;
-    return econ.sites && econ.sites[ref.site];
+    const all = econ && econ.ui && econ.ui.opportunities;
+    return (all && all[oppId]) || null;
+  }
+  function prospUiSize(opp, tag) {
+    const sizes = (prospUi(opp && opp.id) || {}).sizes || [];
+    return sizes.find((s) => s && s.card_tag === tag) || null;
   }
   function prospTypeKey(opp) {
     if (!opp) return '';
@@ -18299,31 +18298,15 @@
     return 'sobreequipamento';
   }
   function prospBaseLevels(opp) {
-    const lv = Object.assign({}, (opp && opp.levels) || {});
-    const site = prospSite(opp.id);
-    if (site && site.levels) {
-      if (site.levels.recurso != null) lv.recurso = site.levels.recurso;
-      if (site.levels.licenciamento != null) lv.licenca = site.levels.licenciamento;
-      if (site.levels.terreno != null) lv.terreno = site.levels.terreno;
-    }
-    return lv;
+    return Object.assign({}, (opp && opp.levels) || {});
   }
-  function prospRecursoFromQ(token) {
-    const econ = prospEcon();
-    const map = econ && econ.gm_pack && econ.gm_pack.levels_map && econ.gm_pack.levels_map.recurso_cf;
-    if (!map) return null;
-    const q = Number(String(token).replace(/^q/, ''));
-    let best = null;
-    let bd = 1e9;
-    Object.keys(map).forEach((lvl) => {
-      const d = Math.abs(Number(map[lvl].q) - q);
-      if (d < bd) { bd = d; best = Number(lvl); }
-    });
-    return best;
+  function prospDrawDist(dist) {
+    if (!dist || typeof dist !== 'object') return null;
+    const entries = Object.keys(dist).filter((k) => typeof dist[k] === 'number').map((k) => ({ k: k, p: dist[k] }));
+    return entries.length ? prospPick(entries) : null;
   }
   function prospDrawAll() {
     const gm = prospPack();
-    const econ = prospEcon();
     if (!gm || !mailLoop.prospecao) return;
     (gm.opportunities || []).forEach((opp) => {
       const base = prospBaseLevels(opp);
@@ -18334,31 +18317,13 @@
         corte: base.corte,
         icnf: opp.icnf
       };
-      const ref = prospRef(opp.id);
-      const gmSite = ref.gm && econ && econ.gm_pack && econ.gm_pack.sites && econ.gm_pack.sites[ref.gm];
-      if (gmSite && gmSite.draws) {
-        const entries = Object.keys(gmSite.draws).map((k) => ({ k: k, p: Number(gmSite.draws[k].p) || 0 }));
-        const key = prospPick(entries);
-        rec.drawKey = key;
-        const m = key && /^(q[\d.]+)_(.+)$/.exec(key);
-        if (m) {
-          const rq = prospRecursoFromQ(m[1]);
-          if (rq) rec.recurso = rq;
-          rec.icnf = m[2];
-        }
-      } else if (opp.true_risk) {
-        ['recurso', 'licenca', 'terreno', 'corte'].forEach((field) => {
-          const dist = opp.true_risk[field];
-          if (!dist || typeof dist !== 'object') return;
-          const entries = Object.keys(dist).filter((k) => typeof dist[k] === 'number').map((k) => ({ k: k, p: dist[k] }));
-          if (entries.length) rec[field] = Number(prospPick(entries));
-        });
-        if (opp.true_risk.icnf && typeof opp.true_risk.icnf === 'object') {
-          const dist = opp.true_risk.icnf;
-          const entries = Object.keys(dist).filter((k) => typeof dist[k] === 'number').map((k) => ({ k: k, p: dist[k] }));
-          if (entries.length) rec.icnf = prospPick(entries);
-        }
-      }
+      const risk = (prospUi(opp.id) || {}).true_risk || {};
+      ['recurso', 'licenca', 'terreno', 'corte'].forEach((field) => {
+        const picked = prospDrawDist(risk[field]);
+        if (picked != null) rec[field] = Number(picked);
+      });
+      const ic = prospDrawDist(risk.icnf);
+      if (ic != null) rec.icnf = ic;
       mailLoop.prospecao.drawn[opp.id] = rec;
     });
   }
@@ -18427,17 +18392,13 @@
   }
   function prospMissionMonths(opp) {
     const fx = prospEffects();
-    if (opp.type === 'eolica') {
-      const site = prospSite(opp.id);
-      const mw = site && site.sizes && site.sizes.recomendado;
-      const row = mw != null ? fx['wind_size_' + mw] : null;
-      return row && typeof row.months === 'number' ? row.months : null;
-    }
-    if (opp.type === 'bateria') {
-      const row = fx.bess_size_20x2;
-      return row && typeof row.months === 'number' ? row.months : null;
-    }
-    return null;
+    const ui = prospUi(opp.id) || {};
+    let key = null;
+    if (opp.type === 'eolica' && ui.recommended_mw != null) key = 'wind_size_' + ui.recommended_mw;
+    else if (opp.type === 'bateria' && ui.recommended_size) key = 'bess_size_' + ui.recommended_size;
+    else if (ui.recommended_plan) key = 'overequip_plan_' + ui.recommended_plan;
+    const row = key && fx[key];
+    return row && typeof row.months === 'number' ? row.months : null;
   }
   function prospTrcMonth() {
     const d = mailLoop.deadlines && mailLoop.deadlines.le_deadline;
@@ -18474,30 +18435,66 @@
     if (type === 'bateria') return 'Baterias';
     return 'Mais painéis';
   }
-  function prospWindNpvs(opp, mw) {
-    const econ = prospEcon();
-    const ref = prospRef(opp.id);
-    const gmSite = ref.gm && econ && econ.gm_pack && econ.gm_pack.sites && econ.gm_pack.sites[ref.gm];
-    const vals = [];
-    if (gmSite && gmSite.draws) {
-      Object.keys(gmSite.draws).forEach((k) => {
-        const cell = gmSite.draws[k][String(mw)];
-        if (cell && typeof cell.ev === 'number') vals.push(cell.ev);
-      });
+  function prospEvList(size) {
+    if (!size) return [];
+    const ev = size.ev_MEUR;
+    if (typeof ev === 'number') {
+      const vals = [ev];
+      if (typeof size.corte2_hit_MEUR === 'number') vals.push(+(ev + size.corte2_hit_MEUR).toFixed(2));
+      return vals;
     }
-    let exact = null;
-    const drawn = prospDrawn(opp);
-    if (drawn.drawKey && gmSite && gmSite.draws && gmSite.draws[drawn.drawKey] && gmSite.draws[drawn.drawKey][String(mw)]) {
-      exact = gmSite.draws[drawn.drawKey][String(mw)].ev;
+    if (ev && typeof ev === 'object') {
+      return Object.keys(ev).map((k) => Number(ev[k])).filter((n) => Number.isFinite(n));
     }
-    if (exact == null && gmSite && gmSite.ev_by_size && gmSite.ev_by_size[String(mw)] != null) exact = Number(gmSite.ev_by_size[String(mw)]);
-    return { vals: vals, exact: exact };
+    return [size.nav_corte2_MEUR, size.nav_corte1_MEUR].filter((n) => typeof n === 'number');
   }
-  function prospEquity(opp, mw) {
-    const site = prospSite(opp.id);
-    const row = site && site.rows && site.rows[String(mw)];
-    const eq = row && row.no_aia && row.no_aia.equity_fid;
-    return (typeof eq === 'number') ? eq : null;
+  function prospEvExact(opp, size) {
+    if (!size) return null;
+    const d = prospDrawn(opp);
+    const ev = size.ev_MEUR;
+    if (ev && typeof ev === 'object') {
+      const key = 'vento' + d.recurso + '_' + d.icnf;
+      return typeof ev[key] === 'number' ? ev[key] : null;
+    }
+    if (typeof ev === 'number') {
+      if (Number(d.corte) === 2 && typeof size.corte2_hit_MEUR === 'number') return +(ev + size.corte2_hit_MEUR).toFixed(2);
+      return ev;
+    }
+    if (Number(d.corte) === 1 && typeof size.nav_corte1_MEUR === 'number') return size.nav_corte1_MEUR;
+    return typeof size.nav_corte2_MEUR === 'number' ? size.nav_corte2_MEUR : null;
+  }
+  function prospActiveTrapIds(opp) {
+    const spec = opp && opp.trap_size;
+    if (!spec) return [];
+    if (typeof spec === 'string') return [spec];
+    const ids = [];
+    const push = (v) => {
+      if (Array.isArray(v)) v.forEach(push);
+      else if (v && ids.indexOf(v) === -1) ids.push(v);
+    };
+    push(spec.default);
+    const cond = spec.if_true_risk;
+    if (cond && typeof cond === 'object') {
+      const d = prospDrawn(opp);
+      const ok = Object.keys(cond).every((k) => {
+        const want = cond[k];
+        const got = d[k];
+        if (got == null) return false;
+        return String(got) === String(want);
+      });
+      if (ok) push(spec.trap);
+    }
+    return ids;
+  }
+  function prospTrapLabel(opp) {
+    const lab = opp && opp.trap_size_label;
+    const d = prospDrawn(opp);
+    if (lab && typeof lab === 'object') {
+      if (d.icnf === 'muito_alto' && lab.icnf_muito_alto) return lab.icnf_muito_alto;
+      return lab.default || '';
+    }
+    if (!prospActiveTrapIds(opp).length) return '';
+    return typeof lab === 'string' ? lab : '';
   }
   function prospReportBad(opp) {
     const d = prospDrawn(opp);
@@ -18512,41 +18509,81 @@
     if (di != null && bi != null && di > bi) return true;
     return false;
   }
+  function prospReportCtx(opp) {
+    const d = prospDrawn(opp);
+    return {
+      site_name: opp.name,
+      icnf_level: prospIcnfWord(d.icnf || opp.icnf),
+      trap_size_label: prospTrapLabel(opp) || (typeof opp.trap_size_label === 'string' ? opp.trap_size_label : '')
+    };
+  }
   function prospReportText(opp) {
+    const d = prospDrawn(opp);
+    const ctx = prospReportCtx(opp);
+    const ov = opp.report_override;
+    if (ov && (ov.wind_2 || ov.wind_3)) {
+      const src = Number(d.recurso) === 2 ? ov.wind_2 : ov.wind_3;
+      return fillMailTemplate(src || '', ctx);
+    }
+    if (ov && (ov.bom || ov.mau)) {
+      const src = d.icnf === 'muito_alto' ? (ov.mau || ov.bom) : (ov.bom || ov.mau);
+      return fillMailTemplate(src || '', ctx);
+    }
     const gm = prospPack();
     const block = gm && gm.consultant_report && gm.consultant_report[prospTypeKey(opp)];
     if (!block) return '';
-    const d = prospDrawn(opp);
-    const ctx = {
-      site_name: opp.name,
-      icnf_level: prospIcnfWord(d.icnf || opp.icnf),
-      trap_size_label: opp.trap_size_label || ''
-    };
     const src = prospReportBad(opp) ? block.mau : block.bom;
     return fillMailTemplate(src || '', ctx);
   }
   function prospReportLine(opp) {
-    if (prospReportReady(opp.id)) return 'O relatório diz para evitar ' + (opp.trap_size_label || 'esse tamanho') + '.';
+    if (prospReportReady(opp.id)) {
+      const label = prospTrapLabel(opp);
+      if (prospActiveTrapIds(opp).length && label) return 'O relatório diz para evitar ' + label + '.';
+      return 'O relatório não marca um tamanho a evitar.';
+    }
     const st = mailLoop.prospecao;
     const pend = st && st.pending && st.pending[opp.id];
     if (pend && pend.reportDue != null) return 'O relatório ainda não chegou.';
     return 'Sem relatório, não sabemos qual tamanho evitar.';
   }
+  function prospRentKey(level) {
+    return { baixa: 'low', media: 'mid', alta: 'high' }[level] || level;
+  }
+  function prospRentBlock(opp) {
+    return (prospUi(opp && opp.id) || {}).rent || {};
+  }
   function prospAcceptP(opp, level) {
-    const econ = prospEcon();
-    const ref = prospRef(opp.id);
-    const strat = econ && econ.gm_pack && econ.gm_pack.rent_strategies && econ.gm_pack.rent_strategies[ref.rent_strategy];
-    const key = { baixa: 'baixa→media', media: 'media→alta', alta: 'alta→alta' }[level];
-    if (strat && key && strat[key] && typeof strat[key][1] === 'number') return strat[key][1];
-    const fb = prospPack() && prospPack().config && prospPack().config.rent_accept_if_no_strategy;
-    if (fb && typeof fb[level] === 'number') return fb[level];
-    return null;
+    const a = prospRentBlock(opp).rent_accept;
+    const k = prospRentKey(level);
+    return a && typeof a[k] === 'number' ? a[k] : null;
   }
   function prospSigning(opp, level) {
-    const econ = prospEcon();
-    const fees = econ && econ.gm_pack && econ.gm_pack.rent_signing_fee && econ.gm_pack.rent_signing_fee[prospTypeKey(opp)];
-    if (!fees || fees[level] == null) return null;
-    return Number(fees[level]);
+    const a = prospRentBlock(opp).cash_signing_MEUR;
+    const k = prospRentKey(level);
+    return a && a[k] != null ? Number(a[k]) : null;
+  }
+  function prospRivalP(opp, level) {
+    const table = prospRentBlock(opp).rival_by_rent || {};
+    const row = table[String(opp.rivals | 0)] || table['0'] || {};
+    const k = prospRentKey(level);
+    return typeof row[k] === 'number' ? row[k] : 0;
+  }
+  function prospRentRate(opp, level) {
+    const rent = prospRentBlock(opp);
+    const k = prospRentKey(level);
+    if (rent.rent_eur_ha_ano && typeof rent.rent_eur_ha_ano[k] === 'number') {
+      const s = String(Math.round(rent.rent_eur_ha_ano[k])).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      return s + ' €/ha/ano';
+    }
+    if (rent.rent_keur_mw_ano && typeof rent.rent_keur_mw_ano[k] === 'number') {
+      const s = rent.rent_keur_mw_ano[k].toFixed(1).replace('.', ',');
+      return s + ' k€/MW/ano';
+    }
+    return '';
+  }
+  function prospReportCost(opp) {
+    const ui = prospUi(opp && opp.id);
+    return ui && typeof ui.report_cost_MEUR === 'number' ? ui.report_cost_MEUR : null;
   }
   function prospRentTag(level) {
     if (level === 'baixa') return 'opp_rent_low';
@@ -18562,6 +18599,23 @@
       html += '<i class="' + cls + '"></i>';
     }
     return html + '</span>';
+  }
+  function prospLevelShown(opp, field, base, drawn, ready) {
+    if (ready) {
+      const n = drawn != null ? Number(drawn) : (base != null ? Number(base) : NaN);
+      if (!Number.isFinite(n)) return null;
+      return { exact: n, lo: n, hi: n, text: String(n) };
+    }
+    const view = opp.view && opp.view.sem_relatorio && opp.view.sem_relatorio[field];
+    if (view) {
+      const m = String(view).match(/(\d)\s*[–-]\s*(\d)/);
+      if (m) return { exact: null, lo: Number(m[1]), hi: Number(m[2]), text: m[1] + '–' + m[2] };
+    }
+    if (base == null || !Number.isFinite(Number(base))) return null;
+    const n = Number(base);
+    const lo = Math.max(1, n - 1);
+    const hi = Math.min(5, n + 1);
+    return { exact: null, lo: lo, hi: hi, text: lo === hi ? String(lo) : (lo + '–' + hi) };
   }
   function prospLevelRow(label, value, reported) {
     if (value == null || !Number.isFinite(Number(value))) return '';
@@ -18600,82 +18654,47 @@
     if (prospIcnfHigh(opp) && w.icnf_alto) parts.push(w.icnf_alto);
     return parts.join('\n\n');
   }
+  function prospSizeTitle(size) {
+    if (!size) return '';
+    if (size.mw != null && size.towers != null) return size.mw + ' MW (' + size.towers + ' torres)';
+    if (size.mw != null && size.mwh != null) {
+      const hours = size.mwh / size.mw;
+      const h = Number.isInteger(hours) ? String(hours) : String(hours).replace('.', ',');
+      return size.mw + ' MW por ' + h + ' horas';
+    }
+    if (size.added_mwp != null) return '+' + size.added_mwp + ' MWp';
+    return '';
+  }
   function prospSizeBlocks(opp) {
-    const econ = prospEcon();
     const ready = prospReportReady(opp.id);
     const blocks = [];
-    if (opp.type === 'eolica') {
-      const site = prospSite(opp.id);
-      const sizes = (site && site.sizes) || {};
-      [['seguro', 'Seguro'], ['recomendado', 'Recomendado'], ['armadilha', 'Armadilha']].forEach((pair) => {
-        const mw = sizes[pair[0]];
-        if (mw == null) return;
-        const np = prospWindNpvs(opp, mw);
-        const role = ready ? (pair[1] + ' · ') : '';
-        let npvTxt = '—';
-        if (ready && np.exact != null) npvTxt = prospEuro(np.exact);
-        else if (np.vals.length) npvTxt = prospEuroRange(Math.min.apply(null, np.vals), Math.max.apply(null, np.vals));
-        else if (np.exact != null) npvTxt = prospEuro(np.exact);
-        const eq = prospEquity(opp, mw);
-        blocks.push({ title: role + mw + ' MW', lines: [
-          'NPV esperado ' + npvTxt,
-          eq == null ? '' : ('Capital próprio ' + prospEuro(eq))
-        ].filter(Boolean) });
-      });
-      const ref = prospRef(opp.id);
-      const line = econ && econ.gm_pack && econ.gm_pack.sites && econ.gm_pack.sites[ref.gm] && econ.gm_pack.sites[ref.gm].line_cost;
-      if (line) {
-        const groups = {};
-        Object.keys(line).forEach((k) => {
-          const label = prospEuro(Number(line[k]));
-          groups[label] = groups[label] || [];
-          groups[label].push(k + ' MW');
-        });
-        blocks.push({ title: 'Linha extra', lines: Object.keys(groups).map((label) => label + ' (' + groups[label].join(', ') + ')') });
-      } else if (site && typeof site.grid_add === 'number' && site.grid_add > 0) {
-        blocks.push({ title: 'Linha até à subestação', lines: [prospEuro(site.grid_add)] });
-      }
-    } else if (opp.type === 'bateria') {
-      const sizes = econ && econ.bess_parcela_se && econ.bess_parcela_se.sizes;
-      const hair = econ && econ.gm_pack && econ.gm_pack.bess_corte3_haircut;
-      const corte = prospDrawn(opp).corte;
-      const roleKey = { seguro: '10x2', recomendado: '20x2', armadilha: '20x4' };
-      [['seguro', 'Seguro'], ['recomendado', 'Recomendado'], ['armadilha', 'Armadilha']].forEach((pair) => {
-        const row = sizes && sizes[pair[0]];
-        if (!row) return;
-        const role = ready ? (pair[1] + ' · ') : '';
-        let withWind = row.npv && row.npv.vento_50;
-        let noWind = row.npv && row.npv.vento_0;
-        if (ready && corte === 3 && hair && typeof hair[roleKey[pair[0]]] === 'number') {
-          if (typeof withWind === 'number') withWind = +(withWind + hair[roleKey[pair[0]]]).toFixed(2);
-          if (typeof noWind === 'number') noWind = +(noWind + hair[roleKey[pair[0]]]).toFixed(2);
+    (opp.sizes_available || []).forEach((tag) => {
+      const size = prospUiSize(opp, tag);
+      if (!size) return;
+      const lines = [];
+      if (size.npv_MEUR) {
+        let withWind = size.npv_MEUR.vento_50;
+        let noWind = size.npv_MEUR.vento_0;
+        if (ready && Number(prospDrawn(opp).corte) === 3 && typeof size.corte3_hit_MEUR === 'number') {
+          if (typeof withWind === 'number') withWind = +(withWind + size.corte3_hit_MEUR).toFixed(2);
+          if (typeof noWind === 'number') noWind = +(noWind + size.corte3_hit_MEUR).toFixed(2);
         }
-        blocks.push({ title: role + (row.size || ''), lines: [
-          'NPV com 50 MW de eólica ' + prospEuro(withWind),
-          'NPV sem eólica ' + prospEuro(noWind),
-          'Capital próprio ' + prospEuro(row.equity_100)
-        ] });
-      });
-      const rents = econ && econ.bess_parcela_se && econ.bess_parcela_se.rents_eur_ha;
-      if (rents) {
-        blocks.push({ title: 'Renda do hectare', lines: [
-          'Baixa ' + prospHa(rents.baixa),
-          'Média ' + prospHa(rents.media),
-          'Alta ' + prospHa(rents.alta)
-        ] });
+        lines.push('NPV com 50 MW de eólica ' + prospEuro(withWind));
+        lines.push('NPV sem eólica ' + prospEuro(noWind));
+        if (typeof size.equity_100_MEUR === 'number') lines.push('Capital próprio ' + prospEuro(size.equity_100_MEUR));
+      } else {
+        const vals = prospEvList(size);
+        const exact = prospEvExact(opp, size);
+        let npvTxt = '—';
+        if (ready && exact != null) npvTxt = prospEuro(exact);
+        else if (vals.length) npvTxt = prospEuroRange(Math.min.apply(null, vals), Math.max.apply(null, vals));
+        lines.push('NPV esperado ' + npvTxt);
+        const eq = size.equity_fid_MEUR != null ? size.equity_fid_MEUR : size.equity_MEUR;
+        if (typeof eq === 'number') lines.push('Capital próprio ' + prospEuro(eq));
+        if (typeof size.line_capex_MEUR === 'number') lines.push('Linha extra ' + prospEuro(size.line_capex_MEUR));
       }
-    } else {
-      const sobre = econ && econ.sobreequip;
-      [['small', 'Pequeno'], ['medium', 'Médio'], ['large', 'Grande']].forEach((pair) => {
-        const row = sobre && sobre[pair[0]];
-        if (!row) return;
-        const role = ready ? (pair[1] + ' · ') : '';
-        blocks.push({ title: role + '+' + row.added_MWp + ' MWp', lines: [
-          'NPV ' + prospEuro(row.nav_99MVA),
-          'Capital próprio ' + prospEuro(row.equity)
-        ] });
-      });
-    }
+      blocks.push({ title: prospSizeTitle(size), lines: lines.filter(Boolean) });
+    });
     return blocks;
   }
   function prospHa(n) {
@@ -18684,32 +18703,27 @@
     return s + ' €/ha';
   }
   function prospPreviewCtx(choiceId, ctx) {
-    const econ = prospEcon();
-    if (!econ) return {};
+    const opp = ctx && ctx.opp_id ? prospOpp(ctx.opp_id) : null;
+    if (!opp) return {};
     const wind = /^wind_(\d+)$/.exec(choiceId || '');
     if (wind) {
-      const opp = ctx && ctx.opp_id ? prospOpp(ctx.opp_id) : null;
-      if (opp) {
-        const np = prospWindNpvs(opp, wind[1]);
-        const ready = prospReportReady(opp.id);
-        const n = (ready && np.exact != null) ? np.exact : (np.vals.length ? np.vals.reduce((a, b) => a + b, 0) / np.vals.length : np.exact);
-        if (n != null) return { npv_preview: prospEuro(n) };
-      }
-      const cards = window.__wattEventPack && window.__wattEventPack.effects_economy && window.__wattEventPack.effects_economy.hybrid_cards_2026_10_09b;
-      const row = cards && cards.wind_cards && cards.wind_cards['wind_size_' + wind[1]];
-      if (row && typeof row.npv_preview_MEUR === 'number') return { npv_preview: prospEuro(row.npv_preview_MEUR) };
+      const size = prospUiSize(opp, 'wind_size_' + wind[1]);
+      if (!size) return {};
+      const exact = prospEvExact(opp, size);
+      const vals = prospEvList(size);
+      const ready = prospReportReady(opp.id);
+      const n = (ready && exact != null) ? exact : (vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : exact);
+      return n == null ? {} : { npv_preview: prospEuro(n) };
     }
     const bess = /^bess_(10x2|20x2|20x4)$/.exec(choiceId || '');
     if (bess) {
-      const role = { '10x2': 'seguro', '20x2': 'recomendado', '20x4': 'armadilha' }[bess[1]];
-      const row = econ.bess_parcela_se && econ.bess_parcela_se.sizes && econ.bess_parcela_se.sizes[role];
-      if (row && row.npv) {
-        return {
-          npv_preview: prospEuro(row.npv.vento_50),
-          npv_sem_eolica: prospEuro(row.npv.vento_0),
-          npv_com_eolica: prospEuro(row.npv.vento_50)
-        };
-      }
+      const size = prospUiSize(opp, 'bess_size_' + bess[1]);
+      if (!size || !size.npv_MEUR) return {};
+      return {
+        npv_preview: prospEuro(size.npv_MEUR.vento_50),
+        npv_sem_eolica: prospEuro(size.npv_MEUR.vento_0),
+        npv_com_eolica: prospEuro(size.npv_MEUR.vento_50)
+      };
     }
     return {};
   }
@@ -18766,8 +18780,7 @@
       showToast('Este relatório já foi pedido.');
       return;
     }
-    const econ = prospEcon();
-    const cost = econ && econ.gm_pack && econ.gm_pack.report_cost && econ.gm_pack.report_cost[prospTypeKey(opp)];
+    const cost = prospReportCost(opp);
     if (typeof cost !== 'number') {
       showToast('O preço do relatório ainda não está fechado.');
       return;
@@ -18776,21 +18789,39 @@
     try { applyMailEffects([opp.tags.report_bought], { skipEconomics: true }); } catch (err) { console.warn('[WattProspecao] tag', err); }
     const st = ensureProspecao();
     st.pending[opp.id] = st.pending[opp.id] || {};
-    const wait = (econ.gm_pack.report_cost && Number(econ.gm_pack.report_cost.months)) || 1;
+    const wait = 1;
     st.pending[opp.id].reportDue = (mailLoop.month | 0) + wait;
     showToast('Relatório pedido. Fica pronto no mês ' + st.pending[opp.id].reportDue + '.');
     try { scheduleSave('prospecao-report'); } catch (_) {}
     renderAssetRoom();
   }
+  function prospRentRank(level) {
+    return { baixa: 0, media: 1, alta: 2 }[level];
+  }
   function prospOfferRent(opp, level) {
     const st = ensureProspecao();
     if (mailTagOn(opp.tags.land_agreed) || mailTagOn(opp.tags.lost_to_rival)) return;
     const pend = st.pending[opp.id] || {};
+    if (pend.closed) return;
     if (pend.rent && !pend.rentResolved) {
       showToast('Já fizeste uma proposta. A resposta chega no mês ' + pend.rentDue + '.');
       return;
     }
+    const last = opp.last_offer_month;
+    if (last != null && (mailLoop.month | 0) > (last | 0)) {
+      showToast('Já passou o mês para uma proposta nova.');
+      return;
+    }
+    if (pend.canReoffer && prospRentRank(level) <= prospRentRank(pend.rent)) {
+      showToast('A nova proposta tem de ser mais alta.');
+      return;
+    }
     st.pending[opp.id] = pend;
+    if (pend.canReoffer) {
+      pend.reoffered = true;
+      pend.canReoffer = false;
+      try { applyMailEffects(['opp_land_reoffered_' + opp.id], { skipEconomics: true }); } catch (_) {}
+    }
     pend.rent = level;
     pend.rentResolved = false;
     pend.rentDue = (mailLoop.month | 0) + 1;
@@ -18807,15 +18838,20 @@
     const force = window.__wattProspecaoForce;
     if (force === 'agree' || force === 'refuse' || force === 'rival') outcome = force;
     if (!outcome) {
-      const p = prospAcceptP(opp, pend.rent);
+      const rivalP = prospRivalP(opp, pend.rent);
       const u = prospRand();
-      if (p != null && u < p) outcome = 'agree';
-      else if ((opp.rivals | 0) > 0) outcome = 'rival';
-      else outcome = 'refuse';
+      if (rivalP > 0 && u < rivalP) outcome = 'rival';
+      else {
+        const p = prospAcceptP(opp, pend.rent);
+        const u2 = prospRand();
+        if (p != null && u2 < p) outcome = 'agree';
+        else outcome = 'refuse';
+      }
     }
     if (outcome === 'rival' && !(opp.rivals | 0)) outcome = 'refuse';
     pend.rentResolved = true;
     if (outcome === 'agree') {
+      pend.canReoffer = false;
       st.ownerLine[opp.id] = (opp.owner && opp.owner.aceita) || '';
       try { applyMailEffects([opp.tags.land_agreed], { skipEconomics: true }); } catch (_) {}
       const fee = prospSigning(opp, pend.rent);
@@ -18823,12 +18859,24 @@
         try { applyEconRow({ cash: fee }, (mailLoop && mailLoop.seId) || 'ourique', { cause: 'prospecao_renda' }); } catch (err) { console.warn('[WattProspecao] renda', err); }
       }
     } else if (outcome === 'rival') {
+      pend.canReoffer = false;
       st.ownerLine[opp.id] = (opp.owner && opp.owner.recusa) || '';
       try { applyMailEffects([opp.tags.lost_to_rival], { skipEconomics: true }); } catch (_) {}
       prospDeliverRival(opp);
     } else {
+      const last = opp.last_offer_month;
+      const inTime = last == null || (mailLoop.month | 0) <= (last | 0);
+      const canRetry = pend.rent !== 'alta' && !pend.reoffered && inTime;
       st.ownerLine[opp.id] = (opp.owner && opp.owner.recusa) || '';
       try { applyMailEffects(['opp_land_refused'], { skipEconomics: true }); } catch (_) {}
+      if (canRetry) {
+        pend.canReoffer = true;
+      } else {
+        pend.canReoffer = false;
+        pend.closed = true;
+        st.ownerLine[opp.id] = (opp.owner && opp.owner.despedida) || st.ownerLine[opp.id];
+        try { applyMailEffects(['opp_site_closed_' + opp.id], { skipEconomics: true }); } catch (_) {}
+      }
     }
   }
   function prospDeliverRival(opp) {
@@ -18853,7 +18901,7 @@
     tutEmit('effect', 'prospecao_launch:' + kind, 300);
     const ctx = {
       site_name: opp.name,
-      trap_size_label: opp.trap_size_label || '',
+      trap_size_label: prospTrapLabel(opp),
       icnf_level: prospIcnfWord(prospDrawn(opp).icnf || opp.icnf),
       finish_month: prospFinishPhrase(opp),
       trc_deadline_month: prospDeadlinePhrase(),
@@ -18871,6 +18919,7 @@
     if (!letter) {
       letter = (mailState.items || []).find((m) => m.skeletonId === skel || String(m.id || '').indexOf(skel) === 0);
     }
+    prospFilterSizeChoices(letter, opp);
     assetRoomState.prospecaoWarn = false;
     try { scheduleSave('prospecao-launch'); } catch (_) {}
     try { closeAssetRoom(); } catch (_) {}
@@ -18879,19 +18928,29 @@
       WattInbox.openLetter(letter.id);
     }
   }
+  function prospFilterSizeChoices(letter, opp) {
+    const allow = opp && opp.sizes_available;
+    if (!letter || !allow || !allow.length || !letter.choices) return;
+    letter.choices = letter.choices.filter((c) => {
+      const fx = (c.effects || []).filter((e) => /^(wind_size_|bess_size_|overequip_plan_)/.test(String(e)));
+      if (!fx.length) return true;
+      return fx.some((e) => allow.indexOf(e) !== -1);
+    });
+  }
   function prospecaoOnSizeChoice(letter, choice) {
     const gm = prospPack();
     if (!gm || !choice) return;
     const effects = (choice.effects || []).map(String);
-    const opp = (gm.opportunities || []).find((o) => o.tags && mailTagOn(o.tags.launched) && effects.indexOf(o.trap_size) !== -1);
+    const opp = (gm.opportunities || []).find((o) => o.tags && mailTagOn(o.tags.launched) && effects.some((e) => prospActiveTrapIds(o).indexOf(e) !== -1));
     if (!opp) return;
     if (mailTagOn(opp.tags.report_bought)) return;
+    const hit = effects.find((e) => prospActiveTrapIds(opp).indexOf(e) !== -1);
     const st = ensureProspecao();
     if ((st.traps || []).some((t) => t.oppId === opp.id)) return;
     const cfg = (gm.config && gm.config.trap_delay_months) || {};
     const delay = Number(cfg[opp.type]);
     if (!Number.isFinite(delay)) return;
-    st.traps.push({ oppId: opp.id, atMonth: (mailLoop.month | 0) + delay, type: opp.type, effect: opp.trap_size, sent: false });
+    st.traps.push({ oppId: opp.id, atMonth: (mailLoop.month | 0) + delay, type: opp.type, effect: hit, sent: false });
     try { scheduleSave('prospecao-trap'); } catch (_) {}
   }
   function prospDeliverTrap(t) {
@@ -18909,8 +18968,14 @@
       });
     } catch (err) { console.warn('[WattProspecao] armadilha', err); }
     const econ = prospEcon();
-    const key = prospRef(opp.id).trap_nav;
-    const nav = key && econ && econ.gm_pack && econ.gm_pack.trap_revealed_nav && econ.gm_pack.trap_revealed_nav[key];
+    const navs = econ && econ.gm_pack && econ.gm_pack.trap_revealed_nav;
+    const navKey = {
+      wind_size_70: opp.id === 'opp-serra-branca' ? 'wind_70_sb' : null,
+      wind_size_100: opp.id === 'opp-vale-da-rosa' ? 'wind_100_vr' : null,
+      bess_size_20x4: 'bess_20x4',
+      overequip_plan_large: 'overequip_large'
+    }[t.effect || ''];
+    const nav = navKey && navs ? navs[navKey] : null;
     if (typeof nav === 'number') {
       try { applyEconRow({ nav: nav }, (mailLoop && mailLoop.seId) || 'ourique', { cause: 'prospecao_trap' }); } catch (err) { console.warn('[WattProspecao] trap nav', err); }
     }
@@ -19039,7 +19104,12 @@
       ['terreno', 'Acesso ao terreno', base.terreno, d.terreno],
       ['corte', 'Corte na rede', base.corte, d.corte]
     ];
-    const rows = fields.map((f) => prospLevelRow(f[1], ready ? (f[3] != null ? f[3] : f[2]) : f[2], ready)).join('');
+    const rows = fields.map((f) => {
+      const shown = prospLevelShown(opp, f[0], f[2], f[3], ready);
+      if (!shown) return '';
+      return '<div class="ps-attr"><span class="ps-attr-k">' + escapeHtml(f[1]) + '</span><span class="ps-attr-v">' +
+        prospDots(shown.exact, shown.lo, shown.hi) + '<span class="num">' + escapeHtml(shown.text) + '</span></span></div>';
+    }).join('');
     const icnfText = ready
       ? prospIcnfWord(d.icnf || opp.icnf)
       : ((opp.icnf_view && opp.icnf_view.sem_relatorio) || prospIcnfWord(opp.icnf));
@@ -19048,8 +19118,7 @@
       return '<div class="ps-size"><div class="ps-size-k">' + escapeHtml(b.title) + '</div>' +
         b.lines.map((ln) => '<div class="ps-size-l num">' + prospHyp(ln) + '</div>').join('') + '</div>';
     }).join('');
-    const econ = prospEcon();
-    const cost = econ && econ.gm_pack && econ.gm_pack.report_cost && econ.gm_pack.report_cost[prospTypeKey(opp)];
+    const cost = prospReportCost(opp);
     let reportBtn = '';
     if (mailTagOn(opp.tags.report_bought)) {
       reportBtn = ready
@@ -19062,16 +19131,25 @@
     const owner = st.ownerLine[opp.id] ? '<p class="ps-owner">' + escapeHtml(st.ownerLine[opp.id]) + '</p>' : '';
     const voice = opp.owner && opp.owner.voz_gm ? '<p class="ps-voice">' + escapeHtml(opp.owner.voz_gm) + '</p>' : '';
     let rents = '';
-    if (!lost && !agreed && !launched) {
-      rents = '<div class="ps-rents">' + ['baixa', 'media', 'alta'].map((level) => {
+    if (pend.closed) {
+      rents = '<p class="ps-note">Este terreno ficou fechado.</p>';
+    } else if (!lost && !agreed && !launched) {
+      const rank = { baixa: 0, media: 1, alta: 2 };
+      const levels = ['baixa', 'media', 'alta'].filter((level) => !pend.canReoffer || rank[level] > rank[pend.rent]);
+      rents = '<div class="ps-rents">' + levels.map((level) => {
         const label = level === 'baixa' ? 'Baixa' : (level === 'alta' ? 'Alta' : 'Média');
         const fee = prospSigning(opp, level);
         const p = prospAcceptP(opp, level);
+        const rate = prospRentRate(opp, level);
         const bits = [label];
+        if (rate) bits.push(rate);
         if (fee != null) bits.push('assinatura ' + prospEuro(fee));
         if (p != null) bits.push('aceita ' + p.toFixed(2).replace('.', ','));
         return '<button type="button" data-ps="rent" data-ps-id="' + escapeHtml(opp.id) + '" data-ps-arg="' + level + '">' + escapeHtml(bits.join(' · ')) + '</button>';
-      }).join('') + '</div><p class="ps-note">A renda anual entra nas contas quando o tamanho estiver escolhido. <span class="asset-hyp">Hipótese</span></p>';
+      }).join('') + '</div><p class="ps-note"><span class="asset-hyp">Hipótese</span></p>';
+      if (pend.canReoffer && opp.owner && opp.owner.segunda_oferta) {
+        rents = '<p class="ps-owner">' + escapeHtml(opp.owner.segunda_oferta) + '</p>' + rents;
+      }
       if (pend.rent && !pend.rentResolved) {
         rents += '<p class="ps-note">À espera da resposta, no mês ' + pend.rentDue + '.</p>';
       }
@@ -19094,14 +19172,17 @@
         escapeHtml((buttons.back && buttons.back.label) || 'Voltar') + '</button></div></div>';
     } else {
       let why = '';
-      if (!agreed) why = 'Primeiro o proprietário tem de aceitar a renda.';
+      if (pend.closed) why = 'Este terreno ficou fechado.';
+      else if (!agreed) why = 'Primeiro o proprietário tem de aceitar a renda.';
       else if (prospWindowClosed(opp)) why = 'A janela fechou no mês ' + (opp.deadline_bar && opp.deadline_bar.window_month) + '.';
       else if (prospTypeBusy(opp.type, opp.id)) why = 'Já tens uma missão deste tipo em curso.';
       launch = '<button type="button" class="ps-primary" data-ps="warn" data-ps-id="' + escapeHtml(opp.id) + '"' + (why ? ' disabled' : '') + '>Lançar</button>' +
         (why ? '<p class="ps-note">' + escapeHtml(why) + '</p>' : '');
     }
     body.innerHTML = '<article class="ps-detail" aria-label="' + escapeHtml(opp.name) + '">' +
-      '<header class="ps-hero"><div class="ps-kicker">' + escapeHtml(prospTypeLabel(opp.type)) + '</div><h2>' + escapeHtml(opp.name) + '</h2><p>' + escapeHtml(opp.pitch || '') + '</p></header>' +
+      '<header class="ps-hero"><div class="ps-kicker">' + escapeHtml(prospTypeLabel(opp.type)) + '</div><h2>' + escapeHtml(opp.name) + '</h2><p>' + escapeHtml(opp.pitch || '') + '</p>' +
+      (opp.description_ficha ? '<p>' + escapeHtml(opp.description_ficha) + '</p>' : '') + '</header>' +
+      (!ready && opp.card_line_no_report ? '<p class="ps-note">' + escapeHtml(opp.card_line_no_report) + '</p>' : '') +
       '<p class="ps-scale">Níveis de 1 a 5. O 5 é sempre o melhor. No corte, 5 é quase nenhum corte. Sem relatório, o intervalo é de um nível para cada lado.</p>' +
       rows +
       '<div class="ps-attr"><span class="ps-attr-k">Risco ICNF</span><span class="ps-attr-v">' + escapeHtml(icnfText) + '</span></div>' +

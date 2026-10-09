@@ -1,7 +1,8 @@
 {
  "_meta": {
   "status": "PROVISÓRIO 2026-10-09g PT — HIPÓTESE salvo REAL; não live",
-  "script": "/workspace/licenca/tools/prospecao_ourique_v01.py"
+  "script": "/workspace/licenca/tools/prospecao_ourique_v01.py",
+  "superseded_2026_10_10a": "sites.*.sizes atualizados (seguro 40); rendas 2,5/4,5/7,5; 0 rivais = 0 na baixa; Serra Branca 13+ torres 0,60/0,85 também em gm_pack. A consola deve ler out['ui']."
  },
  "sites": {
   "cumeada_serra_branca": {
@@ -14,7 +15,7 @@
    "p_refuse": 0.35,
    "rivals": 1,
    "sizes": {
-    "seguro": 20,
+    "seguro": 40,
     "recomendado": 50,
     "armadilha": 100
    },
@@ -47,9 +48,9 @@
      "sunk_if_refused": 0.7,
      "expected_npv": 4.03,
      "rent_delta": {
-      "baixa": 0.32,
+      "baixa": 0.43,
       "media": 0.0,
-      "alta": -0.32
+      "alta": -0.64
      }
     },
     "30": {
@@ -74,9 +75,9 @@
      "sunk_if_refused": 1.05,
      "expected_npv": 6.33,
      "rent_delta": {
-      "baixa": 0.48,
+      "baixa": 0.64,
       "media": 0.0,
-      "alta": -0.48
+      "alta": -0.95
      }
     },
     "40": {
@@ -101,9 +102,9 @@
      "sunk_if_refused": 1.4,
      "expected_npv": 8.52,
      "rent_delta": {
-      "baixa": 0.64,
+      "baixa": 0.85,
       "media": 0.0,
-      "alta": -0.64
+      "alta": -1.28
      }
     },
     "50": {
@@ -128,9 +129,9 @@
      "sunk_if_refused": 1.76,
      "expected_npv": 10.57,
      "rent_delta": {
-      "baixa": 0.8,
+      "baixa": 1.07,
       "media": 0.0,
-      "alta": -0.8
+      "alta": -1.6
      }
     },
     "70": {
@@ -155,9 +156,9 @@
      "sunk_if_refused": 2.46,
      "expected_npv": 14.3,
      "rent_delta": {
-      "baixa": 1.12,
+      "baixa": 1.49,
       "media": 0.0,
-      "alta": -1.12
+      "alta": -2.24
      }
     },
     "100": {
@@ -182,9 +183,9 @@
      "sunk_if_refused": 3.51,
      "expected_npv": 18.81,
      "rent_delta": {
-      "baixa": 1.59,
+      "baixa": 2.13,
       "media": 0.0,
-      "alta": -1.6
+      "alta": -3.2
      }
     }
    }
@@ -199,7 +200,7 @@
    "p_refuse": 0.05,
    "rivals": 0,
    "sizes": {
-    "seguro": 30,
+    "seguro": 40,
     "recomendado": 50,
     "armadilha": 100
    },
@@ -232,9 +233,9 @@
      "sunk_if_refused": 0.7,
      "expected_npv": -0.54,
      "rent_delta": {
-      "baixa": 0.35,
+      "baixa": 0.46,
       "media": 0.0,
-      "alta": -0.34
+      "alta": -0.69
      }
     },
     "30": {
@@ -259,9 +260,9 @@
      "sunk_if_refused": 1.05,
      "expected_npv": 1.37,
      "rent_delta": {
-      "baixa": 0.52,
+      "baixa": 0.69,
       "media": 0.0,
-      "alta": -0.52
+      "alta": -1.03
      }
     },
     "40": {
@@ -286,9 +287,9 @@
      "sunk_if_refused": 1.4,
      "expected_npv": 3.11,
      "rent_delta": {
-      "baixa": 0.69,
+      "baixa": 0.92,
       "media": 0.0,
-      "alta": -0.69
+      "alta": -1.38
      }
     },
     "50": {
@@ -313,9 +314,9 @@
      "sunk_if_refused": 1.76,
      "expected_npv": 4.62,
      "rent_delta": {
-      "baixa": 0.86,
+      "baixa": 1.15,
       "media": 0.0,
-      "alta": -0.86
+      "alta": -1.73
      }
     },
     "70": {
@@ -340,9 +341,9 @@
      "sunk_if_refused": 2.46,
      "expected_npv": 7.03,
      "rent_delta": {
-      "baixa": 1.2,
+      "baixa": 1.61,
       "media": 0.0,
-      "alta": -1.21
+      "alta": -2.42
      }
     },
     "100": {
@@ -367,9 +368,9 @@
      "sunk_if_refused": 3.51,
      "expected_npv": 9.29,
      "rent_delta": {
-      "baixa": 1.73,
+      "baixa": 2.3,
       "media": 0.0,
-      "alta": -1.72
+      "alta": -3.45
      }
     }
    }
@@ -503,14 +504,14 @@
     "irr_0175": 9.95
    },
    "cumeada_serra_branca 40 MW sem AIA renda baixa + BESS 20×2": {
-    "npv": 10.28,
-    "irr_016": 9.64,
-    "irr_0175": 9.8
+    "npv": 10.49,
+    "irr_016": 9.68,
+    "irr_0175": 9.84
    },
    "cumeada_serra_branca 40 MW sem AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 11.78,
-    "irr_016": 9.88,
-    "irr_0175": 10.06
+    "npv": 11.99,
+    "irr_016": 9.92,
+    "irr_0175": 10.1
    },
    "cumeada_serra_branca 40 MW AIA renda media + BESS 20×2": {
     "npv": 9.1,
@@ -523,14 +524,14 @@
     "irr_0175": 9.86
    },
    "cumeada_serra_branca 40 MW AIA renda baixa + BESS 20×2": {
-    "npv": 9.74,
-    "irr_016": 9.56,
-    "irr_0175": 9.7
+    "npv": 9.95,
+    "irr_016": 9.59,
+    "irr_0175": 9.74
    },
    "cumeada_serra_branca 40 MW AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 11.24,
-    "irr_016": 9.8,
-    "irr_0175": 9.97
+    "npv": 11.45,
+    "irr_016": 9.83,
+    "irr_0175": 10.0
    },
    "cumeada_serra_branca 50 MW sem AIA renda media + BESS 20×2": {
     "npv": 13.22,
@@ -543,14 +544,14 @@
     "irr_0175": 10.58
    },
    "cumeada_serra_branca 50 MW sem AIA renda baixa + BESS 20×2": {
-    "npv": 14.02,
-    "irr_016": 10.24,
-    "irr_0175": 10.45
+    "npv": 14.29,
+    "irr_016": 10.29,
+    "irr_0175": 10.5
    },
    "cumeada_serra_branca 50 MW sem AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 15.52,
-    "irr_016": 10.48,
-    "irr_0175": 10.72
+    "npv": 15.79,
+    "irr_016": 10.53,
+    "irr_0175": 10.76
    },
    "cumeada_serra_branca 50 MW AIA renda media + BESS 20×2": {
     "npv": 12.55,
@@ -563,14 +564,14 @@
     "irr_0175": 10.46
    },
    "cumeada_serra_branca 50 MW AIA renda baixa + BESS 20×2": {
-    "npv": 13.35,
-    "irr_016": 10.14,
-    "irr_0175": 10.34
+    "npv": 13.62,
+    "irr_016": 10.18,
+    "irr_0175": 10.38
    },
    "cumeada_serra_branca 50 MW AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 14.85,
-    "irr_016": 10.38,
-    "irr_0175": 10.6
+    "npv": 15.12,
+    "irr_016": 10.42,
+    "irr_0175": 10.65
    },
    "cumeada_serra_branca 70 MW sem AIA renda media + BESS 20×2": {
     "npv": 18.85,
@@ -583,14 +584,14 @@
     "irr_0175": 11.56
    },
    "cumeada_serra_branca 70 MW sem AIA renda baixa + BESS 20×2": {
-    "npv": 19.97,
-    "irr_016": 11.2,
-    "irr_0175": 11.49
+    "npv": 20.34,
+    "irr_016": 11.25,
+    "irr_0175": 11.56
    },
    "cumeada_serra_branca 70 MW sem AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 21.47,
-    "irr_016": 11.44,
-    "irr_0175": 11.76
+    "npv": 21.84,
+    "irr_016": 11.49,
+    "irr_0175": 11.82
    },
    "cumeada_serra_branca 70 MW AIA renda media + BESS 20×2": {
     "npv": 17.94,
@@ -603,14 +604,14 @@
     "irr_0175": 11.4
    },
    "cumeada_serra_branca 70 MW AIA renda baixa + BESS 20×2": {
-    "npv": 19.06,
-    "irr_016": 11.05,
-    "irr_0175": 11.34
+    "npv": 19.43,
+    "irr_016": 11.11,
+    "irr_0175": 11.4
    },
    "cumeada_serra_branca 70 MW AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 20.56,
-    "irr_016": 11.29,
-    "irr_0175": 11.6
+    "npv": 20.93,
+    "irr_016": 11.35,
+    "irr_0175": 11.66
    },
    "herdade_vale_da_rosa 40 MW sem AIA renda media + BESS 20×2": {
     "npv": 0.03,
@@ -623,14 +624,14 @@
     "irr_0175": 8.27
    },
    "herdade_vale_da_rosa 40 MW sem AIA renda baixa + BESS 20×2": {
-    "npv": 0.72,
-    "irr_016": 8.12,
-    "irr_0175": 8.13
+    "npv": 0.95,
+    "irr_016": 8.15,
+    "irr_0175": 8.17
    },
    "herdade_vale_da_rosa 40 MW sem AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 2.22,
-    "irr_016": 8.36,
-    "irr_0175": 8.39
+    "npv": 2.45,
+    "irr_016": 8.39,
+    "irr_0175": 8.43
    },
    "herdade_vale_da_rosa 40 MW AIA renda media + BESS 20×2": {
     "npv": -0.11,
@@ -643,14 +644,14 @@
     "irr_0175": 8.24
    },
    "herdade_vale_da_rosa 40 MW AIA renda baixa + BESS 20×2": {
-    "npv": 0.58,
-    "irr_016": 8.09,
-    "irr_0175": 8.1
+    "npv": 0.81,
+    "irr_016": 8.13,
+    "irr_0175": 8.14
    },
    "herdade_vale_da_rosa 40 MW AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 2.08,
-    "irr_016": 8.33,
-    "irr_0175": 8.36
+    "npv": 2.31,
+    "irr_016": 8.37,
+    "irr_0175": 8.4
    },
    "herdade_vale_da_rosa 50 MW sem AIA renda media + BESS 20×2": {
     "npv": 2.17,
@@ -663,14 +664,14 @@
     "irr_0175": 8.64
    },
    "herdade_vale_da_rosa 50 MW sem AIA renda baixa + BESS 20×2": {
-    "npv": 3.03,
-    "irr_016": 8.48,
-    "irr_0175": 8.53
+    "npv": 3.32,
+    "irr_016": 8.53,
+    "irr_0175": 8.58
    },
    "herdade_vale_da_rosa 50 MW sem AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 4.53,
-    "irr_016": 8.72,
-    "irr_0175": 8.79
+    "npv": 4.82,
+    "irr_016": 8.77,
+    "irr_0175": 8.84
    },
    "herdade_vale_da_rosa 50 MW AIA renda media + BESS 20×2": {
     "npv": 1.96,
@@ -683,14 +684,14 @@
     "irr_0175": 8.61
    },
    "herdade_vale_da_rosa 50 MW AIA renda baixa + BESS 20×2": {
-    "npv": 2.82,
-    "irr_016": 8.45,
-    "irr_0175": 8.49
+    "npv": 3.11,
+    "irr_016": 8.5,
+    "irr_0175": 8.54
    },
    "herdade_vale_da_rosa 50 MW AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 4.32,
-    "irr_016": 8.69,
-    "irr_0175": 8.76
+    "npv": 4.61,
+    "irr_016": 8.74,
+    "irr_0175": 8.81
    },
    "herdade_vale_da_rosa 70 MW sem AIA renda media + BESS 20×2": {
     "npv": 4.92,
@@ -703,14 +704,14 @@
     "irr_0175": 9.12
    },
    "herdade_vale_da_rosa 70 MW sem AIA renda baixa + BESS 20×2": {
-    "npv": 6.12,
-    "irr_016": 8.98,
-    "irr_0175": 9.07
+    "npv": 6.53,
+    "irr_016": 9.04,
+    "irr_0175": 9.14
    },
    "herdade_vale_da_rosa 70 MW sem AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 7.62,
-    "irr_016": 9.22,
-    "irr_0175": 9.33
+    "npv": 8.03,
+    "irr_016": 9.28,
+    "irr_0175": 9.41
    },
    "herdade_vale_da_rosa 70 MW AIA renda media + BESS 20×2": {
     "npv": 4.59,
@@ -723,14 +724,14 @@
     "irr_0175": 9.07
    },
    "herdade_vale_da_rosa 70 MW AIA renda baixa + BESS 20×2": {
-    "npv": 5.79,
-    "irr_016": 8.93,
-    "irr_0175": 9.01
+    "npv": 6.2,
+    "irr_016": 8.99,
+    "irr_0175": 9.09
    },
    "herdade_vale_da_rosa 70 MW AIA renda baixa + BESS 20×2 + PRR": {
-    "npv": 7.29,
-    "irr_016": 9.17,
-    "irr_0175": 9.28
+    "npv": 7.7,
+    "irr_016": 9.23,
+    "irr_0175": 9.35
    }
   }
  },
@@ -841,9 +842,9 @@
        "npv_no_aia": 28.52,
        "npv_aia": 27.32,
        "p_aia": 1.0,
-       "p_refuse": 0.4,
-       "ev": 14.84,
-       "p_lost": 0.4
+       "p_refuse": 0.6,
+       "ev": 8.67,
+       "p_lost": 0.6
       }
      },
      "q1.1_muito_alto": {
@@ -892,9 +893,9 @@
        "npv_no_aia": 28.52,
        "npv_aia": 26.55,
        "p_aia": 1.0,
-       "p_refuse": 0.7,
-       "ev": 5.36,
-       "p_lost": 0.7
+       "p_refuse": 0.85,
+       "ev": 0.85,
+       "p_lost": 0.85
       }
      },
      "q1.18_alto": {
@@ -943,9 +944,9 @@
        "npv_no_aia": 39.85,
        "npv_aia": 38.18,
        "p_aia": 1.0,
-       "p_refuse": 0.4,
-       "ev": 21.35,
-       "p_lost": 0.4
+       "p_refuse": 0.6,
+       "ev": 13.02,
+       "p_lost": 0.6
       }
      },
      "q1.18_muito_alto": {
@@ -994,9 +995,9 @@
        "npv_no_aia": 39.85,
        "npv_aia": 37.1,
        "p_aia": 1.0,
-       "p_refuse": 0.7,
-       "ev": 8.52,
-       "p_lost": 0.7
+       "p_refuse": 0.85,
+       "ev": 2.43,
+       "p_lost": 0.85
       }
      }
     },
@@ -1006,16 +1007,16 @@
      "40": 10.32,
      "50": 12.04,
      "70": 9.56,
-     "100": 12.6
+     "100": 6.51
     },
-    "best_blind": 100,
-    "ev_blind": 12.6,
-    "ev_with_report": 13.81,
-    "value_of_report": 1.21,
+    "best_blind": 50,
+    "ev_blind": 12.04,
+    "ev_with_report": 12.04,
+    "value_of_report": 0.0,
     "best_size_by_draw": {
-     "q1.1_alto": 100,
+     "q1.1_alto": 50,
      "q1.1_muito_alto": 50,
-     "q1.18_alto": 100,
+     "q1.18_alto": 50,
      "q1.18_muito_alto": 50
     },
     "line_cost": null
@@ -1151,49 +1152,49 @@
     }
    }
   },
-  "annuity_factor_wind": 11.47,
+  "annuity_factor_wind": 11.53,
   "wind_rev_MEUR_per_MW_yr1": 0.14,
   "trap_revealed_nav": {
-   "wind_70_sb": -4.94,
-   "wind_100_vr": -6.41,
+   "wind_70_sb": -4.96,
+   "wind_100_vr": -6.44,
    "bess_20x4": -1.0,
    "overequip_large": -3.0
   },
   "rent_strategies": {
    "sb_50": {
     "baixa→media": [
-     6.31,
+     6.38,
      0.51
     ],
     "baixa→alta": [
-     7.27,
+     7.06,
      0.61
     ],
     "media→alta": [
-     9.82,
+     9.66,
      0.83
     ],
     "alta→alta": [
-     10.62,
+     9.87,
      0.95
     ],
     "V": 12.04
    },
    "vr_50": {
     "baixa→media": [
-     0.63,
-     0.77
+     0.82,
+     0.85
     ],
     "baixa→alta": [
-     0.23,
-     0.87
+     -0.12,
+     0.97
     ],
     "media→alta": [
-     0.23,
+     0.03,
      0.99
     ],
     "alta→alta": [
-     -0.4,
+     -1.27,
      1.0
     ],
     "V": 0.46
@@ -1647,7 +1648,6867 @@
    "40": 0.77,
    "50": 0.73,
    "70": 0.48,
-   "100": 0.48
+   "100": 0.3
+  }
+ },
+ "d1009h": {
+  "sb_trap": {
+   "gm_flat": {
+    "vento4_alto": {
+     "p": 0.42,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_dia_unf": 0.4,
+       "npv_ok": 12.93,
+       "npv_ok_aia": 12.39,
+       "sunk": 1.4,
+       "ev": 9.21,
+       "p_defeat": 0.24,
+       "irr_ok_c": 9.51,
+       "irr_ok_r": 8.88,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.24,
+       "p_below9_real": 1.0
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.4,
+       "npv_ok": 16.01,
+       "npv_ok_aia": 15.34,
+       "sunk": 1.76,
+       "ev": 10.65,
+       "p_defeat": 0.28,
+       "irr_ok_c": 10.01,
+       "irr_ok_r": 9.17,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.28,
+       "p_below9_real": 0.28
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 21.64,
+       "npv_ok_aia": 20.73,
+       "sunk": 2.46,
+       "ev": 11.3,
+       "p_defeat": 0.4,
+       "irr_ok_c": 10.88,
+       "irr_ok_r": 9.67,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 28.52,
+       "npv_ok_aia": 27.32,
+       "sunk": 3.51,
+       "ev": 14.84,
+       "p_defeat": 0.4,
+       "irr_ok_c": 11.93,
+       "irr_ok_r": 10.28,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      }
+     },
+     "best_ev": 100,
+     "worst_ev": 40
+    },
+    "vento4_muito_alto": {
+     "p": 0.28,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.7,
+       "npv_ok": 12.93,
+       "npv_ok_aia": 12.04,
+       "sunk": 1.4,
+       "ev": 5.62,
+       "p_defeat": 0.49,
+       "irr_ok_c": 9.46,
+       "irr_ok_r": 8.85,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.49,
+       "p_below9_real": 1.0
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_dia_unf": 0.7,
+       "npv_ok": 16.01,
+       "npv_ok_aia": 14.91,
+       "sunk": 1.76,
+       "ev": 5.67,
+       "p_defeat": 0.56,
+       "irr_ok_c": 9.94,
+       "irr_ok_r": 9.13,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.56,
+       "p_below9_real": 0.56
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 21.64,
+       "npv_ok_aia": 20.15,
+       "sunk": 2.46,
+       "ev": 4.17,
+       "p_defeat": 0.7,
+       "irr_ok_c": 10.78,
+       "irr_ok_r": 9.62,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 28.52,
+       "npv_ok_aia": 26.55,
+       "sunk": 3.51,
+       "ev": 5.36,
+       "p_defeat": 0.7,
+       "irr_ok_c": 11.81,
+       "irr_ok_r": 10.21,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      }
+     },
+     "best_ev": 50,
+     "worst_ev": 70
+    },
+    "vento5_alto": {
+     "p": 0.18,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_dia_unf": 0.4,
+       "npv_ok": 17.62,
+       "npv_ok_aia": 16.88,
+       "sunk": 1.4,
+       "ev": 12.7,
+       "p_defeat": 0.24,
+       "irr_ok_c": 10.23,
+       "irr_ok_r": 9.3,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.24,
+       "p_below9_real": 0.24
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.4,
+       "npv_ok": 21.85,
+       "npv_ok_aia": 20.93,
+       "sunk": 1.76,
+       "ev": 14.75,
+       "p_defeat": 0.28,
+       "irr_ok_c": 10.91,
+       "irr_ok_r": 9.69,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.28,
+       "p_below9_real": 0.28
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 29.72,
+       "npv_ok_aia": 28.47,
+       "sunk": 2.46,
+       "ev": 15.95,
+       "p_defeat": 0.4,
+       "irr_ok_c": 12.11,
+       "irr_ok_r": 10.39,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 39.85,
+       "npv_ok_aia": 38.18,
+       "sunk": 3.51,
+       "ev": 21.35,
+       "p_defeat": 0.4,
+       "irr_ok_c": 13.67,
+       "irr_ok_r": 11.29,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      }
+     },
+     "best_ev": 100,
+     "worst_ev": 40
+    },
+    "vento5_muito_alto": {
+     "p": 0.12,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.7,
+       "npv_ok": 17.62,
+       "npv_ok_aia": 16.41,
+       "sunk": 1.4,
+       "ev": 7.94,
+       "p_defeat": 0.49,
+       "irr_ok_c": 10.16,
+       "irr_ok_r": 9.25,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.49,
+       "p_below9_real": 0.49
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_dia_unf": 0.7,
+       "npv_ok": 21.85,
+       "npv_ok_aia": 20.34,
+       "sunk": 1.76,
+       "ev": 8.15,
+       "p_defeat": 0.56,
+       "irr_ok_c": 10.81,
+       "irr_ok_r": 9.63,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.56,
+       "p_below9_real": 0.56
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 29.72,
+       "npv_ok_aia": 27.67,
+       "sunk": 2.46,
+       "ev": 6.43,
+       "p_defeat": 0.7,
+       "irr_ok_c": 11.99,
+       "irr_ok_r": 10.32,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 39.85,
+       "npv_ok_aia": 37.1,
+       "sunk": 3.51,
+       "ev": 8.52,
+       "p_defeat": 0.7,
+       "irr_ok_c": 13.49,
+       "irr_ok_r": 11.19,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      }
+     },
+     "best_ev": 100,
+     "worst_ev": 70
+    },
+    "ev_avg": {
+     "40": 8.68,
+     "50": 9.69,
+     "70": 9.56,
+     "100": 12.6
+    },
+    "p_defeat_avg": {
+     "40": 0.34,
+     "50": 0.392,
+     "70": 0.52,
+     "100": 0.52
+    }
+   },
+   "s27_10t": {
+    "vento4_alto": {
+     "p": 0.42,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_dia_unf": 0.25,
+       "npv_ok": 12.93,
+       "npv_ok_aia": 12.39,
+       "sunk": 1.4,
+       "ev": 10.45,
+       "p_defeat": 0.15,
+       "irr_ok_c": 9.51,
+       "irr_ok_r": 8.88,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.15,
+       "p_below9_real": 1.0
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.25,
+       "npv_ok": 16.01,
+       "npv_ok_aia": 15.34,
+       "sunk": 1.76,
+       "ev": 12.44,
+       "p_defeat": 0.175,
+       "irr_ok_c": 10.01,
+       "irr_ok_r": 9.17,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.175,
+       "p_below9_real": 0.175
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 21.64,
+       "npv_ok_aia": 20.73,
+       "sunk": 2.46,
+       "ev": 11.3,
+       "p_defeat": 0.4,
+       "irr_ok_c": 10.88,
+       "irr_ok_r": 9.67,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 28.52,
+       "npv_ok_aia": 27.32,
+       "sunk": 3.51,
+       "ev": 14.84,
+       "p_defeat": 0.4,
+       "irr_ok_c": 11.93,
+       "irr_ok_r": 10.28,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      }
+     },
+     "best_ev": 100,
+     "worst_ev": 40
+    },
+    "vento4_muito_alto": {
+     "p": 0.28,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.5,
+       "npv_ok": 12.93,
+       "npv_ok_aia": 12.04,
+       "sunk": 1.4,
+       "ev": 7.5,
+       "p_defeat": 0.35,
+       "irr_ok_c": 9.46,
+       "irr_ok_r": 8.85,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.35,
+       "p_below9_real": 1.0
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_dia_unf": 0.5,
+       "npv_ok": 16.01,
+       "npv_ok_aia": 14.91,
+       "sunk": 1.76,
+       "ev": 8.34,
+       "p_defeat": 0.4,
+       "irr_ok_c": 9.94,
+       "irr_ok_r": 9.13,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 21.64,
+       "npv_ok_aia": 20.15,
+       "sunk": 2.46,
+       "ev": 4.17,
+       "p_defeat": 0.7,
+       "irr_ok_c": 10.78,
+       "irr_ok_r": 9.62,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 28.52,
+       "npv_ok_aia": 26.55,
+       "sunk": 3.51,
+       "ev": 5.36,
+       "p_defeat": 0.7,
+       "irr_ok_c": 11.81,
+       "irr_ok_r": 10.21,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      }
+     },
+     "best_ev": 50,
+     "worst_ev": 70
+    },
+    "vento5_alto": {
+     "p": 0.18,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_dia_unf": 0.25,
+       "npv_ok": 17.62,
+       "npv_ok_aia": 16.88,
+       "sunk": 1.4,
+       "ev": 14.34,
+       "p_defeat": 0.15,
+       "irr_ok_c": 10.23,
+       "irr_ok_r": 9.3,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.15,
+       "p_below9_real": 0.15
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.25,
+       "npv_ok": 21.85,
+       "npv_ok_aia": 20.93,
+       "sunk": 1.76,
+       "ev": 17.13,
+       "p_defeat": 0.175,
+       "irr_ok_c": 10.91,
+       "irr_ok_r": 9.69,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.175,
+       "p_below9_real": 0.175
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 29.72,
+       "npv_ok_aia": 28.47,
+       "sunk": 2.46,
+       "ev": 15.95,
+       "p_defeat": 0.4,
+       "irr_ok_c": 12.11,
+       "irr_ok_r": 10.39,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 39.85,
+       "npv_ok_aia": 38.18,
+       "sunk": 3.51,
+       "ev": 21.35,
+       "p_defeat": 0.4,
+       "irr_ok_c": 13.67,
+       "irr_ok_r": 11.29,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      }
+     },
+     "best_ev": 100,
+     "worst_ev": 40
+    },
+    "vento5_muito_alto": {
+     "p": 0.12,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.5,
+       "npv_ok": 17.62,
+       "npv_ok_aia": 16.41,
+       "sunk": 1.4,
+       "ev": 10.43,
+       "p_defeat": 0.35,
+       "irr_ok_c": 10.16,
+       "irr_ok_r": 9.25,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.35,
+       "p_below9_real": 0.35
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_dia_unf": 0.5,
+       "npv_ok": 21.85,
+       "npv_ok_aia": 20.34,
+       "sunk": 1.76,
+       "ev": 11.68,
+       "p_defeat": 0.4,
+       "irr_ok_c": 10.81,
+       "irr_ok_r": 9.63,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 29.72,
+       "npv_ok_aia": 27.67,
+       "sunk": 2.46,
+       "ev": 6.43,
+       "p_defeat": 0.7,
+       "irr_ok_c": 11.99,
+       "irr_ok_r": 10.32,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 39.85,
+       "npv_ok_aia": 37.1,
+       "sunk": 3.51,
+       "ev": 8.52,
+       "p_defeat": 0.7,
+       "irr_ok_c": 13.49,
+       "irr_ok_r": 11.19,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      }
+     },
+     "best_ev": 50,
+     "worst_ev": 70
+    },
+    "ev_avg": {
+     "40": 10.32,
+     "50": 12.04,
+     "70": 9.56,
+     "100": 12.6
+    },
+    "p_defeat_avg": {
+     "40": 0.23,
+     "50": 0.265,
+     "70": 0.52,
+     "100": 0.52
+    }
+   },
+   "proposta_bandas": {
+    "vento4_alto": {
+     "p": 0.42,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_dia_unf": 0.25,
+       "npv_ok": 12.93,
+       "npv_ok_aia": 12.39,
+       "sunk": 1.4,
+       "ev": 10.45,
+       "p_defeat": 0.15,
+       "irr_ok_c": 9.51,
+       "irr_ok_r": 8.88,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.15,
+       "p_below9_real": 1.0
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.25,
+       "npv_ok": 16.01,
+       "npv_ok_aia": 15.34,
+       "sunk": 1.76,
+       "ev": 12.44,
+       "p_defeat": 0.175,
+       "irr_ok_c": 10.01,
+       "irr_ok_r": 9.17,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.175,
+       "p_below9_real": 0.175
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 21.64,
+       "npv_ok_aia": 20.73,
+       "sunk": 2.46,
+       "ev": 11.3,
+       "p_defeat": 0.4,
+       "irr_ok_c": 10.88,
+       "irr_ok_r": 9.67,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.6,
+       "npv_ok": 28.52,
+       "npv_ok_aia": 27.32,
+       "sunk": 3.51,
+       "ev": 8.67,
+       "p_defeat": 0.6,
+       "irr_ok_c": 11.93,
+       "irr_ok_r": 10.28,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.6,
+       "p_below9_real": 0.6
+      }
+     },
+     "best_ev": 50,
+     "worst_ev": 100
+    },
+    "vento4_muito_alto": {
+     "p": 0.28,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.5,
+       "npv_ok": 12.93,
+       "npv_ok_aia": 12.04,
+       "sunk": 1.4,
+       "ev": 7.5,
+       "p_defeat": 0.35,
+       "irr_ok_c": 9.46,
+       "irr_ok_r": 8.85,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.35,
+       "p_below9_real": 1.0
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_dia_unf": 0.5,
+       "npv_ok": 16.01,
+       "npv_ok_aia": 14.91,
+       "sunk": 1.76,
+       "ev": 8.34,
+       "p_defeat": 0.4,
+       "irr_ok_c": 9.94,
+       "irr_ok_r": 9.13,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 21.64,
+       "npv_ok_aia": 20.15,
+       "sunk": 2.46,
+       "ev": 4.17,
+       "p_defeat": 0.7,
+       "irr_ok_c": 10.78,
+       "irr_ok_r": 9.62,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.85,
+       "npv_ok": 28.52,
+       "npv_ok_aia": 26.55,
+       "sunk": 3.51,
+       "ev": 0.85,
+       "p_defeat": 0.85,
+       "irr_ok_c": 11.81,
+       "irr_ok_r": 10.21,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.85,
+       "p_below9_real": 0.85
+      }
+     },
+     "best_ev": 50,
+     "worst_ev": 100
+    },
+    "vento5_alto": {
+     "p": 0.18,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_dia_unf": 0.25,
+       "npv_ok": 17.62,
+       "npv_ok_aia": 16.88,
+       "sunk": 1.4,
+       "ev": 14.34,
+       "p_defeat": 0.15,
+       "irr_ok_c": 10.23,
+       "irr_ok_r": 9.3,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.15,
+       "p_below9_real": 0.15
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.25,
+       "npv_ok": 21.85,
+       "npv_ok_aia": 20.93,
+       "sunk": 1.76,
+       "ev": 17.13,
+       "p_defeat": 0.175,
+       "irr_ok_c": 10.91,
+       "irr_ok_r": 9.69,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.175,
+       "p_below9_real": 0.175
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.4,
+       "npv_ok": 29.72,
+       "npv_ok_aia": 28.47,
+       "sunk": 2.46,
+       "ev": 15.95,
+       "p_defeat": 0.4,
+       "irr_ok_c": 12.11,
+       "irr_ok_r": 10.39,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.6,
+       "npv_ok": 39.85,
+       "npv_ok_aia": 38.18,
+       "sunk": 3.51,
+       "ev": 13.02,
+       "p_defeat": 0.6,
+       "irr_ok_c": 13.67,
+       "irr_ok_r": 11.29,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.6,
+       "p_below9_real": 0.6
+      }
+     },
+     "best_ev": 50,
+     "worst_ev": 100
+    },
+    "vento5_muito_alto": {
+     "p": 0.12,
+     "sizes": {
+      "40": {
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_dia_unf": 0.5,
+       "npv_ok": 17.62,
+       "npv_ok_aia": 16.41,
+       "sunk": 1.4,
+       "ev": 10.43,
+       "p_defeat": 0.35,
+       "irr_ok_c": 10.16,
+       "irr_ok_r": 9.25,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.35,
+       "p_below9_real": 0.35
+      },
+      "50": {
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_dia_unf": 0.5,
+       "npv_ok": 21.85,
+       "npv_ok_aia": 20.34,
+       "sunk": 1.76,
+       "ev": 11.68,
+       "p_defeat": 0.4,
+       "irr_ok_c": 10.81,
+       "irr_ok_r": 9.63,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.4,
+       "p_below9_real": 0.4
+      },
+      "70": {
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.7,
+       "npv_ok": 29.72,
+       "npv_ok_aia": 27.67,
+       "sunk": 2.46,
+       "ev": 6.43,
+       "p_defeat": 0.7,
+       "irr_ok_c": 11.99,
+       "irr_ok_r": 10.32,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.7,
+       "p_below9_real": 0.7
+      },
+      "100": {
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_dia_unf": 0.85,
+       "npv_ok": 39.85,
+       "npv_ok_aia": 37.1,
+       "sunk": 3.51,
+       "ev": 2.43,
+       "p_defeat": 0.85,
+       "irr_ok_c": 13.49,
+       "irr_ok_r": 11.19,
+       "irr_lost_c": 6.71,
+       "irr_lost_r": 7.25,
+       "p_below9_console": 0.85,
+       "p_below9_real": 0.85
+      }
+     },
+     "best_ev": 50,
+     "worst_ev": 100
+    },
+    "ev_avg": {
+     "40": 10.32,
+     "50": 12.04,
+     "70": 9.56,
+     "100": 6.51
+    },
+    "p_defeat_avg": {
+     "40": 0.23,
+     "50": 0.265,
+     "70": 0.52,
+     "100": 0.7
+    }
+   }
+  },
+  "sb_trap_curtail_by_size": {
+   "40": -2.84,
+   "50": -3.54,
+   "70": -4.96,
+   "100": -7.09
+  },
+  "vr_curtail_draw": {
+   "vento2_corte3_30": {
+    "p": 0.28,
+    "npv": -5.18,
+    "ev": -5.13
+   },
+   "vento2_corte3_50": {
+    "p": 0.28,
+    "npv": -6.07,
+    "ev": -5.98
+   },
+   "vento2_corte3_100": {
+    "p": 0.28,
+    "npv": -11.77,
+    "ev": -11.33
+   },
+   "vento2_corte2_30": {
+    "p": 0.12,
+    "npv": -6.43,
+    "ev": -6.38
+   },
+   "vento2_corte2_50": {
+    "p": 0.12,
+    "npv": -8.15,
+    "ev": -8.06
+   },
+   "vento2_corte2_100": {
+    "p": 0.12,
+    "npv": -15.93,
+    "ev": -15.49
+   },
+   "vento3_corte3_30": {
+    "p": 0.42,
+    "npv": 1.5,
+    "ev": 1.43
+   },
+   "vento3_corte3_50": {
+    "p": 0.42,
+    "npv": 4.96,
+    "ev": 4.75
+   },
+   "vento3_corte3_100": {
+    "p": 0.42,
+    "npv": 9.66,
+    "ev": 8.95
+   },
+   "vento3_corte2_30": {
+    "p": 0.18,
+    "npv": 0.05,
+    "ev": -0.02
+   },
+   "vento3_corte2_50": {
+    "p": 0.18,
+    "npv": 2.54,
+    "ev": 2.33
+   },
+   "vento3_corte2_100": {
+    "p": 0.18,
+    "npv": 4.83,
+    "ev": 4.12
+   }
+  },
+  "vr_ev": {
+   "30": -1.61,
+   "50": -0.23,
+   "100": -0.53
+  },
+  "vr_v3_50": 4.02,
+  "rent": {
+   "serra_branca_50_ev": {
+    "V_at_mid": 12.04,
+    "k_MEUR_per_kEUR_MW": 0.535,
+    "rivals": 1,
+    "neutral_high_N1": 10.98,
+    "neutral_high_N2": 6.74,
+    "neutral_high_N3": 6.74,
+    "best_by_first_N2": {
+     "L": [
+      7.02,
+      "L→H"
+     ],
+     "M": [
+      9.61,
+      "M→H"
+     ],
+     "H": [
+      9.33,
+      "H"
+     ]
+    },
+    "best_by_first_N3": {
+     "L": [
+      7.13,
+      "L→M→H"
+     ],
+     "M": [
+      9.61,
+      "M→H"
+     ],
+     "H": [
+      9.33,
+      "H"
+     ]
+    },
+    "old_rents_N2": {
+     "L": [
+      7.23,
+      "L→H"
+     ],
+     "M": [
+      9.77,
+      "M→H"
+     ],
+     "H": [
+      10.05,
+      "H"
+     ]
+    }
+   },
+   "serra_branca_50_vento4_alto": {
+    "V_at_mid": 12.44,
+    "k_MEUR_per_kEUR_MW": 0.535,
+    "rivals": 1,
+    "neutral_high_N1": 11.19,
+    "neutral_high_N2": 6.82,
+    "neutral_high_N3": 6.82,
+    "best_by_first_N2": {
+     "L": [
+      7.26,
+      "L→H"
+     ],
+     "M": [
+      9.94,
+      "M→H"
+     ],
+     "H": [
+      9.69,
+      "H"
+     ]
+    },
+    "best_by_first_N3": {
+     "L": [
+      7.36,
+      "L→M→H"
+     ],
+     "M": [
+      9.94,
+      "M→H"
+     ],
+     "H": [
+      9.69,
+      "H"
+     ]
+    },
+    "old_rents_N2": {
+     "L": [
+      7.47,
+      "L→H"
+     ],
+     "M": [
+      10.1,
+      "M→H"
+     ],
+     "H": [
+      10.41,
+      "H"
+     ]
+    }
+   },
+   "serra_branca_50_vento5_alto": {
+    "V_at_mid": 17.13,
+    "k_MEUR_per_kEUR_MW": 0.535,
+    "rivals": 1,
+    "neutral_high_N1": 13.77,
+    "neutral_high_N2": 7.72,
+    "neutral_high_N3": 7.72,
+    "best_by_first_N2": {
+     "L": [
+      10.13,
+      "L→H"
+     ],
+     "M": [
+      13.83,
+      "M→H"
+     ],
+     "H": [
+      13.92,
+      "H"
+     ]
+    },
+    "best_by_first_N3": {
+     "L": [
+      10.13,
+      "L→H"
+     ],
+     "M": [
+      13.83,
+      "M→H"
+     ],
+     "H": [
+      13.92,
+      "H"
+     ]
+    },
+    "old_rents_N2": {
+     "L": [
+      10.34,
+      "L→H"
+     ],
+     "M": [
+      13.99,
+      "M→H"
+     ],
+     "H": [
+      14.65,
+      "H"
+     ]
+    }
+   },
+   "bess_20x2_vento50": {
+    "V_at_mid": 2.8,
+    "k_MEUR_per_kEUR_MW": 0.179,
+    "rivals": 2,
+    "neutral_high_N1": 10.15,
+    "neutral_high_N2": 8.32,
+    "neutral_high_N3": 8.32,
+    "best_by_first_N2": {
+     "L": [
+      1.03,
+      "L→H"
+     ],
+     "M": [
+      1.75,
+      "M→H"
+     ],
+     "H": [
+      1.85,
+      "H"
+     ]
+    },
+    "best_by_first_N3": {
+     "L": [
+      1.03,
+      "L→H"
+     ],
+     "M": [
+      1.75,
+      "M→H"
+     ],
+     "H": [
+      1.85,
+      "H"
+     ]
+    },
+    "old_rents_N2": {
+     "L": [
+      1.08,
+      "L→H"
+     ],
+     "M": [
+      1.79,
+      "M→H"
+     ],
+     "H": [
+      2.08,
+      "H"
+     ]
+    }
+   },
+   "bess_20x2_vento20": {
+    "V_at_mid": 2.3,
+    "k_MEUR_per_kEUR_MW": 0.179,
+    "rivals": 2,
+    "neutral_high_N1": 9.06,
+    "neutral_high_N2": 7.55,
+    "neutral_high_N3": 7.55,
+    "best_by_first_N2": {
+     "L": [
+      0.82,
+      "L→H"
+     ],
+     "M": [
+      1.41,
+      "M→H"
+     ],
+     "H": [
+      1.42,
+      "H"
+     ]
+    },
+    "best_by_first_N3": {
+     "L": [
+      0.83,
+      "L→M→H"
+     ],
+     "M": [
+      1.41,
+      "M→H"
+     ],
+     "H": [
+      1.42,
+      "H"
+     ]
+    },
+    "old_rents_N2": {
+     "L": [
+      0.87,
+      "L→H"
+     ],
+     "M": [
+      1.45,
+      "M→H"
+     ],
+     "H": [
+      1.65,
+      "H"
+     ]
+    }
+   },
+   "vale_da_rosa_50_vento3": {
+    "V_at_mid": 4.02,
+    "k_MEUR_per_kEUR_MW": 0.535,
+    "rivals": 0,
+    "neutral_high_N1": 5.95,
+    "neutral_high_N2": 4.5,
+    "neutral_high_N3": 4.5,
+    "best_by_first_N2": {
+     "L": [
+      3.78,
+      "L→M"
+     ],
+     "M": [
+      3.51,
+      "M→H"
+     ],
+     "H": [
+      2.2,
+      "H"
+     ]
+    },
+    "best_by_first_N3": {
+     "L": [
+      4.09,
+      "L→M→H"
+     ],
+     "M": [
+      3.51,
+      "M→H"
+     ],
+     "H": [
+      2.2,
+      "H"
+     ]
+    },
+    "old_rents_N2": {
+     "L": [
+      3.67,
+      "L→M"
+     ],
+     "M": [
+      3.7,
+      "M→H"
+     ],
+     "H": [
+      2.96,
+      "H"
+     ]
+    }
+   },
+   "vale_da_rosa_50_vento3_gm_rivL0.10": {
+    "V_at_mid": 4.02,
+    "k_MEUR_per_kEUR_MW": 0.535,
+    "rivals": "0_gm",
+    "neutral_high_N1": 5.95,
+    "neutral_high_N2": 4.5,
+    "neutral_high_N3": 4.5,
+    "best_by_first_N2": {
+     "L": [
+      3.4,
+      "L→M"
+     ],
+     "M": [
+      3.51,
+      "M→H"
+     ],
+     "H": [
+      2.2,
+      "H"
+     ]
+    },
+    "best_by_first_N3": {
+     "L": [
+      3.68,
+      "L→M→H"
+     ],
+     "M": [
+      3.51,
+      "M→H"
+     ],
+     "H": [
+      2.2,
+      "H"
+     ]
+    },
+    "old_rents_N2": {
+     "L": [
+      3.31,
+      "L→M"
+     ],
+     "M": [
+      3.7,
+      "M→H"
+     ],
+     "H": [
+      2.96,
+      "H"
+     ]
+    }
+   }
+  },
+  "rents_chosen_kEUR_MW": {
+   "L": 2.5,
+   "M": 4.5,
+   "H": 7.5
+  },
+  "real_slope": 0.093,
+  "bess_fallback": {
+   "w0": -2.5,
+   "w20": 2.3,
+   "w50": 2.8
+  }
+ },
+ "d1009i": {
+  "likelihoods": {
+   "gm_075": {
+    "U": {
+     "ok": 0.05,
+     "reservas": 0.2,
+     "reservas_fortes": 0.75
+    },
+    "F": {
+     "ok": 0.75,
+     "reservas": 0.2,
+     "reservas_fortes": 0.05
+    }
+   },
+   "proposta_v0": {
+    "U": {
+     "ok": 0.15,
+     "reservas": 0.35,
+     "reservas_fortes": 0.5
+    },
+    "F": {
+     "ok": 0.6,
+     "reservas": 0.3,
+     "reservas_fortes": 0.1
+    }
+   },
+   "proposta": {
+    "U": {
+     "ok": 0.15,
+     "reservas": 0.4,
+     "reservas_fortes": 0.45
+    },
+    "F": {
+     "ok": 0.55,
+     "reservas": 0.33,
+     "reservas_fortes": 0.12
+    }
+   }
+  },
+  "bayes": {
+   "gm_075": {
+    "baixo": {
+     "ok": {
+      "p_signal": 0.715,
+      "p_unf": 0.003
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.05
+     },
+     "reservas_fortes": {
+      "p_signal": 0.085,
+      "p_unf": 0.441
+     },
+     "check_sum": 0.0496
+    },
+    "medio": {
+     "ok": {
+      "p_signal": 0.645,
+      "p_unf": 0.012
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.15
+     },
+     "reservas_fortes": {
+      "p_signal": 0.155,
+      "p_unf": 0.726
+     },
+     "check_sum": 0.1503
+    },
+    "alto": {
+     "ok": {
+      "p_signal": 0.575,
+      "p_unf": 0.022
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.25
+     },
+     "reservas_fortes": {
+      "p_signal": 0.225,
+      "p_unf": 0.833
+     },
+     "check_sum": 0.2501
+    },
+    "muito_alto": {
+     "ok": {
+      "p_signal": 0.4,
+      "p_unf": 0.062
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.5
+     },
+     "reservas_fortes": {
+      "p_signal": 0.4,
+      "p_unf": 0.938
+     },
+     "check_sum": 0.5
+    },
+    "SB ≤9 alto": {
+     "ok": {
+      "p_signal": 0.575,
+      "p_unf": 0.022
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.25
+     },
+     "reservas_fortes": {
+      "p_signal": 0.225,
+      "p_unf": 0.833
+     },
+     "check_sum": 0.2501
+    },
+    "SB ≤9 m.alto": {
+     "ok": {
+      "p_signal": 0.4,
+      "p_unf": 0.062
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.5
+     },
+     "reservas_fortes": {
+      "p_signal": 0.4,
+      "p_unf": 0.938
+     },
+     "check_sum": 0.5
+    },
+    "SB 10–12 alto": {
+     "ok": {
+      "p_signal": 0.47,
+      "p_unf": 0.043
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.4
+     },
+     "reservas_fortes": {
+      "p_signal": 0.33,
+      "p_unf": 0.909
+     },
+     "check_sum": 0.4002
+    },
+    "SB 10–12 m.alto": {
+     "ok": {
+      "p_signal": 0.26,
+      "p_unf": 0.135
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.7
+     },
+     "reservas_fortes": {
+      "p_signal": 0.54,
+      "p_unf": 0.972
+     },
+     "check_sum": 0.7
+    },
+    "SB 13+ alto": {
+     "ok": {
+      "p_signal": 0.33,
+      "p_unf": 0.091
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.6
+     },
+     "reservas_fortes": {
+      "p_signal": 0.47,
+      "p_unf": 0.957
+     },
+     "check_sum": 0.5998
+    },
+    "SB 13+ m.alto": {
+     "ok": {
+      "p_signal": 0.155,
+      "p_unf": 0.274
+     },
+     "reservas": {
+      "p_signal": 0.2,
+      "p_unf": 0.85
+     },
+     "reservas_fortes": {
+      "p_signal": 0.645,
+      "p_unf": 0.988
+     },
+     "check_sum": 0.8497
+    }
+   },
+   "proposta_v0": {
+    "baixo": {
+     "ok": {
+      "p_signal": 0.577,
+      "p_unf": 0.013
+     },
+     "reservas": {
+      "p_signal": 0.302,
+      "p_unf": 0.058
+     },
+     "reservas_fortes": {
+      "p_signal": 0.12,
+      "p_unf": 0.208
+     },
+     "check_sum": 0.05
+    },
+    "medio": {
+     "ok": {
+      "p_signal": 0.532,
+      "p_unf": 0.042
+     },
+     "reservas": {
+      "p_signal": 0.307,
+      "p_unf": 0.171
+     },
+     "reservas_fortes": {
+      "p_signal": 0.16,
+      "p_unf": 0.469
+     },
+     "check_sum": 0.1499
+    },
+    "alto": {
+     "ok": {
+      "p_signal": 0.487,
+      "p_unf": 0.077
+     },
+     "reservas": {
+      "p_signal": 0.312,
+      "p_unf": 0.28
+     },
+     "reservas_fortes": {
+      "p_signal": 0.2,
+      "p_unf": 0.625
+     },
+     "check_sum": 0.2499
+    },
+    "muito_alto": {
+     "ok": {
+      "p_signal": 0.375,
+      "p_unf": 0.2
+     },
+     "reservas": {
+      "p_signal": 0.325,
+      "p_unf": 0.538
+     },
+     "reservas_fortes": {
+      "p_signal": 0.3,
+      "p_unf": 0.833
+     },
+     "check_sum": 0.4998
+    },
+    "SB ≤9 alto": {
+     "ok": {
+      "p_signal": 0.487,
+      "p_unf": 0.077
+     },
+     "reservas": {
+      "p_signal": 0.312,
+      "p_unf": 0.28
+     },
+     "reservas_fortes": {
+      "p_signal": 0.2,
+      "p_unf": 0.625
+     },
+     "check_sum": 0.2499
+    },
+    "SB ≤9 m.alto": {
+     "ok": {
+      "p_signal": 0.375,
+      "p_unf": 0.2
+     },
+     "reservas": {
+      "p_signal": 0.325,
+      "p_unf": 0.538
+     },
+     "reservas_fortes": {
+      "p_signal": 0.3,
+      "p_unf": 0.833
+     },
+     "check_sum": 0.4998
+    },
+    "SB 10–12 alto": {
+     "ok": {
+      "p_signal": 0.42,
+      "p_unf": 0.143
+     },
+     "reservas": {
+      "p_signal": 0.32,
+      "p_unf": 0.438
+     },
+     "reservas_fortes": {
+      "p_signal": 0.26,
+      "p_unf": 0.769
+     },
+     "check_sum": 0.4002
+    },
+    "SB 10–12 m.alto": {
+     "ok": {
+      "p_signal": 0.285,
+      "p_unf": 0.368
+     },
+     "reservas": {
+      "p_signal": 0.335,
+      "p_unf": 0.731
+     },
+     "reservas_fortes": {
+      "p_signal": 0.38,
+      "p_unf": 0.921
+     },
+     "check_sum": 0.6997
+    },
+    "SB 13+ alto": {
+     "ok": {
+      "p_signal": 0.33,
+      "p_unf": 0.273
+     },
+     "reservas": {
+      "p_signal": 0.33,
+      "p_unf": 0.636
+     },
+     "reservas_fortes": {
+      "p_signal": 0.34,
+      "p_unf": 0.882
+     },
+     "check_sum": 0.5999
+    },
+    "SB 13+ m.alto": {
+     "ok": {
+      "p_signal": 0.218,
+      "p_unf": 0.586
+     },
+     "reservas": {
+      "p_signal": 0.342,
+      "p_unf": 0.869
+     },
+     "reservas_fortes": {
+      "p_signal": 0.44,
+      "p_unf": 0.966
+     },
+     "check_sum": 0.85
+    }
+   },
+   "proposta": {
+    "baixo": {
+     "ok": {
+      "p_signal": 0.53,
+      "p_unf": 0.014
+     },
+     "reservas": {
+      "p_signal": 0.334,
+      "p_unf": 0.06
+     },
+     "reservas_fortes": {
+      "p_signal": 0.136,
+      "p_unf": 0.165
+     },
+     "check_sum": 0.0499
+    },
+    "medio": {
+     "ok": {
+      "p_signal": 0.49,
+      "p_unf": 0.046
+     },
+     "reservas": {
+      "p_signal": 0.341,
+      "p_unf": 0.176
+     },
+     "reservas_fortes": {
+      "p_signal": 0.169,
+      "p_unf": 0.398
+     },
+     "check_sum": 0.1498
+    },
+    "alto": {
+     "ok": {
+      "p_signal": 0.45,
+      "p_unf": 0.083
+     },
+     "reservas": {
+      "p_signal": 0.348,
+      "p_unf": 0.288
+     },
+     "reservas_fortes": {
+      "p_signal": 0.203,
+      "p_unf": 0.556
+     },
+     "check_sum": 0.2504
+    },
+    "muito_alto": {
+     "ok": {
+      "p_signal": 0.35,
+      "p_unf": 0.214
+     },
+     "reservas": {
+      "p_signal": 0.365,
+      "p_unf": 0.548
+     },
+     "reservas_fortes": {
+      "p_signal": 0.285,
+      "p_unf": 0.789
+     },
+     "check_sum": 0.4998
+    },
+    "SB ≤9 alto": {
+     "ok": {
+      "p_signal": 0.45,
+      "p_unf": 0.083
+     },
+     "reservas": {
+      "p_signal": 0.348,
+      "p_unf": 0.288
+     },
+     "reservas_fortes": {
+      "p_signal": 0.203,
+      "p_unf": 0.556
+     },
+     "check_sum": 0.2504
+    },
+    "SB ≤9 m.alto": {
+     "ok": {
+      "p_signal": 0.35,
+      "p_unf": 0.214
+     },
+     "reservas": {
+      "p_signal": 0.365,
+      "p_unf": 0.548
+     },
+     "reservas_fortes": {
+      "p_signal": 0.285,
+      "p_unf": 0.789
+     },
+     "check_sum": 0.4998
+    },
+    "SB 10–12 alto": {
+     "ok": {
+      "p_signal": 0.39,
+      "p_unf": 0.154
+     },
+     "reservas": {
+      "p_signal": 0.358,
+      "p_unf": 0.447
+     },
+     "reservas_fortes": {
+      "p_signal": 0.252,
+      "p_unf": 0.714
+     },
+     "check_sum": 0.4
+    },
+    "SB 10–12 m.alto": {
+     "ok": {
+      "p_signal": 0.27,
+      "p_unf": 0.389
+     },
+     "reservas": {
+      "p_signal": 0.379,
+      "p_unf": 0.739
+     },
+     "reservas_fortes": {
+      "p_signal": 0.351,
+      "p_unf": 0.897
+     },
+     "check_sum": 0.7
+    },
+    "SB 13+ alto": {
+     "ok": {
+      "p_signal": 0.31,
+      "p_unf": 0.29
+     },
+     "reservas": {
+      "p_signal": 0.372,
+      "p_unf": 0.645
+     },
+     "reservas_fortes": {
+      "p_signal": 0.318,
+      "p_unf": 0.849
+     },
+     "check_sum": 0.5998
+    },
+    "SB 13+ m.alto": {
+     "ok": {
+      "p_signal": 0.21,
+      "p_unf": 0.607
+     },
+     "reservas": {
+      "p_signal": 0.39,
+      "p_unf": 0.873
+     },
+     "reservas_fortes": {
+      "p_signal": 0.401,
+      "p_unf": 0.955
+     },
+     "check_sum": 0.8509
+    }
+   }
+  },
+  "options": {
+   "gm_075": {
+    "100MW alto ok": {
+     "p_signal": 0.33,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.091,
+       "p_defeat_real": 0.091,
+       "p_below9_real": 0.091,
+       "ev_score": 19.13,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.091,
+       "p_defeat_real": 0.091,
+       "p_below9_real": 0.091,
+       "ev_score": 21.44,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.043,
+       "p_defeat_real": 0.043,
+       "p_below9_real": 0.043,
+       "ev_score": 13.55,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.043,
+       "p_defeat_real": 0.043,
+       "p_below9_real": 0.043,
+       "ev_score": 16.12,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.015,
+       "p_below9_real": 1.0,
+       "ev_score": 8.85,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.015,
+       "p_below9_real": 0.015,
+       "ev_score": 11.57,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.013,
+       "p_below9_real": 1.0,
+       "ev_score": 5.91,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.013,
+       "p_below9_real": 1.0,
+       "ev_score": 8.47,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW alto reservas": {
+     "p_signal": 0.2,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.6,
+       "p_defeat_real": 0.6,
+       "p_below9_real": 0.6,
+       "ev_score": 5.22,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.6,
+       "p_defeat_real": 0.6,
+       "p_below9_real": 0.6,
+       "ev_score": 4.84,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.4,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 0.4,
+       "ev_score": 6.2,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.4,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 0.4,
+       "ev_score": 6.88,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.175,
+       "p_below9_real": 1.0,
+       "ev_score": 6.42,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.175,
+       "p_below9_real": 0.175,
+       "ev_score": 8.3,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 4.23,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 6.09,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW alto reservas_fortes": {
+     "p_signal": 0.47,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.957,
+       "p_defeat_real": 0.957,
+       "p_below9_real": 0.957,
+       "ev_score": -4.55,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.957,
+       "p_defeat_real": 0.957,
+       "p_below9_real": 0.957,
+       "ev_score": -6.82,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.909,
+       "p_defeat_real": 0.909,
+       "p_below9_real": 0.909,
+       "ev_score": -4.25,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.909,
+       "p_defeat_real": 0.909,
+       "p_below9_real": 0.909,
+       "ev_score": -6.27,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": 0.22,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 0.583,
+       "ev_score": -0.08,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.5,
+       "p_below9_real": 1.0,
+       "ev_score": -0.07,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.5,
+       "p_below9_real": 1.0,
+       "ev_score": -0.0,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto ok": {
+     "p_signal": 0.155,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.274,
+       "p_defeat_real": 0.274,
+       "p_below9_real": 0.274,
+       "ev_score": 13.56,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.274,
+       "p_defeat_real": 0.274,
+       "p_below9_real": 0.274,
+       "ev_score": 14.91,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.135,
+       "p_defeat_real": 0.135,
+       "p_below9_real": 0.135,
+       "ev_score": 11.15,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.135,
+       "p_defeat_real": 0.135,
+       "p_below9_real": 0.135,
+       "ev_score": 13.24,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 7.92,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 0.05,
+       "ev_score": 10.45,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.044,
+       "p_below9_real": 1.0,
+       "ev_score": 5.23,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.044,
+       "p_below9_real": 1.0,
+       "ev_score": 7.64,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto reservas": {
+     "p_signal": 0.2,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.85,
+       "p_defeat_real": 0.85,
+       "p_below9_real": 0.85,
+       "ev_score": -1.73,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.85,
+       "p_defeat_real": 0.85,
+       "p_below9_real": 0.85,
+       "ev_score": -3.43,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.7,
+       "p_defeat_real": 0.7,
+       "p_below9_real": 0.7,
+       "ev_score": -0.13,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.7,
+       "p_defeat_real": 0.7,
+       "p_below9_real": 0.7,
+       "ev_score": -1.04,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 1.0,
+       "ev_score": 2.75,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 0.4,
+       "ev_score": 3.43,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.35,
+       "p_below9_real": 1.0,
+       "ev_score": 1.58,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.35,
+       "p_below9_real": 1.0,
+       "ev_score": 2.42,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto reservas_fortes": {
+     "p_signal": 0.645,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.988,
+       "p_defeat_real": 0.988,
+       "p_below9_real": 0.988,
+       "ev_score": -5.4,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.988,
+       "p_defeat_real": 0.988,
+       "p_below9_real": 0.988,
+       "ev_score": -7.84,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.972,
+       "p_defeat_real": 0.972,
+       "p_below9_real": 0.972,
+       "ev_score": -5.57,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.972,
+       "p_defeat_real": 0.972,
+       "p_below9_real": 0.972,
+       "ev_score": -7.92,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.75,
+       "p_below9_real": 1.0,
+       "ev_score": -2.42,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.75,
+       "p_below9_real": 0.75,
+       "ev_score": -3.59,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.656,
+       "p_below9_real": 1.0,
+       "ev_score": -2.07,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.656,
+       "p_below9_real": 1.0,
+       "ev_score": -2.81,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→40",
+     "safest": "downsize→40"
+    },
+    "70MW alto ok": {
+     "p_signal": 0.47,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.043,
+       "p_defeat_real": 0.043,
+       "p_below9_real": 0.043,
+       "ev_score": 14.14,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.043,
+       "p_defeat_real": 0.043,
+       "p_below9_real": 0.043,
+       "ev_score": 16.71,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.015,
+       "p_below9_real": 1.0,
+       "ev_score": 9.21,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.015,
+       "p_below9_real": 0.015,
+       "ev_score": 11.93,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.013,
+       "p_below9_real": 1.0,
+       "ev_score": 6.27,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.013,
+       "p_below9_real": 1.0,
+       "ev_score": 8.83,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW alto reservas": {
+     "p_signal": 0.2,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.4,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 0.4,
+       "ev_score": 6.73,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.4,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 0.4,
+       "ev_score": 7.41,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.175,
+       "p_below9_real": 1.0,
+       "ev_score": 6.78,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.175,
+       "p_below9_real": 0.175,
+       "ev_score": 8.66,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 4.59,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 6.45,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW alto reservas_fortes": {
+     "p_signal": 0.33,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.909,
+       "p_defeat_real": 0.909,
+       "p_below9_real": 0.909,
+       "ev_score": -3.83,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.909,
+       "p_defeat_real": 0.909,
+       "p_below9_real": 0.909,
+       "ev_score": -5.84,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": 0.58,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 0.583,
+       "ev_score": 0.28,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.5,
+       "p_below9_real": 1.0,
+       "ev_score": 0.29,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.5,
+       "p_below9_real": 1.0,
+       "ev_score": 0.36,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto ok": {
+     "p_signal": 0.26,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.135,
+       "p_defeat_real": 0.135,
+       "p_below9_real": 0.135,
+       "ev_score": 11.73,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.135,
+       "p_defeat_real": 0.135,
+       "p_below9_real": 0.135,
+       "ev_score": 13.81,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 8.28,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 0.05,
+       "ev_score": 10.81,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.044,
+       "p_below9_real": 1.0,
+       "ev_score": 5.59,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.044,
+       "p_below9_real": 1.0,
+       "ev_score": 8.0,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto reservas": {
+     "p_signal": 0.2,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.7,
+       "p_defeat_real": 0.7,
+       "p_below9_real": 0.7,
+       "ev_score": 0.34,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.7,
+       "p_defeat_real": 0.7,
+       "p_below9_real": 0.7,
+       "ev_score": -0.57,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 1.0,
+       "ev_score": 3.11,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 0.4,
+       "ev_score": 3.79,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.35,
+       "p_below9_real": 1.0,
+       "ev_score": 1.94,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.35,
+       "p_below9_real": 1.0,
+       "ev_score": 2.78,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto reservas_fortes": {
+     "p_signal": 0.54,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.972,
+       "p_defeat_real": 0.972,
+       "p_below9_real": 0.972,
+       "ev_score": -5.15,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.972,
+       "p_defeat_real": 0.972,
+       "p_below9_real": 0.972,
+       "ev_score": -7.5,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.75,
+       "p_below9_real": 1.0,
+       "ev_score": -2.06,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.75,
+       "p_below9_real": 0.75,
+       "ev_score": -3.23,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.656,
+       "p_below9_real": 1.0,
+       "ev_score": -1.71,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.656,
+       "p_below9_real": 1.0,
+       "ev_score": -2.45,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→40",
+     "safest": "downsize→40"
+    },
+    "50MW alto ok": {
+     "p_signal": 0.575,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.015,
+       "p_below9_real": 1.0,
+       "ev_score": 9.64,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.015,
+       "p_below9_real": 0.015,
+       "ev_score": 12.36,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.013,
+       "p_below9_real": 1.0,
+       "ev_score": 6.51,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.022,
+       "p_defeat_real": 0.013,
+       "p_below9_real": 1.0,
+       "ev_score": 9.07,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW alto reservas": {
+     "p_signal": 0.2,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.175,
+       "p_below9_real": 1.0,
+       "ev_score": 7.19,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.175,
+       "p_below9_real": 0.175,
+       "ev_score": 9.06,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 4.83,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.25,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 6.69,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW alto reservas_fortes": {
+     "p_signal": 0.225,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": 0.93,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 0.583,
+       "ev_score": 0.64,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.5,
+       "p_below9_real": 1.0,
+       "ev_score": 0.53,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.5,
+       "p_below9_real": 1.0,
+       "ev_score": 0.6,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto ok": {
+     "p_signal": 0.4,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 8.7,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 0.05,
+       "ev_score": 11.24,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.044,
+       "p_below9_real": 1.0,
+       "ev_score": 5.83,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.062,
+       "p_defeat_real": 0.044,
+       "p_below9_real": 1.0,
+       "ev_score": 8.24,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto reservas": {
+     "p_signal": 0.2,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 1.0,
+       "ev_score": 3.49,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.4,
+       "p_below9_real": 0.4,
+       "ev_score": 4.17,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.35,
+       "p_below9_real": 1.0,
+       "ev_score": 2.18,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.5,
+       "p_defeat_real": 0.35,
+       "p_below9_real": 1.0,
+       "ev_score": 3.02,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto reservas_fortes": {
+     "p_signal": 0.4,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.75,
+       "p_below9_real": 1.0,
+       "ev_score": -1.73,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.75,
+       "p_below9_real": 0.75,
+       "ev_score": -2.91,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.656,
+       "p_below9_real": 1.0,
+       "ev_score": -1.47,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.938,
+       "p_defeat_real": 0.656,
+       "p_below9_real": 1.0,
+       "ev_score": -2.21,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "downsize→40",
+     "safest": "downsize→40"
+    }
+   },
+   "proposta_v0": {
+    "100MW alto ok": {
+     "p_signal": 0.33,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.273,
+       "p_defeat_real": 0.273,
+       "p_below9_real": 0.273,
+       "ev_score": 14.16,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.273,
+       "p_defeat_real": 0.273,
+       "p_below9_real": 0.273,
+       "ev_score": 15.51,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.143,
+       "p_defeat_real": 0.143,
+       "p_below9_real": 0.143,
+       "ev_score": 11.49,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.143,
+       "p_defeat_real": 0.143,
+       "p_below9_real": 0.143,
+       "ev_score": 13.53,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.054,
+       "p_below9_real": 1.0,
+       "ev_score": 8.26,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.054,
+       "p_below9_real": 0.054,
+       "ev_score": 10.78,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.046,
+       "p_below9_real": 1.0,
+       "ev_score": 5.5,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.046,
+       "p_below9_real": 1.0,
+       "ev_score": 7.9,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW alto reservas": {
+     "p_signal": 0.33,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.636,
+       "p_defeat_real": 0.636,
+       "p_below9_real": 0.636,
+       "ev_score": 4.22,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.636,
+       "p_defeat_real": 0.636,
+       "p_below9_real": 0.636,
+       "ev_score": 3.65,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.438,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 5.43,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.438,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 5.91,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.196,
+       "p_below9_real": 1.0,
+       "ev_score": 6.1,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.196,
+       "p_below9_real": 0.196,
+       "ev_score": 7.87,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.168,
+       "p_below9_real": 1.0,
+       "ev_score": 4.0,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.168,
+       "p_below9_real": 1.0,
+       "ev_score": 5.78,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW alto reservas_fortes": {
+     "p_signal": 0.34,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.882,
+       "p_defeat_real": 0.882,
+       "p_below9_real": 0.882,
+       "ev_score": -2.5,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.882,
+       "p_defeat_real": 0.882,
+       "p_below9_real": 0.882,
+       "ev_score": -4.37,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.769,
+       "p_defeat_real": 0.769,
+       "p_below9_real": 0.769,
+       "ev_score": -1.38,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.769,
+       "p_defeat_real": 0.769,
+       "p_below9_real": 0.769,
+       "ev_score": -2.66,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 1.0,
+       "ev_score": 2.43,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 2.91,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.375,
+       "p_below9_real": 1.0,
+       "ev_score": 1.46,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.375,
+       "p_below9_real": 1.0,
+       "ev_score": 2.17,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto ok": {
+     "p_signal": 0.218,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.586,
+       "p_defeat_real": 0.586,
+       "p_below9_real": 0.586,
+       "ev_score": 5.28,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.586,
+       "p_defeat_real": 0.586,
+       "p_below9_real": 0.586,
+       "ev_score": 4.97,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.368,
+       "p_defeat_real": 0.368,
+       "p_below9_real": 0.368,
+       "ev_score": 6.49,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.368,
+       "p_defeat_real": 0.368,
+       "p_below9_real": 0.368,
+       "ev_score": 7.33,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.16,
+       "p_below9_real": 1.0,
+       "ev_score": 6.29,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.16,
+       "p_below9_real": 0.16,
+       "ev_score": 8.25,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.14,
+       "p_below9_real": 1.0,
+       "ev_score": 4.08,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.14,
+       "p_below9_real": 1.0,
+       "ev_score": 6.0,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto reservas": {
+     "p_signal": 0.342,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.869,
+       "p_defeat_real": 0.869,
+       "p_below9_real": 0.869,
+       "ev_score": -2.22,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.869,
+       "p_defeat_real": 0.869,
+       "p_below9_real": 0.869,
+       "ev_score": -4.03,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.731,
+       "p_defeat_real": 0.731,
+       "p_below9_real": 0.731,
+       "ev_score": -0.76,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.731,
+       "p_defeat_real": 0.731,
+       "p_below9_real": 0.731,
+       "ev_score": -1.83,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.431,
+       "p_below9_real": 1.0,
+       "ev_score": 2.3,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.431,
+       "p_below9_real": 0.431,
+       "ev_score": 2.81,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.377,
+       "p_below9_real": 1.0,
+       "ev_score": 1.26,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.377,
+       "p_below9_real": 1.0,
+       "ev_score": 1.96,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto reservas_fortes": {
+     "p_signal": 0.44,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.966,
+       "p_defeat_real": 0.966,
+       "p_below9_real": 0.966,
+       "ev_score": -4.8,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.966,
+       "p_defeat_real": 0.966,
+       "p_below9_real": 0.966,
+       "ev_score": -7.12,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.921,
+       "p_defeat_real": 0.921,
+       "p_below9_real": 0.921,
+       "ev_score": -4.54,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.921,
+       "p_defeat_real": 0.921,
+       "p_below9_real": 0.921,
+       "ev_score": -6.63,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.667,
+       "p_below9_real": 1.0,
+       "ev_score": -1.19,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.667,
+       "p_below9_real": 0.667,
+       "ev_score": -1.92,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": -1.2,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": -1.56,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50",
+     "safest": "downsize→40"
+    },
+    "70MW alto ok": {
+     "p_signal": 0.42,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.143,
+       "p_defeat_real": 0.143,
+       "p_below9_real": 0.143,
+       "ev_score": 12.06,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.143,
+       "p_defeat_real": 0.143,
+       "p_below9_real": 0.143,
+       "ev_score": 14.1,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.054,
+       "p_below9_real": 1.0,
+       "ev_score": 8.62,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.054,
+       "p_below9_real": 0.054,
+       "ev_score": 11.14,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.046,
+       "p_below9_real": 1.0,
+       "ev_score": 5.86,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.046,
+       "p_below9_real": 1.0,
+       "ev_score": 8.26,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW alto reservas": {
+     "p_signal": 0.32,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.438,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 5.95,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.438,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 6.43,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.196,
+       "p_below9_real": 1.0,
+       "ev_score": 6.46,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.196,
+       "p_below9_real": 0.196,
+       "ev_score": 8.23,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.168,
+       "p_below9_real": 1.0,
+       "ev_score": 4.36,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.168,
+       "p_below9_real": 1.0,
+       "ev_score": 6.14,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW alto reservas_fortes": {
+     "p_signal": 0.26,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.769,
+       "p_defeat_real": 0.769,
+       "p_below9_real": 0.769,
+       "ev_score": -0.93,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.769,
+       "p_defeat_real": 0.769,
+       "p_below9_real": 0.769,
+       "ev_score": -2.2,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 1.0,
+       "ev_score": 2.79,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 3.27,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.375,
+       "p_below9_real": 1.0,
+       "ev_score": 1.82,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.375,
+       "p_below9_real": 1.0,
+       "ev_score": 2.53,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto ok": {
+     "p_signal": 0.285,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.368,
+       "p_defeat_real": 0.368,
+       "p_below9_real": 0.368,
+       "ev_score": 7.02,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.368,
+       "p_defeat_real": 0.368,
+       "p_below9_real": 0.368,
+       "ev_score": 7.86,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.16,
+       "p_below9_real": 1.0,
+       "ev_score": 6.65,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.16,
+       "p_below9_real": 0.16,
+       "ev_score": 8.61,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.14,
+       "p_below9_real": 1.0,
+       "ev_score": 4.44,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.14,
+       "p_below9_real": 1.0,
+       "ev_score": 6.36,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto reservas": {
+     "p_signal": 0.335,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.731,
+       "p_defeat_real": 0.731,
+       "p_below9_real": 0.731,
+       "ev_score": -0.3,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.731,
+       "p_defeat_real": 0.731,
+       "p_below9_real": 0.731,
+       "ev_score": -1.37,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.431,
+       "p_below9_real": 1.0,
+       "ev_score": 2.66,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.431,
+       "p_below9_real": 0.431,
+       "ev_score": 3.17,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.377,
+       "p_below9_real": 1.0,
+       "ev_score": 1.62,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.377,
+       "p_below9_real": 1.0,
+       "ev_score": 2.32,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto reservas_fortes": {
+     "p_signal": 0.38,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.921,
+       "p_defeat_real": 0.921,
+       "p_below9_real": 0.921,
+       "ev_score": -4.12,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.921,
+       "p_defeat_real": 0.921,
+       "p_below9_real": 0.921,
+       "ev_score": -6.2,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.667,
+       "p_below9_real": 1.0,
+       "ev_score": -0.83,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.667,
+       "p_below9_real": 0.667,
+       "ev_score": -1.56,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": -0.84,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": -1.2,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50",
+     "safest": "downsize→40"
+    },
+    "50MW alto ok": {
+     "p_signal": 0.487,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.054,
+       "p_below9_real": 1.0,
+       "ev_score": 9.05,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.054,
+       "p_below9_real": 0.054,
+       "ev_score": 11.56,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.046,
+       "p_below9_real": 1.0,
+       "ev_score": 6.1,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.077,
+       "p_defeat_real": 0.046,
+       "p_below9_real": 1.0,
+       "ev_score": 8.5,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW alto reservas": {
+     "p_signal": 0.312,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.196,
+       "p_below9_real": 1.0,
+       "ev_score": 6.87,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.196,
+       "p_below9_real": 0.196,
+       "ev_score": 8.63,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.168,
+       "p_below9_real": 1.0,
+       "ev_score": 4.6,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.28,
+       "p_defeat_real": 0.168,
+       "p_below9_real": 1.0,
+       "ev_score": 6.38,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW alto reservas_fortes": {
+     "p_signal": 0.2,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 1.0,
+       "ev_score": 3.16,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 3.65,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.375,
+       "p_below9_real": 1.0,
+       "ev_score": 2.06,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.625,
+       "p_defeat_real": 0.375,
+       "p_below9_real": 1.0,
+       "ev_score": 2.77,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto ok": {
+     "p_signal": 0.375,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.16,
+       "p_below9_real": 1.0,
+       "ev_score": 7.06,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.16,
+       "p_below9_real": 0.16,
+       "ev_score": 9.02,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.14,
+       "p_below9_real": 1.0,
+       "ev_score": 4.68,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.2,
+       "p_defeat_real": 0.14,
+       "p_below9_real": 1.0,
+       "ev_score": 6.6,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto reservas": {
+     "p_signal": 0.325,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.431,
+       "p_below9_real": 1.0,
+       "ev_score": 3.03,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.431,
+       "p_below9_real": 0.431,
+       "ev_score": 3.54,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.377,
+       "p_below9_real": 1.0,
+       "ev_score": 1.86,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.538,
+       "p_defeat_real": 0.377,
+       "p_below9_real": 1.0,
+       "ev_score": 2.56,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto reservas_fortes": {
+     "p_signal": 0.3,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.667,
+       "p_below9_real": 1.0,
+       "ev_score": -0.49,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.667,
+       "p_below9_real": 0.667,
+       "ev_score": -1.22,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": -0.6,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.833,
+       "p_defeat_real": 0.583,
+       "p_below9_real": 1.0,
+       "ev_score": -0.96,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep",
+     "safest": "downsize→40"
+    }
+   },
+   "proposta": {
+    "100MW alto ok": {
+     "p_signal": 0.31,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.29,
+       "p_defeat_real": 0.29,
+       "p_below9_real": 0.29,
+       "ev_score": 13.68,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.29,
+       "p_defeat_real": 0.29,
+       "p_below9_real": 0.29,
+       "ev_score": 14.94,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.154,
+       "p_defeat_real": 0.154,
+       "p_below9_real": 0.154,
+       "ev_score": 11.26,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.154,
+       "p_defeat_real": 0.154,
+       "p_below9_real": 0.154,
+       "ev_score": 13.24,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.058,
+       "p_below9_real": 1.0,
+       "ev_score": 8.2,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.058,
+       "p_below9_real": 0.058,
+       "ev_score": 10.69,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 5.45,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 7.83,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW alto reservas": {
+     "p_signal": 0.372,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.645,
+       "p_defeat_real": 0.645,
+       "p_below9_real": 0.645,
+       "ev_score": 3.98,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.645,
+       "p_defeat_real": 0.645,
+       "p_below9_real": 0.645,
+       "ev_score": 3.36,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.447,
+       "p_defeat_real": 0.447,
+       "p_below9_real": 0.447,
+       "ev_score": 5.24,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.447,
+       "p_defeat_real": 0.447,
+       "p_below9_real": 0.447,
+       "ev_score": 5.67,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.201,
+       "p_below9_real": 1.0,
+       "ev_score": 6.02,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.201,
+       "p_below9_real": 0.201,
+       "ev_score": 7.75,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.173,
+       "p_below9_real": 1.0,
+       "ev_score": 3.95,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.173,
+       "p_below9_real": 1.0,
+       "ev_score": 5.69,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW alto reservas_fortes": {
+     "p_signal": 0.318,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.849,
+       "p_defeat_real": 0.849,
+       "p_below9_real": 0.849,
+       "ev_score": -1.59,
+       "irr_real_ok": 10.02,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.849,
+       "p_defeat_real": 0.849,
+       "p_below9_real": 0.849,
+       "ev_score": -3.29,
+       "irr_real_ok": 10.28,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.714,
+       "p_defeat_real": 0.714,
+       "p_below9_real": 0.714,
+       "ev_score": -0.25,
+       "irr_real_ok": 9.39,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.714,
+       "p_defeat_real": 0.714,
+       "p_below9_real": 0.714,
+       "ev_score": -1.24,
+       "irr_real_ok": 9.65,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 1.0,
+       "ev_score": 3.17,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 0.389,
+       "ev_score": 3.91,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.333,
+       "p_below9_real": 1.0,
+       "ev_score": 1.98,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.333,
+       "p_below9_real": 1.0,
+       "ev_score": 2.9,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto ok": {
+     "p_signal": 0.21,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.607,
+       "p_defeat_real": 0.607,
+       "p_below9_real": 0.607,
+       "ev_score": 4.72,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.607,
+       "p_defeat_real": 0.607,
+       "p_below9_real": 0.607,
+       "ev_score": 4.3,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.389,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 0.389,
+       "ev_score": 6.08,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.389,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 0.389,
+       "ev_score": 6.82,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.171,
+       "p_below9_real": 1.0,
+       "ev_score": 6.13,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.171,
+       "p_below9_real": 0.171,
+       "ev_score": 8.02,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 3.96,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 5.83,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto reservas": {
+     "p_signal": 0.39,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.873,
+       "p_defeat_real": 0.873,
+       "p_below9_real": 0.873,
+       "ev_score": -2.34,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.873,
+       "p_defeat_real": 0.873,
+       "p_below9_real": 0.873,
+       "ev_score": -4.16,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.739,
+       "p_defeat_real": 0.739,
+       "p_below9_real": 0.739,
+       "ev_score": -0.91,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.739,
+       "p_defeat_real": 0.739,
+       "p_below9_real": 0.739,
+       "ev_score": -2.02,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 1.0,
+       "ev_score": 2.18,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 2.66,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.384,
+       "p_below9_real": 1.0,
+       "ev_score": 1.18,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.384,
+       "p_below9_real": 1.0,
+       "ev_score": 1.84,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "100MW muito_alto reservas_fortes": {
+     "p_signal": 0.401,
+     "options": {
+      "keep": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.955,
+       "p_defeat_real": 0.955,
+       "p_below9_real": 0.955,
+       "ev_score": -4.52,
+       "irr_real_ok": 9.95,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 100,
+       "towers": 15,
+       "p_aia": 1.0,
+       "p_unf": 0.955,
+       "p_defeat_real": 0.955,
+       "p_below9_real": 0.955,
+       "ev_score": -6.78,
+       "irr_real_ok": 10.21,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→70": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.897,
+       "p_defeat_real": 0.897,
+       "p_below9_real": 0.897,
+       "ev_score": -4.07,
+       "irr_real_ok": 9.34,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→70 + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.897,
+       "p_defeat_real": 0.897,
+       "p_below9_real": 0.897,
+       "ev_score": -6.03,
+       "irr_real_ok": 9.6,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.632,
+       "p_below9_real": 1.0,
+       "ev_score": -0.67,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.65
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.632,
+       "p_below9_real": 0.632,
+       "ev_score": -1.22,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.65
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.553,
+       "p_below9_real": 1.0,
+       "ev_score": -0.84,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.77
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.553,
+       "p_below9_real": 1.0,
+       "ev_score": -1.04,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.77
+      }
+     },
+     "best_ev": "downsize→50",
+     "safest": "downsize→40"
+    },
+    "70MW alto ok": {
+     "p_signal": 0.39,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.154,
+       "p_defeat_real": 0.154,
+       "p_below9_real": 0.154,
+       "ev_score": 11.83,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.154,
+       "p_defeat_real": 0.154,
+       "p_below9_real": 0.154,
+       "ev_score": 13.82,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.058,
+       "p_below9_real": 1.0,
+       "ev_score": 8.56,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.058,
+       "p_below9_real": 0.058,
+       "ev_score": 11.05,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 5.81,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 8.19,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW alto reservas": {
+     "p_signal": 0.358,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.447,
+       "p_defeat_real": 0.447,
+       "p_below9_real": 0.447,
+       "ev_score": 5.76,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.447,
+       "p_defeat_real": 0.447,
+       "p_below9_real": 0.447,
+       "ev_score": 6.19,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.201,
+       "p_below9_real": 1.0,
+       "ev_score": 6.38,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.201,
+       "p_below9_real": 0.201,
+       "ev_score": 8.11,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.173,
+       "p_below9_real": 1.0,
+       "ev_score": 4.31,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.173,
+       "p_below9_real": 1.0,
+       "ev_score": 6.05,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW alto reservas_fortes": {
+     "p_signal": 0.252,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.714,
+       "p_defeat_real": 0.714,
+       "p_below9_real": 0.714,
+       "ev_score": 0.21,
+       "irr_real_ok": 9.41,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.714,
+       "p_defeat_real": 0.714,
+       "p_below9_real": 0.714,
+       "ev_score": -0.77,
+       "irr_real_ok": 9.67,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 1.0,
+       "ev_score": 3.53,
+       "irr_real_ok": 8.9,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 0.389,
+       "ev_score": 4.27,
+       "irr_real_ok": 9.16,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.333,
+       "p_below9_real": 1.0,
+       "ev_score": 2.34,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.333,
+       "p_below9_real": 1.0,
+       "ev_score": 3.26,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto ok": {
+     "p_signal": 0.27,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.389,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 0.389,
+       "ev_score": 6.6,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.389,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 0.389,
+       "ev_score": 7.34,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.171,
+       "p_below9_real": 1.0,
+       "ev_score": 6.49,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.171,
+       "p_below9_real": 0.171,
+       "ev_score": 8.38,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 4.32,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 6.19,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto reservas": {
+     "p_signal": 0.379,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.739,
+       "p_defeat_real": 0.739,
+       "p_below9_real": 0.739,
+       "ev_score": -0.45,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.739,
+       "p_defeat_real": 0.739,
+       "p_below9_real": 0.739,
+       "ev_score": -1.56,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 1.0,
+       "ev_score": 2.54,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 3.02,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.384,
+       "p_below9_real": 1.0,
+       "ev_score": 1.54,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.384,
+       "p_below9_real": 1.0,
+       "ev_score": 2.2,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50 + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "70MW muito_alto reservas_fortes": {
+     "p_signal": 0.351,
+     "options": {
+      "keep": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.897,
+       "p_defeat_real": 0.897,
+       "p_below9_real": 0.897,
+       "ev_score": -3.64,
+       "irr_real_ok": 9.36,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 70,
+       "towers": 11,
+       "p_aia": 1.0,
+       "p_unf": 0.897,
+       "p_defeat_real": 0.897,
+       "p_below9_real": 0.897,
+       "ev_score": -5.6,
+       "irr_real_ok": 9.62,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→50": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.632,
+       "p_below9_real": 1.0,
+       "ev_score": -0.31,
+       "irr_real_ok": 8.86,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.29
+      },
+      "downsize→50 + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.632,
+       "p_below9_real": 0.632,
+       "ev_score": -0.86,
+       "irr_real_ok": 9.12,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.29
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.553,
+       "p_below9_real": 1.0,
+       "ev_score": -0.48,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.41
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.553,
+       "p_below9_real": 1.0,
+       "ev_score": -0.68,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.41
+      }
+     },
+     "best_ev": "downsize→50",
+     "safest": "downsize→40"
+    },
+    "50MW alto ok": {
+     "p_signal": 0.45,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.058,
+       "p_below9_real": 1.0,
+       "ev_score": 8.98,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.058,
+       "p_below9_real": 0.058,
+       "ev_score": 11.47,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 6.05,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.083,
+       "p_defeat_real": 0.05,
+       "p_below9_real": 1.0,
+       "ev_score": 8.43,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW alto reservas": {
+     "p_signal": 0.348,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.201,
+       "p_below9_real": 1.0,
+       "ev_score": 6.79,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.201,
+       "p_below9_real": 0.201,
+       "ev_score": 8.52,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.173,
+       "p_below9_real": 1.0,
+       "ev_score": 4.55,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.288,
+       "p_defeat_real": 0.173,
+       "p_below9_real": 1.0,
+       "ev_score": 6.29,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW alto reservas_fortes": {
+     "p_signal": 0.203,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 1.0,
+       "ev_score": 3.91,
+       "irr_real_ok": 8.91,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.7,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.389,
+       "p_below9_real": 0.389,
+       "ev_score": 4.65,
+       "irr_real_ok": 9.17,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.333,
+       "p_below9_real": 1.0,
+       "ev_score": 2.58,
+       "irr_real_ok": 8.62,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.6000000000000001,
+       "p_unf": 0.556,
+       "p_defeat_real": 0.333,
+       "p_below9_real": 1.0,
+       "ev_score": 3.5,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto ok": {
+     "p_signal": 0.35,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.171,
+       "p_below9_real": 1.0,
+       "ev_score": 6.89,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.171,
+       "p_below9_real": 0.171,
+       "ev_score": 8.79,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 4.56,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.214,
+       "p_defeat_real": 0.15,
+       "p_below9_real": 1.0,
+       "ev_score": 6.43,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto reservas": {
+     "p_signal": 0.365,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 1.0,
+       "ev_score": 2.91,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.438,
+       "p_below9_real": 0.438,
+       "ev_score": 3.39,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.384,
+       "p_below9_real": 1.0,
+       "ev_score": 1.78,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.548,
+       "p_defeat_real": 0.384,
+       "p_below9_real": 1.0,
+       "ev_score": 2.44,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep + BESS 20×2",
+     "safest": "downsize→40 + BESS 20×2"
+    },
+    "50MW muito_alto reservas_fortes": {
+     "p_signal": 0.285,
+     "options": {
+      "keep": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.632,
+       "p_below9_real": 1.0,
+       "ev_score": 0.03,
+       "irr_real_ok": 8.87,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.0
+      },
+      "keep + BESS 20×2": {
+       "W": 50,
+       "towers": 8,
+       "p_aia": 0.8,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.632,
+       "p_below9_real": 0.632,
+       "ev_score": -0.51,
+       "irr_real_ok": 9.13,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.0
+      },
+      "downsize→40": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.553,
+       "p_below9_real": 1.0,
+       "ev_score": -0.24,
+       "irr_real_ok": 8.59,
+       "irr_real_lost": 7.48,
+       "cost_downsize": 0.17
+      },
+      "downsize→40 + BESS 20×2": {
+       "W": 40,
+       "towers": 6,
+       "p_aia": 0.7,
+       "p_unf": 0.789,
+       "p_defeat_real": 0.553,
+       "p_below9_real": 1.0,
+       "ev_score": -0.44,
+       "irr_real_ok": 8.84,
+       "irr_real_lost": 7.25,
+       "cost_downsize": 0.17
+      }
+     },
+     "best_ev": "keep",
+     "safest": "downsize→40"
+    }
+   }
+  },
+  "downsize_drop": {
+   "gm_075": {
+    "alto": {
+     "ok": {
+      "13+": 0.091,
+      "10–12": 0.043,
+      "≤9": 0.022
+     },
+     "reservas": {
+      "13+": 0.6,
+      "10–12": 0.4,
+      "≤9": 0.25
+     },
+     "reservas_fortes": {
+      "13+": 0.957,
+      "10–12": 0.909,
+      "≤9": 0.833
+     }
+    },
+    "muito_alto": {
+     "ok": {
+      "13+": 0.274,
+      "10–12": 0.135,
+      "≤9": 0.062
+     },
+     "reservas": {
+      "13+": 0.85,
+      "10–12": 0.7,
+      "≤9": 0.5
+     },
+     "reservas_fortes": {
+      "13+": 0.988,
+      "10–12": 0.972,
+      "≤9": 0.938
+     }
+    }
+   },
+   "proposta_v0": {
+    "alto": {
+     "ok": {
+      "13+": 0.273,
+      "10–12": 0.143,
+      "≤9": 0.077
+     },
+     "reservas": {
+      "13+": 0.636,
+      "10–12": 0.438,
+      "≤9": 0.28
+     },
+     "reservas_fortes": {
+      "13+": 0.882,
+      "10–12": 0.769,
+      "≤9": 0.625
+     }
+    },
+    "muito_alto": {
+     "ok": {
+      "13+": 0.586,
+      "10–12": 0.368,
+      "≤9": 0.2
+     },
+     "reservas": {
+      "13+": 0.869,
+      "10–12": 0.731,
+      "≤9": 0.538
+     },
+     "reservas_fortes": {
+      "13+": 0.966,
+      "10–12": 0.921,
+      "≤9": 0.833
+     }
+    }
+   },
+   "proposta": {
+    "alto": {
+     "ok": {
+      "13+": 0.29,
+      "10–12": 0.154,
+      "≤9": 0.083
+     },
+     "reservas": {
+      "13+": 0.645,
+      "10–12": 0.447,
+      "≤9": 0.288
+     },
+     "reservas_fortes": {
+      "13+": 0.849,
+      "10–12": 0.714,
+      "≤9": 0.556
+     }
+    },
+    "muito_alto": {
+     "ok": {
+      "13+": 0.607,
+      "10–12": 0.389,
+      "≤9": 0.214
+     },
+     "reservas": {
+      "13+": 0.873,
+      "10–12": 0.739,
+      "≤9": 0.548
+     },
+     "reservas_fortes": {
+      "13+": 0.955,
+      "10–12": 0.897,
+      "≤9": 0.789
+     }
+    }
+   }
+  },
+  "accuracy": {
+   "gm_075": {
+    "P(rf|U)": 0.75,
+    "P(ok|F)": 0.75,
+    "LR": {
+     "ok": 0.07,
+     "reservas": 1.0,
+     "reservas_fortes": 15.0
+    }
+   },
+   "proposta_v0": {
+    "P(rf|U)": 0.5,
+    "P(ok|F)": 0.6,
+    "LR": {
+     "ok": 0.25,
+     "reservas": 1.17,
+     "reservas_fortes": 5.0
+    }
+   },
+   "proposta": {
+    "P(rf|U)": 0.45,
+    "P(ok|F)": 0.55,
+    "LR": {
+     "ok": 0.27,
+     "reservas": 1.21,
+     "reservas_fortes": 3.75
+    }
+   }
+  }
+ },
+ "ui": {
+  "_meta": "2026-10-10a PT · bloco para a consola (PR #15). PROVISÓRIO (HIPÓTESE salvo REAL). Ids = events/prospecao.v01.json. Chaves antigas (sites.*, gm_pack.*) mantidas; ESTE bloco é a fonte para a UI.",
+  "schema": "opportunities[id] = {type, name, rivals, recommended_*, trap_*, trap_when, consultant_report, sizes: [{mw|size|plan, towers, label: seguro|recomendado|opcao|armadilha, card_tag, trap_when, npv…, p_aia, p_dia_unf, ev, p_defeat, equity}], rent: {...}, report_cost_MEUR}",
+  "opportunities": {
+   "opp-serra-branca": {
+    "type": "eolica",
+    "name": "Serra Branca",
+    "rivals": 1,
+    "recommended_mw": 50,
+    "trap_mw": 100,
+    "trap_when": "sempre (bandas de torres: 13+ torres P(DIA desf.) 0,60 / 0,85 PROVISÓRIO)",
+    "conditional_trap": {
+     "mw": 70,
+     "when": "true_risk.icnf == muito_alto"
+    },
+    "consultant_report": {
+     "trap_size": "wind_size_100",
+     "trap_size_label": "100 MW (15 torres)",
+     "extra_if_icnf_muito_alto": "Com o risco ambiental muito alto, evita também 70 MW (11 torres).",
+     "gm_alignment": "events/prospecao.v01.json tem trap_size wind_size_70: mudar para wind_size_100 e juntar a frase condicional para 70 MW."
+    },
+    "sizes": [
+     {
+      "mw": 40,
+      "towers": 6,
+      "label": "seguro",
+      "card_tag": "wind_size_40",
+      "trap_when": null,
+      "npv_ok_MEUR": {
+       "vento4": 12.93,
+       "vento5": 17.62
+      },
+      "npv_ok_aia_MEUR": {
+       "vento4": 12.39,
+       "vento5": 16.88
+      },
+      "p_aia": {
+       "alto": 0.6000000000000001,
+       "muito_alto": 0.7
+      },
+      "p_dia_unf": {
+       "alto": 0.25,
+       "muito_alto": 0.5
+      },
+      "ev_MEUR": {
+       "vento4_alto": 10.45,
+       "vento4_muito_alto": 7.5,
+       "vento5_alto": 14.34,
+       "vento5_muito_alto": 10.43
+      },
+      "ev_avg_MEUR": 10.32,
+      "p_defeat": {
+       "vento4_alto": 0.15,
+       "vento4_muito_alto": 0.35,
+       "vento5_alto": 0.15,
+       "vento5_muito_alto": 0.35
+      },
+      "equity_fid_MEUR": 20.1,
+      "dev_cash_MEUR": 2.4,
+      "curtail_pct": 6.4
+     },
+     {
+      "mw": 50,
+      "towers": 8,
+      "label": "recomendado",
+      "card_tag": "wind_size_50",
+      "trap_when": null,
+      "npv_ok_MEUR": {
+       "vento4": 16.01,
+       "vento5": 21.85
+      },
+      "npv_ok_aia_MEUR": {
+       "vento4": 15.34,
+       "vento5": 20.93
+      },
+      "p_aia": {
+       "alto": 0.7,
+       "muito_alto": 0.8
+      },
+      "p_dia_unf": {
+       "alto": 0.25,
+       "muito_alto": 0.5
+      },
+      "ev_MEUR": {
+       "vento4_alto": 12.44,
+       "vento4_muito_alto": 8.34,
+       "vento5_alto": 17.13,
+       "vento5_muito_alto": 11.68
+      },
+      "ev_avg_MEUR": 12.04,
+      "p_defeat": {
+       "vento4_alto": 0.175,
+       "vento4_muito_alto": 0.4,
+       "vento5_alto": 0.175,
+       "vento5_muito_alto": 0.4
+      },
+      "equity_fid_MEUR": 24.9,
+      "dev_cash_MEUR": 3.0,
+      "curtail_pct": 6.8
+     },
+     {
+      "mw": 70,
+      "towers": 11,
+      "label": "opcao",
+      "card_tag": "wind_size_70",
+      "trap_when": "icnf == muito_alto",
+      "npv_ok_MEUR": {
+       "vento4": 21.64,
+       "vento5": 29.72
+      },
+      "npv_ok_aia_MEUR": {
+       "vento4": 20.73,
+       "vento5": 28.47
+      },
+      "p_aia": {
+       "alto": 1.0,
+       "muito_alto": 1.0
+      },
+      "p_dia_unf": {
+       "alto": 0.4,
+       "muito_alto": 0.7
+      },
+      "ev_MEUR": {
+       "vento4_alto": 11.3,
+       "vento4_muito_alto": 4.17,
+       "vento5_alto": 15.95,
+       "vento5_muito_alto": 6.43
+      },
+      "ev_avg_MEUR": 9.56,
+      "p_defeat": {
+       "vento4_alto": 0.4,
+       "vento4_muito_alto": 0.7,
+       "vento5_alto": 0.4,
+       "vento5_muito_alto": 0.7
+      },
+      "equity_fid_MEUR": 34.7,
+      "dev_cash_MEUR": 4.2,
+      "curtail_pct": 7.8
+     },
+     {
+      "mw": 100,
+      "towers": 15,
+      "label": "armadilha",
+      "card_tag": "wind_size_100",
+      "trap_when": "sempre",
+      "npv_ok_MEUR": {
+       "vento4": 28.52,
+       "vento5": 39.85
+      },
+      "npv_ok_aia_MEUR": {
+       "vento4": 27.32,
+       "vento5": 38.18
+      },
+      "p_aia": {
+       "alto": 1.0,
+       "muito_alto": 1.0
+      },
+      "p_dia_unf": {
+       "alto": 0.6,
+       "muito_alto": 0.85
+      },
+      "ev_MEUR": {
+       "vento4_alto": 8.67,
+       "vento4_muito_alto": 0.85,
+       "vento5_alto": 13.02,
+       "vento5_muito_alto": 2.43
+      },
+      "ev_avg_MEUR": 6.51,
+      "p_defeat": {
+       "vento4_alto": 0.6,
+       "vento4_muito_alto": 0.85,
+       "vento5_alto": 0.6,
+       "vento5_muito_alto": 0.85
+      },
+      "equity_fid_MEUR": 49.3,
+      "dev_cash_MEUR": 6.0,
+      "curtail_pct": 9.5
+     }
+    ],
+    "true_risk": {
+     "icnf": {
+      "alto": 0.6,
+      "muito_alto": 0.4
+     },
+     "recurso": {
+      "4": 0.7,
+      "5": 0.3
+     }
+    },
+    "rent": {
+     "rent_keur_mw_ano": {
+      "low": 2.5,
+      "mid": 4.5,
+      "high": 7.5
+     },
+     "rent_accept": {
+      "low": 0.4,
+      "mid": 0.75,
+      "high": 0.95
+     },
+     "rival_by_rent": {
+      "1": {
+       "low": 0.35,
+       "mid": 0.15,
+       "high": 0.05
+      },
+      "2": {
+       "low": 0.55,
+       "mid": 0.3,
+       "high": 0.1
+      },
+      "0": {
+       "low": 0.0,
+       "mid": 0.0,
+       "high": 0.0
+      }
+     },
+     "rival_by_rent_label": "1 e 2 rivais: GM (aplicado); 0 rivais = 0/0/0 PROVISÓRIO (GM tinha 0,10 na baixa)",
+     "retry_rule": "Recusa → UMA nova oferta no mês seguinte, com renda mais alta do que a primeira (opp_land_reoffered_<id>); recusa da segunda oferta ou da alta → opp_site_closed_<id>. O rival volta a ser sorteado em cada oferta, ANTES da resposta. Última oferta nova: M5 eólico / M9 BESS.",
+     "cash_signing_MEUR": {
+      "low": -0.02,
+      "mid": -0.05,
+      "high": -0.1
+     },
+     "cash_label": "pago só se o dono aceita (opp_land_agreed_<id>)",
+     "npv_vs_mid_MEUR": {
+      "low": 1.07,
+      "mid": 0.0,
+      "high": -1.6
+     },
+     "npv_basis": "eólico 50 MW; nav = (4,5 − renda) × MW × 0,0107; média já no O&M de 35 k€/MW"
+    },
+    "report_cost_MEUR": -0.15
+   },
+   "opp-vale-da-rosa": {
+    "type": "eolica",
+    "name": "Vale da Rosa",
+    "rivals": 0,
+    "recommended_mw": 50,
+    "trap_mw": 100,
+    "trap_when": "true_risk.recurso == 2",
+    "consultant_report": {
+     "trap_size": "wind_size_100",
+     "trap_size_label": "100 MW (15 torres)",
+     "note": "armadilha só com vento 2; com vento 3 o 100 MW é o melhor em NPV (equity 58 M€)"
+    },
+    "sizes": [
+     {
+      "mw": 40,
+      "towers": 6,
+      "label": "seguro",
+      "card_tag": "wind_size_40",
+      "trap_when": null,
+      "npv_ok_MEUR": {
+       "vento3": 3.32,
+       "vento2": -5.55
+      },
+      "corte2_hit_MEUR": -1.93,
+      "p_aia": 0.2,
+      "p_dia_unf": 0.05,
+      "ev_MEUR": -0.26,
+      "ev_with_corte_draw_MEUR": null,
+      "line_capex_MEUR": 4.8,
+      "equity_fid_MEUR": 25.8,
+      "curtail_pct": 6.4
+     },
+     {
+      "mw": 50,
+      "towers": 8,
+      "label": "recomendado",
+      "card_tag": "wind_size_50",
+      "trap_when": null,
+      "npv_ok_MEUR": {
+       "vento3": 4.96,
+       "vento2": -6.07
+      },
+      "corte2_hit_MEUR": -2.42,
+      "p_aia": 0.3,
+      "p_dia_unf": 0.05,
+      "ev_MEUR": 0.46,
+      "ev_with_corte_draw_MEUR": -0.23,
+      "line_capex_MEUR": 4.8,
+      "equity_fid_MEUR": 30.8,
+      "curtail_pct": 6.8
+     },
+     {
+      "mw": 100,
+      "towers": 15,
+      "label": "armadilha",
+      "card_tag": "wind_size_100",
+      "trap_when": "recurso == 2",
+      "npv_ok_MEUR": {
+       "vento3": 9.66,
+       "vento2": -11.77
+      },
+      "corte2_hit_MEUR": -4.83,
+      "p_aia": 0.6000000000000001,
+      "p_dia_unf": 0.05,
+      "ev_MEUR": 0.84,
+      "ev_with_corte_draw_MEUR": -0.53,
+      "line_capex_MEUR": 5.62,
+      "equity_fid_MEUR": 58.9,
+      "curtail_pct": 9.5
+     }
+    ],
+    "true_risk": {
+     "recurso": {
+      "2": 0.4,
+      "3": 0.6
+     },
+     "corte": {
+      "3": 0.7,
+      "2": 0.3
+     }
+    },
+    "rent": {
+     "rent_keur_mw_ano": {
+      "low": 2.5,
+      "mid": 4.5,
+      "high": 7.5
+     },
+     "rent_accept": {
+      "low": 0.4,
+      "mid": 0.75,
+      "high": 0.95
+     },
+     "rival_by_rent": {
+      "1": {
+       "low": 0.35,
+       "mid": 0.15,
+       "high": 0.05
+      },
+      "2": {
+       "low": 0.55,
+       "mid": 0.3,
+       "high": 0.1
+      },
+      "0": {
+       "low": 0.0,
+       "mid": 0.0,
+       "high": 0.0
+      }
+     },
+     "rival_by_rent_label": "1 e 2 rivais: GM (aplicado); 0 rivais = 0/0/0 PROVISÓRIO (GM tinha 0,10 na baixa)",
+     "retry_rule": "Recusa → UMA nova oferta no mês seguinte, com renda mais alta do que a primeira (opp_land_reoffered_<id>); recusa da segunda oferta ou da alta → opp_site_closed_<id>. O rival volta a ser sorteado em cada oferta, ANTES da resposta. Última oferta nova: M5 eólico / M9 BESS.",
+     "cash_signing_MEUR": {
+      "low": -0.02,
+      "mid": -0.05,
+      "high": -0.1
+     },
+     "cash_label": "pago só se o dono aceita (opp_land_agreed_<id>)",
+     "npv_vs_mid_MEUR": {
+      "low": 1.07,
+      "mid": 0.0,
+      "high": -1.6
+     },
+     "npv_basis": "eólico 50 MW; nav = (4,5 − renda) × MW × 0,0107; média já no O&M de 35 k€/MW"
+    },
+    "report_cost_MEUR": -0.15
+   },
+   "opp-junto-subestacao": {
+    "type": "bateria",
+    "name": "Junto à subestação",
+    "rivals": 2,
+    "recommended_size": "20x2",
+    "trap_size": "20x4",
+    "trap_when": "sempre (regra 75/25)",
+    "consultant_report": {
+     "trap_size": "bess_size_20x4",
+     "trap_size_label": "20 MW por 4 horas"
+    },
+    "sizes": [
+     {
+      "size": "10x2",
+      "mw": 10,
+      "mwh": 20,
+      "label": "seguro",
+      "card_tag": "bess_size_10x2",
+      "npv_MEUR": {
+       "vento_0": -1.1,
+       "vento_20": 1.3,
+       "vento_50": 1.5
+      },
+      "npv_prr_MEUR": {
+       "vento_0": -0.3,
+       "vento_20": 2.0,
+       "vento_50": 2.2
+      },
+      "equity_100_MEUR": 5.3,
+      "equity_prr_MEUR": 4.2,
+      "corte3_hit_MEUR": -0.53,
+      "ha": 0.4
+     },
+     {
+      "size": "20x2",
+      "mw": 20,
+      "mwh": 40,
+      "label": "recomendado",
+      "card_tag": "bess_size_20x2",
+      "npv_MEUR": {
+       "vento_0": -2.5,
+       "vento_20": 2.3,
+       "vento_50": 2.8
+      },
+      "npv_prr_MEUR": {
+       "vento_0": -1.0,
+       "vento_20": 3.8,
+       "vento_50": 4.3
+      },
+      "equity_100_MEUR": 10.5,
+      "equity_prr_MEUR": 8.4,
+      "corte3_hit_MEUR": -1.06,
+      "ha": 0.6
+     },
+     {
+      "size": "20x4",
+      "mw": 20,
+      "mwh": 80,
+      "label": "armadilha",
+      "card_tag": "bess_size_20x4",
+      "npv_MEUR": {
+       "vento_0": -10.4,
+       "vento_20": -3.3,
+       "vento_50": -2.5
+      },
+      "npv_prr_MEUR": {
+       "vento_0": -7.8,
+       "vento_20": -0.7,
+       "vento_50": 0.1
+      },
+      "equity_100_MEUR": 18.4,
+      "equity_prr_MEUR": 14.7,
+      "corte3_hit_MEUR": -1.5,
+      "ha": 0.8
+     }
+    ],
+    "true_risk": {
+     "corte": {
+      "4": 0.6,
+      "3": 0.4
+     }
+    },
+    "rent": {
+     "rent_keur_mw_ano": {
+      "low": 2.5,
+      "mid": 4.5,
+      "high": 7.5
+     },
+     "rent_accept": {
+      "low": 0.4,
+      "mid": 0.75,
+      "high": 0.95
+     },
+     "rival_by_rent": {
+      "1": {
+       "low": 0.35,
+       "mid": 0.15,
+       "high": 0.05
+      },
+      "2": {
+       "low": 0.55,
+       "mid": 0.3,
+       "high": 0.1
+      },
+      "0": {
+       "low": 0.0,
+       "mid": 0.0,
+       "high": 0.0
+      }
+     },
+     "rival_by_rent_label": "1 e 2 rivais: GM (aplicado); 0 rivais = 0/0/0 PROVISÓRIO (GM tinha 0,10 na baixa)",
+     "retry_rule": "Recusa → UMA nova oferta no mês seguinte, com renda mais alta do que a primeira (opp_land_reoffered_<id>); recusa da segunda oferta ou da alta → opp_site_closed_<id>. O rival volta a ser sorteado em cada oferta, ANTES da resposta. Última oferta nova: M5 eólico / M9 BESS.",
+     "cash_signing_MEUR": {
+      "low": -0.02,
+      "mid": -0.05,
+      "high": -0.1
+     },
+     "cash_label": "pago só se o dono aceita (opp_land_agreed_<id>)",
+     "npv_vs_mid_MEUR": {
+      "low": 0.36,
+      "mid": 0.0,
+      "high": -0.54
+     },
+     "npv_basis": "BESS 20 MW; renda por MW de potência (HIPÓTESE sem âncora: equivale a ~80–250 k€/ha/ano em 0,6 ha); média assumida dentro do opex do BESS"
+    },
+    "report_cost_MEUR": -0.04
+   },
+   "opp-mais-paineis": {
+    "type": "sobreequipamento",
+    "name": "Mais painéis no terreno da central",
+    "rivals": 0,
+    "recommended_plan": "small",
+    "trap_plan": "large",
+    "trap_when": "sempre",
+    "consultant_report": {
+     "trap_size": "overequip_plan_large",
+     "trap_size_label": "o plano grande"
+    },
+    "sizes": [
+     {
+      "plan": "small",
+      "added_mwp": 20,
+      "label": "recomendado",
+      "card_tag": "overequip_plan_small",
+      "nav_corte2_MEUR": 1.6,
+      "nav_corte1_MEUR": 0.4,
+      "equity_MEUR": 3.15,
+      "ha": 10
+     },
+     {
+      "plan": "medium",
+      "added_mwp": 40,
+      "label": "opcao",
+      "card_tag": "overequip_plan_medium",
+      "nav_corte2_MEUR": -0.7,
+      "nav_corte1_MEUR": -3.0,
+      "equity_MEUR": 6.3,
+      "ha": 19
+     },
+     {
+      "plan": "large",
+      "added_mwp": 90,
+      "label": "armadilha",
+      "card_tag": "overequip_plan_large",
+      "nav_corte2_MEUR": -17.3,
+      "nav_corte1_MEUR": -22.0,
+      "equity_MEUR": 14.17,
+      "ha": 43
+     }
+    ],
+    "true_risk": {
+     "corte": {
+      "2": 0.7,
+      "1": 0.3
+     }
+    },
+    "rent": {
+     "rent_accept": {
+      "low": 0.4,
+      "mid": 0.75,
+      "high": 0.95
+     },
+     "rival_by_rent": {
+      "1": {
+       "low": 0.35,
+       "mid": 0.15,
+       "high": 0.05
+      },
+      "2": {
+       "low": 0.55,
+       "mid": 0.3,
+       "high": 0.1
+      },
+      "0": {
+       "low": 0.0,
+       "mid": 0.0,
+       "high": 0.0
+      }
+     },
+     "rival_by_rent_label": "1 e 2 rivais: GM (aplicado); 0 rivais = 0/0/0 PROVISÓRIO (GM tinha 0,10 na baixa)",
+     "retry_rule": "Recusa → UMA nova oferta no mês seguinte, com renda mais alta do que a primeira (opp_land_reoffered_<id>); recusa da segunda oferta ou da alta → opp_site_closed_<id>. O rival volta a ser sorteado em cada oferta, ANTES da resposta. Última oferta nova: M5 eólico / M9 BESS.",
+     "cash_signing_MEUR": {
+      "low": 0.0,
+      "mid": -0.01,
+      "high": -0.02
+     },
+     "cash_label": "pago só se o dono aceita (opp_land_agreed_<id>)",
+     "rent_eur_ha_ano": {
+      "low": 500,
+      "mid": 750,
+      "high": 1250
+     },
+     "rent_keur_mwp_ano": {
+      "low": 0.85,
+      "mid": 1.275,
+      "high": 2.125
+     },
+     "npv_vs_mid_MEUR_by_plan": {
+      "small": {
+       "low": 0.11,
+       "mid": 0.0,
+       "high": -0.21
+      },
+      "medium": {
+       "low": 0.21,
+       "mid": 0.0,
+       "high": -0.42
+      },
+      "large": {
+       "low": 0.48,
+       "mid": 0.0,
+       "high": -0.95
+      }
+     },
+     "npv_basis": "renda por ha da solar do motor (1,7 ha/MWp × 750 €/ha/ano = 1,275 k€/MWp/ano, já no nav dos overequip_plan_*); baixa/alta 500/1 250 €/ha (1 250 = relato São Teotónio; Alentejo 1 000–2 500 SECUNDÁRIO fica acima do motor). Fator 12.47"
+    },
+    "report_cost_MEUR": -0.02
+   }
+  },
+  "checks": {
+   "sb_worst_by_draw": {
+    "vento4_alto": 100,
+    "vento4_muito_alto": 100,
+    "vento5_alto": 100,
+    "vento5_muito_alto": 100
+   },
+   "sb_best_by_draw": {
+    "vento4_alto": 50,
+    "vento4_muito_alto": 50,
+    "vento5_alto": 50,
+    "vento5_muito_alto": 50
+   }
   }
  }
 }
