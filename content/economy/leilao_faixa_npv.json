@@ -109,10 +109,15 @@
    "label": "LOCKED Pedro 2026-09-30 (D8)",
    "why": "8 % = what the investor wants on its own money, after the bank (equity view)"
   },
+  "decision_D10b_2026_10_09": {
+   "value": "rival 20–30 €/MWh por lote = clamp(round(be_solar − h/3), 20, 30)",
+   "label": "LOCKED Pedro 2026-10-09 (20–30; solar sozinha NPV < 0) · fórmula HIPÓTESE",
+   "evidence": "leilao-rival-realismo-2026-10-09.md (PT 2019 média 20,33, mín. 14,76; PT 2020 11,14; ES REER jan-2021 24,47 / out-2021 31,65; LevelTen ES solar P25 Q4-2025 32,50, P10 < 30; captura solar ES 2025 36,39)"
+  },
   "decisions_locked_2026_09_30": {
    "D7": "Alqueva = lot with no good price (best rival below break-even; every winning bid NPV < 0). 45 ceiling and '40+ can't win' kept",
    "D8": "8 % on equity after debt",
-   "D9": "equity shortfall solved by player options: ask investors (equity_capex_request), longer loan (tenor), partner — € terms HIPÓTESE/PEDIR, see leilao-faixa-npv.md",
+   "D9": "equity shortfall solved by player options: ask investors (equity_capex_request), longer loan (tenor), partner — € terms HIPÓTESE/PEDIR, see leilao-faixa-npv.md. 2026-09-30c (GM): these options apply at FID / construction start (equity_full = equity_fit_ok ∧ equity_capex_commit), NOT at the auction: the auction no longer filters lots by equity",
    "D10": "rivals bid 2026 prices",
    "label": "LOCKED Pedro 2026-09-30"
   },
@@ -120,6 +125,13 @@
    "value": 99,
    "label": "REAL (DGEG Leilão 2020 lote n.º 6) · TRANCADO Pedro 2026-09-30",
    "why": "was 96; MVA only moves the caução (0,96 → 0,99 M€, outside NPV: returned at COD) and CAR need (5,50 → 5,53). NPV, break-even and bands unchanged"
+  },
+  "ourique_connection_kv": {
+   "value": 150,
+   "label": "TRANCADO Pedro 2026-10-09 (substitui a decisão 400 kV da mesma manhã: não quer o jogo demasiado difícil)",
+   "grid": "SE própria 30/150 kV 3–6 (centro 4,5; trafo 150 kV ACER 1,10–1,27 dentro, REAL) + baía REN 150 kV 0,84–1,52 (1,18, HIPÓTESE proxy ACER 220–275 kV) + linha 5 km × 0,224–0,393 M€/km (1,54, REAL ACER UIC 2023 Table 3, km HIPÓTESE) + servidão 5 km × 10–30 k€/km (0,10, HIPÓTESE P33) = 7,33 → Capex (69,6 + 7,33) × 1,05 = 80,8",
+   "transformer_note": "O «~5 M€» da P58 era o trafo de 400 kV: NÃO aplicado a 150 kV (PEDIR P58b)",
+   "before": "400 kV: SE 7,5 + baía 3,2 + linha 5,42 = 16,1 → Capex 90,0, break-even 37,8, rival 40, faixa 38–40"
   },
   "auction_reserve_price_eur_mwh": {
    "value": 45,
@@ -133,7 +145,7 @@
    "round": 1,
    "MWp": 120,
    "MVA": 99.0,
-   "kv": 400,
+   "kv": 150,
    "line_km": 5,
    "region_yield_kwh_kwp": 1750,
    "risk_tag": "Câmara hostil",
@@ -141,9 +153,9 @@
    "risk_label": "HIPOTESE game-design",
    "capex_MEUR": {
     "approved_s6": 103.0,
-    "proposed": 90.0,
-    "proposed_eur_kwp": 750,
-    "grid_centre": 16.1,
+    "proposed": 80.8,
+    "proposed_eur_kwp": 673,
+    "grid_centre": 7.3,
     "label": "HIPOTESE (PEDIR P4)"
    },
    "car_cash_MEUR": 4.54,
@@ -156,243 +168,282 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 40,
-    "npcFloor_console": 39,
-    "npcHi_console": 44,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 40, mode 42, max 48); best rival fixed at 40 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 38,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 11.5,
+      "inc_prr_MEUR": 13.0,
+      "be_hybrid": 25.3,
+      "be_hybrid_prr": 24.2,
+      "bess_equity": 10.5,
+      "bess_equity_prr": 8.4,
+      "good_band": [
+       26,
+       30
+      ],
+      "good_band_prr": [
+       25,
+       30
+      ],
+      "npv_total_at_rival": 6.8,
+      "npv_total_at_rival_prr": 8.3
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 8.4,
+      "inc_prr_MEUR": 9.2,
+      "be_hybrid": 27.4,
+      "be_hybrid_prr": 26.9,
+      "bess_equity": 5.3,
+      "bess_equity_prr": 4.2,
+      "good_band": [
+       28,
+       30
+      ],
+      "good_band_prr": [
+       27,
+       30
+      ],
+      "npv_total_at_rival": 3.7,
+      "npv_total_at_rival_prr": 4.5
+     }
+    },
+    "hybrid_scale_vs_ourique": 1.0,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
-   "breakeven_eur_mwh": 37.8,
+   "breakeven_eur_mwh": 33.2,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     37
+     30
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     38,
-     40
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     41,
+     31,
      48
     ]
    },
    "npv_slope_MEUR_per_eur_mwh_in_good_band": 1.5,
    "equity_need_MEUR": {
-    "at_breakeven": 44.1,
-    "at_npc_best": 41.4,
-    "at_20": 74.7,
-    "at_g070_fit_rule": 27.0,
+    "at_breakeven": 42.0,
+    "at_npc_best": 48.5,
+    "at_20": 65.4,
+    "at_g070_fit_rule": 24.2,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
    },
    "show": {
     "15": {
-     "npv": -33.0,
-     "irr": 4.6,
-     "gearing": 0.08,
-     "project_npv": -33.8,
-     "project_irr": 4.6
-    },
-    "20": {
-     "npv": -25.7,
+     "npv": -26.4,
      "irr": 5.1,
-     "gearing": 0.17,
-     "project_npv": -27.6,
+     "gearing": 0.09,
+     "project_npv": -27.2,
      "project_irr": 5.1
     },
-    "25": {
-     "npv": -18.5,
-     "irr": 5.8,
-     "gearing": 0.26,
-     "project_npv": -21.4,
+    "20": {
+     "npv": -19.1,
+     "irr": 5.7,
+     "gearing": 0.19,
+     "project_npv": -21.1,
      "project_irr": 5.7
     },
-    "30": {
-     "npv": -11.3,
+    "25": {
+     "npv": -11.9,
      "irr": 6.5,
-     "gearing": 0.36,
-     "project_npv": -15.3,
+     "gearing": 0.29,
+     "project_npv": -14.9,
      "project_irr": 6.3
     },
-    "35": {
-     "npv": -4.0,
-     "irr": 7.4,
-     "gearing": 0.45,
-     "project_npv": -9.1,
+    "30": {
+     "npv": -4.7,
+     "irr": 7.3,
+     "gearing": 0.4,
+     "project_npv": -8.7,
      "project_irr": 7.0
     },
-    "40": {
-     "npv": 3.2,
-     "irr": 8.5,
-     "gearing": 0.54,
-     "project_npv": -2.9,
+    "35": {
+     "npv": 2.6,
+     "irr": 8.4,
+     "gearing": 0.5,
+     "project_npv": -2.5,
      "project_irr": 7.7
     },
+    "40": {
+     "npv": 9.8,
+     "irr": 9.8,
+     "gearing": 0.61,
+     "project_npv": 3.7,
+     "project_irr": 8.5
+    },
     "45": {
-     "npv": 10.5,
-     "irr": 9.9,
-     "gearing": 0.64,
-     "project_npv": 3.3,
-     "project_irr": 8.4
+     "npv": 17.1,
+     "irr": 11.7,
+     "gearing": 0.71,
+     "project_npv": 9.9,
+     "project_irr": 9.3
     }
    },
    "npv_by_bid": {
-    "14": -34.4,
-    "15": -33.0,
-    "16": -31.5,
-    "17": -30.1,
-    "18": -28.6,
-    "19": -27.2,
-    "20": -25.7,
-    "21": -24.3,
-    "22": -22.8,
-    "23": -21.4,
-    "24": -19.9,
-    "25": -18.5,
-    "26": -17.0,
-    "27": -15.6,
-    "28": -14.1,
-    "29": -12.7,
-    "30": -11.3,
-    "31": -9.8,
-    "32": -8.4,
-    "33": -6.9,
-    "34": -5.5,
-    "35": -4.0,
-    "36": -2.6,
-    "37": -1.1,
-    "38": 0.3,
-    "39": 1.8,
-    "40": 3.2,
-    "41": 4.7,
-    "42": 6.1,
-    "43": 7.6,
-    "44": 9.0,
-    "45": 10.5,
-    "46": 11.9,
-    "47": 13.4,
-    "48": 14.8
+    "14": -27.8,
+    "15": -26.4,
+    "16": -24.9,
+    "17": -23.5,
+    "18": -22.0,
+    "19": -20.6,
+    "20": -19.1,
+    "21": -17.7,
+    "22": -16.2,
+    "23": -14.8,
+    "24": -13.3,
+    "25": -11.9,
+    "26": -10.5,
+    "27": -9.0,
+    "28": -7.6,
+    "29": -6.1,
+    "30": -4.7,
+    "31": -3.2,
+    "32": -1.8,
+    "33": -0.3,
+    "34": 1.1,
+    "35": 2.6,
+    "36": 4.0,
+    "37": 5.5,
+    "38": 6.9,
+    "39": 8.4,
+    "40": 9.8,
+    "41": 11.3,
+    "42": 12.7,
+    "43": 14.2,
+    "44": 15.6,
+    "45": 17.1,
+    "46": 18.5,
+    "47": 20.0,
+    "48": 21.4
    },
    "irr_by_bid": {
-    "14": 4.5,
-    "15": 4.6,
-    "16": 4.7,
-    "17": 4.8,
-    "18": 4.9,
-    "19": 5.0,
-    "20": 5.1,
-    "21": 5.3,
-    "22": 5.4,
-    "23": 5.5,
-    "24": 5.7,
-    "25": 5.8,
-    "26": 5.9,
-    "27": 6.1,
-    "28": 6.2,
-    "29": 6.4,
-    "30": 6.5,
-    "31": 6.7,
-    "32": 6.9,
-    "33": 7.1,
-    "34": 7.2,
-    "35": 7.4,
-    "36": 7.6,
-    "37": 7.8,
-    "38": 8.1,
-    "39": 8.3,
-    "40": 8.5,
-    "41": 8.8,
-    "42": 9.0,
-    "43": 9.3,
-    "44": 9.6,
-    "45": 9.9,
-    "46": 10.2,
-    "47": 10.6,
-    "48": 11.0
+    "14": 5.0,
+    "15": 5.1,
+    "16": 5.2,
+    "17": 5.3,
+    "18": 5.4,
+    "19": 5.6,
+    "20": 5.7,
+    "21": 5.8,
+    "22": 6.0,
+    "23": 6.1,
+    "24": 6.3,
+    "25": 6.5,
+    "26": 6.6,
+    "27": 6.8,
+    "28": 7.0,
+    "29": 7.1,
+    "30": 7.3,
+    "31": 7.5,
+    "32": 7.7,
+    "33": 8.0,
+    "34": 8.2,
+    "35": 8.4,
+    "36": 8.7,
+    "37": 8.9,
+    "38": 9.2,
+    "39": 9.5,
+    "40": 9.8,
+    "41": 10.1,
+    "42": 10.5,
+    "43": 10.8,
+    "44": 11.2,
+    "45": 11.7,
+    "46": 12.1,
+    "47": 12.6,
+    "48": 13.2
    },
    "gearing_by_bid": {
     "14": 0.06,
-    "15": 0.08,
-    "16": 0.1,
-    "17": 0.11,
-    "18": 0.13,
-    "19": 0.15,
-    "20": 0.17,
-    "21": 0.19,
-    "22": 0.21,
-    "23": 0.23,
-    "24": 0.24,
-    "25": 0.26,
-    "26": 0.28,
-    "27": 0.3,
-    "28": 0.32,
-    "29": 0.34,
-    "30": 0.36,
-    "31": 0.38,
-    "32": 0.39,
-    "33": 0.41,
-    "34": 0.43,
-    "35": 0.45,
-    "36": 0.47,
-    "37": 0.49,
-    "38": 0.51,
-    "39": 0.53,
-    "40": 0.54,
-    "41": 0.56,
-    "42": 0.58,
-    "43": 0.6,
-    "44": 0.62,
-    "45": 0.64,
-    "46": 0.66,
-    "47": 0.68,
-    "48": 0.69
+    "15": 0.09,
+    "16": 0.11,
+    "17": 0.13,
+    "18": 0.15,
+    "19": 0.17,
+    "20": 0.19,
+    "21": 0.21,
+    "22": 0.23,
+    "23": 0.25,
+    "24": 0.27,
+    "25": 0.29,
+    "26": 0.31,
+    "27": 0.34,
+    "28": 0.36,
+    "29": 0.38,
+    "30": 0.4,
+    "31": 0.42,
+    "32": 0.44,
+    "33": 0.46,
+    "34": 0.48,
+    "35": 0.5,
+    "36": 0.52,
+    "37": 0.54,
+    "38": 0.57,
+    "39": 0.59,
+    "40": 0.61,
+    "41": 0.63,
+    "42": 0.65,
+    "43": 0.67,
+    "44": 0.69,
+    "45": 0.71,
+    "46": 0.73,
+    "47": 0.75,
+    "48": 0.77
    },
    "project_npv_by_bid": {
-    "14": -35.1,
-    "15": -33.8,
-    "16": -32.6,
-    "17": -31.4,
-    "18": -30.1,
-    "19": -28.9,
-    "20": -27.6,
-    "21": -26.4,
-    "22": -25.2,
-    "23": -23.9,
-    "24": -22.7,
-    "25": -21.4,
-    "26": -20.2,
-    "27": -19.0,
-    "28": -17.7,
-    "29": -16.5,
-    "30": -15.3,
-    "31": -14.0,
-    "32": -12.8,
-    "33": -11.5,
-    "34": -10.3,
-    "35": -9.1,
-    "36": -7.8,
-    "37": -6.6,
-    "38": -5.3,
-    "39": -4.1,
-    "40": -2.9,
-    "41": -1.6,
-    "42": -0.4,
-    "43": 0.9,
-    "44": 2.1,
-    "45": 3.3,
-    "46": 4.6,
-    "47": 5.8,
-    "48": 7.1
+    "14": -28.5,
+    "15": -27.2,
+    "16": -26.0,
+    "17": -24.8,
+    "18": -23.5,
+    "19": -22.3,
+    "20": -21.1,
+    "21": -19.8,
+    "22": -18.6,
+    "23": -17.3,
+    "24": -16.1,
+    "25": -14.9,
+    "26": -13.6,
+    "27": -12.4,
+    "28": -11.1,
+    "29": -9.9,
+    "30": -8.7,
+    "31": -7.4,
+    "32": -6.2,
+    "33": -4.9,
+    "34": -3.7,
+    "35": -2.5,
+    "36": -1.2,
+    "37": 0.0,
+    "38": 1.3,
+    "39": 2.5,
+    "40": 3.7,
+    "41": 5.0,
+    "42": 6.2,
+    "43": 7.5,
+    "44": 8.7,
+    "45": 9.9,
+    "46": 11.2,
+    "47": 12.4,
+    "48": 13.7
    },
    "breakeven_sensitivities": {
-    "tail_36_today_CR": 42.3,
-    "project_view_no_debt": 42.3,
+    "tail_36_today_CR": 37.7,
+    "project_view_no_debt": 37.0,
     "approved_capex_s6": 44.2,
-    "life_30": 40.5,
-    "kd_6pct": 39.3,
-    "no_risk_tag": 37.7,
+    "life_30": 36.0,
+    "kd_6pct": 34.5,
+    "no_risk_tag": 33.1,
     "gate5_as_written": 65.0,
     "console_today": 33.0
    },
@@ -400,15 +451,15 @@
     "label": "HIPOTESE (info only, not for MVP UI)",
     "what": "REAL modality (2019 'remuneração geral', 2020 'compensação SEN'): you sell at market price all life and PAY a fixed €/MWh to the system for 15 years. Bid = what you pay. Debt DSCR 1,45 on merchant (HIPOTESE)",
     "npv_at_contribution": {
-     "0": 25.3,
-     "5": 18.2,
-     "10": 11.0,
-     "20": -3.3
+     "0": 31.9,
+     "5": 24.8,
+     "10": 17.6,
+     "20": 3.3
     },
-    "max_contribution_npv0": 17.7,
+    "max_contribution_npv0": 22.3,
     "with_tail_36": {
-     "0": 2.9,
-     "5": -4.2
+     "0": 9.5,
+     "5": 2.4
     }
    }
   },
@@ -440,33 +491,63 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 40,
-    "npcFloor_console": 39,
-    "npcHi_console": 44,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
-    "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 40, mode 42, max 48); best rival fixed at 40 in MVP (deterministic win rule)"
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
+    "no_good_price": true,
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 40,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 16.73,
+      "inc_prr_MEUR": 18.91,
+      "be_hybrid": 30.3,
+      "be_hybrid_prr": 29.3,
+      "bess_equity": 15.3,
+      "bess_equity_prr": 12.2,
+      "good_band": null,
+      "good_band_prr": [
+       30,
+       30
+      ],
+      "npv_total_at_rival": -0.7,
+      "npv_total_at_rival_prr": 1.5
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 12.22,
+      "inc_prr_MEUR": 13.38,
+      "be_hybrid": 32.3,
+      "be_hybrid_prr": 31.8,
+      "bess_equity": 7.7,
+      "bess_equity_prr": 6.1,
+      "good_band": null,
+      "good_band_prr": null,
+      "npv_total_at_rival": -5.2,
+      "npv_total_at_rival_prr": -4.0
+     }
+    },
+    "hybrid_scale_vs_ourique": 1.455,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 37.8,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     37
+     30
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     38,
-     40
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     41,
+     31,
      48
     ]
    },
    "npv_slope_MEUR_per_eur_mwh_in_good_band": 2.2,
    "equity_need_MEUR": {
     "at_breakeven": 68.2,
-    "at_npc_best": 62.7,
+    "at_npc_best": 87.2,
     "at_20": 113.1,
     "at_g070_fit_rule": 40.9,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -724,33 +805,66 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 40,
-    "npcFloor_console": 39,
-    "npcHi_console": 44,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 40, mode 42, max 48); best rival fixed at 40 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 40,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 26.02,
+      "inc_prr_MEUR": 29.41,
+      "be_hybrid": 29.4,
+      "be_hybrid_prr": 28.4,
+      "bess_equity": 23.8,
+      "bess_equity_prr": 19.0,
+      "good_band": [
+       30,
+       30
+      ],
+      "good_band_prr": [
+       29,
+       30
+      ],
+      "npv_total_at_rival": 2.2,
+      "npv_total_at_rival_prr": 5.6
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 19.01,
+      "inc_prr_MEUR": 20.82,
+      "be_hybrid": 31.4,
+      "be_hybrid_prr": 30.9,
+      "bess_equity": 12.0,
+      "bess_equity_prr": 9.5,
+      "good_band": null,
+      "good_band_prr": null,
+      "npv_total_at_rival": -4.8,
+      "npv_total_at_rival_prr": -3.0
+     }
+    },
+    "hybrid_scale_vs_ourique": 2.263,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 36.9,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     36
+     30
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     37,
-     40
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     41,
+     31,
      48
     ]
    },
-   "npv_slope_MEUR_per_eur_mwh_in_good_band": 3.5,
+   "npv_slope_MEUR_per_eur_mwh_in_good_band": 3.4,
    "equity_need_MEUR": {
     "at_breakeven": 95.3,
-    "at_npc_best": 83.4,
+    "at_npc_best": 123.2,
     "at_20": 162.9,
     "at_g070_fit_rule": 59.6,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -1008,33 +1122,72 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 38,
-    "npcFloor_console": 37,
-    "npcHi_console": 42,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 38, mode 40, max 46); best rival fixed at 38 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 38,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 10.22,
+      "inc_prr_MEUR": 11.56,
+      "be_hybrid": 26.0,
+      "be_hybrid_prr": 25.0,
+      "bess_equity": 9.3,
+      "bess_equity_prr": 7.5,
+      "good_band": [
+       26,
+       30
+      ],
+      "good_band_prr": [
+       25,
+       30
+      ],
+      "npv_total_at_rival": 5.3,
+      "npv_total_at_rival_prr": 6.7
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 7.47,
+      "inc_prr_MEUR": 8.18,
+      "be_hybrid": 28.1,
+      "be_hybrid_prr": 27.5,
+      "bess_equity": 4.7,
+      "bess_equity_prr": 3.7,
+      "good_band": [
+       29,
+       30
+      ],
+      "good_band_prr": [
+       28,
+       30
+      ],
+      "npv_total_at_rival": 2.6,
+      "npv_total_at_rival_prr": 3.3
+     }
+    },
+    "hybrid_scale_vs_ourique": 0.889,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 33.7,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     33
+     30
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     34,
-     38
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     39,
+     31,
      48
     ]
    },
    "npv_slope_MEUR_per_eur_mwh_in_good_band": 1.3,
    "equity_need_MEUR": {
     "at_breakeven": 38.8,
-    "at_npc_best": 32.8,
+    "at_npc_best": 44.7,
     "at_20": 60.4,
     "at_g070_fit_rule": 22.4,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -1292,30 +1445,60 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 39,
-    "npcFloor_console": 38,
-    "npcHi_console": 43,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D7): lote sem preço bom — melhor rival abaixo do break-even, todas as ofertas que ganham têm NPV < 0",
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": true,
-    "npc_distribution": "rivals' bids ~ triangular(min 39, mode 41, max 47); best rival fixed at 39 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 39,
+    "d7_alqueva": true,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 8.83,
+      "inc_prr_MEUR": 9.98,
+      "be_hybrid": 32.6,
+      "be_hybrid_prr": 31.6,
+      "bess_equity": 8.1,
+      "bess_equity_prr": 6.4,
+      "good_band": null,
+      "good_band_prr": null,
+      "npv_total_at_rival": -3.1,
+      "npv_total_at_rival_prr": -1.9
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 6.45,
+      "inc_prr_MEUR": 7.06,
+      "be_hybrid": 34.6,
+      "be_hybrid_prr": 34.1,
+      "bess_equity": 4.1,
+      "bess_equity_prr": 3.2,
+      "good_band": null,
+      "good_band_prr": null,
+      "npv_total_at_rival": -5.5,
+      "npv_total_at_rival_prr": -4.8
+     }
+    },
+    "hybrid_scale_vs_ourique": 0.768,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 40.0,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     39
+     30
     ],
     "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     40,
+     31,
      48
     ]
    },
-   "npv_slope_MEUR_per_eur_mwh_in_good_band": null,
+   "npv_slope_MEUR_per_eur_mwh_in_good_band": 1.2,
    "equity_need_MEUR": {
     "at_breakeven": 34.8,
-    "at_npc_best": 36.3,
+    "at_npc_best": 48.1,
     "at_20": 61.4,
     "at_g070_fit_rule": 22.2,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -1573,33 +1756,66 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 40,
-    "npcFloor_console": 39,
-    "npcHi_console": 44,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 40, mode 42, max 48); best rival fixed at 40 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 40,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 9.29,
+      "inc_prr_MEUR": 10.51,
+      "be_hybrid": 28.9,
+      "be_hybrid_prr": 27.9,
+      "bess_equity": 8.5,
+      "bess_equity_prr": 6.8,
+      "good_band": [
+       29,
+       30
+      ],
+      "good_band_prr": [
+       28,
+       30
+      ],
+      "npv_total_at_rival": 1.3,
+      "npv_total_at_rival_prr": 2.5
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 6.79,
+      "inc_prr_MEUR": 7.43,
+      "be_hybrid": 31.0,
+      "be_hybrid_prr": 30.5,
+      "bess_equity": 4.3,
+      "bess_equity_prr": 3.4,
+      "good_band": null,
+      "good_band_prr": null,
+      "npv_total_at_rival": -1.2,
+      "npv_total_at_rival_prr": -0.6
+     }
+    },
+    "hybrid_scale_vs_ourique": 0.808,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 36.6,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     36
+     30
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     37,
-     40
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     41,
+     31,
      48
     ]
    },
    "npv_slope_MEUR_per_eur_mwh_in_good_band": 1.2,
    "equity_need_MEUR": {
     "at_breakeven": 34.0,
-    "at_npc_best": 29.9,
+    "at_npc_best": 43.8,
     "at_20": 57.6,
     "at_g070_fit_rule": 20.8,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -1804,10 +2020,88 @@
     "48": 7.4
    },
    "breakeven_sensitivities": {
-    "nisa_underground_partial_3km": 39.6,
-    "nisa_underground_full_8km": 44.6,
+    "nisa_base": {
+     "what": "sem carta (lote como está)",
+     "breakeven": 36.6,
+     "npv_at_40": 4.2,
+     "equity_at_40": 30.1,
+     "capex": 69.5,
+     "months_pre_fid": 0,
+     "build_months": 16
+    },
+    "nisa_short_5km_capex_only": {
+     "what": "enterrar 5 km, só Capex +8.2",
+     "breakeven": 41.6,
+     "npv_at_40": -1.9,
+     "equity_at_40": 38.3,
+     "capex": 77.7,
+     "months_pre_fid": 0,
+     "build_months": 16
+    },
+    "nisa_short_5km": {
+     "what": "enterrar 5 km: Capex +8.2, +3 m antes da FID (reopen_tech_plan), obra +1 m",
+     "breakeven": 41.8,
+     "npv_at_40": -2.1,
+     "equity_at_40": 38.4,
+     "capex": 77.7,
+     "months_pre_fid": 3,
+     "build_months": 17
+    },
+    "nisa_short_5km_low_high_capex": [
+     38.6,
+     44.9
+    ],
+    "nisa_long_8km_capex_only": {
+     "what": "enterrar 8 km, só Capex +13.2",
+     "breakeven": 44.6,
+     "npv_at_40": -5.6,
+     "equity_at_40": 43.3,
+     "capex": 82.7,
+     "months_pre_fid": 0,
+     "build_months": 16
+    },
+    "nisa_long_8km": {
+     "what": "enterrar 8 km: Capex +13.2, +3 m antes da FID, obra +2 m",
+     "breakeven": 45.0,
+     "npv_at_40": -5.9,
+     "equity_at_40": 43.5,
+     "capex": 82.7,
+     "months_pre_fid": 3,
+     "build_months": 18
+    },
+    "nisa_long_8km_low_high_capex": [
+     39.9,
+     49.9
+    ],
+    "nisa_reroute": {
+     "what": "negociar traçado: +2.5 km aéreos + servidão = +0.82 M€, +3 m de terreno",
+     "breakeven": 37.1,
+     "npv_at_40": 3.4,
+     "equity_at_40": 31.0,
+     "capex": 70.3,
+     "months_pre_fid": 3,
+     "build_months": 16
+    },
+    "nisa_refuse_stall": {
+     "what": "recusar: Câmara trava o parecer, +3 m de PIP",
+     "breakeven": 36.6,
+     "npv_at_40": 4.0,
+     "equity_at_40": 30.2,
+     "capex": 69.5,
+     "months_pre_fid": 3,
+     "build_months": 16
+    },
+    "nisa_refuse_pip_refused": {
+     "what": "recusar e o PIP é recusado: +3 m + 6 m (pip_indeferido → reformular)",
+     "breakeven": 36.8,
+     "npv_at_40": 3.7,
+     "equity_at_40": 30.4,
+     "capex": 69.5,
+     "months_pre_fid": 9,
+     "build_months": 16
+    },
     "nisa_pip_+3_months": 36.6,
-    "nisa_label": "HIPOTESE Pedro 2026-09-30 (Nisa hostil a renováveis e linhas aéreas); Δcapex = km × (enterrado 0,85–3,06 − aéreo 0,224–0,393) M€/km, REAL ACER Tables 3–4, centro",
+    "nisa_label": "HIPOTESE (Pedro 2026-09-30: Nisa hostil a renováveis e linhas aéreas; GM 2026-09-30 tarde: 5 km default / 8 km Falagueira). Δcapex = km × (enterrado 0,85–3,06 − aéreo 0,224–0,393) M€/km, REAL ACER UIC 2023 Tables 3–4, centro = meio do IQR. Meses HIPÓTESE. equity_at_40 = Capex − dívida do motor (a dívida está presa ao DSCR: Capex a mais = equity a mais)",
     "tail_36_today_CR": 41.0,
     "project_view_no_debt": 40.9,
     "approved_capex_s6": 43.8,
@@ -1861,33 +2155,72 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 35,
-    "npcFloor_console": 34,
-    "npcHi_console": 39,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
+    "npc_best_bid": 29,
+    "npcFloor_console": 28,
+    "npcHi_console": 33,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 35, mode 37, max 43); best rival fixed at 35 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 35,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 4.18,
+      "inc_prr_MEUR": 4.73,
+      "be_hybrid": 27.2,
+      "be_hybrid_prr": 26.8,
+      "bess_equity": 7.6,
+      "bess_equity_prr": 6.1,
+      "good_band": [
+       28,
+       29
+      ],
+      "good_band_prr": [
+       27,
+       29
+      ],
+      "npv_total_at_rival": 2.2,
+      "npv_total_at_rival_prr": 2.7
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 3.05,
+      "inc_prr_MEUR": 3.35,
+      "be_hybrid": 28.1,
+      "be_hybrid_prr": 27.9,
+      "bess_equity": 3.9,
+      "bess_equity_prr": 3.1,
+      "good_band": [
+       29,
+       29
+      ],
+      "good_band_prr": [
+       28,
+       29
+      ],
+      "npv_total_at_rival": 1.0,
+      "npv_total_at_rival_prr": 1.4
+     }
+    },
+    "hybrid_scale_vs_ourique": 0.364,
+    "npc_distribution": "rivals' bids ~ triangular(min 29, mode 31, max 37); best rival fixed at 29 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 30.6,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     30
+     29
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     31,
-     35
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     36,
+     30,
      48
     ]
    },
    "npv_slope_MEUR_per_eur_mwh_in_good_band": 1.2,
    "equity_need_MEUR": {
     "at_breakeven": 33.7,
-    "at_npc_best": 28.1,
+    "at_npc_best": 36.2,
     "at_20": 48.7,
     "at_g070_fit_rule": 18.7,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -2145,33 +2478,72 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 36,
-    "npcFloor_console": 35,
-    "npcHi_console": 40,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 36, mode 38, max 44); best rival fixed at 36 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 36,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 3.72,
+      "inc_prr_MEUR": 4.2,
+      "be_hybrid": 28.0,
+      "be_hybrid_prr": 27.6,
+      "bess_equity": 6.8,
+      "bess_equity_prr": 5.4,
+      "good_band": [
+       28,
+       30
+      ],
+      "good_band_prr": [
+       28,
+       30
+      ],
+      "npv_total_at_rival": 2.1,
+      "npv_total_at_rival_prr": 2.6
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 2.72,
+      "inc_prr_MEUR": 2.97,
+      "be_hybrid": 29.0,
+      "be_hybrid_prr": 28.7,
+      "bess_equity": 3.4,
+      "bess_equity_prr": 2.7,
+      "good_band": [
+       29,
+       30
+      ],
+      "good_band_prr": [
+       29,
+       30
+      ],
+      "npv_total_at_rival": 1.1,
+      "npv_total_at_rival_prr": 1.4
+     }
+    },
+    "hybrid_scale_vs_ourique": 0.323,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 31.5,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     31
+     30
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     32,
-     36
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     37,
+     31,
      48
     ]
    },
    "npv_slope_MEUR_per_eur_mwh_in_good_band": 1.1,
    "equity_need_MEUR": {
     "at_breakeven": 29.8,
-    "at_npc_best": 24.8,
+    "at_npc_best": 32.1,
     "at_20": 43.9,
     "at_g070_fit_rule": 16.9,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -2429,33 +2801,66 @@
    "proposed_auction": {
     "reserve_max_bid": 45,
     "reserve_label": "REAL anchor (2019 ref. ~45)",
-    "npc_best_bid": 40,
-    "npcFloor_console": 39,
-    "npcHi_console": 44,
-    "npc_label": "LOCKED Pedro 2026-09-30 (D10: rivais a preços de 2026): melhor rival = break-even arredondado para cima + 4 €/MWh, nunca acima de 40",
+    "npc_best_bid": 30,
+    "npcFloor_console": 29,
+    "npcHi_console": 34,
+    "npc_label": "LOCKED Pedro 2026-10-09 (D10b: rivais realistas 20–30 €/MWh; ganhar só com solar dá NPV < 0, o híbrido paga). Fórmula HIPÓTESE: rival = clamp(round(be_solar − h/3), 20, 30), h = be_solar − be_híbrido(50 MW + 20 MW/2 h)",
     "no_good_price": false,
-    "npc_distribution": "rivals' bids ~ triangular(min 40, mode 42, max 48); best rival fixed at 40 in MVP (deterministic win rule)"
+    "no_good_price_solar_only": true,
+    "npc_best_bid_d10_old": 40,
+    "d7_alqueva": false,
+    "hybrid": {
+     "w50_b20x2": {
+      "inc_MEUR": 9.29,
+      "inc_prr_MEUR": 10.51,
+      "be_hybrid": 29.6,
+      "be_hybrid_prr": 28.7,
+      "bess_equity": 8.5,
+      "bess_equity_prr": 6.8,
+      "good_band": [
+       30,
+       30
+      ],
+      "good_band_prr": [
+       29,
+       30
+      ],
+      "npv_total_at_rival": 0.5,
+      "npv_total_at_rival_prr": 1.7
+     },
+     "w40_b10x2": {
+      "inc_MEUR": 6.79,
+      "inc_prr_MEUR": 7.43,
+      "be_hybrid": 31.6,
+      "be_hybrid_prr": 31.1,
+      "bess_equity": 4.3,
+      "bess_equity_prr": 3.4,
+      "good_band": null,
+      "good_band_prr": null,
+      "npv_total_at_rival": -2.0,
+      "npv_total_at_rival_prr": -1.4
+     }
+    },
+    "hybrid_scale_vs_ourique": 0.808,
+    "npc_distribution": "rivals' bids ~ triangular(min 30, mode 32, max 38); best rival fixed at 30 in MVP (deterministic win rule)"
    },
    "breakeven_eur_mwh": 37.0,
    "breakeven_label": "HIPOTESE (motor result)",
    "bands_eur_mwh": {
     "trap_wins_npv_negative": [
      14,
-     37
+     30
     ],
-    "good_wins_npv_positive_irr_ge_8": [
-     38,
-     40
-    ],
+    "good_wins_npv_positive_irr_ge_8": null,
     "unwinnable": [
-     41,
+     31,
      48
     ]
    },
    "npv_slope_MEUR_per_eur_mwh_in_good_band": 1.2,
    "equity_need_MEUR": {
     "at_breakeven": 31.3,
-    "at_npc_best": 28.5,
+    "at_npc_best": 42.4,
     "at_20": 56.3,
     "at_g070_fit_rule": 20.8,
     "label": "HIPOTESE: Capex × (1 − gearing at that bid). Ripple on the §6 fit test (PEDIR D9)"
@@ -2713,31 +3118,31 @@
    "npv_at_20": -45.0
   },
   {
-   "step": "5. + Capex 580 €/kWp plant + grid + 5 % (90 M€, ≈ Akuo Santas 722 €/kWp)",
-   "breakeven": 47.4,
-   "npv_at_20": -35.3
+   "step": "5. + Capex 580 €/kWp plant + grid + 5 % (80.8 M€ com rede 150 kV; antes 90,0 a 400 kV; ≈ Akuo Santas 722 €/kWp)",
+   "breakeven": 42.1,
+   "npv_at_20": -28.5
   },
   {
    "step": "6. + investor view with project finance (kd 5 %, DSCR 1,25)",
-   "breakeven": 42.1,
-   "npv_at_20": -33.3
+   "breakeven": 37.6,
+   "npv_at_20": -26.5
   },
   {
    "step": "7. + merchant tail 45 €/MWh in 2026 € (CR 0,68)",
-   "breakeven": 37.7,
-   "npv_at_20": -26.6
+   "breakeven": 33.1,
+   "npv_at_20": -19.8
   },
   {
    "step": "8. + Ourique risk tag (Câmara hostil: +6 months)",
-   "breakeven": 37.8,
-   "npv_at_20": -25.7
+   "breakeven": 33.2,
+   "npv_at_20": -19.1
   }
  ],
  "lens_2019_illustrative": {
   "label": "HIPOTESE (illustrative, not a print)",
   "params": "plant 450 €/kWp expected for 2021–22 build, kd 2,5 % (Euribor < 0 in 2019), merchant tail 45 (CR ~0,9 × ~50 expected), opex 9, life 35, same 8 % hurdle",
   "breakeven": {
-   "ourique": 24.9,
+   "ourique": 21.0,
    "ferreira": 22.9,
    "estremoz": 22.3,
    "evora": 21.4,
@@ -2753,7 +3158,7 @@
   "AUCTION_WAVES": "per lot: npcFloor = lots[id].proposed_auction.npcFloor_console, npcHi = npcHi_console (win rule unchanged: bid <= npcFloor + 1)",
   "auctionCashFlows/auctionEconomics": "replace the mock (AUCTION_MOCK_BREAKEVEN_BID 33, SLOPE 0.32, YEARS 25, capex0 = 33×0,32×scale) with a lookup of lots[id].npv_by_bid / irr_by_bid (integer bids 14–48; interpolate). Tone rule unchanged (NPV<0 bad; IRR<8 anemic never happens here because NPV>=0 ⇔ IRR>=8)",
   "reserve": "bids > 45 €/MWh rejected ('acima do preço máximo do leilão'); slider 14–48 can stay",
-  "default_bid": "auctionState.bid 40 → 30 (inside the trap for most lots, below every good band: the player must think)",
+  "default_bid": "D10b 2026-10-09: auctionState.bid → 32 (acima do rival 30: não ganha; o jogador tem de descer e perceber que só o híbrido paga)",
   "copy": "'Os rivais costumam oferecer entre 15 e 25 €/MWh' is no longer true in-game. Suggest: 'Em 2019 os vencedores ofereceram 15–25 €/MWh. Hoje construir e pedir dinheiro emprestado custa mais: os rivais pedem mais.' and auctionNpcIrony '~15–25' → the lot's rival band (npc_best … npcHi)",
   "LOT_ECONOMY": "rounds 2–3 lots have no row, so lotCapexRatio falls back to MWp/120; add the 6 lots with capex_MEUR.proposed (or approved) so bands/scale use real Capex",
   "trap_card_numbers": "trap NPV at 15–25 €/MWh is now −7 to −76 M€ (by lot), not −3 to −7"
