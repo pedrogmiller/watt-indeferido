@@ -1,0 +1,90 @@
+{
+  "id": "mail-eolica-dimensao-01",
+  "phase": "post_win",
+  "draft": true,
+  "status": "DRAFT 2026-10-09 — Pedro: o jogador escolhe o tamanho. Aguarda Gate código (DRAFT_RULE_IDS).",
+  "trigger": {
+    "rule": "r-eolica-dimensao",
+    "on_action": "eolica",
+    "window_months": [
+      0,
+      6
+    ]
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "heavy": true,
+  "mutex_group": "wind_size",
+  "choices": [
+    {
+      "id": "wind_20",
+      "label": "Juntar 20 MW (3 torres)",
+      "effects": [
+        "wind_size_20"
+      ],
+      "hint": "Custa pouco e é o caminho mais curto para a licença ambiental: deve sair dentro do ciclo. Ganhas menos no fim.",
+      "consequence_pt": "Juntas 20 MW de eólica: sai pouco dinheiro da caixa e a licença do vento deve sair a tempo. Ganho pequeno, mas seguro.",
+      "hint_preview": "NPV previsto do vento: {{npv_preview}}",
+      "card_seal_gm": "seguro"
+    },
+    {
+      "id": "wind_40",
+      "label": "Juntar 40 MW (6 torres)",
+      "effects": [
+        "wind_size_40"
+      ],
+      "hint": "Bom equilíbrio: aproveita bem a ligação e cada MW rende o máximo. O processo ambiental leva quase três anos.",
+      "consequence_pt": "Juntas 40 MW de eólica: o NPV previsto sobe bem. A licença do vento fica a meio no fim do ciclo.",
+      "hint_preview": "NPV previsto do vento: {{npv_preview}}",
+      "card_seal_gm": "recomendado"
+    },
+    {
+      "id": "wind_50",
+      "label": "Juntar 50 MW (8 torres)",
+      "effects": [
+        "wind_size_50"
+      ],
+      "hint": "Quase o mesmo prazo que 40 MW, com mais ganho. Abaixo de 10 torres, a avaliação ambiental completa é menos provável.",
+      "consequence_pt": "Juntas 50 MW de eólica: o NPV previsto sobe muito. A licença do vento fica a meio no fim do ciclo.",
+      "hint_preview": "NPV previsto do vento: {{npv_preview}}",
+      "card_seal_gm": "recomendado"
+    },
+    {
+      "id": "wind_70",
+      "label": "Juntar 70 MW (11 torres)",
+      "effects": [
+        "wind_size_70"
+      ],
+      "hint": "Ganhas mais, mas com mais de 10 torres a avaliação ambiental completa é provável, e o vento já corta mais na ligação.",
+      "consequence_pt": "Juntas 70 MW de eólica: sai mais dinheiro da caixa e o risco de uma avaliação ambiental longa sobe.",
+      "hint_preview": "NPV previsto do vento: {{npv_preview}}",
+      "card_seal_gm": "ambicioso"
+    },
+    {
+      "id": "wind_100",
+      "label": "Juntar 100 MW (15 torres)",
+      "effects": [
+        "wind_size_100"
+      ],
+      "hint": "O maior ganho no papel, mas a ligação fica cheia e corta muita energia, a licença quase de certeza demora anos e o capital próprio do vento passa o da central solar.",
+      "consequence_pt": "Juntas 100 MW de eólica: sai muito dinheiro da caixa, a licença do vento vai demorar anos e a ligação vai cortar energia.",
+      "hint_preview": "NPV previsto do vento: {{npv_preview}}",
+      "card_seal_gm": "armadilha"
+    },
+    {
+      "id": "wind_none",
+      "label": "Não juntar eólica",
+      "effects": [
+        "wind_declined"
+      ],
+      "hint": "Ficas só com a central solar. Sem eólica, uma bateria em Ourique quase não tem com que carregar.",
+      "consequence_pt": "Ficas só com a central solar: não gastas nada, mas perdes o ganho do vento e uma bateria deixa de compensar.",
+      "hint_preview": "",
+      "card_seal_gm": null
+    }
+  ],
+  "notes_for_ui": "Abre pela ação «+ Juntar um parque eólico» (substitui a missão de 15 MW / mission_eolico). Cada escolha mostra o NPV previsto (npv_preview_MEUR da Economy, só preview: não entra no NPV). O selo (seguro/recomendado/ambicioso/armadilha) é só para o GM, nunca aparece ao jogador.",
+  "notes_for_economy": "wind_size_*: valores em hybrid_cards_2026_10_09b.wind_cards. wind_declined: tag nova, sem € — PEDIR linha a 0.",
+  "nota_gm": "Torres: 20 MW = 3, 40 = 6, 50 = 8, 70 = 11, 100 = 15 (hibrido §5.2). AIA obrigatória por anexo II do DL 151-B/2013 (≥20 torres, ou ≥10 em zona sensível) → p(AIA) da carta (0,4/0,4/0,5/0,7/0,8). Fonte: euro-fields-console.md §24 · effects-economy.json hybrid_cards_2026_10_09b · hibrido-ourique-eolica-2026-10-09.md §5",
+  "hybrid_cards_v01_2026_10_09": true
+}

@@ -1,0 +1,22 @@
+{
+  "skeleton_id": "mail-bateria-dimensao-01",
+  "skin_id": "com-eolica",
+  "when": {
+    "se_id": "ourique",
+    "any_effects": [
+      "wind_size_20",
+      "wind_size_40",
+      "wind_size_50",
+      "wind_size_70",
+      "wind_size_100"
+    ]
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Baterias em Ourique: o vento já pode carregá-las",
+  "body": "Antes de fechar o projeto da obra, podemos juntar baterias no mesmo ponto de ligação. Há uma regra que muda tudo: a tua bateria não pode beber o teu sol. A energia da central solar do leilão não pode ir para a bateria; pelo menos três quartos da carga têm de vir do vento ou da energia que os painéis já iam perder, e no máximo um quarto da rede.\n\nPor isso mostro-te dois números em cada escolha: o NPV sem eólica e o NPV com eólica. Sem parque eólico, a bateria quase não tem com que carregar e perde dinheiro. Com eólica, ganha.\n\nA licença, a obra e a entrada em funcionamento levam quase dois anos, por isso é agora ou não cabe no ciclo. Candidato-me já ao apoio do Fundo Ambiental, que paga uma parte se for aprovado.\n\nComo já tens o parque eólico no plano, conta o número «com eólica».",
+  "params": {
+    "npv_sem_eolica": "bess_cards[tag].nav_no_wind",
+    "npv_com_eolica": "bess_cards[tag].nav_with_wind_20|50"
+  },
+  "hybrid_cards_v01_2026_10_09": true
+}

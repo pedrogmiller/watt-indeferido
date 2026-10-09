@@ -94,7 +94,14 @@
     "skeletons/mail-linha-empreiteiro-01.json",
     "skeletons/mail-linha-servidao-01.json",
     "skeletons/mail-fa-bess-resposta-01.json",
-    "skeletons/mail-transformador-encomenda-01.json"
+    "skeletons/mail-transformador-encomenda-01.json",
+    "skeletons/mail-consultor-hibrido-01.json",
+    "skeletons/mail-eolica-dimensao-01.json",
+    "skeletons/mail-bateria-dimensao-01.json",
+    "skeletons/mail-eolica-marco-01.json",
+    "skeletons/mail-bateria-nota-01.json",
+    "skeletons/mail-prospecao-rival-01.json",
+    "skeletons/mail-prospecao-armadilha-01.json"
   ],
   "skins": [
     "skins/mail-advogado-dd-01.default.json",
@@ -261,7 +268,24 @@
     "skins/mail-fa-bess-resposta-01.recusado.json",
     "skins/mail-transformador-encomenda-01.ourique.json",
     "skins/mail-rede-linha-pronta-01.rede-propria.json",
-    "skins/mail-prazo-derrapagem-01.rede-propria.json"
+    "skins/mail-prazo-derrapagem-01.rede-propria.json",
+    "skins/mail-consultor-hibrido-01.ourique.json",
+    "skins/mail-eolica-dimensao-01.ourique.json",
+    "skins/mail-eolica-dimensao-01.prospecao.json",
+    "skins/mail-bateria-dimensao-01.com-eolica.json",
+    "skins/mail-bateria-dimensao-01.sem-eolica.json",
+    "skins/mail-bateria-dimensao-01.prospecao.json",
+    "skins/mail-eolica-marco-01.aia.json",
+    "skins/mail-eolica-marco-01.medicao.json",
+    "skins/mail-bateria-nota-01.entrada-lenta.json",
+    "skins/mail-bateria-nota-01.paragem-ligacao.json",
+    "skins/mail-bateria-nota-01.prr-aprovado.json",
+    "skins/mail-bateria-nota-01.prr-recusado.json",
+    "skins/mail-bateria-nota-01.saturacao.json",
+    "skins/mail-prospecao-rival-01.ourique.json",
+    "skins/mail-prospecao-armadilha-01.bateria.json",
+    "skins/mail-prospecao-armadilha-01.eolica.json",
+    "skins/mail-prospecao-armadilha-01.sobreequipamento.json"
   ],
   "se_sheets": [
     "se-sheets/ferreira-do-alentejo.json",
@@ -379,5 +403,7 @@
     ]
   },
   "npv_causes": "npv-causes.pt.json",
-  "hud_effects": "hud-effects.draft.json"
+  "hud_effects": "hud-effects.draft.json",
+  "prospecao": "prospecao.v01.json",
+  "prospecao_ourique": "prospecao-ourique.v01.json"
 }

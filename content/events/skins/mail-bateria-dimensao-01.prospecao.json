@@ -1,0 +1,18 @@
+{
+  "skeleton_id": "mail-bateria-dimensao-01",
+  "skin_id": "prospecao",
+  "when": {
+    "se_id": "ourique",
+    "launched_from": "prospecao"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Baterias em {{site_name}}: de que tamanho?",
+  "body": "O terreno de {{site_name}} está acordado. Lembra-te da regra: a tua bateria não pode beber o teu sol. Pelo menos três quartos da carga têm de vir do vento ou da energia que os painéis já iam perder, e no máximo um quarto da rede.\n\nEm cada escolha mostro o NPV sem eólica e com eólica. {{report_line}}",
+  "params": {
+    "site_name": "prospecao.opportunities[].name",
+    "report_line": "com relatório: «O relatório diz para evitar {{trap_size_label}}.» · sem relatório: «Sem relatório, não sabemos qual tamanho evitar.»",
+    "npv_sem_eolica": "como nas skins com/sem-eolica",
+    "npv_com_eolica": "idem"
+  },
+  "prospecao_v01_2026_10_09": true
+}

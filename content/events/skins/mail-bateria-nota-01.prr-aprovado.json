@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-bateria-nota-01",
+  "skin_id": "prr-aprovado",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Fundo Ambiental",
+  "subject": "Fundo Ambiental: apoio às baterias aprovado",
+  "body": "O Fundo Ambiental aprovou o apoio às baterias: paga uma parte do custo. Atenção: o equipamento tem de estar no local até 31 de dezembro, senão perde-se o apoio.",
+  "consequence_pt": "Apoio aprovado: precisas de menos capital próprio para as baterias e o NPV sobe.",
+  "on_deliver_effects": [
+    "bess_prr_grant"
+  ],
+  "hybrid_cards_v01_2026_10_09": true
+}

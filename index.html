@@ -4400,6 +4400,67 @@
     vertical-align: middle;
   }
 
+  .ps-wrap, .ps-detail { max-width: 720px; }
+  .ps-head h2, .ps-hero h2 { margin: 4px 0 8px; font-size: 22px; letter-spacing: -0.03em; }
+  .ps-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #0369a1; }
+  .ps-note, .ps-scale, .ps-voice, .ps-meta { font-size: 13px; color: #64748b; line-height: 1.45; margin: 8px 0; }
+  .ps-free { font-size: 14px; margin: 0 0 8px; }
+  .ps-list { display: flex; flex-direction: column; gap: 10px; }
+  .ps-card, .ps-detail {
+    text-align: left;
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #fff;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+  }
+  .ps-card { padding: 14px 14px 12px; cursor: pointer; }
+  .ps-card h3 { margin: 4px 0; font-size: 18px; }
+  .ps-card p { margin: 0; font-size: 13px; color: #475569; line-height: 1.4; }
+  .ps-card.is-lost { opacity: 0.72; }
+  .ps-card-top, .ps-warn-actions, .ps-rents { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .ps-flag { font-size: 11px; font-weight: 700; background: #e0f2fe; color: #0369a1; border-radius: 999px; padding: 2px 8px; }
+  .ps-flag.bad { background: #fee2e2; color: #b91c1c; }
+  .ps-hero { background: linear-gradient(135deg, #0369a1, #0284c7); color: #fff; border-radius: 16px 16px 0 0; padding: 16px; }
+  .ps-hero .ps-kicker { color: #e0f2fe; }
+  .ps-hero p { margin: 0; color: #e0f2fe; line-height: 1.4; }
+  .ps-detail { overflow: hidden; }
+  .ps-detail > :not(.ps-hero) { margin-left: 14px; margin-right: 14px; }
+  .ps-detail > :last-child { margin-bottom: 14px; }
+  .ps-attr { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+  .ps-attr-k { color: #64748b; }
+  .ps-attr-v { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+  .ps-dots { display: inline-flex; gap: 4px; }
+  .ps-dots i { width: 14px; height: 8px; border-radius: 999px; background: #e2e8f0; display: block; }
+  .ps-dots i.on { background: #0284c7; }
+  .ps-dots i.range { background: #7dd3fc; }
+  .ps-time { margin-top: 12px; }
+  .ps-time-bar { height: 14px; border-radius: 999px; background: #e0f2fe; overflow: hidden; }
+  .ps-time-bar span { display: block; height: 100%; width: 62%; background: #38bdf8; }
+  .ps-time.is-red .ps-time-bar { background: #fee2e2; }
+  .ps-time.is-red .ps-time-bar span { background: #ef4444; }
+  .ps-time p { font-size: 12px; color: #64748b; margin: 6px 0 0; }
+  .ps-sizes { display: flex; flex-direction: column; gap: 8px; margin: 12px 14px; }
+  .ps-size { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; }
+  .ps-size-k { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .ps-size-l { font-size: 13px; color: #334155; line-height: 1.4; }
+  .ps-primary, .ps-rents button, .ps-warn-actions button {
+    border: 0; border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; font-size: 14px;
+  }
+  .ps-primary { background: #0369a1; color: #fff; margin-top: 8px; }
+  .ps-primary:disabled { background: #cbd5e1; color: #475569; cursor: not-allowed; }
+  .ps-rents { margin-top: 8px; }
+  .ps-rents button, .ps-warn-actions button:last-child { background: #f1f5f9; color: #0f172a; }
+  .ps-report, .ps-owner { font-size: 14px; line-height: 1.45; background: #f8fafc; border-radius: 12px; padding: 10px 12px; }
+  .ps-owner { border-left: 3px solid #0284c7; }
+  .ps-warn { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px; padding: 12px; margin-top: 8px; }
+  .ps-warn p { margin: 0 0 8px; font-size: 14px; line-height: 1.45; }
+  @media (max-width: 420px) {
+    .ps-rents, .ps-warn-actions { flex-direction: column; align-items: stretch; }
+  }
+
   .asset-vital-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5660,7 +5721,7 @@
     <div class="asset-room-chrome-actions">
       <button type="button" class="asset-room-back" id="assetRoomBack" aria-label="Voltar ao portefólio">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-        Voltar ao portefólio
+        <span id="assetRoomBackLabel">Voltar ao portefólio</span>
       </button>
       <button type="button" class="asset-room-close" id="assetRoomClose" aria-label="Fechar a sala do ativo" title="Fechar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -6639,7 +6700,7 @@
   }
 
   /* ═══ Sala do ativo ═══ */
-  const assetRoomState = { open: false, nodeId: null, focus: null, armedKey: null };
+  const assetRoomState = { open: false, nodeId: null, focus: null, armedKey: null, prospecao: null, prospecaoWarn: false };
 
   function assetOfftakeLabel(node) {
     const lr = (typeof auctionState !== 'undefined') ? auctionState.lastResult : null;
@@ -7210,7 +7271,7 @@
   function renderAssetRoomOptimizations(node) {
     const nodeId = node.id;
     const applied = state.appliedActions[nodeId] || new Set();
-    const list = actions[nodeId] || actions.ourique || [];
+    const list = (actions[nodeId] || actions.ourique || []).filter((a) => a.id !== 'sobre' && a.id !== 'bess' && a.id !== 'eolica');
     return list.map((a) => {
       const done = applied.has(a.id);
       const isFarm = a.id === 'farm';
@@ -7252,6 +7313,11 @@
     const node = nodes.find((n) => n.id === assetRoomState.nodeId);
     if (!node) return;
     if (titleEl) titleEl.textContent = node.name;
+    try { syncProspecaoChrome(); } catch (_) {}
+    if (assetRoomState.prospecao) {
+      try { renderProspecaoScreen(body, node); } catch (err) { console.warn('[WattProspecao] ecrã', err); }
+      return;
+    }
 
     const tf = assetTrcParts(node);
     const t = tf.t;
@@ -7307,8 +7373,8 @@
       ...((pipOpen && salaIcnfConsultAvailable()) ? [cta('icnf', 'Consultar o ICNF',
         salaIcnfConsultSub(),
         salaIcnfConsultChip(), '', false, '')] : []),
-      cta('hibridizacao', 'Juntar eólico, baterias ou mais painéis', 'Ver as melhorias deste projeto',
-        'Melhorar', '', false, ''),
+      ...(landKnown ? [cta('prospecao', 'Prospeção', 'Locais para eólica, baterias ou mais painéis neste ponto de ligação.',
+        'Procurar', 'search', false, '')] : []),
       cta('oferta', 'Venda da energia', 'A preço de mercado ou com contrato de venda a longo prazo',
         offerOpen ? 'Aberto' : 'Mais tarde', offerOpen ? '' : 'gated', !offerOpen, landKnown ? 'Abre quando o projeto chegar à fase da Câmara (PIP)' : 'Abre depois de escolheres o terreno'),
       cta('find_buyers', 'Procurar comprador',
@@ -7391,7 +7457,7 @@
 
       <section class="asset-zone" id="assetZoneHibridizacao" aria-label="Melhorias do projeto">
         <div class="asset-zone-kicker">Melhorias: eólico, baterias e mais painéis <span class="prov-mark">valores provisórios</span></div>
-        <p style="font-size:13px;color:#64748b;margin:0 0 4px;line-height:1.45">Sobreequipar é instalar mais painéis do que a potência da ligação, para produzir durante mais horas. Hibridizar é juntar um parque eólico ou baterias no mesmo ponto de ligação.</p>
+        <p style="font-size:13px;color:#64748b;margin:0 0 4px;line-height:1.45">${landKnown ? 'A procura de locais para eólica, baterias ou mais painéis está no botão Prospeção. Aqui podes vender parte do projeto.' : 'A procura de locais para eólica, baterias ou mais painéis abre depois de escolheres o terreno da central.'}</p>
         <div class="asset-opt-list">${renderAssetRoomOptimizations(node)}</div>
       </section>
 
@@ -7450,8 +7516,8 @@
           const fidL = (mailState.items || []).filter((m) => mailSkeletonOf(m) === 'mail-investidores-fid-01' && !m.econChoiceId).pop();
           if (fidL && window.WattInbox) { WattInbox.open(); WattInbox.openLetter(fidL.id); }
           else showToast('A decisão de construir chega numa carta dos investidores, depois da licença de produção, do banco e do empreiteiro.');
-        } else if (id === 'hibridizacao') {
-          focusAssetHybridizacao();
+        } else if (id === 'prospecao') {
+          openProspecao();
         } else if (id === 'find_buyers') {
           startFindBuyersFlow(node.id);
         } else if (id === 'sell_full_exit' || id === 'sell_plant_rent_infra' || id === 'sell_hybrid_part') {
@@ -7698,6 +7764,8 @@
     assetRoomState.open = false;
     assetRoomState.nodeId = null;
     assetRoomState.focus = null;
+    assetRoomState.prospecao = null;
+    assetRoomState.prospecaoWarn = false;
     const room = document.getElementById('assetRoom');
     if (room) {
       room.classList.remove('open');
@@ -7708,7 +7776,7 @@
   function initAssetRoom() {
     const back = document.getElementById('assetRoomBack');
     const closeBtn = document.getElementById('assetRoomClose');
-    if (back) back.addEventListener('click', closeAssetRoom);
+    if (back) back.addEventListener('click', assetRoomBackClick);
     if (closeBtn) closeBtn.addEventListener('click', closeAssetRoom);
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
@@ -7718,6 +7786,7 @@
       const ss = document.getElementById('settingsSheet');
       if (ss && ss.classList.contains('open')) return;
       e.stopImmediatePropagation();
+      if (assetRoomState.prospecao) { assetRoomBackClick(); return; }
       closeAssetRoom();
     }, true);
   }
@@ -8122,6 +8191,7 @@
         const inboxBefore = (mailState.items || []).length;
         mailLoop.month = monthBefore + 1;
         mailLoop._slipLetterThisPlay = false;
+        try { if (typeof prospecaoOnMonth === 'function') prospecaoOnMonth(); } catch (err) { console.warn('[WattProspecao] mês', err); }
         // Running obra costs and the ACT fine land as the month starts, before a deadline is met.
         try { chargeObraMonth(); } catch (err) { console.warn('[WattEcon] obra month', err); }
         try { resolvePendingFines(); } catch (err) { console.warn('[WattEcon] fine', err); }
@@ -11884,6 +11954,26 @@
       // H2: without the economy pack, letters still work but money does not move.
       console.warn('[WattEcon] economy pack missing (manifest.effects_economy): letters will not move Caixa, dívida or garantias.');
     }
+    pack.prospecao = null;
+    if (manifest.prospecao) {
+      try {
+        const pr = await fetch(base + '/' + manifest.prospecao);
+        if (pr.ok) pack.prospecao = await pr.json();
+        else console.warn('[WattProspecao] ' + manifest.prospecao + ' HTTP ' + pr.status);
+      } catch (err) {
+        console.warn('[WattProspecao] conteúdo', err);
+      }
+    }
+    pack.prospecao_ourique = null;
+    if (manifest.prospecao_ourique) {
+      try {
+        const pe = await fetch(base + '/' + manifest.prospecao_ourique);
+        if (pe.ok) pack.prospecao_ourique = await pe.json();
+        else console.warn('[WattProspecao] ' + manifest.prospecao_ourique + ' HTTP ' + pe.status);
+      } catch (err) {
+        console.warn('[WattProspecao] valores', err);
+      }
+    }
     if (manifest.mvp_schedule) {
       try {
         const sr = await fetch(base + '/' + manifest.mvp_schedule);
@@ -12010,6 +12100,16 @@
       const ov = ovAll[c.id] || null;
       const hint = (ov && typeof ov.hint === 'string') ? ov.hint : c.hint;
       const consequence = (ov && ov.consequence_pt) || c.consequence_pt || null;
+      let hintText = (typeof hint === 'string' && hint.trim()) ? fillMailTemplate(hint.trim(), ctx) : '';
+      if (typeof c.hint_preview === 'string' && c.hint_preview.trim() && typeof prospecaoPreviewCtx === 'function') {
+        try {
+          const extra = prospecaoPreviewCtx(c.id, ctx) || {};
+          if (extra && Object.keys(extra).length) {
+            const prev = fillMailTemplate(c.hint_preview.trim(), Object.assign({}, ctx, extra));
+            if (prev && prev.trim()) hintText = hintText ? (hintText + ' ' + prev) : prev;
+          }
+        } catch (_) {}
+      }
       return {
         id: c.id,
         legacy_id: c.legacy_id || null,
@@ -12020,7 +12120,8 @@
         requires_state: Array.isArray(c.requires_state) ? c.requires_state.slice() : null,
         locked_hint: c.locked_hint || null,
         effects_if_param: c.effects_if_param ? JSON.parse(JSON.stringify(c.effects_if_param)) : null,
-        hint: (typeof hint === 'string' && hint.trim()) ? fillMailTemplate(hint.trim(), ctx) : null,
+        hint: hintText || null,
+        opens_screen: c.opens_screen || null,
         consequence_pt: (typeof consequence === 'string' && consequence.trim()) ? fillMailTemplate(consequence.trim(), ctx) : null
       };
     });
@@ -12050,7 +12151,9 @@
       deadline_blocks_play: (typeof skin.deadline_blocks_play === 'boolean') ? skin.deadline_blocks_play : skeleton.deadline_blocks_play,
       params: JSON.parse(JSON.stringify(mergedParams)),
       delivery: (skeleton.id === 'mail-dgeg-le-cod-01' || skeleton.id === 'mail-marco-01') ? null : (skin.delivery || skeleton.delivery || null),
-      on_deliver_effects: ((skin.on_deliver_effects || skeleton.on_deliver_effects || [])).slice()
+      on_deliver_effects: ((skin.on_deliver_effects || skeleton.on_deliver_effects || [])).map(function (e) {
+        return fillMailTemplate(String(e), ctx);
+      }).filter(function (e) { return e && e.indexOf('{{') === -1; })
     };
   }
 
@@ -12331,7 +12434,7 @@
   /* ── Draft rules (lp-cod-rules.draft.json), only the groups the console runs today ── */
   const DRAFT_RULE_GROUPS = ['dia_outcome', 'lp_transfer', 'env_screening', 'icnf_vinc_outcome', 'icnf_outcome_caso', 'icnf_outcome_ca', 'fid_card', 'es_caixa', 'es_trc_decisao', 'pip_outcome', 'lp_outcome', 'obra_supply', 'obra_meio', 'obra_rede', 'obra_furto', 'obra_rede_propria', 'fa_bess_outcome'];
   /** Single rules the console runs (group icnf_ca is otherwise not wired; rules without mutex_group). */
-  const DRAFT_RULE_IDS = ['r-apa-icnf-vinculativo-aia', 'r-apa-icnf-vinculativo-caso', 'r-sobreequipamento', 'r-nisa-enterrar-linha',
+    const DRAFT_RULE_IDS = ['r-apa-icnf-vinculativo-aia', 'r-apa-icnf-vinculativo-caso', 'r-sobreequipamento', 'r-nisa-enterrar-linha', 'r-consultor-hibrido',
     'r-pip-pedido', 'r-pip-reformulado', 'r-lp-pedido-sem-aia',
     'r-rede-parecer', 'r-term-sheet', 'r-epc', 'r-ensaios', 'r-le-cod',
     'r-consultor-icnf-aviso-aia', 'r-consultor-icnf-aviso-caso', 'r-arranque',
@@ -13664,6 +13767,10 @@
         if (typeof renderActivity === 'function') renderActivity();
       } catch (_) {}
     }
+    if (!L._deliverEmitted) {
+      L._deliverEmitted = true;
+      tutEmit('effect', 'deliver:' + (L.skeletonId || ''), 300);
+    }
   }
   function applyLetterArrivalEffects(L) {
     if (!L || L._arrivalApplied) return;
@@ -13710,6 +13817,10 @@
     try { applyLetterArrivalEffects(L); } catch (_) {}
     try { renderInboxBadge(); } catch (_) {}
     try { if (mailState.open) renderInboxBody(); } catch (_) {}
+    if (!L._deliverEmitted) {
+      L._deliverEmitted = true;
+      tutEmit('effect', 'deliver:' + skeletonId, 300);
+    }
     return L;
   }
   function applyRuleEndState(rule) {
@@ -15771,6 +15882,8 @@
       mailLoop.pendingFines = [];
       mailLoop.codPricedMonth = null;
       mailLoop.codPlanMonth = null;
+      mailLoop.prospecao = null;
+      try { ensureProspecao(); } catch (err) { console.warn('[WattProspecao] início', err); }
     } else {
       try { await loadEventPack(); ensureEnvPath(); } catch (_) {}
       if (!mailLoop.projectPhase) mailLoop.projectPhase = 'trc_won';
@@ -16502,6 +16615,11 @@
           }
           if (res && repeat) res.repeat = true;
           mailLoop._answeringId = null;
+          if (choice && choice.opens_screen === 'prospecao') {
+            setTimeout(function () { try { openProspecaoFromChoice(); } catch (err) { console.warn('[WattProspecao] abrir', err); } }, 0);
+          }
+          try { if (typeof prospecaoOnSizeChoice === 'function') prospecaoOnSizeChoice(letter, choice); } catch (err) { console.warn('[WattProspecao] tamanho', err); }
+          try { if (typeof prospecaoOnDownsize === 'function') prospecaoOnDownsize(letter, choice); } catch (err) { console.warn('[WattProspecao] reduzir', err); }
           try { if (typeof handleStakeChoice === 'function') handleStakeChoice(letter, effectList); } catch (err) { console.warn('[WattStakes] choice', err); }
           if (letter && mailSkeletonOf(letter) === 'mail-consultor-nao-sujeicao-risco-01' && mailLoop.overequipPending) {
             try { resolveOverequipTripwire(normalizeChoiceId(choiceId, letter)); } catch (err) { console.warn('[WattMail] tripwire resolve', err); }
@@ -16940,6 +17058,7 @@
       mailLoop.deadlineFollowup = (ml.deadlineFollowup && typeof ml.deadlineFollowup === 'object') ? ml.deadlineFollowup : {};
       mailLoop.hudMoment = ml.hudMoment || null;
       mailLoop.icnfConsultMonth = ml.icnfConsultMonth != null ? ml.icnfConsultMonth : mailLoop.icnfConsultMonth;
+      mailLoop.prospecao = (ml.prospecao && typeof ml.prospecao === 'object') ? ml.prospecao : null;
       // sale mode renames: old saves keep working
       (nodes || []).forEach((n) => {
         if (n && n.mwState && n.mwState.sale_closed_mode) n.mwState.sale_closed_mode = normalizeSaleMode(n.mwState.sale_closed_mode);
@@ -18126,6 +18245,955 @@
       }
     });
   }
+
+
+  /* ═══ Prospeção (híbrido) ═══
+     Números em content/events/prospecao-ourique.v01.json (provisórios, marca HIPÓTESE).
+     Textos das fichas em content/events/prospecao.v01.json. */
+
+  function prospPack() {
+    const p = window.__wattEventPack;
+    return (p && p.prospecao) || null;
+  }
+  function prospEcon() {
+    const p = window.__wattEventPack;
+    return (p && p.prospecao_ourique) || null;
+  }
+  function prospMb32(a) {
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return { a: a >>> 0, u: ((t ^ (t >>> 14)) >>> 0) / 4294967296 };
+  }
+  function prospRand() {
+    const st = mailLoop.prospecao;
+    const step = prospMb32((st && st.rng) >>> 0);
+    st.rng = step.a || 1;
+    return step.u;
+  }
+  function prospPick(entries) {
+    let total = 0;
+    entries.forEach((e) => { total += Number(e.p) || 0; });
+    if (!entries.length || total <= 0) return null;
+    let u = prospRand() * total;
+    for (let i = 0; i < entries.length; i++) {
+      u -= Number(entries[i].p) || 0;
+      if (u <= 0) return entries[i].k;
+    }
+    return entries[entries.length - 1].k;
+  }
+  function prospUi(oppId) {
+    const econ = prospEcon();
+    const all = econ && econ.ui && econ.ui.opportunities;
+    return (all && all[oppId]) || null;
+  }
+  function prospUiSize(opp, tag) {
+    const sizes = (prospUi(opp && opp.id) || {}).sizes || [];
+    return sizes.find((s) => s && s.card_tag === tag) || null;
+  }
+  function prospTypeKey(opp) {
+    if (!opp) return '';
+    if (opp.type === 'eolica') return 'eolica';
+    if (opp.type === 'bateria') return 'bateria';
+    return 'sobreequipamento';
+  }
+  function prospBaseLevels(opp) {
+    return Object.assign({}, (opp && opp.levels) || {});
+  }
+  function prospDrawDist(dist) {
+    if (!dist || typeof dist !== 'object') return null;
+    const entries = Object.keys(dist).filter((k) => typeof dist[k] === 'number').map((k) => ({ k: k, p: dist[k] }));
+    return entries.length ? prospPick(entries) : null;
+  }
+  function prospDrawAll() {
+    const gm = prospPack();
+    if (!gm || !mailLoop.prospecao) return;
+    (gm.opportunities || []).forEach((opp) => {
+      const base = prospBaseLevels(opp);
+      const rec = {
+        recurso: base.recurso,
+        licenca: base.licenca,
+        terreno: base.terreno,
+        corte: base.corte,
+        icnf: opp.icnf
+      };
+      const risk = (prospUi(opp.id) || {}).true_risk || {};
+      ['recurso', 'licenca', 'terreno', 'corte'].forEach((field) => {
+        const picked = prospDrawDist(risk[field]);
+        if (picked != null) rec[field] = Number(picked);
+      });
+      const ic = prospDrawDist(risk.icnf);
+      if (ic != null) rec.icnf = ic;
+      mailLoop.prospecao.drawn[opp.id] = rec;
+    });
+  }
+  function ensureProspecao() {
+    if (typeof mailLoop === 'undefined' || !mailLoop) return null;
+    if (!mailLoop.prospecao || typeof mailLoop.prospecao !== 'object' || !mailLoop.prospecao.drawn) {
+      mailLoop.prospecao = {
+        rng: (Math.floor(Math.random() * 0xffffffff) >>> 0) || 1,
+        drawn: {},
+        pending: {},
+        reportReady: {},
+        ownerLine: {},
+        traps: []
+      };
+      try { prospDrawAll(); } catch (err) { console.warn('[WattProspecao] sorteio', err); }
+    }
+    const st = mailLoop.prospecao;
+    st.pending = st.pending || {};
+    st.reportReady = st.reportReady || {};
+    st.ownerLine = st.ownerLine || {};
+    st.traps = st.traps || [];
+    st.drawn = st.drawn || {};
+    if (!st.rng) st.rng = 1;
+    const gm = prospPack();
+    if (gm && (gm.opportunities || []).length && !Object.keys(st.drawn).length) {
+      try { prospDrawAll(); } catch (err) { console.warn('[WattProspecao] sorteio', err); }
+    }
+    return st;
+  }
+  function prospDrawn(opp) {
+    const st = ensureProspecao();
+    return (st && st.drawn && st.drawn[opp.id]) || {};
+  }
+  function prospReportReady(oppId) {
+    const st = mailLoop.prospecao;
+    return !!(st && st.reportReady && st.reportReady[oppId]);
+  }
+  function prospEuro(n) {
+    n = Number(n);
+    if (!Number.isFinite(n)) return '—';
+    const abs = fmtMoney2(n);
+    if (abs === '0 €') return abs;
+    return (n < 0 ? '−' : '') + abs;
+  }
+  function prospEuroRange(a, b) {
+    if (!Number.isFinite(a) || !Number.isFinite(b) || Math.abs(a - b) < 0.005) return prospEuro(Number.isFinite(a) ? a : b);
+    const lo = Math.min(a, b);
+    const hi = Math.max(a, b);
+    return prospEuro(lo) + ' a ' + prospEuro(hi);
+  }
+  function prospHyp(text) {
+    return escapeHtml(text) + ' <span class="asset-hyp">Hipótese</span>';
+  }
+  const PROSP_ICNF_PT = { baixo: 'baixo', medio: 'médio', alto: 'alto', muito_alto: 'muito alto' };
+  const PROSP_ICNF_RANK = { baixo: 0, medio: 1, alto: 2, muito_alto: 3 };
+  function prospIcnfWord(key) {
+    return PROSP_ICNF_PT[key] || String(key || '');
+  }
+  function prospOpp(id) {
+    const gm = prospPack();
+    return gm && (gm.opportunities || []).find((o) => o.id === id);
+  }
+  function prospEffects() {
+    const p = window.__wattEventPack;
+    return (p && p.effects_economy && p.effects_economy.effects) || {};
+  }
+  function prospMissionMonths(opp) {
+    const fx = prospEffects();
+    const ui = prospUi(opp.id) || {};
+    let key = null;
+    if (opp.type === 'eolica' && ui.recommended_mw != null) key = 'wind_size_' + ui.recommended_mw;
+    else if (opp.type === 'bateria' && ui.recommended_size) key = 'bess_size_' + ui.recommended_size;
+    else if (ui.recommended_plan) key = 'overequip_plan_' + ui.recommended_plan;
+    const row = key && fx[key];
+    return row && typeof row.months === 'number' ? row.months : null;
+  }
+  function prospTrcMonth() {
+    const d = mailLoop.deadlines && mailLoop.deadlines.le_deadline;
+    if (!d || d.atMonth == null) return null;
+    return d.atMonth | 0;
+  }
+  function prospSlack() {
+    const cfg = prospPack() && prospPack().config;
+    const n = cfg && cfg.trc_slack_months;
+    return (typeof n === 'number') ? n : 3;
+  }
+  function prospFinishMonth(opp) {
+    const months = prospMissionMonths(opp);
+    if (months == null) return null;
+    return (mailLoop.month | 0) + months;
+  }
+  function prospBarRed(opp) {
+    const finish = prospFinishMonth(opp);
+    const due = prospTrcMonth();
+    if (finish == null || due == null) return false;
+    return finish > (due - prospSlack());
+  }
+  function prospWindowClosed(opp) {
+    const w = opp.deadline_bar && opp.deadline_bar.window_month;
+    if (w == null) return false;
+    return (mailLoop.month | 0) > (w | 0);
+  }
+  function prospTypeBusy(type, exceptId) {
+    const gm = prospPack();
+    return !!((gm && gm.opportunities) || []).some((o) => o.type === type && o.id !== exceptId && o.tags && mailTagOn(o.tags.launched));
+  }
+  function prospTypeLabel(type) {
+    if (type === 'eolica') return 'Eólica';
+    if (type === 'bateria') return 'Baterias';
+    return 'Mais painéis';
+  }
+  function prospEvList(size) {
+    if (!size) return [];
+    const ev = size.ev_MEUR;
+    if (typeof ev === 'number') {
+      const vals = [ev];
+      if (typeof size.corte2_hit_MEUR === 'number') vals.push(+(ev + size.corte2_hit_MEUR).toFixed(2));
+      return vals;
+    }
+    if (ev && typeof ev === 'object') {
+      return Object.keys(ev).map((k) => Number(ev[k])).filter((n) => Number.isFinite(n));
+    }
+    return [size.nav_corte2_MEUR, size.nav_corte1_MEUR].filter((n) => typeof n === 'number');
+  }
+  function prospEvExact(opp, size) {
+    if (!size) return null;
+    const d = prospDrawn(opp);
+    const ev = size.ev_MEUR;
+    if (ev && typeof ev === 'object') {
+      const key = 'vento' + d.recurso + '_' + d.icnf;
+      return typeof ev[key] === 'number' ? ev[key] : null;
+    }
+    if (typeof ev === 'number') {
+      if (Number(d.corte) === 2 && typeof size.corte2_hit_MEUR === 'number') return +(ev + size.corte2_hit_MEUR).toFixed(2);
+      return ev;
+    }
+    if (Number(d.corte) === 1 && typeof size.nav_corte1_MEUR === 'number') return size.nav_corte1_MEUR;
+    return typeof size.nav_corte2_MEUR === 'number' ? size.nav_corte2_MEUR : null;
+  }
+  function prospActiveTrapIds(opp) {
+    const spec = opp && opp.trap_size;
+    if (!spec) return [];
+    if (typeof spec === 'string') return [spec];
+    const ids = [];
+    const push = (v) => {
+      if (Array.isArray(v)) v.forEach(push);
+      else if (v && ids.indexOf(v) === -1) ids.push(v);
+    };
+    push(spec.default);
+    const cond = spec.if_true_risk;
+    if (cond && typeof cond === 'object') {
+      const d = prospDrawn(opp);
+      const ok = Object.keys(cond).every((k) => {
+        const want = cond[k];
+        const got = d[k];
+        if (got == null) return false;
+        return String(got) === String(want);
+      });
+      if (ok) push(spec.trap);
+    }
+    return ids;
+  }
+  function prospTrapLabel(opp) {
+    const lab = opp && opp.trap_size_label;
+    const d = prospDrawn(opp);
+    if (lab && typeof lab === 'object') {
+      if (d.icnf === 'muito_alto' && lab.icnf_muito_alto) return lab.icnf_muito_alto;
+      return lab.default || '';
+    }
+    if (!prospActiveTrapIds(opp).length) return '';
+    return typeof lab === 'string' ? lab : '';
+  }
+  function prospReportBad(opp) {
+    const d = prospDrawn(opp);
+    const b = prospBaseLevels(opp);
+    const fields = ['recurso', 'licenca', 'terreno', 'corte'];
+    for (let i = 0; i < fields.length; i++) {
+      const f = fields[i];
+      if (d[f] != null && b[f] != null && Number(d[f]) < Number(b[f])) return true;
+    }
+    const di = PROSP_ICNF_RANK[d.icnf];
+    const bi = PROSP_ICNF_RANK[opp.icnf];
+    if (di != null && bi != null && di > bi) return true;
+    return false;
+  }
+  function prospReportCtx(opp) {
+    const d = prospDrawn(opp);
+    return {
+      site_name: opp.name,
+      icnf_level: prospIcnfWord(d.icnf || opp.icnf),
+      trap_size_label: prospTrapLabel(opp) || (typeof opp.trap_size_label === 'string' ? opp.trap_size_label : '')
+    };
+  }
+  function prospReportText(opp) {
+    const d = prospDrawn(opp);
+    const ctx = prospReportCtx(opp);
+    const ov = opp.report_override;
+    if (ov && (ov.wind_2 || ov.wind_3)) {
+      const src = Number(d.recurso) === 2 ? ov.wind_2 : ov.wind_3;
+      return fillMailTemplate(src || '', ctx);
+    }
+    if (ov && (ov.bom || ov.mau)) {
+      const src = d.icnf === 'muito_alto' ? (ov.mau || ov.bom) : (ov.bom || ov.mau);
+      return fillMailTemplate(src || '', ctx);
+    }
+    const gm = prospPack();
+    const block = gm && gm.consultant_report && gm.consultant_report[prospTypeKey(opp)];
+    if (!block) return '';
+    const src = prospReportBad(opp) ? block.mau : block.bom;
+    return fillMailTemplate(src || '', ctx);
+  }
+  function prospReportLine(opp) {
+    if (prospReportReady(opp.id)) {
+      const label = prospTrapLabel(opp);
+      if (prospActiveTrapIds(opp).length && label) return 'O relatório diz para evitar ' + label + '.';
+      return 'O relatório não marca um tamanho a evitar.';
+    }
+    const st = mailLoop.prospecao;
+    const pend = st && st.pending && st.pending[opp.id];
+    if (pend && pend.reportDue != null) return 'O relatório ainda não chegou.';
+    return 'Sem relatório, não sabemos qual tamanho evitar.';
+  }
+  function prospRentKey(level) {
+    return { baixa: 'low', media: 'mid', alta: 'high' }[level] || level;
+  }
+  function prospRentBlock(opp) {
+    return (prospUi(opp && opp.id) || {}).rent || {};
+  }
+  function prospAcceptP(opp, level) {
+    const a = prospRentBlock(opp).rent_accept;
+    const k = prospRentKey(level);
+    return a && typeof a[k] === 'number' ? a[k] : null;
+  }
+  function prospSigning(opp, level) {
+    const a = prospRentBlock(opp).cash_signing_MEUR;
+    const k = prospRentKey(level);
+    return a && a[k] != null ? Number(a[k]) : null;
+  }
+  function prospRivalP(opp, level) {
+    const table = prospRentBlock(opp).rival_by_rent || {};
+    const row = table[String(opp.rivals | 0)] || table['0'] || {};
+    const k = prospRentKey(level);
+    return typeof row[k] === 'number' ? row[k] : 0;
+  }
+  function prospRentRate(opp, level) {
+    const rent = prospRentBlock(opp);
+    const k = prospRentKey(level);
+    if (rent.rent_eur_ha_ano && typeof rent.rent_eur_ha_ano[k] === 'number') {
+      const s = String(Math.round(rent.rent_eur_ha_ano[k])).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      return s + ' €/ha/ano';
+    }
+    if (rent.rent_keur_mw_ano && typeof rent.rent_keur_mw_ano[k] === 'number') {
+      const s = rent.rent_keur_mw_ano[k].toFixed(1).replace('.', ',');
+      return s + ' k€/MW/ano';
+    }
+    return '';
+  }
+  function prospReportCost(opp) {
+    const ui = prospUi(opp && opp.id);
+    return ui && typeof ui.report_cost_MEUR === 'number' ? ui.report_cost_MEUR : null;
+  }
+  function prospRentTag(level) {
+    if (level === 'baixa') return 'opp_rent_low';
+    if (level === 'alta') return 'opp_rent_high';
+    return 'opp_rent_mid';
+  }
+  function prospDots(exact, lo, hi) {
+    let html = '<span class="ps-dots" aria-hidden="true">';
+    for (let i = 1; i <= 5; i++) {
+      let cls = '';
+      if (exact != null) cls = i <= exact ? 'on' : '';
+      else if (i >= lo && i <= hi) cls = 'range';
+      html += '<i class="' + cls + '"></i>';
+    }
+    return html + '</span>';
+  }
+  function prospLevelShown(opp, field, base, drawn, ready) {
+    if (ready) {
+      const n = drawn != null ? Number(drawn) : (base != null ? Number(base) : NaN);
+      if (!Number.isFinite(n)) return null;
+      return { exact: n, lo: n, hi: n, text: String(n) };
+    }
+    const view = opp.view && opp.view.sem_relatorio && opp.view.sem_relatorio[field];
+    if (view) {
+      const m = String(view).match(/(\d)\s*[–-]\s*(\d)/);
+      if (m) return { exact: null, lo: Number(m[1]), hi: Number(m[2]), text: m[1] + '–' + m[2] };
+    }
+    if (base == null || !Number.isFinite(Number(base))) return null;
+    const n = Number(base);
+    const lo = Math.max(1, n - 1);
+    const hi = Math.min(5, n + 1);
+    return { exact: null, lo: lo, hi: hi, text: lo === hi ? String(lo) : (lo + '–' + hi) };
+  }
+  function prospLevelRow(label, value, reported) {
+    if (value == null || !Number.isFinite(Number(value))) return '';
+    const n = Number(value);
+    const lo = Math.max(1, n - 1);
+    const hi = Math.min(5, n + 1);
+    const shown = reported ? n : null;
+    const text = reported ? String(n) : (lo === hi ? String(lo) : (lo + '–' + hi));
+    return '<div class="ps-attr"><span class="ps-attr-k">' + escapeHtml(label) + '</span><span class="ps-attr-v">' +
+      prospDots(shown, lo, hi) + '<span class="num">' + escapeHtml(text) + '</span></span></div>';
+  }
+  function prospIcnfHigh(opp) {
+    if (prospReportReady(opp.id)) {
+      const ic = prospDrawn(opp).icnf || opp.icnf || '';
+      return ic === 'alto' || ic === 'muito_alto';
+    }
+    const t = (opp.icnf_view && opp.icnf_view.sem_relatorio) || '';
+    return /alto/.test(t);
+  }
+  function prospFinishPhrase(opp) {
+    const m = prospFinishMonth(opp);
+    return m == null ? 'ainda por marcar' : ('mês ' + m);
+  }
+  function prospDeadlinePhrase() {
+    const m = prospTrcMonth();
+    return m == null ? 'ainda por marcar' : ('mês ' + m);
+  }
+  function prospLaunchCopy(opp) {
+    const gm = prospPack();
+    const w = (gm && gm.launch_warning) || {};
+    const ctx = { site_name: opp.name, finish_month: prospFinishPhrase(opp), trc_deadline_month: prospDeadlinePhrase() };
+    const parts = [];
+    if (w.base) parts.push(fillMailTemplate(w.base, ctx));
+    if (!mailTagOn(opp.tags.report_bought) && w.sem_relatorio) parts.push(w.sem_relatorio);
+    if (prospBarRed(opp) && w.prazo_apertado) parts.push(w.prazo_apertado);
+    if (prospIcnfHigh(opp) && w.icnf_alto) parts.push(w.icnf_alto);
+    return parts.join('\n\n');
+  }
+  function prospSizeTitle(size) {
+    if (!size) return '';
+    if (size.mw != null && size.towers != null) return size.mw + ' MW (' + size.towers + ' torres)';
+    if (size.mw != null && size.mwh != null) {
+      const hours = size.mwh / size.mw;
+      const h = Number.isInteger(hours) ? String(hours) : String(hours).replace('.', ',');
+      return size.mw + ' MW por ' + h + ' horas';
+    }
+    if (size.added_mwp != null) return '+' + size.added_mwp + ' MWp';
+    return '';
+  }
+  function prospSizeBlocks(opp) {
+    const ready = prospReportReady(opp.id);
+    const blocks = [];
+    (opp.sizes_available || []).forEach((tag) => {
+      const size = prospUiSize(opp, tag);
+      if (!size) return;
+      const lines = [];
+      if (size.npv_MEUR) {
+        let withWind = size.npv_MEUR.vento_50;
+        let noWind = size.npv_MEUR.vento_0;
+        if (ready && Number(prospDrawn(opp).corte) === 3 && typeof size.corte3_hit_MEUR === 'number') {
+          if (typeof withWind === 'number') withWind = +(withWind + size.corte3_hit_MEUR).toFixed(2);
+          if (typeof noWind === 'number') noWind = +(noWind + size.corte3_hit_MEUR).toFixed(2);
+        }
+        lines.push('NPV com 50 MW de eólica ' + prospEuro(withWind));
+        lines.push('NPV sem eólica ' + prospEuro(noWind));
+        if (typeof size.equity_100_MEUR === 'number') lines.push('Capital próprio ' + prospEuro(size.equity_100_MEUR));
+      } else {
+        const vals = prospEvList(size);
+        const exact = prospEvExact(opp, size);
+        let npvTxt = '—';
+        if (ready && exact != null) npvTxt = prospEuro(exact);
+        else if (vals.length) npvTxt = prospEuroRange(Math.min.apply(null, vals), Math.max.apply(null, vals));
+        lines.push('NPV esperado ' + npvTxt);
+        const eq = size.equity_fid_MEUR != null ? size.equity_fid_MEUR : size.equity_MEUR;
+        if (typeof eq === 'number') lines.push('Capital próprio ' + prospEuro(eq));
+        if (typeof size.line_capex_MEUR === 'number') lines.push('Linha extra ' + prospEuro(size.line_capex_MEUR));
+      }
+      blocks.push({ title: prospSizeTitle(size), lines: lines.filter(Boolean) });
+    });
+    return blocks;
+  }
+  function prospHa(n) {
+    if (n == null || !Number.isFinite(Number(n))) return '—';
+    const s = String(Math.round(Number(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return s + ' €/ha';
+  }
+  function prospPreviewCtx(choiceId, ctx) {
+    const opp = ctx && ctx.opp_id ? prospOpp(ctx.opp_id) : null;
+    if (!opp) return {};
+    const wind = /^wind_(\d+)$/.exec(choiceId || '');
+    if (wind) {
+      const size = prospUiSize(opp, 'wind_size_' + wind[1]);
+      if (!size) return {};
+      const exact = prospEvExact(opp, size);
+      const vals = prospEvList(size);
+      const ready = prospReportReady(opp.id);
+      const n = (ready && exact != null) ? exact : (vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : exact);
+      return n == null ? {} : { npv_preview: prospEuro(n) };
+    }
+    const bess = /^bess_(10x2|20x2|20x4)$/.exec(choiceId || '');
+    if (bess) {
+      const size = prospUiSize(opp, 'bess_size_' + bess[1]);
+      if (!size || !size.npv_MEUR) return {};
+      return {
+        npv_preview: prospEuro(size.npv_MEUR.vento_50),
+        npv_sem_eolica: prospEuro(size.npv_MEUR.vento_0),
+        npv_com_eolica: prospEuro(size.npv_MEUR.vento_50)
+      };
+    }
+    return {};
+  }
+  function prospecaoPreviewCtx(choiceId, ctx) { return prospPreviewCtx(choiceId, ctx); }
+
+  function syncProspecaoChrome() {
+    const el = document.getElementById('assetRoomBackLabel');
+    const btn = document.getElementById('assetRoomBack');
+    let label = 'Voltar ao portefólio';
+    if (assetRoomState.prospecao && assetRoomState.prospecao !== 'list') label = 'Voltar à lista';
+    else if (assetRoomState.prospecao === 'list') label = 'Voltar à sala';
+    if (el) el.textContent = label;
+    if (btn) btn.setAttribute('aria-label', label);
+  }
+  function assetRoomBackClick() {
+    if (assetRoomState.prospecao && assetRoomState.prospecao !== 'list') {
+      assetRoomState.prospecao = 'list';
+      assetRoomState.prospecaoWarn = false;
+      renderAssetRoom();
+      return;
+    }
+    if (assetRoomState.prospecao === 'list') {
+      assetRoomState.prospecao = null;
+      assetRoomState.prospecaoWarn = false;
+      renderAssetRoom();
+      return;
+    }
+    closeAssetRoom();
+  }
+  function openProspecao() {
+    if (typeof landChosen === 'function' && !landChosen()) {
+      showToast('Primeiro escolhe o terreno da central.');
+      return;
+    }
+    try { ensureProspecao(); } catch (err) { console.warn('[WattProspecao]', err); }
+    const nodeId = (mailLoop && mailLoop.seId) || (assetRoomState && assetRoomState.nodeId) || 'ourique';
+    assetRoomState.prospecao = 'list';
+    assetRoomState.prospecaoWarn = false;
+    if (!assetRoomState.open || assetRoomState.nodeId !== nodeId) openAssetRoom(nodeId);
+    else renderAssetRoom();
+  }
+  function openProspecaoFromChoice() {
+    if (typeof landChosen === 'function' && !landChosen()) {
+      showToast('Primeiro escolhe o terreno da central.');
+      return;
+    }
+    try { if (typeof closeInbox === 'function') closeInbox(); } catch (_) {}
+    openProspecao();
+  }
+
+  function prospBuyReport(opp) {
+    if (!opp || !opp.tags) return;
+    if (mailTagOn(opp.tags.report_bought)) {
+      showToast('Este relatório já foi pedido.');
+      return;
+    }
+    const cost = prospReportCost(opp);
+    if (typeof cost !== 'number') {
+      showToast('O preço do relatório ainda não está fechado.');
+      return;
+    }
+    try { applyEconRow({ cash: cost }, (mailLoop && mailLoop.seId) || 'ourique', { cause: 'prospecao_report' }); } catch (err) { console.warn('[WattProspecao] relatório', err); }
+    try { applyMailEffects([opp.tags.report_bought], { skipEconomics: true }); } catch (err) { console.warn('[WattProspecao] tag', err); }
+    const st = ensureProspecao();
+    st.pending[opp.id] = st.pending[opp.id] || {};
+    const wait = 1;
+    st.pending[opp.id].reportDue = (mailLoop.month | 0) + wait;
+    showToast('Relatório pedido. Fica pronto no mês ' + st.pending[opp.id].reportDue + '.');
+    try { scheduleSave('prospecao-report'); } catch (_) {}
+    renderAssetRoom();
+  }
+  function prospRentRank(level) {
+    return { baixa: 0, media: 1, alta: 2 }[level];
+  }
+  function prospOfferRent(opp, level) {
+    const st = ensureProspecao();
+    if (mailTagOn(opp.tags.land_agreed) || mailTagOn(opp.tags.lost_to_rival)) return;
+    const pend = st.pending[opp.id] || {};
+    if (pend.closed) return;
+    if (pend.rent && !pend.rentResolved) {
+      showToast('Já fizeste uma proposta. A resposta chega no mês ' + pend.rentDue + '.');
+      return;
+    }
+    const last = opp.last_offer_month;
+    if (last != null && (mailLoop.month | 0) > (last | 0)) {
+      showToast('Já passou o mês para uma proposta nova.');
+      return;
+    }
+    if (pend.canReoffer && prospRentRank(level) <= prospRentRank(pend.rent)) {
+      showToast('A nova proposta tem de ser mais alta.');
+      return;
+    }
+    st.pending[opp.id] = pend;
+    if (pend.canReoffer) {
+      pend.reoffered = true;
+      pend.canReoffer = false;
+      try { applyMailEffects(['opp_land_reoffered_' + opp.id], { skipEconomics: true }); } catch (_) {}
+    }
+    pend.rent = level;
+    pend.rentResolved = false;
+    pend.rentDue = (mailLoop.month | 0) + 1;
+    const line = opp.owner && opp.owner.renda && opp.owner.renda[level];
+    st.ownerLine[opp.id] = line || '';
+    try { applyMailEffects([prospRentTag(level)], { skipEconomics: true }); } catch (_) {}
+    showToast('Proposta enviada. A resposta fica na ficha, no mês ' + pend.rentDue + '.');
+    try { scheduleSave('prospecao-rent'); } catch (_) {}
+    renderAssetRoom();
+  }
+  function prospResolveRent(opp, pend) {
+    const st = ensureProspecao();
+    let outcome = null;
+    const force = window.__wattProspecaoForce;
+    if (force === 'agree' || force === 'refuse' || force === 'rival') outcome = force;
+    if (!outcome) {
+      const rivalP = prospRivalP(opp, pend.rent);
+      const u = prospRand();
+      if (rivalP > 0 && u < rivalP) outcome = 'rival';
+      else {
+        const p = prospAcceptP(opp, pend.rent);
+        const u2 = prospRand();
+        if (p != null && u2 < p) outcome = 'agree';
+        else outcome = 'refuse';
+      }
+    }
+    if (outcome === 'rival' && !(opp.rivals | 0)) outcome = 'refuse';
+    pend.rentResolved = true;
+    if (outcome === 'agree') {
+      pend.canReoffer = false;
+      st.ownerLine[opp.id] = (opp.owner && opp.owner.aceita) || '';
+      try { applyMailEffects([opp.tags.land_agreed], { skipEconomics: true }); } catch (_) {}
+      const fee = prospSigning(opp, pend.rent);
+      if (typeof fee === 'number' && fee !== 0) {
+        try { applyEconRow({ cash: fee }, (mailLoop && mailLoop.seId) || 'ourique', { cause: 'prospecao_renda' }); } catch (err) { console.warn('[WattProspecao] renda', err); }
+      }
+    } else if (outcome === 'rival') {
+      pend.canReoffer = false;
+      st.ownerLine[opp.id] = (opp.owner && opp.owner.recusa) || '';
+      try { applyMailEffects([opp.tags.lost_to_rival], { skipEconomics: true }); } catch (_) {}
+      prospDeliverRival(opp);
+    } else {
+      const last = opp.last_offer_month;
+      const inTime = last == null || (mailLoop.month | 0) <= (last | 0);
+      const canRetry = pend.rent !== 'alta' && !pend.reoffered && inTime;
+      st.ownerLine[opp.id] = (opp.owner && opp.owner.recusa) || '';
+      try { applyMailEffects(['opp_land_refused'], { skipEconomics: true }); } catch (_) {}
+      if (canRetry) {
+        pend.canReoffer = true;
+      } else {
+        pend.canReoffer = false;
+        pend.closed = true;
+        st.ownerLine[opp.id] = (opp.owner && opp.owner.despedida) || st.ownerLine[opp.id];
+        try { applyMailEffects(['opp_site_closed_' + opp.id], { skipEconomics: true }); } catch (_) {}
+      }
+    }
+  }
+  function prospDeliverRival(opp) {
+    const ctx = { site_name: opp.name, opp_id: opp.id };
+    try {
+      deliverStakeLetter('mail-prospecao-rival-01', 'ourique', {
+        params: ctx,
+        ctx: ctx,
+        allowRepeat: true,
+        id: 'mail-prospecao-rival-01:ourique:' + opp.id,
+        when: 'Mês ' + (mailLoop.month | 0)
+      });
+    } catch (err) { console.warn('[WattProspecao] rival', err); }
+  }
+  function prospConfirmLaunch(opp) {
+    if (!mailTagOn(opp.tags.land_agreed)) { showToast('Primeiro o proprietário tem de aceitar a renda.'); return; }
+    if (mailTagOn(opp.tags.lost_to_rival)) return;
+    if (prospWindowClosed(opp)) { showToast('A janela deste tipo já fechou.'); return; }
+    if (prospTypeBusy(opp.type, opp.id)) { showToast('Já tens uma missão deste tipo em curso.'); return; }
+    try { applyMailEffects([opp.tags.launched], { skipEconomics: true }); } catch (_) {}
+    const kind = opp.type === 'eolica' ? 'eolica' : (opp.type === 'bateria' ? 'bateria' : 'sobreequipamento');
+    tutEmit('effect', 'prospecao_launch:' + kind, 300);
+    const ctx = {
+      site_name: opp.name,
+      trap_size_label: prospTrapLabel(opp),
+      icnf_level: prospIcnfWord(prospDrawn(opp).icnf || opp.icnf),
+      finish_month: prospFinishPhrase(opp),
+      trc_deadline_month: prospDeadlinePhrase(),
+      report_line: prospReportLine(opp),
+      opp_id: opp.id
+    };
+    let skel = 'mail-consultor-sobreequipamento-01';
+    let skin = 'ourique';
+    if (opp.type === 'eolica') { skel = 'mail-eolica-dimensao-01'; skin = 'prospecao'; }
+    else if (opp.type === 'bateria') { skel = 'mail-bateria-dimensao-01'; skin = 'prospecao'; }
+    let letter = null;
+    try {
+      letter = deliverStakeLetter(skel, skin, { params: ctx, ctx: ctx, when: 'Mês ' + (mailLoop.month | 0) });
+    } catch (err) { console.warn('[WattProspecao] lançar', err); }
+    if (!letter) {
+      letter = (mailState.items || []).find((m) => m.skeletonId === skel || String(m.id || '').indexOf(skel) === 0);
+    }
+    prospFilterSizeChoices(letter, opp);
+    assetRoomState.prospecaoWarn = false;
+    try { scheduleSave('prospecao-launch'); } catch (_) {}
+    try { closeAssetRoom(); } catch (_) {}
+    if (letter && window.WattInbox) {
+      WattInbox.open();
+      WattInbox.openLetter(letter.id);
+    }
+  }
+  function prospFilterSizeChoices(letter, opp) {
+    const allow = opp && opp.sizes_available;
+    if (!letter || !allow || !allow.length || !letter.choices) return;
+    letter.choices = letter.choices.filter((c) => {
+      const fx = (c.effects || []).filter((e) => /^(wind_size_|bess_size_|overequip_plan_)/.test(String(e)));
+      if (!fx.length) return true;
+      return fx.some((e) => allow.indexOf(e) !== -1);
+    });
+  }
+  function prospecaoOnSizeChoice(letter, choice) {
+    const gm = prospPack();
+    if (!gm || !choice) return;
+    const effects = (choice.effects || []).map(String);
+    const opp = (gm.opportunities || []).find((o) => o.tags && mailTagOn(o.tags.launched) && effects.some((e) => prospActiveTrapIds(o).indexOf(e) !== -1));
+    if (!opp) return;
+    if (mailTagOn(opp.tags.report_bought)) return;
+    const hit = effects.find((e) => prospActiveTrapIds(opp).indexOf(e) !== -1);
+    const st = ensureProspecao();
+    if ((st.traps || []).some((t) => t.oppId === opp.id)) return;
+    const cfg = (gm.config && gm.config.trap_delay_months) || {};
+    const delay = Number(cfg[opp.type]);
+    if (!Number.isFinite(delay)) return;
+    st.traps.push({ oppId: opp.id, atMonth: (mailLoop.month | 0) + delay, type: opp.type, effect: hit, sent: false });
+    try { scheduleSave('prospecao-trap'); } catch (_) {}
+  }
+  function prospDeliverTrap(t) {
+    const opp = prospOpp(t.oppId);
+    if (!opp) return;
+    const skin = opp.type === 'eolica' ? 'eolica' : (opp.type === 'bateria' ? 'bateria' : 'sobreequipamento');
+    const ctx = { site_name: opp.name, opp_id: opp.id, trap_effect: t.effect || opp.trap_size };
+    try {
+      deliverStakeLetter('mail-prospecao-armadilha-01', skin, {
+        params: ctx,
+        ctx: ctx,
+        allowRepeat: true,
+        id: 'mail-prospecao-armadilha-01:' + skin + ':' + opp.id,
+        when: 'Mês ' + (mailLoop.month | 0)
+      });
+    } catch (err) { console.warn('[WattProspecao] armadilha', err); }
+    const econ = prospEcon();
+    const navs = econ && econ.gm_pack && econ.gm_pack.trap_revealed_nav;
+    const navKey = {
+      wind_size_70: opp.id === 'opp-serra-branca' ? 'wind_70_sb' : null,
+      wind_size_100: opp.id === 'opp-vale-da-rosa' ? 'wind_100_vr' : null,
+      bess_size_20x4: 'bess_20x4',
+      overequip_plan_large: 'overequip_large'
+    }[t.effect || ''];
+    const nav = navKey && navs ? navs[navKey] : null;
+    if (typeof nav === 'number') {
+      try { applyEconRow({ nav: nav }, (mailLoop && mailLoop.seId) || 'ourique', { cause: 'prospecao_trap' }); } catch (err) { console.warn('[WattProspecao] trap nav', err); }
+    }
+  }
+  function prospecaoOnDownsize(letter, choice) {
+    if (!letter || !choice || choice.id !== 'downsize') return;
+    if (typeof mailSkeletonOf === 'function' && mailSkeletonOf(letter) !== 'mail-prospecao-armadilha-01') return;
+    const from = letter.params && letter.params.trap_effect;
+    const to = { wind_size_70: 'wind_size_50', wind_size_100: 'wind_size_70', bess_size_20x4: 'bess_size_20x2', overequip_plan_large: 'overequip_plan_medium' }[from];
+    if (!from || !to || !mailLoop.tags) return;
+    mailLoop.tags[from] = Math.max(0, (mailLoop.tags[from] || 1) - 1);
+    const a = (typeof econEffectRow === 'function' && econEffectRow(from)) || {};
+    const b = (typeof econEffectRow === 'function' && econEffectRow(to)) || {};
+    const delta = {};
+    ['cash', 'nav', 'equity', 'car', 'debt', 'bonding', 'months'].forEach((f) => {
+      if (typeof a[f] === 'number' && typeof b[f] === 'number') delta[f] = +(b[f] - a[f]).toFixed(3);
+    });
+    try { applyEconRow(delta, (mailLoop && mailLoop.seId) || 'ourique', { cause: 'prospecao_downsize' }); } catch (_) {}
+    try { applyMailEffects([to], { skipEconomics: true }); } catch (_) {}
+  }
+  function maybeHybridHint() {
+    if (typeof landChosen !== 'function' || !landChosen()) return;
+    const month = mailLoop.month | 0;
+    if (month < 1 || month > 6) return;
+    const pack = window.__wattEventPack;
+    const rules = (pack && pack.rules_draft && pack.rules_draft.rules) || [];
+    const rule = rules.find((r) => r && r.id === 'r-consultor-hibrido');
+    const blocks = (rule && rule.blocks_if_any_effects) || ['hybrid_hint_seen'];
+    if (blocks.some((k) => mailTagOn(k))) return;
+    const ids = (mailLoop && mailLoop.deliveredIds) || {};
+    if (ids['mail-consultor-hibrido-01:ourique'] || ids['mail-consultor-hibrido-01']) return;
+    try { deliverStakeLetter('mail-consultor-hibrido-01', 'ourique', { when: 'Mês ' + month }); } catch (err) { console.warn('[WattProspecao] dica', err); }
+  }
+  function prospecaoOnMonth() {
+    if (typeof mailLoop === 'undefined' || !mailLoop || !mailLoop.active) return;
+    const st = ensureProspecao();
+    if (!st) return;
+    try { maybeHybridHint(); } catch (err) { console.warn('[WattProspecao] dica', err); }
+    const month = mailLoop.month | 0;
+    const gm = prospPack();
+    ((gm && gm.opportunities) || []).forEach((opp) => {
+      const pend = st.pending[opp.id];
+      if (!pend) return;
+      if (pend.reportDue != null && month >= pend.reportDue && !st.reportReady[opp.id]) {
+        st.reportReady[opp.id] = true;
+        st.ownerLine[opp.id + ':report'] = prospReportText(opp);
+      }
+      if (pend.rent && pend.rentDue != null && month >= pend.rentDue && !pend.rentResolved) {
+        try { prospResolveRent(opp, pend); } catch (err) { console.warn('[WattProspecao] renda', err); }
+      }
+    });
+    (st.traps || []).forEach((t) => {
+      if (!t.sent && month >= (t.atMonth | 0)) {
+        prospDeliverTrap(t);
+        t.sent = true;
+      }
+    });
+    st.traps = (st.traps || []).filter((t) => !t.sent);
+    if (assetRoomState.open && assetRoomState.prospecao) {
+      try { renderAssetRoom(); } catch (_) {}
+    }
+  }
+
+  function renderProspecaoScreen(body, node) {
+    ensureProspecao();
+    const gm = prospPack();
+    if (!gm) {
+      body.innerHTML = '<p class="ps-note">A prospeção ainda não está disponível.</p>';
+      return;
+    }
+    if (assetRoomState.prospecao === 'list') renderProspecaoList(body, node, gm);
+    else renderProspecaoCard(body, node, gm, prospOpp(assetRoomState.prospecao));
+    body.querySelectorAll('[data-ps]').forEach((el) => {
+      el.addEventListener('click', () => prospClick(el.getAttribute('data-ps'), el.getAttribute('data-ps-id'), el.getAttribute('data-ps-arg')));
+    });
+  }
+  function prospClick(action, id, arg) {
+    const opp = prospOpp(id);
+    if (action === 'open' && opp) {
+      assetRoomState.prospecao = opp.id;
+      assetRoomState.prospecaoWarn = false;
+      renderAssetRoom();
+      return;
+    }
+    if (!opp) return;
+    if (action === 'report') prospBuyReport(opp);
+    else if (action === 'rent') prospOfferRent(opp, arg);
+    else if (action === 'warn') { assetRoomState.prospecaoWarn = true; renderAssetRoom(); }
+    else if (action === 'warn-back') { assetRoomState.prospecaoWarn = false; renderAssetRoom(); }
+    else if (action === 'launch') prospConfirmLaunch(opp);
+  }
+  function renderProspecaoList(body, node, gm) {
+    ensureAssetMwState(node);
+    const free = formatMwHudPct(freeMwPct(node), node.mwState && node.mwState.trc_mw);
+    const cards = (gm.opportunities || []).map((opp) => {
+      const lost = opp.tags && mailTagOn(opp.tags.lost_to_rival);
+      const launched = opp.tags && mailTagOn(opp.tags.launched);
+      const win = opp.deadline_bar && opp.deadline_bar.window_month;
+      return '<button type="button" class="ps-card' + (lost ? ' is-lost' : '') + '" data-ps="open" data-ps-id="' + escapeHtml(opp.id) + '">' +
+        '<div class="ps-card-top"><span class="ps-kicker">' + escapeHtml(prospTypeLabel(opp.type)) + '</span>' +
+        (launched ? '<span class="ps-flag">Em curso</span>' : '') +
+        (lost ? '<span class="ps-flag bad">Perdido</span>' : '') +
+        '</div><h3>' + escapeHtml(opp.name) + '</h3><p>' + escapeHtml(opp.pitch || '') + '</p>' +
+        '<p class="ps-meta">Janela até ao mês ' + (win == null ? '—' : win) + (opp.rivals ? (' · ' + opp.rivals + (opp.rivals === 1 ? ' rival' : ' rivais')) : ' · sem rivais') + '</p>' +
+        '</button>';
+    }).join('');
+    body.innerHTML = '<section class="ps-wrap" aria-label="Prospeção">' +
+      '<div class="ps-head"><div class="ps-kicker">Prospeção</div><h2>Locais neste ponto de ligação</h2>' +
+      '<p class="ps-free">MW livres <strong class="num">' + free + '</strong></p>' +
+      '<p class="ps-note">A eólica fecha no mês 6, inclusive. As baterias e os painéis a mais fecham no mês 10. Cada ficha escolhe o local. O tamanho escolhe-se a seguir, na carta.</p></div>' +
+      '<div class="ps-list">' + cards + '</div></section>';
+  }
+  function renderProspecaoCard(body, node, gm, opp) {
+    if (!opp) { assetRoomState.prospecao = 'list'; renderProspecaoList(body, node, gm); return; }
+    const ready = prospReportReady(opp.id);
+    const d = prospDrawn(opp);
+    const base = prospBaseLevels(opp);
+    const lost = mailTagOn(opp.tags.lost_to_rival);
+    const agreed = mailTagOn(opp.tags.land_agreed);
+    const launched = mailTagOn(opp.tags.launched);
+    const st = ensureProspecao();
+    const pend = (st.pending && st.pending[opp.id]) || {};
+    const fields = [
+      ['recurso', 'Recurso', base.recurso, d.recurso],
+      ['licenca', 'Licenciamento', base.licenca, d.licenca],
+      ['terreno', 'Acesso ao terreno', base.terreno, d.terreno],
+      ['corte', 'Corte na rede', base.corte, d.corte]
+    ];
+    const rows = fields.map((f) => {
+      const shown = prospLevelShown(opp, f[0], f[2], f[3], ready);
+      if (!shown) return '';
+      return '<div class="ps-attr"><span class="ps-attr-k">' + escapeHtml(f[1]) + '</span><span class="ps-attr-v">' +
+        prospDots(shown.exact, shown.lo, shown.hi) + '<span class="num">' + escapeHtml(shown.text) + '</span></span></div>';
+    }).join('');
+    const icnfText = ready
+      ? prospIcnfWord(d.icnf || opp.icnf)
+      : ((opp.icnf_view && opp.icnf_view.sem_relatorio) || prospIcnfWord(opp.icnf));
+    const rivals = (opp.rivals | 0) === 0 ? 'Sem rivais' : ((opp.rivals | 0) === 1 ? '1 rival' : (opp.rivals + ' rivais'));
+    const sizes = prospSizeBlocks(opp).map((b) => {
+      return '<div class="ps-size"><div class="ps-size-k">' + escapeHtml(b.title) + '</div>' +
+        b.lines.map((ln) => '<div class="ps-size-l num">' + prospHyp(ln) + '</div>').join('') + '</div>';
+    }).join('');
+    const cost = prospReportCost(opp);
+    let reportBtn = '';
+    if (mailTagOn(opp.tags.report_bought)) {
+      reportBtn = ready
+        ? '<p class="ps-report">' + escapeHtml(st.ownerLine[opp.id + ':report'] || prospReportText(opp)) + '</p>'
+        : '<p class="ps-note">Relatório pedido. Fica pronto no mês ' + (pend.reportDue == null ? 'seguinte' : pend.reportDue) + '.</p>';
+    } else if (!lost) {
+      reportBtn = '<button type="button" class="ps-primary" data-ps="report" data-ps-id="' + escapeHtml(opp.id) + '">Pedir relatório' +
+        (typeof cost === 'number' ? (' · ' + escapeHtml(prospEuro(cost))) : '') + '</button> <span class="asset-hyp">Hipótese</span>';
+    }
+    const owner = st.ownerLine[opp.id] ? '<p class="ps-owner">' + escapeHtml(st.ownerLine[opp.id]) + '</p>' : '';
+    const voice = opp.owner && opp.owner.voz_gm ? '<p class="ps-voice">' + escapeHtml(opp.owner.voz_gm) + '</p>' : '';
+    let rents = '';
+    if (pend.closed) {
+      rents = '<p class="ps-note">Este terreno ficou fechado.</p>';
+    } else if (!lost && !agreed && !launched) {
+      const rank = { baixa: 0, media: 1, alta: 2 };
+      const levels = ['baixa', 'media', 'alta'].filter((level) => !pend.canReoffer || rank[level] > rank[pend.rent]);
+      rents = '<div class="ps-rents">' + levels.map((level) => {
+        const label = level === 'baixa' ? 'Baixa' : (level === 'alta' ? 'Alta' : 'Média');
+        const fee = prospSigning(opp, level);
+        const p = prospAcceptP(opp, level);
+        const rate = prospRentRate(opp, level);
+        const bits = [label];
+        if (rate) bits.push(rate);
+        if (fee != null) bits.push('assinatura ' + prospEuro(fee));
+        if (p != null) bits.push('aceita ' + p.toFixed(2).replace('.', ','));
+        return '<button type="button" data-ps="rent" data-ps-id="' + escapeHtml(opp.id) + '" data-ps-arg="' + level + '">' + escapeHtml(bits.join(' · ')) + '</button>';
+      }).join('') + '</div><p class="ps-note"><span class="asset-hyp">Hipótese</span></p>';
+      if (pend.canReoffer && opp.owner && opp.owner.segunda_oferta) {
+        rents = '<p class="ps-owner">' + escapeHtml(opp.owner.segunda_oferta) + '</p>' + rents;
+      }
+      if (pend.rent && !pend.rentResolved) {
+        rents += '<p class="ps-note">À espera da resposta, no mês ' + pend.rentDue + '.</p>';
+      }
+    }
+    const finish = prospFinishMonth(opp);
+    const due = prospTrcMonth();
+    const red = prospBarRed(opp);
+    let time = 'Prazo ainda por marcar';
+    if (finish != null && due != null) time = 'Fim previsto no mês ' + finish + '. Prazo do TRC no mês ' + due + '.';
+    else if (finish != null) time = 'Fim previsto no mês ' + finish + '. Prazo do TRC ainda por marcar.';
+    let launch = '';
+    if (launched) launch = '<p class="ps-note">Missão lançada. O tamanho está na carta do Correio.</p>';
+    else if (lost) launch = '<p class="ps-note">O rival ficou com este terreno.</p>';
+    else if (assetRoomState.prospecaoWarn) {
+      const buttons = (gm.launch_warning && gm.launch_warning.buttons) || {};
+      launch = '<div class="ps-warn"><p>' + escapeHtml(prospLaunchCopy(opp)).replace(/\n/g, '<br>') + '</p>' +
+        '<div class="ps-warn-actions"><button type="button" class="ps-primary" data-ps="launch" data-ps-id="' + escapeHtml(opp.id) + '">' +
+        escapeHtml((buttons.confirm && buttons.confirm.label) || 'Lançar') + '</button>' +
+        '<button type="button" data-ps="warn-back" data-ps-id="' + escapeHtml(opp.id) + '">' +
+        escapeHtml((buttons.back && buttons.back.label) || 'Voltar') + '</button></div></div>';
+    } else {
+      let why = '';
+      if (pend.closed) why = 'Este terreno ficou fechado.';
+      else if (!agreed) why = 'Primeiro o proprietário tem de aceitar a renda.';
+      else if (prospWindowClosed(opp)) why = 'A janela fechou no mês ' + (opp.deadline_bar && opp.deadline_bar.window_month) + '.';
+      else if (prospTypeBusy(opp.type, opp.id)) why = 'Já tens uma missão deste tipo em curso.';
+      launch = '<button type="button" class="ps-primary" data-ps="warn" data-ps-id="' + escapeHtml(opp.id) + '"' + (why ? ' disabled' : '') + '>Lançar</button>' +
+        (why ? '<p class="ps-note">' + escapeHtml(why) + '</p>' : '');
+    }
+    body.innerHTML = '<article class="ps-detail" aria-label="' + escapeHtml(opp.name) + '">' +
+      '<header class="ps-hero"><div class="ps-kicker">' + escapeHtml(prospTypeLabel(opp.type)) + '</div><h2>' + escapeHtml(opp.name) + '</h2><p>' + escapeHtml(opp.pitch || '') + '</p>' +
+      (opp.description_ficha ? '<p>' + escapeHtml(opp.description_ficha) + '</p>' : '') + '</header>' +
+      (!ready && opp.card_line_no_report ? '<p class="ps-note">' + escapeHtml(opp.card_line_no_report) + '</p>' : '') +
+      '<p class="ps-scale">Níveis de 1 a 5. O 5 é sempre o melhor. No corte, 5 é quase nenhum corte. Sem relatório, o intervalo é de um nível para cada lado.</p>' +
+      rows +
+      '<div class="ps-attr"><span class="ps-attr-k">Risco ICNF</span><span class="ps-attr-v">' + escapeHtml(icnfText) + '</span></div>' +
+      '<div class="ps-attr"><span class="ps-attr-k">Rivais</span><span class="ps-attr-v">' + escapeHtml(rivals) + '</span></div>' +
+      '<div class="ps-time' + (red ? ' is-red' : '') + '"><div class="ps-time-bar"><span></span></div><p>' + escapeHtml(time) + ' <span class="asset-hyp">Hipótese</span></p></div>' +
+      '<div class="ps-sizes">' + sizes + '</div>' +
+      reportBtn + voice + owner + rents + launch +
+      '</article>';
+  }
+
+  window.__wattProspecaoForce = window.__wattProspecaoForce || null;
 
   function tutEmit(kind, val, delay) {
     setTimeout(function () { if (window.__tut) window.__tut.emit(kind, val); }, delay == null ? 280 : delay);

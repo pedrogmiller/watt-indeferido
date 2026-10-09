@@ -1,0 +1,15 @@
+{
+  "id": "mail-eolica-marco-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "delivery": "note",
+  "choices": [],
+  "trigger": {
+    "rule": "by_skin"
+  },
+  "from_type": "CONSULTOR",
+  "heavy": false,
+  "notes_for_ui": "Nota no HUD/registo. Mexe só no caminho do vento, nunca no COD solar.",
+  "nota_gm": "Skins: medicao (wind_measurement_done) e aia (wind_aia_required). euro-fields-console.md §24 · effects-economy.json hybrid_cards_2026_10_09b · hibrido-ourique-eolica-2026-10-09.md §5",
+  "hybrid_cards_v01_2026_10_09": true
+}

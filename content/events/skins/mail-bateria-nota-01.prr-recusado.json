@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-bateria-nota-01",
+  "skin_id": "prr-recusado",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Fundo Ambiental",
+  "subject": "Fundo Ambiental: apoio às baterias recusado",
+  "body": "O Fundo Ambiental recusou o apoio às baterias. Havia mais candidaturas do que dinheiro. As baterias seguem, pagas por ti.",
+  "consequence_pt": "Sem apoio: as baterias seguem com o custo todo do teu lado.",
+  "on_deliver_effects": [
+    "bess_prr_refused"
+  ],
+  "hybrid_cards_v01_2026_10_09": true
+}

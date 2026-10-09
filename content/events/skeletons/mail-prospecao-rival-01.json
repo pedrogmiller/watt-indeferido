@@ -1,0 +1,35 @@
+{
+  "id": "mail-prospecao-rival-01",
+  "phase": "post_win",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "trigger": {
+    "rule": "r-prospecao-rival"
+  },
+  "priority": "normal",
+  "from_type": "CONSULTOR",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "search_again",
+      "label": "Procurar outro local",
+      "effects": [],
+      "opens_screen": "prospecao",
+      "hint": "Voltas à prospeção. As janelas da eólica e das baterias continuam a contar.",
+      "consequence_pt": "Voltas à prospeção para escolher outro local. Perdeste este terreno."
+    },
+    {
+      "id": "drop",
+      "label": "Deixar estar",
+      "effects": [],
+      "hint": "Não procuras outro local agora. Podes voltar à prospeção na Sala enquanto as janelas estiverem abertas.",
+      "consequence_pt": "Ficas sem este local. Podes voltar à prospeção mais tarde, se ainda houver tempo."
+    }
+  ],
+  "on_deliver_effects": [
+    "opp_lost_to_rival_{{opp_id}}"
+  ],
+  "notes_for_ui": "on_deliver aplica opp_lost_to_rival_<id> e retira a ficha da prospeção.",
+  "nota_gm": "Sem € no texto.",
+  "prospecao_v01_2026_10_09": true
+}

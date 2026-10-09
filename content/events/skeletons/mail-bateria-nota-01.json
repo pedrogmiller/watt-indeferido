@@ -1,0 +1,15 @@
+{
+  "id": "mail-bateria-nota-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "delivery": "note",
+  "choices": [],
+  "trigger": {
+    "rule": "by_skin"
+  },
+  "from_type": "CONSULTOR",
+  "heavy": false,
+  "notes_for_ui": "Nota no HUD/registo. Só mexe na bateria (track bess); nunca no COD solar.",
+  "nota_gm": "Skins: prr-aprovado (bess_prr_grant), prr-recusado (bess_prr_refused), entrada-lenta (bess_entry_slow), paragem-ligacao (bess_tie_in_outage), saturacao (bess_revenue_saturation). euro-fields-console.md §24 · effects-economy.json hybrid_cards_2026_10_09b · hibrido-ourique-eolica-2026-10-09.md §5",
+  "hybrid_cards_v01_2026_10_09": true
+}

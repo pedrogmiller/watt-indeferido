@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-eolica-marco-01",
+  "skin_id": "medicao",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Vento medido: um ano de dados",
+  "body": "A torre de medição já tem um ano de dados. O vento confirma-se e o projeto eólico passa a valer alguma coisa, mesmo que o vendas já.",
+  "consequence_pt": "O projeto eólico passou a ter vento medido: já vale alguma coisa no fim do ciclo.",
+  "on_deliver_effects": [
+    "wind_measurement_done"
+  ],
+  "hybrid_cards_v01_2026_10_09": true
+}

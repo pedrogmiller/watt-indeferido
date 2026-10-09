@@ -1,0 +1,41 @@
+{
+  "id": "mail-consultor-hibrido-01",
+  "phase": "post_win",
+  "draft": false,
+  "status": "approved",
+  "trigger": {
+    "rule": "r-consultor-hibrido"
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "heavy": false,
+  "choices": [
+    {
+      "id": "see_wind",
+      "label": "Ver as opções de eólica",
+      "effects": [
+        "hybrid_hint_seen"
+      ],
+      "hint": "Abre a prospeção: vês os locais para eólica e baterias no teu ponto de ligação.",
+      "consequence_pt": "Abres a prospeção: ainda não gastaste nada.",
+      "opens_action_before_prospecao_v01_2026_10_09": "eolica",
+      "opens_screen": "prospecao",
+      "hint_before_prospecao_v01_2026_10_09": "Abre a carta do parque eólico, onde escolhes o tamanho.",
+      "consequence_pt_before_prospecao_v01_2026_10_09": "Abres as opções de eólica: ainda não gastaste nada."
+    },
+    {
+      "id": "later",
+      "label": "Mais tarde",
+      "effects": [
+        "hybrid_hint_seen"
+      ],
+      "hint": "Não muda nada. Podes juntar eólica até ao M6 e baterias até ao M10, na Sala.",
+      "consequence_pt": "Fica para depois: nada muda. A eólica fecha no M6 e as baterias no M10."
+    }
+  ],
+  "notes_for_ui": "see_wind abre o ecrã prospecao (opens_screen: prospecao). hybrid_hint_seen só marca que a carta foi respondida (once).",
+  "notes_for_economy": "hybrid_hint_seen: tag nova a 0 € — PEDIR linha a 0.",
+  "nota_gm": "Contexto 2026-10-09: rivais licitam 20–30 €/MWh (regra nova da Economy, regeneração a caminho); só com solar o projeto perde dinheiro; o híbrido (eólica + baterias, regra 75/25) salva-o.",
+  "hybrid_hint_v01_2026_10_09": true,
+  "prospecao_v01_2026_10_09": "see_wind abre a prospeção (opens_screen). O corpo aprovado ainda cita os botões «+ Juntar…» — ver relatório."
+}

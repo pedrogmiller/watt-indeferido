@@ -1,0 +1,69 @@
+{
+  "id": "mail-bateria-dimensao-01",
+  "phase": "post_win",
+  "draft": true,
+  "status": "DRAFT 2026-10-09 — Pedro: o jogador escolhe o tamanho; regra 75/25 REAL. Substitui mail-consultor-valueadd-01 (M8) e o caminho mail-joker-fa-bess-01 → mail-fa-bess-resposta-01.",
+  "trigger": {
+    "rule": "r-bateria-dimensao",
+    "on_action": "bess",
+    "fallback_rule": "r-bateria-dimensao-consultor",
+    "latest_month": 10
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "heavy": true,
+  "mutex_group": "bess_size",
+  "on_deliver_effects": [
+    "bess_charging_rule_75_25"
+  ],
+  "choices": [
+    {
+      "id": "bess_10x2",
+      "label": "Juntar 10 MW por 2 horas",
+      "effects": [
+        "bess_size_10x2"
+      ],
+      "hint": "Pequena e barata. Com eólica dá algum lucro; sem eólica perde pouco.",
+      "hint_preview": "NPV: {{npv_sem_eolica}} sem eólica · {{npv_com_eolica}} com eólica",
+      "consequence_pt": "Juntas uma bateria pequena: sai pouco dinheiro da caixa e precisas de mais capital próprio na decisão final.",
+      "card_seal_gm": "seguro"
+    },
+    {
+      "id": "bess_20x2",
+      "label": "Juntar 20 MW por 2 horas",
+      "effects": [
+        "bess_size_20x2"
+      ],
+      "hint": "O melhor tamanho se tiveres eólica a carregá-la. Sem eólica, perde dinheiro.",
+      "hint_preview": "NPV: {{npv_sem_eolica}} sem eólica · {{npv_com_eolica}} com eólica",
+      "consequence_pt": "Juntas uma bateria de 20 MW: com eólica sobe o NPV; sem eólica desce. Precisas de mais capital próprio na decisão final.",
+      "card_seal_gm": "recomendado (com vento)"
+    },
+    {
+      "id": "bess_20x4",
+      "label": "Juntar 20 MW por 4 horas",
+      "effects": [
+        "bess_size_20x4"
+      ],
+      "hint": "Guarda o dobro da energia, mas custa quase o dobro. Mesmo com eólica, as horas extra quase nunca se pagam.",
+      "hint_preview": "NPV: {{npv_sem_eolica}} sem eólica · {{npv_com_eolica}} com eólica",
+      "consequence_pt": "Juntas uma bateria grande de 4 horas: muito capital próprio a mais e o NPV desce, com ou sem eólica.",
+      "card_seal_gm": "armadilha"
+    },
+    {
+      "id": "bess_none",
+      "label": "Não juntar baterias",
+      "effects": [
+        "bess_declined"
+      ],
+      "hint": "A central segue sem baterias. Não gastas nada e não arriscas.",
+      "hint_preview": "",
+      "consequence_pt": "Sem baterias: não gastas nada e o capital próprio da decisão final não muda.",
+      "card_seal_gm": null
+    }
+  ],
+  "notes_for_ui": "O consultor mostra SEMPRE as duas prévias (sem eólica / com eólica), lidas de hybrid_cards_2026_10_09b.bess_cards: npv_sem_eolica = nav_no_wind; npv_com_eolica = nav_with_wind_20 (20–40 MW) ou nav_with_wind_50 (≥50 MW); se ainda não houver wind_size_*, mostrar nav_with_wind_50 com a etiqueta «com 50 MW de eólica». Realçar a prévia que se aplica ao jogador. Selo só para o GM.",
+  "notes_for_economy": "bess_size_*: valores em hybrid_cards_2026_10_09b.bess_cards. bess_declined: tag nova, sem € — PEDIR linha a 0. Candidatura ao PRR: automática com bess_size_* (sem custo extra; PEDIR se houver taxa).",
+  "nota_gm": "Regra 75/25 (REAL, Pedro 2026-10-09; Akuo Santas deck 4.3 p3/p12): a energia da central solar do leilão não carrega a bateria; ≥75 % vem do vento ou dos cortes dos painéis, ≤25 % da rede, ≤24,75 MW da rede. Licença própria do armazenamento (DL 15/2022 art. 74.º) ~6 m + obra ~12 + entrada ~3 = 21 meses: tem de arrancar até ~M10. euro-fields-console.md §24 · effects-economy.json hybrid_cards_2026_10_09b · hibrido-ourique-eolica-2026-10-09.md §5",
+  "hybrid_cards_v01_2026_10_09": true
+}

@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-bateria-nota-01",
+  "skin_id": "paragem-ligacao",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Ligar as baterias obriga a parar a central",
+  "body": "Para ligar as baterias ao ponto partilhado, a central solar tem de parar uns dias. Perdes a produção desses dias.",
+  "consequence_pt": "A central parou uns dias para ligar as baterias: o NPV desce um pouco. O COD solar não muda.",
+  "on_deliver_effects": [
+    "bess_tie_in_outage"
+  ],
+  "hybrid_cards_v01_2026_10_09": true
+}

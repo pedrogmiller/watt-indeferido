@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-bateria-nota-01",
+  "skin_id": "entrada-lenta",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Baterias: a entrada em funcionamento atrasa",
+  "body": "A obra das baterias acabou, mas a REN e a DGEG ainda não aprovaram a contagem e os ensaios. As baterias atrasam uns meses. A central solar não muda.",
+  "consequence_pt": "As baterias começam cerca de 4 meses mais tarde: perdes receita delas. O COD solar não muda.",
+  "on_deliver_effects": [
+    "bess_entry_slow"
+  ],
+  "hybrid_cards_v01_2026_10_09": true
+}
