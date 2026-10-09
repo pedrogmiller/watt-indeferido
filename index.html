@@ -18611,12 +18611,13 @@
         const mw = sizes[pair[0]];
         if (mw == null) return;
         const np = prospWindNpvs(opp, mw);
+        const role = ready ? (pair[1] + ' · ') : '';
         let npvTxt = '—';
         if (ready && np.exact != null) npvTxt = prospEuro(np.exact);
         else if (np.vals.length) npvTxt = prospEuroRange(Math.min.apply(null, np.vals), Math.max.apply(null, np.vals));
         else if (np.exact != null) npvTxt = prospEuro(np.exact);
         const eq = prospEquity(opp, mw);
-        blocks.push({ title: pair[1] + ' · ' + mw + ' MW', lines: [
+        blocks.push({ title: role + mw + ' MW', lines: [
           'NPV esperado ' + npvTxt,
           eq == null ? '' : ('Capital próprio ' + prospEuro(eq))
         ].filter(Boolean) });
@@ -18642,13 +18643,14 @@
       [['seguro', 'Seguro'], ['recomendado', 'Recomendado'], ['armadilha', 'Armadilha']].forEach((pair) => {
         const row = sizes && sizes[pair[0]];
         if (!row) return;
+        const role = ready ? (pair[1] + ' · ') : '';
         let withWind = row.npv && row.npv.vento_50;
         let noWind = row.npv && row.npv.vento_0;
         if (ready && corte === 3 && hair && typeof hair[roleKey[pair[0]]] === 'number') {
           if (typeof withWind === 'number') withWind = +(withWind + hair[roleKey[pair[0]]]).toFixed(2);
           if (typeof noWind === 'number') noWind = +(noWind + hair[roleKey[pair[0]]]).toFixed(2);
         }
-        blocks.push({ title: pair[1] + ' · ' + (row.size || ''), lines: [
+        blocks.push({ title: role + (row.size || ''), lines: [
           'NPV com 50 MW de eólica ' + prospEuro(withWind),
           'NPV sem eólica ' + prospEuro(noWind),
           'Capital próprio ' + prospEuro(row.equity_100)
@@ -18667,7 +18669,8 @@
       [['small', 'Pequeno'], ['medium', 'Médio'], ['large', 'Grande']].forEach((pair) => {
         const row = sobre && sobre[pair[0]];
         if (!row) return;
-        blocks.push({ title: pair[1] + ' · +' + row.added_MWp + ' MWp', lines: [
+        const role = ready ? (pair[1] + ' · ') : '';
+        blocks.push({ title: role + '+' + row.added_MWp + ' MWp', lines: [
           'NPV ' + prospEuro(row.nav_99MVA),
           'Capital próprio ' + prospEuro(row.equity)
         ] });
@@ -18870,7 +18873,7 @@
     }
     assetRoomState.prospecaoWarn = false;
     try { scheduleSave('prospecao-launch'); } catch (_) {}
-    renderAssetRoom();
+    try { closeAssetRoom(); } catch (_) {}
     if (letter && window.WattInbox) {
       WattInbox.open();
       WattInbox.openLetter(letter.id);
