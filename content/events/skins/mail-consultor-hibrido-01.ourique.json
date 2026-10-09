@@ -1,0 +1,13 @@
+{
+  "skeleton_id": "mail-consultor-hibrido-01",
+  "skin_id": "ourique",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Só com solar, o fundo não vai aceitar",
+  "body": "Ganhámos o TRC, mas ao preço a que fechámos, a central só com solar rende abaixo do mínimo que o fundo aceita.\n\nO que salva o projeto é usar a mesma ligação para mais: um parque eólico e baterias. Na Sala, em «Procurar eólico, baterias ou mais painéis», a eólica fica aberta até ao M6 e as baterias até ao M10. Depois disso já não cabem no ciclo.",
+  "params": {},
+  "hybrid_hint_v01_2026_10_09": true,
+  "body_before_prospecao_2026_10_09": "Ganhámos o TRC, mas ao preço a que fechámos, a central só com solar rende abaixo do mínimo que o fundo aceita.\n\nO que salva o projeto é usar a mesma ligação para mais: um parque eólico e baterias. Na Sala, «+ Juntar um parque eólico» fica aberto até ao M6 e «+ Juntar baterias» até ao M10. Depois disso já não cabem no ciclo."
+}

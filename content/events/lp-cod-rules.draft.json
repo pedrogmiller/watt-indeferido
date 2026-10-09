@@ -4267,13 +4267,30 @@
       "skeleton": "mail-transformador-encomenda-01",
       "skin": "ourique",
       "status": "draft_pending_pedro",
-      "when_phase": ["land", "pip", "aia", "licenca_producao"],
+      "when_phase": [
+        "land",
+        "pip",
+        "aia",
+        "licenca_producao"
+      ],
       "heavy": true,
       "relevant": true,
       "once": true,
-      "requires_all_effects": ["pip_aprovado"],
-      "requires_any_effects": ["nao_sujeicao", "env_path_nao_sujeito"],
-      "blocks_if_any_effects": ["transformer_order_early", "transformer_order_late", "fid_reached", "construction_started", "sale_full_exit", "trc_caducado"],
+      "requires_all_effects": [
+        "pip_aprovado"
+      ],
+      "requires_any_effects": [
+        "nao_sujeicao",
+        "env_path_nao_sujeito"
+      ],
+      "blocks_if_any_effects": [
+        "transformer_order_early",
+        "transformer_order_late",
+        "fid_reached",
+        "construction_started",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
       "after_effect": {
         "tag": "pip_aprovado",
         "months": 2,
@@ -4281,10 +4298,53 @@
         "source": "Pedro 2026-10-06: M6 depois do PIP. PIP ~M4 → +2 ≈ M6 (não partilha o M5 com o pedido de LP)."
       },
       "odds_mode": "numeric",
-      "odds": { "base": 1.0, "source": "sai sempre no caminho Ourique" },
+      "odds": {
+        "base": 1.0,
+        "source": "sai sempre no caminho Ourique"
+      },
       "wait_for_answer_if_delivered": true,
       "transformador_m6_2026_10_06": true,
       "note": "Ourique only (requires nao_sujeicao). when_phase includes aia and licenca_producao because pip_aprovado immediately raises the console phase to aia, and the LP can land before the two-month wait ends. Blocks stop the letter at FID and at construction."
+    },
+    {
+      "id": "r-consultor-hibrido",
+      "skeleton": "mail-consultor-hibrido-01",
+      "skin": "ourique",
+      "status": "approved",
+      "when_phase": [
+        "trc_won",
+        "land"
+      ],
+      "heavy": false,
+      "relevant": true,
+      "once": true,
+      "requires_phase_reached": "trc_won",
+      "blocks_if_any_effects": [
+        "wind_size_20",
+        "wind_size_40",
+        "wind_size_50",
+        "wind_size_70",
+        "wind_size_100",
+        "bess_size_10x2",
+        "bess_size_20x2",
+        "bess_size_20x4",
+        "hybrid_hint_seen",
+        "sale_full_exit",
+        "trc_caducado"
+      ],
+      "after_effect": {
+        "tag": "trc_won (fase)",
+        "months": 1,
+        "band": "1-2",
+        "source": "GM: M1–M2, antes de a janela da eólica (M6) fechar"
+      },
+      "odds_mode": "numeric",
+      "odds": {
+        "base": 1.0,
+        "source": "sai sempre, se ainda não houver híbrido"
+      },
+      "note": "Gatilho = entrada na fase trc_won, +1–2 meses (M1–M2).",
+      "hybrid_hint_v01_2026_10_09": true
     }
   ],
   "phase_bump_proposed": {

@@ -1,0 +1,364 @@
+{
+  "version": 1,
+  "status": "DRAFT 2026-10-09 — GM, versão aprovada (Chief of Staff/Pedro): 3–5 fichas, sem filtros, sem estudo rápido, sem lista curta.",
+  "se_id": "ourique",
+  "screen": "prospecao",
+  "rules_summary": {
+    "levels": "1 a 5 em recurso, licença, terreno e corte; 5 = mais favorável (corte 5 = quase sem corte).",
+    "vagueness": "Sem relatório: intervalo de ±1 nível; com relatório: nível exato.",
+    "report": "Um só relatório pago por oportunidade (opp_report_bought_<id>, € PEDIR_ECONOMY): revela o true_risk e o trap_size.",
+    "rent": "Baixa, média ou alta (opp_rent_*); resposta do proprietário 1 mês depois (PEDIR). Odds de aceitar: PEDIR_ECONOMY (proposta GM 0,4 / 0,75 / 0,95).",
+    "launch_requires": "opp_land_agreed_<id>; uma missão por tipo (eólica e bateria em paralelo, no máximo uma de cada); janelas M6 eólica, M10 bateria.",
+    "size": "O tamanho escolhe-se em mail-eolica-dimensao-01 / mail-bateria-dimensao-01 (skin prospecao, com {{site_name}}).",
+    "true_risk": "Sorteado no início da partida (seed); probabilidades PEDIR_ECONOMY."
+  },
+  "opportunities": [
+    {
+      "id": "opp-serra-branca",
+      "type": "eolica",
+      "name": "Serra Branca",
+      "pitch": "O melhor vento do concelho, numa linha de cumes. As aves da estepe também gostam dele.",
+      "levels": {
+        "recurso": 4,
+        "licenca": 2,
+        "terreno": 3,
+        "corte": 3
+      },
+      "icnf": "alto",
+      "rivals": 1,
+      "nota_gm": "Perto da ZPE de Castro Verde (aves estepárias: abetarda, sisão, peneireiro-das-torres). Com 11+ torres, a avaliação ambiental completa é quase certa.",
+      "true_risk": {
+        "icnf": {
+          "alto": 0.6,
+          "muito_alto": 0.4
+        },
+        "recurso": {
+          "4": 0.7,
+          "5": 0.3
+        },
+        "odds_source": "PEDIR_ECONOMY"
+      },
+      "trap_size": "wind_size_70",
+      "trap_size_label": "70 MW (11 torres)",
+      "trap_why_gm": "≥10 torres em zona sensível → AIA quase certa + corte maior; o vento bom engana.",
+      "owner": {
+        "voz_gm": "O herdeiro desconfiado: herdou o monte do pai, os irmãos estão fora e ele não quer ser enganado.",
+        "renda": {
+          "baixa": "Isso é o que pagam pelos eucaliptos. O meu pai não ia gostar. Vou pensar, mas não prometo nada.",
+          "media": "Já é conversa. Tenho de falar com os meus irmãos. Dou-lhe resposta em breve.",
+          "alta": "Está bem. Pelo menos não me estão a fazer de parvo. Pode mandar o contrato."
+        },
+        "aceita": "Pronto, fechamos. Mas quero ver as torres no papel antes de alguém pôr lá uma máquina.",
+        "recusa": "Pensei bem e não. Não vendo a serra do meu pai por esse dinheiro."
+      },
+      "view": {
+        "sem_relatorio": {
+          "recurso": "3–5",
+          "licenca": "1–3",
+          "terreno": "2–4",
+          "corte": "2–4"
+        },
+        "com_relatorio": "nível exato = true_risk sorteado (ou o nível base, se o campo não for sorteado)"
+      },
+      "tags": {
+        "land_agreed": "opp_land_agreed_opp-serra-branca",
+        "report_bought": "opp_report_bought_opp-serra-branca",
+        "lost_to_rival": "opp_lost_to_rival_opp-serra-branca",
+        "launched": "opp_launched_opp-serra-branca",
+        "rent": [
+          "opp_rent_low",
+          "opp_rent_mid",
+          "opp_rent_high"
+        ],
+        "refused": "opp_land_refused"
+      },
+      "icnf_view": {
+        "sem_relatorio": "médio a alto",
+        "com_relatorio": "nível real (true_risk.icnf, se sorteado; senão o nível base)"
+      },
+      "deadline_bar": {
+        "window_month": 6,
+        "compare_to": "le_deadline (TRC)",
+        "red_if": "fim previsto da missão > prazo do TRC − 3 meses (PEDIR_ECONOMY)"
+      }
+    },
+    {
+      "id": "opp-vale-da-rosa",
+      "type": "eolica",
+      "name": "Vale da Rosa",
+      "pitch": "Um só dono, nada de aves raras. O vento é o que é, e a subestação fica longe.",
+      "levels": {
+        "recurso": 3,
+        "licenca": 4,
+        "terreno": 4,
+        "corte": 2
+      },
+      "icnf": "baixo",
+      "rivals": 0,
+      "nota_gm": "Longe da ZPE. A linha até à subestação é mais comprida (custo na missão, PEDIR).",
+      "true_risk": {
+        "recurso": {
+          "2": 0.4,
+          "3": 0.6
+        },
+        "odds_source": "PEDIR_ECONOMY"
+      },
+      "trap_size": "wind_size_100",
+      "trap_size_label": "100 MW (15 torres)",
+      "trap_why_gm": "Vento médio + linha longa: o parque grande corta muito e não paga a linha.",
+      "owner": {
+        "voz_gm": "Um casal reformado: ela faz as contas, ele conta histórias do vento que lá sopra.",
+        "renda": {
+          "baixa": "Ó homem, com isso nem pagamos a contribuição. Mas deixe ficar o papel, que nós vemos.",
+          "media": "Parece-nos honesto. Deixe-nos dormir sobre o assunto e telefonamos.",
+          "alta": "Isso já ajuda os netos. Pode contar connosco."
+        },
+        "aceita": "Está combinado. Só pedimos que não estraguem o caminho do poço.",
+        "recusa": "Desculpe, mas não. Na nossa idade não vale a pena a confusão."
+      },
+      "view": {
+        "sem_relatorio": {
+          "recurso": "2–4",
+          "licenca": "3–5",
+          "terreno": "3–5",
+          "corte": "1–3"
+        },
+        "com_relatorio": "nível exato = true_risk sorteado (ou o nível base, se o campo não for sorteado)"
+      },
+      "tags": {
+        "land_agreed": "opp_land_agreed_opp-vale-da-rosa",
+        "report_bought": "opp_report_bought_opp-vale-da-rosa",
+        "lost_to_rival": "opp_lost_to_rival_opp-vale-da-rosa",
+        "launched": "opp_launched_opp-vale-da-rosa",
+        "rent": [
+          "opp_rent_low",
+          "opp_rent_mid",
+          "opp_rent_high"
+        ],
+        "refused": "opp_land_refused"
+      },
+      "icnf_view": {
+        "sem_relatorio": "baixo a médio",
+        "com_relatorio": "nível real (true_risk.icnf, se sorteado; senão o nível base)"
+      },
+      "deadline_bar": {
+        "window_month": 6,
+        "compare_to": "le_deadline (TRC)",
+        "red_if": "fim previsto da missão > prazo do TRC − 3 meses (PEDIR_ECONOMY)"
+      }
+    },
+    {
+      "id": "opp-junto-subestacao",
+      "type": "bateria",
+      "name": "Junto à subestação",
+      "pitch": "O sítio perfeito para baterias: colado à subestação. Não somos os únicos a saber.",
+      "levels": {
+        "licenca": 4,
+        "terreno": 2,
+        "corte": 4
+      },
+      "icnf": "baixo",
+      "rivals": 2,
+      "nota_gm": "Sem 'recurso' (bateria). Corte = quanto a bateria consegue carregar e descarregar sem a ligação a limitar.",
+      "true_risk": {
+        "corte": {
+          "4": 0.6,
+          "3": 0.4
+        },
+        "odds_source": "PEDIR_ECONOMY"
+      },
+      "trap_size": "bess_size_20x4",
+      "trap_size_label": "20 MW por 4 horas",
+      "trap_why_gm": "Regra 75/25: 4 h quase nunca enchem; corte real 3 piora.",
+      "owner": {
+        "voz_gm": "A sociedade agrícola com advogado: responde sempre por escrito e cada vírgula conta.",
+        "renda": {
+          "baixa": "O nosso advogado considera a proposta abaixo do valor de mercado do terreno. Fica registada.",
+          "media": "A proposta é aceitável em princípio. O nosso advogado vai rever a minuta e responde dentro do prazo.",
+          "alta": "A proposta está em linha com o que esperávamos. Pode enviar a minuta final para assinatura."
+        },
+        "aceita": "A sociedade aprova o contrato de arrendamento. Segue a minuta assinada, com as condições que acordámos.",
+        "recusa": "A sociedade decidiu não avançar. Recebemos outra proposta para o mesmo terreno."
+      },
+      "view": {
+        "sem_relatorio": {
+          "licenca": "3–5",
+          "terreno": "1–3",
+          "corte": "3–5"
+        },
+        "com_relatorio": "nível exato = true_risk sorteado (ou o nível base, se o campo não for sorteado)"
+      },
+      "tags": {
+        "land_agreed": "opp_land_agreed_opp-junto-subestacao",
+        "report_bought": "opp_report_bought_opp-junto-subestacao",
+        "lost_to_rival": "opp_lost_to_rival_opp-junto-subestacao",
+        "launched": "opp_launched_opp-junto-subestacao",
+        "rent": [
+          "opp_rent_low",
+          "opp_rent_mid",
+          "opp_rent_high"
+        ],
+        "refused": "opp_land_refused"
+      },
+      "icnf_view": {
+        "sem_relatorio": "baixo a médio",
+        "com_relatorio": "nível real (true_risk.icnf, se sorteado; senão o nível base)"
+      },
+      "deadline_bar": {
+        "window_month": 10,
+        "compare_to": "le_deadline (TRC)",
+        "red_if": "fim previsto da missão > prazo do TRC − 3 meses (PEDIR_ECONOMY)"
+      }
+    },
+    {
+      "id": "opp-mais-paineis",
+      "type": "sobreequipamento",
+      "name": "Mais painéis no terreno da central",
+      "mvp_optional": true,
+      "show_if": "sobreequipamento continua no MVP (Pedro)",
+      "pitch": "Sem vizinhos, sem surpresas, sem grande lucro.",
+      "levels": {
+        "licenca": 5,
+        "terreno": 5,
+        "corte": 2
+      },
+      "icnf": "baixo",
+      "rivals": 0,
+      "nota_gm": "Até 20 % da potência de ligação (DL 15/2022, sobreequipamento). Usa a carta mail-consultor-sobreequipamento-01.",
+      "true_risk": {
+        "corte": {
+          "2": 0.7,
+          "1": 0.3
+        },
+        "odds_source": "PEDIR_ECONOMY"
+      },
+      "trap_size": "overequip_plan_large",
+      "trap_size_label": "o plano grande",
+      "trap_why_gm": "Os painéis a mais cortam quando o sol é forte; o plano grande perde muito NPV (Economy §23.4).",
+      "owner": {
+        "voz_gm": "O mesmo dono do terreno da central: já te conhece e gosta de negociar.",
+        "renda": {
+          "baixa": "Mais painéis pelo mesmo preço? Isso é que era bom. Vamos ver.",
+          "media": "Pronto, é justo. Ponho mais uma assinatura no contrato.",
+          "alta": "Assim, sim. Até lhe ofereço um café."
+        },
+        "aceita": "Feito. Mais painéis, mais renda. Fico contente.",
+        "recusa": "Não. Já vos dei o terreno da central, o resto fica para as ovelhas."
+      },
+      "view": {
+        "sem_relatorio": {
+          "licenca": "4–5",
+          "terreno": "4–5",
+          "corte": "1–3"
+        },
+        "com_relatorio": "nível exato = true_risk sorteado (ou o nível base, se o campo não for sorteado)"
+      },
+      "tags": {
+        "land_agreed": "opp_land_agreed_opp-mais-paineis",
+        "report_bought": "opp_report_bought_opp-mais-paineis",
+        "lost_to_rival": "opp_lost_to_rival_opp-mais-paineis",
+        "launched": "opp_launched_opp-mais-paineis",
+        "rent": [
+          "opp_rent_low",
+          "opp_rent_mid",
+          "opp_rent_high"
+        ],
+        "refused": "opp_land_refused"
+      },
+      "icnf_view": {
+        "sem_relatorio": "baixo a médio",
+        "com_relatorio": "nível real (true_risk.icnf, se sorteado; senão o nível base)"
+      },
+      "deadline_bar": {
+        "window_month": 10,
+        "compare_to": "le_deadline (TRC)",
+        "red_if": "fim previsto da missão > prazo do TRC − 3 meses (PEDIR_ECONOMY)"
+      }
+    }
+  ],
+  "consequences": {
+    "rent": {
+      "opp_rent_low": "Ofereces uma renda baixa: poupas, mas o proprietário pode recusar e o rival pode chegar primeiro.",
+      "opp_rent_mid": "Ofereces uma renda média: é provável que aceite, mas um rival ainda pode passar à frente.",
+      "opp_rent_high": "Ofereces uma renda alta: o terreno fica quase garantido, mas pagas mais todos os anos."
+    },
+    "report": "Compras o relatório do consultor: sai dinheiro da caixa e passas a ver o risco real e o tamanho a evitar.",
+    "launch": "Lanças a missão: o terreno fica comprometido e começas a gastar no projeto. A seguir escolhes o tamanho."
+  },
+  "consultant_report": {
+    "eolica": {
+      "bom": "Medimos e cruzámos os dados de {{site_name}}. O vento está à altura e o risco ambiental é {{icnf_level}}, dentro do que se gere com cuidado. Evita {{trap_size_label}}: acima disso, a ligação corta muito e a avaliação ambiental torna-se quase certa.",
+      "mau": "Más notícias em {{site_name}}. O risco ambiental é {{icnf_level}} e o vento é pior do que parecia. Se avançares, fica pelos tamanhos pequenos: {{trap_size_label}} perderia dinheiro e podia ficar preso anos na avaliação ambiental."
+    },
+    "bateria": {
+      "bom": "{{site_name}} confirma-se: perto da subestação, a ligação raramente limita as baterias e o risco ambiental é {{icnf_level}}. Evita {{trap_size_label}}: com a regra de carga, as horas extra quase nunca se enchem.",
+      "mau": "Em {{site_name}} a ligação limita as baterias mais do que se pensava. O risco ambiental é {{icnf_level}}, mas o problema é outro: {{trap_size_label}} ficaria meio vazio quase todos os dias. Fica pelo tamanho pequeno ou não avances."
+    },
+    "sobreequipamento": {
+      "bom": "Os painéis a mais em {{site_name}} cortam pouco e o risco ambiental é {{icnf_level}}. É um ganho pequeno mas certo. Evita {{trap_size_label}}: aí os cortes comem o lucro.",
+      "mau": "Em {{site_name}} os painéis a mais vão ser cortados muitas horas por dia. O risco ambiental é {{icnf_level}}, mas o corte é que pesa: {{trap_size_label}} perde dinheiro, e mesmo o pequeno rende pouco."
+    }
+  },
+  "launch_warning": {
+    "base": "Antes de lançares {{site_name}}: ficas com a renda do terreno e começas a gastar no projeto, mesmo que não chegue ao fim. Pelas minhas contas, fica pronto por volta do {{finish_month}}, e o prazo do teu TRC é o {{trc_deadline_month}}.",
+    "sem_relatorio": "Não compraste o relatório. Vais às cegas: não sabes o risco real nem qual tamanho evitar.",
+    "prazo_apertado": "A barra está vermelha: não há folga entre o fim deste projeto e o prazo do teu TRC. Um atraso e já não cabe.",
+    "icnf_alto": "O risco ambiental aqui é alto. Conta com uma avaliação ambiental completa, com mais custo e meses de atraso.",
+    "show_rule": "base sempre; juntar sem_relatorio se faltar opp_report_bought_<id>; prazo_apertado se a barra estiver vermelha; icnf_alto se o ICNF visível for alto ou muito alto.",
+    "buttons": {
+      "confirm": {
+        "label": "Lançar",
+        "consequence_pt": "Lanças a missão: o terreno fica comprometido e começas a gastar no projeto. A seguir escolhes o tamanho."
+      },
+      "back": {
+        "label": "Voltar",
+        "consequence_pt": "Voltas à ficha: nada fica comprometido."
+      }
+    }
+  },
+  "nota_gm": "Sem € no texto. A ZPE de Castro Verde é real; os nomes dos locais e dos proprietários são inventados.",
+  "prospecao_v01_2026_10_09": true,
+  "economy_file": "prospecao-ourique.v01.json",
+  "economy_ref": {
+    "opp-serra-branca": {
+      "site": "cumeada_serra_branca",
+      "gm": "sb",
+      "rent_strategy": "sb_50",
+      "trap_nav": "wind_70_sb"
+    },
+    "opp-vale-da-rosa": {
+      "site": "herdade_vale_da_rosa",
+      "gm": "vr",
+      "rent_strategy": "vr_50",
+      "trap_nav": "wind_100_vr"
+    },
+    "opp-junto-subestacao": {
+      "bess": true,
+      "rent_strategy": "bess_20x2",
+      "trap_nav": "bess_20x4"
+    },
+    "opp-mais-paineis": {
+      "sobre": true,
+      "trap_nav": "overequip_large"
+    }
+  },
+  "config": {
+    "trc_slack_months": 3,
+    "trc_slack_status": "HIPÓTESE",
+    "trc_slack_note": "A barra fica vermelha quando o fim previsto passa o prazo do TRC menos estes meses. A Economy ainda tem de confirmar o 3.",
+    "trap_delay_months": {
+      "eolica": 12,
+      "bateria": 6,
+      "sobreequipamento": 6,
+      "status": "HIPÓTESE",
+      "note": "A carta da armadilha espera estas medições. A Economy ainda não fixou o atraso."
+    },
+    "rent_accept_if_no_strategy": {
+      "baixa": 0.4,
+      "media": 0.75,
+      "alta": 0.95,
+      "status": "HIPÓTESE",
+      "source": "Proposta do GM em rules_summary. Usa-se só quando a Economy não traz rent_strategies para o local (sobreequipamento)."
+    }
+  }
+}

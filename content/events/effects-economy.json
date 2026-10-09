@@ -4357,6 +4357,511 @@
     9,
     15
    ]
+  },
+  "wind_size_20": {
+   "cash": -0.59,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 0.59,
+   "equity": 0.0,
+   "months": 27,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'seguro') · REAL (vento trancado Pedro) · PEDIR (tabela de valor de desenvolvimento; NPV-linked não escolhido)",
+   "origin": "tools/hibrido_sizing_v01.json (motor 150 kV) · TRANCADO Pedro 2026-10-09: vento captura 0,95 do baseload, capex 1,20 M€/MW, O&M 35 k€/MW/ano, prémio = VALOR DE DESENVOLVIMENTO no fim do ciclo (não NPV operacional); BESS: regra de carga 75/25 em Ourique (o PV do leilão NÃO carrega; ≥ 75 % do eólico merchant/clipping, ≤ 25 % da rede, ≤ 24,75 MW) e receita = central Clean Horizon −10 % de taxa do otimizador; Modo = saturação.",
+   "note": "Carta eólico 20 MW (3 torres de 6,8 MW) no mesmo TRC de 99 MVA, arranque M0–M6, prémio = valor de desenvolvimento no fim do ciclo. Desenvolvimento 0.9 M€ no total (0,3 + 0,03/MW), ~65 % dentro do ciclo = cash −0.59 (CAR +0.59). Até à DIA ~27 meses; p(AIA obrigatória) 0.4 (ZPE Castro Verde a 5 km; ≥ 20 torres sempre AIA). Fase esperada no M31: licenca_dia. Valor de desenvolvimento = MW × {10 / 25 / 70} k€/MW × qualidade 0.92 → medição 0.18 · AIA submetida 0.46 · licença/DIA 1.29 M€ (PEDIR: alternativa ligada ao NPV = 2.45 na DIA). Preview do consultor (NPV operacional no M0, 8 %, FID M48 / COD M63): +3.2 M€, TIR 10.3 %; capital próprio na FID do vento 10.9 M€ (DSCR 1,40) — FORA do ciclo, não entra no equity fit da solar. Corte do vento 5.5 % (perfil de uma central PV com tracker); uso da ligação 28.9 %; rede 3.02 €/MWh (só solar 3.06). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "cash −0,65×(0,3+0,03×20) ; dev_value[fase] = 20 × k€/MW[fase] × q(0.92) ; nav 0 no ciclo (prémio só no ecrã final) ; preview npv 3.2",
+   "card_seal": "seguro",
+   "wind_MW": 20,
+   "turbines": 3,
+   "p_aia": 0.4,
+   "dev_cost_total_MEUR": 0.9,
+   "dev_value_by_stage_MEUR": {
+    "medicao": 0.18,
+    "aia_submetida": 0.46,
+    "licenca_dia": 1.29
+   },
+   "dev_value_quality": 0.92,
+   "dev_value_npv_linked_MEUR": {
+    "medicao": 0.53,
+    "aia_submetida": 1.23,
+    "licenca_dia": 2.45
+   },
+   "dev_value_rule": "PEDIR: tabela fixa × qualidade (em uso) vs NPV-linked",
+   "npv_preview_MEUR": 3.2,
+   "irr_preview_pct": 10.3,
+   "equity_at_wind_fid_MEUR": 10.9,
+   "curtail_pct": 5.5,
+   "plug_use_pct": 28.9,
+   "grid_eur_mwh": 3.02,
+   "stage_expected_m31": "licenca_dia",
+   "pay_from": "caixa",
+   "exclusive_group": "wind_size",
+   "supersedes": "mission_eolico"
+  },
+  "wind_size_40": {
+   "cash": -0.98,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 0.98,
+   "equity": 0.0,
+   "months": 33,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'recomendado') · REAL (vento trancado Pedro) · PEDIR (tabela de valor de desenvolvimento; NPV-linked não escolhido)",
+   "origin": "tools/hibrido_sizing_v01.json (motor 150 kV) · TRANCADO Pedro 2026-10-09: vento captura 0,95 do baseload, capex 1,20 M€/MW, O&M 35 k€/MW/ano, prémio = VALOR DE DESENVOLVIMENTO no fim do ciclo (não NPV operacional); BESS: regra de carga 75/25 em Ourique (o PV do leilão NÃO carrega; ≥ 75 % do eólico merchant/clipping, ≤ 25 % da rede, ≤ 24,75 MW) e receita = central Clean Horizon −10 % de taxa do otimizador; Modo = saturação.",
+   "note": "Carta eólico 40 MW (6 torres de 6,8 MW) no mesmo TRC de 99 MVA, arranque M0–M6, prémio = valor de desenvolvimento no fim do ciclo. Desenvolvimento 1.5 M€ no total (0,3 + 0,03/MW), ~65 % dentro do ciclo = cash −0.98 (CAR +0.98). Até à DIA ~33 meses; p(AIA obrigatória) 0.4 (ZPE Castro Verde a 5 km; ≥ 20 torres sempre AIA). Fase esperada no M31: aia_submetida. Valor de desenvolvimento = MW × {10 / 25 / 70} k€/MW × qualidade 1.0 → medição 0.4 · AIA submetida 1.0 · licença/DIA 2.8 M€ (PEDIR: alternativa ligada ao NPV = 5.24 na DIA). Preview do consultor (NPV operacional no M0, 8 %, FID M48 / COD M63): +7.0 M€, TIR 10.6 %; capital próprio na FID do vento 20.6 M€ (DSCR 1,40) — FORA do ciclo, não entra no equity fit da solar. Corte do vento 6.35 % (perfil de uma central PV com tracker); uso da ligação 34.0 %; rede 2.57 €/MWh (só solar 3.06). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "cash −0,65×(0,3+0,03×40) ; dev_value[fase] = 40 × k€/MW[fase] × q(1.0) ; nav 0 no ciclo (prémio só no ecrã final) ; preview npv 7.0",
+   "card_seal": "recomendado",
+   "wind_MW": 40,
+   "turbines": 6,
+   "p_aia": 0.4,
+   "dev_cost_total_MEUR": 1.5,
+   "dev_value_by_stage_MEUR": {
+    "medicao": 0.4,
+    "aia_submetida": 1.0,
+    "licenca_dia": 2.8
+   },
+   "dev_value_quality": 1.0,
+   "dev_value_npv_linked_MEUR": {
+    "medicao": 1.12,
+    "aia_submetida": 2.62,
+    "licenca_dia": 5.24
+   },
+   "dev_value_rule": "PEDIR: tabela fixa × qualidade (em uso) vs NPV-linked",
+   "npv_preview_MEUR": 7.0,
+   "irr_preview_pct": 10.6,
+   "equity_at_wind_fid_MEUR": 20.6,
+   "curtail_pct": 6.35,
+   "plug_use_pct": 34.0,
+   "grid_eur_mwh": 2.57,
+   "stage_expected_m31": "aia_submetida",
+   "pay_from": "caixa",
+   "exclusive_group": "wind_size",
+   "supersedes": "mission_eolico"
+  },
+  "wind_size_50": {
+   "cash": -1.17,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 1.17,
+   "equity": 0.0,
+   "months": 33,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'recomendado') · REAL (vento trancado Pedro) · PEDIR (tabela de valor de desenvolvimento; NPV-linked não escolhido)",
+   "origin": "tools/hibrido_sizing_v01.json (motor 150 kV) · TRANCADO Pedro 2026-10-09: vento captura 0,95 do baseload, capex 1,20 M€/MW, O&M 35 k€/MW/ano, prémio = VALOR DE DESENVOLVIMENTO no fim do ciclo (não NPV operacional); BESS: regra de carga 75/25 em Ourique (o PV do leilão NÃO carrega; ≥ 75 % do eólico merchant/clipping, ≤ 25 % da rede, ≤ 24,75 MW) e receita = central Clean Horizon −10 % de taxa do otimizador; Modo = saturação.",
+   "note": "Carta eólico 50 MW (8 torres de 6,8 MW) no mesmo TRC de 99 MVA, arranque M0–M6, prémio = valor de desenvolvimento no fim do ciclo. Desenvolvimento 1.8 M€ no total (0,3 + 0,03/MW), ~65 % dentro do ciclo = cash −1.17 (CAR +1.17). Até à DIA ~33 meses; p(AIA obrigatória) 0.5 (ZPE Castro Verde a 5 km; ≥ 20 torres sempre AIA). Fase esperada no M31: aia_submetida. Valor de desenvolvimento = MW × {10 / 25 / 70} k€/MW × qualidade 1.0 → medição 0.5 · AIA submetida 1.25 · licença/DIA 3.5 M€ (PEDIR: alternativa ligada ao NPV = 6.48 na DIA). Preview do consultor (NPV operacional no M0, 8 %, FID M48 / COD M63): +8.7 M€, TIR 10.6 %; capital próprio na FID do vento 25.6 M€ (DSCR 1,40) — FORA do ciclo, não entra no equity fit da solar. Corte do vento 6.81 % (perfil de uma central PV com tracker); uso da ligação 36.5 %; rede 2.39 €/MWh (só solar 3.06). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "cash −0,65×(0,3+0,03×50) ; dev_value[fase] = 50 × k€/MW[fase] × q(1.0) ; nav 0 no ciclo (prémio só no ecrã final) ; preview npv 8.7",
+   "card_seal": "recomendado",
+   "wind_MW": 50,
+   "turbines": 8,
+   "p_aia": 0.5,
+   "dev_cost_total_MEUR": 1.8,
+   "dev_value_by_stage_MEUR": {
+    "medicao": 0.5,
+    "aia_submetida": 1.25,
+    "licenca_dia": 3.5
+   },
+   "dev_value_quality": 1.0,
+   "dev_value_npv_linked_MEUR": {
+    "medicao": 1.39,
+    "aia_submetida": 3.24,
+    "licenca_dia": 6.48
+   },
+   "dev_value_rule": "PEDIR: tabela fixa × qualidade (em uso) vs NPV-linked",
+   "npv_preview_MEUR": 8.7,
+   "irr_preview_pct": 10.6,
+   "equity_at_wind_fid_MEUR": 25.6,
+   "curtail_pct": 6.81,
+   "plug_use_pct": 36.5,
+   "grid_eur_mwh": 2.39,
+   "stage_expected_m31": "aia_submetida",
+   "pay_from": "caixa",
+   "exclusive_group": "wind_size",
+   "supersedes": "mission_eolico"
+  },
+  "wind_size_70": {
+   "cash": -1.56,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 1.56,
+   "equity": 0.0,
+   "months": 39,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'ambicioso') · REAL (vento trancado Pedro) · PEDIR (tabela de valor de desenvolvimento; NPV-linked não escolhido)",
+   "origin": "tools/hibrido_sizing_v01.json (motor 150 kV) · TRANCADO Pedro 2026-10-09: vento captura 0,95 do baseload, capex 1,20 M€/MW, O&M 35 k€/MW/ano, prémio = VALOR DE DESENVOLVIMENTO no fim do ciclo (não NPV operacional); BESS: regra de carga 75/25 em Ourique (o PV do leilão NÃO carrega; ≥ 75 % do eólico merchant/clipping, ≤ 25 % da rede, ≤ 24,75 MW) e receita = central Clean Horizon −10 % de taxa do otimizador; Modo = saturação.",
+   "note": "Carta eólico 70 MW (11 torres de 6,8 MW) no mesmo TRC de 99 MVA, arranque M0–M6, prémio = valor de desenvolvimento no fim do ciclo. Desenvolvimento 2.4 M€ no total (0,3 + 0,03/MW), ~65 % dentro do ciclo = cash −1.56 (CAR +1.56). Até à DIA ~39 meses; p(AIA obrigatória) 0.7 (ZPE Castro Verde a 5 km; ≥ 20 torres sempre AIA). Fase esperada no M31: aia_submetida. Valor de desenvolvimento = MW × {10 / 25 / 70} k€/MW × qualidade 0.94 → medição 0.66 · AIA submetida 1.65 · licença/DIA 4.61 M€ (PEDIR: alternativa ligada ao NPV = 8.67 na DIA). Preview do consultor (NPV operacional no M0, 8 %, FID M48 / COD M63): +11.4 M€, TIR 10.4 %; capital próprio na FID do vento 36.0 M€ (DSCR 1,40) — FORA do ciclo, não entra no equity fit da solar. Corte do vento 7.82 % (perfil de uma central PV com tracker); uso da ligação 41.4 %; rede 2.11 €/MWh (só solar 3.06). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "cash −0,65×(0,3+0,03×70) ; dev_value[fase] = 70 × k€/MW[fase] × q(0.94) ; nav 0 no ciclo (prémio só no ecrã final) ; preview npv 11.4",
+   "card_seal": "ambicioso",
+   "wind_MW": 70,
+   "turbines": 11,
+   "p_aia": 0.7,
+   "dev_cost_total_MEUR": 2.4,
+   "dev_value_by_stage_MEUR": {
+    "medicao": 0.66,
+    "aia_submetida": 1.65,
+    "licenca_dia": 4.61
+   },
+   "dev_value_quality": 0.94,
+   "dev_value_npv_linked_MEUR": {
+    "medicao": 1.86,
+    "aia_submetida": 4.33,
+    "licenca_dia": 8.67
+   },
+   "dev_value_rule": "PEDIR: tabela fixa × qualidade (em uso) vs NPV-linked",
+   "npv_preview_MEUR": 11.4,
+   "irr_preview_pct": 10.4,
+   "equity_at_wind_fid_MEUR": 36.0,
+   "curtail_pct": 7.82,
+   "plug_use_pct": 41.4,
+   "grid_eur_mwh": 2.11,
+   "stage_expected_m31": "aia_submetida",
+   "pay_from": "caixa",
+   "exclusive_group": "wind_size",
+   "supersedes": "mission_eolico"
+  },
+  "wind_size_100": {
+   "cash": -2.15,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 2.15,
+   "equity": 0.0,
+   "months": 45,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'armadilha') · REAL (vento trancado Pedro) · PEDIR (tabela de valor de desenvolvimento; NPV-linked não escolhido)",
+   "origin": "tools/hibrido_sizing_v01.json (motor 150 kV) · TRANCADO Pedro 2026-10-09: vento captura 0,95 do baseload, capex 1,20 M€/MW, O&M 35 k€/MW/ano, prémio = VALOR DE DESENVOLVIMENTO no fim do ciclo (não NPV operacional); BESS: regra de carga 75/25 em Ourique (o PV do leilão NÃO carrega; ≥ 75 % do eólico merchant/clipping, ≤ 25 % da rede, ≤ 24,75 MW) e receita = central Clean Horizon −10 % de taxa do otimizador; Modo = saturação.",
+   "note": "Carta eólico 100 MW (15 torres de 6,8 MW) no mesmo TRC de 99 MVA, arranque M0–M6, prémio = valor de desenvolvimento no fim do ciclo. Desenvolvimento 3.3 M€ no total (0,3 + 0,03/MW), ~65 % dentro do ciclo = cash −2.15 (CAR +2.15). Até à DIA ~45 meses; p(AIA obrigatória) 0.8 (ZPE Castro Verde a 5 km; ≥ 20 torres sempre AIA). Fase esperada no M31: aia_submetida. Valor de desenvolvimento = MW × {10 / 25 / 70} k€/MW × qualidade 0.8 → medição 0.8 · AIA submetida 2.0 · licença/DIA 5.6 M€ (PEDIR: alternativa ligada ao NPV = 11.06 na DIA). Preview do consultor (NPV operacional no M0, 8 %, FID M48 / COD M63): +14.0 M€, TIR 10.1 %; capital próprio na FID do vento 52.7 M€ (DSCR 1,40) — FORA do ciclo, não entra no equity fit da solar. Corte do vento 9.47 % (perfil de uma central PV com tracker); uso da ligação 48.6 %; rede 1.8 €/MWh (só solar 3.06). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "cash −0,65×(0,3+0,03×100) ; dev_value[fase] = 100 × k€/MW[fase] × q(0.8) ; nav 0 no ciclo (prémio só no ecrã final) ; preview npv 14.0",
+   "card_seal": "armadilha",
+   "wind_MW": 100,
+   "turbines": 15,
+   "p_aia": 0.8,
+   "dev_cost_total_MEUR": 3.3,
+   "dev_value_by_stage_MEUR": {
+    "medicao": 0.8,
+    "aia_submetida": 2.0,
+    "licenca_dia": 5.6
+   },
+   "dev_value_quality": 0.8,
+   "dev_value_npv_linked_MEUR": {
+    "medicao": 2.37,
+    "aia_submetida": 5.53,
+    "licenca_dia": 11.06
+   },
+   "dev_value_rule": "PEDIR: tabela fixa × qualidade (em uso) vs NPV-linked",
+   "npv_preview_MEUR": 14.0,
+   "irr_preview_pct": 10.1,
+   "equity_at_wind_fid_MEUR": 52.7,
+   "curtail_pct": 9.47,
+   "plug_use_pct": 48.6,
+   "grid_eur_mwh": 1.8,
+   "stage_expected_m31": "aia_submetida",
+   "pay_from": "caixa",
+   "exclusive_group": "wind_size",
+   "supersedes": "mission_eolico"
+  },
+  "wind_aia_required": {
+   "cash": -0.15,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 0.15,
+   "equity": null,
+   "months": 9,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "DL 151-B/2013 anexo II (eólicas ≥ 20 torres ou ≥ 10 em zona sensível); hibrido_sizing p_aia",
+   "note": "Sorteio com p_aia da carta wind_size_*: a AIA é obrigatória → EIA completo + consulta pública: −0,15 M€ e +9 meses no caminho do vento (não no solar). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "cash −0,15 ; +9 m no track do vento ; aplica-se só com wind_size_*",
+   "track": "wind",
+   "applies_to": "só com wind_size_*"
+  },
+  "wind_measurement_done": {
+   "cash": null,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "hibrido_sizing STAGE medicao",
+   "note": "Torre de medição com 12 meses de dados: o vento passa à fase 'medição' (valor de desenvolvimento = MW × 10 k€/MW × q). Sem €. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "marco ; dev_value → medicao",
+   "track": "wind",
+   "applies_to": "só com wind_size_*"
+  },
+  "bess_size_10x2": {
+   "cash": -0.3,
+   "debt": null,
+   "nav": -1.1,
+   "bonding": null,
+   "car": 0.3,
+   "equity": 5.3,
+   "months": 21,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'seguro') · REAL (receita Clean Horizon; regra 75/25 Santas; decisão Pedro 2026-10-09) · SECUNDÁRIO (capex)",
+   "origin": "tools/hibrido_sizing_v01.json · REAL Clean Horizon (Solar Plaza PT 29-09-2026, deck 1.1 p11–13): PT 2 h 329 k€/MW/ano (2025), 276 (2026); central € reais 2026 ~115 (2027) → 111 (2030) → 86 (2035) → 67 (2044) (lido do gráfico ±10 %); 44 % serviços de sistema. Regra 75/25: REAL Akuo Santas (deck 4.3 p3/p12). Apoio 20 %: REAL CH p16 / Aviso 01/C21-i08/2024.",
+   "note": "Carta BESS 10 MW/20 MWh (2 h) atrás do contador da central, partilha os 99 MVA (a solar do leilão tem prioridade). Kickoff/licença −0.3 (CAR +0.3); ~21 meses até ao COD do BESS (arrancar até ~M10 para caber no ciclo). Capex 4.8 M€ (€ 2026; 5.3 nominal no COD) a 100 % capital próprio (em PT ainda não há dívida para BESS, JLL p9 — HIPÓTESE vs convenção 0,3; P43). NPV do BESS (8 %, motor 150 kV) com a regra 75/25: SEM vento -1.1 (só ~38 % da energia pode vir de fontes elegíveis) · com vento ≥ 20 MW +1.3 · com 50 MW +1.5; com apoio de 20 % (bess_prr_grant): -0.3 / +2.0 / +2.2. Saturação (Modo 65 k€): -0.0 com 50 MW de vento. Energia recuperada do corte do vento (50 MW): 3.17 GWh/ano. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "nav = nav_no_wind (-1.1) se não há wind_size_* ; nav_with_wind (1.3 a 20 MW, 1.5 a 50 MW) se há ; equity = capex nominal (100 %)",
+   "nav_no_wind": -1.1,
+   "nav_with_wind_20": 1.3,
+   "nav_with_wind_50": 1.5,
+   "nav_with_grant": {
+    "no_wind": -0.3,
+    "wind_20": 2.0,
+    "wind_50": 2.2
+   },
+   "nav_saturation_modo_wind_50": -0.0,
+   "capex_MEUR": 4.8,
+   "capex_nominal_MEUR": 5.3,
+   "equity_with_grant": 4.2,
+   "res_charge_factor_no_wind": 0.382,
+   "card_seal": "seguro",
+   "bess_MW": 10,
+   "bess_MWh": 20,
+   "gated_by": "bess_charging_rule_75_25 + presença de wind_size_* (≥ 20 MW)",
+   "exclusive_group": "bess_size",
+   "pay_from": "caixa"
+  },
+  "bess_size_20x2": {
+   "cash": -0.4,
+   "debt": null,
+   "nav": -2.5,
+   "bonding": null,
+   "car": 0.4,
+   "equity": 10.5,
+   "months": 21,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'recomendado (com vento)') · REAL (receita Clean Horizon; regra 75/25 Santas; decisão Pedro 2026-10-09) · SECUNDÁRIO (capex)",
+   "origin": "tools/hibrido_sizing_v01.json · REAL Clean Horizon (Solar Plaza PT 29-09-2026, deck 1.1 p11–13): PT 2 h 329 k€/MW/ano (2025), 276 (2026); central € reais 2026 ~115 (2027) → 111 (2030) → 86 (2035) → 67 (2044) (lido do gráfico ±10 %); 44 % serviços de sistema. Regra 75/25: REAL Akuo Santas (deck 4.3 p3/p12). Apoio 20 %: REAL CH p16 / Aviso 01/C21-i08/2024.",
+   "note": "Carta BESS 20 MW/40 MWh (2 h) atrás do contador da central, partilha os 99 MVA (a solar do leilão tem prioridade). Kickoff/licença −0.4 (CAR +0.4); ~21 meses até ao COD do BESS (arrancar até ~M10 para caber no ciclo). Capex 9.6 M€ (€ 2026; 10.5 nominal no COD) a 100 % capital próprio (em PT ainda não há dívida para BESS, JLL p9 — HIPÓTESE vs convenção 0,3; P43). NPV do BESS (8 %, motor 150 kV) com a regra 75/25: SEM vento -2.5 (só ~32 % da energia pode vir de fontes elegíveis) · com vento ≥ 20 MW +2.3 · com 50 MW +2.8; com apoio de 20 % (bess_prr_grant): -1.0 / +3.8 / +4.3. Saturação (Modo 65 k€): -0.3 com 50 MW de vento. Energia recuperada do corte do vento (50 MW): 5.0 GWh/ano. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "nav = nav_no_wind (-2.5) se não há wind_size_* ; nav_with_wind (2.3 a 20 MW, 2.8 a 50 MW) se há ; equity = capex nominal (100 %)",
+   "nav_no_wind": -2.5,
+   "nav_with_wind_20": 2.3,
+   "nav_with_wind_50": 2.8,
+   "nav_with_grant": {
+    "no_wind": -1.0,
+    "wind_20": 3.8,
+    "wind_50": 4.3
+   },
+   "nav_saturation_modo_wind_50": -0.3,
+   "capex_MEUR": 9.6,
+   "capex_nominal_MEUR": 10.5,
+   "equity_with_grant": 8.4,
+   "res_charge_factor_no_wind": 0.324,
+   "card_seal": "recomendado (com vento)",
+   "bess_MW": 20,
+   "bess_MWh": 40,
+   "gated_by": "bess_charging_rule_75_25 + presença de wind_size_* (≥ 20 MW)",
+   "exclusive_group": "bess_size",
+   "pay_from": "caixa"
+  },
+  "bess_size_20x4": {
+   "cash": -0.5,
+   "debt": null,
+   "nav": -10.4,
+   "bonding": null,
+   "car": 0.5,
+   "equity": 18.4,
+   "months": 21,
+   "prob": null,
+   "label": "HIPÓTESE (carta 'armadilha') · REAL (receita Clean Horizon; regra 75/25 Santas; decisão Pedro 2026-10-09) · SECUNDÁRIO (capex)",
+   "origin": "tools/hibrido_sizing_v01.json · REAL Clean Horizon (Solar Plaza PT 29-09-2026, deck 1.1 p11–13): PT 2 h 329 k€/MW/ano (2025), 276 (2026); central € reais 2026 ~115 (2027) → 111 (2030) → 86 (2035) → 67 (2044) (lido do gráfico ±10 %); 44 % serviços de sistema. Regra 75/25: REAL Akuo Santas (deck 4.3 p3/p12). Apoio 20 %: REAL CH p16 / Aviso 01/C21-i08/2024.",
+   "note": "Carta BESS 20 MW/80 MWh (4 h) atrás do contador da central, partilha os 99 MVA (a solar do leilão tem prioridade). Kickoff/licença −0.5 (CAR +0.5); ~21 meses até ao COD do BESS (arrancar até ~M10 para caber no ciclo). Capex 16.8 M€ (€ 2026; 18.4 nominal no COD) a 100 % capital próprio (em PT ainda não há dívida para BESS, JLL p9 — HIPÓTESE vs convenção 0,3; P43). NPV do BESS (8 %, motor 150 kV) com a regra 75/25: SEM vento -10.4 (só ~20 % da energia pode vir de fontes elegíveis) · com vento ≥ 20 MW -3.3 · com 50 MW -2.5; com apoio de 20 % (bess_prr_grant): -7.8 / -0.7 / +0.1. Saturação (Modo 65 k€): -4.1 com 50 MW de vento. Energia recuperada do corte do vento (50 MW): 6.5 GWh/ano. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "nav = nav_no_wind (-10.4) se não há wind_size_* ; nav_with_wind (-3.3 a 20 MW, -2.5 a 50 MW) se há ; equity = capex nominal (100 %)",
+   "nav_no_wind": -10.4,
+   "nav_with_wind_20": -3.3,
+   "nav_with_wind_50": -2.5,
+   "nav_with_grant": {
+    "no_wind": -7.8,
+    "wind_20": -0.7,
+    "wind_50": 0.1
+   },
+   "nav_saturation_modo_wind_50": -4.1,
+   "capex_MEUR": 16.8,
+   "capex_nominal_MEUR": 18.4,
+   "equity_with_grant": 14.7,
+   "res_charge_factor_no_wind": 0.204,
+   "card_seal": "armadilha",
+   "bess_MW": 20,
+   "bess_MWh": 80,
+   "gated_by": "bess_charging_rule_75_25 + presença de wind_size_* (≥ 20 MW)",
+   "exclusive_group": "bess_size",
+   "pay_from": "caixa"
+  },
+  "bess_charging_rule_75_25": {
+   "cash": null,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (decisão Pedro 2026-10-09 22:48 PT; regra real em Santas, Akuo deck 4.3 p3/p12)",
+   "origin": "REAL Clean Horizon (Solar Plaza PT 29-09-2026, deck 1.1 p11–13): PT 2 h 329 k€/MW/ano (2025), 276 (2026); central € reais 2026 ~115 (2027) → 111 (2030) → 86 (2035) → 67 (2044) (lido do gráfico ±10 %); 44 % serviços de sistema. Regra 75/25: REAL Akuo Santas (deck 4.3 p3/p12). Apoio 20 %: REAL CH p16 / Aviso 01/C21-i08/2024.",
+   "note": "Regra de carga do BESS em Ourique: o PV do leilão NÃO carrega a bateria (como o FiT de Santas); ≥ 75 % da energia carregada por ano vem de eólico merchant ou clipping do PV; ≤ 25 % da rede; potência da rede ≤ 24,75 MW (25 % de 99). Sem vento só há clipping (~2 %) → a bateria quase não arbitra (fator 0,20–0,38) e o NPV passa a negativo; com ≥ 20 MW de vento o fator é 1,0. Sem €; muda o NPV das cartas bess_size_* (nav_no_wind vs nav_with_wind_*). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "gate: nav_bess = nav_with_wind_* se wind_size_* ≥ 20 MW, senão nav_no_wind",
+   "grid_share_max": 0.25,
+   "grid_power_cap_MW": 24.75,
+   "auction_pv_can_charge": false,
+   "rule": "always_on (v0.1)"
+  },
+  "bess_prr_grant": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "REAL (taxa 20 %: Aviso 01/C21-i08/2024; CH p16) · HIPÓTESE (aviso sucessor em 2026)",
+   "origin": "REAL: PRR investimento RP-C21-i08 «Flexibilidade de Rede e Armazenamento» — Aviso N.º 01/C21-i08/2024 (30-07-2024, Fundo Ambiental), regulamento Portaria n.º 176-B/2024/1: armazenamento ≥ 1 MVA e ≥ 2 h, junto a centro electroprodutor renovável (mesmo ponto de ligação), apoio até 20 % dos custos elegíveis; dotação 99,75 M€ para ≥ 500 MW; relatório final 03-04-2025 (rect. 09-04-2025): 31 operações, 86,38 M€, 561,6 MW (≈ 0,154 M€/MW); execução até 31-12-2025. ATENÇÃO: este aviso está FECHADO em 2026 → no jogo é um aviso sucessor (HIPÓTESE/PEDIR).",
+   "note": "Apoio ao capex do BESS de 20 % (cartas bess_size_*). Prazo duro: equipamento no local até 31-12 do ano do aviso (Hyperion p4) — se falhar, perde o apoio. ΔNPV = nav_with_grant − nav da carta (≈ +0,8 / +1,5 / +2,6 para 10×2 / 20×2 / 20×4); equity −20 % do capex. Mesma lógica que fa_bess_awarded (que fica para a missão antiga de 15 MW). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "grant = 0,20 × capex_BESS ; nav: usar nav_with_grant da carta ; equity −grant",
+   "grant_rate": 0.2,
+   "applies_to": "só com bess_size_*",
+   "grant_MEUR": {
+    "bess_size_10x2": 1.06,
+    "bess_size_20x2": 2.1,
+    "bess_size_20x4": 3.68
+   },
+   "delta_nav": {
+    "bess_size_10x2": 0.7,
+    "bess_size_20x2": 1.5,
+    "bess_size_20x4": 2.6
+   }
+  },
+  "bess_tie_in_outage": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.1,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (valor) · REAL (risco: Hyperion deck 2.3 p10)",
+   "origin": "Hyperion p10: ligar armazenamento a uma central em operação obriga a paragens",
+   "note": "Ligar o BESS ao ponto partilhado depois do COD solar obriga a parar a central N dias (proteções, contagem, PPC). Produção perdida −0,05…−0,15 → nav −0,10. Só se o BESS entrar DEPOIS do COD solar (antes do COD não se perde nada). Mitigação: janela fixada no contrato EPC. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "nav −0,10 (−0,05…−0,15) ; só se COD_BESS > COD_solar",
+   "nav_band": [
+    -0.05,
+    -0.15
+   ],
+   "applies_to": "só com bess_size_* e COD_BESS > COD solar"
+  },
+  "bess_entry_slow": {
+   "cash": null,
+   "debt": null,
+   "nav": -0.48,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": 4,
+   "prob": null,
+   "label": "HIPÓTESE (valor) · REAL (Hyperion deck 2.3 p14: a entrada em exploração demorou mais do que a obra)",
+   "origin": "Hyperion p14",
+   "note": "Entrada em exploração lenta (REN/DGEG/contagem por perímetro aprovada pelo ORT, Akuo p7): +4 meses (3–6) no COD do BESS, NÃO no COD solar. Receita perdida ≈ −0,006 M€/MW/mês (20 MW: −0,12/mês → −0,48). Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "COD_BESS +4 ; nav −0,006 × MW_BESS × 4",
+   "nav_per_MW_month": -0.006,
+   "track": "bess",
+   "applies_to": "só com bess_size_*"
+  },
+  "bess_revenue_saturation": {
+   "cash": null,
+   "debt": null,
+   "nav": null,
+   "bonding": null,
+   "car": null,
+   "equity": null,
+   "months": null,
+   "prob": null,
+   "label": "HIPÓTESE (cenário Modo 65 k€/MW/ano) · REAL (sinal: 340 MW pré-qualificados para aFRR em PT, Capalo p14)",
+   "origin": "Capalo deck 4.2 p14; CH p12",
+   "note": "Evento de risco: a receita do BESS cai para o cenário de saturação (Modo 65 k€/MW/ano, −3 %/ano real). ΔNPV = nav_saturation − nav_with_wind da carta (com 50 MW de vento): bess_size_10x2 -1.5, bess_size_20x2 -3.1, bess_size_20x4 -1.6. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "nav = nav_saturation_modo − nav_with_wind (por carta)",
+   "delta_nav": {
+    "bess_size_10x2": -1.5,
+    "bess_size_20x2": -3.1,
+    "bess_size_20x4": -1.6
+   },
+   "applies_to": "só com bess_size_*"
+  },
+  "wind_declined": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 0.0,
+   "equity": 0.0,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "GM 2026-10-09e (Pedro: recusa explícita das cartas híbridas)",
+   "note": "O jogador recusou a carta do vento (nenhum wind_size_*). Sem €, sem NPV, sem meses. Consequência: com bess_charging_rule_75_25 o BESS (se houver) fica com nav_no_wind. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "sem cash ; sem capex ; sem equity ; nav 0 ; meses 0",
+   "capex_MEUR": 0.0,
+   "pay_from": null
+  },
+  "bess_declined": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 0.0,
+   "equity": 0.0,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "GM 2026-10-09e (Pedro: recusa explícita das cartas híbridas)",
+   "note": "O jogador recusou a carta do BESS (nenhum bess_size_*). Sem €, sem NPV, sem meses. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "sem cash ; sem capex ; sem equity ; nav 0 ; meses 0",
+   "capex_MEUR": 0.0,
+   "pay_from": null
+  },
+  "bess_prr_refused": {
+   "cash": 0.0,
+   "debt": null,
+   "nav": 0.0,
+   "bonding": null,
+   "car": 0.0,
+   "equity": 0.0,
+   "months": 0,
+   "prob": null,
+   "label": "HIPÓTESE",
+   "origin": "GM 2026-10-09e (Pedro: recusa explícita das cartas híbridas)",
+   "note": "Apoio PRR ao BESS recusado: sem €, sem NPV, sem meses. O BESS fica com o equity SEM o apoio (equity da carta, não equity_with_grant) e com o nav sem apoio. Custo da candidatura (se houver) já pago. Híbrido Ourique (hibrido-ourique-eolica-2026-10-09.md §5; euro-fields §24, 2026-10-09b).",
+   "formula": "sem cash ; sem capex ; sem equity ; nav 0 ; meses 0",
+   "capex_MEUR": 0.0,
+   "pay_from": null,
+   "applies_to": "só com bess_size_*"
+  },
+  "hybrid_hint_seen": {
+   "cash": 0,
+   "nav": 0,
+   "debt": 0,
+   "bonding": 0,
+   "car": 0,
+   "equity": 0,
+   "months": 0,
+   "note": "HIPÓTESE — tag nova a 0 € (GM: a carta do consultor híbrido só marca que foi vista)."
+  },
+  "curtailment_trap_revealed": {
+   "cash": 0,
+   "nav": 0,
+   "debt": 0,
+   "bonding": 0,
+   "car": 0,
+   "equity": 0,
+   "months": 0,
+   "note": "HIPÓTESE — o ΔNPV está em prospecao-ourique.v01.json gm_pack.trap_revealed_nav e aplica-se quando a carta da armadilha chega."
   }
  },
  "rule_odds_proposed": {
@@ -7957,5 +8462,225 @@
   "trc_lapse_accepted",
   "trc_remainder_to_grid",
   "trc_risk_warned"
- ]
+ ],
+ "hybrid_cards_2026_10_09b": {
+  "_meta": "Economy 2026-10-09b PT · cartas eólico/BESS · DRAFT, nada deployed. TRANCADO Pedro 2026-10-09: vento captura 0,95 do baseload, capex 1,20 M€/MW, O&M 35 k€/MW/ano, prémio = VALOR DE DESENVOLVIMENTO no fim do ciclo (não NPV operacional); BESS: regra de carga 75/25 em Ourique (o PV do leilão NÃO carrega; ≥ 75 % do eólico merchant/clipping, ≤ 25 % da rede, ≤ 24,75 MW) e receita = central Clean Horizon −10 % de taxa do otimizador; Modo = saturação.",
+  "source": "tools/hibrido_sizing_v01.json (motor {'npv_40': 9.8, 'npv_38': 6.9, 'equity_40': 31.7, 'equity_38': 35.1, 'grid_MEUR': 7.33, 'kv': 150})",
+  "wind_cards": {
+   "wind_size_20": {
+    "cash": -0.59,
+    "car": 0.59,
+    "months": 27,
+    "card_seal": "seguro",
+    "p_aia": 0.4,
+    "dev_value_by_stage_MEUR": {
+     "medicao": 0.18,
+     "aia_submetida": 0.46,
+     "licenca_dia": 1.29
+    },
+    "npv_preview_MEUR": 3.2,
+    "equity_at_wind_fid_MEUR": 10.9,
+    "curtail_pct": 5.5,
+    "grid_eur_mwh": 3.02
+   },
+   "wind_size_40": {
+    "cash": -0.98,
+    "car": 0.98,
+    "months": 33,
+    "card_seal": "recomendado",
+    "p_aia": 0.4,
+    "dev_value_by_stage_MEUR": {
+     "medicao": 0.4,
+     "aia_submetida": 1.0,
+     "licenca_dia": 2.8
+    },
+    "npv_preview_MEUR": 7.0,
+    "equity_at_wind_fid_MEUR": 20.6,
+    "curtail_pct": 6.35,
+    "grid_eur_mwh": 2.57
+   },
+   "wind_size_50": {
+    "cash": -1.17,
+    "car": 1.17,
+    "months": 33,
+    "card_seal": "recomendado",
+    "p_aia": 0.5,
+    "dev_value_by_stage_MEUR": {
+     "medicao": 0.5,
+     "aia_submetida": 1.25,
+     "licenca_dia": 3.5
+    },
+    "npv_preview_MEUR": 8.7,
+    "equity_at_wind_fid_MEUR": 25.6,
+    "curtail_pct": 6.81,
+    "grid_eur_mwh": 2.39
+   },
+   "wind_size_70": {
+    "cash": -1.56,
+    "car": 1.56,
+    "months": 39,
+    "card_seal": "ambicioso",
+    "p_aia": 0.7,
+    "dev_value_by_stage_MEUR": {
+     "medicao": 0.66,
+     "aia_submetida": 1.65,
+     "licenca_dia": 4.61
+    },
+    "npv_preview_MEUR": 11.4,
+    "equity_at_wind_fid_MEUR": 36.0,
+    "curtail_pct": 7.82,
+    "grid_eur_mwh": 2.11
+   },
+   "wind_size_100": {
+    "cash": -2.15,
+    "car": 2.15,
+    "months": 45,
+    "card_seal": "armadilha",
+    "p_aia": 0.8,
+    "dev_value_by_stage_MEUR": {
+     "medicao": 0.8,
+     "aia_submetida": 2.0,
+     "licenca_dia": 5.6
+    },
+    "npv_preview_MEUR": 14.0,
+    "equity_at_wind_fid_MEUR": 52.7,
+    "curtail_pct": 9.47,
+    "grid_eur_mwh": 1.8
+   }
+  },
+  "bess_cards": {
+   "bess_size_10x2": {
+    "cash": -0.3,
+    "car": 0.3,
+    "equity": 5.3,
+    "months": 21,
+    "capex_MEUR": 4.8,
+    "nav_no_wind": -1.1,
+    "nav_with_wind_20": 1.3,
+    "nav_with_wind_50": 1.5,
+    "nav_with_grant": {
+     "no_wind": -0.3,
+     "wind_20": 2.0,
+     "wind_50": 2.2
+    },
+    "nav_saturation_modo_wind_50": -0.0,
+    "card_seal": "seguro"
+   },
+   "bess_size_20x2": {
+    "cash": -0.4,
+    "car": 0.4,
+    "equity": 10.5,
+    "months": 21,
+    "capex_MEUR": 9.6,
+    "nav_no_wind": -2.5,
+    "nav_with_wind_20": 2.3,
+    "nav_with_wind_50": 2.8,
+    "nav_with_grant": {
+     "no_wind": -1.0,
+     "wind_20": 3.8,
+     "wind_50": 4.3
+    },
+    "nav_saturation_modo_wind_50": -0.3,
+    "card_seal": "recomendado (com vento)"
+   },
+   "bess_size_20x4": {
+    "cash": -0.5,
+    "car": 0.5,
+    "equity": 18.4,
+    "months": 21,
+    "capex_MEUR": 16.8,
+    "nav_no_wind": -10.4,
+    "nav_with_wind_20": -3.3,
+    "nav_with_wind_50": -2.5,
+    "nav_with_grant": {
+     "no_wind": -7.8,
+     "wind_20": -0.7,
+     "wind_50": 0.1
+    },
+    "nav_saturation_modo_wind_50": -4.1,
+    "card_seal": "armadilha"
+   }
+  },
+  "dev_value_table_k_eur_mw": {
+   "medicao": 10,
+   "aia_submetida": 25,
+   "licenca_dia": 70
+  },
+  "dev_value_rule": "PEDIR (tabela fixa × qualidade em uso; NPV-linked em dev_value_npv_linked_MEUR)",
+  "recommended_package": {
+   "wind": "wind_size_50",
+   "bess": "bess_size_20x2",
+   "npv_total_38": 18.4,
+   "npv_total_38_prr": 19.9,
+   "irr_38": 9.9,
+   "npv_total_40": 21.3,
+   "equity_total_38": 71.2,
+   "equity_in_cycle_38": 45.6
+  },
+  "before": {
+   "mission_eolico": {
+    "cash": -0.75,
+    "car": 0.75,
+    "equity": 6.9,
+    "months": 18
+   },
+   "bess_dev_flag": {
+    "cash": -0.4,
+    "car": 0.4,
+    "equity": 2.16,
+    "nav": -0.83,
+    "months": 9,
+    "capex_MEUR": 7.2
+   },
+   "mission_bess": {
+    "cash": -0.4,
+    "car": 0.4,
+    "equity": 2.16,
+    "nav": -0.83,
+    "months": 9
+   },
+   "fa_bess_awarded": {
+    "equity": -0.43,
+    "nav": 1.24,
+    "grant_MEUR": 1.44
+   }
+  },
+  "gm_odds_2026_10_09e": {
+   "wind_aia_required": {
+    "gm": {
+     "wind_size_20": 0.4,
+     "wind_size_40": 0.4,
+     "wind_size_50": 0.5,
+     "wind_size_70": 0.7,
+     "wind_size_100": 0.8
+    },
+    "verdict": "CONFIRMADO",
+    "reason": "Torres a 6,8 MW: 20 MW = 3, 40 = 6, 50 = 8, 70 = 11, 100 = 15. DL 151-B/2013 anexo II: AIA obrigatória no caso geral com ≥ 20 torres e em área sensível com ≥ 10 torres. Nenhuma carta chega às 20 torres, e o parque fica a ~5 km (fora) da ZPE de Castro Verde → é sempre caso a caso (art. 1.º/3 b): a APA decide se há efeitos significativos. A ZPE é de aves estepárias (abetarda, sisão, peneireiro-das-torres), o caso mais sensível para eólicas no país. Por isso o caso a caso tende para AIA e cresce com o número de torres: 0,4 (3–6 torres), 0,5 (8), 0,7 (11: ≥ 10, o limiar de área sensível, se alguma torre ou acesso tocar a ZPE), 0,8 (15). Bate com o p_aia de hibrido_sizing (0,4/0,4/0,5/0,7/0,8). PEDIR: confirmar o critério de distância a outros parques no anexo II e se há eólicas perto de Ourique. HIPÓTESE."
+   },
+   "bess_prr_grant": {
+    "gm": 0.5,
+    "proposed": 0.6,
+    "verdict": "AJUSTAR 0,5 → 0,6 (HIPÓTESE)",
+    "reason": "Âncoras REAIS: Clean Horizon p16, concurso 2025: 99,75 M€, 43 projetos premiados, 562 MW. Relatório final do Fundo Ambiental (FA_SRC): 31 operações, 86,38 M€, 561,6 MW. Ou seja, ficaram ~13 M€ por usar (87 % da dotação) → o concurso NÃO esgotou o dinheiro, e a maior parte das candidaturas elegíveis foi financiada. O número de candidaturas não aparece no deck nem no relatório (PEDIR), por isso não há taxa de sucesso real. O risco real é a elegibilidade e o prazo duro (equipamento no local até 31-12; Hyperion p4), não a concorrência. Proposta: 0,6 de base (+0,1 com lp_granted). Se o Pedro quiser o aviso sucessor mais disputado (o leilão 2026 traz muitos players), manter 0,5."
+   },
+   "bess_entry_slow": {
+    "gm": {
+     "prob": 0.4,
+     "months": 4
+    },
+    "proposed": {
+     "prob": 0.6,
+     "months": 4
+    },
+    "verdict": "AJUSTAR prob 0,4 → 0,6; +4 meses CONFIRMADO",
+    "reason": "Hyperion (deck 2.3 p14, REAL): nos DOIS projetos (Cavaleira e Vale de Moura), a entrada em exploração 'pediu mais calendário do que a construção'. A armazenagem é nova para todas as entidades e o processo ainda está a amadurecer. A carta já assume 3 meses de entrada em exploração nos 21. Um atraso de +4 (para 7 meses) é o caso típico em 2026, não a exceção → 0,6. Akuo p7: a contagem por perímetro tem de ser aprovada pelo ORT, mais um passo. Descer para 0,4 em versões futuras ('vai melhorar nos próximos anos', Hyperion)."
+   },
+   "bess_revenue_saturation": {
+    "gm": 0.3,
+    "verdict": "CONFIRMADO 0,3 (HIPÓTESE)",
+    "reason": "O central da Clean Horizon JÁ inclui a canibalização prevista (276 k€/MW em 2026 → ~111 em 2030 → 67 em 2044). O evento é uma queda EXTRA até ao Modo (65 k€/MW/ano, −3 %/ano), ~40–50 % abaixo do central. Sinais REAIS a favor: 340 MW de eólica/solar já pré-qualificados para aFRR (Capalo p14); leilão de 750 + 300 MVA em 2026; meta de 3 GW em 2030 e 4,5 GW em 2040 (APREN p11). Contra: mecanismo de capacidade anunciado para 2027+ (CH p16) e o mercado de capacidade espanhol (APREN p12). Três em dez é razoável."
+   },
+   "fa_bess_awarded": "Só saves antigos (bess_dev_flag / mission_bess). Jogos novos: bess_prr_grant / bess_prr_refused."
+  }
+ }
 }

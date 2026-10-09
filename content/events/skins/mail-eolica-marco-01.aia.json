@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-eolica-marco-01",
+  "skin_id": "aia",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "O parque eólico precisa de avaliação ambiental completa",
+  "body": "A Agência do Ambiente disse que o parque eólico tem de passar por uma avaliação ambiental completa, com estudo e consulta pública. Custa mais e o vento atrasa vários meses. A central solar não muda.",
+  "consequence_pt": "Avaliação ambiental completa para o vento: sai dinheiro da caixa e a licença do vento atrasa cerca de 9 meses. O COD solar não muda.",
+  "on_deliver_effects": [
+    "wind_aia_required"
+  ],
+  "hybrid_cards_v01_2026_10_09": true
+}

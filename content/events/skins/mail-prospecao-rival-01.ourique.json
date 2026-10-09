@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-prospecao-rival-01",
+  "skin_id": "ourique",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "O rival ficou com o terreno",
+  "body": "Enquanto esperávamos pela resposta, outro promotor ofereceu mais pelo terreno de {{site_name}}, e o proprietário aceitou. Esse local já não está disponível.",
+  "params": {
+    "site_name": "prospecao.opportunities[].name",
+    "opp_id": "id da oportunidade"
+  },
+  "prospecao_v01_2026_10_09": true
+}

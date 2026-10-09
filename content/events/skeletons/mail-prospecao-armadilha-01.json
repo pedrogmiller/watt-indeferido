@@ -1,0 +1,38 @@
+{
+  "id": "mail-prospecao-armadilha-01",
+  "phase": "mid_dev",
+  "draft": true,
+  "status": "draft_pending_pedro",
+  "trigger": {
+    "rule": "by_skin"
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "heavy": true,
+  "on_deliver_effects": [
+    "curtailment_trap_revealed"
+  ],
+  "choices": [
+    {
+      "id": "downsize",
+      "label": "Reduzir o projeto",
+      "effects": [
+        "opp_downsize"
+      ],
+      "hint": "Desces um tamanho. Pagas o projeto refeito, mas cortas menos energia.",
+      "consequence_pt": "Reduzes o projeto um tamanho: sai dinheiro da caixa para refazer o projeto, mas o corte na rede desce e o NPV melhora."
+    },
+    {
+      "id": "accept",
+      "label": "Aceitar",
+      "effects": [
+        "opp_trap_accepted"
+      ],
+      "hint": "Manténs o tamanho. Não gastas nada agora, mas perdes energia todos os anos.",
+      "consequence_pt": "Manténs o tamanho: não gastas nada agora, mas o corte maior faz descer o NPV."
+    }
+  ],
+  "notes_for_ui": "opp_downsize: substituir a tag de tamanho pela de baixo (wind_size_70→50, 100→70; bess_size_20x4→20x2; overequip_plan_large→medium). Valores da nova tag aplicam-se; custo do redesenho PEDIR_ECONOMY.",
+  "nota_gm": "Só sai se o jogador escolheu o trap_size do local sem opp_report_bought_<id>.",
+  "prospecao_v01_2026_10_09": true
+}

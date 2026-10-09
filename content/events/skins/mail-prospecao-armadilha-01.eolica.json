@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-prospecao-armadilha-01",
+  "skin_id": "eolica",
+  "when": {
+    "se_id": "ourique",
+    "opp_type": "eolica"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "A armadilha mostra-se: o vento corta mais do que previsto",
+  "body": "Já temos um ano de medições em {{site_name}}. Com o tamanho que escolheste, o vento e o sol vão produzir ao mesmo tempo acima do que a ligação aceita muitas mais horas do que previmos. Vamos perder energia todos os anos. Podemos reduzir o projeto agora ou aceitar a perda.",
+  "params": {
+    "site_name": "prospecao.opportunities[].name"
+  },
+  "prospecao_v01_2026_10_09": true
+}

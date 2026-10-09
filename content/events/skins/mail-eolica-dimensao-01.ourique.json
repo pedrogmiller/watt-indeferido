@@ -1,0 +1,14 @@
+{
+  "skeleton_id": "mail-eolica-dimensao-01",
+  "skin_id": "ourique",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Um parque eólico em Ourique: de que tamanho?",
+  "body": "Há vento bom nos montes à volta de Ourique, e o parque pode usar a mesma ligação da central solar: o vento sopra sobretudo à noite e no inverno, quando os painéis produzem pouco.\n\nNão vamos construir o parque neste ciclo. O que fazemos agora é pôr a torre de medição, pedir as licenças e levar o projeto o mais longe possível. No fim, o projeto vale mais quanto mais longe estiver.\n\nUm parque pequeno é rápido e barato, mas rende pouco. Um parque grande rende mais no papel, mas enche a ligação, e com mais de 10 torres a avaliação ambiental completa torna-se provável e leva anos. Escolhe o tamanho.",
+  "params": {
+    "npv_preview": "hybrid_cards_2026_10_09b.wind_cards[tag].npv_preview_MEUR"
+  },
+  "hybrid_cards_v01_2026_10_09": true
+}

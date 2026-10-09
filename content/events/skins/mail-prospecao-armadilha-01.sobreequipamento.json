@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-prospecao-armadilha-01",
+  "skin_id": "sobreequipamento",
+  "when": {
+    "se_id": "ourique",
+    "opp_type": "sobreequipamento"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "A armadilha mostra-se: os painéis a mais são cortados",
+  "body": "O estudo da rede chegou: com tantos painéis a mais em {{site_name}}, a ligação vai cortar a produção muitas horas por dia de sol. Podemos reduzir o projeto agora ou aceitar a perda.",
+  "params": {
+    "site_name": "prospecao.opportunities[].name"
+  },
+  "prospecao_v01_2026_10_09": true
+}

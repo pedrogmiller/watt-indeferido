@@ -1,0 +1,17 @@
+{
+  "skeleton_id": "mail-eolica-dimensao-01",
+  "skin_id": "prospecao",
+  "when": {
+    "se_id": "ourique",
+    "launched_from": "prospecao"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Parque eólico em {{site_name}}: de que tamanho?",
+  "body": "O terreno de {{site_name}} está acordado. Agora decide o tamanho do parque. Não o construímos neste ciclo: pomos a torre de medição, pedimos as licenças e levamos o projeto o mais longe possível.\n\nUm parque pequeno é rápido e barato, mas rende pouco. Um parque grande rende mais no papel, mas enche a ligação, e com mais de 10 torres a avaliação ambiental completa torna-se provável. {{report_line}}",
+  "params": {
+    "site_name": "prospecao.opportunities[].name",
+    "report_line": "com relatório: «O relatório diz para evitar {{trap_size_label}}.» · sem relatório: «Sem relatório, não sabemos qual tamanho evitar.»",
+    "npv_preview": "como na skin ourique"
+  },
+  "prospecao_v01_2026_10_09": true
+}

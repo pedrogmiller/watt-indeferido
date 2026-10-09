@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-bateria-nota-01",
+  "skin_id": "saturacao",
+  "when": {
+    "se_id": "ourique"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "Há cada vez mais baterias na rede",
+  "body": "Entraram muitas baterias e centrais nos serviços que pagam à rede. Os preços desses serviços estão a cair, e as tuas baterias vão ganhar menos nos próximos anos.",
+  "consequence_pt": "A receita das baterias caiu: o NPV desce. O COD solar não muda.",
+  "on_deliver_effects": [
+    "bess_revenue_saturation"
+  ],
+  "hybrid_cards_v01_2026_10_09": true
+}

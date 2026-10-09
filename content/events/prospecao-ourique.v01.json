@@ -1,0 +1,1653 @@
+{
+ "_meta": {
+  "status": "PROVISÓRIO 2026-10-09g PT — HIPÓTESE salvo REAL; não live",
+  "script": "/workspace/licenca/tools/prospecao_ourique_v01.py"
+ },
+ "sites": {
+  "cumeada_serra_branca": {
+   "type": "eolico",
+   "q": 1.1,
+   "km": 2,
+   "grid_add": 0.0,
+   "icnf": "alto",
+   "p_aia": 0.8,
+   "p_refuse": 0.35,
+   "rivals": 1,
+   "sizes": {
+    "seguro": 20,
+    "recomendado": 50,
+    "armadilha": 100
+   },
+   "levels": {
+    "recurso": 4,
+    "licenciamento": 1,
+    "terreno": 5
+   },
+   "note": "cumeada: vento melhor (CF ~30 %, nível 4); perto da ZPE de Castro Verde (aves estepárias) → ICNF alto",
+   "rows": {
+    "20": {
+     "no_aia": {
+      "npv": 6.23,
+      "equity_fid": 10.3,
+      "capex_2026": 25.5,
+      "dev_cash": 1.2,
+      "curtail_pct": 5.5,
+      "irr": 12.5
+     },
+     "with_aia_9m": {
+      "npv": 5.97,
+      "equity_fid": 10.5,
+      "capex_2026": 25.5,
+      "dev_cash": 1.2,
+      "curtail_pct": 5.5,
+      "irr": 12.5
+     },
+     "p_aia": 0.8,
+     "p_refuse": 0.35,
+     "sunk_if_refused": 0.7,
+     "expected_npv": 4.03,
+     "rent_delta": {
+      "baixa": 0.32,
+      "media": 0.0,
+      "alta": -0.32
+     }
+    },
+    "30": {
+     "no_aia": {
+      "npv": 9.66,
+      "equity_fid": 15.2,
+      "capex_2026": 37.5,
+      "dev_cash": 1.8,
+      "curtail_pct": 5.9,
+      "irr": 12.7
+     },
+     "with_aia_9m": {
+      "npv": 9.26,
+      "equity_fid": 15.4,
+      "capex_2026": 37.5,
+      "dev_cash": 1.8,
+      "curtail_pct": 5.9,
+      "irr": 12.7
+     },
+     "p_aia": 0.8,
+     "p_refuse": 0.35,
+     "sunk_if_refused": 1.05,
+     "expected_npv": 6.33,
+     "rent_delta": {
+      "baixa": 0.48,
+      "media": 0.0,
+      "alta": -0.48
+     }
+    },
+    "40": {
+     "no_aia": {
+      "npv": 12.93,
+      "equity_fid": 20.1,
+      "capex_2026": 49.5,
+      "dev_cash": 2.4,
+      "curtail_pct": 6.4,
+      "irr": 12.8
+     },
+     "with_aia_9m": {
+      "npv": 12.39,
+      "equity_fid": 20.4,
+      "capex_2026": 49.5,
+      "dev_cash": 2.4,
+      "curtail_pct": 6.4,
+      "irr": 12.8
+     },
+     "p_aia": 0.8,
+     "p_refuse": 0.35,
+     "sunk_if_refused": 1.4,
+     "expected_npv": 8.52,
+     "rent_delta": {
+      "baixa": 0.64,
+      "media": 0.0,
+      "alta": -0.64
+     }
+    },
+    "50": {
+     "no_aia": {
+      "npv": 16.01,
+      "equity_fid": 24.9,
+      "capex_2026": 61.5,
+      "dev_cash": 3.0,
+      "curtail_pct": 6.8,
+      "irr": 12.8
+     },
+     "with_aia_9m": {
+      "npv": 15.34,
+      "equity_fid": 25.3,
+      "capex_2026": 61.5,
+      "dev_cash": 3.0,
+      "curtail_pct": 6.8,
+      "irr": 12.8
+     },
+     "p_aia": 0.8,
+     "p_refuse": 0.35,
+     "sunk_if_refused": 1.76,
+     "expected_npv": 10.57,
+     "rent_delta": {
+      "baixa": 0.8,
+      "media": 0.0,
+      "alta": -0.8
+     }
+    },
+    "70": {
+     "no_aia": {
+      "npv": 21.64,
+      "equity_fid": 34.7,
+      "capex_2026": 85.5,
+      "dev_cash": 4.2,
+      "curtail_pct": 7.8,
+      "irr": 12.6
+     },
+     "with_aia_9m": {
+      "npv": 20.73,
+      "equity_fid": 35.2,
+      "capex_2026": 85.5,
+      "dev_cash": 4.2,
+      "curtail_pct": 7.8,
+      "irr": 12.6
+     },
+     "p_aia": 0.8,
+     "p_refuse": 0.35,
+     "sunk_if_refused": 2.46,
+     "expected_npv": 14.3,
+     "rent_delta": {
+      "baixa": 1.12,
+      "media": 0.0,
+      "alta": -1.12
+     }
+    },
+    "100": {
+     "no_aia": {
+      "npv": 28.52,
+      "equity_fid": 49.3,
+      "capex_2026": 121.5,
+      "dev_cash": 6.0,
+      "curtail_pct": 9.5,
+      "irr": 12.3
+     },
+     "with_aia_9m": {
+      "npv": 27.32,
+      "equity_fid": 50.0,
+      "capex_2026": 121.5,
+      "dev_cash": 6.0,
+      "curtail_pct": 9.5,
+      "irr": 12.3
+     },
+     "p_aia": 0.8,
+     "p_refuse": 0.35,
+     "sunk_if_refused": 3.51,
+     "expected_npv": 18.81,
+     "rent_delta": {
+      "baixa": 1.59,
+      "media": 0.0,
+      "alta": -1.6
+     }
+    }
+   }
+  },
+  "herdade_vale_da_rosa": {
+   "type": "eolico",
+   "q": 1.0,
+   "km": 12,
+   "grid_add": 4.800000000000001,
+   "icnf": "baixo",
+   "p_aia": null,
+   "p_refuse": 0.05,
+   "rivals": 0,
+   "sizes": {
+    "seguro": 30,
+    "recomendado": 50,
+    "armadilha": 100
+   },
+   "levels": {
+    "recurso": 3,
+    "licenciamento": 4,
+    "terreno": 2
+   },
+   "note": "planície: CF 27 % (Mira), ICNF baixo; 12 km até à SE da central → coletor 30 kV 2 circuitos 0,40 M€/km = +4,8 (alt. 150 kV aéreo 0,26 M€/km × 12 + SE do parque 2,5 = 5,6)",
+   "rows": {
+    "20": {
+     "no_aia": {
+      "npv": -0.48,
+      "equity_fid": 16.2,
+      "capex_2026": 30.3,
+      "dev_cash": 1.2,
+      "curtail_pct": 5.5,
+      "irr": 7.7
+     },
+     "with_aia_9m": {
+      "npv": -0.46,
+      "equity_fid": 16.4,
+      "capex_2026": 30.3,
+      "dev_cash": 1.2,
+      "curtail_pct": 5.5,
+      "irr": 7.7
+     },
+     "p_aia": 0.4,
+     "p_refuse": 0.05,
+     "sunk_if_refused": 0.7,
+     "expected_npv": -0.54,
+     "rent_delta": {
+      "baixa": 0.35,
+      "media": 0.0,
+      "alta": -0.34
+     }
+    },
+    "30": {
+     "no_aia": {
+      "npv": 1.5,
+      "equity_fid": 20.9,
+      "capex_2026": 42.3,
+      "dev_cash": 1.8,
+      "curtail_pct": 5.9,
+      "irr": 8.6
+     },
+     "with_aia_9m": {
+      "npv": 1.44,
+      "equity_fid": 21.3,
+      "capex_2026": 42.3,
+      "dev_cash": 1.8,
+      "curtail_pct": 5.9,
+      "irr": 8.6
+     },
+     "p_aia": 0.4,
+     "p_refuse": 0.05,
+     "sunk_if_refused": 1.05,
+     "expected_npv": 1.37,
+     "rent_delta": {
+      "baixa": 0.52,
+      "media": 0.0,
+      "alta": -0.52
+     }
+    },
+    "40": {
+     "no_aia": {
+      "npv": 3.32,
+      "equity_fid": 25.8,
+      "capex_2026": 54.3,
+      "dev_cash": 2.4,
+      "curtail_pct": 6.4,
+      "irr": 9.1
+     },
+     "with_aia_9m": {
+      "npv": 3.18,
+      "equity_fid": 26.2,
+      "capex_2026": 54.3,
+      "dev_cash": 2.4,
+      "curtail_pct": 6.4,
+      "irr": 9.1
+     },
+     "p_aia": 0.4,
+     "p_refuse": 0.05,
+     "sunk_if_refused": 1.4,
+     "expected_npv": 3.11,
+     "rent_delta": {
+      "baixa": 0.69,
+      "media": 0.0,
+      "alta": -0.69
+     }
+    },
+    "50": {
+     "no_aia": {
+      "npv": 4.96,
+      "equity_fid": 30.8,
+      "capex_2026": 66.3,
+      "dev_cash": 3.0,
+      "curtail_pct": 6.8,
+      "irr": 9.3
+     },
+     "with_aia_9m": {
+      "npv": 4.75,
+      "equity_fid": 31.3,
+      "capex_2026": 66.3,
+      "dev_cash": 3.0,
+      "curtail_pct": 6.8,
+      "irr": 9.3
+     },
+     "p_aia": 0.5,
+     "p_refuse": 0.05,
+     "sunk_if_refused": 1.76,
+     "expected_npv": 4.62,
+     "rent_delta": {
+      "baixa": 0.86,
+      "media": 0.0,
+      "alta": -0.86
+     }
+    },
+    "70": {
+     "no_aia": {
+      "npv": 7.71,
+      "equity_fid": 41.3,
+      "capex_2026": 90.3,
+      "dev_cash": 4.2,
+      "curtail_pct": 7.8,
+      "irr": 9.5
+     },
+     "with_aia_9m": {
+      "npv": 7.38,
+      "equity_fid": 41.9,
+      "capex_2026": 90.3,
+      "dev_cash": 4.2,
+      "curtail_pct": 7.8,
+      "irr": 9.5
+     },
+     "p_aia": 0.7,
+     "p_refuse": 0.05,
+     "sunk_if_refused": 2.46,
+     "expected_npv": 7.03,
+     "rent_delta": {
+      "baixa": 1.2,
+      "media": 0.0,
+      "alta": -1.21
+     }
+    },
+    "100": {
+     "no_aia": {
+      "npv": 10.29,
+      "equity_fid": 58.0,
+      "capex_2026": 126.3,
+      "dev_cash": 6.0,
+      "curtail_pct": 9.5,
+      "irr": 9.4
+     },
+     "with_aia_9m": {
+      "npv": 9.86,
+      "equity_fid": 58.8,
+      "capex_2026": 126.3,
+      "dev_cash": 6.0,
+      "curtail_pct": 9.5,
+      "irr": 9.4
+     },
+     "p_aia": 0.8,
+     "p_refuse": 0.05,
+     "sunk_if_refused": 3.51,
+     "expected_npv": 9.29,
+     "rent_delta": {
+      "baixa": 1.73,
+      "media": 0.0,
+      "alta": -1.72
+     }
+    }
+   }
+  }
+ },
+ "bess_parcela_se": {
+  "rivals": 2,
+  "rents_eur_ha": {
+   "baixa": 2500,
+   "media": 5000,
+   "alta": 10000
+  },
+  "fallback": "rival fica → BESS dentro da vedação da central: +1,5 km de cabo MT (~0,3 M€) e +2 meses (−0,2) → NPV −0,5 (HIPÓTESE)",
+  "sizes": {
+   "seguro": {
+    "size": "10 MW/20 MWh",
+    "equity_100": 5.3,
+    "equity_prr": 4.2,
+    "npv": {
+     "vento_0": -1.1,
+     "vento_20": 1.3,
+     "vento_50": 1.5
+    },
+    "npv_prr": {
+     "vento_0": -0.3,
+     "vento_20": 2.0,
+     "vento_50": 2.2
+    },
+    "ha": 0.4,
+    "rent_npv": {
+     "baixa": -0.009,
+     "media": -0.018,
+     "alta": -0.036
+    }
+   },
+   "recomendado": {
+    "size": "20 MW/40 MWh",
+    "equity_100": 10.5,
+    "equity_prr": 8.4,
+    "npv": {
+     "vento_0": -2.5,
+     "vento_20": 2.3,
+     "vento_50": 2.8
+    },
+    "npv_prr": {
+     "vento_0": -1.0,
+     "vento_20": 3.8,
+     "vento_50": 4.3
+    },
+    "ha": 0.6,
+    "rent_npv": {
+     "baixa": -0.013,
+     "media": -0.027,
+     "alta": -0.054
+    }
+   },
+   "armadilha": {
+    "size": "20 MW/80 MWh",
+    "equity_100": 18.4,
+    "equity_prr": 14.7,
+    "npv": {
+     "vento_0": -10.4,
+     "vento_20": -3.3,
+     "vento_50": -2.5
+    },
+    "npv_prr": {
+     "vento_0": -7.8,
+     "vento_20": -0.7,
+     "vento_50": 0.1
+    },
+    "ha": 0.8,
+    "rent_npv": {
+     "baixa": -0.018,
+     "media": -0.036,
+     "alta": -0.071
+    }
+   }
+  },
+  "ann20": 8.93
+ },
+ "sobreequip": {
+  "small": {
+   "added_MWp": 20,
+   "MWp_total": 140,
+   "clip_pct_118_8": 0.41,
+   "capex_delta_MEUR": [
+    9.0,
+    12.0,
+    10.5
+   ],
+   "nav_99MVA": 1.6,
+   "equity": 3.15
+  },
+  "medium": {
+   "added_MWp": 40,
+   "MWp_total": 160,
+   "clip_pct_118_8": 2.1,
+   "capex_delta_MEUR": [
+    18.0,
+    24.0,
+    21.0
+   ],
+   "nav_99MVA": -0.7,
+   "equity": 6.3
+  },
+  "large": {
+   "added_MWp": 90,
+   "MWp_total": 210,
+   "clip_pct_118_8": 13.03,
+   "capex_delta_MEUR": [
+    40.5,
+    54.0,
+    47.25
+   ],
+   "nav_99MVA": -17.3,
+   "equity": 14.17
+  }
+ },
+ "irr_check": {
+  "solar_careful_B": -5.56,
+  "solar_careful_B_no_overequip": -7.16,
+  "cases": {
+   "cumeada_serra_branca 40 MW sem AIA renda media + BESS 20×2": {
+    "npv": 9.64,
+    "irr_016": 9.54,
+    "irr_0175": 9.69
+   },
+   "cumeada_serra_branca 40 MW sem AIA renda media + BESS 20×2 + PRR": {
+    "npv": 11.14,
+    "irr_016": 9.78,
+    "irr_0175": 9.95
+   },
+   "cumeada_serra_branca 40 MW sem AIA renda baixa + BESS 20×2": {
+    "npv": 10.28,
+    "irr_016": 9.64,
+    "irr_0175": 9.8
+   },
+   "cumeada_serra_branca 40 MW sem AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 11.78,
+    "irr_016": 9.88,
+    "irr_0175": 10.06
+   },
+   "cumeada_serra_branca 40 MW AIA renda media + BESS 20×2": {
+    "npv": 9.1,
+    "irr_016": 9.46,
+    "irr_0175": 9.59
+   },
+   "cumeada_serra_branca 40 MW AIA renda media + BESS 20×2 + PRR": {
+    "npv": 10.6,
+    "irr_016": 9.7,
+    "irr_0175": 9.86
+   },
+   "cumeada_serra_branca 40 MW AIA renda baixa + BESS 20×2": {
+    "npv": 9.74,
+    "irr_016": 9.56,
+    "irr_0175": 9.7
+   },
+   "cumeada_serra_branca 40 MW AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 11.24,
+    "irr_016": 9.8,
+    "irr_0175": 9.97
+   },
+   "cumeada_serra_branca 50 MW sem AIA renda media + BESS 20×2": {
+    "npv": 13.22,
+    "irr_016": 10.12,
+    "irr_0175": 10.31
+   },
+   "cumeada_serra_branca 50 MW sem AIA renda media + BESS 20×2 + PRR": {
+    "npv": 14.72,
+    "irr_016": 10.36,
+    "irr_0175": 10.58
+   },
+   "cumeada_serra_branca 50 MW sem AIA renda baixa + BESS 20×2": {
+    "npv": 14.02,
+    "irr_016": 10.24,
+    "irr_0175": 10.45
+   },
+   "cumeada_serra_branca 50 MW sem AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 15.52,
+    "irr_016": 10.48,
+    "irr_0175": 10.72
+   },
+   "cumeada_serra_branca 50 MW AIA renda media + BESS 20×2": {
+    "npv": 12.55,
+    "irr_016": 10.01,
+    "irr_0175": 10.2
+   },
+   "cumeada_serra_branca 50 MW AIA renda media + BESS 20×2 + PRR": {
+    "npv": 14.05,
+    "irr_016": 10.25,
+    "irr_0175": 10.46
+   },
+   "cumeada_serra_branca 50 MW AIA renda baixa + BESS 20×2": {
+    "npv": 13.35,
+    "irr_016": 10.14,
+    "irr_0175": 10.34
+   },
+   "cumeada_serra_branca 50 MW AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 14.85,
+    "irr_016": 10.38,
+    "irr_0175": 10.6
+   },
+   "cumeada_serra_branca 70 MW sem AIA renda media + BESS 20×2": {
+    "npv": 18.85,
+    "irr_016": 11.02,
+    "irr_0175": 11.3
+   },
+   "cumeada_serra_branca 70 MW sem AIA renda media + BESS 20×2 + PRR": {
+    "npv": 20.35,
+    "irr_016": 11.26,
+    "irr_0175": 11.56
+   },
+   "cumeada_serra_branca 70 MW sem AIA renda baixa + BESS 20×2": {
+    "npv": 19.97,
+    "irr_016": 11.2,
+    "irr_0175": 11.49
+   },
+   "cumeada_serra_branca 70 MW sem AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 21.47,
+    "irr_016": 11.44,
+    "irr_0175": 11.76
+   },
+   "cumeada_serra_branca 70 MW AIA renda media + BESS 20×2": {
+    "npv": 17.94,
+    "irr_016": 10.87,
+    "irr_0175": 11.14
+   },
+   "cumeada_serra_branca 70 MW AIA renda media + BESS 20×2 + PRR": {
+    "npv": 19.44,
+    "irr_016": 11.11,
+    "irr_0175": 11.4
+   },
+   "cumeada_serra_branca 70 MW AIA renda baixa + BESS 20×2": {
+    "npv": 19.06,
+    "irr_016": 11.05,
+    "irr_0175": 11.34
+   },
+   "cumeada_serra_branca 70 MW AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 20.56,
+    "irr_016": 11.29,
+    "irr_0175": 11.6
+   },
+   "herdade_vale_da_rosa 40 MW sem AIA renda media + BESS 20×2": {
+    "npv": 0.03,
+    "irr_016": 8.0,
+    "irr_0175": 8.01
+   },
+   "herdade_vale_da_rosa 40 MW sem AIA renda media + BESS 20×2 + PRR": {
+    "npv": 1.53,
+    "irr_016": 8.24,
+    "irr_0175": 8.27
+   },
+   "herdade_vale_da_rosa 40 MW sem AIA renda baixa + BESS 20×2": {
+    "npv": 0.72,
+    "irr_016": 8.12,
+    "irr_0175": 8.13
+   },
+   "herdade_vale_da_rosa 40 MW sem AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 2.22,
+    "irr_016": 8.36,
+    "irr_0175": 8.39
+   },
+   "herdade_vale_da_rosa 40 MW AIA renda media + BESS 20×2": {
+    "npv": -0.11,
+    "irr_016": 7.98,
+    "irr_0175": 7.98
+   },
+   "herdade_vale_da_rosa 40 MW AIA renda media + BESS 20×2 + PRR": {
+    "npv": 1.39,
+    "irr_016": 8.22,
+    "irr_0175": 8.24
+   },
+   "herdade_vale_da_rosa 40 MW AIA renda baixa + BESS 20×2": {
+    "npv": 0.58,
+    "irr_016": 8.09,
+    "irr_0175": 8.1
+   },
+   "herdade_vale_da_rosa 40 MW AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 2.08,
+    "irr_016": 8.33,
+    "irr_0175": 8.36
+   },
+   "herdade_vale_da_rosa 50 MW sem AIA renda media + BESS 20×2": {
+    "npv": 2.17,
+    "irr_016": 8.35,
+    "irr_0175": 8.38
+   },
+   "herdade_vale_da_rosa 50 MW sem AIA renda media + BESS 20×2 + PRR": {
+    "npv": 3.67,
+    "irr_016": 8.59,
+    "irr_0175": 8.64
+   },
+   "herdade_vale_da_rosa 50 MW sem AIA renda baixa + BESS 20×2": {
+    "npv": 3.03,
+    "irr_016": 8.48,
+    "irr_0175": 8.53
+   },
+   "herdade_vale_da_rosa 50 MW sem AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 4.53,
+    "irr_016": 8.72,
+    "irr_0175": 8.79
+   },
+   "herdade_vale_da_rosa 50 MW AIA renda media + BESS 20×2": {
+    "npv": 1.96,
+    "irr_016": 8.31,
+    "irr_0175": 8.34
+   },
+   "herdade_vale_da_rosa 50 MW AIA renda media + BESS 20×2 + PRR": {
+    "npv": 3.46,
+    "irr_016": 8.55,
+    "irr_0175": 8.61
+   },
+   "herdade_vale_da_rosa 50 MW AIA renda baixa + BESS 20×2": {
+    "npv": 2.82,
+    "irr_016": 8.45,
+    "irr_0175": 8.49
+   },
+   "herdade_vale_da_rosa 50 MW AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 4.32,
+    "irr_016": 8.69,
+    "irr_0175": 8.76
+   },
+   "herdade_vale_da_rosa 70 MW sem AIA renda media + BESS 20×2": {
+    "npv": 4.92,
+    "irr_016": 8.79,
+    "irr_0175": 8.86
+   },
+   "herdade_vale_da_rosa 70 MW sem AIA renda media + BESS 20×2 + PRR": {
+    "npv": 6.42,
+    "irr_016": 9.03,
+    "irr_0175": 9.12
+   },
+   "herdade_vale_da_rosa 70 MW sem AIA renda baixa + BESS 20×2": {
+    "npv": 6.12,
+    "irr_016": 8.98,
+    "irr_0175": 9.07
+   },
+   "herdade_vale_da_rosa 70 MW sem AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 7.62,
+    "irr_016": 9.22,
+    "irr_0175": 9.33
+   },
+   "herdade_vale_da_rosa 70 MW AIA renda media + BESS 20×2": {
+    "npv": 4.59,
+    "irr_016": 8.73,
+    "irr_0175": 8.8
+   },
+   "herdade_vale_da_rosa 70 MW AIA renda media + BESS 20×2 + PRR": {
+    "npv": 6.09,
+    "irr_016": 8.97,
+    "irr_0175": 9.07
+   },
+   "herdade_vale_da_rosa 70 MW AIA renda baixa + BESS 20×2": {
+    "npv": 5.79,
+    "irr_016": 8.93,
+    "irr_0175": 9.01
+   },
+   "herdade_vale_da_rosa 70 MW AIA renda baixa + BESS 20×2 + PRR": {
+    "npv": 7.29,
+    "irr_016": 9.17,
+    "irr_0175": 9.28
+   }
+  }
+ },
+ "gm_pack": {
+  "levels_map": {
+   "recurso_cf": {
+    "1": {
+     "cf_min": null,
+     "cf_max": 21.0,
+     "q": 0.75
+    },
+    "2": {
+     "cf_min": 21.0,
+     "cf_max": 25.0,
+     "q": 0.86
+    },
+    "3": {
+     "cf_min": 25.0,
+     "cf_max": 28.5,
+     "q": 1.0
+    },
+    "4": {
+     "cf_min": 28.5,
+     "cf_max": 31.0,
+     "q": 1.1
+    },
+    "5": {
+     "cf_min": 31.0,
+     "cf_max": null,
+     "q": 1.18
+    }
+   },
+   "corte_pct": {
+    "5": [
+     0,
+     3
+    ],
+    "4": [
+     3,
+     6
+    ],
+    "3": [
+     6,
+     9
+    ],
+    "2": [
+     9,
+     13
+    ],
+    "1": [
+     13,
+     100
+    ]
+   },
+   "refuse_given_aia": {
+    "baixo": 0.05,
+    "medio": 0.15,
+    "alto": 0.25,
+    "muito_alto": 0.5
+   }
+  },
+  "sites": {
+   "sb": {
+    "draws": {
+     "q1.1_alto": {
+      "p": 0.42,
+      "20": {
+       "npv_no_aia": 6.23,
+       "npv_aia": 5.97,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.25,
+       "ev": 4.98,
+       "p_lost": 0.15
+      },
+      "30": {
+       "npv_no_aia": 9.66,
+       "npv_aia": 9.26,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.25,
+       "ev": 7.78,
+       "p_lost": 0.15
+      },
+      "40": {
+       "npv_no_aia": 12.93,
+       "npv_aia": 12.39,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.25,
+       "ev": 10.45,
+       "p_lost": 0.15
+      },
+      "50": {
+       "npv_no_aia": 16.01,
+       "npv_aia": 15.34,
+       "p_aia": 0.7,
+       "p_refuse": 0.25,
+       "ev": 12.44,
+       "p_lost": 0.175
+      },
+      "70": {
+       "npv_no_aia": 21.64,
+       "npv_aia": 20.73,
+       "p_aia": 1.0,
+       "p_refuse": 0.4,
+       "ev": 11.3,
+       "p_lost": 0.4
+      },
+      "100": {
+       "npv_no_aia": 28.52,
+       "npv_aia": 27.32,
+       "p_aia": 1.0,
+       "p_refuse": 0.4,
+       "ev": 14.84,
+       "p_lost": 0.4
+      }
+     },
+     "q1.1_muito_alto": {
+      "p": 0.28,
+      "20": {
+       "npv_no_aia": 6.23,
+       "npv_aia": 5.8,
+       "p_aia": 0.7,
+       "p_refuse": 0.5,
+       "ev": 3.55,
+       "p_lost": 0.35
+      },
+      "30": {
+       "npv_no_aia": 9.66,
+       "npv_aia": 9.0,
+       "p_aia": 0.7,
+       "p_refuse": 0.5,
+       "ev": 5.58,
+       "p_lost": 0.35
+      },
+      "40": {
+       "npv_no_aia": 12.93,
+       "npv_aia": 12.04,
+       "p_aia": 0.7,
+       "p_refuse": 0.5,
+       "ev": 7.5,
+       "p_lost": 0.35
+      },
+      "50": {
+       "npv_no_aia": 16.01,
+       "npv_aia": 14.91,
+       "p_aia": 0.8,
+       "p_refuse": 0.5,
+       "ev": 8.34,
+       "p_lost": 0.4
+      },
+      "70": {
+       "npv_no_aia": 21.64,
+       "npv_aia": 20.15,
+       "p_aia": 1.0,
+       "p_refuse": 0.7,
+       "ev": 4.17,
+       "p_lost": 0.7
+      },
+      "100": {
+       "npv_no_aia": 28.52,
+       "npv_aia": 26.55,
+       "p_aia": 1.0,
+       "p_refuse": 0.7,
+       "ev": 5.36,
+       "p_lost": 0.7
+      }
+     },
+     "q1.18_alto": {
+      "p": 0.18,
+      "20": {
+       "npv_no_aia": 8.6,
+       "npv_aia": 8.24,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.25,
+       "ev": 6.95,
+       "p_lost": 0.15
+      },
+      "30": {
+       "npv_no_aia": 13.2,
+       "npv_aia": 12.64,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.25,
+       "ev": 10.72,
+       "p_lost": 0.15
+      },
+      "40": {
+       "npv_no_aia": 17.62,
+       "npv_aia": 16.88,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.25,
+       "ev": 14.34,
+       "p_lost": 0.15
+      },
+      "50": {
+       "npv_no_aia": 21.85,
+       "npv_aia": 20.93,
+       "p_aia": 0.7,
+       "p_refuse": 0.25,
+       "ev": 17.13,
+       "p_lost": 0.175
+      },
+      "70": {
+       "npv_no_aia": 29.72,
+       "npv_aia": 28.47,
+       "p_aia": 1.0,
+       "p_refuse": 0.4,
+       "ev": 15.95,
+       "p_lost": 0.4
+      },
+      "100": {
+       "npv_no_aia": 39.85,
+       "npv_aia": 38.18,
+       "p_aia": 1.0,
+       "p_refuse": 0.4,
+       "ev": 21.35,
+       "p_lost": 0.4
+      }
+     },
+     "q1.18_muito_alto": {
+      "p": 0.12,
+      "20": {
+       "npv_no_aia": 8.6,
+       "npv_aia": 8.01,
+       "p_aia": 0.7,
+       "p_refuse": 0.5,
+       "ev": 5.03,
+       "p_lost": 0.35
+      },
+      "30": {
+       "npv_no_aia": 13.2,
+       "npv_aia": 12.29,
+       "p_aia": 0.7,
+       "p_refuse": 0.5,
+       "ev": 7.79,
+       "p_lost": 0.35
+      },
+      "40": {
+       "npv_no_aia": 17.62,
+       "npv_aia": 16.41,
+       "p_aia": 0.7,
+       "p_refuse": 0.5,
+       "ev": 10.43,
+       "p_lost": 0.35
+      },
+      "50": {
+       "npv_no_aia": 21.85,
+       "npv_aia": 20.34,
+       "p_aia": 0.8,
+       "p_refuse": 0.5,
+       "ev": 11.68,
+       "p_lost": 0.4
+      },
+      "70": {
+       "npv_no_aia": 29.72,
+       "npv_aia": 27.67,
+       "p_aia": 1.0,
+       "p_refuse": 0.7,
+       "ev": 6.43,
+       "p_lost": 0.7
+      },
+      "100": {
+       "npv_no_aia": 39.85,
+       "npv_aia": 37.1,
+       "p_aia": 1.0,
+       "p_refuse": 0.7,
+       "ev": 8.52,
+       "p_lost": 0.7
+      }
+     }
+    },
+    "ev_by_size": {
+     "20": 4.94,
+     "30": 7.69,
+     "40": 10.32,
+     "50": 12.04,
+     "70": 9.56,
+     "100": 12.6
+    },
+    "best_blind": 100,
+    "ev_blind": 12.6,
+    "ev_with_report": 13.81,
+    "value_of_report": 1.21,
+    "best_size_by_draw": {
+     "q1.1_alto": 100,
+     "q1.1_muito_alto": 50,
+     "q1.18_alto": 100,
+     "q1.18_muito_alto": 50
+    },
+    "line_cost": null
+   },
+   "vr": {
+    "draws": {
+     "q0.86_baixo": {
+      "p": 0.4,
+      "20": {
+       "npv_no_aia": -3.11,
+       "npv_aia": -2.98,
+       "p_aia": 0.2,
+       "p_refuse": 0.05,
+       "ev": -3.09,
+       "p_lost": 0.01
+      },
+      "30": {
+       "npv_no_aia": -5.18,
+       "npv_aia": -4.96,
+       "p_aia": 0.2,
+       "p_refuse": 0.05,
+       "ev": -5.13,
+       "p_lost": 0.01
+      },
+      "40": {
+       "npv_no_aia": -5.55,
+       "npv_aia": -5.32,
+       "p_aia": 0.2,
+       "p_refuse": 0.05,
+       "ev": -5.49,
+       "p_lost": 0.01
+      },
+      "50": {
+       "npv_no_aia": -6.07,
+       "npv_aia": -5.82,
+       "p_aia": 0.3,
+       "p_refuse": 0.05,
+       "ev": -5.98,
+       "p_lost": 0.015
+      },
+      "70": {
+       "npv_no_aia": -8.2,
+       "npv_aia": -7.86,
+       "p_aia": 0.49999999999999994,
+       "p_refuse": 0.05,
+       "ev": -7.97,
+       "p_lost": 0.025
+      },
+      "100": {
+       "npv_no_aia": -11.77,
+       "npv_aia": -11.28,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.05,
+       "ev": -11.33,
+       "p_lost": 0.03
+      }
+     },
+     "q1.0_baixo": {
+      "p": 0.6,
+      "20": {
+       "npv_no_aia": 1.37,
+       "npv_aia": 1.31,
+       "p_aia": 0.2,
+       "p_refuse": 0.05,
+       "ev": 1.31,
+       "p_lost": 0.01
+      },
+      "30": {
+       "npv_no_aia": 1.5,
+       "npv_aia": 1.44,
+       "p_aia": 0.2,
+       "p_refuse": 0.05,
+       "ev": 1.43,
+       "p_lost": 0.01
+      },
+      "40": {
+       "npv_no_aia": 3.32,
+       "npv_aia": 3.18,
+       "p_aia": 0.2,
+       "p_refuse": 0.05,
+       "ev": 3.22,
+       "p_lost": 0.01
+      },
+      "50": {
+       "npv_no_aia": 4.96,
+       "npv_aia": 4.75,
+       "p_aia": 0.3,
+       "p_refuse": 0.05,
+       "ev": 4.75,
+       "p_lost": 0.015
+      },
+      "70": {
+       "npv_no_aia": 7.08,
+       "npv_aia": 6.78,
+       "p_aia": 0.49999999999999994,
+       "p_refuse": 0.05,
+       "ev": 6.62,
+       "p_lost": 0.025
+      },
+      "100": {
+       "npv_no_aia": 9.66,
+       "npv_aia": 9.26,
+       "p_aia": 0.6000000000000001,
+       "p_refuse": 0.05,
+       "ev": 8.95,
+       "p_lost": 0.03
+      }
+     }
+    },
+    "ev_by_size": {
+     "20": -0.45,
+     "30": -1.19,
+     "40": -0.26,
+     "50": 0.46,
+     "70": 0.78,
+     "100": 0.84
+    },
+    "best_blind": 100,
+    "ev_blind": 0.84,
+    "ev_with_report": 4.13,
+    "value_of_report": 3.29,
+    "best_size_by_draw": {
+     "q0.86_baixo": 20,
+     "q1.0_baixo": 100
+    },
+    "line_cost": {
+     "20": 2.4,
+     "30": 4.8,
+     "40": 4.8,
+     "50": 4.8,
+     "70": 5.62,
+     "100": 5.62
+    }
+   }
+  },
+  "annuity_factor_wind": 11.47,
+  "wind_rev_MEUR_per_MW_yr1": 0.14,
+  "trap_revealed_nav": {
+   "wind_70_sb": -4.94,
+   "wind_100_vr": -6.41,
+   "bess_20x4": -1.0,
+   "overequip_large": -3.0
+  },
+  "rent_strategies": {
+   "sb_50": {
+    "baixa→media": [
+     6.31,
+     0.51
+    ],
+    "baixa→alta": [
+     7.27,
+     0.61
+    ],
+    "media→alta": [
+     9.82,
+     0.83
+    ],
+    "alta→alta": [
+     10.62,
+     0.95
+    ],
+    "V": 12.04
+   },
+   "vr_50": {
+    "baixa→media": [
+     0.63,
+     0.77
+    ],
+    "baixa→alta": [
+     0.23,
+     0.87
+    ],
+    "media→alta": [
+     0.23,
+     0.99
+    ],
+    "alta→alta": [
+     -0.4,
+     1.0
+    ],
+    "V": 0.46
+   },
+   "bess_20x2": {
+    "baixa→media": [
+     0.89,
+     0.32
+    ],
+    "baixa→alta": [
+     1.13,
+     0.41
+    ],
+    "media→alta": [
+     1.87,
+     0.67
+    ],
+    "alta→alta": [
+     2.47,
+     0.89
+    ],
+    "V": 2.8
+   }
+  },
+  "irr_by_draw": {
+   "sb40 q1.1_alto": {
+    "p_draw": 0.42,
+    "p_aia": 0.6000000000000001,
+    "p_refused": 0.15,
+    "irr016": {
+     "sem_aia": 9.55,
+     "aia": 9.46,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 9.69,
+     "aia": 9.6,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.85
+   },
+   "sb40 q1.1_alto +PRR": {
+    "p_draw": 0.42,
+    "p_aia": 0.6000000000000001,
+    "p_refused": 0.15,
+    "irr016": {
+     "sem_aia": 9.79,
+     "aia": 9.7,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 9.95,
+     "aia": 9.86,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.85
+   },
+   "sb40 q1.1_muito_alto": {
+    "p_draw": 0.28,
+    "p_aia": 0.7,
+    "p_refused": 0.35,
+    "irr016": {
+     "sem_aia": 9.55,
+     "aia": 9.4,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 9.69,
+     "aia": 9.54,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.65
+   },
+   "sb40 q1.1_muito_alto +PRR": {
+    "p_draw": 0.28,
+    "p_aia": 0.7,
+    "p_refused": 0.35,
+    "irr016": {
+     "sem_aia": 9.79,
+     "aia": 9.64,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 9.95,
+     "aia": 9.8,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.65
+   },
+   "sb40 q1.18_alto": {
+    "p_draw": 0.18,
+    "p_aia": 0.6000000000000001,
+    "p_refused": 0.15,
+    "irr016": {
+     "sem_aia": 10.3,
+     "aia": 10.18,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 10.51,
+     "aia": 10.38,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.85
+   },
+   "sb40 q1.18_alto +PRR": {
+    "p_draw": 0.18,
+    "p_aia": 0.6000000000000001,
+    "p_refused": 0.15,
+    "irr016": {
+     "sem_aia": 10.54,
+     "aia": 10.42,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 10.78,
+     "aia": 10.65,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.85
+   },
+   "sb40 q1.18_muito_alto": {
+    "p_draw": 0.12,
+    "p_aia": 0.7,
+    "p_refused": 0.35,
+    "irr016": {
+     "sem_aia": 10.3,
+     "aia": 10.1,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 10.51,
+     "aia": 10.3,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.65
+   },
+   "sb40 q1.18_muito_alto +PRR": {
+    "p_draw": 0.12,
+    "p_aia": 0.7,
+    "p_refused": 0.35,
+    "irr016": {
+     "sem_aia": 10.54,
+     "aia": 10.34,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 10.78,
+     "aia": 10.56,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.65
+   },
+   "sb50 q1.1_alto": {
+    "p_draw": 0.42,
+    "p_aia": 0.7,
+    "p_refused": 0.175,
+    "irr016": {
+     "sem_aia": 10.12,
+     "aia": 10.01,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 10.32,
+     "aia": 10.2,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.82
+   },
+   "sb50 q1.1_alto +PRR": {
+    "p_draw": 0.42,
+    "p_aia": 0.7,
+    "p_refused": 0.175,
+    "irr016": {
+     "sem_aia": 10.36,
+     "aia": 10.25,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 10.58,
+     "aia": 10.46,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.82
+   },
+   "sb50 q1.1_muito_alto": {
+    "p_draw": 0.28,
+    "p_aia": 0.8,
+    "p_refused": 0.4,
+    "irr016": {
+     "sem_aia": 10.12,
+     "aia": 9.94,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 10.32,
+     "aia": 10.13,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.6
+   },
+   "sb50 q1.1_muito_alto +PRR": {
+    "p_draw": 0.28,
+    "p_aia": 0.8,
+    "p_refused": 0.4,
+    "irr016": {
+     "sem_aia": 10.36,
+     "aia": 10.18,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 10.58,
+     "aia": 10.39,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.6
+   },
+   "sb50 q1.18_alto": {
+    "p_draw": 0.18,
+    "p_aia": 0.7,
+    "p_refused": 0.175,
+    "irr016": {
+     "sem_aia": 11.05,
+     "aia": 10.91,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 11.34,
+     "aia": 11.18,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.82
+   },
+   "sb50 q1.18_alto +PRR": {
+    "p_draw": 0.18,
+    "p_aia": 0.7,
+    "p_refused": 0.175,
+    "irr016": {
+     "sem_aia": 11.29,
+     "aia": 11.15,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 11.6,
+     "aia": 11.44,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.82
+   },
+   "sb50 q1.18_muito_alto": {
+    "p_draw": 0.12,
+    "p_aia": 0.8,
+    "p_refused": 0.4,
+    "irr016": {
+     "sem_aia": 11.05,
+     "aia": 10.81,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 11.34,
+     "aia": 11.08,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.6
+   },
+   "sb50 q1.18_muito_alto +PRR": {
+    "p_draw": 0.12,
+    "p_aia": 0.8,
+    "p_refused": 0.4,
+    "irr016": {
+     "sem_aia": 11.29,
+     "aia": 11.05,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 11.6,
+     "aia": 11.34,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.6
+   },
+   "vr50 q0.86_baixo": {
+    "p_draw": 0.4,
+    "p_aia": 0.3,
+    "p_refused": 0.015,
+    "irr016": {
+     "sem_aia": 6.59,
+     "aia": 6.63,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 6.45,
+     "aia": 6.5,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.0
+   },
+   "vr50 q0.86_baixo +PRR": {
+    "p_draw": 0.4,
+    "p_aia": 0.3,
+    "p_refused": 0.015,
+    "irr016": {
+     "sem_aia": 6.83,
+     "aia": 6.87,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 6.72,
+     "aia": 6.76,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.0
+   },
+   "vr50 q1.0_baixo": {
+    "p_draw": 0.6,
+    "p_aia": 0.3,
+    "p_refused": 0.015,
+    "irr016": {
+     "sem_aia": 8.35,
+     "aia": 8.32,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 8.38,
+     "aia": 8.35,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.0
+   },
+   "vr50 q1.0_baixo +PRR": {
+    "p_draw": 0.6,
+    "p_aia": 0.3,
+    "p_refused": 0.015,
+    "irr016": {
+     "sem_aia": 8.59,
+     "aia": 8.56,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 8.65,
+     "aia": 8.61,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.0
+   },
+   "vr70 q0.86_baixo": {
+    "p_draw": 0.4,
+    "p_aia": 0.49999999999999994,
+    "p_refused": 0.025,
+    "irr016": {
+     "sem_aia": 6.25,
+     "aia": 6.3,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 6.08,
+     "aia": 6.14,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.0
+   },
+   "vr70 q0.86_baixo +PRR": {
+    "p_draw": 0.4,
+    "p_aia": 0.49999999999999994,
+    "p_refused": 0.025,
+    "irr016": {
+     "sem_aia": 6.49,
+     "aia": 6.54,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 6.34,
+     "aia": 6.4,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.0
+   },
+   "vr70 q1.0_baixo": {
+    "p_draw": 0.6,
+    "p_aia": 0.49999999999999994,
+    "p_refused": 0.025,
+    "irr016": {
+     "sem_aia": 8.69,
+     "aia": 8.64,
+     "recusado": 6.69
+    },
+    "irr0175": {
+     "sem_aia": 8.76,
+     "aia": 8.7,
+     "recusado": 6.56
+    },
+    "p_above9_016": 0.0
+   },
+   "vr70 q1.0_baixo +PRR": {
+    "p_draw": 0.6,
+    "p_aia": 0.49999999999999994,
+    "p_refused": 0.025,
+    "irr016": {
+     "sem_aia": 8.93,
+     "aia": 8.88,
+     "recusado": 6.93
+    },
+    "irr0175": {
+     "sem_aia": 9.02,
+     "aia": 8.97,
+     "recusado": 6.83
+    },
+    "p_above9_016": 0.0
+   }
+  },
+  "bess_corte3_haircut": {
+   "10x2": -0.53,
+   "20x2": -1.06,
+   "20x4": -1.5,
+   "note": "corte 3 = a ligação limita +15 % da arbitragem (56 % da receita CH) → −8,4 % da receita; HIPÓTESE"
+  },
+  "overequip_corte1": {
+   "small": 0.4,
+   "medium": -3.0,
+   "large": -22.0,
+   "note": "corte 1 = mais 10 % da energia extra cortada (35 GWh/ano no pequeno a 36 €/MWh) → −1,2 / −2,3 / −4,7; HIPÓTESE"
+  },
+  "report_cost": {
+   "eolica": -0.15,
+   "bateria": -0.04,
+   "sobreequipamento": -0.02,
+   "months": 1,
+   "note": "1 mês, em paralelo com a resposta do dono; revela true_risk e trap_size (HIPÓTESE: pré-viabilidade com vento mesoescala + scoping de aves + estudo de corte)"
+  },
+  "rent_signing_fee": {
+   "eolica": {
+    "baixa": -0.02,
+    "media": -0.05,
+    "alta": -0.1
+   },
+   "bateria": {
+    "baixa": -0.02,
+    "media": -0.05,
+    "alta": -0.1
+   },
+   "sobreequipamento": {
+    "baixa": 0.0,
+    "media": -0.01,
+    "alta": -0.02
+   },
+   "note": "prémio de opção/exclusividade pago à assinatura (caixa no ciclo), além da renda anual a partir do COD (nav). HIPÓTESE"
+  },
+  "p_win_by_size_sb": {
+   "20": 0.77,
+   "30": 0.77,
+   "40": 0.77,
+   "50": 0.73,
+   "70": 0.48,
+   "100": 0.48
+  }
+ }
+}

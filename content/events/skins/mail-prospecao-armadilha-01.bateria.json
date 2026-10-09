@@ -1,0 +1,15 @@
+{
+  "skeleton_id": "mail-prospecao-armadilha-01",
+  "skin_id": "bateria",
+  "when": {
+    "se_id": "ourique",
+    "opp_type": "bateria"
+  },
+  "from_name": "Consultor de desenvolvimento",
+  "subject": "A armadilha mostra-se: as baterias ficam meio vazias",
+  "body": "Seis meses depois de lançarmos {{site_name}}, as contas da rede estão feitas. Com a regra de carga e a ligação a limitar, as baterias do tamanho que escolheste vão ficar meio vazias quase todos os dias. Podemos reduzir o projeto agora ou aceitar a perda.",
+  "params": {
+    "site_name": "prospecao.opportunities[].name"
+  },
+  "prospecao_v01_2026_10_09": true
+}
