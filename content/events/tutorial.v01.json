@@ -149,23 +149,6 @@
       "ui_tut_0fee34b_2026_10_07": true
     },
     {
-      "id": "tut-sala-hibrido",
-      "trigger": {
-        "screen": "sala",
-        "on": "first_effect",
-        "tag": "",
-        "effect": "deliver:mail-consultor-hibrido-01",
-        "phase": "",
-        "min_month": 0
-      },
-      "target": "sala.open",
-      "title": "Juntar eólica e baterias",
-      "body": "Aqui juntas eólica (até ao M6) e baterias (até ao M10). Só com solar, o fundo dificilmente aceita o projeto.",
-      "blocks_play": false,
-      "order": 65,
-      "rivais_2026_10_09": true
-    },
-    {
       "id": "tut-play",
       "trigger": {
         "screen": "home",
@@ -201,6 +184,23 @@
       "nota_gm": "Primeiro prazo real: land_option (M1). Se land_option_open não vier, usar phase=land.",
       "body_long": "Aqui vês os prazos do projeto e quanto falta para cada um. Se falhares um, o projeto atrasa ou a DGEG pode abrir uma audiência para te tirar o TRC.",
       "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-hibrido-v01",
+      "trigger": {
+        "screen": "correio",
+        "on": "first_effect",
+        "tag": "",
+        "effect": "deliver:mail-consultor-valueadd-01",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "correio.first_choice",
+      "title": "Só com solar não chega",
+      "body": "Só com solar, ao preço do leilão, perdes dinheiro. Hibridizar o ponto de ligação é o que o torna rentável.",
+      "blocks_play": false,
+      "order": 85,
+      "v01_hybrid_2026_10_10": "Variante rentável com hibridização. Substitui tut-sala-hibrido, que apontava para mail-consultor-hibrido-01 (carta que não existe)."
     },
     {
       "id": "tut-terreno",
