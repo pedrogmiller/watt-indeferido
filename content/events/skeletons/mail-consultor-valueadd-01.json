@@ -19,8 +19,8 @@
         "value_add_commit",
         "bess_dev_flag"
       ],
-      "consequence_pt": "Hibridizas o ponto de ligação: sai 0,4 M€ agora, e o NPV do projeto passa a positivo.",
-      "hint": "Pagas 0,4 M€ agora. Na FID entram mais 2,16 M€ de capital próprio. O híbrido fica pronto em 9 meses e não atrasa o solar."
+      "consequence_pt": "Hibridizas o ponto de ligação: não sai dinheiro agora, e o NPV do projeto passa a positivo.",
+      "hint": "Não sai dinheiro agora. Na FID entram 2,56 M€ de capital próprio (inclui 0,4 M€ de estudos e desenho do híbrido). O híbrido fica pronto em 9 meses e não atrasa o solar."
     },
     {
       "id": "later",
@@ -43,5 +43,5 @@
   "deadline_role": "due",
   "deadline_kind": "player",
   "deadline_blocks_play": true,
-  "v01_hybrid_2026_10_10": "Carta presa (Continuar abre-a). Texto da variante rentável com hibridização: solar ao preço do leilão perde; baterias mais aditamento eólico passam o NPV a positivo. 0,4 M€ agora, 2,16 M€ de capital próprio na FID, 9 meses na pista híbrida."
+  "v01_hybrid_2026_10_10": "Carta presa (Continuar abre-a). Texto da variante rentável com hibridização: solar ao preço do leilão perde; baterias mais aditamento eólico passam o NPV a positivo. Avançar custa 0 € agora e 2,56 M€ de capital próprio na FID, e leva 9 meses na pista híbrida."
 }

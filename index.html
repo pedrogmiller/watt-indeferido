@@ -5910,7 +5910,7 @@
   const actions = {
     ourique: [
       { id: 'sobre', title: '+ Sobreequipar o solar (+20% MWp)', desc: 'Instalar mais painéis do que a potência da ligação, para produzir durante mais horas. Não precisas de mais TRC.', capex: '300 k€ agora · +5,1 M€ de capital próprio', tempo: '7–9 meses', nav: 'a definir' },
-      { id: 'bess', title: '+ Juntar baterias', desc: 'Baterias de 15 MW / 30 MWh no mesmo ponto de ligação, com o valor de hibridização da v0.1. Não atrasam o arranque solar.', capex: '400 k€ agora · +2,16 M€ de capital próprio', tempo: '9 meses', nav: 'a definir' },
+      { id: 'bess', title: '+ Juntar baterias', desc: 'Baterias de 15 MW / 30 MWh no mesmo ponto de ligação, com o valor de hibridização da v0.1. Não atrasam o arranque solar.', capex: 'Avançar custa 0 € agora e 2,56 M€ de capital próprio na FID, e leva 9 meses', tempo: '9 meses', nav: 'a definir' },
       { id: 'eolica', title: '+ Juntar um parque eólico', desc: 'Parque eólico de 15 MW no mesmo ponto de ligação. Produz em horas diferentes do solar.', capex: '750 k€ agora · +6,9 M€ de capital próprio', tempo: '16–20 meses', nav: 'a definir' },
       { id: 'farm', title: 'Vender parte do projeto (25%)', desc: 'Vendes 25% da empresa do projeto. O título fica no mesmo titular. É a mesma venda das cartas dos investidores.', capex: '—', tempo: 'Antes da licença de produção', nav: '0,80 M€ de caixa no mês 6 a 40 €/MWh · ficas com 75% do NPV' },
     ],
@@ -5981,6 +5981,18 @@
   function hybridReadyPhrase() {
     if (typeof mailLoop === 'undefined' || !mailLoop || mailLoop.hybridReadyMonth == null) return '';
     return 'Híbrido pronto: mês ' + mailLoop.hybridReadyMonth;
+  }
+  /** Cost line for the batteries card, read from the registered hybrid row (file, else the fallback). */
+  function bessAdvanceCostText() {
+    let row = null;
+    try {
+      if (typeof effectEconRow === 'function') row = effectEconRow('bess_dev_flag');
+      if (!row || typeof row.equity !== 'number') row = (typeof econEngineRow === 'function') ? econEngineRow('mission_bess') : row;
+    } catch (_) {}
+    const cash = row && typeof row.cash === 'number' ? row.cash : 0;
+    const equity = row && typeof row.equity === 'number' ? row.equity : 2.56;
+    const months = row && typeof row.months === 'number' ? row.months : 9;
+    return 'Avançar custa ' + fmtMoneyAbs(cash) + ' agora e ' + fmtMoney2(equity) + ' de capital próprio na FID, e leva ' + months + ' meses';
   }
   /** Upgrade NPV line: the mission row in effects-economy.json when nav is a number; otherwise hide «a definir». */
   function upgradeNavText(action) {
@@ -6637,7 +6649,7 @@
             <div class="action-meta">
               <div class="action-meta-item">
                 <span class="action-meta-label">Custo</span>
-                <span class="action-meta-value num">${a.capex}</span>
+                <span class="action-meta-value num">${a.id === 'bess' ? bessAdvanceCostText() : a.capex}</span>
               </div>
               <div class="action-meta-item">
                 <span class="action-meta-label">Licenciamento</span>
@@ -7276,7 +7288,7 @@
           <h4>${a.title}${done ? ' ✓' : ''}</h4>
           <p>${a.desc}</p>
           <div class="asset-opt-meta">
-            <span>Custo <strong class="num">${a.capex}</strong></span>
+            <span>Custo <strong class="num">${a.id === 'bess' ? bessAdvanceCostText() : a.capex}</strong></span>
             <span>Licenciamento <strong>${a.tempo}</strong></span>
             ${navTxt ? `<span>Impacto NPV <strong class="num">${navTxt}</strong></span>` : ''}
             ${(a.id === 'bess' && hybridReadyPhrase()) ? `<span>${hybridReadyPhrase()}</span>` : ''}
@@ -9240,7 +9252,8 @@
     burn_aia: { cash: -0.09 }, burn_licenca_producao: { cash: -0.075 },
     burn_obra: { cash: 0, debt: 4.51, equity: -1.93 },
     mission_sobreequipamento: { cash: -0.3, car: 0.3, equity: 5.1, months: 6 },
-    mission_bess: { cash: -0.4, car: 0.4, equity: 2.16, nav: 7.2, months: 9 },
+    // Avançar custa 0 € agora e 2,56 M€ de capital próprio na FID, e leva 9 meses.
+    mission_bess: { equity: 2.56, nav: 9.3, months: 9, nav_per_cod_month: -0.26 },
     mission_eolico: { cash: -0.75, car: 0.75, equity: 6.9, months: 18 }
   };
   function econEngineRow(key) {
@@ -9484,7 +9497,7 @@
     return base + COD_TEST_MONTHS + (extra | 0);
   }
   /**
-   * Month NPV is −0,19 × the real COD shift (euro-fields §20).
+   * Month NPV is −0,19 × the real COD shift (euro-fields §20). With the hybrid in, add nav_per_cod_month (−0,26) so the month costs −0,45.
    * A delay tag's nav_months is that same slope, and it counts only when its track is the one that moves COD.
    * syncCodNpv is that test: a plant slip while the player's line is later does not change NPV.
    */
@@ -9520,7 +9533,14 @@
     const k = (e && e.k) || 1;
     const price = (delta) => {
       if (!delta) return;
-      applyEconRow({ nav: +(COD_NPV_PER_MONTH * k * delta).toFixed(3) }, lotId, { cause: 'cod_shift', codMonths: delta });
+      // Solar slip is −0,19 × k. Once the hybrid has started, add bess_dev_flag.nav_per_cod_month
+      // (−0,26), so each COD month costs −0,45. A month already priced is not re-priced.
+      let slope = COD_NPV_PER_MONTH * k;
+      if (batteryHasStarted(lotId)) {
+        const hr = (typeof effectEconRow === 'function' && effectEconRow('bess_dev_flag')) || econEngineRow('mission_bess');
+        if (hr && typeof hr.nav_per_cod_month === 'number') slope += hr.nav_per_cod_month * k;
+      }
+      applyEconRow({ nav: +(slope * delta).toFixed(3) }, lotId, { cause: 'cod_shift', codMonths: delta });
     };
     if (mailLoop.codPricedMonth == null) {
       mailLoop.codPlanMonth = plan;
