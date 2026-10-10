@@ -66,12 +66,13 @@
       },
       "target": "auction.bid",
       "title": "A tua oferta em €/MWh",
-      "body": "Ganha a oferta mais baixa em €/MWh. Se baixares demais, o NPV do consultor fica negativo.",
+      "body": "Os rivais licitam 20–30 €/MWh. Tão barato, só com solar perdes dinheiro. A ligação dá para mais.",
       "blocks_play": false,
       "order": 20,
       "nota_gm": "Leilão inverso: oferta mais baixa ganha (dica do live: «sobe a oferta até o NPV ficar positivo», 8 % ao ano).",
       "body_long": "Ofereces o preço a que vendes a energia. Ganha a oferta mais baixa, mas, se fores baixo demais, o NPV que o consultor mostra fica negativo e o projeto perde dinheiro.",
-      "ui_tut_0fee34b_2026_10_07": true
+      "ui_tut_0fee34b_2026_10_07": true,
+      "body_before_rivais_2026_10_09": "Ganha a oferta mais baixa em €/MWh. Se baixares demais, o NPV do consultor fica negativo."
     },
     {
       "id": "tut-leilao-relogio",
@@ -146,6 +147,23 @@
       "order": 60,
       "body_long": "Cada carta tem escolhas. Depois de responderes, aparece uma frase a dizer o que mudou: caixa, prazos, risco ou NPV.",
       "ui_tut_0fee34b_2026_10_07": true
+    },
+    {
+      "id": "tut-sala-hibrido",
+      "trigger": {
+        "screen": "sala",
+        "on": "first_effect",
+        "tag": "",
+        "effect": "deliver:mail-consultor-hibrido-01",
+        "phase": "",
+        "min_month": 0
+      },
+      "target": "sala.open",
+      "title": "Juntar eólica e baterias",
+      "body": "Aqui juntas eólica (até ao M6) e baterias (até ao M10). Só com solar, o fundo dificilmente aceita o projeto.",
+      "blocks_play": false,
+      "order": 65,
+      "rivais_2026_10_09": true
     },
     {
       "id": "tut-play",

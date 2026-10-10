@@ -326,6 +326,7 @@
   },
   "effect_labels": "effect-labels.pt.json",
   "tutorial": "tutorial.v01.json",
+  "auction_consultor": "auction-consultor.v01.json",
   "entities_draft": "entities.draft.json",
   "effects_economy": "effects-economy.json",
   "endings_stakes_v01": {
