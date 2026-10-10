@@ -14345,6 +14345,8 @@
     return npv != null && npv < 0;
   }
   function openEndScreen() {
+    // The balance markup sits after this script, so the first init() runs before the buttons exist.
+    try { initEndScreen(); } catch (_) {}
     const modal = document.getElementById('endScreen');
     if (!modal) return;
     const st = (mailLoop && mailLoop.end_state) || { status: 'lost', reason: null, month: mailLoop && mailLoop.month };
@@ -18301,6 +18303,9 @@
   function tutEmit(kind, val, delay) {
     setTimeout(function () { if (window.__tut) window.__tut.emit(kind, val); }, delay == null ? 280 : delay);
   }
+  document.addEventListener('DOMContentLoaded', function () {
+    try { initEndScreen(); } catch (_) {}
+  });
   window.__tutApi = {
     phase: () => (typeof mailLoop !== 'undefined' && mailLoop.active ? (mailLoop.projectPhase || 'trc_won') : ''),
     month: () => (typeof mailLoop !== 'undefined' ? (mailLoop.month | 0) : 0),
