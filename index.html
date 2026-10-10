@@ -14407,6 +14407,8 @@
     if (!modal) return;
     modal.hidden = true;
     modal.classList.remove('open');
+    // Play was disabled while the balance was open. Re-enable «Ver o balanço» so Fechar is not a dead end.
+    try { syncPlayGate(); } catch (_) {}
   }
   function restartMandate() {
     try { clearSave(); } catch (_) {}
