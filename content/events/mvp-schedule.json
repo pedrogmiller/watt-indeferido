@@ -181,7 +181,8 @@
           "requires_any_effects": [
             "lp_request_submitted",
             "pip_aprovado",
-            "apa_track_start"
+            "apa_track_start",
+            "trc_awarded"
           ]
         },
         {
@@ -320,7 +321,8 @@
         "requires_any_effects": [
           "lp_request_submitted",
           "pip_aprovado",
-          "apa_track_start"
+          "apa_track_start",
+          "trc_awarded"
         ]
       },
       {

@@ -5910,7 +5910,7 @@
   const actions = {
     ourique: [
       { id: 'sobre', title: '+ Sobreequipar o solar (+20% MWp)', desc: 'Instalar mais painéis do que a potência da ligação, para produzir durante mais horas. Não precisas de mais TRC.', capex: '300 k€ agora · +5,1 M€ de capital próprio', tempo: '7–9 meses', nav: 'a definir' },
-      { id: 'bess', title: '+ Juntar baterias', desc: 'Baterias de 15 MW / 30 MWh. Reduzem os cortes de produção impostos pela rede e guardam energia quando está barata para a vender quando está cara.', capex: '400 k€ agora · +2,7 M€ de capital próprio', tempo: '11–13 meses', nav: 'a definir' },
+      { id: 'bess', title: '+ Juntar baterias', desc: 'Baterias de 15 MW / 30 MWh no mesmo ponto de ligação, com o valor de hibridização da v0.1. Não atrasam o arranque solar.', capex: 'Avançar custa 0 € agora e 2,56 M€ de capital próprio na FID, e leva 9 meses', tempo: '9 meses', nav: 'a definir' },
       { id: 'eolica', title: '+ Juntar um parque eólico', desc: 'Parque eólico de 15 MW no mesmo ponto de ligação. Produz em horas diferentes do solar.', capex: '750 k€ agora · +6,9 M€ de capital próprio', tempo: '16–20 meses', nav: 'a definir' },
       { id: 'farm', title: 'Vender parte do projeto (25%)', desc: 'Vendes 25% da empresa do projeto. O título fica no mesmo titular. É a mesma venda das cartas dos investidores.', capex: '—', tempo: 'Antes da licença de produção', nav: '0,80 M€ de caixa no mês 6 a 40 €/MWh · ficas com 75% do NPV' },
     ],
@@ -5956,18 +5956,60 @@
   function fmtEur(n) {
     return fmtSigned(n, false);
   }
+  /** True once effects-economy.json has the battery row. Until then the card says «a carregar» and nothing is booked. */
+  function bessEconomyLoaded() {
+    try {
+      const p = (typeof econPack === 'function') ? econPack() : null;
+      const row = p && p.effects && p.effects.bess_dev_flag;
+      return !!(row && typeof row.nav === 'number' && Number.isFinite(row.nav));
+    } catch (_) { return false; }
+  }
+  /** Same MW / row scale as applyScaledBatteryRow, so the card prints the NPV the engine books. */
+  function bessDisplayScale(nodeId) {
+    const id = nodeId || ((typeof mailLoop !== 'undefined' && mailLoop && mailLoop.seId) || 'ourique');
+    const rowMw = (typeof BESS_ROW_MW === 'number' && BESS_ROW_MW) ? BESS_ROW_MW : 15;
+    let mw = (typeof BESS_SLICE_MW === 'number') ? BESS_SLICE_MW : rowMw;
+    try {
+      const node = (typeof nodes !== 'undefined') ? nodes.find((n) => n.id === id) : null;
+      if (node && node.trc) {
+        if ((node.trc.bess | 0) > 0) mw = node.trc.bess | 0;
+        else if ((node.trc.free | 0) < mw) mw = 0;
+      }
+    } catch (_) {}
+    return mw / rowMw;
+  }
+  function hybridReadyPhrase() {
+    if (typeof mailLoop === 'undefined' || !mailLoop || mailLoop.hybridReadyMonth == null) return '';
+    return 'Híbrido pronto: mês ' + mailLoop.hybridReadyMonth;
+  }
+  /** Cost line for the batteries card, read from the registered hybrid row (file, else the fallback). */
+  function bessAdvanceCostText() {
+    let row = null;
+    try {
+      if (typeof effectEconRow === 'function') row = effectEconRow('bess_dev_flag');
+      if (!row || typeof row.equity !== 'number') row = (typeof econEngineRow === 'function') ? econEngineRow('mission_bess') : row;
+    } catch (_) {}
+    const cash = row && typeof row.cash === 'number' ? row.cash : 0;
+    const equity = row && typeof row.equity === 'number' ? row.equity : 2.56;
+    const months = row && typeof row.months === 'number' ? row.months : 9;
+    return 'Avançar custa ' + fmtMoneyAbs(cash) + ' agora e ' + fmtMoney2(equity) + ' de capital próprio na FID, e leva ' + months + ' meses';
+  }
   /** Upgrade NPV line: the mission row in effects-economy.json when nav is a number; otherwise hide «a definir». */
   function upgradeNavText(action) {
     if (!action) return '';
     const mission = { sobre: 'mission_sobreequipamento', bess: 'mission_bess', eolica: 'mission_eolico' }[action.id];
     if (mission) {
+      if (action.id === 'bess' && !bessEconomyLoaded()) return 'a carregar';
       let nav = null;
       try {
-        const row = (typeof econEngineRow === 'function') ? econEngineRow(mission) : null;
+        let row = null;
+        if (action.id === 'bess' && typeof effectEconRow === 'function') row = effectEconRow('bess_dev_flag');
+        if (!row && typeof econEngineRow === 'function') row = econEngineRow(mission);
         nav = row && row.nav;
+        if (action.id === 'bess' && typeof nav === 'number') nav = +(nav * bessDisplayScale()).toFixed(3);
       } catch (_) {}
       if (typeof nav === 'number' && Number.isFinite(nav)) return fmtSigned(nav, true);
-      return '';
+      return action.id === 'bess' ? 'a carregar' : '';
     }
     if (action.nav == null || action.nav === '' || action.nav === 'a definir') return '';
     return String(action.nav);
@@ -6018,6 +6060,11 @@
     if (((mailLoop.month | 0) - (note.month | 0)) > 1) return '';
     if (window.__tut && window.__tutNpvSeen !== note.text) { window.__tutNpvSeen = note.text; tutEmit('effect', 'npv_note_shown', 600); }
     return '<span class="hud-next-crit" id="npvCauseNote" data-tut="npv.cause">' + escapeHtml(note.text) + '</span>';
+  }
+  function hybridReadyVitalCard() {
+    const phrase = (typeof hybridReadyPhrase === 'function') ? hybridReadyPhrase() : '';
+    if (!phrase || typeof mailLoop === 'undefined' || !mailLoop) return '';
+    return '<div class="asset-vital-card" id="hybridReadyCard"><div class="k">Híbrido</div><div class="v num">mês ' + mailLoop.hybridReadyMonth + '</div><div class="sub">' + phrase + '</div></div>';
   }
   function contingencyVitalCard(phase) {
     if (typeof mailLoop === 'undefined' || !mailLoop || typeof mailLoop.obraContingency !== 'number') return '';
@@ -6602,7 +6649,7 @@
             <div class="action-meta">
               <div class="action-meta-item">
                 <span class="action-meta-label">Custo</span>
-                <span class="action-meta-value num">${a.capex}</span>
+                <span class="action-meta-value num">${a.id === 'bess' ? bessAdvanceCostText() : a.capex}</span>
               </div>
               <div class="action-meta-item">
                 <span class="action-meta-label">Licenciamento</span>
@@ -6611,6 +6658,10 @@
               ${upgradeNavText(a) ? `<div class="action-meta-item">
                 <span class="action-meta-label">Impacto NPV</span>
                 <span class="action-meta-value positive num">${upgradeNavText(a)}</span>
+              </div>` : ''}
+              ${(a.id === 'bess' && hybridReadyPhrase()) ? `<div class="action-meta-item">
+                <span class="action-meta-label">Híbrido</span>
+                <span class="action-meta-value">${hybridReadyPhrase()}</span>
               </div>` : ''}
             </div>
             <button class="btn-confirm${(!done && assetRoomState.armedKey === (nodeId + ':' + a.id)) ? ' is-armed' : ''}" type="button" data-confirm="${nodeId}:${a.id}" ${done ? 'disabled' : ''}>
@@ -6953,7 +7004,7 @@
     mailLoop.deliveredIds[letter.id] = true;
     stampLetterArrival(letter);
     mailState.items = [letter].concat(mailState.items.filter((m) => m.id !== letter.id));
-    // deliver:<skeleton id> for every letter. A step such as tut-sala-hibrido stays dormant until that id exists.
+    // deliver:<skeleton id> for every letter. tut-hibrido-v01 listens for deliver:mail-consultor-valueadd-01.
     tutEmit('effect', 'deliver:' + skeletonId, 300);
     renderInboxBadge();
     scheduleSave('mail-player-' + skeletonId);
@@ -7237,9 +7288,10 @@
           <h4>${a.title}${done ? ' ✓' : ''}</h4>
           <p>${a.desc}</p>
           <div class="asset-opt-meta">
-            <span>Custo <strong class="num">${a.capex}</strong></span>
+            <span>Custo <strong class="num">${a.id === 'bess' ? bessAdvanceCostText() : a.capex}</strong></span>
             <span>Licenciamento <strong>${a.tempo}</strong></span>
             ${navTxt ? `<span>Impacto NPV <strong class="num">${navTxt}</strong></span>` : ''}
+            ${(a.id === 'bess' && hybridReadyPhrase()) ? `<span>${hybridReadyPhrase()}</span>` : ''}
           </div>
           <button type="button" class="btn-confirm${armed ? ' is-armed' : ''}" data-asset-confirm="${nodeId}:${a.id}" ${disabled ? 'disabled' : ''}>${btnLabel}</button>
         </div>`;
@@ -7375,6 +7427,7 @@
             <div class="sub">${npvSub}</div>
           </div>
           ${contingencyVitalCard(phase)}
+          ${hybridReadyVitalCard()}
           <div class="asset-vital-card">
             <div class="k">Preço recebido</div>
             <div class="v num">${nodeDossier(node).preco || '—'}</div>
@@ -7786,6 +7839,10 @@
       const nextAdded = +((Number(node.overequipAddedMwp) || 0) + overequipInstalledMwp(node) * OVEREQUIP_STEP_PCT / 100).toFixed(1);
       if (overequipTripwire(node, nextAdded, { source: 'sala' })) return;
     }
+    if (actionId === 'bess' && !bessEconomyLoaded()) {
+      try { showToast('A economia ainda está a carregar. Tenta outra vez.'); } catch (_) {}
+      return;
+    }
     const hybridPlanPct = actionId === 'bess' ? 8 : (actionId === 'eolica' ? 10 : 0);
     if (hybridPlanPct > 0 && node) {
       ensureAssetMwState(node);
@@ -8088,7 +8145,7 @@
     const btn = document.getElementById('btnNextQ');
     if (!btn || btn.disabled) return;
     if (typeof playIsLocked === 'function' && playIsLocked()) {
-      if (mailLoop && mailLoop.end_state && mailLoop.end_state.status === 'won') {
+      if (mailLoop && mailLoop.end_state && (mailLoop.end_state.status === 'won' || mailLoop.end_state.reason === 'cod_solar')) {
         try { openEndScreen(); } catch (_) {}
       }
       return;
@@ -8135,6 +8192,7 @@
         // Running obra costs and the ACT fine land as the month starts, before a deadline is met.
         try { chargeObraMonth(); } catch (err) { console.warn('[WattEcon] obra month', err); }
         try { resolvePendingFines(); } catch (err) { console.warn('[WattEcon] fine', err); }
+        try { resolvePendingTermSheet(); } catch (err) { console.warn('[WattEcon] term sheet', err); }
         if (mailLoop.month > scheduleMax) cappedAtEnd = true;
         if (typeof deliverMonthCandidates === 'function') {
           mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
@@ -9186,7 +9244,7 @@
     const p = window.__wattEventPack;
     return (p && p.effects_economy && typeof p.effects_economy === 'object') ? p.effects_economy : null;
   }
-  /** Fallback (mesmos números do JSON) enquanto o pack não carregou. */
+  /** Fallback while the pack has not loaded. The batteries card shows «a carregar» and books nothing until the file is in. */
   const ECON_ENGINE_FALLBACK = {
     trc_won: { bonding: 0.96, formula: 'bonding: +0.01*MVA (fallback cash: -0.01*MVA)' },
     comecar_missao_kickoff: { cash: -1.0 },
@@ -9194,7 +9252,8 @@
     burn_aia: { cash: -0.09 }, burn_licenca_producao: { cash: -0.075 },
     burn_obra: { cash: 0, debt: 4.51, equity: -1.93 },
     mission_sobreequipamento: { cash: -0.3, car: 0.3, equity: 5.1, months: 6 },
-    mission_bess: { cash: -0.4, car: 0.4, equity: 2.16, nav: -0.83, months: 9 },
+    // Avançar custa 0 € agora e 2,56 M€ de capital próprio na FID, e leva 9 meses.
+    mission_bess: { equity: 2.56, nav: 9.3, months: 9, nav_per_cod_month: -0.26 },
     mission_eolico: { cash: -0.75, car: 0.75, equity: 6.9, months: 18 }
   };
   function econEngineRow(key) {
@@ -9364,6 +9423,43 @@
     });
     mailLoop.pendingFines = keep;
   }
+  /**
+   * «Pedir um empréstimo maior» blocks the term-sheet letter (term_sheet_negotiate) and used to
+   * never set term_sheet_signed, so FID could not arrive. The bank answers 1–2 months later:
+   * the existing gearing_push roll, then the sheet is signed either way. No new letter.
+   */
+  function scheduleTermSheetNegotiation() {
+    if (!mailLoop || mailLoop.pendingTermSheet) return;
+    if ((mailLoop.tags && (mailLoop.tags.term_sheet_signed | 0) > 0)) return;
+    const wait = (typeof econRng === 'function' && econRng() < 0.5) ? 1 : 2;
+    mailLoop.pendingTermSheet = { due: (mailLoop.month | 0) + wait };
+  }
+  function resolvePendingTermSheet() {
+    if (!mailLoop || !mailLoop.pendingTermSheet) return;
+    const item = mailLoop.pendingTermSheet;
+    if ((item.due | 0) > (mailLoop.month | 0)) return;
+    mailLoop.pendingTermSheet = null;
+    if ((mailLoop.tags && (mailLoop.tags.term_sheet_signed | 0) > 0)) return;
+    let accepted = false;
+    if (!item.outcomeDone) {
+      const row = (typeof effectEconRow === 'function') ? effectEconRow('gearing_push') : null;
+      const lotId = mailLoop.seId || (typeof ECON_REF_LOT !== 'undefined' ? ECON_REF_LOT : 'ourique');
+      try {
+        const r = resolveRolledRequest('gearing_push', row || {}, lotId);
+        accepted = !!(r && r.ok);
+      } catch (err) { console.warn('[WattEcon] term sheet', err); }
+    }
+    const follow = ['term_sheet_signed'];
+    if (!item.outcomeDone && !accepted) follow.push('gearing_band_base');
+    try { applyMailEffects(follow, { fromRule: true }); } catch (err) { console.warn('[WattEcon] term sheet sign', err); }
+    try {
+      showToast(item.outcomeDone
+        ? 'As condições do empréstimo ficam assinadas.'
+        : (accepted
+          ? 'O banco aceitou o empréstimo maior. As condições ficam assinadas.'
+          : 'O banco manteve as condições habituais. As condições ficam assinadas.'));
+    } catch (_) {}
+  }
   /** Test months on top of the last ready track: 2, −1 with an accredited inspection, +1 if the EPC stood down. */
   function codTestExtra() {
     const tags = (mailLoop && mailLoop.tags) || {};
@@ -9379,6 +9475,15 @@
     });
     return extra;
   }
+  /** Months on transformer_order_late (the file's own ΔCOD). Early order is due.months, 15. */
+  function transformerLateMonths() {
+    let months = 9;
+    try {
+      const row = (typeof effectEconRow === 'function') ? effectEconRow('transformer_order_late') : null;
+      if (row && typeof row.months === 'number' && row.months) months = row.months;
+    } catch (_) {}
+    return months;
+  }
   /**
    * COD = max(player grid, REN bay, plant) + test months.
    * Before the player's line exists, fall back to max(plant, REN) so pre-obra pricing still works.
@@ -9392,7 +9497,7 @@
     return base + COD_TEST_MONTHS + (extra | 0);
   }
   /**
-   * Month NPV is −0,19 × the real COD shift (euro-fields §20).
+   * Month NPV is −0,19 × the real COD shift (euro-fields §20). With the hybrid in, add nav_per_cod_month (−0,26) so the month costs −0,45.
    * A delay tag's nav_months is that same slope, and it counts only when its track is the one that moves COD.
    * syncCodNpv is that test: a plant slip while the player's line is later does not change NPV.
    */
@@ -9404,7 +9509,19 @@
     if (!epc || !grid || epc.atMonth == null || grid.atMonth == null) return;
     if (epc.planMonth == null) epc.planMonth = epc.atMonth | 0;
     if (grid.planMonth == null) grid.planMonth = grid.atMonth | 0;
-    if (player && player.atMonth != null && player.planMonth == null) player.planMonth = player.atMonth | 0;
+    if (player && player.atMonth != null) {
+      const tags = mailLoop.tags || {};
+      const lateOrder = (tags.transformer_order_late | 0) > 0 && !((tags.transformer_order_early | 0) > 0);
+      // The real line is 24 months when the transformer was not ordered early. The plan is the
+      // early-order date (created + 15), so those 9 months are priced at −0,19 M€/month when they
+      // move COD. If the late tag arrives after the plan is already priced, the economy.months
+      // shift on player_grid is priced by the delta below and the plan is left alone.
+      if (player.planMonth == null) {
+        player.planMonth = lateOrder ? ((player.atMonth | 0) - transformerLateMonths()) : (player.atMonth | 0);
+      } else if (lateOrder && mailLoop.codPricedMonth == null && (player.planMonth | 0) === (player.atMonth | 0)) {
+        player.planMonth = (player.atMonth | 0) - transformerLateMonths();
+      }
+    }
     const extra = codTestExtra();
     const playerPlan = player && player.planMonth != null ? player.planMonth : null;
     const playerNow = player && player.atMonth != null ? player.atMonth : null;
@@ -9416,7 +9533,14 @@
     const k = (e && e.k) || 1;
     const price = (delta) => {
       if (!delta) return;
-      applyEconRow({ nav: +(COD_NPV_PER_MONTH * k * delta).toFixed(3) }, lotId, { cause: 'cod_shift', codMonths: delta });
+      // Solar slip is −0,19 × k. Once the hybrid has started, add bess_dev_flag.nav_per_cod_month
+      // (−0,26), so each COD month costs −0,45. A month already priced is not re-priced.
+      let slope = COD_NPV_PER_MONTH * k;
+      if (batteryHasStarted(lotId)) {
+        const hr = (typeof effectEconRow === 'function' && effectEconRow('bess_dev_flag')) || econEngineRow('mission_bess');
+        if (hr && typeof hr.nav_per_cod_month === 'number') slope += hr.nav_per_cod_month * k;
+      }
+      applyEconRow({ nav: +(slope * delta).toFixed(3) }, lotId, { cause: 'cod_shift', codMonths: delta });
     };
     if (mailLoop.codPricedMonth == null) {
       mailLoop.codPlanMonth = plan;
@@ -13432,7 +13556,7 @@
       if (loading) {
         btn.disabled = true;
         btn.setAttribute('aria-disabled', 'true');
-      } else if (ended && mailLoop.end_state && mailLoop.end_state.status === 'won') {
+      } else if (ended && mailLoop.end_state && (mailLoop.end_state.status === 'won' || mailLoop.end_state.reason === 'cod_solar')) {
         const screen = document.getElementById('endScreen');
         const open = !!(screen && screen.classList.contains('open'));
         btn.disabled = open;
@@ -13527,7 +13651,8 @@
       sem_dinheiro: 'Ficaste sem dinheiro para desenvolver o projeto.',
       licenca_recusada: 'A licença foi recusada em definitivo.',
       abandonado: 'Abandonaste o projeto.',
-      cod: 'A central entrou em funcionamento.'
+      cod: 'A central entrou em funcionamento.',
+      cod_solar: 'Chegaste ao COD, mas só com solar ao preço do leilão o ativo perde dinheiro.'
     };
     const bits = [];
     if (map[st.reason]) bits.push(map[st.reason]);
@@ -13771,11 +13896,17 @@
     const es = rule && rule.end_state;
     if (!es) return;
     let reason = es.reason || null;
+    let status = es.status || 'lost';
     // "Fechar o projeto" on the rescue letter is a cash loss. The rule reason is abandonado; the skin is sem-dinheiro.
     if (reason === 'abandonado' && ((mailLoop.tags || {}).cash_rescue_refused | 0)) reason = 'sem_dinheiro';
-    mailLoop.end_state = { status: es.status || 'lost', reason: reason, month: mailLoop.month | 0 };
+    // A solar-only COD with negative NPV is a loss, even when the cycle rule says won.
+    if ((status === 'won' || reason === 'cod') && solarOnlyCodLoss()) {
+      status = 'lost';
+      reason = 'cod_solar';
+    }
+    mailLoop.end_state = { status: status, reason: reason, month: mailLoop.month | 0 };
     syncEndPlayLock();
-    if ((es.status || '') === 'won') { try { openEndScreen(); } catch (_) {} }
+    if (status === 'won' || reason === 'cod_solar') { try { openEndScreen(); } catch (_) {} }
   }
   function applyCreatesDeadline(rule) {
     const c = rule && rule.creates_deadline;
@@ -14255,11 +14386,37 @@
     if (effectList.indexOf('end_screen_open') !== -1) openEndScreen();
   }
 
+  /** COD with only solar and a negative NPV is a loss: the auction price does not pay for the plant. */
+  const SOLAR_ONLY_COD_LINE = 'Chegaste ao COD, mas só com solar ao preço do leilão o ativo perde dinheiro. Em Portugal, o lucro vem de hibridizar o ponto de ligação. Tenta de novo e aceita a carta de hibridização.';
+  function solarOnlyCodLoss() {
+    if (!mailLoop) return false;
+    const tags = mailLoop.tags || {};
+    const reached = (tags.cod_reached | 0) > 0 || (tags.end_state_won | 0) > 0
+      || ((mailLoop.end_state || {}).reason === 'cod') || ((mailLoop.end_state || {}).reason === 'cod_solar');
+    if (!reached) return false;
+    try {
+      if (typeof batteryHasStarted === 'function' && batteryHasStarted(mailLoop.seId || 'ourique')) return false;
+    } catch (_) {}
+    if ((tags.bess_dev_flag | 0) > 0 || (tags.mission_bess | 0) > 0) return false;
+    let npv = null;
+    try { npv = stakesNpvIrr().npvNow; } catch (_) {}
+    return npv != null && npv < 0;
+  }
   function openEndScreen() {
+    // The balance markup sits after this script, so the first init() runs before the buttons exist.
+    try { initEndScreen(); } catch (_) {}
     const modal = document.getElementById('endScreen');
     if (!modal) return;
     const st = (mailLoop && mailLoop.end_state) || { status: 'lost', reason: null, month: mailLoop && mailLoop.month };
-    const won = st.status === 'won';
+    if (st.status === 'won' && solarOnlyCodLoss() && mailLoop) {
+      mailLoop.end_state.status = 'lost';
+      mailLoop.end_state.reason = 'cod_solar';
+      st.status = 'lost';
+      st.reason = 'cod_solar';
+      try { syncEndPlayLock(); } catch (_) {}
+    }
+    const solarLoss = !!(mailLoop && mailLoop.end_state && mailLoop.end_state.reason === 'cod_solar') || (st.reason === 'cod_solar');
+    const won = st.status === 'won' && !solarLoss;
     const eco = stakesNpvIrr();
     const ctx = stakesPlaceholderCtx({});
     const missed = Object.keys((mailLoop && mailLoop.missedDeadlines) || {});
@@ -14268,21 +14425,25 @@
     const body = document.getElementById('endScreenBody');
     if (title) title.textContent = won ? 'Ciclo fechado' : 'Mandato terminado';
     const rows = [
-      ['Resultado', won ? 'Ganhaste: a central está a vender energia.' : (ctx.end_reason_text || 'Perdeste o mandato.')],
+      ['Resultado', won ? 'Ganhaste: a central está a vender energia.' : (solarLoss ? 'Perdeste: a central arrancou, mas o ativo só com solar perde dinheiro.' : (ctx.end_reason_text || 'Perdeste o mandato.'))],
       ['Meses jogados', ctx.months_played],
       ['Caixa que resta', ctx.cash_left],
       ['Meses que a caixa ainda cobre', monthsCoverPhrase(ctx.months_left)],
       ['Dinheiro de desenvolvimento gasto', ctx.car_spent],
       ['NPV no leilão', ctx.npv_auction],
-      ['NPV agora', won ? ctx.npv_now : ctx.npv_now],
-      ['IRR do capital próprio', won ? ctx.irr : '—'],
-      ['COD', won ? (ctx.cod_month + ' (plano ' + ctx.cod_month_plan + ')') : '—'],
+      ['NPV agora', ctx.npv_now],
+      ['IRR do capital próprio', (won || solarLoss) ? ctx.irr : '—'],
+      ['COD', (won || solarLoss) ? (ctx.cod_month + ' (plano ' + ctx.cod_month_plan + ')') : '—'],
       ['Prazos cumpridos', met.length ? String(met.length) : '0'],
       ['Prazos falhados', missed.length ? missed.map((k) => DEADLINE_LABEL_PT[k] || k).join(', ') : 'nenhum'],
       ['Reputação', ctx.reputation_word],
       ['Revisão do orçamento', ctx.mandate_step_word + ' (só no fecho; o orçamento a meio do jogo não muda por aqui)']
     ];
-    if (!won) {
+    if (solarLoss) {
+      const npvIdx = rows.findIndex((r) => r[0] === 'NPV agora');
+      rows.splice(npvIdx + 1, 0, ['O que faltou', SOLAR_ONLY_COD_LINE]);
+    }
+    if (!won && !solarLoss) {
       let bond = '—';
       try {
         const id = mailLoop.seId || 'ourique';
@@ -14304,6 +14465,8 @@
     if (!modal) return;
     modal.hidden = true;
     modal.classList.remove('open');
+    // Play was disabled while the balance was open. Re-enable «Ver o balanço» so Fechar is not a dead end.
+    try { syncPlayGate(); } catch (_) {}
   }
   function restartMandate() {
     try { clearSave(); } catch (_) {}
@@ -14375,14 +14538,18 @@
       } catch (_) {}
     }
     if ((has('end_state_lost') || has('end_state_won')) && (!mailLoop.end_state || mailLoop.end_state.status === 'playing')) {
-      const won = has('end_state_won');
+      let won = has('end_state_won');
       let reason = won ? 'cod' : 'trc_caducado';
       if (has('cash_rescue_refused') || ((mailLoop.tags || {}).cash_rescue_refused | 0)) reason = 'sem_dinheiro';
       if (((mailLoop.tags || {}).project_abandoned | 0) && !((mailLoop.tags || {}).cash_rescue_refused | 0)) reason = 'abandonado';
       if (((mailLoop.tags || {}).licenca_recusada_final | 0)) reason = 'licenca_recusada';
+      if (won && solarOnlyCodLoss()) {
+        won = false;
+        reason = 'cod_solar';
+      }
       mailLoop.end_state = { status: won ? 'won' : 'lost', reason: reason, month: mailLoop.month | 0 };
       syncEndPlayLock();
-      if (won) { try { openEndScreen(); } catch (_) {} }
+      if (won || reason === 'cod_solar') { try { openEndScreen(); } catch (_) {} }
     }
   }
 
@@ -15167,8 +15334,10 @@
         notes[tag] = 'parcela mais curta já opcionada';
         return;
       }
-      // capex_rede_flag is one grid agreement. Tags are counted before economics, so a repeat is already > 1.
-      if (tag === 'capex_rede_flag' && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags && (mailLoop.tags.capex_rede_flag | 0) > 1) {
+      // One package per project. Tags are counted before economics, so a repeat is already > 1.
+      // capex_rede_flag: one grid agreement. env_mitigation_flag: one mitigation package, whichever authority asks first.
+      const ONCE_PER_PROJECT = { capex_rede_flag: 1, env_mitigation_flag: 1 };
+      if (ONCE_PER_PROJECT[tag] && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags && (mailLoop.tags[tag] | 0) > 1) {
         notes[tag] = 'já contado';
         return;
       }
@@ -15176,7 +15345,7 @@
       if (!row) return;
       let d;
       if (tag === 'bess_dev_flag' || tag === 'mission_bess') {
-        // The scaled battery row is applied once from startBessFromPriorityLetter (8 MW of the 15 MW row).
+        // The full battery row is applied once from startBessFromPriorityLetter (BESS_SLICE_MW of BESS_ROW_MW).
         notes[tag] = 'bateria';
         return;
       }
@@ -15188,6 +15357,11 @@
         scheduleActFine(row);
         notes[tag] = 'sorteio';
         d = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
+      } else if (tag === 'gearing_push') {
+        // Outcome waits 1–2 months (scheduleTermSheetNegotiation). Signing happens there, not on this click.
+        scheduleTermSheetNegotiation();
+        notes[tag] = 'negociação';
+        return;
       } else if (row.pay_from === 'contingencia_obra') {
         d = priceContingencyTag(tag, row, lotId);
         notes[tag] = 'contingencia';
@@ -15278,9 +15452,9 @@
     state.equityCommitted = +((state.equityCommitted || 0) + deposit).toFixed(3);
   }
 
-  /** Battery economics are the 15 MW row. The letter and the sala place 8 MW, so the row is applied once at 8/15. */
+  /** Battery economics are the 15 MW row. The letter and the sala book the full row once (scale 1). */
   const BESS_ROW_MW = 15;
-  const BESS_SLICE_MW = 8;
+  const BESS_SLICE_MW = 15;
   function batteryHasStarted(lotId) {
     const id = lotId || (mailLoop && mailLoop.seId) || 'ourique';
     const tags = (mailLoop && mailLoop.tags) || {};
@@ -15300,10 +15474,12 @@
   }
   /**
    * Apply bess_dev_flag / mission_bess once, scaled by the MW actually placed.
-   * The row already nets battery cost and revenue (nav −0,83 at 15 MW → about −0,44 at 8 MW).
+   * v0.1 books the full 15 MW row. Nothing is booked until effects-economy.json has loaded.
+   * months_track "hybrid" sets the ready month and does not move the solar COD.
    */
   function applyScaledBatteryRow(nodeId, mw) {
     if (mailLoop && mailLoop._bessEconomicsApplied) return null;
+    if (!bessEconomyLoaded()) return null;
     const row = (typeof effectEconRow === 'function' && effectEconRow('bess_dev_flag')) || econEngineRow('mission_bess');
     if (!row || !(mw > 0)) return null;
     if (mailLoop) mailLoop._bessEconomicsApplied = true;
@@ -15312,6 +15488,9 @@
     ['cash', 'debt', 'nav', 'bonding', 'car', 'equity'].forEach((f) => {
       if (typeof row[f] === 'number' && row[f]) scaled[f] = +(row[f] * scale).toFixed(3);
     });
+    if (row.months_track === 'hybrid' && typeof row.months === 'number' && row.months && mailLoop) {
+      mailLoop.hybridReadyMonth = (mailLoop.month | 0) + row.months;
+    }
     const d = applyEconRow(scaled, nodeId, { cause: 'bess_dev_flag' });
     if (typeof row.capex_MEUR === 'number' && d && typeof d.equity === 'number' && d.equity) {
       const ec = econState();
@@ -15323,6 +15502,7 @@
     const nodeId = (mailLoop && mailLoop.seId) || 'ourique';
     if (!state.appliedActions[nodeId]) state.appliedActions[nodeId] = new Set();
     if (state.appliedActions[nodeId].has('bess')) return;
+    if (!bessEconomyLoaded()) return;
     const node = (typeof nodes !== 'undefined') ? nodes.find((n) => n.id === nodeId) : null;
     state.appliedActions[nodeId].add('bess');
     let mw = 0;
@@ -15768,7 +15948,7 @@
       stampLetterArrival(newLetters);
       newLetters.forEach((L) => { try { applyLetterArrivalEffects(L); } catch (_) {} });
       mailState.items = newLetters.concat(mailState.items);
-      // Same hook as deliver:mail-prazo-aviso-le-01: any skeleton id, so deliver:mail-consultor-hibrido-01 fires when that letter arrives.
+      // deliver:<skeleton id> for every new letter, including deliver:mail-consultor-valueadd-01 (tut-hibrido-v01).
       newLetters.forEach((L) => tutEmit('effect', 'deliver:' + (L.skeletonId || String(L.id || '').split(':')[0]), 300));
       if (mailState.open && mailState.view === 'detail' && mailState.activeId) {
         const cur = mailState.items.find((m) => m.id === mailState.activeId);
@@ -15825,6 +16005,7 @@
       mailLoop.obraContingencyInitial = null;
       mailLoop.obraMeters = {};
       mailLoop.pendingFines = [];
+      mailLoop.pendingTermSheet = null;
       mailLoop.codPricedMonth = null;
       mailLoop.codPlanMonth = null;
     } else {
@@ -16990,8 +17171,17 @@
       mailLoop.obraContingencyInitial = (typeof ml.obraContingencyInitial === 'number') ? ml.obraContingencyInitial : null;
       mailLoop.obraMeters = (ml.obraMeters && typeof ml.obraMeters === 'object') ? ml.obraMeters : {};
       mailLoop.pendingFines = Array.isArray(ml.pendingFines) ? ml.pendingFines : [];
+      mailLoop.pendingTermSheet = (ml.pendingTermSheet && ml.pendingTermSheet.due != null)
+        ? { due: ml.pendingTermSheet.due | 0, outcomeDone: !!ml.pendingTermSheet.outcomeDone }
+        : null;
+      // A negotiate chosen before this fix already rolled (or refused) and never signed. Sign on the next month, without rolling again.
+      if (!mailLoop.pendingTermSheet && (mailLoop.tags.term_sheet_negotiate | 0) > 0 && !((mailLoop.tags.term_sheet_signed | 0) > 0)) {
+        mailLoop.pendingTermSheet = { due: mailLoop.month | 0, outcomeDone: true };
+      }
       mailLoop.codPricedMonth = (typeof ml.codPricedMonth === 'number') ? ml.codPricedMonth : null;
       mailLoop.codPlanMonth = (typeof ml.codPlanMonth === 'number') ? ml.codPlanMonth : null;
+      mailLoop.hybridReadyMonth = (typeof ml.hybridReadyMonth === 'number') ? ml.hybridReadyMonth : null;
+      mailLoop._bessEconomicsApplied = !!ml._bessEconomicsApplied;
       mailLoop.rescueBridgeApplied = !!ml.rescueBridgeApplied;
       mailLoop.deadlineFollowup = (ml.deadlineFollowup && typeof ml.deadlineFollowup === 'object') ? ml.deadlineFollowup : {};
       mailLoop.hudMoment = ml.hudMoment || null;
@@ -18186,6 +18376,9 @@
   function tutEmit(kind, val, delay) {
     setTimeout(function () { if (window.__tut) window.__tut.emit(kind, val); }, delay == null ? 280 : delay);
   }
+  document.addEventListener('DOMContentLoaded', function () {
+    try { initEndScreen(); } catch (_) {}
+  });
   window.__tutApi = {
     phase: () => (typeof mailLoop !== 'undefined' && mailLoop.active ? (mailLoop.projectPhase || 'trc_won') : ''),
     month: () => (typeof mailLoop !== 'undefined' ? (mailLoop.month | 0) : 0),
