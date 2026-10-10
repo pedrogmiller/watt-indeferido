@@ -8180,6 +8180,7 @@
         // Running obra costs and the ACT fine land as the month starts, before a deadline is met.
         try { chargeObraMonth(); } catch (err) { console.warn('[WattEcon] obra month', err); }
         try { resolvePendingFines(); } catch (err) { console.warn('[WattEcon] fine', err); }
+        try { resolvePendingTermSheet(); } catch (err) { console.warn('[WattEcon] term sheet', err); }
         if (mailLoop.month > scheduleMax) cappedAtEnd = true;
         if (typeof deliverMonthCandidates === 'function') {
           mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
@@ -9408,6 +9409,43 @@
       }
     });
     mailLoop.pendingFines = keep;
+  }
+  /**
+   * «Pedir um empréstimo maior» blocks the term-sheet letter (term_sheet_negotiate) and used to
+   * never set term_sheet_signed, so FID could not arrive. The bank answers 1–2 months later:
+   * the existing gearing_push roll, then the sheet is signed either way. No new letter.
+   */
+  function scheduleTermSheetNegotiation() {
+    if (!mailLoop || mailLoop.pendingTermSheet) return;
+    if ((mailLoop.tags && (mailLoop.tags.term_sheet_signed | 0) > 0)) return;
+    const wait = (typeof econRng === 'function' && econRng() < 0.5) ? 1 : 2;
+    mailLoop.pendingTermSheet = { due: (mailLoop.month | 0) + wait };
+  }
+  function resolvePendingTermSheet() {
+    if (!mailLoop || !mailLoop.pendingTermSheet) return;
+    const item = mailLoop.pendingTermSheet;
+    if ((item.due | 0) > (mailLoop.month | 0)) return;
+    mailLoop.pendingTermSheet = null;
+    if ((mailLoop.tags && (mailLoop.tags.term_sheet_signed | 0) > 0)) return;
+    let accepted = false;
+    if (!item.outcomeDone) {
+      const row = (typeof effectEconRow === 'function') ? effectEconRow('gearing_push') : null;
+      const lotId = mailLoop.seId || (typeof ECON_REF_LOT !== 'undefined' ? ECON_REF_LOT : 'ourique');
+      try {
+        const r = resolveRolledRequest('gearing_push', row || {}, lotId);
+        accepted = !!(r && r.ok);
+      } catch (err) { console.warn('[WattEcon] term sheet', err); }
+    }
+    const follow = ['term_sheet_signed'];
+    if (!item.outcomeDone && !accepted) follow.push('gearing_band_base');
+    try { applyMailEffects(follow, { fromRule: true }); } catch (err) { console.warn('[WattEcon] term sheet sign', err); }
+    try {
+      showToast(item.outcomeDone
+        ? 'As condições do empréstimo ficam assinadas.'
+        : (accepted
+          ? 'O banco aceitou o empréstimo maior. As condições ficam assinadas.'
+          : 'O banco manteve as condições habituais. As condições ficam assinadas.'));
+    } catch (_) {}
   }
   /** Test months on top of the last ready track: 2, −1 with an accredited inspection, +1 if the EPC stood down. */
   function codTestExtra() {
@@ -15299,6 +15337,11 @@
         scheduleActFine(row);
         notes[tag] = 'sorteio';
         d = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
+      } else if (tag === 'gearing_push') {
+        // Outcome waits 1–2 months (scheduleTermSheetNegotiation). Signing happens there, not on this click.
+        scheduleTermSheetNegotiation();
+        notes[tag] = 'negociação';
+        return;
       } else if (row.pay_from === 'contingencia_obra') {
         d = priceContingencyTag(tag, row, lotId);
         notes[tag] = 'contingencia';
@@ -15942,6 +15985,7 @@
       mailLoop.obraContingencyInitial = null;
       mailLoop.obraMeters = {};
       mailLoop.pendingFines = [];
+      mailLoop.pendingTermSheet = null;
       mailLoop.codPricedMonth = null;
       mailLoop.codPlanMonth = null;
     } else {
@@ -17107,6 +17151,13 @@
       mailLoop.obraContingencyInitial = (typeof ml.obraContingencyInitial === 'number') ? ml.obraContingencyInitial : null;
       mailLoop.obraMeters = (ml.obraMeters && typeof ml.obraMeters === 'object') ? ml.obraMeters : {};
       mailLoop.pendingFines = Array.isArray(ml.pendingFines) ? ml.pendingFines : [];
+      mailLoop.pendingTermSheet = (ml.pendingTermSheet && ml.pendingTermSheet.due != null)
+        ? { due: ml.pendingTermSheet.due | 0, outcomeDone: !!ml.pendingTermSheet.outcomeDone }
+        : null;
+      // A negotiate chosen before this fix already rolled (or refused) and never signed. Sign on the next month, without rolling again.
+      if (!mailLoop.pendingTermSheet && (mailLoop.tags.term_sheet_negotiate | 0) > 0 && !((mailLoop.tags.term_sheet_signed | 0) > 0)) {
+        mailLoop.pendingTermSheet = { due: mailLoop.month | 0, outcomeDone: true };
+      }
       mailLoop.codPricedMonth = (typeof ml.codPricedMonth === 'number') ? ml.codPricedMonth : null;
       mailLoop.codPlanMonth = (typeof ml.codPlanMonth === 'number') ? ml.codPlanMonth : null;
       mailLoop.hybridReadyMonth = (typeof ml.hybridReadyMonth === 'number') ? ml.hybridReadyMonth : null;
