@@ -6642,6 +6642,7 @@
       <div class="drawer-section-label drawer-actions-label">Otimizações</div>
       ${(actions[nodeId] || []).map(a => {
         const done = applied.has(a.id);
+        const cashMsg = done ? '' : actionCashBlock(nodeId, a.id);
         return `
           <div class="action-box${done ? ' done' : ''}" data-action="${a.id}">
             <div class="action-title">${a.title}${done ? ' ✓' : ''}</div>
@@ -6664,9 +6665,10 @@
                 <span class="action-meta-value">${hybridReadyPhrase()}</span>
               </div>` : ''}
             </div>
-            <button class="btn-confirm${(!done && assetRoomState.armedKey === (nodeId + ':' + a.id)) ? ' is-armed' : ''}" type="button" data-confirm="${nodeId}:${a.id}" ${done ? 'disabled' : ''}>
-              ${done ? 'Feito' : actionStartLabel(nodeId, a)}
+            <button class="btn-confirm${(!done && !cashMsg && assetRoomState.armedKey === (nodeId + ':' + a.id)) ? ' is-armed' : ''}" type="button" data-confirm="${nodeId}:${a.id}" ${(done || cashMsg) ? 'disabled' : ''}>
+              ${done ? 'Feito' : (cashMsg ? 'Sem caixa' : actionStartLabel(nodeId, a))}
             </button>
+            ${cashMsg ? `<p class="mail-choice-hint mail-locked-hint cash-short-note">${cashMsg}</p>` : ''}
           </div>`;
       }).join('')}
     `;
@@ -7163,7 +7165,9 @@
     const ch = L && (L.choices || []).find((c) => c.id === P.choiceId);
     overequipCommit(node, P.added);
     if (L && ch && !L.econChoiceId) {
-      try { applyMailEffects(choiceEffectsFor(L, ch), { letter: L }); } catch (err) { console.warn('[WattMail] overequip commit', err); }
+      let resOx = null;
+      try { resOx = applyMailEffects(choiceEffectsFor(L, ch), { letter: L }); } catch (err) { console.warn('[WattMail] overequip commit', err); }
+      if (resOx && resOx.refused) return;
       L.econChoiceId = ch.id;
       L.econChoiceLabel = fillMailTemplate(ch.label);
     }
@@ -7277,10 +7281,12 @@
       const blockedFarm = isFarm && !(node.van > 0);
       const soldStake = isFarm && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags
         && (((mailLoop.tags.stake_sale_25 | 0) > 0) || ((mailLoop.tags.stake_sale_pre_lp | 0) > 0));
-      const disabled = done || blockedFarm || soldStake;
+      const cashMsg = (!done && !blockedFarm && !soldStake) ? actionCashBlock(nodeId, a.id) : '';
+      const disabled = done || blockedFarm || soldStake || !!cashMsg;
       let btnLabel = actionStartLabel(nodeId, a);
       if (done || soldStake) btnLabel = 'Feito';
       if (blockedFarm && !done && !soldStake) btnLabel = 'Bloqueado: o projeto perde dinheiro';
+      if (cashMsg) btnLabel = 'Sem caixa';
       const armed = !done && !soldStake && assetRoomState.armedKey === (nodeId + ':' + a.id);
       const navTxt = upgradeNavText(a);
       return `
@@ -7294,6 +7300,7 @@
             ${(a.id === 'bess' && hybridReadyPhrase()) ? `<span>${hybridReadyPhrase()}</span>` : ''}
           </div>
           <button type="button" class="btn-confirm${armed ? ' is-armed' : ''}" data-asset-confirm="${nodeId}:${a.id}" ${disabled ? 'disabled' : ''}>${btnLabel}</button>
+          ${cashMsg ? `<p class="mail-choice-hint mail-locked-hint cash-short-note">${cashMsg}</p>` : ''}
         </div>`;
     }).join('');
   }
@@ -7799,6 +7806,8 @@
   }
   /** «Começar» spends money. The first tap arms the button and it stays armed until the second tap confirms. */
   function armActionConfirm(btn, nodeId, actionId) {
+    const cashBlock = actionCashBlock(nodeId, actionId);
+    if (cashBlock) { try { showToast(cashBlock); } catch (_) {} return false; }
     const key = nodeId + ':' + actionId;
     if (assetRoomState.armedKey === key) {
       assetRoomState.armedKey = null;
@@ -7825,6 +7834,8 @@
   function confirmAction(nodeId, actionId) {
     if (!state.appliedActions[nodeId]) state.appliedActions[nodeId] = new Set();
     if (state.appliedActions[nodeId].has(actionId)) return;
+    const cashBlock = actionCashBlock(nodeId, actionId);
+    if (cashBlock) { try { showToast(cashBlock); } catch (_) {} return; }
 
     const act = (actions[nodeId] || []).find(a => a.id === actionId);
     const node = nodes.find(n => n.id === nodeId);
@@ -7859,10 +7870,14 @@
     // Venda de 25%: stake_sale_pre_lp (0,80 M€ no mês 6 a 40 €/MWh) + o jogador fica com 75% do NPV.
     const MISSION_EVENT = { sobre: 'mission_sobreequipamento', eolica: 'mission_eolico' };
     if (MISSION_EVENT[actionId]) {
-      try { applyEconRow(econEngineRow(MISSION_EVENT[actionId]), nodeId, { cause: MISSION_EVENT[actionId] }); } catch (err) { console.warn('[WattEcon] mission', err); }
+      let booked = null;
+      try { booked = applyEconRow(econEngineRow(MISSION_EVENT[actionId]), nodeId, { cause: MISSION_EVENT[actionId] }); } catch (err) { console.warn('[WattEcon] mission', err); }
+      if (booked && booked.refused) { state.appliedActions[nodeId].delete(actionId); return; }
     }
     if (actionId === 'bess') {
-      try { applyScaledBatteryRow(nodeId, BESS_SLICE_MW); } catch (err) { console.warn('[WattEcon] bess', err); }
+      let booked = null;
+      try { booked = applyScaledBatteryRow(nodeId, BESS_SLICE_MW); } catch (err) { console.warn('[WattEcon] bess', err); }
+      if (booked && booked.refused) { state.appliedActions[nodeId].delete(actionId); return; }
     }
     if (actionId === 'farm') {
       const tg = (typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags) || {};
@@ -8140,6 +8155,9 @@
   // One Play in flight. A second click while this is set is dropped, not queued.
   let playBusy = false;
   let playTicket = 0;
+  // Not saved. A month tick already ends in runStakesPass, so a hole opened by that tick must not open a second letter.
+  let monthSpending = false;
+  let cashHoleBusy = false;
   function nextQuarter() {
     if (playBusy) return;
     const btn = document.getElementById('btnNextQ');
@@ -8189,6 +8207,7 @@
         const inboxBefore = (mailState.items || []).length;
         mailLoop.month = monthBefore + 1;
         mailLoop._slipLetterThisPlay = false;
+        monthSpending = true;
         // Running obra costs and the ACT fine land as the month starts, before a deadline is met.
         try { chargeObraMonth(); } catch (err) { console.warn('[WattEcon] obra month', err); }
         try { resolvePendingFines(); } catch (err) { console.warn('[WattEcon] fine', err); }
@@ -8288,6 +8307,7 @@
       } catch (err) {
         console.warn('[WattPlay] advance', err);
       } finally {
+        monthSpending = false;
         if (ticket === playTicket) {
           playBusy = false;
           btn.classList.remove('loading');
@@ -9280,6 +9300,110 @@
     if (/tier_factor/.test(seg)) return econTier().reqFactor;
     return 1;
   }
+  /**
+   * One gate for every voluntary spend. Cost is M€ the player would pay now.
+   * True when the cost is 0 or the cash left would still be at least 0.
+   * Cash at risk, NPV and the bonding line are not cash.
+   */
+  function canSpend(cost) {
+    const c = Number(cost) || 0;
+    if (!(c > 0)) return true;
+    return (Number(state.caixa) || 0) + 1e-9 >= c;
+  }
+  function cashShortfall(cost) {
+    return +Math.max(0, (Number(cost) || 0) - (Number(state.caixa) || 0)).toFixed(3);
+  }
+  /** «faltam 0,18 M€» — decimal comma, always M€. */
+  function fmtGapMeur(n) {
+    const v = Math.abs(Number(n) || 0);
+    const thousandths = Math.round(v * 1000);
+    const s = (thousandths / 1000).toFixed(thousandths % 10 === 0 ? 2 : 3);
+    return s.replace('.', ',') + ' M€';
+  }
+  function cashGapMessage(cost) {
+    return 'Não tens caixa para isto: faltam ' + fmtGapMeur(cashShortfall(cost)) + '.';
+  }
+  /** Guarantees already posted, and fines already risked, may push cash below 0. */
+  const MANDATORY_CASH_TAGS = { caucao_executada: 1, deadline_accept_miss: 1, act_fine_paid: 1, act_fine_risk: 1 };
+  function rowCashDelta(row, lotId) {
+    if (!row || typeof row.cash !== 'number' || !row.cash || !Number.isFinite(row.cash)) return 0;
+    let e = null;
+    try { e = lotEcon(lotId); } catch (_) { e = null; }
+    const scale = e ? econFieldScale(row, 'cash', e) : 1;
+    return +(row.cash * scale).toFixed(3);
+  }
+  /** Cash the battery row will actually take, matching applyScaledBatteryRow. 0 if it will not book. */
+  function bessCashCost(lotId, mw) {
+    if (typeof mailLoop !== 'undefined' && mailLoop && mailLoop._bessEconomicsApplied) return 0;
+    if (typeof bessEconomyLoaded === 'function' && !bessEconomyLoaded()) return 0;
+    const use = mw == null ? ((typeof BESS_SLICE_MW === 'number') ? BESS_SLICE_MW : 15) : mw;
+    if (!(use > 0)) return 0;
+    const rowMw = (typeof BESS_ROW_MW === 'number' && BESS_ROW_MW) ? BESS_ROW_MW : 15;
+    const row = (typeof effectEconRow === 'function' && effectEconRow('bess_dev_flag')) || econEngineRow('mission_bess');
+    const full = rowCashDelta(row, lotId);
+    if (!(full < 0)) return 0;
+    return +(-full * (use / rowMw)).toFixed(3);
+  }
+  /** Positive M€ a player choice would take from cash now. Mandatory tags and construction contingency are not included. */
+  function voluntaryCashOutlay(effects, opts) {
+    opts = opts || {};
+    const lotId = opts.lotId || ((typeof mailLoop !== 'undefined' && mailLoop && mailLoop.seId) || ECON_REF_LOT);
+    let cost = 0;
+    (effects || []).forEach((ef) => {
+      const tag = String(ef || '');
+      if (!tag || MANDATORY_CASH_TAGS[tag]) return;
+      if (typeof STAKES_SKIP_ECON !== 'undefined' && STAKES_SKIP_ECON[tag]) return;
+      if (typeof ECON_ROLLED !== 'undefined' && ECON_ROLLED[tag]) return;
+      if (tag === 'bess_dev_flag' || tag === 'mission_bess') {
+        let mw = 0;
+        try {
+          const node = (typeof nodes !== 'undefined') ? nodes.find((n) => n.id === lotId) : null;
+          const slice = (typeof BESS_SLICE_MW === 'number') ? BESS_SLICE_MW : 15;
+          if (node && node.trc && (node.trc.free | 0) >= slice) mw = slice;
+        } catch (_) {}
+        cost = +(cost + bessCashCost(lotId, mw)).toFixed(3);
+        return;
+      }
+      let row = null;
+      try { row = (typeof effectEconRow === 'function') ? effectEconRow(tag) : econEngineRow(tag); } catch (_) { row = null; }
+      if (!row) return;
+      if (row.pay_from === 'contingencia_obra') return;
+      const d = rowCashDelta(row, lotId);
+      if (d < 0) cost = +(cost - d).toFixed(3);
+    });
+    return cost;
+  }
+  function missionCashCost(actionId, nodeId) {
+    if (actionId === 'bess') return bessCashCost(nodeId, (typeof BESS_SLICE_MW === 'number') ? BESS_SLICE_MW : 15);
+    const map = { sobre: 'mission_sobreequipamento', eolica: 'mission_eolico' };
+    const key = map[actionId];
+    if (!key) return 0;
+    const d = rowCashDelta(econEngineRow(key), nodeId);
+    return d < 0 ? -d : 0;
+  }
+  function actionCashBlock(nodeId, actionId) {
+    const cost = missionCashCost(actionId, nodeId);
+    return canSpend(cost) ? '' : cashGapMessage(cost);
+  }
+  function choiceSpendMessage(letter, choice) {
+    if (!choice) return '';
+    let fx = (choice.effects || []).slice();
+    try { if (typeof choiceEffectsFor === 'function') fx = choiceEffectsFor(letter, choice); } catch (_) {}
+    const cost = voluntaryCashOutlay(fx, { letter: letter });
+    return canSpend(cost) ? '' : cashGapMessage(cost);
+  }
+  /** Mandatory spend just pushed cash below 0. Pedro's ladder: rescue, then the one-month ultimatum, then the end. */
+  function noteCashHole() {
+    if (monthSpending || cashHoleBusy) return;
+    if (typeof mailLoop === 'undefined' || !mailLoop || !mailLoop.active) return;
+    if (mailLoop._stakesPass) return;
+    if ((Number(state.caixa) || 0) >= -1e-9) return;
+    if (typeof playIsLocked === 'function' && playIsLocked()) return;
+    cashHoleBusy = true;
+    try { runStakesPass(mailLoop.month | 0); }
+    catch (err) { console.warn('[WattStakes] cash hole', err); }
+    finally { cashHoleBusy = false; }
+  }
   /** Aplica uma linha {cash, debt, nav, bonding, car, equity, months} ao estado. Devolve o delta aplicado.
    *  bonding + = consome linha (garantias livres descem). nav = ΔNPV do ativo (entra no NAV via recomputeNav).
    *  debt só entra na dívida a partir da obra (pós-FID); antes fica como dívida planeada. Texto (PEDIR) é ignorado. */
@@ -9299,7 +9423,16 @@
       // caução prestada em dinheiro: executar/devolver mexe na caixa, não na linha
       if (out.bonding < 0) { if (opts.refund) out.cash += -out.bonding; out.bonding = 0; }
     }
+    if (out.cash < 0 && !opts.allowNegative && !canSpend(-out.cash)) {
+      const message = cashGapMessage(-out.cash);
+      try { showToast(message); } catch (_) {}
+      return { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0, refused: true, message: message };
+    }
+    const cashBefore = Number(state.caixa) || 0;
     if (out.cash) state.caixa = +(state.caixa + out.cash).toFixed(3);
+    if (opts.allowNegative && out.cash < 0 && cashBefore >= -1e-9 && state.caixa < -1e-9) {
+      try { noteCashHole(); } catch (_) {}
+    }
     const phase = lotProjectPhase(lotId);
     if (out.debt) {
       if (phase === 'obra' || phase === 'cod') state.divida = +(state.divida + out.debt).toFixed(3);
@@ -9410,7 +9543,7 @@
       const hit = forced ? forced === 'accept' : ((typeof econRng === 'function' ? econRng() : Math.random()) < (Number(item.p) || 0.5));
       mailLoop.tags = mailLoop.tags || {};
       if (hit) {
-        applyEconRow({ cash: -0.10, nav: -0.10 }, mailLoop.seId || ECON_REF_LOT);
+        applyEconRow({ cash: -0.10, nav: -0.10 }, mailLoop.seId || ECON_REF_LOT, { allowNegative: true, cause: 'act_fine_paid' });
         mailLoop.tags.reputation_exposed = (mailLoop.tags.reputation_exposed | 0) + 1;
         mailLoop.tags.act_fine_hit = (mailLoop.tags.act_fine_hit | 0) + 1;
         mailLoop.tagMonth = mailLoop.tagMonth || {};
@@ -11032,16 +11165,64 @@
   const TRC_WIN_BOND_MEUR = 0.96;       // Ourique (0,01 × 96 MVA); por lote = ECON_BOND_PER_MVA_MEUR × MVA (lotEcon().caucao)
   const TRC_WIN_CAR_COMMIT_MEUR = 1.0;  // kickoff Ourique; por lote = lotEcon().kickoff (1,0 / 1,5 / 2,0)
   const TRC_WIN_NAV_MEUR = 0;           // sem delta manual: o NAV é recalculado com o NPV do lote
-  function applyTrcWinEconomics(lot) {
-    const id = lot && lot.id;
-    const ec = econState();
-    const d = { caixa: 0, nav: 0, bondingFree: 0, bondCash: 0, kickoff: 0, bond: 0, lotId: id };
-    if (!id || ec.trcApplied[id]) return d;
+  function trcWinAmounts(lot) {
     const e = lotEcon(lot);
     const row = econEngineRow('trc_won');
     const bond = (typeof e.caucao === 'number' && e.caucao > 0) ? e.caucao
       : +(((row && typeof row.bonding === 'number') ? row.bonding : TRC_WIN_BOND_MEUR) * econFieldScale(row || { formula: 'bonding: +0.01*MVA' }, 'bonding', e)).toFixed(3);
     const kick = (typeof e.kickoff === 'number') ? e.kickoff : TRC_WIN_CAR_COMMIT_MEUR;
+    return { bond: bond, kick: kick };
+  }
+  /** Cash an «Aceitar o TRC» would take now: kickoff, plus the guarantee only when the bonding line does not cover it. */
+  function pendingTrcCashNeed() {
+    let free = Number(state.bondingFree) || 0;
+    let cash = 0;
+    const ec = econState();
+    auctionPendingWins().forEach((p) => {
+      const lot = AUCTION_LOTS.find((l) => l.id === p.lotId) || p.lot;
+      if (!lot || (ec.trcApplied && ec.trcApplied[lot.id])) return;
+      const a = trcWinAmounts(lot);
+      cash += a.kick;
+      if (free + 1e-9 >= a.bond) free = +(free - a.bond).toFixed(3);
+      else cash += a.bond;
+    });
+    return +Math.max(0, cash).toFixed(3);
+  }
+  function refreshAcceptCashGate() {
+    const btn = document.getElementById('auctionTrapDone');
+    const note = document.getElementById('auctionTrapNote');
+    if (!btn) return;
+    if (!auctionHasPendingTrc()) {
+      if (btn.dataset.cashShort) {
+        btn.disabled = false;
+        btn.removeAttribute('aria-disabled');
+        delete btn.dataset.cashShort;
+      }
+      return;
+    }
+    const need = pendingTrcCashNeed();
+    if (canSpend(need)) {
+      if (btn.dataset.cashShort) {
+        btn.disabled = false;
+        btn.removeAttribute('aria-disabled');
+        delete btn.dataset.cashShort;
+      }
+      return;
+    }
+    const msg = cashGapMessage(need);
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled', 'true');
+    btn.dataset.cashShort = '1';
+    if (note) note.textContent = msg;
+  }
+  function applyTrcWinEconomics(lot) {
+    const id = lot && lot.id;
+    const ec = econState();
+    const d = { caixa: 0, nav: 0, bondingFree: 0, bondCash: 0, kickoff: 0, bond: 0, lotId: id };
+    if (!id || ec.trcApplied[id]) return d;
+    const amounts = trcWinAmounts(lot);
+    const bond = amounts.bond;
+    const kick = amounts.kick;
     const node = nodes.find((n) => n.id === id);
     d.bond = bond;
     if (state.bondingFree + 1e-9 >= bond) {
@@ -11097,6 +11278,13 @@
   }
 
   function goHomeWithTrc() {
+    const need = pendingTrcCashNeed();
+    if (!canSpend(need)) {
+      const msg = cashGapMessage(need);
+      try { showToast(msg); } catch (_) {}
+      try { refreshAcceptCashGate(); } catch (_) {}
+      return;
+    }
     // Aceitar: commit pending wins (once), then leave the room
     const committed = commitPendingTrcWins();
     if (!committed.length && auctionState.wonLots && auctionState.wonLots.length) {
@@ -11429,6 +11617,7 @@
           : 'Já não há lotes que possas licitar. Aceita o TRC e sai: os investidores escrevem-te logo a seguir.';
       }
     }
+    try { refreshAcceptCashGate(); } catch (_) {}
     scheduleSave('auction-result');
   }
 
@@ -14040,6 +14229,7 @@
           if (!mailLoop.end_state || mailLoop.end_state.status === 'playing') {
             mailLoop.end_state = { status: 'lost', reason: 'sem_dinheiro', month: month };
             syncEndPlayLock();
+            try { openEndScreen(); } catch (_) {}
           }
           return delivered;
         }
@@ -15301,7 +15491,7 @@
       ECON_FIELDS.forEach((f) => {
         if (typeof prev[f] === 'number' && prev[f]) neg[f] = -prev[f];
       });
-      const d = applyEconRow(neg, lotId);
+      const d = applyEconRow(neg, lotId, { allowNegative: true, cause: 'revert_' + tag });
       if (typeof prev.equity === 'number' && prev.equity) {
         ec.letterCapexEquity = +((ec.letterCapexEquity || 0) - prev.equity).toFixed(3);
       }
@@ -15313,6 +15503,16 @@
 
   function applyEffectEconomics(effects, opts) {
     opts = opts || {};
+    const allowNeg = !!(opts.fromRule || opts.allowNegative || opts.mandatory);
+    if (!allowNeg) {
+      const cost = voluntaryCashOutlay(effects, opts);
+      if (!canSpend(cost)) {
+        const message = cashGapMessage(cost);
+        try { showToast(message); } catch (_) {}
+        return { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0, refused: true, cost: cost, message: message };
+      }
+    }
+    const spendOpts = (tag, extra) => Object.assign({ cause: tag, allowNegative: allowNeg || !!MANDATORY_CASH_TAGS[tag] }, extra || {});
     const sum = { cash: 0, debt: 0, nav: 0, bonding: 0, car: 0, equity: 0, months: 0 };
     const perTag = {};
     const notes = {};
@@ -15326,6 +15526,7 @@
       else skipLine = true;
     }
     (effects || []).forEach((ef) => {
+      if (sum.refused) return;
       const tag = String(ef);
       if (typeof STAKES_SKIP_ECON !== 'undefined' && STAKES_SKIP_ECON[tag]) return;
       if (/^car_band_[sml]$/.test(tag)) return; // M0: resolveM0Ask
@@ -15369,7 +15570,7 @@
         // nav_months is −0,19 × months and counts only when that track moves COD (syncCodNpv).
         // Keep nav_capex and nav_cash. act_fine_paid has nav_months 0 and stays a normal row.
         const kept = navExcludingMonths(row);
-        d = applyEconRow(Object.assign({}, row, { nav: kept }), lotId, { cause: tag });
+        d = applyEconRow(Object.assign({}, row, { nav: kept }), lotId, spendOpts(tag));
         notes[tag] = 'cod';
       } else if (ECON_ROLLED[tag]) {
         const pressure = tag === 'cash_at_risk_request' && opts.letter && typeof mailSkeletonOf === 'function' && mailSkeletonOf(opts.letter) === 'mail-investidores-pressao-01';
@@ -15398,16 +15599,21 @@
         if (ec.bondInCash[lotId]) {
           // caução já estava em dinheiro: não sai outra vez da caixa nem da linha
           const r2 = Object.assign({}, row, { cash: null, bonding: null });
-          d = applyEconRow(r2, lotId, { cause: tag });
+          d = applyEconRow(r2, lotId, spendOpts(tag));
           delete ec.bondInCash[lotId];
         } else {
-          d = applyEconRow(row, lotId, { cause: tag });
+          d = applyEconRow(row, lotId, spendOpts(tag));
         }
       } else if (tag === 'cod_reached') {
-        d = applyEconRow(row, lotId, { bondInCashAware: true, refund: true, cause: tag });
+        d = applyEconRow(row, lotId, spendOpts(tag, { bondInCashAware: true, refund: true }));
         const ec = econState(); if (ec.bondInCash[lotId]) delete ec.bondInCash[lotId]; // caução em dinheiro devolvida à caixa (applyEconRow refund)
       } else {
-        d = applyEconRow(row, lotId, { cause: tag });
+        d = applyEconRow(row, lotId, spendOpts(tag));
+        if (d && d.refused) {
+          sum.refused = true;
+          sum.message = d.message;
+          return;
+        }
         if (tag === 'cash_at_risk_+1') {
           // depois da contingência do plano (~5 cartas, Ourique 0,69 M€) cada carta também sobe o CAR need (+U)
           const n = (mailLoop && mailLoop.tags && mailLoop.tags['cash_at_risk_+1']) || 0;
@@ -15492,6 +15698,10 @@
       mailLoop.hybridReadyMonth = (mailLoop.month | 0) + row.months;
     }
     const d = applyEconRow(scaled, nodeId, { cause: 'bess_dev_flag' });
+    if (d && d.refused) {
+      if (mailLoop) mailLoop._bessEconomicsApplied = false;
+      return d;
+    }
     if (typeof row.capex_MEUR === 'number' && d && typeof d.equity === 'number' && d.equity) {
       const ec = econState();
       ec.letterCapexEquity = +((ec.letterCapexEquity || 0) + d.equity).toFixed(3);
@@ -15527,8 +15737,17 @@
   }
   function applyMailEffects(effects, opts) {
     opts = opts || {};
-    if (opts.letter && !opts.fromRule && mailLoop) mailLoop._slipLetterThisPlay = false;
     if (!Array.isArray(effects) || !effects.length) return { carBand: null, messages: [] };
+    const allowNeg = !!(opts.fromRule || opts.allowNegative || opts.mandatory || opts.skipEconomics);
+    if (!allowNeg) {
+      const cost = voluntaryCashOutlay(effects, opts);
+      if (!canSpend(cost)) {
+        const message = cashGapMessage(cost);
+        try { showToast(message); } catch (_) {}
+        return { refused: true, cost: cost, message: message, carBand: null, messages: [] };
+      }
+    }
+    if (opts.letter && !opts.fromRule && mailLoop) mailLoop._slipLetterThisPlay = false;
     const messages = [];
     let carBand = null;
     mailLoop.tags = mailLoop.tags || {};
@@ -16202,19 +16421,20 @@
             const isDeferred = !answered && deferredId && cid === deferredId;
             const off = answered && !isChosen;
             const locked = !answered && choiceLocked(c);
+            const cashMsg = (!answered && !locked) ? choiceSpendMessage(letter, c) : '';
             let cls = (answered ? (isChosen ? 'mail-cta-primary' : 'mail-cta-secondary') : (i === 0 ? 'mail-cta-primary' : 'mail-cta-secondary'));
             if (isChosen) cls += ' is-chosen';
             if (off) cls += ' is-off';
             if (isDeferred) cls += ' is-deferred';
-            if (locked) cls = 'mail-cta-secondary is-locked';
+            if (locked || cashMsg) cls = 'mail-cta-secondary is-locked';
             const label = fillMailTemplate(c.label);
             const btn = '<button type="button" class="' + cls + '" data-mail-choice="' + escapeHtml(cid) + '"' + (i === 0 ? ' data-tut="correio.first_choice"' : '') + ' data-mail-letter="' + escapeHtml(letter.id) + '"' +
-              ((isChosen || off || isDeferred || locked) ? ' disabled aria-disabled="true"' : '') + (isChosen ? ' aria-pressed="true"' : '') + '>' +
+              ((isChosen || off || isDeferred || locked || cashMsg) ? ' disabled aria-disabled="true"' : '') + (isChosen ? ' aria-pressed="true"' : '') + '>' +
               (locked ? '<span class="mail-lock" aria-hidden="true">🔒</span> ' : '') + (isChosen ? '✓ ' : '') + escapeHtml(label) + (isChosen ? ' <span class="mail-chosen-tag">escolheste</span>' : '') +
               (isDeferred ? ' <span class="mail-chosen-tag">escolheste antes</span>' : '') + '</button>';
-            const hint = locked ? fillMailTemplate(c.locked_hint || 'Ainda não é possível.') : fillMailTemplate(choiceHintFor(letter, c));
+            const hint = cashMsg || (locked ? fillMailTemplate(c.locked_hint || 'Ainda não é possível.') : fillMailTemplate(choiceHintFor(letter, c)));
             if (!hint) return btn;
-            if (locked) { hasHints = true; return '<div class="mail-choice is-locked">' + btn + '<p class="mail-choice-hint mail-locked-hint">' + escapeHtml(hint) + '</p></div>'; }
+            if (locked || cashMsg) { hasHints = true; return '<div class="mail-choice is-locked">' + btn + '<p class="mail-choice-hint mail-locked-hint cash-short-note">' + escapeHtml(hint) + '</p></div>'; }
             hasHints = true;
             return '<div class="mail-choice' + (off ? ' is-off' : '') + '">' + btn + '<p class="mail-choice-hint">' + escapeHtml(hint) + '</p></div>';
           }).join('');
@@ -16711,6 +16931,8 @@
           const choice = letter && (letter.choices || []).find((c) => normalizeChoiceId(c.id, letter) === choiceId || c.id === choiceId || c.legacy_id === choiceId);
           if (letter && letter.econChoiceId) { renderInboxBody(); return; } // M7: answered letters are closed
           if (choice && choiceLocked(choice)) { showToast(choice.locked_hint || 'Ainda não é possível.'); renderInboxBody(); return; }
+          const cashMsg = choice ? choiceSpendMessage(letter, choice) : '';
+          if (cashMsg) { showToast(cashMsg); renderInboxBody(); return; }
           // mail-consultor-sobreequipamento-01: store overequip_added_mwp from the skin params and recompute the route
           // BEFORE confirming; a heavier route parks the plan and opens the tripwire card instead.
           if (letter && choice && mailSkeletonOf(letter) === 'mail-consultor-sobreequipamento-01' && /^overequip_(small|medium|large)$/.test(choice.id)) {
@@ -16733,6 +16955,11 @@
           const repeat = !!(letter && (letter.econChoiceId || (deferring && letter.deferredChoiceId)));
           let res = null;
           if (typeof applyMailEffects === 'function') res = applyMailEffects(effectList, { skipEconomics: repeat, letter: letter });
+          if (res && res.refused) {
+            mailLoop._answeringId = null;
+            renderInboxBody();
+            return;
+          }
           if (letter && !repeat) {
             if (deferring) letter.deferredChoiceId = normalizeChoiceId(choiceId, letter);
             else { letter.econChoiceId = normalizeChoiceId(choiceId, letter); letter.econChoiceLabel = choice ? fillMailTemplate(choice.label) : ''; }
@@ -16769,11 +16996,14 @@
           } else if (letter && Array.isArray(letter.effects) && letter.effects.length) {
             effectList = letter.effects.slice();
           }
+          const ctaCash = choiceSpendMessage(letter, choice || { effects: effectList });
+          if (ctaCash) { showToast(ctaCash); renderInboxBody(); return; }
           const repeatCta = !!(letter && letter.econChoiceId);
           let resCta = null;
           let datesBeforeCta = null;
           try { datesBeforeCta = trackedDateSnap(); } catch (_) {}
           if (effectList.length && typeof applyMailEffects === 'function') resCta = applyMailEffects(effectList, { skipEconomics: repeatCta, letter: letter });
+          if (resCta && resCta.refused) { renderInboxBody(); return; }
           if (letter && !repeatCta && effectList.length) letter.econChoiceId = (choice && choice.id) || 'cta';
           if (resCta && repeatCta) resCta.repeat = true;
           if (letterId) markLetterRead(letterId);
@@ -18248,7 +18478,19 @@
         envRoute: (patch) => { const sh = JSON.parse(JSON.stringify(getSeSheet(mailLoop.seId || 'ourique') || {})); Object.assign(sh.env_draft = sh.env_draft || {}, patch || {}); return computeEnvRoute(sh, null); },
         auctionWave: (n) => { resetAuctionDraft({ wave: n }); try { renderAuctionLots(); renderAuctionRivals(); selectAuctionLot(AUCTION_LOTS[0].id); } catch (_) {} return AUCTION_LOTS.map((l) => l.id); },
         faixa: () => !!LEILAO_FAIXA, overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
-        saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable()
+        saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable(),
+        canSpend: (n) => canSpend(n),
+        cashGap: (n) => cashGapMessage(n),
+        choiceCost: (letterId, choiceId) => {
+          const letter = (mailState.items || []).find((m) => m.id === letterId);
+          if (!letter) return null;
+          const choice = (letter.choices || []).find((c) => c.id === choiceId || c.legacy_id === choiceId);
+          if (!choice) return null;
+          let fx = (choice.effects || []).slice();
+          try { fx = choiceEffectsFor(letter, choice); } catch (_) {}
+          const cost = voluntaryCashOutlay(fx, { letter: letter });
+          return { cost: cost, ok: canSpend(cost), msg: canSpend(cost) ? '' : cashGapMessage(cost), caixa: state.caixa };
+        }
       };
     }
     window.WattSave = {
