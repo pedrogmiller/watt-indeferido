@@ -14703,7 +14703,8 @@
       mailLoop.dilutionApplied = true;
       try {
         const n = nodes.find((x) => x.id === (mailLoop.seId || 'ourique'));
-        if (n && typeof n.van === 'number') n.van = +(n.van * (1 - RESCUE_DILUTION)).toFixed(2);
+        // Como no sócio (FIX L): a diluição só se aplica com NPV positivo.
+        if (n && typeof n.van === 'number' && n.van > 0) n.van = +(n.van * (1 - RESCUE_DILUTION)).toFixed(2);
       } catch (_) {}
     }
     if (has('cash_rescue_used') && !mailLoop.rescueBridgeApplied) {
