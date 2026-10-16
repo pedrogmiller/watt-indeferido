@@ -1,0 +1,40 @@
+{
+  "status": "Texto final do Game Master, 2026-10-16. Este ficheiro é o único sítio da carta de boas-vindas e do Mandato 0.",
+  "mandate0": {
+    "title": "Ganhar o leilão",
+    "opening": "Sem ligação à rede não há central. Começa por aqui.",
+    "required": "Ganhar um TRC no leilão",
+    "extra": "Ganhar sem licitar abaixo do que o projeto aguenta",
+    "extra_note": "Mantido: o NPV da oferta vencedora vem de leilao_faixa (auctionEconomics, tom bad = abaixo do break-even). Em Ourique o break-even é 33,2 €/MWh e qualquer oferta que ganhe fica abaixo.",
+    "locked_title": "Mandato 1: O primeiro ponto de ligação",
+    "locked_badge": "🔒 Abre quando ganhares o TRC"
+  },
+  "mandate_titles": {
+    "0": "Mandato 0: Ganhar o leilão",
+    "trc_won": "Mandato 1: O primeiro ponto de ligação",
+    "land": "Mandato 1: O primeiro ponto de ligação",
+    "pip": "Mandato 1: O primeiro ponto de ligação",
+    "aia": "Mandato 1: O primeiro ponto de ligação",
+    "licenca_producao": "Mandato 1: O primeiro ponto de ligação",
+    "obra": "Mandato 1: O primeiro ponto de ligação",
+    "cod": "Mandato 1: O primeiro ponto de ligação"
+  },
+  "mails": [
+    {
+      "id": "m0-bem-vindo",
+      "type": "investidores",
+      "sender": "Investidores",
+      "to": "ti",
+      "subject": "Bem-vindo",
+      "when": "agora",
+      "body": "Confiamos-te a nossa nova empresa de renováveis. Antes de tudo, precisamos de um ponto de ligação à rede: ganha um TRC no próximo leilão. O teu orçamento está nas Finanças.",
+      "choices": [
+        {
+          "id": "ver_mandato",
+          "label": "Ver o mandato",
+          "opens": "mandato"
+        }
+      ]
+    }
+  ]
+}

@@ -5296,6 +5296,202 @@
     .obj-tbl td { display: inline-block; border: 0; padding: 0 6px 0 0; }
     .obj-tbl td:first-child { display: block; width: 100%; padding-bottom: 6px; }
   }
+  /* ═══ Menu inicial (maquete) ═══ */
+  body.at-menu .header-metrics,
+  body.at-menu .mobile-caixa-pill,
+  body.at-menu .footer-mock-period,
+  body.at-menu .econ-provisional-brand,
+  body.at-menu .header-home-btn,
+  body.at-menu .header-auction-btn,
+  body.at-menu .header-inbox-btn,
+  body.at-menu .header-help,
+  body.at-menu .header-settings-btn,
+  body.at-menu .tab-bar,
+  body.at-menu .main,
+  body.at-menu .fab-nextq,
+  body.at-menu .activity,
+  body.at-menu .play-action-gate,
+  body.at-menu .mobile-tabbar,
+  body.at-menu .mobile-tabbar-hint { display: none !important; }
+  body.at-menu.footer-mock #btnSettings,
+  body.at-menu.footer-mock #btnSearch,
+  body.at-menu.footer-mock #btnNextQ,
+  body.at-menu.footer-mock #btnTutorial,
+  body.at-menu.footer-mock .mobile-tabbar,
+  body.at-menu.footer-mock .header-metrics,
+  body.at-menu.footer-mock #footerMockPeriod { display: none !important; }
+  body.at-menu.footer-mock .brand-period { display: block !important; }
+  body.at-menu .header { padding: 12px 20px; gap: 10px; }
+  @media (max-width: 430px) {
+    body.at-menu.footer-mock .brand-text { display: flex !important; }
+  }
+  .start-screen[hidden] { display: none !important; }
+  .start-screen { flex: 1; display: flex; justify-content: center; }
+  .start-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 28px 16px calc(28px + env(safe-area-inset-bottom));
+  }
+  #startMenu .menu { width: 100%; max-width: 440px; }
+  #startMenu h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; text-align: center; }
+  #startMenu .lead { color: var(--text-muted); text-align: center; margin: 4px 0 20px; }
+  #startMenu .card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: 16px;
+  }
+  #startMenu .stack { display: grid; gap: 8px; }
+  #startMenu .btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+    transition: box-shadow 0.15s, background 0.15s;
+  }
+  #startMenu .btn:hover { box-shadow: var(--shadow-hover); }
+  #startMenu .btn small { display: block; font-weight: 400; font-size: 12px; color: var(--text-muted); }
+  #startMenu .btn.primary { background: #0f172a; border-color: #0f172a; color: #fff; }
+  #startMenu .btn.primary:hover { background: #1e293b; }
+  #startMenu .btn.primary small { color: #cbd5e1; }
+  #startMenu .btn.danger { color: var(--critical); }
+  #startMenu .chev { color: var(--text-muted); font-weight: 400; }
+  #startMenu .btn.primary .chev { color: #cbd5e1; }
+  #startMenu .btn.fb { border-color: var(--solar); background: #fff8ef; }
+  #startMenu .btn.fb small { color: #92400e; }
+  #startMenu .foot { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 16px; }
+  #startMenu .foot a { color: var(--text-muted); }
+  @media (min-width: 900px) {
+    .start-main { align-items: center; min-height: calc(100vh - 64px); }
+    #startMenu .menu { max-width: 520px; }
+    #startMenu h1 { font-size: 26px; }
+  }
+  #startModal .modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 200;
+  }
+  #startModal .sheet {
+    background: #fff;
+    width: 100%;
+    max-width: 520px;
+    max-height: min(88vh, 720px);
+    overflow: auto;
+    border-radius: 16px 16px 0 0;
+    padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+  @media (min-width: 700px) {
+    #startModal .modal-bg { align-items: center; }
+    #startModal .sheet { border-radius: 16px; }
+  }
+  #startModal .sheet h2 { font-size: 17px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  #startModal .x {
+    color: var(--text-muted);
+    font-weight: 400;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 6px;
+  }
+  #startModal .m { color: var(--text-muted); font-size: 13px; margin: 2px 0 12px; }
+  #startModal .slot { border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px; margin-top: 8px; }
+  #startModal .slot b { font-size: 15px; }
+  #startModal .slot .meta { font-size: 12px; color: var(--text-muted); }
+  #startModal .slot .row { display: flex; gap: 8px; margin-top: 10px; }
+  #startModal .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #startModal .btn.primary { background: #0f172a; border-color: #0f172a; color: #fff; }
+  #startModal .btn.sm { flex: 1; }
+  #startModal .btn.red { color: var(--critical); flex: 0 0 auto; width: auto; padding: 0 18px; }
+  #startModal .btn.danger-solid { background: var(--critical); border-color: var(--critical); color: #fff; }
+  #startModal label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+  #startModal input, #startModal textarea {
+    width: 100%;
+    font: inherit;
+    font-size: 16px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    margin: 4px 0 14px;
+    background: #fff;
+    color: var(--text-main);
+  }
+  #startModal textarea { min-height: 72px; resize: vertical; }
+  #startModal .acts { display: flex; gap: 8px; }
+  #startModal .acts .btn { flex: 1; }
+  #startModal .howto { font-size: 14px; color: var(--text-main); display: grid; gap: 8px; margin: 8px 0 14px; }
+  #startModal .howto p { margin: 0; }
+  .phase0-welcome {
+    position: fixed;
+    inset: 0;
+    z-index: 280;
+    background: rgba(15, 23, 42, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+  }
+  .phase0-welcome .card {
+    width: min(440px, 100%);
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 18px 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.16);
+  }
+  .phase0-welcome h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .phase0-welcome ul { margin: 0 0 16px; padding-left: 18px; display: grid; gap: 8px; color: var(--text-main); }
+  .phase0-welcome button {
+    width: 100%;
+    min-height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: #007AFF;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .phase0-welcome button.secondary { background: #fff; color: var(--text-main); border: 1px solid var(--border-subtle); margin-top: 8px; }
+  .settings-btn.danger-solid { background: var(--critical); border-color: var(--critical); color: #fff; }
+  .settings-btn.danger-solid:hover { background: #b91c1c; border-color: #b91c1c; }
+  body.at-menu #objSheet,
+  body.at-menu .obj-budget { display: none !important; }
 
 </style>
 <link rel="stylesheet" href="tut.css" />
@@ -5378,6 +5574,13 @@
   </button>
 
 </header>
+
+<div id="startMenu" class="start-screen" hidden>
+  <div class="start-main">
+    <div class="menu" id="startMenuCard"></div>
+  </div>
+</div>
+<div id="startModal"></div>
 
 <!-- ═══ TABS ═══ -->
 <nav class="tab-bar" role="tablist">
@@ -5945,16 +6148,16 @@
       <button type="button" class="settings-btn" id="btnTutReplay" data-tut="settings.replay">Ver outra vez</button>
       <button type="button" class="settings-btn" id="btnTutToggle" data-tut="settings.toggle">Desligar dicas</button>
     </div>
-    <button type="button" class="settings-btn danger" id="btnNewGame">Novo jogo</button>
+    <button type="button" class="settings-btn danger" id="btnNewGame">Apagar jogo guardado</button>
   </div>
 </aside>
 <div class="settings-confirm" id="settingsConfirm" hidden role="dialog" aria-modal="true" aria-labelledby="settingsConfirmTitle">
   <div class="settings-confirm-card">
-    <div class="settings-confirm-title" id="settingsConfirmTitle">Novo jogo?</div>
-    <div class="settings-confirm-body" id="settingsConfirmBody">Isto apaga o jogo gravado neste navegador e começa de novo. Não se pode desfazer.</div>
+    <div class="settings-confirm-title" id="settingsConfirmTitle">Apagar este jogo?</div>
+    <div class="settings-confirm-body" id="settingsConfirmBody">Este jogo é apagado deste navegador. Não se pode desfazer.</div>
     <div class="settings-confirm-actions">
       <button type="button" class="settings-btn" id="settingsConfirmCancel">Cancelar</button>
-      <button type="button" class="settings-btn danger" id="settingsConfirmOk">Novo jogo</button>
+      <button type="button" class="settings-btn danger-solid" id="settingsConfirmOk">Apagar</button>
     </div>
   </div>
 </div>
@@ -9281,7 +9484,7 @@
     } else if (forceArrive) {
       try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
       requestAnimationFrame(() => startDemoSequence());
-    } else if (!isOnboardingDone() && !screenshotAuctionOnly) {
+    } else if (!isOnboardingDone() && !screenshotAuctionOnly && !_atStartMenu && _newSlotName == null) {
       requestAnimationFrame(() => {
         if (window.__tut) window.__tut.showWelcome();
         else window.__tutWantWelcome = true;
@@ -14813,6 +15016,7 @@
   function restartMandate() {
     try { clearSave(); } catch (_) {}
     try { localStorage.removeItem(SAVE_KEY); } catch (_) {}
+    try { sessionStorage.setItem('watt.newSlotName', defaultGameName(new Date())); } catch (_) {}
     location.reload();
   }
   function initEndScreen() {
@@ -16051,6 +16255,7 @@
   }
 
   function periodLabelText() {
+    if (document.body.classList.contains('at-menu')) return 'v0.1';
     if (mailLoop && mailLoop.active && mailLoop.month >= 0 && state.auctionWon) {
       return objPeriodLabel(mailLoop.month | 0);
     }
@@ -16278,18 +16483,69 @@
     if (phase === 'obra' || phase === 'cod') return true;
     return !!(mailLoop && mailLoop.tags && (mailLoop.tags.construction_started | 0) > 0);
   }
+  /** Winning bid vs the project's break-even. null until the faixa NPV table can price that bid. */
+  function objBreakEvenMet() {
+    try {
+      if (typeof auctionState === 'undefined' || typeof auctionEconomics !== 'function' || typeof faixaLot !== 'function') return null;
+      let bid = null;
+      let lotId = null;
+      const taken = auctionState.taken || {};
+      Object.keys(taken).forEach((id) => {
+        const t = taken[id];
+        if (bid != null || !t || t.lost || t.bid == null) return;
+        bid = t.bid;
+        lotId = id;
+      });
+      if (bid == null && auctionState.lastResult && !auctionState.lastResult.lost && auctionState.lastResult.bid != null) {
+        bid = auctionState.lastResult.bid;
+        lotId = auctionState.lastResult.lot && auctionState.lastResult.lot.id;
+      }
+      if (bid == null || !lotId) return null;
+      const fx = faixaLot(lotId);
+      if (!fx || !fx.npv_by_bid) return null;
+      const eco = auctionEconomics(bid, { id: lotId });
+      if (!eco || eco.source !== 'leilao_faixa' || typeof eco.van !== 'number' || !isFinite(eco.van)) return null;
+      return eco.tone !== 'bad';
+    } catch (_) { return null; }
+  }
+  function objMandate0Html() {
+    const m = (typeof phase0CopyCache !== 'undefined' && phase0CopyCache && phase0CopyCache.mandate0) || {};
+    const title = m.title || 'Ganhar o leilão';
+    const opening = m.opening || 'Sem ligação à rede não há central. Começa por aqui.';
+    const required = m.required || 'Ganhar um TRC no leilão';
+    const extra = m.extra || '';
+    const lockedTitle = m.locked_title || 'Mandato 1: O primeiro ponto de ligação';
+    const lockedBadge = m.locked_badge || '🔒 Abre quando ganhares o TRC';
+    const held = extra ? objBreakEvenMet() : null;
+    const extraAv = held == null ? 'p' : (held ? 'g' : 'r');
+    const extraWord = held == null ? 'Ainda não' : (held ? 'Em bom caminho' : 'Em risco');
+    const extraRow = extra
+      ? ('<tr><td><div class="o">' + objEsc(extra) + '</div></td><td>' + objImp('x') +
+        '</td><td><span class="obj-av ' + extraAv + '">' + extraWord + '</span></td></tr>')
+      : '';
+    return '<div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 0 · ativo</div><div class="obj-mand-t">' +
+      objEsc(title) + '</div></div><span class="obj-imp e">Ativo</span></div>' +
+      '<div class="obj-mand-s">' + objEsc(opening) + '</div>' +
+      '<table class="obj-tbl"><tr><th>Objetivo</th><th>Importância</th><th>Avaliação</th></tr>' +
+      '<tr><td><div class="o">' + objEsc(required) + '</div></td><td>' + objImp('e') +
+      '</td><td><span class="obj-av p">Por cumprir</span></td></tr>' + extraRow + '</table>' +
+      '<div class="obj-note">Se falhares um objetivo exigido, o mandato termina.</div></div>' +
+      '<div class="obj-card obj-locked"><div class="obj-mand-h"><div><div class="obj-mand-t">' + objEsc(lockedTitle) +
+      '</div></div><span class="obj-lock">' + objEsc(lockedBadge) + '</span></div></div>';
+  }
   function objVisaoHtml() {
     const snap = objSnapshot();
     const reac = objReaction(snap);
-    const rows = snap.won ? objRows(snap) : [];
+    if (!snap.won) return '<div class="obj-vis"><div>' + objMandate0Html() + '</div></div>';
+    const rows = objRows(snap);
     const m2 = objMandate2Open();
-    const table = snap.won ? (
+    const table = (
       '<table class="obj-tbl"><tr><th>Objetivo</th><th>Importância</th><th>Avaliação</th></tr>' +
       rows.map((o, i) => '<tr><td><div class="o">' + o[0] + '</div><div class="onum">' + o[2] + '</div></td><td>' + objImp(o[1]) +
         '</td><td><span class="obj-av ' + snap.av[i] + '">' + OBJ_AV_WORD[snap.av[i]] + '</span></td></tr>').join('') +
       '</table>' + objCodWarn(snap) +
       '<div class="obj-note">Se falhares um objetivo exigido, o mandato termina.</div>'
-    ) : '<p class="obj-mand-s">Ganha um TRC no leilão. A carta dos investidores traz o Mandato 1.</p>';
+    );
     const m2card = m2
       ? '<div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 2 · ativo</div><div class="obj-mand-t">Crescer com dinheiro próprio</div></div><span class="obj-imp e">Ativo</span></div><div class="obj-mand-s">Ourique entrou em obra. Isto é o mandato seguinte.</div>'
       : '<div class="obj-card obj-locked"><div class="obj-mand-h"><div><div class="obj-k">Mandato 2 · bloqueado</div><div class="obj-mand-t">Crescer com dinheiro próprio</div></div><span class="obj-lock">🔒 Abre quando Ourique entrar em obra</span></div><div class="obj-mand-s" style="color:#94a3b8">Isto é o que te espera.</div>';
@@ -16402,6 +16658,9 @@
     const body = root.querySelector('.mail-detail-body');
     const from = root.querySelector('.mail-detail-from');
     const when = letterWhenLabel(letter, true);
+    if (letter.phase0) {
+      if (from) from.innerHTML = 'De: <strong>' + objEsc(letter.sender || 'Investidores') + '</strong> · Para: ' + objEsc(letter.to || 'ti');
+    }
     if (sk === 'mail-investidores-mandato-01') {
       if (from) from.innerHTML = 'De: <strong>Investidores</strong> · Para: ti' + (when ? ' · ' + objEsc(when) : '');
       if (body) body.insertAdjacentHTML('beforeend', objMandateLetterExtra());
@@ -16755,6 +17014,9 @@
       return 0;
     }
     const fresh = !(mailLoop.active && mailLoop.seId === seId);
+    if (fresh && mailState && Array.isArray(mailState.items)) {
+      mailState.items = mailState.items.filter((m) => !m || !m.phase0);
+    }
     mailLoop.active = true;
     mailLoop.seId = seId;
     if (fresh || mailLoop.month < 0) {
@@ -16932,6 +17194,11 @@
     const body = document.getElementById('inboxBody');
     const sub = document.getElementById('inboxSubtitle');
     if (!body) return;
+    const titleEl = document.getElementById('inboxTitle');
+    if (titleEl) {
+      const phase0Open = !state.auctionWon && (mailState.items || []).some((m) => m && m.phase0);
+      titleEl.textContent = phase0Open ? 'Caixa de entrada' : 'Correio';
+    }
     const drawer = document.getElementById('inboxDrawer');
     const reading = mailState.view === 'detail' && !!mailState.activeId;
     if (drawer) drawer.dataset.mailView = reading ? 'detail' : 'list';
@@ -17530,6 +17797,14 @@
           scheduleSave('mail-choice');
           presentChoiceToast(choice, effectList, res, datesBefore);
           renderInboxBody();
+          if (choice && (choice.opens === 'auction' || choice.opens === 'mandato')) {
+            try { closeInbox(); } catch (_) {}
+            if (choice.opens === 'auction') {
+              try { openAuctionRoom(); } catch (_) {}
+            } else {
+              try { openObjetivos('visao'); } catch (_) {}
+            }
+          }
           try { if (typeof syncPlayGate === 'function') syncPlayGate(); } catch (_) {}
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
@@ -17662,12 +17937,53 @@
 
 
 
-  /* ── Save system (Game Boy) ── */
+  /* ── Save system (vários jogos) ──
+   * watt.saves.index.v1  lista de jogos
+   * watt.save.slot.<id>  cada jogo
+   * watt.saves.active    jogo ativo
+   * watt.save.v1         legado: na primeira visita passa para o primeiro slot
+   * watt.save.v1.backup  uma cópia de segurança, escrita uma vez
+   */
   const SAVE_KEY = 'watt.save.v1';
+  const SAVE_BACKUP_KEY = 'watt.save.v1.backup';
+  const SAVES_INDEX_KEY = 'watt.saves.index.v1';
+  const SAVES_ACTIVE_KEY = 'watt.saves.active';
+  const SAVE_SLOT_PREFIX = 'watt.save.slot.';
   const SAVE_DEBOUNCE_MS = 400;
+  const PHASE0_COPY_URL = 'content/events/phase0.placeholder.json';
+  /** Destino de «Dar opinião». URL http(s) ou mailto recebe as 3 respostas; vazio deixa o formulário no jogo. */
+  const DAR_OPINIAO_URL = '';
   let _saveTimer = null;
   let _hydratedFromSave = false;
   let _saveOverrideActive = false;
+  let _atStartMenu = false;
+  let _newSlotName = null;
+  let phase0WelcomeSeen = null;
+  let phase0CopyCache = null;
+  let _settingsConfirmAction = null;
+  const MANDATE_TITLE_DEFAULT = {
+    '0': 'Mandato 0: Ganhar o leilão',
+    trc_won: 'Mandato 1: O primeiro ponto de ligação',
+    land: 'Mandato 1: O primeiro ponto de ligação',
+    pip: 'Mandato 1: O primeiro ponto de ligação',
+    aia: 'Mandato 1: O primeiro ponto de ligação',
+    licenca_producao: 'Mandato 1: O primeiro ponto de ligação',
+    obra: 'Mandato 1: O primeiro ponto de ligação',
+    cod: 'Mandato 1: O primeiro ponto de ligação'
+  };
+  let mandateTitles = Object.assign({}, MANDATE_TITLE_DEFAULT);
+  const SLOT_PLACE_PT = {
+    ourique: 'Ourique',
+    ferreira: 'Ferreira do Alentejo',
+    estremoz: 'Estremoz',
+    evora: 'Évora',
+    alqueva: 'Alqueva',
+    falagueira: 'Falagueira',
+    portimao: 'Portimão',
+    tavira: 'Tavira',
+    'ponte-sor': 'Ponte de Sor'
+  };
+  const PT_MON_SHORT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 
   function hasSaveOverrideQuery() {
     const p = new URLSearchParams(location.search);
@@ -17807,17 +18123,23 @@
       nodes: JSON.parse(JSON.stringify(nodes)),
       activities: JSON.parse(JSON.stringify(activities)),
       actions: actionsCopy,
-      flags: { onboardingDone: onboardingDone },
+      flags: {
+        onboardingDone: onboardingDone,
+        phase0Seen: phase0WelcomeSeen,
+        slotName: activeSlotName()
+      },
       tutorial: (window.__tut && window.__tut.exportState) ? window.__tut.exportState() : (window.__tutSaved || null)
     };
   }
 
   function persistSave(reason) {
-    if (_saveOverrideActive) return false;
+    if (_saveOverrideActive || _atStartMenu) return false;
     try {
       const blob = collectSaveBlob();
       const json = JSON.stringify(blob);
-      localStorage.setItem(SAVE_KEY, json);
+      const id = ensureActiveSlot(blob);
+      localStorage.setItem(slotStorageKey(id), json);
+      touchSlotIndex(id, blob);
       return true;
     } catch (err) {
       try { console.warn('[watt.save] persist failed', reason || '', err); } catch (_) {}
@@ -17836,19 +18158,19 @@
 
   function clearSave() {
     if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
-    try { localStorage.removeItem(SAVE_KEY); } catch (_) {}
+    try {
+      const id = localStorage.getItem(SAVES_ACTIVE_KEY);
+      if (id) {
+        localStorage.removeItem(slotStorageKey(id));
+        writeSavesIndex(readSavesIndex().filter((s) => s.id !== id));
+        localStorage.removeItem(SAVES_ACTIVE_KEY);
+      }
+      localStorage.removeItem(SAVE_KEY);
+    } catch (_) {}
   }
 
   function readSaveBlob() {
-    try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (!raw) return null;
-      const blob = JSON.parse(raw);
-      if (!blob || blob.v !== 1 || !blob.state) return null;
-      return blob;
-    } catch (_) {
-      return null;
-    }
+    return readActiveSlotBlob();
   }
 
   function hydrateFromSave(blob) {
@@ -17991,6 +18313,7 @@
     if (blob.flags && blob.flags.onboardingDone) {
       try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
     }
+    if (blob.flags && typeof blob.flags.phase0Seen === 'boolean') phase0WelcomeSeen = blob.flags.phase0Seen;
     // After a win, never leave Home looking like «Sem central»: expand ≥1 awarded TRC
     if (state.auctionWon) {
       const won = (auctionState && auctionState.wonLots) ? auctionState.wonLots.slice() : [];
@@ -18065,8 +18388,19 @@
     closeSettingsConfirm();
   }
 
-  function openSettingsConfirm() {
+  function openSettingsConfirm(opts) {
+    opts = opts || {};
     const el = document.getElementById('settingsConfirm');
+    const title = document.getElementById('settingsConfirmTitle');
+    const body = document.getElementById('settingsConfirmBody');
+    const ok = document.getElementById('settingsConfirmOk');
+    if (title) title.textContent = opts.title || 'Apagar este jogo?';
+    if (body) body.textContent = opts.body || 'Este jogo é apagado deste navegador. Não se pode desfazer.';
+    if (ok) {
+      ok.textContent = opts.ok || 'Apagar';
+      ok.classList.add('danger-solid');
+    }
+    _settingsConfirmAction = typeof opts.action === 'function' ? opts.action : null;
     if (!el) return;
     el.hidden = false;
     el.classList.add('open');
@@ -18081,11 +18415,20 @@
 
   function exportSaveFile() {
     try {
-      // Flush pending debounce so export matches disk
       if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
-      if (!_saveOverrideActive) persistSave('export');
-      const blob = collectSaveBlob();
-      const json = JSON.stringify(blob, null, 2);
+      let json = null;
+      if (!_atStartMenu && !_saveOverrideActive) {
+        persistSave('export');
+        json = JSON.stringify(collectSaveBlob(), null, 2);
+      } else {
+        const slots = sortedSlots();
+        let id = null;
+        try { id = localStorage.getItem(SAVES_ACTIVE_KEY); } catch (_) {}
+        const pick = slots.find((s) => s.id === id) || slots[0];
+        if (!pick) { showToast('Ainda não tens um jogo guardado'); return; }
+        json = localStorage.getItem(slotStorageKey(pick.id)) || '';
+        try { json = JSON.stringify(JSON.parse(json), null, 2); } catch (_) {}
+      }
       const file = new Blob([json], { type: 'application/json' });
       const url = URL.createObjectURL(file);
       const a = document.createElement('a');
@@ -18111,15 +18454,21 @@
           showToast('Ficheiro inválido: não é um jogo gravado');
           return;
         }
-        localStorage.setItem(SAVE_KEY, JSON.stringify(blob));
+        const id = newSlotId();
+        const name = (blob.flags && blob.flags.slotName) || defaultGameName(blob.savedAt ? new Date(blob.savedAt) : new Date());
+        const entry = metaFromBlob(blob, { id: id, name: name, createdAt: new Date().toISOString() });
+        const index = readSavesIndex();
+        index.unshift(entry);
+        writeSavesIndex(index);
+        localStorage.setItem(slotStorageKey(id), JSON.stringify(blob));
+        localStorage.setItem(SAVES_ACTIVE_KEY, id);
         if (blob.flags && blob.flags.onboardingDone) {
           try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
         }
         showToast('Jogo importado · a recarregar…');
         setTimeout(() => {
-          // Drop override queries so cold load hydrates the imported save
-          const url = location.pathname + location.hash;
-          location.replace(url || location.href.split('?')[0]);
+          try { sessionStorage.setItem('watt.enterSlot', '1'); } catch (_) {}
+          location.replace(location.pathname + location.hash);
         }, 350);
       } catch (_) {
         showToast('Ficheiro inválido');
@@ -18154,6 +18503,511 @@
     const url = location.pathname + '?new=' + Date.now() + location.hash;
     location.replace(url);
   }
+
+  function slotStorageKey(id) { return SAVE_SLOT_PREFIX + id; }
+  function newSlotId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+  function readSavesIndex() {
+    try {
+      const raw = localStorage.getItem(SAVES_INDEX_KEY);
+      if (!raw) return [];
+      const list = JSON.parse(raw);
+      return Array.isArray(list) ? list.filter((s) => s && s.id) : [];
+    } catch (_) { return []; }
+  }
+  function writeSavesIndex(list) {
+    localStorage.setItem(SAVES_INDEX_KEY, JSON.stringify(list || []));
+  }
+  function sortedSlots() {
+    return readSavesIndex().slice().sort((a, b) => String(b.savedAt || '').localeCompare(String(a.savedAt || '')));
+  }
+  function activeSlotName() {
+    try {
+      const id = localStorage.getItem(SAVES_ACTIVE_KEY);
+      const row = readSavesIndex().find((s) => s.id === id);
+      return row && row.name ? row.name : '';
+    } catch (_) { return ''; }
+  }
+  function defaultGameName(d) {
+    const date = (d instanceof Date && !isNaN(d.getTime())) ? d : new Date();
+    return 'Jogo de ' + date.getDate() + ' ' + PT_MON_SHORT[date.getMonth()] + ' ' + date.getFullYear();
+  }
+  function savedAgoPt(iso) {
+    const t = Date.parse(iso || '');
+    if (!t) return 'agora';
+    const s = Math.max(0, (Date.now() - t) / 1000);
+    if (s < 45) return 'agora';
+    if (s < 3600) {
+      const n = Math.max(1, Math.round(s / 60));
+      return 'há ' + n + (n === 1 ? ' minuto' : ' minutos');
+    }
+    if (s < 86400) {
+      const n = Math.max(1, Math.round(s / 3600));
+      return 'há ' + n + (n === 1 ? ' hora' : ' horas');
+    }
+    if (s < 172800) return 'ontem';
+    const n = Math.floor(s / 86400);
+    return 'há ' + n + ' dias';
+  }
+  function placeFromSe(se, won) {
+    if (!won) return 'Por começar';
+    return SLOT_PLACE_PT[se] || (se ? se : 'Por começar');
+  }
+  function dateLabelFrom(year, quarter, month) {
+    if (month != null && month >= 0) {
+      const d = new Date(2026, 9, 1);
+      d.setMonth(d.getMonth() + (month | 0));
+      return PT_MON_SHORT[d.getMonth()] + ' ' + d.getFullYear();
+    }
+    const q = quarter || 3;
+    const y = year || 2026;
+    const start = [0, 0, 3, 6, 9][q] || 6;
+    return PT_MON_SHORT[start] + ' ' + y;
+  }
+  function mandateTitleFor(won, phase) {
+    if (!won) return mandateTitles['0'] || MANDATE_TITLE_DEFAULT['0'];
+    return mandateTitles[phase] || mandateTitles.trc_won || MANDATE_TITLE_DEFAULT.trc_won;
+  }
+  function metaFromBlob(blob, prev) {
+    prev = prev || {};
+    const st = (blob && blob.state) || {};
+    const ml = (blob && blob.mailLoop) || {};
+    const au = (blob && blob.auctionState) || {};
+    const won = !!st.auctionWon;
+    const se = ml.seId || au.wonId || (Array.isArray(au.wonLots) && au.wonLots[0]) || '';
+    const month = (ml.active && ml.month != null && ml.month >= 0) ? ml.month : null;
+    return {
+      id: prev.id,
+      name: prev.name || (blob && blob.flags && blob.flags.slotName) || 'Jogo guardado',
+      createdAt: prev.createdAt || (blob && blob.savedAt) || new Date().toISOString(),
+      savedAt: (blob && blob.savedAt) || new Date().toISOString(),
+      place: placeFromSe(se, won),
+      dateLabel: dateLabelFrom(st.year, st.quarter, month),
+      mandate: mandateTitleFor(won, ml.projectPhase || '')
+    };
+  }
+  function liveSlotMeta(prev) {
+    const won = !!state.auctionWon;
+    const phase = (mailLoop && mailLoop.projectPhase) || '';
+    const se = (mailLoop && mailLoop.seId) || (auctionState && (auctionState.wonId || (auctionState.wonLots && auctionState.wonLots[0]))) || '';
+    const month = (mailLoop && mailLoop.active && mailLoop.month >= 0) ? mailLoop.month : null;
+    return {
+      id: prev.id,
+      name: prev.name,
+      createdAt: prev.createdAt || new Date().toISOString(),
+      savedAt: new Date().toISOString(),
+      place: placeFromSe(se, won),
+      dateLabel: dateLabelFrom(state.year, state.quarter, month),
+      mandate: mandateTitleFor(won, phase)
+    };
+  }
+  function ensureActiveSlot() {
+    let id = null;
+    try { id = localStorage.getItem(SAVES_ACTIVE_KEY); } catch (_) {}
+    const index = readSavesIndex();
+    if (id && index.some((s) => s.id === id)) return id;
+    id = newSlotId();
+    index.unshift({
+      id: id,
+      name: defaultGameName(new Date()),
+      createdAt: new Date().toISOString(),
+      savedAt: new Date().toISOString(),
+      place: 'Por começar',
+      dateLabel: dateLabelFrom(state.year, state.quarter, null),
+      mandate: mandateTitleFor(false, '')
+    });
+    writeSavesIndex(index);
+    localStorage.setItem(SAVES_ACTIVE_KEY, id);
+    return id;
+  }
+  function touchSlotIndex(id) {
+    const index = readSavesIndex();
+    const i = index.findIndex((s) => s.id === id);
+    const prev = i >= 0 ? index[i] : { id: id, name: defaultGameName(new Date()), createdAt: new Date().toISOString() };
+    const next = liveSlotMeta(prev);
+    if (i >= 0) index[i] = next;
+    else index.unshift(next);
+    writeSavesIndex(index);
+  }
+  function readSlotRaw(id) {
+    try { return localStorage.getItem(slotStorageKey(id)); } catch (_) { return null; }
+  }
+  function readActiveSlotBlob() {
+    try {
+      const id = localStorage.getItem(SAVES_ACTIVE_KEY);
+      if (!id) return null;
+      const raw = readSlotRaw(id);
+      if (!raw) return null;
+      const blob = JSON.parse(raw);
+      if (!blob || blob.v !== 1 || !blob.state) return null;
+      return blob;
+    } catch (_) { return null; }
+  }
+  function deleteSlot(id) {
+    if (!id) return;
+    writeSavesIndex(readSavesIndex().filter((s) => s.id !== id));
+    try { localStorage.removeItem(slotStorageKey(id)); } catch (_) {}
+    try {
+      if (localStorage.getItem(SAVES_ACTIVE_KEY) === id) localStorage.removeItem(SAVES_ACTIVE_KEY);
+    } catch (_) {}
+  }
+  function migrateLegacySave() {
+    try {
+      if (localStorage.getItem(SAVES_INDEX_KEY) != null) return;
+      const legacy = localStorage.getItem(SAVE_KEY);
+      if (!legacy) {
+        writeSavesIndex([]);
+        return;
+      }
+      if (localStorage.getItem(SAVE_BACKUP_KEY) == null) localStorage.setItem(SAVE_BACKUP_KEY, legacy);
+      let blob = null;
+      try { blob = JSON.parse(legacy); } catch (_) { blob = null; }
+      const id = newSlotId();
+      localStorage.setItem(slotStorageKey(id), legacy);
+      const name = (blob && blob.savedAt) ? defaultGameName(new Date(blob.savedAt)) : 'Jogo guardado';
+      const entry = blob && blob.state
+        ? metaFromBlob(blob, { id: id, name: name, createdAt: blob.savedAt || new Date().toISOString() })
+        : { id: id, name: 'Jogo guardado', createdAt: new Date().toISOString(), savedAt: new Date().toISOString(), place: 'Jogo anterior', dateLabel: '—', mandate: mandateTitleFor(false, '') };
+      entry.id = id;
+      if (!entry.name) entry.name = name;
+      writeSavesIndex([entry]);
+      localStorage.setItem(SAVES_ACTIVE_KEY, id);
+      localStorage.removeItem(SAVE_KEY);
+    } catch (err) {
+      try { console.warn('[watt.save] migrate', err); } catch (_) {}
+    }
+  }
+  function loadPhase0Copy() {
+    if (phase0CopyCache) return Promise.resolve(phase0CopyCache);
+    return fetch(PHASE0_COPY_URL, { cache: 'no-store' }).then((r) => {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    }).then((j) => {
+      phase0CopyCache = j || {};
+      applyMandateTitles(phase0CopyCache);
+      return phase0CopyCache;
+    }).catch((err) => {
+      try { console.warn('[watt.menu] phase0 copy', err); } catch (_) {}
+      phase0CopyCache = {
+        welcome: { title: '[PLACEHOLDER GM] Mandato 0', lines: ['[PLACEHOLDER GM] Não foi possível ler phase0.placeholder.json.'], buttons: [{ id: 'inbox', label: 'Abrir a Caixa de entrada', primary: true }] },
+        mails: []
+      };
+      return phase0CopyCache;
+    });
+  }
+  function applyMandateTitles(copy) {
+    if (copy && copy.mandate_titles && typeof copy.mandate_titles === 'object') {
+      mandateTitles = Object.assign({}, MANDATE_TITLE_DEFAULT, copy.mandate_titles);
+    }
+  }
+  function seedPhase0Mails(copy) {
+    const mails = (copy && Array.isArray(copy.mails)) ? copy.mails : [];
+    mailState.items = mails.map((m) => ({
+      id: m.id,
+      skeletonId: m.id,
+      type: m.type || 'consultor',
+      subject: m.subject || '',
+      sender: m.sender || 'Consultor',
+      when: m.when || 'agora',
+      read: false,
+      body: m.body || '',
+      phase0: true,
+      to: m.to || null,
+      choices: (m.choices || []).map((c) => ({
+        id: c.id,
+        label: c.label,
+        effects: Array.isArray(c.effects) ? c.effects.slice() : [],
+        opens: c.opens || null,
+        hint: c.hint || null,
+        consequence_pt: c.consequence_pt || null
+      })),
+      cta: null,
+      effects: []
+    }));
+    try { renderInboxBadge(); } catch (_) {}
+  }
+  function showPhase0Welcome(copy) {
+    if (phase0WelcomeSeen === true) return;
+    if (document.getElementById('phase0Welcome')) return;
+    const w = (copy && copy.welcome) || {};
+    const lines = Array.isArray(w.lines) ? w.lines : [];
+    const buttons = Array.isArray(w.buttons) && w.buttons.length ? w.buttons : [{ id: 'inbox', label: 'Abrir a Caixa de entrada', primary: true }];
+    const el = document.createElement('div');
+    el.id = 'phase0Welcome';
+    el.className = 'phase0-welcome';
+    el.innerHTML = '<div class="card" role="dialog" aria-modal="true" aria-labelledby="phase0Title"><h2 id="phase0Title">' +
+      escapeHtml(w.title || 'Mandato 0') + '</h2><ul>' +
+      lines.map((l) => '<li>' + escapeHtml(l) + '</li>').join('') +
+      '</ul>' + buttons.map((b) => '<button type="button" class="' + (b.primary ? '' : 'secondary') + '" data-phase0="' + escapeHtml(b.id || 'inbox') + '">' + escapeHtml(b.label || 'Continuar') + '</button>').join('') +
+      '</div>';
+    document.body.appendChild(el);
+    el.addEventListener('click', (ev) => {
+      const b = ev.target.closest('[data-phase0]');
+      if (!b) return;
+      phase0WelcomeSeen = true;
+      el.remove();
+      try { openInbox(); } catch (_) {}
+      try { persistSave('phase0-welcome'); } catch (_) {}
+    });
+  }
+  function closeStartModal() {
+    const host = document.getElementById('startModal');
+    if (host) host.innerHTML = '';
+  }
+  function openStartSheet(html) {
+    const host = document.getElementById('startModal');
+    if (!host) return;
+    host.innerHTML = '<div class="modal-bg"><div class="sheet" role="dialog" aria-modal="true">' + html + '</div></div>';
+    const bg = host.querySelector('.modal-bg');
+    if (bg) bg.addEventListener('click', (ev) => { if (ev.target === bg) closeStartModal(); });
+    host.querySelectorAll('[data-close-sheet]').forEach((b) => b.addEventListener('click', closeStartModal));
+  }
+  function slotCardHtml(o) {
+    return '<div class="slot"><b>' + escapeHtml(o.name || 'Jogo') + '</b>' +
+      '<div class="meta">' + escapeHtml(o.place || '') + ' · ' + escapeHtml(o.dateLabel || '') + ' · ' + escapeHtml(o.mandate || '') + '</div>' +
+      '<div class="meta">Guardado ' + escapeHtml(savedAgoPt(o.savedAt)) + '</div>' +
+      '<div class="row"><button type="button" class="btn primary sm" data-continue="' + escapeHtml(o.id) + '">Continuar</button>' +
+      '<button type="button" class="btn red" data-delete="' + escapeHtml(o.id) + '">Apagar</button></div></div>';
+  }
+  function openLoadSheet() {
+    const slots = sortedSlots();
+    if (!slots.length) {
+      openStartSheet('<h2>Carregar jogo<button type="button" class="x" data-close-sheet aria-label="Fechar">×</button></h2><p class="m">Ainda não tens jogos guardados neste navegador.</p><div class="acts"><button type="button" class="btn sm" data-close-sheet>Fechar</button><button type="button" class="btn primary sm" data-open-new>Novo jogo</button></div>');
+      const go = document.querySelector('#startModal [data-open-new]');
+      if (go) go.addEventListener('click', openNewGameSheet);
+      return;
+    }
+    openStartSheet('<h2>Carregar jogo<button type="button" class="x" data-close-sheet aria-label="Fechar">×</button></h2><p class="m">Os jogos ficam guardados só neste navegador.</p>' + slots.map(slotCardHtml).join(''));
+    document.querySelectorAll('#startModal [data-continue]').forEach((b) => b.addEventListener('click', () => enterSlot(b.getAttribute('data-continue'))));
+    document.querySelectorAll('#startModal [data-delete]').forEach((b) => b.addEventListener('click', () => openDeleteSheet(b.getAttribute('data-delete'))));
+  }
+  function openNewGameSheet() {
+    const name = defaultGameName(new Date());
+    openStartSheet('<h2>Novo jogo<button type="button" class="x" data-close-sheet aria-label="Fechar">×</button></h2><p class="m">Começas no Mandato 0: Ganhar o leilão. A primeira mensagem está na Caixa de entrada.</p><label for="newGameName">Nome do jogo</label><input id="newGameName" value="' + escapeHtml(name) + '"><div class="acts"><button type="button" class="btn sm" data-close-sheet>Cancelar</button><button type="button" class="btn primary sm" id="newGameStart">Começar</button></div>');
+    const input = document.getElementById('newGameName');
+    const start = document.getElementById('newGameStart');
+    if (input) {
+      input.addEventListener('focus', () => { try { input.select(); } catch (_) {} });
+    }
+    if (start) start.addEventListener('click', () => {
+      const n = (input && input.value || '').trim() || name;
+      try { sessionStorage.setItem('watt.newSlotName', n); } catch (_) {}
+      location.replace(location.pathname + location.hash);
+    });
+  }
+  function openDeleteSheet(id) {
+    const slot = readSavesIndex().find((s) => s.id === id);
+    if (!slot) return;
+    openStartSheet('<h2>Apagar «' + escapeHtml(slot.name || 'jogo') + '»?</h2><p class="m">' + escapeHtml(slot.place || '') + ' · ' + escapeHtml(slot.dateLabel || '') + ' · ' + escapeHtml(slot.mandate || '') + '</p><p class="m">Este jogo é apagado deste navegador. Não se pode desfazer.</p><div class="acts"><button type="button" class="btn sm" data-close-sheet>Cancelar</button><button type="button" class="btn danger-solid sm" id="confirmDeleteSlot">Apagar</button></div>');
+    const ok = document.getElementById('confirmDeleteSlot');
+    if (ok) ok.addEventListener('click', () => {
+      deleteSlot(id);
+      closeStartModal();
+      renderStartMenu();
+      try { showToast('Jogo apagado'); } catch (_) {}
+    });
+  }
+  function openHowToSheet() {
+    openStartSheet('<h2>Como se joga<button type="button" class="x" data-close-sheet aria-label="Fechar">×</button></h2><div class="howto"><p>Ganhas um lugar na rede no leilão. A oferta mais baixa leva o lote, mas um preço baixo demais faz o projeto perder dinheiro.</p><p>Depois, mês a mês, respondes às cartas da Caixa de entrada: terreno, câmara, licenças e obra. O botão Continuar avança o tempo quando não há um prazo à espera.</p><p>O objetivo é pores a central a produzir (COD) sem ficares sem dinheiro.</p></div><div class="acts"><button type="button" class="btn primary sm" data-close-sheet>Percebi</button></div>');
+  }
+  function openAboutSheet() {
+    openStartSheet('<h2>Sobre<button type="button" class="x" data-close-sheet aria-label="Fechar">×</button></h2><p class="m">Watt Indeferido é um jogo sobre desenvolver uma central solar em Portugal, do leilão à ligação à rede. Versão 0.1.</p><p class="m">Os jogos ficam guardados só neste navegador.</p><div class="acts"><button type="button" class="btn primary sm" data-close-sheet>Fechar</button></div>');
+  }
+  function openOpinionSheet() {
+    openStartSheet('<h2>Dar opinião<button type="button" class="x" data-close-sheet aria-label="Fechar">×</button></h2><p class="m">3 perguntas · ajuda-nos a melhorar o jogo.</p><label for="op1">O que correu bem?</label><textarea id="op1"></textarea><label for="op2">O que te bloqueou?</label><textarea id="op2"></textarea><label for="op3">O que farias a seguir?</label><textarea id="op3"></textarea><div class="acts"><button type="button" class="btn sm" data-close-sheet>Cancelar</button><button type="button" class="btn primary sm" id="opSend">Enviar</button></div>');
+    const send = document.getElementById('opSend');
+    if (send) send.addEventListener('click', () => {
+      const q1 = (document.getElementById('op1') || {}).value || '';
+      const q2 = (document.getElementById('op2') || {}).value || '';
+      const q3 = (document.getElementById('op3') || {}).value || '';
+      if (DAR_OPINIAO_URL) {
+        try {
+          const u = new URL(DAR_OPINIAO_URL, location.href);
+          if (u.protocol === 'http:' || u.protocol === 'https:') {
+            u.searchParams.set('q1', q1);
+            u.searchParams.set('q2', q2);
+            u.searchParams.set('q3', q3);
+            window.open(u.toString(), '_blank', 'noopener');
+          } else if (u.protocol === 'mailto:') {
+            const body = encodeURIComponent('1. ' + q1 + '\n2. ' + q2 + '\n3. ' + q3);
+            window.location.href = DAR_OPINIAO_URL + (DAR_OPINIAO_URL.indexOf('?') === -1 ? '?' : '&') + 'body=' + body;
+          }
+        } catch (_) {}
+      }
+      closeStartModal();
+      try { showToast(DAR_OPINIAO_URL ? 'Obrigado. A opinião abre numa nova página.' : 'Obrigado. O destino do formulário ainda não está configurado.'); } catch (_) {}
+    });
+  }
+  function enterSlot(id) {
+    if (!id) return;
+    try { localStorage.setItem(SAVES_ACTIVE_KEY, id); } catch (_) {}
+    try { sessionStorage.setItem('watt.enterSlot', '1'); } catch (_) {}
+    location.replace(location.pathname + location.hash);
+  }
+  function deletableSlot() {
+    const slots = sortedSlots();
+    if (!slots.length) return null;
+    let id = null;
+    try { id = localStorage.getItem(SAVES_ACTIVE_KEY); } catch (_) {}
+    return slots.find((s) => s.id === id) || slots[0];
+  }
+  function confirmDeleteFromSettings() {
+    const slot = deletableSlot();
+    if (!slot) {
+      try { showToast('Ainda não tens jogos guardados'); } catch (_) {}
+      return;
+    }
+    openSettingsConfirm({
+      title: 'Apagar «' + (slot.name || 'jogo') + '»?',
+      body: (slot.place || '') + ' · ' + (slot.dateLabel || '') + ' · ' + (slot.mandate || '') + ' Este jogo é apagado deste navegador. Não se pode desfazer.',
+      ok: 'Apagar',
+      action: function () { finishDeleteSlot(slot.id); }
+    });
+  }
+  function finishDeleteSlot(id) {
+    const leaveGame = !_atStartMenu;
+    _saveOverrideActive = true;
+    if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
+    deleteSlot(id);
+    try { localStorage.removeItem(SAVE_KEY); } catch (_) {}
+    closeSettingsConfirm();
+    if (leaveGame) {
+      location.replace(location.pathname + location.hash);
+      return;
+    }
+    closeSettingsSheet();
+    renderStartMenu();
+    try { showToast('Jogo apagado'); } catch (_) {}
+    _saveOverrideActive = false;
+  }
+  function menuButton(primary, title, sub, key) {
+    return '<button type="button" class="btn' + (primary ? ' primary' : '') + (key === 'opiniao' ? ' fb' : '') + '" data-menu="' + key + '"><span>' +
+      title + '<small>' + sub + '</small></span><span class="chev" aria-hidden="true">›</span></button>';
+  }
+  function renderStartMenu() {
+    const host = document.getElementById('startMenuCard');
+    if (!host) return;
+    const slots = sortedSlots();
+    const has = slots.length > 0;
+    const last = slots[0];
+    const loadSub = has
+      ? (slots.length === 1 ? '1 jogo guardado' : slots.length + ' jogos guardados') + ' neste navegador · último: ' + escapeHtml(last.place || '') + ' · ' + escapeHtml(last.dateLabel || '')
+      : 'Ainda não tens jogos guardados';
+    const load = menuButton(has, 'Carregar jogo', loadSub, 'carregar');
+    const novo = menuButton(!has, 'Novo jogo', 'Mandato 0: Ganhar o leilão · começa na Caixa de entrada', 'novo');
+    host.innerHTML = '<h1>Preparar jogo</h1><p class="lead">Desenvolve uma central solar, do leilão à ligação à rede.</p>' +
+      '<div class="card"><div class="stack">' + load + novo +
+      menuButton(false, 'Como se joga', 'Explicado em 30 segundos', 'como') +
+      menuButton(false, 'Definições', 'Dicas, exportar e importar, apagar jogos', 'definicoes') +
+      menuButton(false, '💬 Dar opinião', '3 perguntas · ajuda-nos a melhorar o jogo', 'opiniao') +
+      '</div></div><p class="foot"><a href="#sobre" data-menu="sobre">Sobre</a></p>';
+    host.querySelectorAll('[data-menu]').forEach((b) => b.addEventListener('click', (ev) => {
+      const key = b.getAttribute('data-menu');
+      if (key === 'sobre') ev.preventDefault();
+      if (key === 'carregar') openLoadSheet();
+      else if (key === 'novo') openNewGameSheet();
+      else if (key === 'como') openHowToSheet();
+      else if (key === 'definicoes') { closeStartModal(); openSettingsSheet(); }
+      else if (key === 'opiniao') openOpinionSheet();
+      else if (key === 'sobre') openAboutSheet();
+    }));
+  }
+  function showStartMenu() {
+    _atStartMenu = true;
+    document.body.classList.add('at-menu');
+    const el = document.getElementById('startMenu');
+    if (el) el.hidden = false;
+    renderStartMenu();
+    try { syncPeriodChrome(); } catch (_) {}
+  }
+  function hideStartMenu() {
+    _atStartMenu = false;
+    document.body.classList.remove('at-menu');
+    const el = document.getElementById('startMenu');
+    if (el) el.hidden = true;
+    closeStartModal();
+    try { syncPeriodChrome(); } catch (_) {}
+  }
+  function beginNewSlot(name) {
+    const id = newSlotId();
+    const entry = {
+      id: id,
+      name: name || defaultGameName(new Date()),
+      createdAt: new Date().toISOString(),
+      savedAt: new Date().toISOString(),
+      place: 'Por começar',
+      dateLabel: dateLabelFrom(state.year, state.quarter, null),
+      mandate: mandateTitleFor(false, '')
+    };
+    const index = readSavesIndex();
+    index.unshift(entry);
+    writeSavesIndex(index);
+    try { localStorage.setItem(SAVES_ACTIVE_KEY, id); } catch (_) {}
+    phase0WelcomeSeen = false;
+    try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+    try {
+      mandateState.acknowledged = true;
+      mandateState.letterRead = true;
+    } catch (_) {}
+    hideStartMenu();
+    loadPhase0Copy().then((copy) => {
+      seedPhase0Mails(copy);
+      phase0WelcomeSeen = true;
+      try { openInbox(); } catch (err) { console.warn('[watt.menu] inbox', err); }
+      try {
+        const first = (mailState.items || []).find((m) => m && m.phase0);
+        if (first && typeof openLetter === 'function') openLetter(first.id);
+      } catch (_) {}
+      try { persistSave('new-slot'); } catch (_) {}
+    });
+  }
+  function maybeResumePhase0() {
+    if (phase0WelcomeSeen !== false || state.auctionWon) return;
+    loadPhase0Copy().then((copy) => {
+      if (!(mailState.items || []).some((m) => m && m.phase0)) seedPhase0Mails(copy);
+      phase0WelcomeSeen = true;
+      try { openInbox(); } catch (_) {}
+      try {
+        const first = (mailState.items || []).find((m) => m && m.phase0 && !m.read);
+        if (first && typeof openLetter === 'function') openLetter(first.id);
+      } catch (_) {}
+      try { persistSave('phase0-resume'); } catch (_) {}
+    });
+  }
+  function consumeNewSlotName() {
+    try {
+      const name = sessionStorage.getItem('watt.newSlotName');
+      if (name == null) return null;
+      sessionStorage.removeItem('watt.newSlotName');
+      return name;
+    } catch (_) { return null; }
+  }
+  function consumeEnterSlot() {
+    try {
+      if (sessionStorage.getItem('watt.enterSlot') === '1') {
+        sessionStorage.removeItem('watt.enterSlot');
+        return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+  function menuSkippedByQuery() {
+    try {
+      const p = new URLSearchParams(location.search);
+      if (p.get('menu') === '0') return true;
+      if (p.get('menu') === '1') return false;
+    } catch (_) {}
+    return false;
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const host = document.getElementById('startModal');
+    if (!host || !host.firstChild) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    closeStartModal();
+  }, true);
 
   /* ═══ Pesquisa + fichas de entidades (mock local, só leitura) ═══
    * Spec: content/entidades-cta-proposta.md §1 (ficha) + §3 (pesquisa). Dados: manifest `entities_draft`.
@@ -19005,11 +19859,12 @@
       importSaveFile(f);
       importInput.value = '';
     });
-    if (newBtn) newBtn.addEventListener('click', openSettingsConfirm);
+    if (newBtn) newBtn.addEventListener('click', confirmDeleteFromSettings);
     if (confirmCancel) confirmCancel.addEventListener('click', closeSettingsConfirm);
     if (confirmOk) confirmOk.addEventListener('click', () => {
+      const action = _settingsConfirmAction;
       closeSettingsConfirm();
-      hardResetNewGame();
+      if (typeof action === 'function') action();
     });
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
@@ -19056,12 +19911,18 @@
     }
     window.WattSave = {
       key: SAVE_KEY,
+      indexKey: SAVES_INDEX_KEY,
+      activeKey: SAVES_ACTIVE_KEY,
+      backupKey: SAVE_BACKUP_KEY,
+      slotPrefix: SAVE_SLOT_PREFIX,
+      opiniaoUrl: DAR_OPINIAO_URL,
       collect: collectSaveBlob,
       persist: persistSave,
       schedule: scheduleSave,
       hydrate: hydrateFromSave,
       clear: clearSave,
       read: readSaveBlob,
+      index: readSavesIndex,
       overrideActive: function () { return _saveOverrideActive; }
     };
   }
@@ -19084,15 +19945,21 @@
     return force;
   }
   function init() {
+    migrateLegacySave();
     const forceNew = consumeForceNewGame();
+    _newSlotName = consumeNewSlotName();
+    const entering = consumeEnterSlot();
     if (forceNew) {
       clearSave();
       try { localStorage.removeItem(ONBOARDING_KEY); } catch (_) {}
       try { localStorage.removeItem('watt-tut-v01'); window.__tutSaved = null; } catch (_) {}
     }
+    const skipMenu = forceNew || entering || _newSlotName != null || hasSaveOverrideQuery() || menuSkippedByQuery();
+    _atStartMenu = !skipMenu;
+    if (_atStartMenu) document.body.classList.add('at-menu');
     _saveOverrideActive = hasSaveOverrideQuery();
     let resumed = false;
-    if (!_saveOverrideActive && !forceNew) {
+    if (!_saveOverrideActive && !forceNew && entering) {
       const blob = readSaveBlob();
       if (blob) {
         resumed = hydrateFromSave(blob);
@@ -19130,6 +19997,13 @@
 
     if (resumed) {
       applyHydratedUi();
+      try { maybeResumePhase0(); } catch (_) {}
+    }
+
+    if (_newSlotName != null) {
+      try { beginNewSlot(_newSlotName); } catch (err) { console.warn('[watt.menu] new', err); }
+    } else if (_atStartMenu) {
+      showStartMenu();
     }
 
     const playBtn = document.getElementById('btnNextQ');
