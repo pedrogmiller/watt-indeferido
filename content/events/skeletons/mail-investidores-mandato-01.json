@@ -1,0 +1,25 @@
+{
+  "id": "mail-investidores-mandato-01",
+  "phase": "post_win",
+  "trigger": {
+    "after": "trc_awarded",
+    "month_offset": 0,
+    "immediate": true,
+    "when_phase": [
+      "trc_won"
+    ]
+  },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "choices": [
+    {
+      "id": "ver_visao",
+      "label": "Ver visão da direção",
+      "hint": "Abre a visão da direção: o mandato, os objetivos e a reação dos investidores.",
+      "effects": [],
+      "consequence_pt": "Abres a visão da direção."
+    }
+  ],
+  "notes_for_ui": "Carta de M0 com o Mandato 1. Abre no Correio quando o jogador aceita o TRC. O botão abre Empresa → Visão da direção. Não bloqueia o tempo.",
+  "nota_gm": "Texto final do Game Master (maquete v3): o primeiro mandato é Ourique, três coisas exigidas e o COD no mês planeado como extra."
+}
