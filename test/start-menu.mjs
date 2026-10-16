@@ -193,6 +193,10 @@ async function migrationAndDelete(browser, width, height, tag) {
 }
 
 async function dismissLayers(page) {
+  if (await page.locator('#mandate0Card').count()) {
+    await page.locator('#mandate0Close').click();
+    await page.waitForTimeout(100);
+  }
   if (await page.locator('#phase0Welcome').count()) {
     await page.locator('#phase0Welcome button').first().click();
     await page.waitForTimeout(150);
@@ -333,30 +337,40 @@ async function playToCod(browser, width, height, tag) {
   if (!/Jogo de \d+ \w+ \d{4}/.test(preset)) throw new Error('default name: ' + preset);
   await shot(page, 'novo-jogo-' + tag);
   await page.locator('#newGameStart').click();
-  await page.waitForSelector('#phase0Welcome', { timeout: 15000 });
-  const welcome = await page.locator('#phase0Welcome').innerText();
-  if (!/PLACEHOLDER GM/.test(welcome)) throw new Error('phase0 welcome is not marked placeholder');
-  await shot(page, 'phase0-welcome-' + tag);
-  await page.locator('#phase0Welcome button').click();
-  await page.waitForSelector('#inboxDrawer.open');
+  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
+  if (await page.locator('#phase0Welcome').count()) throw new Error('welcome overlay duplicates the mail');
   const title = await page.locator('#inboxTitle').innerText();
   if (title.trim() !== 'Caixa de entrada') throw new Error('inbox title: ' + title);
   const mail = await page.locator('#inboxBody').innerText();
-  if (!/PLACEHOLDER GM/.test(mail)) throw new Error('mandato 0 mail missing placeholder');
-  if (!/Mandato 0: Ganhar o leilão/.test(mail)) throw new Error('mandato 0 subject');
+  if (/PLACEHOLDER GM/.test(mail)) throw new Error('placeholder copy still showing');
+  if (!/Bem-vindo/.test(mail)) throw new Error('welcome subject: ' + mail.slice(0, 240));
+  if (!/Investidores/.test(mail) || !/Para: ti/.test(mail)) throw new Error('welcome from/to: ' + mail.slice(0, 240));
+  if (!/ponto de ligação à rede/.test(mail)) throw new Error('welcome body');
+  if (!/Ver o mandato/.test(mail)) throw new Error('welcome button');
   await shot(page, 'caixa-entrada-' + tag);
   const fabBlue = await page.locator('#btnNextQ').evaluate((el) => getComputedStyle(el).backgroundColor);
   if (fabBlue !== 'rgb(0, 122, 255)') throw new Error('body CTA color ' + fabBlue);
+  const mailBlue = await page.locator('[data-mail-choice="ver_mandato"]').evaluate((el) => getComputedStyle(el).backgroundColor);
+  if (mailBlue !== 'rgb(0, 122, 255)') throw new Error('mail CTA color ' + mailBlue);
   if (await page.locator('#startMenu').isVisible()) throw new Error('menu still visible in game');
   if (!(await page.locator('#btnSettings').isVisible())) throw new Error('gear hidden during the game');
 
-  await page.locator('.mail-row').first().click();
-  await page.waitForSelector('[data-mail-choice="ir_leilao"]');
-  await page.locator('[data-mail-choice="ir_leilao"]').click();
-  await page.waitForSelector('#mandateBriefing.open, #auctionRoom.open', { timeout: 10000 });
-  await dismissLayers(page);
-  await dismissLayers(page);
+  await page.locator('[data-mail-choice="ver_mandato"]').click();
+  await page.waitForSelector('#mandate0Card');
+  if (await page.locator('#inboxDrawer.open').count()) throw new Error('inbox still open over Mandato 0');
+  const m0 = await page.locator('#mandate0Card').innerText();
+  if (!/Ganhar o leilão/.test(m0)) throw new Error('mandato 0 title: ' + m0.slice(0, 300));
+  if (!/Sem ligação à rede não há central/.test(m0)) throw new Error('mandato 0 opening');
+  if (!/Ganhar um TRC no leilão/.test(m0)) throw new Error('mandato 0 required');
+  if (!/Ganhar sem licitar abaixo do que o projeto aguenta/.test(m0)) throw new Error('mandato 0 extra dropped');
+  if (!/Mandato 1: O primeiro ponto de ligação/.test(m0)) throw new Error('locked mandate 1');
+  if (!/Abre quando ganhares o TRC/.test(m0)) throw new Error('locked badge');
+  await shot(page, 'mandato0-' + tag);
+  await page.locator('#mandate0Close').click();
+  if (await page.locator('#btnOpenAuction').isVisible()) await page.locator('#btnOpenAuction').click();
+  else await page.locator('#tabAuction').click();
   await page.waitForSelector('#auctionRoom.open', { timeout: 10000 });
+  if (await page.locator('#mandateBriefing.open').count()) throw new Error('old mandate briefing overlaps the auction');
   const tipOff = page.locator('.tut-root.open .tut-off');
   try { await tipOff.waitFor({ state: 'visible', timeout: 2500 }); await tipOff.click(); } catch (_) {}
   await page.waitForFunction(() => {

@@ -5374,6 +5374,19 @@
     cursor: pointer;
   }
   .phase0-welcome button.secondary { background: #fff; color: var(--text-main); border: 1px solid var(--border-subtle); margin-top: 8px; }
+  #mandate0Card .card { width: min(480px, 100%); }
+  #mandate0Card .k { margin: 0 0 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #64748b; }
+  #mandate0Card .open { margin: 0 0 14px; }
+  #mandate0Card .goal, #mandate0Card .lock {
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 0 0 8px;
+  }
+  #mandate0Card .goal b, #mandate0Card .lock b { display: block; font-size: 14px; }
+  #mandate0Card .goal span, #mandate0Card .lock span { display: block; margin-top: 4px; font-size: 12px; color: #64748b; }
+  #mandate0Card .lock { background: #f8fafc; }
+  body.at-menu #mandate0Card { display: none !important; }
   .settings-btn.danger-solid { background: var(--critical); border-color: var(--critical); color: #fff; }
   .settings-btn.danger-solid:hover { background: #b91c1c; border-color: #b91c1c; }
 
@@ -11825,6 +11838,7 @@
 
   function openAuctionRoom(opts) {
     opts = opts || {};
+    try { if (typeof closeMandate0 === 'function') closeMandate0(); } catch (_) {}
     if (typeof gateMandateBeforeAuction === 'function' && !gateMandateBeforeAuction(opts)) {
       return;
     }
@@ -16662,7 +16676,9 @@
               '<span class="mail-row-time">' + escapeHtml(letter.when) + '</span>' +
             '</div>' +
             '<div class="mail-detail-subject" id="mailDetailSubject" tabindex="-1">' + escapeHtml(fillMailTemplate(letter.subject)) + '</div>' +
-            '<div class="mail-detail-from">De <strong>' + escapeHtml(letter.sender) + '</strong></div>' +
+            '<div class="mail-detail-from">' + (letter.to
+              ? ('De: <strong>' + escapeHtml(letter.sender) + '</strong> · Para: ' + escapeHtml(letter.to))
+              : ('De <strong>' + escapeHtml(letter.sender) + '</strong>')) + '</div>' +
             '<div class="mail-detail-body">' + escapeHtml(fillMailTemplate(letter.body)) + '</div>' +
             (actionsHtml ? '<div class="mail-detail-actions' + (hasHints ? ' has-hints' : '') + '">' + actionsHtml + '</div>' : '') +
           '</div>';
@@ -17186,9 +17202,13 @@
           scheduleSave('mail-choice');
           presentChoiceToast(choice, effectList, res, datesBefore);
           renderInboxBody();
-          if (choice && choice.opens === 'auction') {
+          if (choice && (choice.opens === 'auction' || choice.opens === 'mandato')) {
             try { closeInbox(); } catch (_) {}
-            try { openAuctionRoom(); } catch (_) {}
+            if (choice.opens === 'auction') {
+              try { openAuctionRoom(); } catch (_) {}
+            } else {
+              try { openMandate0(); } catch (_) {}
+            }
           }
           try { if (typeof syncPlayGate === 'function') syncPlayGate(); } catch (_) {}
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
@@ -18070,8 +18090,24 @@
     }).catch((err) => {
       try { console.warn('[watt.menu] phase0 copy', err); } catch (_) {}
       phase0CopyCache = {
-        welcome: { title: '[PLACEHOLDER GM] Mandato 0', lines: ['[PLACEHOLDER GM] Não foi possível ler phase0.placeholder.json.'], buttons: [{ id: 'inbox', label: 'Abrir a Caixa de entrada', primary: true }] },
-        mails: []
+        mandate0: {
+          title: 'Ganhar o leilão',
+          opening: 'Sem ligação à rede não há central. Começa por aqui.',
+          required: 'Ganhar um TRC no leilão',
+          extra: 'Ganhar sem licitar abaixo do que o projeto aguenta',
+          locked_title: 'Mandato 1: O primeiro ponto de ligação',
+          locked_badge: '🔒 Abre quando ganhares o TRC'
+        },
+        mails: [{
+          id: 'm0-bem-vindo',
+          type: 'investidores',
+          sender: 'Investidores',
+          to: 'ti',
+          subject: 'Bem-vindo',
+          when: 'agora',
+          body: 'Confiamos-te a nossa nova empresa de renováveis. Antes de tudo, precisamos de um ponto de ligação à rede: ganha um TRC no próximo leilão. O teu orçamento está nas Finanças.',
+          choices: [{ id: 'ver_mandato', label: 'Ver o mandato', opens: 'mandato' }]
+        }]
       };
       return phase0CopyCache;
     });
@@ -18093,6 +18129,7 @@
       read: false,
       body: m.body || '',
       phase0: true,
+      to: m.to || null,
       choices: (m.choices || []).map((c) => ({
         id: c.id,
         label: c.label,
@@ -18105,6 +18142,62 @@
       effects: []
     }));
     try { renderInboxBadge(); } catch (_) {}
+  }
+  function phase0BreakEvenMet() {
+    try {
+      if (typeof auctionState === 'undefined' || typeof auctionEconomics !== 'function' || typeof faixaLot !== 'function') return null;
+      let bid = null;
+      let lotId = null;
+      const taken = auctionState.taken || {};
+      Object.keys(taken).forEach((id) => {
+        const t = taken[id];
+        if (bid != null || !t || t.lost || t.bid == null) return;
+        bid = t.bid;
+        lotId = id;
+      });
+      if (bid == null && auctionState.lastResult && !auctionState.lastResult.lost && auctionState.lastResult.bid != null) {
+        bid = auctionState.lastResult.bid;
+        lotId = auctionState.lastResult.lot && auctionState.lastResult.lot.id;
+      }
+      if (bid == null || !lotId) return null;
+      const fx = faixaLot(lotId);
+      if (!fx || !fx.npv_by_bid) return null;
+      const eco = auctionEconomics(bid, { id: lotId });
+      if (!eco || eco.source !== 'leilao_faixa' || typeof eco.van !== 'number' || !isFinite(eco.van)) return null;
+      return eco.tone !== 'bad';
+    } catch (_) { return null; }
+  }
+  function closeMandate0() {
+    const el = document.getElementById('mandate0Card');
+    if (el) el.remove();
+  }
+  function openMandate0() {
+    closeMandate0();
+    const m = (phase0CopyCache && phase0CopyCache.mandate0) || {};
+    const title = m.title || 'Ganhar o leilão';
+    const opening = m.opening || 'Sem ligação à rede não há central. Começa por aqui.';
+    const required = m.required || 'Ganhar um TRC no leilão';
+    const extra = m.extra || '';
+    const lockedTitle = m.locked_title || 'Mandato 1: O primeiro ponto de ligação';
+    const lockedBadge = m.locked_badge || '🔒 Abre quando ganhares o TRC';
+    const held = extra ? phase0BreakEvenMet() : null;
+    const extraWord = held == null ? 'Ainda não' : (held ? 'Em bom caminho' : 'Em risco');
+    const extraRow = extra
+      ? ('<div class="goal"><b>' + escapeHtml(extra) + '</b><span>Extra · ' + extraWord + '</span></div>')
+      : '';
+    const el = document.createElement('div');
+    el.id = 'mandate0Card';
+    el.className = 'phase0-welcome';
+    el.innerHTML = '<div class="card" role="dialog" aria-modal="true" aria-labelledby="mandate0Title">' +
+      '<p class="k">Mandato 0 · ativo</p><h2 id="mandate0Title">' + escapeHtml(title) + '</h2>' +
+      '<p class="open">' + escapeHtml(opening) + '</p>' +
+      '<div class="goal"><b>' + escapeHtml(required) + '</b><span>Exigido · Por cumprir</span></div>' +
+      extraRow +
+      '<div class="lock"><b>' + escapeHtml(lockedTitle) + '</b><span>' + escapeHtml(lockedBadge) + '</span></div>' +
+      '<button type="button" class="secondary" id="mandate0Close">Fechar</button></div>';
+    document.body.appendChild(el);
+    const close = document.getElementById('mandate0Close');
+    if (close) close.addEventListener('click', closeMandate0);
   }
   function showPhase0Welcome(copy) {
     if (phase0WelcomeSeen === true) return;
@@ -18325,11 +18418,19 @@
     try { localStorage.setItem(SAVES_ACTIVE_KEY, id); } catch (_) {}
     phase0WelcomeSeen = false;
     try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
+    try {
+      mandateState.acknowledged = true;
+      mandateState.letterRead = true;
+    } catch (_) {}
     hideStartMenu();
     loadPhase0Copy().then((copy) => {
       seedPhase0Mails(copy);
+      phase0WelcomeSeen = true;
       try { openInbox(); } catch (err) { console.warn('[watt.menu] inbox', err); }
-      showPhase0Welcome(copy);
+      try {
+        const first = (mailState.items || []).find((m) => m && m.phase0);
+        if (first && typeof openLetter === 'function') openLetter(first.id);
+      } catch (_) {}
       try { persistSave('new-slot'); } catch (_) {}
     });
   }
@@ -18337,8 +18438,17 @@
     if (phase0WelcomeSeen !== false || state.auctionWon) return;
     loadPhase0Copy().then((copy) => {
       if (!(mailState.items || []).some((m) => m && m.phase0)) seedPhase0Mails(copy);
+      phase0WelcomeSeen = true;
+      try {
+        mandateState.acknowledged = true;
+        mandateState.letterRead = true;
+      } catch (_) {}
       try { openInbox(); } catch (_) {}
-      showPhase0Welcome(copy);
+      try {
+        const first = (mailState.items || []).find((m) => m && m.phase0 && !m.read);
+        if (first && typeof openLetter === 'function') openLetter(first.id);
+      } catch (_) {}
+      try { persistSave('phase0-resume'); } catch (_) {}
     });
   }
   function consumeNewSlotName() {

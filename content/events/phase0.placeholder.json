@@ -1,6 +1,14 @@
 {
-  "status": "PLACEHOLDER — texto do Game Master por substituir. Este é o único sítio da cópia do ecrã de boas-vindas da fase 0 e das cartas do Mandato 0.",
-  "replace_me": "Substitui welcome, mails e, se quiseres, mandate_titles. O jogo lê só este ficheiro.",
+  "status": "Texto final do Game Master, 2026-10-16. Este ficheiro é o único sítio da carta de boas-vindas e do Mandato 0.",
+  "mandate0": {
+    "title": "Ganhar o leilão",
+    "opening": "Sem ligação à rede não há central. Começa por aqui.",
+    "required": "Ganhar um TRC no leilão",
+    "extra": "Ganhar sem licitar abaixo do que o projeto aguenta",
+    "extra_note": "Mantido: o NPV da oferta vencedora vem de leilao_faixa (auctionEconomics, tom bad = abaixo do break-even). Em Ourique o break-even é 33,2 €/MWh e qualquer oferta que ganhe fica abaixo.",
+    "locked_title": "Mandato 1: O primeiro ponto de ligação",
+    "locked_badge": "🔒 Abre quando ganhares o TRC"
+  },
   "mandate_titles": {
     "0": "Mandato 0: Ganhar o leilão",
     "trc_won": "Mandato 1: O primeiro ponto de ligação",
@@ -11,52 +19,20 @@
     "obra": "Mandato 1: O primeiro ponto de ligação",
     "cod": "Mandato 1: O primeiro ponto de ligação"
   },
-  "welcome": {
-    "title": "[PLACEHOLDER GM] Mandato 0",
-    "lines": [
-      "[PLACEHOLDER GM] Vais tentar ganhar um lugar na rede, num leilão.",
-      "[PLACEHOLDER GM] A primeira mensagem está na Caixa de entrada.",
-      "[PLACEHOLDER GM] Este texto ainda não é o do Game Master. Substitui-o em phase0.placeholder.json."
-    ],
-    "buttons": [
-      {
-        "id": "inbox",
-        "label": "Abrir a Caixa de entrada",
-        "primary": true
-      }
-    ]
-  },
   "mails": [
     {
-      "id": "m0-abertura",
-      "type": "consultor",
-      "sender": "Consultor",
-      "subject": "[PLACEHOLDER GM] Mandato 0: Ganhar o leilão",
-      "when": "agora",
-      "body": "[PLACEHOLDER GM] Carta de abertura do Mandato 0. O Game Master ainda vai escrever este texto.\n\nO objetivo desta fase é ganhar o leilão: o direito de ligar uma central solar à rede. Quando estiveres pronto, abre o Leilão.",
-      "choices": [
-        {
-          "id": "ir_leilao",
-          "label": "Ir ao leilão",
-          "effects": [],
-          "opens": "auction",
-          "hint": "[PLACEHOLDER GM] Abre a sala do leilão."
-        }
-      ]
-    },
-    {
-      "id": "m0-investidores",
+      "id": "m0-bem-vindo",
       "type": "investidores",
       "sender": "Investidores",
-      "subject": "[PLACEHOLDER GM] O mandato começa no leilão",
+      "to": "ti",
+      "subject": "Bem-vindo",
       "when": "agora",
-      "body": "[PLACEHOLDER GM] Carta provisória dos investidores para o Mandato 0. Substitui este texto em phase0.placeholder.json.\n\nAinda não há central. Primeiro ganha-se o leilão.",
+      "body": "Confiamos-te a nossa nova empresa de renováveis. Antes de tudo, precisamos de um ponto de ligação à rede: ganha um TRC no próximo leilão. O teu orçamento está nas Finanças.",
       "choices": [
         {
-          "id": "ok",
-          "label": "Percebi",
-          "effects": [],
-          "hint": "[PLACEHOLDER GM] Fecha o aviso. O leilão continua à tua espera."
+          "id": "ver_mandato",
+          "label": "Ver o mandato",
+          "opens": "mandato"
         }
       ]
     }
