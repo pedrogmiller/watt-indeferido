@@ -427,9 +427,9 @@ async function playToCod(browser, width, height, tag, bid, outcome) {
   const defaults = await page.evaluate(() => {
     const q = window.__wattQA;
     return {
-      ourique: q.econAt('ourique', 27),
-      evora: q.econAt('evora', 27),
-      portimao: q.econAt('portimao', 27)
+      ourique: q.winAt('ourique', 27),
+      evora: q.winAt('evora', 27),
+      portimao: q.winAt('portimao', 27)
     };
   });
   ['ourique', 'evora', 'portimao'].forEach((id) => {
@@ -620,7 +620,7 @@ async function playOtherLot(browser, width, height, tag) {
   await page.waitForSelector('#auctionRoom.open', { timeout: 10000 });
   await page.waitForFunction(() => {
     const q = window.__wattQA;
-    return !!(q && q.econAt && q.econAt('ourique', 40) && q.econAt('ourique', 40).win === false && q.econAt('evora', 27) && q.econAt('evora', 27).win);
+    return !!(q && q.winAt && q.winAt('ourique', 40) && q.winAt('ourique', 40).win === false && q.winAt('evora', 27) && q.winAt('evora', 27).win);
   }, { timeout: 20000 });
   try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1500 }); } catch (_) {}
   const firstBid = await page.locator('#auctionBidSlider').inputValue();
