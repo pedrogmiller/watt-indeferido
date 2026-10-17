@@ -448,7 +448,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   }
   await page.waitForSelector('#objSheet:not([hidden])', { timeout: 10000 });
   const board = await page.locator('#objBody').innerText();
-  if (!/Mandato 1/.test(board) || !/O primeiro ponto de ligação/.test(board)) throw new Error('objectives: ' + board.slice(0, 300));
+  if (!/mandato 1/i.test(board) || !/O primeiro ponto de ligação/.test(board)) throw new Error('objectives: ' + board.slice(0, 300));
   await page.locator('#objTabFin').click();
   await page.waitForFunction(() => /caixa para desenvolver/i.test((document.getElementById('objBody') || {}).innerText || ''));
   const fin = await page.locator('#objBody').innerText();
