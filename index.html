@@ -5804,7 +5804,7 @@
               </div>
               <div class="auction-irony-trap">
                 <div class="k">Preço habitual dos rivais</div>
-                <div class="v" id="auctionNpcIrony">~40–44 €/MWh</div>
+                <div class="v" id="auctionNpcIrony">entre 20 e 30</div>
                 <div class="sub" id="auctionNpcBid">O preço exato dos rivais só se sabe no fim</div>
               </div>
             </div>
@@ -11252,8 +11252,10 @@
     // Fog exact npcFloor pre-seal
     const npcIrony = document.getElementById('auctionNpcIrony');
     const npcBid = document.getElementById('auctionNpcBid');
-    if (npcIrony) npcIrony.textContent = (lot && lot.npcFloor != null && lot.npcHi != null)
-      ? '~' + (lot.npcFloor + 1) + '–' + lot.npcHi + ' €/MWh' : '~15–25 €/MWh';
+    if (npcIrony) npcIrony.textContent = (lot && lot.id === 'ourique')
+      ? 'entre 20 e 30'
+      : ((lot && lot.npcFloor != null && lot.npcHi != null)
+        ? '~' + (lot.npcFloor + 1) + '–' + lot.npcHi + ' €/MWh' : '~15–25 €/MWh');
     if (npcBid) {
       npcBid.textContent = (lot && lot.rival ? lot.rival + ' · ' : '') + 'o preço exato só se sabe no fim';
     }
