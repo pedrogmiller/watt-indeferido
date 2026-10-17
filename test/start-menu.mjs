@@ -362,7 +362,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   await page.waitForFunction(() => {
     const bp = window.__wattQA && window.__wattQA.bomPreco && window.__wattQA.bomPreco();
     return !!(bp && bp.lots && bp.lots.ourique === 29 && Object.keys(bp.lots).length === 1);
-  }, { timeout: 15000 });
+  }, null, { timeout: 15000 });
   await page.locator('[data-mail-choice="ver_mandato"]').click();
   await page.waitForSelector('#mandate0Card');
   if (await page.locator('#inboxDrawer.open').count()) throw new Error('inbox still open over Mandato 0');
@@ -420,7 +420,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   const trap = await page.locator('#auctionTrapDone').innerText();
   if (!/Aceitar/.test(trap)) throw new Error('did not win the lot: ' + trap);
   await page.locator('#auctionTrapDone').click();
-  await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, { timeout: 15000 });
+  await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, null, { timeout: 15000 });
   await page.evaluate(() => window.__wattQA.openMandate0());
   await page.waitForSelector('#mandate0Extra');
   const extra = await page.locator('#mandate0Extra').innerText();
@@ -450,15 +450,23 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   const board = await page.locator('#objBody').innerText();
   if (!/mandato 1/i.test(board) || !/O primeiro ponto de ligação/.test(board)) throw new Error('objectives: ' + board.slice(0, 300));
   await page.locator('#objTabFin').click();
-  await page.waitForFunction(() => /caixa para desenvolver/i.test((document.getElementById('objBody') || {}).innerText || ''));
+  await page.waitForFunction(() => /caixa para desenvolver/i.test((document.getElementById('objBody') || {}).innerText || ''), null, { timeout: 15000 });
   const fin = await page.locator('#objBody').innerText();
   if (!/ainda por gastar/i.test(fin)) throw new Error('finanças: ' + fin.slice(0, 240));
   await shot(page, 'financas-' + tag);
   await page.locator('#objClose').click();
   await page.waitForFunction(() => {
     const id = localStorage.getItem('watt.saves.active');
-    return !!(id && localStorage.getItem('watt.save.slot.' + id));
-  }, { timeout: 8000 });
+    if (!id) return false;
+    const raw = localStorage.getItem('watt.save.slot.' + id);
+    if (!raw) return false;
+    try {
+      const blob = JSON.parse(raw);
+      return !!(blob && blob.state && blob.state.auctionWon);
+    } catch (_) {
+      return false;
+    }
+  }, null, { timeout: 8000 });
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForSelector('#startMenu:not([hidden]) [data-menu="carregar"]', { timeout: 15000 });
   await page.locator('[data-menu="carregar"]').click();
@@ -467,7 +475,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   await page.waitForFunction(() => {
     const q = window.__wattQA;
     return !!(q && q.state && q.state.auctionWon && !document.body.classList.contains('at-menu'));
-  }, { timeout: 15000 });
+  }, null, { timeout: 15000 });
   if (stopAfterExtra) {
     await page.close();
     return { reached: { extra: outcome, bid: bid } };
@@ -584,7 +592,7 @@ async function playOtherLot(browser, width, height, tag) {
   await page.waitForFunction(() => {
     const q = window.__wattQA;
     return !!(q && q.winAt && q.winAt('ourique', 40) && q.winAt('ourique', 40).win === false && q.winAt('evora', 27) && q.winAt('evora', 27).win);
-  }, { timeout: 20000 });
+  }, null, { timeout: 20000 });
   try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1500 }); } catch (_) {}
   const firstBid = await page.locator('#auctionBidSlider').inputValue();
   if (firstBid !== '27') throw new Error('ourique default bid ' + firstBid);
@@ -601,7 +609,7 @@ async function playOtherLot(browser, width, height, tag) {
   await page.waitForFunction(() => {
     const q = window.__wattQA;
     return q && q.auction && q.auction.wave === 1 && q.auction.screen === 'bid';
-  }, { timeout: 10000 });
+  }, null, { timeout: 10000 });
   const lot = page.locator('#auction-lot-evora, [data-lot="evora"]').first();
   if ((await lot.getAttribute('aria-selected')) !== 'true') await lot.click({ force: true });
   const preset = await page.locator('#auctionBidSlider').inputValue();
@@ -612,7 +620,7 @@ async function playOtherLot(browser, width, height, tag) {
   const trap = await page.locator('#auctionTrapDone').innerText();
   if (!/Aceitar/.test(trap)) throw new Error('évora did not win at 27: ' + trap);
   await page.locator('#auctionTrapDone').click({ force: true });
-  await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, { timeout: 15000 });
+  await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, null, { timeout: 15000 });
   await page.evaluate(() => window.__wattQA.openMandate0());
   await page.waitForSelector('#mandate0Card');
   const body = await page.locator('#mandate0Card').innerText();
