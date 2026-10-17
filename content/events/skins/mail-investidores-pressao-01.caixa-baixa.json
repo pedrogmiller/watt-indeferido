@@ -5,8 +5,14 @@
   "when": {
     "state_check": "cash_ratio_low"
   },
-  "from_name": "Comité de investimento",
-  "subject": "Os investidores estão nervosos",
-  "body": "O dinheiro de desenvolvimento está a acabar. Ao ritmo a que gastas, dura poucos meses.\n\nOs investidores estão nervosos. Se a caixa ficar vazia, vamos ter uma conversa difícil sobre o futuro do projeto. Ainda vais a tempo: podes cortar custos, pedir-nos mais dinheiro ou vender um quarto do projeto.",
-  "params": {}
+  "from_name": "Diretor financeiro",
+  "subject": "A caixa está a acabar",
+  "body": "Temos {{cash_left}} para desenvolver e, até à decisão final de investimento, ainda faltam cerca de {{spend_left}}. Podemos pedir mais aos investidores, mas isso tem um custo na confiança deles.\n\nSe a caixa ficar negativa, os investidores obrigam-nos a escolher: capital extra (custa parte do valor do projeto), vender, cortar custos ou fechar. Se voltar a ficar negativa, temos um mês para a repor, ou o mandato termina.",
+  "choice_overrides": {
+    "ask_more": {
+      "label": "Pedir mais aos investidores"
+    }
+  },
+  "params": {},
+  "nota_gm": "Texto final do Game Master (maquete v3). Aviso enquanto a caixa ainda é positiva. A 1.ª vez que fica negativa, a carta de resgate pede uma escolha. A 2.ª vez dá um mês para repor a caixa."
 }
