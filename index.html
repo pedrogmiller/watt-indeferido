@@ -5182,6 +5182,148 @@
   body.footer-mock:has(.asset-room.open) .play-action-gate,
   body.footer-mock:has(.auction-room.open) .play-action-gate { display: none !important; }
 
+  /* ═══ Empresa · objetivos (maquete v3) ═══ */
+  .obj-btn { position: relative; }
+  .obj-dot {
+    position: absolute; top: 4px; right: 4px; width: 8px; height: 8px;
+    border-radius: 50%; background: #dc2626; border: 2px solid #fff; pointer-events: none;
+  }
+  .obj-dot[hidden] { display: none !important; }
+  #pillCaixa.obj-cash-link { cursor: pointer; }
+  #pillCaixa.obj-cash-link:focus-visible { outline: 2px solid #007AFF; outline-offset: 2px; }
+  .obj-budget {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 12px;
+  }
+  .obj-budget[hidden] { display: none !important; }
+  .obj-bc {
+    border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 10px;
+    background: #fff; color: inherit; text-align: left; font: inherit; cursor: pointer;
+    box-shadow: var(--shadow-card);
+  }
+  .obj-bc:hover { border-color: #cbd5e1; }
+  .obj-bc:focus-visible { outline: 2px solid #007AFF; outline-offset: 2px; }
+  .obj-bc .k { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .04em; }
+  .obj-bc .v { font-weight: 800; font-size: 16px; margin-top: 2px; }
+  .obj-bc .s { font-size: 11px; font-weight: 800; margin-top: 2px; }
+  .obj-ok { color: #166534; }
+  .obj-no { color: #b91c1c; }
+  @media (min-width: 900px) {
+    body.obj-has-budget .obj-budget {
+      position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%);
+      width: min(720px, calc(100% - 140px)); margin: 0; z-index: 40;
+    }
+    body.obj-has-budget .main { padding-bottom: 108px; }
+  }
+  body:has(.inbox-drawer.open) .obj-budget,
+  body:has(.auction-room.open) .obj-budget,
+  body:has(.asset-room.open) .obj-budget,
+  body.obj-open .obj-budget { display: none !important; }
+  .obj-sheet {
+    position: fixed; inset: 0; z-index: 9900;
+    background: rgba(15, 23, 42, 0.62);
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    padding: 36px 20px; overflow: auto;
+  }
+  .obj-sheet[hidden] { display: none !important; }
+  body.obj-open .toast { display: none !important; }
+  .obj-panel {
+    width: min(880px, 100%);
+    max-height: none;
+    margin: auto;
+    flex: 0 0 auto;
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 16px 18px 8px;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, 0.28);
+  }
+  .obj-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+  .obj-top h1 { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.02em; }
+  .obj-close {
+    border: 1px solid var(--border-subtle); background: #fff; color: #475569;
+    border-radius: 10px; padding: 8px 12px; font: inherit; font-weight: 700; cursor: pointer; min-height: 40px;
+  }
+  .obj-close:focus-visible { outline: 2px solid #007AFF; outline-offset: 2px; }
+  .obj-tabs { display: flex; gap: 6px; background: #f1f5f9; border-radius: 10px; padding: 3px; margin-bottom: 12px; }
+  .obj-tabs button {
+    flex: 1; text-align: center; padding: 8px; border-radius: 8px; border: 0; background: transparent;
+    font: inherit; font-weight: 700; color: #64748b; cursor: pointer; min-height: 40px;
+  }
+  .obj-tabs button.is-on { background: #fff; color: #0f172a; box-shadow: var(--shadow-card); }
+  .obj-tabs button:focus-visible { outline: 2px solid #007AFF; outline-offset: 2px; }
+  .obj-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-card); margin-bottom: 12px; }
+  .obj-k { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .04em; }
+  .obj-hip, .obj-ex {
+    font-size: 9px; font-weight: 800; border-radius: 4px; padding: 0 4px; margin-left: 4px;
+    vertical-align: middle; white-space: nowrap;
+  }
+  .obj-hip { color: #92400e; background: #fef3c7; }
+  .obj-ex { color: #6b21a8; background: #f3e8ff; }
+  .obj-vis { display: flex; flex-direction: column; gap: 0; }
+  .obj-vis > * { min-width: 0; width: 100%; }
+  @media (min-width: 700px) {
+    .obj-reac {
+      display: grid;
+      grid-template-columns: minmax(200px, 260px) 1fr;
+      column-gap: 20px;
+      align-items: center;
+    }
+    .obj-reac .obj-k { grid-column: 1 / -1; }
+    .obj-reac .obj-big { grid-column: 1; grid-row: 2; margin: 0; }
+    .obj-reac .obj-meter { grid-column: 1; grid-row: 3; }
+    .obj-reac .obj-scale { grid-column: 1; grid-row: 4; }
+    .obj-reac p { grid-column: 2; grid-row: 2 / span 3; margin: 0; align-self: center; }
+  }
+  @media (min-width: 900px) { .obj-fin { grid-template-columns: repeat(3, 1fr) !important; } }
+  .obj-reac .obj-big { font-size: 18px; font-weight: 800; margin: 6px 0; }
+  .obj-meter { height: 10px; border-radius: 999px; background: linear-gradient(90deg, #dc2626, #f59e0b, #16a34a); position: relative; margin: 10px 0 4px; }
+  .obj-meter i { position: absolute; top: -4px; width: 4px; height: 18px; background: #0f172a; border-radius: 2px; }
+  .obj-scale { display: flex; justify-content: space-between; margin: 0; font-size: 12px; color: #64748b; }
+  .obj-reac p { font-size: 13px; margin: 8px 0 0; }
+  .obj-mand-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .obj-mand-t { font-size: 16px; font-weight: 800; }
+  .obj-mand-s { font-size: 13px; color: #475569; margin: 4px 0 8px; }
+  .obj-tbl { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .obj-tbl th { font-size: 10px; color: #64748b; text-transform: uppercase; text-align: left; padding: 6px 8px; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
+  .obj-tbl td { padding: 9px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: top; font-size: 13px; white-space: normal; overflow-wrap: break-word; }
+  @media (min-width: 641px) {
+    .obj-tbl th:nth-child(2), .obj-tbl td:nth-child(2) { width: 124px; }
+    .obj-tbl th:nth-child(3), .obj-tbl td:nth-child(3) { width: 132px; }
+  }
+  .obj-tbl .o { font-weight: 700; }
+  .obj-tbl .onum { font-size: 12px; color: #475569; margin-top: 2px; }
+  .obj-imp { display: inline-block; font-size: 11px; font-weight: 800; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+  .obj-imp.e { background: #0f172a; color: #fff; }
+  .obj-imp.x { background: #e0f2fe; color: #0369a1; }
+  .obj-imp.dim { background: #e2e8f0; color: #64748b; }
+  .obj-av { font-size: 11px; font-weight: 800; border-radius: 999px; padding: 2px 8px; white-space: nowrap; display: inline-block; }
+  .obj-av.g { background: #dcfce7; color: #166534; }
+  .obj-av.p { background: #fef3c7; color: #92400e; }
+  .obj-av.r { background: #fee2e2; color: #b91c1c; }
+  .obj-locked { background: #f8fafc; border: 1px dashed #cbd5e1; color: #94a3b8; }
+  .obj-locked .obj-mand-t { color: #64748b; }
+  .obj-locked .obj-tbl td { color: #94a3b8; }
+  .obj-lock { font-size: 11px; font-weight: 800; color: #64748b; background: #e2e8f0; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+  .obj-note { font-size: 12px; color: #64748b; margin-top: 8px; }
+  .obj-cwarn { margin-top: 10px; background: #fffbeb; border: 1px solid #f59e0b; color: #92400e; border-radius: 8px; padding: 8px 10px; font-size: 12px; }
+  .obj-fin { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .obj-fv { font-size: 24px; font-weight: 800; margin: 4px 0; }
+  .obj-fl { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; padding: 2px 0; }
+  .obj-fl.tot { border-top: 1px solid #e2e8f0; margin-top: 4px; padding-top: 6px; font-weight: 800; }
+  .obj-bar { height: 8px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin: 8px 0 2px; position: relative; }
+  .obj-bar i { display: block; height: 100%; }
+  .obj-verd { font-weight: 800; font-size: 13px; margin-top: 6px; }
+  .obj-lobj { border-top: 1px solid #f1f5f9; padding: 8px 0; display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+  .obj-lobj .obj-imp { flex: none; align-self: flex-start; }
+  .mail-detail-body .obj-lobj p, .mail-detail-body p { margin: 8px 0; }
+  @media (max-width: 640px) {
+    .obj-sheet { padding: 12px; }
+    .obj-panel { padding: 12px 12px 4px; border-radius: 14px; }
+    .obj-tbl, .obj-tbl tbody, .obj-tbl tr { display: block; width: 100%; }
+    .obj-tbl th { display: none; }
+    .obj-tbl tr { padding: 9px 0; border-bottom: 1px solid #f1f5f9; }
+    .obj-tbl td { display: inline-block; border: 0; padding: 0 6px 0 0; }
+    .obj-tbl td:first-child { display: block; width: 100%; padding-bottom: 6px; }
+  }
   /* ═══ Menu inicial (maquete) ═══ */
   body.at-menu .header-metrics,
   body.at-menu .mobile-caixa-pill,
@@ -5389,6 +5531,8 @@
   body.at-menu #mandate0Card { display: none !important; }
   .settings-btn.danger-solid { background: var(--critical); border-color: var(--critical); color: #fff; }
   .settings-btn.danger-solid:hover { background: #b91c1c; border-color: #b91c1c; }
+  body.at-menu #objSheet,
+  body.at-menu .obj-budget { display: none !important; }
 
 </style>
 <link rel="stylesheet" href="tut.css" />
@@ -5427,12 +5571,12 @@
     </div>
     <div class="brand-text">
       <span class="brand-name">Watt Indeferido</span>
-      <span class="brand-period" id="periodLabel">2026 · T3</span>
+      <span class="brand-period" id="periodLabel">2026 · Q3</span>
       <span class="econ-provisional econ-provisional-brand" id="econProvisional" title="Os valores em € do header e da sala são provisórios: estimativas de trabalho, ainda podem mudar.">€ · valores provisórios</span>
     </div>
   </div>
   <span class="mobile-caixa-pill" id="mobileCaixaPill" data-tut="hud.cash" title="Caixa disponível"><span class="k">Caixa</span> <span class="v num" id="mobileCaixaVal">2,0 M€</span><span class="pill-prov" title="Os valores em € são provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span></span>
-  <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · T3</span>
+  <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · Q3</span>
 
   <div class="header-metrics" id="coach-header-metrics">
     <div class="metric-pill cash-ok" id="pillCaixa" data-tut="hud.cash">
@@ -5459,6 +5603,10 @@
     <span class="inbox-badge pulse" id="inboxBadge" hidden>0</span>
   </button>
   <button type="button" class="header-help" id="btnTutorial" title="Ver outra vez">Ver outra vez</button>
+  <button type="button" class="header-settings-btn obj-btn" id="btnObjetivos" title="Empresa · Visão da direção" aria-label="Empresa · Visão da direção">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+    <span class="obj-dot" id="objDot" hidden></span>
+  </button>
   <button type="button" class="header-settings-btn header-search-btn" id="btnSearch" title="Pesquisar" aria-label="Pesquisar" aria-haspopup="dialog" aria-expanded="false" aria-controls="entPanel">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg>
   </button>
@@ -5497,6 +5645,18 @@
         <button type="button" class="btn-panel-ghost" id="btnMinimizeAll" title="Minimizar todas as centrais">Minimizar todas</button>
         <button type="button" class="btn-panel-ghost" id="btnRestoreAll" title="Abrir todas as centrais">Abrir todas</button>
       </div>
+    </div>
+    <div class="obj-budget" id="objBudget" hidden>
+      <button type="button" class="obj-bc" id="objBudgetCash" data-obj-open="financas">
+        <div class="k">Caixa para desenvolver</div>
+        <div class="v" id="objBudgetCashVal">—</div>
+        <div class="s" id="objBudgetCashOk">—</div>
+      </button>
+      <button type="button" class="obj-bc" id="objBudgetEq" data-obj-open="financas">
+        <div class="k">Capital próprio para a obra</div>
+        <div class="v" id="objBudgetEqVal">—</div>
+        <div class="s" id="objBudgetEqOk">—</div>
+      </button>
     </div>
     <div class="home-trc-prompt" id="homeTrcPrompt" role="status" hidden>
       <span id="homeTrcPromptText">Tens um TRC por aceitar.</span>
@@ -6043,6 +6203,20 @@
   </div>
 </div>
 
+
+<div class="obj-sheet" id="objSheet" hidden role="dialog" aria-modal="true" aria-labelledby="objTitle">
+  <div class="obj-panel">
+    <div class="obj-top">
+      <h1 id="objTitle">Empresa</h1>
+      <button type="button" class="obj-close" id="objClose">Fechar</button>
+    </div>
+    <div class="obj-tabs" role="tablist">
+      <button type="button" id="objTabVisao" data-obj-tab="visao" role="tab" aria-selected="true">Visão da direção</button>
+      <button type="button" id="objTabFin" data-obj-tab="financas" role="tab" aria-selected="false">Finanças</button>
+    </div>
+    <div id="objBody"></div>
+  </div>
+</div>
 
 <!-- ═══ MOBILE FOOTER (must sit BEFORE the main <script>: init() runs synchronously and wires these buttons) ═══ -->
 <div class="mobile-tabbar-hint" id="mobileTabbarHint" hidden>Navegação móvel</div>
@@ -8288,6 +8462,7 @@
     const fmp = document.getElementById('footerMockPeriod');
     if (fmp) fmp.textContent = periodTxt;
     try { if (typeof renderMandateHud === 'function') renderMandateHud(); } catch (_) {}
+    try { if (typeof syncObjChrome === 'function') syncObjChrome(); } catch (_) {}
     try { renderAssetMoneyStrip(); } catch (_) {}
     if (doFlash) {
       flashPill('pillCaixa');
@@ -8502,12 +8677,12 @@
         activities.unshift({
           time: 'Agora',
           text: movedQ
-            ? `Trimestre avançado para ${state.year} · T${state.quarter}: caixa e valor da empresa atualizados`
-            : `Trimestre avançado para ${state.year} · T${state.quarter}`,
+            ? `Trimestre avançado para ${state.year} · Q${state.quarter}: caixa e valor da empresa atualizados`
+            : `Trimestre avançado para ${state.year} · Q${state.quarter}`,
         });
         renderActivity();
 
-        showToast(`Avançaste para ${state.year} · T${state.quarter}` + ((typeof spendFeeling === 'function') ? spendFeeling(driftQ) : ''));
+        showToast(`Avançaste para ${state.year} · Q${state.quarter}` + ((typeof spendFeeling === 'function') ? spendFeeling(driftQ) : ''));
         scheduleSave('next-quarter');
 
         // Next quarter without a TRC: open the next REN round, but never skip a round that still has lots you can bid on.
@@ -11534,6 +11709,7 @@
       mailStart.then((n) => {
         try { syncPlayGate(); } catch (_) {}
         if (n) showToast(msg + ' · Correio: ' + cartasNovasPt(n));
+        try { openMandateAfterTrc(); } catch (_) {}
       });
     }
   }
@@ -13913,6 +14089,7 @@
       if (!L || L.arrivedSeq != null) return;
       mailLoop.arrivalSeq = (mailLoop.arrivalSeq | 0) + 1;
       L.arrivedSeq = mailLoop.arrivalSeq;
+      if (L.arrivedMonth == null && mailLoop.month != null && mailLoop.month >= 0) L.arrivedMonth = mailLoop.month | 0;
     });
   }
   function playBlockLetters() {
@@ -14117,7 +14294,11 @@
       ctx.se_name = (extra.se_name) || (sheet && sheet.se_name) || 'Ourique';
     } catch (_) { ctx.se_name = extra.se_name || 'Ourique'; }
     const caixa = Number(state && state.caixa) || 0;
-    ctx.cash_left = fmtEur(caixa);
+    ctx.cash_left = (typeof objMeur === 'function') ? objMeur(caixa) : fmtEur(caixa);
+    try {
+      const sp = (typeof objSpendLeft === 'function') ? objSpendLeft() : null;
+      ctx.spend_left = sp ? objMeur(sp.left) : '—';
+    } catch (_) { ctx.spend_left = '—'; }
     const burn = phaseBurnAbs();
     ctx.months_left = burn > 0.0005 ? String(Math.max(0, Math.floor(caixa / burn))) : '0';
     ctx.cash_gap = fmtEur(rescueBridgeAmount());
@@ -16127,11 +16308,414 @@
 
   function periodLabelText() {
     if (document.body.classList.contains('at-menu')) return 'v0.1';
-    if (mailLoop && mailLoop.active && mailLoop.month >= 0) {
-      const ph = phaseLabelPt(mailLoop.projectPhase || 'trc_won');
-      return 'Mês ' + mailLoop.month + ' · ' + ph;
+    if (mailLoop && mailLoop.active && mailLoop.month >= 0 && state.auctionWon) {
+      return objPeriodLabel(mailLoop.month | 0);
     }
-    return state.year + ' · T' + state.quarter;
+    return state.year + ' · Q' + state.quarter;
+  }
+
+  /* ── Empresa · janela de objetivos (maquete v3) ──
+   * Mês 0 do Correio = 14 de janeiro de 2027 (TRC). Cada mês de jogo é um mês de calendário.
+   * Números HIPÓTESE / EXEMPLO ficam com a marca pequena da maquete. */
+  const OBJ_MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const OBJ_MONTHS_SHORT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const OBJ_LICENCE_MONTH = 26;
+  const OBJ_LICENCE_EXT_MONTH = 38;
+  const OBJ_COD_PLAN_FALLBACK = 33;
+  const OBJ_HIP = '<span class="obj-hip">HIPÓTESE</span>';
+  const OBJ_EX = '<span class="obj-ex">EXEMPLO</span>';
+  const OBJ_AV_WORD = { g: 'Em bom caminho', p: 'Preocupados', r: 'Em risco' };
+  let objTab = 'visao';
+
+  function objDateUtc(mailMonth) {
+    const d = new Date(Date.UTC(2027, 0, 14));
+    d.setUTCMonth(d.getUTCMonth() + (Number(mailMonth) || 0));
+    return d;
+  }
+  function objDateLong(mailMonth) {
+    const d = objDateUtc(mailMonth);
+    return d.getUTCDate() + ' de ' + OBJ_MONTHS[d.getUTCMonth()] + ' de ' + d.getUTCFullYear();
+  }
+  function objDateShort(mailMonth) {
+    const d = objDateUtc(mailMonth);
+    return d.getUTCDate() + ' ' + OBJ_MONTHS_SHORT[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+  }
+  function objMonthLong(mailMonth) {
+    const d = objDateUtc(mailMonth);
+    return OBJ_MONTHS[d.getUTCMonth()] + ' de ' + d.getUTCFullYear();
+  }
+  function objMonthShort(mailMonth) {
+    const d = objDateUtc(mailMonth);
+    return OBJ_MONTHS_SHORT[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+  }
+  function objPeriodLabel(mailMonth) {
+    const d = objDateUtc(mailMonth);
+    return d.getUTCFullYear() + ' · Q' + (Math.floor(d.getUTCMonth() / 3) + 1);
+  }
+  function objMeur(v, withPlus) {
+    const n = Number(v) || 0;
+    const sign = n < 0 ? '−' : (withPlus && n > 0 ? '+' : '');
+    let s = Math.abs(n).toFixed(2).replace(/0$/, '').replace(/\.0$/, '').replace('.', ',');
+    return sign + s + ' M€';
+  }
+  function objEsc(s) {
+    return (typeof escapeHtml === 'function') ? escapeHtml(s == null ? '' : String(s)) : String(s == null ? '' : s);
+  }
+  function letterMailMonth(letter) {
+    if (!letter) return null;
+    if (letter.arrivedMonth != null && letter.arrivedMonth !== '') return letter.arrivedMonth | 0;
+    const hit = String(letter.when || '').match(/Mês\s+(\d+)/i);
+    return hit ? Number(hit[1]) : null;
+  }
+  function letterWhenLabel(letter, longForm) {
+    const m = letterMailMonth(letter);
+    if (m == null) return (letter && letter.when) || '';
+    return longForm ? objDateLong(m) : objDateShort(m);
+  }
+  function objRound1(n) { return Math.round((Number(n) || 0) * 10) / 10; }
+  function objSpendLeft() {
+    const lotId = (mailLoop && mailLoop.seId) || 'ourique';
+    let car = 4.54;
+    try {
+      const f = (typeof faixaLot === 'function') ? faixaLot(lotId) : null;
+      if (f && f.car_cash_MEUR != null) car = Number(f.car_cash_MEUR);
+    } catch (_) {}
+    let spent = 0;
+    try { spent = Number(econState().carSpent) || 0; } catch (_) {}
+    return { left: Math.max(0, +(car - spent).toFixed(2)), hip: true };
+  }
+  function objBondAmount() {
+    const lotId = (mailLoop && mailLoop.seId) || 'ourique';
+    try {
+      const rec = econState().trcApplied && econState().trcApplied[lotId];
+      if (rec && rec.bond) return Number(rec.bond);
+    } catch (_) {}
+    try {
+      const a = trcWinAmounts(lotId);
+      if (a && a.bond) return Number(a.bond);
+    } catch (_) {}
+    return 0.99;
+  }
+  function objEquityPack() {
+    const lotId = (mailLoop && mailLoop.seId) || 'ourique';
+    let need = 48.5;
+    try {
+      const f = (typeof faixaLot === 'function') ? faixaLot(lotId) : null;
+      if (f && f.equity_need_MEUR && f.equity_need_MEUR.at_npc_best != null) need = Number(f.equity_need_MEUR.at_npc_best);
+    } catch (_) {}
+    let hybrid = false;
+    try { hybrid = typeof batteryHasStarted === 'function' && batteryHasStarted(lotId); } catch (_) {}
+    if (hybrid) need = +(need + 2.56).toFixed(2);
+    let purse = 45;
+    try {
+      const b = econBudget();
+      if (b && typeof b.equity === 'number' && b.equity > 0) purse = b.equity;
+    } catch (_) {}
+    const partner = objRound1(need * 0.25);
+    const mine = objRound1(need * 0.75);
+    const folga = objRound1(purse - mine);
+    return { need: objRound1(need), partner: partner, mine: mine, purse: purse, folga: folga, hybrid: hybrid };
+  }
+  function objCodMonths() {
+    let plan = (mailLoop && mailLoop.codPlanMonth != null) ? (mailLoop.codPlanMonth | 0) : null;
+    let fc = null;
+    try {
+      const c = (typeof codForecast === 'function') ? codForecast() : null;
+      if (c && c.month != null) fc = c.month | 0;
+    } catch (_) {}
+    if (plan == null) plan = OBJ_COD_PLAN_FALLBACK;
+    if (fc == null) fc = plan;
+    return { plan: plan, fc: fc, live: fc !== plan };
+  }
+  function objDeadlineMissed(id) {
+    return !!(mailLoop && mailLoop.missedDeadlines && mailLoop.missedDeadlines[id] != null);
+  }
+  function objSnapshot() {
+    const month = (mailLoop && mailLoop.active) ? (mailLoop.month | 0) : 0;
+    const won = !!(state && state.auctionWon);
+    const cash = Number(state && state.caixa) || 0;
+    const spend = objSpendLeft();
+    const eq = objEquityPack();
+    const bond = won ? objBondAmount() : 0;
+    const cod = objCodMonths();
+    let npvNow = null, npvAuction = null;
+    try {
+      const eco = (typeof stakesNpvIrr === 'function') ? stakesNpvIrr() : null;
+      if (eco) { npvNow = eco.npvNow; npvAuction = eco.npvAuction; }
+    } catch (_) {}
+    if (npvNow == null) {
+      try {
+        const n = nodes.find((x) => x.id === ((mailLoop && mailLoop.seId) || 'ourique'));
+        if (n && typeof n.van === 'number' && won) npvNow = (typeof playerNpv === 'function') ? playerNpv(n.van) : n.van;
+      } catch (_) {}
+    }
+    const hybrid = eq.hybrid;
+    const phase = (mailLoop && mailLoop.projectPhase) || 'trc_won';
+    const gridMiss = objDeadlineMissed('grid_agreement') || objDeadlineMissed('grid_agreement_final');
+    const pastExt = cod.fc > OBJ_LICENCE_EXT_MONTH;
+    const atCod = phase === 'cod' || (mailLoop && mailLoop.tagMonth && mailLoop.tagMonth.cod_reached != null);
+    const avLicence = (pastExt || gridMiss) ? 'r' : 'g';
+    let avHybrid = 'g';
+    if (atCod && !hybrid) avHybrid = 'r';
+    else if (month > 18 && !hybrid) avHybrid = 'p';
+    let avNpv = 'p';
+    if ((npvNow != null && npvNow > 0) || hybrid) avNpv = 'g';
+    if (atCod && !(npvNow > 0)) avNpv = 'r';
+    const avCod = cod.fc > cod.plan + 6 ? 'r' : (cod.fc > cod.plan ? 'p' : 'g');
+    const left = OBJ_LICENCE_MONTH - month;
+    const leftTxt = left > 0 ? ('faltam ' + left + (left === 1 ? ' mês' : ' meses')) : (left === 0 ? 'é este mês' : 'o prazo já passou');
+    return {
+      won: won, month: month, cash: cash, spend: spend.left, bond: bond, eq: eq,
+      cod: cod, npvNow: npvNow, npvAuction: npvAuction, hybrid: hybrid, phase: phase,
+      av: [avLicence, avHybrid, avNpv, avCod], gridMiss: gridMiss, leftTxt: leftTxt, atCod: atCod
+    };
+  }
+  function objReaction(snap) {
+    if (!snap.won) {
+      return { title: 'Ainda sem mandato', text: 'O mandato começa quando ganhares um TRC no leilão.', pos: 50 };
+    }
+    if (snap.gridMiss) {
+      const slip = Math.max(0, snap.cod.fc - snap.cod.plan);
+      const slipTxt = slip ? (' e o COD previsto atrasou ' + slip + (slip === 1 ? ' mês' : ' meses')) : '';
+      return {
+        title: 'Preocupados com o atraso na ligação',
+        text: 'O acordo de ligação com a REN passou do prazo' + slipTxt + '. Queremos vê-lo assinado este mês.',
+        pos: 30
+      };
+    }
+    if ((snap.month | 0) < 4) {
+      return {
+        title: 'Ainda é cedo para julgar',
+        text: 'O mandato começou agora. Os primeiros meses de licenciamento vão dizer-nos muito.',
+        pos: 50
+      };
+    }
+    const reds = snap.av.filter((a) => a === 'r').length;
+    if (reds) return { title: 'Insatisfeitos com o rumo', text: 'Há um objetivo exigido em risco. Se falhar, o mandato termina.', pos: 22 };
+    if (snap.av.indexOf('p') !== -1) return { title: 'Atentos ao valor do projeto', text: 'O mandato segue. O que mais pesa agora é chegar ao COD com lucro.', pos: 42 };
+    return { title: 'Satisfeitos com o rumo', text: 'Os objetivos exigidos vão em bom caminho.', pos: 74 };
+  }
+  function objImp(kind) {
+    return kind === 'e' ? '<span class="obj-imp e">Exigido</span>' : '<span class="obj-imp x">Extra</span>';
+  }
+  function objBar(have, need) {
+    const h = Math.max(0, Number(have) || 0);
+    const n = Math.max(0, Number(need) || 0);
+    const mx = Math.max(h, n, 0.001);
+    return '<div class="obj-bar"><i style="width:' + (h / mx * 100) + '%;background:' + (h + 1e-9 >= n ? '#16a34a' : '#f59e0b') + '"></i>' +
+      '<span style="position:absolute;top:0;bottom:0;left:calc(' + (n / mx * 100) + '% - 1px);width:2px;background:#0f172a"></span></div>';
+  }
+  function objVerd(gap) {
+    const g = Number(gap) || 0;
+    return '<div class="obj-verd ' + (g >= -1e-9 ? 'obj-ok' : 'obj-no') + '">' +
+      (g >= -1e-9 ? ('Chega · sobra ' + objMeur(g)) : ('Não chega · faltam ' + objMeur(-g))) + '</div>';
+  }
+  function objRows(snap) {
+    const cashBit = objMeur(snap.cash);
+    const npvBit = snap.npvNow == null ? '—' : ('<b class="' + (snap.npvNow < 0 ? 'obj-no' : 'obj-ok') + '">' + objMeur(snap.npvNow) + '</b>');
+    return [
+      ['Pôr Ourique a produzir antes de a licença caducar', 'e',
+        'Prazo: ' + objMonthLong(OBJ_LICENCE_MONTH) + ' (' + snap.leftTxt + ') · prorrogável uma vez até ' + objMonthLong(OBJ_LICENCE_EXT_MONTH) + ' · caixa para desenvolver ' + cashBit],
+      ['Hibridizar o ponto de ligação', 'e',
+        '0 € agora · ' + objMeur(2.56) + ' de capital próprio na decisão final ' + OBJ_HIP + ' · demora 9 meses · não atrasa o COD solar'],
+      ['Ativo com NPV positivo no COD', 'e',
+        'NPV agora (a tua parte) ' + npvBit + ' ' + OBJ_HIP + ' · com híbrido ≈ +2 M€ no COD ' + OBJ_EX],
+      ['Chegar ao COD até ao mês planeado', 'x',
+        'Planeado ' + objMonthShort(snap.cod.plan) + ' · previsto ' + objMonthShort(snap.cod.fc) + (snap.cod.live ? '' : '') +
+        ' · cada mês de atraso custa −0,19 M€ de NPV (−0,45 com híbrido) · conta para a reputação']
+    ];
+  }
+  function objCodWarn(snap) {
+    if (snap.cod.plan <= OBJ_LICENCE_MONTH && snap.cod.fc <= OBJ_LICENCE_MONTH) return '';
+    return '<div class="obj-cwarn">⚠ O COD planeado (' + objMonthLong(snap.cod.plan) + ') fica depois do prazo da licença (' +
+      objMonthLong(OBJ_LICENCE_MONTH) + '). Vais precisar da prorrogação, que só dá uma vez e vai até ' + objMonthLong(OBJ_LICENCE_EXT_MONTH) + '.</div>';
+  }
+  function objMandate2Open() {
+    const phase = (mailLoop && mailLoop.projectPhase) || '';
+    if (phase === 'obra' || phase === 'cod') return true;
+    return !!(mailLoop && mailLoop.tags && (mailLoop.tags.construction_started | 0) > 0);
+  }
+  function objVisaoHtml() {
+    const snap = objSnapshot();
+    const reac = objReaction(snap);
+    const rows = snap.won ? objRows(snap) : [];
+    const m2 = objMandate2Open();
+    const table = snap.won ? (
+      '<table class="obj-tbl"><tr><th>Objetivo</th><th>Importância</th><th>Avaliação</th></tr>' +
+      rows.map((o, i) => '<tr><td><div class="o">' + o[0] + '</div><div class="onum">' + o[2] + '</div></td><td>' + objImp(o[1]) +
+        '</td><td><span class="obj-av ' + snap.av[i] + '">' + OBJ_AV_WORD[snap.av[i]] + '</span></td></tr>').join('') +
+      '</table>' + objCodWarn(snap) +
+      '<div class="obj-note">Se falhares um objetivo exigido, o mandato termina.</div>'
+    ) : '<p class="obj-mand-s">Ganha um TRC no leilão. A carta dos investidores traz o Mandato 1.</p>';
+    const m2card = m2
+      ? '<div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 2 · ativo</div><div class="obj-mand-t">Crescer com dinheiro próprio</div></div><span class="obj-imp e">Ativo</span></div><div class="obj-mand-s">Ourique entrou em obra. Isto é o mandato seguinte.</div>'
+      : '<div class="obj-card obj-locked"><div class="obj-mand-h"><div><div class="obj-k">Mandato 2 · bloqueado</div><div class="obj-mand-t">Crescer com dinheiro próprio</div></div><span class="obj-lock">🔒 Abre quando Ourique entrar em obra</span></div><div class="obj-mand-s" style="color:#94a3b8">Isto é o que te espera.</div>';
+    return '<div class="obj-vis"><div class="obj-card obj-reac"><div class="obj-k">Reação dos investidores</div><div class="obj-big">' + objEsc(reac.title) +
+      '</div><div class="obj-meter"><i style="left:' + reac.pos + '%"></i></div><div class="obj-scale"><span>Insatisfeitos</span><span>Satisfeitos</span></div><p>' +
+      objEsc(reac.text) + '</p></div><div><div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 1 · ativo</div><div class="obj-mand-t">O primeiro ponto de ligação</div></div><span class="obj-imp e">Ativo</span></div>' +
+      '<div class="obj-mand-s">Os investidores confiam-te Ourique. Querem uma central híbrida a produzir, com lucro, antes de a licença caducar.</div>' +
+      table + '</div>' + m2card +
+      '<div class="obj-card"><table class="obj-tbl"><tr><th>Objetivo</th><th>Importância</th></tr>' +
+      '<tr><td>Levar um segundo ponto de ligação até à licença de produção</td><td><span class="obj-imp dim">Exigido</span></td></tr>' +
+      '<tr><td>Pagar o capital próprio desse projeto com a caixa de Ourique ou vendendo parte do projeto</td><td><span class="obj-imp dim">Exigido</span></td></tr>' +
+      '<tr><td>Vender parte de um projeto com mais-valia</td><td><span class="obj-imp dim">Extra</span></td></tr></table></div></div></div>';
+  }
+  function objFinancasHtml() {
+    const snap = objSnapshot();
+    const eq = snap.eq;
+    const gapCash = snap.cash - snap.spend;
+    const npvCls = (snap.npvNow != null && snap.npvNow < 0) ? ' obj-no' : '';
+    const npvTxt = snap.npvNow == null ? '—' : objMeur(snap.npvNow);
+    const auctionTxt = snap.npvAuction == null ? '—' : objMeur(snap.npvAuction);
+    return '<div class="obj-fin">' +
+      '<div class="obj-card"><div class="obj-k">Caixa para desenvolver</div><div class="obj-fv">' + objMeur(snap.cash) + '</div><div class="obj-note">Para terreno, licenças e estudos até à decisão final de investimento.</div></div>' +
+      '<div class="obj-card"><div class="obj-k">Ainda por gastar até à decisão final</div><div class="obj-fv">' + (snap.month ? '' : '≈ ') + objMeur(snap.spend) + OBJ_HIP + '</div>' +
+      objBar(snap.cash, snap.spend) + objVerd(gapCash) + '</div>' +
+      '<div class="obj-card"><div class="obj-k">Capital próprio para a obra</div>' +
+      '<div class="obj-fl"><span>Necessidade na decisão final</span><span>' + objMeur(eq.need) + OBJ_HIP + '</span></div>' +
+      '<div class="obj-fl"><span>− Sócio (25%)</span><span>' + objMeur(eq.partner) + OBJ_HIP + '</span></div>' +
+      '<div class="obj-fl"><span>= Tua parte (75%)</span><span>' + objMeur(eq.mine) + OBJ_HIP + '</span></div>' +
+      '<div class="obj-fl"><span>Investidores</span><span>' + objMeur(eq.purse) + '</span></div>' +
+      '<div class="obj-fl tot"><span>Folga</span><span class="' + (eq.folga >= 0 ? 'obj-ok' : 'obj-no') + '">' + objMeur(eq.folga, true) + '</span></div>' +
+      objBar(eq.purse, eq.mine) + objVerd(eq.folga) +
+      '<div class="obj-note">' + (eq.hybrid ? 'Com híbrido.' : 'Só solar.') + ' O sócio atrasa a decisão final cerca de 4 meses e fica com 25% do NPV.</div></div>' +
+      '<div class="obj-card"><div class="obj-k">NPV agora (a tua parte)</div><div class="obj-fv' + npvCls + '">' + npvTxt + (snap.npvNow == null ? '' : OBJ_HIP) + '</div>' +
+      '<div class="obj-note">no leilão: ' + auctionTxt + ' · 75% se tiveres sócio</div>' +
+      '<div class="obj-fl" style="margin-top:6px"><span>Com híbrido</span><span class="obj-ok">≈ +2 M€ no COD ' + OBJ_EX + '</span></div></div>' +
+      '<div class="obj-card"><div class="obj-k">Garantia bancária</div><div class="obj-fv">' + objMeur(snap.bond) + '</div><div class="obj-note">Caução da ligação. Não é um gasto: só se perde se o TRC caducar.</div></div></div>';
+  }
+  function renderObjetivos() {
+    const body = document.getElementById('objBody');
+    if (!body) return;
+    const vis = objTab !== 'financas';
+    const tabV = document.getElementById('objTabVisao');
+    const tabF = document.getElementById('objTabFin');
+    if (tabV) { tabV.classList.toggle('is-on', vis); tabV.setAttribute('aria-selected', vis ? 'true' : 'false'); }
+    if (tabF) { tabF.classList.toggle('is-on', !vis); tabF.setAttribute('aria-selected', vis ? 'false' : 'true'); }
+    body.innerHTML = vis ? objVisaoHtml() : objFinancasHtml();
+  }
+  function openObjetivos(tab) {
+    objTab = tab === 'financas' ? 'financas' : 'visao';
+    try { if (typeof closeInbox === 'function') closeInbox(); } catch (_) {}
+    const sheet = document.getElementById('objSheet');
+    if (!sheet) return;
+    sheet.hidden = false;
+    document.body.classList.add('obj-open');
+    renderObjetivos();
+    try { syncObjChrome(); } catch (_) {}
+    const title = document.getElementById('objTitle');
+    if (title) { try { title.focus(); } catch (_) {} }
+  }
+  function closeObjetivos() {
+    const sheet = document.getElementById('objSheet');
+    if (sheet) sheet.hidden = true;
+    document.body.classList.remove('obj-open');
+    try { syncObjChrome(); } catch (_) {}
+  }
+  function objReached(have, need) { return (Number(have) || 0) + 1e-9 >= (Number(need) || 0); }
+  function syncObjChrome() {
+    const snap = objSnapshot();
+    const show = !!(snap.won);
+    document.body.classList.toggle('obj-has-budget', show);
+    const bar = document.getElementById('objBudget');
+    if (bar) bar.hidden = !show;
+    const cashEl = document.getElementById('objBudgetCashVal');
+    const cashOk = document.getElementById('objBudgetCashOk');
+    const eqEl = document.getElementById('objBudgetEqVal');
+    const eqOk = document.getElementById('objBudgetEqOk');
+    const cashReach = objReached(snap.cash, snap.spend);
+    const eqReach = snap.eq.folga >= -1e-9;
+    if (cashEl) cashEl.textContent = objMeur(snap.cash);
+    if (cashOk) { cashOk.textContent = cashReach ? 'Chega' : 'Não chega'; cashOk.className = 's ' + (cashReach ? 'obj-ok' : 'obj-no'); }
+    if (eqEl) eqEl.textContent = 'folga ' + objMeur(snap.eq.folga);
+    if (eqOk) { eqOk.textContent = eqReach ? 'Chega' : 'Não chega'; eqOk.className = 's ' + (eqReach ? 'obj-ok' : 'obj-no'); }
+    const dot = document.getElementById('objDot');
+    if (dot) {
+      const items = (typeof mailState !== 'undefined' && mailState.items) || [];
+      const unread = items.some((m) => m && !m.read && (
+        (typeof mailSkeletonOf === 'function' && mailSkeletonOf(m) === 'mail-investidores-mandato-01') ||
+        (typeof mailSkeletonOf === 'function' && mailSkeletonOf(m) === 'mail-investidores-pressao-01' && m.skinId === 'caixa-baixa')
+      ));
+      dot.hidden = !unread;
+    }
+    const sheet = document.getElementById('objSheet');
+    if (sheet && !sheet.hidden) renderObjetivos();
+  }
+  function objMandateLetterExtra() {
+    const snap = objSnapshot();
+    const rows = objRows(snap);
+    return rows.map((o) => '<div class="obj-lobj"><span>' + o[0] + '</span>' + objImp(o[1]) + '</div>').join('') +
+      '<div class="obj-lobj"><span><b>Capital próprio para a obra</b><br><span class="obj-note">45 M€ dos investidores; um sócio pode entrar com 25%.</span></span><b>45 M€</b></div>' +
+      '<div class="obj-note">Se falhares um objetivo exigido, o mandato termina.</div>';
+  }
+  function objCfoBodyHtml() {
+    const snap = objSnapshot();
+    return '<p>Temos ' + objMeur(snap.cash) + ' para desenvolver e, até à decisão final de investimento, ainda faltam cerca de ' +
+      objMeur(snap.spend) + ' ' + OBJ_HIP + '. Podemos pedir mais aos investidores, mas isso tem um custo na confiança deles.</p>' +
+      '<p>Se a caixa ficar negativa, os investidores obrigam-nos a escolher: capital extra (custa parte do valor do projeto), vender, cortar custos ou fechar. Se voltar a ficar negativa, temos um mês para a repor, ou o mandato termina.</p>';
+  }
+  function decorateObjectivesLetter(root, letter) {
+    if (!root || !letter || typeof mailSkeletonOf !== 'function') return;
+    const sk = mailSkeletonOf(letter);
+    const body = root.querySelector('.mail-detail-body');
+    const from = root.querySelector('.mail-detail-from');
+    const when = letterWhenLabel(letter, true);
+    if (sk === 'mail-investidores-mandato-01') {
+      if (from) from.innerHTML = 'De: <strong>Investidores</strong> · Para: ti' + (when ? ' · ' + objEsc(when) : '');
+      if (body) body.insertAdjacentHTML('beforeend', objMandateLetterExtra());
+    }
+    if (sk === 'mail-investidores-pressao-01' && letter.skinId === 'caixa-baixa') {
+      if (from) from.innerHTML = 'De: <strong>Diretor financeiro</strong> · Para: ti' + (when ? ' · ' + objEsc(when) : '');
+      if (body) body.innerHTML = objCfoBodyHtml();
+      const actions = root.querySelector('.mail-detail-actions');
+      if (actions && !actions.querySelector('[data-obj-financas]')) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'mail-cta-secondary';
+        b.setAttribute('data-obj-financas', '1');
+        b.textContent = 'Ver finanças';
+        b.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          try { closeInbox(); } catch (_) {}
+          openObjetivos('financas');
+        });
+        actions.appendChild(b);
+      }
+    }
+  }
+  function openMandateAfterTrc() {
+    const L = (mailState.items || []).find((m) => mailSkeletonOf(m) === 'mail-investidores-mandato-01' && !m.econChoiceId);
+    if (!L || typeof openLetter !== 'function') return;
+    openLetter(L.id);
+  }
+  function initObjetivosUi() {
+    const btn = document.getElementById('btnObjetivos');
+    if (btn) btn.addEventListener('click', () => openObjetivos('visao'));
+    const close = document.getElementById('objClose');
+    if (close) close.addEventListener('click', () => closeObjetivos());
+    const sheet = document.getElementById('objSheet');
+    if (sheet) sheet.addEventListener('click', (ev) => { if (ev.target === sheet) closeObjetivos(); });
+    document.querySelectorAll('[data-obj-tab]').forEach((el) => {
+      el.addEventListener('click', () => openObjetivos(el.getAttribute('data-obj-tab')));
+    });
+    document.querySelectorAll('[data-obj-open]').forEach((el) => {
+      el.addEventListener('click', () => openObjetivos(el.getAttribute('data-obj-open')));
+    });
+    const pill = document.getElementById('pillCaixa');
+    if (pill) {
+      pill.classList.add('obj-cash-link');
+      pill.setAttribute('role', 'button');
+      pill.setAttribute('tabindex', '0');
+      const prev = pill.getAttribute('title') || 'Caixa disponível';
+      pill.title = prev + ' · abre Finanças';
+      const go = () => openObjetivos('financas');
+      pill.addEventListener('click', go);
+      pill.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); }
+      });
+    }
+    try { syncObjChrome(); } catch (_) {}
   }
 
   /** Plan landing delivery without mutating mailState / deliveredIds / lastJokerMonth. */
@@ -16529,6 +17113,7 @@
     }
     letter.read = true;
     renderInboxBadge();
+    try { if (typeof syncObjChrome === 'function') syncObjChrome(); } catch (_) {}
     scheduleSave('mail-read');
   }
 
@@ -16683,7 +17268,7 @@
           '<div class="mail-detail">' +
             '<div class="mail-detail-meta">' +
               '<span class="mail-type-chip ' + letter.type + '"' + (MAIL_TYPE_TITLE[letter.type] ? ' title="' + escapeHtml(MAIL_TYPE_TITLE[letter.type]) + '"' : '') + '>' + escapeHtml(typeLabel) + '</span>' +
-              '<span class="mail-row-time">' + escapeHtml(letter.when) + '</span>' +
+              '<span class="mail-row-time">' + escapeHtml(letterWhenLabel(letter, true)) + '</span>' +
             '</div>' +
             '<div class="mail-detail-subject" id="mailDetailSubject" tabindex="-1">' + escapeHtml(fillMailTemplate(letter.subject)) + '</div>' +
             '<div class="mail-detail-from">' + (letter.to
@@ -16693,6 +17278,7 @@
             (actionsHtml ? '<div class="mail-detail-actions' + (hasHints ? ' has-hints' : '') + '">' + actionsHtml + '</div>' : '') +
           '</div>';
         try { entScanLetter(body, letter); } catch (_) {}
+        try { decorateObjectivesLetter(body, letter); } catch (_) {}
         if (mailState._focusLetter) {
           // L10: move focus into the letter that was just opened.
           // Continue asks for the call to action: the first choice, else the subject.
@@ -16742,7 +17328,7 @@
           '<div class="mail-row-top">' +
             '<span class="mail-type-chip ' + m.type + '"' + (MAIL_TYPE_TITLE[m.type] ? ' title="' + escapeHtml(MAIL_TYPE_TITLE[m.type]) + '"' : '') + '>' + escapeHtml(typeLabel) + '</span>' +
             (prazo ? '<span class="mail-row-prazo">Prazo</span>' : '') +
-            '<span class="mail-row-time">' + escapeHtml(m.when) + '</span>' +
+            '<span class="mail-row-time">' + escapeHtml(letterWhenLabel(m, false)) + '</span>' +
           '</div>' +
           '<div class="mail-row-subject">' + escapeHtml(fillMailTemplate(m.subject)) + (m.econChoiceId ? ' <span class="mail-row-answered">respondida</span>' : '') + '</div>' +
           '<div class="mail-row-sender">' + escapeHtml(m.sender) + '</div>' +
@@ -17223,6 +17809,10 @@
           try { if (typeof syncPlayGate === 'function') syncPlayGate(); } catch (_) {}
           try { if (typeof renderNodes === 'function') renderNodes(); } catch (_) {}
           try { if (typeof syncPeriodChrome === 'function') syncPeriodChrome(); } catch (_) {}
+          if (letter && normalizeChoiceId(choiceId, letter) === 'ver_visao') {
+            try { closeInbox(); } catch (_) {}
+            try { openObjetivos('visao'); } catch (_) {}
+          }
           return;
         }
         if (e.target.closest('[data-mail-ignore]')) {
@@ -17749,6 +18339,7 @@
     const fmp = document.getElementById('footerMockPeriod');
     if (fmp) fmp.textContent = label;
     try { if (typeof refreshHudMoment === 'function') refreshHudMoment(); } catch (_) {}
+    try { if (typeof syncObjChrome === 'function') syncObjChrome(); } catch (_) {}
   }
 
   function applyHydratedUi() {
@@ -19488,6 +20079,7 @@
     initSettingsUi();
     try { initEntitySearch(); } catch (err) { console.warn('[WattEnt] init', err); }
     try { if (typeof initMandateUi === 'function') initMandateUi(); } catch (_) {}
+    try { if (typeof initObjetivosUi === 'function') initObjetivosUi(); } catch (_) {}
     initCoach();
     initAuctionDraft();
     initInbox();
@@ -19539,7 +20131,9 @@
     document.getElementById('btnMinimizeAll').addEventListener('click', minimizeAllNodes);
     document.getElementById('btnRestoreAll').addEventListener('click', restoreAllNodes);
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+        if (e.key === 'Escape') {
+        const objSheet = document.getElementById('objSheet');
+        if (objSheet && !objSheet.hidden) { closeObjetivos(); return; }
         const briefing = document.getElementById('mandateBriefing');
         const letter = document.getElementById('mandateLetter');
         if (briefing && briefing.classList.contains('open')) {
