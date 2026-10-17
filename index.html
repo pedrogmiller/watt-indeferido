@@ -5219,16 +5219,25 @@
   body:has(.asset-room.open) .obj-budget,
   body.obj-open .obj-budget { display: none !important; }
   .obj-sheet {
-    position: fixed; inset: 0; z-index: 8750;
-    background: rgba(15, 23, 42, 0.45);
-    display: flex; justify-content: center; align-items: flex-start;
-    padding: 12px 12px 24px; overflow: auto;
+    position: fixed; inset: 0; z-index: 9900;
+    background: rgba(15, 23, 42, 0.62);
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    padding: 36px 20px; overflow: auto;
   }
   .obj-sheet[hidden] { display: none !important; }
-  body.footer-mock .obj-sheet { padding-bottom: calc(var(--mobile-tabbar-h, 76px) + 16px); }
-  .obj-panel { width: min(1100px, 100%); margin: 8px auto 32px; }
-  .obj-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .obj-top h1 { font-size: 20px; font-weight: 800; margin: 4px 0 10px; }
+  body.obj-open .toast { display: none !important; }
+  .obj-panel {
+    width: min(880px, 100%);
+    max-height: none;
+    margin: auto;
+    flex: 0 0 auto;
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 16px 18px 8px;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, 0.28);
+  }
+  .obj-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+  .obj-top h1 { font-size: 22px; font-weight: 800; margin: 0; letter-spacing: -0.02em; }
   .obj-close {
     border: 1px solid var(--border-subtle); background: #fff; color: #475569;
     border-radius: 10px; padding: 8px 12px; font: inherit; font-weight: 700; cursor: pointer; min-height: 40px;
@@ -5249,9 +5258,22 @@
   }
   .obj-hip { color: #92400e; background: #fef3c7; }
   .obj-ex { color: #6b21a8; background: #f3e8ff; }
-  .obj-vis { display: grid; gap: 12px; }
-  .obj-vis > * { min-width: 0; }
-  @media (min-width: 900px) { .obj-vis { grid-template-columns: 300px 1fr; } .obj-fin { grid-template-columns: repeat(3, 1fr) !important; } }
+  .obj-vis { display: flex; flex-direction: column; gap: 0; }
+  .obj-vis > * { min-width: 0; width: 100%; }
+  @media (min-width: 700px) {
+    .obj-reac {
+      display: grid;
+      grid-template-columns: minmax(200px, 260px) 1fr;
+      column-gap: 20px;
+      align-items: center;
+    }
+    .obj-reac .obj-k { grid-column: 1 / -1; }
+    .obj-reac .obj-big { grid-column: 1; grid-row: 2; margin: 0; }
+    .obj-reac .obj-meter { grid-column: 1; grid-row: 3; }
+    .obj-reac .obj-scale { grid-column: 1; grid-row: 4; }
+    .obj-reac p { grid-column: 2; grid-row: 2 / span 3; margin: 0; align-self: center; }
+  }
+  @media (min-width: 900px) { .obj-fin { grid-template-columns: repeat(3, 1fr) !important; } }
   .obj-reac .obj-big { font-size: 18px; font-weight: 800; margin: 6px 0; }
   .obj-meter { height: 10px; border-radius: 999px; background: linear-gradient(90deg, #dc2626, #f59e0b, #16a34a); position: relative; margin: 10px 0 4px; }
   .obj-meter i { position: absolute; top: -4px; width: 4px; height: 18px; background: #0f172a; border-radius: 2px; }
@@ -5261,8 +5283,12 @@
   .obj-mand-t { font-size: 16px; font-weight: 800; }
   .obj-mand-s { font-size: 13px; color: #475569; margin: 4px 0 8px; }
   .obj-tbl { width: 100%; border-collapse: collapse; table-layout: fixed; }
-  .obj-tbl th { font-size: 10px; color: #64748b; text-transform: uppercase; text-align: left; padding: 6px 4px; border-bottom: 1px solid #e2e8f0; }
-  .obj-tbl td { padding: 9px 4px; border-bottom: 1px solid #f1f5f9; vertical-align: top; font-size: 13px; white-space: normal; overflow-wrap: anywhere; }
+  .obj-tbl th { font-size: 10px; color: #64748b; text-transform: uppercase; text-align: left; padding: 6px 8px; border-bottom: 1px solid #e2e8f0; white-space: nowrap; }
+  .obj-tbl td { padding: 9px 8px; border-bottom: 1px solid #f1f5f9; vertical-align: top; font-size: 13px; white-space: normal; overflow-wrap: break-word; }
+  @media (min-width: 641px) {
+    .obj-tbl th:nth-child(2), .obj-tbl td:nth-child(2) { width: 124px; }
+    .obj-tbl th:nth-child(3), .obj-tbl td:nth-child(3) { width: 132px; }
+  }
   .obj-tbl .o { font-weight: 700; }
   .obj-tbl .onum { font-size: 12px; color: #475569; margin-top: 2px; }
   .obj-imp { display: inline-block; font-size: 11px; font-weight: 800; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
@@ -5290,6 +5316,8 @@
   .obj-lobj .obj-imp { flex: none; align-self: flex-start; }
   .mail-detail-body .obj-lobj p, .mail-detail-body p { margin: 8px 0; }
   @media (max-width: 640px) {
+    .obj-sheet { padding: 12px; }
+    .obj-panel { padding: 12px 12px 4px; border-radius: 14px; }
     .obj-tbl, .obj-tbl tbody, .obj-tbl tr { display: block; width: 100%; }
     .obj-tbl th { display: none; }
     .obj-tbl tr { padding: 9px 0; border-bottom: 1px solid #f1f5f9; }
@@ -16592,7 +16620,7 @@
       objEsc(reac.text) + '</p></div><div><div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 1 · ativo</div><div class="obj-mand-t">O primeiro ponto de ligação</div></div><span class="obj-imp e">Ativo</span></div>' +
       '<div class="obj-mand-s">Os investidores confiam-te Ourique. Querem uma central híbrida a produzir, com lucro, antes de a licença caducar.</div>' +
       table + '</div>' + m2card +
-      '<table class="obj-tbl"><tr><th>Objetivo</th><th>Importância</th></tr>' +
+      '<div class="obj-card"><table class="obj-tbl"><tr><th>Objetivo</th><th>Importância</th></tr>' +
       '<tr><td>Levar um segundo ponto de ligação até à licença de produção</td><td><span class="obj-imp dim">Exigido</span></td></tr>' +
       '<tr><td>Pagar o capital próprio desse projeto com a caixa de Ourique ou vendendo parte do projeto</td><td><span class="obj-imp dim">Exigido</span></td></tr>' +
       '<tr><td>Vender parte de um projeto com mais-valia</td><td><span class="obj-imp dim">Extra</span></td></tr></table></div></div></div>';
@@ -16633,6 +16661,7 @@
   }
   function openObjetivos(tab) {
     objTab = tab === 'financas' ? 'financas' : 'visao';
+    try { if (typeof closeInbox === 'function') closeInbox(); } catch (_) {}
     const sheet = document.getElementById('objSheet');
     if (!sheet) return;
     sheet.hidden = false;

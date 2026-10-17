@@ -348,6 +348,49 @@ async function layers(page) {
   });
 }
 
+async function assertBoardLayout(page, label) {
+  const m = await page.evaluate(() => {
+    const panel = document.querySelector('.obj-panel');
+    const table = document.querySelector('#objBody .obj-tbl');
+    const title = document.getElementById('objTitle');
+    const sheet = document.getElementById('objSheet');
+    const pr = panel.getBoundingClientRect();
+    const tr = table.getBoundingClientRect();
+    const hit = (el) => {
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      const x = Math.min(window.innerWidth - 2, Math.max(2, r.left + r.width / 2));
+      const y = Math.min(window.innerHeight - 2, Math.max(2, r.top + Math.min(r.height / 2, 12)));
+      const node = document.elementFromPoint(x, y);
+      return node ? (node.id || node.className || node.tagName) : null;
+    };
+    const pill = document.querySelector('#pillCaixa');
+    const pillHit = hit(pill);
+    const covered = (id) => {
+      const node = document.elementFromPoint(window.innerWidth - 24, 80);
+      return !!(node && node.closest && node.closest(id));
+    };
+    return {
+      panelW: Math.round(pr.width),
+      tableW: Math.round(tr.width),
+      inbox: !!document.querySelector('#inboxDrawer.open'),
+      toast: !!document.querySelector('#toast.show') && getComputedStyle(document.getElementById('toast')).display !== 'none',
+      panelTop: Math.round(pr.top),
+      titleInPanel: !!(title && panel.contains(title)),
+      pillHit: pillHit,
+      rightCovered: covered('#objSheet'),
+      sheet: !!(sheet && !sheet.hidden)
+    };
+  });
+  if (!m.sheet) throw new Error(label + ' objectives window closed');
+  if (m.inbox) throw new Error(label + ' Correio still open behind the board');
+  if (m.toast) throw new Error(label + ' toast overlaps the board');
+  if (!m.titleInPanel) throw new Error(label + ' Empresa title is outside the board');
+  if (m.panelTop < 12) throw new Error(label + ' board sits on the header ' + m.panelTop);
+  if (m.tableW < m.panelW * 0.72) throw new Error(label + ' table squeezed ' + m.tableW + '/' + m.panelW);
+  if (!m.rightCovered) throw new Error(label + ' backdrop does not cover the side');
+}
+
 async function assertNoOverlap(page, label) {
   const open = await layers(page);
   const names = Object.keys(open).filter((k) => open[k]);
@@ -473,6 +516,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   }
   if (!/pelo menos 29 €\/MWh/.test(m1)) throw new Error('limiar label: ' + m1.slice(0, 400));
   if (/Em risco|projeto aguenta|Bónus|bónus|\bbonus\b/i.test(m1)) throw new Error('old extra wording: ' + m1.slice(0, 400));
+  await assertBoardLayout(page, 'board-' + tag);
   await shot(page, 'extra-' + outcome + '-' + tag);
   await shot(page, 'mandato1-' + tag);
   await assertNoOverlap(page, 'mandato1-' + tag);
