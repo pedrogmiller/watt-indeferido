@@ -10,9 +10,9 @@
   },
   "from_name": "Comité de investimento",
   "subject": "Último aviso: a caixa voltou a ficar vazia",
-  "body": "A caixa voltou a ficar abaixo de zero. Já te ajudámos uma vez. Não voltamos a pôr dinheiro.\n\nTens até {{deadline_month}} para resolver isto, vendendo o projeto ou cortando custos. Se a caixa continuar vazia nessa altura, fechamos o projeto. Não há mais avisos.",
+  "body": "A caixa voltou a ficar abaixo de zero. Já te ajudámos uma vez. Não voltamos a pôr dinheiro.\n\nTens um mês para repor a caixa. Se continuar vazia no fim desse mês, o mandato termina.",
   "params": {},
   "deadline_id": "cash_recovery",
-  "deadline_role": "final",
-  "deadline_blocks_play": true
+  "deadline_role": "warning",
+  "deadline_blocks_play": false
 }

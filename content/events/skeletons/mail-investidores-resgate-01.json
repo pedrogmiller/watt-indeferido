@@ -40,7 +40,7 @@
     {
       "id": "rescue_sell",
       "label": "Vender o projeto todo",
-      "hint": "Os investidores cobrem só o que falta enquanto procuras comprador. A venda não é imediata e as ofertas vão ser cerca de 30 % mais baixas, porque o comprador sabe que precisas de vender. Quando a venda fechar, o projeto deixa de ser teu.",
+      "hint": "Enquanto procuras comprador, a venda não é imediata e as ofertas vão ser cerca de 30 % mais baixas, porque o comprador sabe que precisas de vender. Quando a venda fechar, o projeto deixa de ser teu.",
       "effects": [
         "find_buyers_started",
         "sale_pipeline_open",
@@ -75,7 +75,7 @@
     {
       "id": "rescue_cut",
       "label": "Cortar custos e atrasar o projeto",
-      "hint": "Os investidores cobrem só o que falta. Tu cortas a equipa e paras os estudos que não são urgentes durante três meses: gastas muito menos agora, mas o projeto atrasa dois meses e esse tempo também custa. Os prazos da lei continuam a contar.",
+      "hint": "Cortas a equipa e paras os estudos que não são urgentes durante três meses: gastas muito menos agora, mas o projeto atrasa dois meses e esse tempo também custa. Os prazos da lei continuam a contar.",
       "effects": [
         "burn_cut_deep",
         "dev_slowdown",
