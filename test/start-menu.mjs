@@ -436,7 +436,16 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   if (/Em risco|projeto aguenta|Bónus|bónus|bonus/i.test(extra + '\n' + note)) throw new Error('old extra wording: ' + extra);
   await shot(page, 'extra-' + outcome + '-' + tag);
   await page.locator('#mandate0Close').click();
-  await page.locator('#btnObjetivos').click();
+  const visao = page.locator('[data-mail-choice="ver_visao"]');
+  if (await visao.count() && await visao.isVisible()) {
+    await visao.click();
+  } else {
+    for (let i = 0; i < 4 && await page.locator('#inboxDrawer.open').count(); i++) {
+      await page.locator('#inboxBackBtn').click({ force: true });
+      await page.waitForTimeout(80);
+    }
+    await page.locator('#btnObjetivos').click();
+  }
   await page.waitForSelector('#objSheet:not([hidden])', { timeout: 10000 });
   const board = await page.locator('#objBody').innerText();
   if (!/Mandato 1/.test(board) || !/O primeiro ponto de ligação/.test(board)) throw new Error('objectives: ' + board.slice(0, 300));
