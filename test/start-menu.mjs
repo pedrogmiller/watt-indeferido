@@ -467,6 +467,8 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   }, bid, { timeout: 20000 });
   const presetBid = await page.locator('#auctionBidSlider').inputValue();
   if (presetBid !== '27') throw new Error('default bid ' + presetBid);
+  const irony = await page.locator('#auctionNpcIrony').innerText();
+  if (!/entre 20 e 30/.test(irony) || /30–34|~40–44/.test(irony)) throw new Error('ourique rival hint: ' + irony);
   const defaults = await page.evaluate(() => {
     const q = window.__wattQA;
     return {
