@@ -193,6 +193,10 @@ async function migrationAndDelete(browser, width, height, tag) {
 }
 
 async function dismissLayers(page) {
+  if (await page.locator('#objSheet:not([hidden])').count()) {
+    await page.locator('#objClose').click();
+    await page.waitForTimeout(80);
+  }
   if (await page.locator('#mandate0Card').count()) {
     await page.locator('#mandate0Close').click();
     await page.waitForTimeout(100);
@@ -432,6 +436,29 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   if (/Em risco|projeto aguenta|Bónus|bónus|bonus/i.test(extra + '\n' + note)) throw new Error('old extra wording: ' + extra);
   await shot(page, 'extra-' + outcome + '-' + tag);
   await page.locator('#mandate0Close').click();
+  await page.locator('#btnObjetivos').click();
+  await page.waitForSelector('#objSheet:not([hidden])', { timeout: 10000 });
+  const board = await page.locator('#objBody').innerText();
+  if (!/Mandato 1/.test(board) || !/O primeiro ponto de ligação/.test(board)) throw new Error('objectives: ' + board.slice(0, 300));
+  await page.locator('#objTabFin').click();
+  await page.waitForFunction(() => /caixa para desenvolver/i.test((document.getElementById('objBody') || {}).innerText || ''));
+  const fin = await page.locator('#objBody').innerText();
+  if (!/ainda por gastar/i.test(fin)) throw new Error('finanças: ' + fin.slice(0, 240));
+  await shot(page, 'financas-' + tag);
+  await page.locator('#objClose').click();
+  await page.waitForFunction(() => {
+    const id = localStorage.getItem('watt.saves.active');
+    return !!(id && localStorage.getItem('watt.save.slot.' + id));
+  }, { timeout: 8000 });
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.waitForSelector('#startMenu:not([hidden]) [data-menu="carregar"]', { timeout: 15000 });
+  await page.locator('[data-menu="carregar"]').click();
+  await page.waitForSelector('#startModal [data-continue]');
+  await page.locator('#startModal [data-continue]').click();
+  await page.waitForFunction(() => {
+    const q = window.__wattQA;
+    return !!(q && q.state && q.state.auctionWon && !document.body.classList.contains('at-menu'));
+  }, { timeout: 15000 });
   if (stopAfterExtra) {
     await page.close();
     return { reached: { extra: outcome, bid: bid } };
