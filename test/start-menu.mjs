@@ -367,7 +367,7 @@ async function openAuctionFromGame(page) {
   else await page.locator('#tabAuction').click();
 }
 
-async function playToCod(browser, width, height, tag, bid, outcome) {
+async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExtra) {
   const page = await browser.newPage({ viewport: { width, height } });
   track(page, 'cod-' + tag);
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
@@ -395,7 +395,7 @@ async function playToCod(browser, width, height, tag, bid, outcome) {
 
   await page.waitForFunction(() => {
     const bp = window.__wattQA && window.__wattQA.bomPreco && window.__wattQA.bomPreco();
-    return !!(bp && bp.lots && bp.lots.ourique === 29 && Object.keys(bp.lots).length === 1);
+    return !!(bp && bp.lots && bp.lots.ourique === 28 && Object.keys(bp.lots).length === 1);
   }, { timeout: 15000 });
   await page.locator('[data-mail-choice="ver_mandato"]').click();
   await page.waitForSelector('#objSheet:not([hidden])');
@@ -403,7 +403,7 @@ async function playToCod(browser, width, height, tag, bid, outcome) {
   if (!/Ganhar o leilão/.test(m0)) throw new Error('mandato 0 title: ' + m0.slice(0, 300));
   if (!/Sem ligação à rede não há central/.test(m0)) throw new Error('mandato 0 opening');
   if (!/Ganhar um TRC no leilão/.test(m0)) throw new Error('mandato 0 required');
-  if (!/pelo menos 29 €\/MWh/.test(m0)) throw new Error('ourique limiar: ' + m0.slice(0, 400));
+  if (!/pelo menos 28 €\/MWh/.test(m0)) throw new Error('ourique limiar: ' + m0.slice(0, 400));
   if (!/Em curso/.test(m0)) throw new Error('extra not in progress');
   if (/projeto aguenta|Em risco|Em bom caminho/.test(m0)) throw new Error('old extra copy: ' + m0.slice(0, 400));
   if (!/Mandato 1: O primeiro ponto de ligação/.test(m0)) throw new Error('locked mandate 1');
@@ -423,17 +423,20 @@ async function playToCod(browser, width, height, tag, bid, outcome) {
     return !!(e && e.win);
   }, bid, { timeout: 20000 });
   const presetBid = await page.locator('#auctionBidSlider').inputValue();
-  if (presetBid !== '27') throw new Error('default bid ' + presetBid);
+  if (presetBid !== '25') throw new Error('default bid ' + presetBid);
   const defaults = await page.evaluate(() => {
     const q = window.__wattQA;
     return {
-      ourique: q.winAt('ourique', 27),
-      evora: q.winAt('evora', 27),
-      portimao: q.winAt('portimao', 27)
+      ourique: q.winAt('ourique', 25),
+      evora: q.winAt('evora', 25),
+      portimao: q.winAt('portimao', 25),
+      b28: q.winAt('ourique', 28),
+      b29: q.winAt('ourique', 29),
+      b30: q.winAt('ourique', 30)
     };
   });
-  ['ourique', 'evora', 'portimao'].forEach((id) => {
-    if (!defaults[id] || !defaults[id].win) throw new Error('bid 27 loses ' + id + ' ' + JSON.stringify(defaults[id]));
+  ['ourique', 'evora', 'portimao', 'b28', 'b29', 'b30'].forEach((id) => {
+    if (!defaults[id] || !defaults[id].win) throw new Error('bid loses ' + id + ' ' + JSON.stringify(defaults[id]));
   });
   await dismissLayers(page);
   const lot = page.locator('#auction-lot-ourique, [data-lot="ourique"]').first();
@@ -471,11 +474,16 @@ async function playToCod(browser, width, height, tag, bid, outcome) {
     if (!/Falhado/.test(extra)) throw new Error('expected Falhado: ' + extra);
     if (!/Ganhaste, mas barato/.test(note)) throw new Error('failure note: ' + note);
   }
-  if (/Em risco|projeto aguenta/.test(extra + '\n' + note)) throw new Error('old extra wording: ' + extra);
+  if (!/pelo menos 28 €\/MWh/.test(extra)) throw new Error('limiar label: ' + extra);
+  if (/Em risco|projeto aguenta|Bónus|bónus|bonus/i.test(extra + '\n' + note)) throw new Error('old extra wording: ' + extra);
   await shot(page, 'extra-' + outcome + '-' + tag);
   await shot(page, 'mandato1-' + tag);
   await assertNoOverlap(page, 'mandato1-' + tag);
   await page.locator('#objClose').click();
+  if (stopAfterExtra) {
+    await page.close();
+    return { reached: { extra: outcome, bid: bid } };
+  }
 
   let month = -1;
   let guard = 0;
@@ -620,11 +628,11 @@ async function playOtherLot(browser, width, height, tag) {
   await page.waitForSelector('#auctionRoom.open', { timeout: 10000 });
   await page.waitForFunction(() => {
     const q = window.__wattQA;
-    return !!(q && q.winAt && q.winAt('ourique', 40) && q.winAt('ourique', 40).win === false && q.winAt('evora', 27) && q.winAt('evora', 27).win);
+    return !!(q && q.winAt && q.winAt('ourique', 40) && q.winAt('ourique', 40).win === false && q.winAt('evora', 25) && q.winAt('evora', 25).win);
   }, { timeout: 20000 });
   try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1500 }); } catch (_) {}
   const firstBid = await page.locator('#auctionBidSlider').inputValue();
-  if (firstBid !== '27') throw new Error('ourique default bid ' + firstBid);
+  if (firstBid !== '25') throw new Error('ourique default bid ' + firstBid);
   await page.locator('#auctionBidSlider').evaluate((el) => {
     el.value = '40';
     el.dispatchEvent(new Event('input', { bubbles: true }));
@@ -642,12 +650,12 @@ async function playOtherLot(browser, width, height, tag) {
   const lot = page.locator('#auction-lot-evora, [data-lot="evora"]').first();
   if ((await lot.getAttribute('aria-selected')) !== 'true') await lot.click({ force: true });
   const preset = await page.locator('#auctionBidSlider').inputValue();
-  if (preset !== '27') throw new Error('évora default bid ' + preset);
+  if (preset !== '25') throw new Error('évora default bid ' + preset);
   try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1000 }); } catch (_) {}
   await page.locator('#auction-confirm').click({ force: true });
   await page.waitForSelector('[data-screen="trap"].active #auctionTrapDone', { timeout: 10000 });
   const trap = await page.locator('#auctionTrapDone').innerText();
-  if (!/Aceitar/.test(trap)) throw new Error('évora did not win at 27: ' + trap);
+  if (!/Aceitar/.test(trap)) throw new Error('évora did not win at 25: ' + trap);
   await page.locator('#auctionTrapDone').click({ force: true });
   await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, { timeout: 15000 });
   for (let i = 0; i < 3 && await page.locator('#inboxDrawer.open').count(); i++) {
@@ -674,18 +682,27 @@ try {
   await migrationAndDelete(browser, 1440, 900, '1440');
   }
   report.cod = {};
-  if (only !== 'other') for (const [bid, outcome] of [[29, 'conseguido'], [27, 'falhado']]) {
-    for (const [w, h, tag] of [[1440, 900, '1440'], [390, 844, '390']]) {
-      const cod = await playToCod(browser, w, h, outcome + '-' + tag, bid, outcome);
-      console.log('COD', outcome, tag, JSON.stringify(cod.reached));
-      report.cod[outcome + '-' + tag] = cod.reached;
+  if (only !== 'other') {
+    for (const [bid, outcome] of [[25, 'falhado'], [28, 'conseguido']]) {
+      for (const [w, h, tag] of [[1440, 900, '1440'], [390, 844, '390']]) {
+        const cod = await playToCod(browser, w, h, outcome + '-' + bid + '-' + tag, bid, outcome);
+        console.log('COD', outcome, bid, tag, JSON.stringify(cod.reached));
+        report.cod[outcome + '-' + bid + '-' + tag] = cod.reached;
+      }
+    }
+    for (const bid of [29, 30]) {
+      for (const [w, h, tag] of [[1440, 900, '1440'], [390, 844, '390']]) {
+        const extra = await playToCod(browser, w, h, 'conseguido-' + bid + '-' + tag, bid, 'conseguido', true);
+        console.log('EXTRA', bid, tag, JSON.stringify(extra.reached));
+        report.cod['conseguido-' + bid + '-' + tag] = extra.reached;
+      }
     }
   }
   if (only !== 'cod') {
   await playOtherLot(browser, 1440, 900, '1440');
   await playOtherLot(browser, 390, 844, '390');
   }
-  console.log('Évora extra hidden, default 27 wins');
+  console.log('Évora extra hidden, default 25 wins');
   report.ok = errors.length === 0;
   report.errors = errors.slice();
   if (errors.length) {
