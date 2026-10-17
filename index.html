@@ -18211,6 +18211,8 @@
     const lockedTitle = m.locked_title || 'Mandato 1: O primeiro ponto de ligação';
     const lockedBadge = m.locked_badge || '🔒 Abre quando ganhares o TRC';
     const ex = mandate0Extra();
+    const wonNow = wonAuctionPick();
+    const requiredState = wonNow.lotId ? 'Conseguido' : 'Por cumprir';
     const extraRow = ex
       ? ('<div class="goal" id="mandate0Extra"><b>' + escapeHtml(ex.label) + '</b><span>Extra · ' + escapeHtml(ex.word) + '</span></div>')
       : '';
@@ -18221,7 +18223,7 @@
     el.innerHTML = '<div class="card" role="dialog" aria-modal="true" aria-labelledby="mandate0Title">' +
       '<p class="k">Mandato 0 · ativo</p><h2 id="mandate0Title">' + escapeHtml(title) + '</h2>' +
       '<p class="open">' + escapeHtml(opening) + '</p>' +
-      '<div class="goal"><b>' + escapeHtml(required) + '</b><span>Exigido · Por cumprir</span></div>' +
+      '<div class="goal"><b>' + escapeHtml(required) + '</b><span>Exigido · ' + requiredState + '</span></div>' +
       extraRow + extraNote +
       '<div class="lock"><b>' + escapeHtml(lockedTitle) + '</b><span>' + escapeHtml(lockedBadge) + '</span></div>' +
       '<button type="button" class="secondary" id="mandate0Close">Fechar</button></div>';

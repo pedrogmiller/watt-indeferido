@@ -550,9 +550,11 @@ async function playOtherLot(browser, width, height, tag) {
     el.dispatchEvent(new Event('input', { bubbles: true }));
   });
   await page.locator('#auction-confirm').click();
-  await page.waitForSelector('[data-screen="trap"].active, [data-screen="fora"].active', { timeout: 10000 });
-  if (await page.locator('#auctionTrapDone').count()) await page.locator('#auctionTrapDone').click();
-  await page.locator('#auctionForaNext, #portfolioEmptyCta').first().click();
+  await page.waitForSelector('[data-screen="fora"].active #auctionForaNext, #portfolioEmptyCta:not([hidden])', { timeout: 10000 });
+  try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1500 }); } catch (_) {}
+  const nextRound = page.locator('[data-screen="fora"].active #auctionForaNext');
+  if (await nextRound.count()) await nextRound.click({ force: true });
+  else await page.locator('#portfolioEmptyCta').click({ force: true });
   await page.waitForFunction(() => {
     const q = window.__wattQA;
     return q && q.auction && q.auction.wave === 1 && q.auction.screen === 'bid';
@@ -561,11 +563,12 @@ async function playOtherLot(browser, width, height, tag) {
   if ((await lot.getAttribute('aria-selected')) !== 'true') await lot.click({ force: true });
   const preset = await page.locator('#auctionBidSlider').inputValue();
   if (preset !== '27') throw new Error('évora default bid ' + preset);
-  await page.locator('#auction-confirm').click();
+  try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1000 }); } catch (_) {}
+  await page.locator('#auction-confirm').click({ force: true });
   await page.waitForSelector('[data-screen="trap"].active #auctionTrapDone', { timeout: 10000 });
   const trap = await page.locator('#auctionTrapDone').innerText();
   if (!/Aceitar/.test(trap)) throw new Error('évora did not win at 27: ' + trap);
-  await page.locator('#auctionTrapDone').click();
+  await page.locator('#auctionTrapDone').click({ force: true });
   await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, { timeout: 15000 });
   await page.evaluate(() => window.__wattQA.openMandate0());
   await page.waitForSelector('#mandate0Card');
@@ -580,22 +583,25 @@ async function playOtherLot(browser, width, height, tag) {
 const browser = await chromium.launch({ headless: true });
 const report = { ok: false, errors: [], shots: [] };
 try {
-  if (process.env.WATT_ONLY !== 'cod') {
+  const only = process.env.WATT_ONLY || '';
+  if (only !== 'cod' && only !== 'other') {
   await openEmptyMenu(browser, 390, 844, '390');
   await openEmptyMenu(browser, 1440, 900, '1440');
   await migrationAndDelete(browser, 390, 844, '390');
   await migrationAndDelete(browser, 1440, 900, '1440');
   }
   report.cod = {};
-  for (const [bid, outcome] of [[29, 'conseguido'], [27, 'falhado']]) {
+  if (only !== 'other') for (const [bid, outcome] of [[29, 'conseguido'], [27, 'falhado']]) {
     for (const [w, h, tag] of [[1440, 900, '1440'], [390, 844, '390']]) {
       const cod = await playToCod(browser, w, h, outcome + '-' + tag, bid, outcome);
       console.log('COD', outcome, tag, JSON.stringify(cod.reached));
       report.cod[outcome + '-' + tag] = cod.reached;
     }
   }
+  if (only !== 'cod') {
   await playOtherLot(browser, 1440, 900, '1440');
   await playOtherLot(browser, 390, 844, '390');
+  }
   console.log('Évora extra hidden, default 27 wins');
   report.ok = errors.length === 0;
   report.errors = errors.slice();
