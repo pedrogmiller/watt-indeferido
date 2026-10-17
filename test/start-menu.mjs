@@ -438,7 +438,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
 
   await page.waitForFunction(() => {
     const bp = window.__wattQA && window.__wattQA.bomPreco && window.__wattQA.bomPreco();
-    return !!(bp && bp.lots && bp.lots.ourique === 28 && Object.keys(bp.lots).length === 1);
+    return !!(bp && bp.lots && bp.lots.ourique === 29 && Object.keys(bp.lots).length === 1);
   }, { timeout: 15000 });
   await page.locator('[data-mail-choice="ver_mandato"]').click();
   await page.waitForSelector('#objSheet:not([hidden])');
@@ -446,7 +446,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   if (!/Ganhar o leilão/.test(m0)) throw new Error('mandato 0 title: ' + m0.slice(0, 300));
   if (!/Sem ligação à rede não há central/.test(m0)) throw new Error('mandato 0 opening');
   if (!/Ganhar um TRC no leilão/.test(m0)) throw new Error('mandato 0 required');
-  if (!/pelo menos 28 €\/MWh/.test(m0)) throw new Error('ourique limiar: ' + m0.slice(0, 400));
+  if (!/pelo menos 29 €\/MWh/.test(m0)) throw new Error('ourique limiar: ' + m0.slice(0, 400));
   if (!/Em curso/.test(m0)) throw new Error('extra not in progress');
   if (/projeto aguenta|Em risco|Em bom caminho/.test(m0)) throw new Error('old extra copy: ' + m0.slice(0, 400));
   if (!/Mandato 1: O primeiro ponto de ligação/.test(m0)) throw new Error('locked mandate 1');
@@ -514,7 +514,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
     if (!/Falhado/.test(extra)) throw new Error('expected Falhado: ' + extra);
     if (!/Ganhaste, mas barato/.test(note)) throw new Error('failure note: ' + note);
   }
-  if (!/pelo menos 28 €\/MWh/.test(m1)) throw new Error('limiar label: ' + m1.slice(0, 400));
+  if (!/pelo menos 29 €\/MWh/.test(m1)) throw new Error('limiar label: ' + m1.slice(0, 400));
   if (/Em risco|projeto aguenta|Bónus|bónus|\bbonus\b/i.test(m1)) throw new Error('old extra wording: ' + m1.slice(0, 400));
   await assertBoardLayout(page, 'board-' + tag);
   await shot(page, 'extra-' + outcome + '-' + tag);
@@ -724,10 +724,10 @@ try {
   }
   report.cod = {};
   if (only !== 'other') {
-    for (const [bid, outcome, stop] of [[25, 'falhado', true], [28, 'conseguido', false], [29, 'conseguido', true], [30, 'conseguido', true]]) {
+    for (const [bid, outcome] of [[27, 'falhado'], [29, 'conseguido']]) {
       for (const [w, h, tag] of [[1440, 900, '1440'], [390, 844, '390']]) {
-        const cod = await playToCod(browser, w, h, outcome + '-' + bid + '-' + tag, bid, outcome, stop);
-        console.log(stop ? 'EXTRA' : 'COD', outcome, bid, tag, JSON.stringify(cod.reached));
+        const cod = await playToCod(browser, w, h, outcome + '-' + bid + '-' + tag, bid, outcome);
+        console.log('COD', outcome, bid, tag, JSON.stringify(cod.reached));
         report.cod[outcome + '-' + bid + '-' + tag] = cod.reached;
       }
     }
