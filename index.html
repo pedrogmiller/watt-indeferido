@@ -5783,10 +5783,10 @@
         <div class="auction-screen active" id="auctionScreenBid" data-screen="bid">
           <div class="auction-bid-scroll auction-swipe-surface" id="auctionBidSwipe">
           <div class="auction-offer" id="auction-bid-offer" data-tut="auction.bid">
-            <div class="auction-bid-huge num" id="auctionBidValue">30</div>
+            <div class="auction-bid-huge num" id="auctionBidValue">27</div>
             <div class="auction-bid-unit">€/MWh · a tua oferta</div>
             <div class="auction-slider-wrap">
-              <input type="range" class="auction-slider" id="auctionBidSlider" min="14" max="48" step="1" value="30" aria-label="Oferta em euros por MWh" />
+              <input type="range" class="auction-slider" id="auctionBidSlider" min="14" max="48" step="1" value="27" aria-label="Oferta em euros por MWh" />
               <div class="auction-slider-ends"><span>14 €/MWh</span><span>48 €/MWh</span></div>
               <div class="auction-steps" id="auctionBidSteps"></div>
             </div>
@@ -10432,7 +10432,7 @@
   let AUCTION_LOTS = AUCTION_WAVES[0].slice();
 
   const AUCTION_MAX_BID = 45;     // leilão faixa draft: preço máximo do leilão (bids above are refused)
-  const AUCTION_DEFAULT_BID = 30; // leilão faixa draft: default bid (inside the trap for most lots)
+  const AUCTION_DEFAULT_BID = 27; // Ourique limiar 29 − 2. ≤ rival on every lot (30, or 29 in Portimão).
   const auctionState = {
     open: false,
     screen: 'bid',
@@ -10490,9 +10490,12 @@
   /* ── Leilão faixa (IPP Economy draft 2026-09-30, D7–D10 · NOT approved by Pedro) ──
    * NPV / IRR per lot and integer bid 14–48 come from leilao_faixa_npv.json (equity view, 8 % nominal).
    * Per lot also npcFloor / npcHi (proposed_auction.*_console). Win rule unchanged: bid <= npcFloor + 1.
-   * Auction cap (preço máximo) 45 €/MWh; default bid 30. Without the file the old mock stays (console warning). */
+   * Auction cap (preço máximo) 45 €/MWh; default bid is AUCTION_DEFAULT_BID. Without the file the old mock stays (console warning).
+   * Bom-preço limiar: content/economy/bom_preco.json (only lots listed there). */
   const LEILAO_FAIXA_URL = 'content/economy/leilao_faixa_npv.json';
+  const BOM_PRECO_URL = 'content/economy/bom_preco.json';
   var LEILAO_FAIXA = null; // var: read by lotFitsMandate before this line runs
+  var BOM_PRECO = null;
   function faixaLot(id) { return (LEILAO_FAIXA && LEILAO_FAIXA.lots && LEILAO_FAIXA.lots[id]) || null; }
   function faixaLookup(table, bid) {
     if (!table) return null;
@@ -10592,6 +10595,11 @@
       if (!r.ok) { console.warn('[WattAuction] leilao_faixa missing (' + r.status + '): auction keeps the old mock NPV'); return; }
       applyLeilaoFaixa(await r.json());
     } catch (err) { console.warn('[WattAuction] leilao_faixa failed', err); }
+    try {
+      const b = await fetch(BOM_PRECO_URL, { cache: 'no-store' });
+      if (!b.ok) { console.warn('[WattAuction] bom_preco missing (' + b.status + ')'); return; }
+      BOM_PRECO = await b.json();
+    } catch (err) { console.warn('[WattAuction] bom_preco failed', err); }
   })();
   /* Lines under the consultant NPV sentence. Copy: content/events/auction-consultor.v01.json (manifest auction_consultor). */
   const AUCTION_CONSULTOR_FALLBACK = 'content/events/auction-consultor.v01.json';
@@ -18094,7 +18102,9 @@
           title: 'Ganhar o leilão',
           opening: 'Sem ligação à rede não há central. Começa por aqui.',
           required: 'Ganhar um TRC no leilão',
-          extra: 'Ganhar sem licitar abaixo do que o projeto aguenta',
+          extra: 'Ganhar o leilão a um bom preço (pelo menos {LIMIAR} €/MWh)',
+          note_ok: 'Bom preço: cada MWh de Ourique vale mais. Mesmo assim, só com solar perdes dinheiro; hibridizado, já podes ter lucro.',
+          note_fail: 'Ganhaste, mas barato. Vai ser difícil chegar ao lucro: vais precisar de hibridizar, de cuidado nos custos e talvez de mais capital dos investidores.',
           locked_title: 'Mandato 1: O primeiro ponto de ligação',
           locked_badge: '🔒 Abre quando ganhares o TRC'
         },
@@ -18143,29 +18153,50 @@
     }));
     try { renderInboxBadge(); } catch (_) {}
   }
-  function phase0BreakEvenMet() {
+  function wonAuctionPick() {
+    let bid = null;
+    let lotId = null;
     try {
-      if (typeof auctionState === 'undefined' || typeof auctionEconomics !== 'function' || typeof faixaLot !== 'function') return null;
-      let bid = null;
-      let lotId = null;
-      const taken = auctionState.taken || {};
+      const taken = (typeof auctionState !== 'undefined' && auctionState.taken) || {};
       Object.keys(taken).forEach((id) => {
         const t = taken[id];
         if (bid != null || !t || t.lost || t.bid == null) return;
-        bid = t.bid;
+        bid = Number(t.bid);
         lotId = id;
       });
-      if (bid == null && auctionState.lastResult && !auctionState.lastResult.lost && auctionState.lastResult.bid != null) {
-        bid = auctionState.lastResult.bid;
+      if (bid == null && typeof auctionState !== 'undefined' && auctionState.lastResult && !auctionState.lastResult.lost && auctionState.lastResult.bid != null) {
+        bid = Number(auctionState.lastResult.bid);
         lotId = auctionState.lastResult.lot && auctionState.lastResult.lot.id;
       }
-      if (bid == null || !lotId) return null;
-      const fx = faixaLot(lotId);
-      if (!fx || !fx.npv_by_bid) return null;
-      const eco = auctionEconomics(bid, { id: lotId });
-      if (!eco || eco.source !== 'leilao_faixa' || typeof eco.van !== 'number' || !isFinite(eco.van)) return null;
-      return eco.tone !== 'bad';
-    } catch (_) { return null; }
+    } catch (_) {}
+    return { bid: bid, lotId: lotId };
+  }
+  function bomPrecoLimiar(lotId) {
+    const lots = (typeof BOM_PRECO !== 'undefined' && BOM_PRECO && BOM_PRECO.lots) || null;
+    if (!lots || lots[lotId] == null || lots[lotId] === '') return null;
+    const n = Number(lots[lotId]);
+    return isFinite(n) ? n : null;
+  }
+  function mandate0Extra() {
+    const won = wonAuctionPick();
+    const lotId = won.lotId || 'ourique';
+    const lim = bomPrecoLimiar(lotId);
+    if (lim == null) return null;
+    const m = (typeof phase0CopyCache !== 'undefined' && phase0CopyCache && phase0CopyCache.mandate0) || {};
+    const template = m.extra || 'Ganhar o leilão a um bom preço (pelo menos {LIMIAR} €/MWh)';
+    const label = String(template).replace(/\{LIMIAR\}/g, String(lim));
+    let word = 'Em curso';
+    let note = '';
+    if (won.lotId && won.bid != null) {
+      if (won.bid + 1e-9 >= lim) {
+        word = 'Conseguido';
+        note = m.note_ok || '';
+      } else {
+        word = 'Falhado';
+        note = m.note_fail || '';
+      }
+    }
+    return { label: label, word: word, note: note };
   }
   function closeMandate0() {
     const el = document.getElementById('mandate0Card');
@@ -18177,14 +18208,13 @@
     const title = m.title || 'Ganhar o leilão';
     const opening = m.opening || 'Sem ligação à rede não há central. Começa por aqui.';
     const required = m.required || 'Ganhar um TRC no leilão';
-    const extra = m.extra || '';
     const lockedTitle = m.locked_title || 'Mandato 1: O primeiro ponto de ligação';
     const lockedBadge = m.locked_badge || '🔒 Abre quando ganhares o TRC';
-    const held = extra ? phase0BreakEvenMet() : null;
-    const extraWord = held == null ? 'Ainda não' : (held ? 'Em bom caminho' : 'Em risco');
-    const extraRow = extra
-      ? ('<div class="goal"><b>' + escapeHtml(extra) + '</b><span>Extra · ' + extraWord + '</span></div>')
+    const ex = mandate0Extra();
+    const extraRow = ex
+      ? ('<div class="goal" id="mandate0Extra"><b>' + escapeHtml(ex.label) + '</b><span>Extra · ' + escapeHtml(ex.word) + '</span></div>')
       : '';
+    const extraNote = ex && ex.note ? ('<p class="open" id="mandate0ExtraNote">' + escapeHtml(ex.note) + '</p>') : '';
     const el = document.createElement('div');
     el.id = 'mandate0Card';
     el.className = 'phase0-welcome';
@@ -18192,7 +18222,7 @@
       '<p class="k">Mandato 0 · ativo</p><h2 id="mandate0Title">' + escapeHtml(title) + '</h2>' +
       '<p class="open">' + escapeHtml(opening) + '</p>' +
       '<div class="goal"><b>' + escapeHtml(required) + '</b><span>Exigido · Por cumprir</span></div>' +
-      extraRow +
+      extraRow + extraNote +
       '<div class="lock"><b>' + escapeHtml(lockedTitle) + '</b><span>' + escapeHtml(lockedBadge) + '</span></div>' +
       '<button type="button" class="secondary" id="mandate0Close">Fechar</button></div>';
     document.body.appendChild(el);
@@ -19369,7 +19399,7 @@
         landChosen: () => landChosen(), envPath: () => currentEnvPath(), onAiaRoute: () => onAiaRoute(),
         envRoute: (patch) => { const sh = JSON.parse(JSON.stringify(getSeSheet(mailLoop.seId || 'ourique') || {})); Object.assign(sh.env_draft = sh.env_draft || {}, patch || {}); return computeEnvRoute(sh, null); },
         auctionWave: (n) => { resetAuctionDraft({ wave: n }); try { renderAuctionLots(); renderAuctionRivals(); selectAuctionLot(AUCTION_LOTS[0].id); } catch (_) {} return AUCTION_LOTS.map((l) => l.id); },
-        faixa: () => !!LEILAO_FAIXA, overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
+        faixa: () => !!LEILAO_FAIXA, bomPreco: () => BOM_PRECO, openMandate0: () => openMandate0(), overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, winAt: (id, bid) => { let lot = null; try { AUCTION_WAVES.forEach((w) => { if (!lot) lot = w.find((l) => l.id === id) || null; }); } catch (_) {} if (!lot) return null; return { win: wouldWinAuction(Number(bid), lot), floor: lot.npcFloor, best: rivalBest(lot) }; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
         saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable(),
         canSpend: (n) => canSpend(n),
         cashGap: (n) => cashGapMessage(n),

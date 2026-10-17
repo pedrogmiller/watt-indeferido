@@ -4,8 +4,9 @@
     "title": "Ganhar o leilão",
     "opening": "Sem ligação à rede não há central. Começa por aqui.",
     "required": "Ganhar um TRC no leilão",
-    "extra": "Ganhar sem licitar abaixo do que o projeto aguenta",
-    "extra_note": "Mantido: o NPV da oferta vencedora vem de leilao_faixa (auctionEconomics, tom bad = abaixo do break-even). Em Ourique o break-even é 33,2 €/MWh e qualquer oferta que ganhe fica abaixo.",
+    "extra": "Ganhar o leilão a um bom preço (pelo menos {LIMIAR} €/MWh)",
+    "note_ok": "Bom preço: cada MWh de Ourique vale mais. Mesmo assim, só com solar perdes dinheiro; hibridizado, já podes ter lucro.",
+    "note_fail": "Ganhaste, mas barato. Vai ser difícil chegar ao lucro: vais precisar de hibridizar, de cuidado nos custos e talvez de mais capital dos investidores.",
     "locked_title": "Mandato 1: O primeiro ponto de ligação",
     "locked_badge": "🔒 Abre quando ganhares o TRC"
   },
