@@ -620,7 +620,32 @@ async function playOtherLot(browser, width, height, tag) {
   if (await page.locator('#mandate0Extra').count()) throw new Error('extra row present for Évora');
   if (!/Ganhar um TRC no leilão/.test(body)) throw new Error('required goal missing: ' + body.slice(0, 300));
   await shot(page, 'extra-hidden-evora-' + tag);
+  await assetRoomChecks(page, tag);
   await page.close();
+}
+
+/** Sala do ativo right after the TRC: «Ver números» not under the HUD, months ≥ 0, MW still a plan, three money pots. */
+async function assetRoomChecks(page, tag) {
+  await page.locator('#mandate0Close').click({ force: true });
+  await page.evaluate(() => window.__tutApi.openSala());
+  await page.waitForSelector('#assetRoom.open #verNumeros');
+  await page.evaluate(() => { document.getElementById('verNumeros').open = true; });
+  await page.waitForTimeout(200);
+  const r = await page.evaluate(() => {
+    const sum = document.querySelector('#verNumeros > summary').getBoundingClientRect();
+    const hit = document.elementFromPoint(sum.left + 8, sum.top + 2);
+    return {
+      covered: !(hit && hit.closest('#verNumeros')),
+      months: (document.getElementById('valMonthsPlayed') || {}).textContent,
+      mw: [...document.querySelectorAll('#assetRoom .asset-mw-card .k')].map((e) => e.textContent),
+      pots: [...document.querySelectorAll('#assetMoneyStrip .money-pot .k')].map((e) => e.textContent)
+    };
+  });
+  if (r.covered) throw new Error('«Ver números» covered by another layer at ' + tag);
+  if (!(Number(r.months) >= 0)) throw new Error('Meses de jogo negative: ' + r.months);
+  if (!r.mw.includes('MW no teu plano') || r.mw.includes('MW ligados por ti')) throw new Error('MW card before COD: ' + r.mw.join(' / '));
+  if (r.pots.join('|') !== 'Desenvolvimento|Construção|Garantias do banco') throw new Error('money pots: ' + r.pots.join('|'));
+  await shot(page, 'sala-ver-numeros-' + tag);
 }
 
 const browser = await chromium.launch({ headless: true });
