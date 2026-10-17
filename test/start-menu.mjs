@@ -474,8 +474,8 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
     if (!/Falhado/.test(extra)) throw new Error('expected Falhado: ' + extra);
     if (!/Ganhaste, mas barato/.test(note)) throw new Error('failure note: ' + note);
   }
-  if (!/pelo menos 28 €\/MWh/.test(extra)) throw new Error('limiar label: ' + extra);
-  if (/Em risco|projeto aguenta|Bónus|bónus|bonus/i.test(extra + '\n' + note)) throw new Error('old extra wording: ' + extra);
+  if (!/pelo menos 28 €\/MWh/.test(m1)) throw new Error('limiar label: ' + m1.slice(0, 400));
+  if (/Em risco|projeto aguenta|Bónus|bónus|\bbonus\b/i.test(m1)) throw new Error('old extra wording: ' + m1.slice(0, 400));
   await shot(page, 'extra-' + outcome + '-' + tag);
   await shot(page, 'mandato1-' + tag);
   await assertNoOverlap(page, 'mandato1-' + tag);
