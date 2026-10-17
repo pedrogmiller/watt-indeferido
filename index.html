@@ -5783,10 +5783,10 @@
         <div class="auction-screen active" id="auctionScreenBid" data-screen="bid">
           <div class="auction-bid-scroll auction-swipe-surface" id="auctionBidSwipe">
           <div class="auction-offer" id="auction-bid-offer" data-tut="auction.bid">
-            <div class="auction-bid-huge num" id="auctionBidValue">25</div>
+            <div class="auction-bid-huge num" id="auctionBidValue">27</div>
             <div class="auction-bid-unit">€/MWh · a tua oferta</div>
             <div class="auction-slider-wrap">
-              <input type="range" class="auction-slider" id="auctionBidSlider" min="14" max="48" step="1" value="25" aria-label="Oferta em euros por MWh" />
+              <input type="range" class="auction-slider" id="auctionBidSlider" min="14" max="48" step="1" value="27" aria-label="Oferta em euros por MWh" />
               <div class="auction-slider-ends"><span>14 €/MWh</span><span>48 €/MWh</span></div>
               <div class="auction-steps" id="auctionBidSteps"></div>
             </div>
@@ -8657,7 +8657,7 @@
       overlay_highlight: true,
       card_data: {
         title: 'Olha o consultor',
-        body: 'A oferta começa em 25 €/MWh. Aqui ganhas o lote, mas o projeto perde dinheiro (NPV negativo). Sobe a oferta até o NPV ficar positivo: os investidores querem pelo menos 8% ao ano sobre o dinheiro deles, depois de pagar ao banco. Se passares o preço dos rivais, perdes o lote.',
+        body: 'A oferta começa em 27 €/MWh. Aqui ganhas o lote, mas o projeto perde dinheiro (NPV negativo). Sobe a oferta até o NPV ficar positivo: os investidores querem pelo menos 8% ao ano sobre o dinheiro deles, depois de pagar ao banco. Se passares o preço dos rivais, perdes o lote.',
         action_instruction: 'Lê o painel',
         btn_label: 'Jogar'
       }
@@ -10432,7 +10432,7 @@
   let AUCTION_LOTS = AUCTION_WAVES[0].slice();
 
   const AUCTION_MAX_BID = 45;     // leilão faixa draft: preço máximo do leilão (bids above are refused)
-  const AUCTION_DEFAULT_BID = 25; // ≤ rival on every lot (30, or 29 in Portimão), so an untouched slider still wins.
+  const AUCTION_DEFAULT_BID = 27; // ≤ rival on every lot (30, or 29 in Portimão), so an untouched slider still wins.
   const auctionState = {
     open: false,
     screen: 'bid',
