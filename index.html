@@ -5902,10 +5902,10 @@
         <div class="auction-screen active" id="auctionScreenBid" data-screen="bid">
           <div class="auction-bid-scroll auction-swipe-surface" id="auctionBidSwipe">
           <div class="auction-offer" id="auction-bid-offer" data-tut="auction.bid">
-            <div class="auction-bid-huge num" id="auctionBidValue">30</div>
+            <div class="auction-bid-huge num" id="auctionBidValue">27</div>
             <div class="auction-bid-unit">€/MWh · a tua oferta</div>
             <div class="auction-slider-wrap">
-              <input type="range" class="auction-slider" id="auctionBidSlider" min="14" max="48" step="1" value="30" aria-label="Oferta em euros por MWh" />
+              <input type="range" class="auction-slider" id="auctionBidSlider" min="14" max="48" step="1" value="27" aria-label="Oferta em euros por MWh" />
               <div class="auction-slider-ends"><span>14 €/MWh</span><span>48 €/MWh</span></div>
               <div class="auction-steps" id="auctionBidSteps"></div>
             </div>
@@ -10566,7 +10566,7 @@
   let AUCTION_LOTS = AUCTION_WAVES[0].slice();
 
   const AUCTION_MAX_BID = 45;     // leilão faixa draft: preço máximo do leilão (bids above are refused)
-  const AUCTION_DEFAULT_BID = 30; // leilão faixa draft: default bid (inside the trap for most lots)
+  const AUCTION_DEFAULT_BID = 27; // Ourique limiar 29 − 2. ≤ rival on every lot (30, or 29 in Portimão).
   const auctionState = {
     open: false,
     screen: 'bid',
@@ -10624,9 +10624,12 @@
   /* ── Leilão faixa (IPP Economy draft 2026-09-30, D7–D10 · NOT approved by Pedro) ──
    * NPV / IRR per lot and integer bid 14–48 come from leilao_faixa_npv.json (equity view, 8 % nominal).
    * Per lot also npcFloor / npcHi (proposed_auction.*_console). Win rule unchanged: bid <= npcFloor + 1.
-   * Auction cap (preço máximo) 45 €/MWh; default bid 30. Without the file the old mock stays (console warning). */
+   * Auction cap (preço máximo) 45 €/MWh; default bid is AUCTION_DEFAULT_BID. Without the file the old mock stays (console warning).
+   * Bom-preço limiar: content/economy/bom_preco.json (only lots listed there). */
   const LEILAO_FAIXA_URL = 'content/economy/leilao_faixa_npv.json';
+  const BOM_PRECO_URL = 'content/economy/bom_preco.json';
   var LEILAO_FAIXA = null; // var: read by lotFitsMandate before this line runs
+  var BOM_PRECO = null;
   function faixaLot(id) { return (LEILAO_FAIXA && LEILAO_FAIXA.lots && LEILAO_FAIXA.lots[id]) || null; }
   function faixaLookup(table, bid) {
     if (!table) return null;
@@ -10726,6 +10729,12 @@
       if (!r.ok) { console.warn('[WattAuction] leilao_faixa missing (' + r.status + '): auction keeps the old mock NPV'); return; }
       applyLeilaoFaixa(await r.json());
     } catch (err) { console.warn('[WattAuction] leilao_faixa failed', err); }
+    try {
+      const b = await fetch(BOM_PRECO_URL, { cache: 'no-store' });
+      if (!b.ok) { console.warn('[WattAuction] bom_preco missing (' + b.status + ')'); return; }
+      BOM_PRECO = await b.json();
+      try { if (typeof syncObjChrome === 'function') syncObjChrome(); } catch (_) {}
+    } catch (err) { console.warn('[WattAuction] bom_preco failed', err); }
   })();
   /* Lines under the consultant NPV sentence. Copy: content/events/auction-consultor.v01.json (manifest auction_consultor). */
   const AUCTION_CONSULTOR_FALLBACK = 'content/events/auction-consultor.v01.json';
@@ -16483,52 +16492,75 @@
     if (phase === 'obra' || phase === 'cod') return true;
     return !!(mailLoop && mailLoop.tags && (mailLoop.tags.construction_started | 0) > 0);
   }
-  /** Winning bid vs the project's break-even. null until the faixa NPV table can price that bid. */
-  function objBreakEvenMet() {
+  function wonAuctionPick() {
+    let bid = null;
+    let lotId = null;
     try {
-      if (typeof auctionState === 'undefined' || typeof auctionEconomics !== 'function' || typeof faixaLot !== 'function') return null;
-      let bid = null;
-      let lotId = null;
-      const taken = auctionState.taken || {};
+      const taken = (typeof auctionState !== 'undefined' && auctionState.taken) || {};
       Object.keys(taken).forEach((id) => {
         const t = taken[id];
         if (bid != null || !t || t.lost || t.bid == null) return;
-        bid = t.bid;
+        bid = Number(t.bid);
         lotId = id;
       });
-      if (bid == null && auctionState.lastResult && !auctionState.lastResult.lost && auctionState.lastResult.bid != null) {
-        bid = auctionState.lastResult.bid;
+      if (bid == null && typeof auctionState !== 'undefined' && auctionState.lastResult && !auctionState.lastResult.lost && auctionState.lastResult.bid != null) {
+        bid = Number(auctionState.lastResult.bid);
         lotId = auctionState.lastResult.lot && auctionState.lastResult.lot.id;
       }
-      if (bid == null || !lotId) return null;
-      const fx = faixaLot(lotId);
-      if (!fx || !fx.npv_by_bid) return null;
-      const eco = auctionEconomics(bid, { id: lotId });
-      if (!eco || eco.source !== 'leilao_faixa' || typeof eco.van !== 'number' || !isFinite(eco.van)) return null;
-      return eco.tone !== 'bad';
-    } catch (_) { return null; }
+    } catch (_) {}
+    return { bid: bid, lotId: lotId };
+  }
+  function bomPrecoLimiar(lotId) {
+    const lots = (typeof BOM_PRECO !== 'undefined' && BOM_PRECO && BOM_PRECO.lots) || null;
+    if (!lots || lots[lotId] == null || lots[lotId] === '') return null;
+    const n = Number(lots[lotId]);
+    return isFinite(n) ? n : null;
+  }
+  /** Extra only for lots listed in bom_preco.json. Before a win, that is Ourique. */
+  function mandate0Extra() {
+    const won = wonAuctionPick();
+    const lotId = won.lotId || 'ourique';
+    const lim = bomPrecoLimiar(lotId);
+    if (lim == null) return null;
+    const m = (typeof phase0CopyCache !== 'undefined' && phase0CopyCache && phase0CopyCache.mandate0) || {};
+    const template = m.extra || 'Ganhar o leilão a um bom preço (pelo menos {LIMIAR} €/MWh)';
+    const label = String(template).replace(/\{LIMIAR\}/g, String(lim));
+    let word = 'Em curso';
+    let av = 'p';
+    let note = '';
+    if (won.lotId && won.bid != null) {
+      if (won.bid + 1e-9 >= lim) {
+        word = 'Conseguido';
+        av = 'g';
+        note = m.note_ok || '';
+      } else {
+        word = 'Falhado';
+        av = 'r';
+        note = m.note_fail || '';
+      }
+    }
+    return { label: label, word: word, av: av, note: note };
   }
   function objMandate0Html() {
     const m = (typeof phase0CopyCache !== 'undefined' && phase0CopyCache && phase0CopyCache.mandate0) || {};
     const title = m.title || 'Ganhar o leilão';
     const opening = m.opening || 'Sem ligação à rede não há central. Começa por aqui.';
     const required = m.required || 'Ganhar um TRC no leilão';
-    const extra = m.extra || '';
     const lockedTitle = m.locked_title || 'Mandato 1: O primeiro ponto de ligação';
     const lockedBadge = m.locked_badge || '🔒 Abre quando ganhares o TRC';
-    const held = extra ? objBreakEvenMet() : null;
-    const extraAv = held == null ? 'p' : (held ? 'g' : 'r');
-    const extraWord = held == null ? 'Ainda não' : (held ? 'Em bom caminho' : 'Em risco');
-    const extraRow = extra
-      ? ('<tr><td><div class="o">' + objEsc(extra) + '</div></td><td>' + objImp('x') +
-        '</td><td><span class="obj-av ' + extraAv + '">' + extraWord + '</span></td></tr>')
+    const ex = mandate0Extra();
+    const extraRow = ex
+      ? ('<tr id="mandate0Extra"><td><div class="o">' + objEsc(ex.label) + '</div></td><td>' + objImp('x') +
+        '</td><td><span class="obj-av ' + ex.av + '">' + objEsc(ex.word) + '</span></td></tr>')
       : '';
+    const extraNote = ex && ex.note ? ('<div class="obj-note" id="mandate0ExtraNote">' + objEsc(ex.note) + '</div>') : '';
     return '<div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 0 · ativo</div><div class="obj-mand-t">' +
       objEsc(title) + '</div></div><span class="obj-imp e">Ativo</span></div>' +
       '<div class="obj-mand-s">' + objEsc(opening) + '</div>' +
       '<table class="obj-tbl"><tr><th>Objetivo</th><th>Importância</th><th>Avaliação</th></tr>' +
       '<tr><td><div class="o">' + objEsc(required) + '</div></td><td>' + objImp('e') +
       '</td><td><span class="obj-av p">Por cumprir</span></td></tr>' + extraRow + '</table>' +
+      extraNote +
       '<div class="obj-note">Se falhares um objetivo exigido, o mandato termina.</div></div>' +
       '<div class="obj-card obj-locked"><div class="obj-mand-h"><div><div class="obj-mand-t">' + objEsc(lockedTitle) +
       '</div></div><span class="obj-lock">' + objEsc(lockedBadge) + '</span></div></div>';
@@ -16549,7 +16581,13 @@
     const m2card = m2
       ? '<div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 2 · ativo</div><div class="obj-mand-t">Crescer com dinheiro próprio</div></div><span class="obj-imp e">Ativo</span></div><div class="obj-mand-s">Ourique entrou em obra. Isto é o mandato seguinte.</div>'
       : '<div class="obj-card obj-locked"><div class="obj-mand-h"><div><div class="obj-k">Mandato 2 · bloqueado</div><div class="obj-mand-t">Crescer com dinheiro próprio</div></div><span class="obj-lock">🔒 Abre quando Ourique entrar em obra</span></div><div class="obj-mand-s" style="color:#94a3b8">Isto é o que te espera.</div>';
-    return '<div class="obj-vis"><div class="obj-card obj-reac"><div class="obj-k">Reação dos investidores</div><div class="obj-big">' + objEsc(reac.title) +
+    const ex = mandate0Extra();
+    const m0done = (ex && ex.word !== 'Em curso')
+      ? ('<div class="obj-card" id="mandate0Result"><div class="obj-mand-h"><div><div class="obj-k">Mandato 0</div><div class="obj-mand-t">' + objEsc(ex.label) +
+        '</div></div><span class="obj-av ' + ex.av + '" id="mandate0Extra">' + objEsc(ex.word) + '</span></div>' +
+        (ex.note ? '<div class="obj-note" id="mandate0ExtraNote">' + objEsc(ex.note) + '</div>' : '') + '</div>')
+      : '';
+    return '<div class="obj-vis">' + m0done + '<div class="obj-card obj-reac"><div class="obj-k">Reação dos investidores</div><div class="obj-big">' + objEsc(reac.title) +
       '</div><div class="obj-meter"><i style="left:' + reac.pos + '%"></i></div><div class="obj-scale"><span>Insatisfeitos</span><span>Satisfeitos</span></div><p>' +
       objEsc(reac.text) + '</p></div><div><div class="obj-card"><div class="obj-mand-h"><div><div class="obj-k">Mandato 1 · ativo</div><div class="obj-mand-t">O primeiro ponto de ligação</div></div><span class="obj-imp e">Ativo</span></div>' +
       '<div class="obj-mand-s">Os investidores confiam-te Ourique. Querem uma central híbrida a produzir, com lucro, antes de a licença caducar.</div>' +
@@ -18694,7 +18732,9 @@
           title: 'Ganhar o leilão',
           opening: 'Sem ligação à rede não há central. Começa por aqui.',
           required: 'Ganhar um TRC no leilão',
-          extra: 'Ganhar sem licitar abaixo do que o projeto aguenta',
+          extra: 'Ganhar o leilão a um bom preço (pelo menos {LIMIAR} €/MWh)',
+          note_ok: 'Bom preço: cada MWh de Ourique vale mais. Mesmo assim, só com solar perdes dinheiro; hibridizado, já podes ter lucro.',
+          note_fail: 'Ganhaste, mas barato. Vai ser difícil chegar ao lucro: vais precisar de hibridizar, de cuidado nos custos e talvez de mais capital dos investidores.',
           locked_title: 'Mandato 1: O primeiro ponto de ligação',
           locked_badge: '🔒 Abre quando ganhares o TRC'
         },
@@ -19909,7 +19949,7 @@
         landChosen: () => landChosen(), envPath: () => currentEnvPath(), onAiaRoute: () => onAiaRoute(),
         envRoute: (patch) => { const sh = JSON.parse(JSON.stringify(getSeSheet(mailLoop.seId || 'ourique') || {})); Object.assign(sh.env_draft = sh.env_draft || {}, patch || {}); return computeEnvRoute(sh, null); },
         auctionWave: (n) => { resetAuctionDraft({ wave: n }); try { renderAuctionLots(); renderAuctionRivals(); selectAuctionLot(AUCTION_LOTS[0].id); } catch (_) {} return AUCTION_LOTS.map((l) => l.id); },
-        faixa: () => !!LEILAO_FAIXA, overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
+        faixa: () => !!LEILAO_FAIXA, bomPreco: () => BOM_PRECO, mandateExtra: () => mandate0Extra(), overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
         saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable(),
         canSpend: (n) => canSpend(n),
         cashGap: (n) => cashGapMessage(n),

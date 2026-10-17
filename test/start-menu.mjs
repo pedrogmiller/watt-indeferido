@@ -367,7 +367,7 @@ async function openAuctionFromGame(page) {
   else await page.locator('#tabAuction').click();
 }
 
-async function playToCod(browser, width, height, tag) {
+async function playToCod(browser, width, height, tag, bid, outcome) {
   const page = await browser.newPage({ viewport: { width, height } });
   track(page, 'cod-' + tag);
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
@@ -393,13 +393,19 @@ async function playToCod(browser, width, height, tag) {
   if (await page.locator('#startMenu').isVisible()) throw new Error('menu still visible in game');
   if (!(await page.locator('#btnSettings').isVisible())) throw new Error('gear hidden during the game');
 
+  await page.waitForFunction(() => {
+    const bp = window.__wattQA && window.__wattQA.bomPreco && window.__wattQA.bomPreco();
+    return !!(bp && bp.lots && bp.lots.ourique === 29 && Object.keys(bp.lots).length === 1);
+  }, { timeout: 15000 });
   await page.locator('[data-mail-choice="ver_mandato"]').click();
   await page.waitForSelector('#objSheet:not([hidden])');
   const m0 = await page.locator('#objBody').innerText();
   if (!/Ganhar o leilão/.test(m0)) throw new Error('mandato 0 title: ' + m0.slice(0, 300));
   if (!/Sem ligação à rede não há central/.test(m0)) throw new Error('mandato 0 opening');
   if (!/Ganhar um TRC no leilão/.test(m0)) throw new Error('mandato 0 required');
-  if (!/Ganhar sem licitar abaixo do que o projeto aguenta/.test(m0)) throw new Error('mandato 0 extra dropped');
+  if (!/pelo menos 29 €\/MWh/.test(m0)) throw new Error('ourique limiar: ' + m0.slice(0, 400));
+  if (!/Em curso/.test(m0)) throw new Error('extra not in progress');
+  if (/projeto aguenta|Em risco|Em bom caminho/.test(m0)) throw new Error('old extra copy: ' + m0.slice(0, 400));
   if (!/Mandato 1: O primeiro ponto de ligação/.test(m0)) throw new Error('locked mandate 1');
   if (!/Abre quando ganhares o TRC/.test(m0)) throw new Error('locked badge');
   if (/Mandato 1 · ativo/.test(m0)) throw new Error('mandate 1 already active before the TRC');
@@ -410,22 +416,35 @@ async function playToCod(browser, width, height, tag) {
   await assertNoOverlap(page, 'auction-' + tag);
   const tipOff = page.locator('.tut-root.open .tut-off');
   try { await tipOff.waitFor({ state: 'visible', timeout: 2500 }); await tipOff.click(); } catch (_) {}
-  await page.waitForFunction(() => {
+  await page.waitForFunction((n) => {
     const q = window.__wattQA;
     if (!q || !q.econAt) return false;
-    const e = q.econAt('ourique', 30);
+    const e = q.econAt('ourique', n);
     return !!(e && e.win);
-  }, { timeout: 20000 });
+  }, bid, { timeout: 20000 });
+  const presetBid = await page.locator('#auctionBidSlider').inputValue();
+  if (presetBid !== '27') throw new Error('default bid ' + presetBid);
+  const defaults = await page.evaluate(() => {
+    const q = window.__wattQA;
+    return {
+      ourique: q.econAt('ourique', 27),
+      evora: q.econAt('evora', 27),
+      portimao: q.econAt('portimao', 27)
+    };
+  });
+  ['ourique', 'evora', 'portimao'].forEach((id) => {
+    if (!defaults[id] || !defaults[id].win) throw new Error('bid 27 loses ' + id + ' ' + JSON.stringify(defaults[id]));
+  });
   await dismissLayers(page);
   const lot = page.locator('#auction-lot-ourique, [data-lot="ourique"]').first();
   if (await lot.count() && (await lot.getAttribute('aria-selected')) !== 'true') {
     await lot.click({ force: true });
   }
   const slider = page.locator('#auctionBidSlider');
-  await slider.evaluate((el) => {
-    el.value = '30';
+  await slider.evaluate((el, n) => {
+    el.value = String(n);
     el.dispatchEvent(new Event('input', { bubbles: true }));
-  });
+  }, bid);
   await page.locator('#auction-confirm').click();
   await page.waitForSelector('[data-screen="trap"].active', { timeout: 10000 });
   try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1000 }); } catch (_) {}
@@ -443,6 +462,17 @@ async function playToCod(browser, width, height, tag) {
   const m1 = await page.locator('#objBody').innerText();
   if (!/mandato 1\s*·\s*ativo/i.test(m1) || !/O primeiro ponto de ligação/.test(m1)) throw new Error('mandate 1 window: ' + m1.slice(0, 400));
   if (/Abre quando ganhares o TRC/.test(m1)) throw new Error('mandate 1 still locked after the TRC');
+  const extra = await page.locator('#mandate0Extra').innerText();
+  const note = await page.locator('#mandate0ExtraNote').innerText();
+  if (outcome === 'conseguido') {
+    if (!/Conseguido/.test(extra)) throw new Error('expected Conseguido: ' + extra);
+    if (!/Bom preço: cada MWh de Ourique vale mais/.test(note)) throw new Error('success note: ' + note);
+  } else {
+    if (!/Falhado/.test(extra)) throw new Error('expected Falhado: ' + extra);
+    if (!/Ganhaste, mas barato/.test(note)) throw new Error('failure note: ' + note);
+  }
+  if (/Em risco|projeto aguenta/.test(extra + '\n' + note)) throw new Error('old extra wording: ' + extra);
+  await shot(page, 'extra-' + outcome + '-' + tag);
   await shot(page, 'mandato1-' + tag);
   await assertNoOverlap(page, 'mandato1-' + tag);
   await page.locator('#objClose').click();
@@ -575,6 +605,61 @@ async function playToCod(browser, width, height, tag) {
   throw new Error('did not reach COD, last month ' + month);
 }
 
+async function playOtherLot(browser, width, height, tag) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  track(page, 'evora-' + tag);
+  await page.goto(BASE, { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector('[data-menu="novo"]');
+  await page.locator('[data-menu="novo"]').click();
+  await page.locator('#newGameStart').click();
+  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
+  await page.locator('[data-mail-choice="ver_mandato"]').click();
+  await page.waitForSelector('#objClose');
+  await page.locator('#objClose').click();
+  await openAuctionFromGame(page);
+  await page.waitForSelector('#auctionRoom.open', { timeout: 10000 });
+  await page.waitForFunction(() => {
+    const q = window.__wattQA;
+    return !!(q && q.econAt && q.econAt('ourique', 40) && q.econAt('ourique', 40).win === false && q.econAt('evora', 27) && q.econAt('evora', 27).win);
+  }, { timeout: 20000 });
+  try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1500 }); } catch (_) {}
+  const firstBid = await page.locator('#auctionBidSlider').inputValue();
+  if (firstBid !== '27') throw new Error('ourique default bid ' + firstBid);
+  await page.locator('#auctionBidSlider').evaluate((el) => {
+    el.value = '40';
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.locator('#auction-confirm').click();
+  await page.waitForSelector('[data-screen="trap"].active, [data-screen="fora"].active', { timeout: 10000 });
+  if (await page.locator('#auctionTrapDone').count()) await page.locator('#auctionTrapDone').click();
+  await page.locator('#auctionForaNext, #portfolioEmptyCta').first().click();
+  await page.waitForFunction(() => {
+    const q = window.__wattQA;
+    return q && q.auction && q.auction.wave === 1 && q.auction.screen === 'bid';
+  }, { timeout: 10000 });
+  const lot = page.locator('#auction-lot-evora, [data-lot="evora"]').first();
+  if ((await lot.getAttribute('aria-selected')) !== 'true') await lot.click({ force: true });
+  const preset = await page.locator('#auctionBidSlider').inputValue();
+  if (preset !== '27') throw new Error('évora default bid ' + preset);
+  await page.locator('#auction-confirm').click();
+  await page.waitForSelector('[data-screen="trap"].active #auctionTrapDone', { timeout: 10000 });
+  const trap = await page.locator('#auctionTrapDone').innerText();
+  if (!/Aceitar/.test(trap)) throw new Error('évora did not win at 27: ' + trap);
+  await page.locator('#auctionTrapDone').click();
+  await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, { timeout: 15000 });
+  for (let i = 0; i < 3 && await page.locator('#inboxDrawer.open').count(); i++) {
+    await page.locator('#inboxBackBtn').click({ force: true });
+    await page.waitForTimeout(80);
+  }
+  await page.locator('#btnObjetivos').click({ force: true });
+  await page.waitForSelector('#objSheet:not([hidden])');
+  const body = await page.locator('#objBody').innerText();
+  if (/bom preço|pelo menos \d+ €\/MWh|projeto aguenta/i.test(body)) throw new Error('extra still shown off Ourique: ' + body.slice(0, 400));
+  if (await page.locator('#mandate0Extra').count()) throw new Error('extra row present for Évora');
+  await shot(page, 'extra-hidden-evora-' + tag);
+  await page.close();
+}
+
 const browser = await chromium.launch({ headless: true });
 const report = { ok: false, errors: [], shots: [] };
 try {
@@ -584,11 +669,17 @@ try {
   await migrationAndDelete(browser, 390, 844, '390');
   await migrationAndDelete(browser, 1440, 900, '1440');
   }
-  const cod1440 = await playToCod(browser, 1440, 900, '1440');
-  console.log('COD 1440', JSON.stringify(cod1440.reached));
-  const cod390 = await playToCod(browser, 390, 844, '390');
-  console.log('COD 390', JSON.stringify(cod390.reached));
-  report.cod = { w1440: cod1440.reached, w390: cod390.reached };
+  report.cod = {};
+  for (const [bid, outcome] of [[29, 'conseguido'], [27, 'falhado']]) {
+    for (const [w, h, tag] of [[1440, 900, '1440'], [390, 844, '390']]) {
+      const cod = await playToCod(browser, w, h, outcome + '-' + tag, bid, outcome);
+      console.log('COD', outcome, tag, JSON.stringify(cod.reached));
+      report.cod[outcome + '-' + tag] = cod.reached;
+    }
+  }
+  await playOtherLot(browser, 1440, 900, '1440');
+  await playOtherLot(browser, 390, 844, '390');
+  console.log('Évora extra hidden, default 27 wins');
   report.ok = errors.length === 0;
   report.errors = errors.slice();
   if (errors.length) {
