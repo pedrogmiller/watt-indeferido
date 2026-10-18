@@ -272,7 +272,8 @@
   .reputation-pill.tone-boa .reputation-word { color: #166534; }
   .reputation-pill.tone-fraca { background: #fef2f2; border-color: #fca5a5; }
   .reputation-pill.tone-fraca .reputation-word { color: #b91c1c; }
-  .ver-numeros { border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+  .ver-numeros { border-bottom: 1px solid #e2e8f0; background: #f8fafc; flex-shrink: 0; }
+  .ver-numeros[open] { max-height: 55%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .ver-numeros > summary {
     cursor: pointer;
     padding: 10px 16px;
@@ -286,6 +287,35 @@
   .ver-numeros[open] > summary::before { content: '▾ '; }
   .ver-numeros-body { padding: 0 16px 14px; display: flex; flex-direction: column; gap: 10px; }
   .ver-numeros .asset-money-strip { border-bottom: 0; background: transparent; padding: 0; flex-wrap: wrap; }
+  /* Três potes de dinheiro, separados à vista: não se misturam */
+  .money-pots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .money-pots .econ-provisional { grid-column: 1 / -1; justify-self: end; }
+  .money-pot {
+    display: flex; flex-direction: column; gap: 2px; min-width: 0;
+    background: #fff; border: 1px solid #e2e8f0; border-left-width: 4px; border-radius: 12px; padding: 8px 10px;
+  }
+  .money-pot.pot-dev { border-left-color: #007AFF; }
+  .money-pot.pot-build { border-left-color: #64748b; }
+  .money-pot.pot-bond { border-left-color: #b45309; }
+  .money-pot .k { font-size: 11px; font-weight: 700; color: #334155; }
+  .money-pot .v { font-size: 15px; font-weight: 750; color: #0f172a; }
+  .money-pot .m { font-size: 11px; color: #475569; white-space: normal; }
+  .money-pot .s { font-size: 11px; color: #64748b; line-height: 1.3; }
+  .money-pot .d { font-size: 11px; font-weight: 700; }
+  .money-pot .d.up { color: #15803d; }
+  .money-pot .d.down { color: #b91c1c; }
+  .money-pot.flash-up { background: #dcfce7; border-color: #86efac; }
+  .money-pot.flash-down { background: #fee2e2; border-color: #fca5a5; }
+  @media (max-width: 640px) {
+    .money-pots { grid-template-columns: 1fr; gap: 6px; }
+    .money-pot { display: grid; grid-template-columns: 1fr auto; column-gap: 8px; padding: 6px 10px; }
+    .money-pot .k { grid-column: 1; }
+    .money-pot .v { grid-column: 2; grid-row: 1; text-align: right; font-size: 14px; }
+    .money-pot .d { grid-column: 2; text-align: right; }
+    .money-pot .m, .money-pot .s { grid-column: 1 / -1; }
+  }
+  .auction-trap-pots { font-size: 13px; color: #334155; line-height: 1.45; margin: 10px 0 0; }
+  .auction-trap-pots .warn { display: block; margin-top: 4px; color: #b45309; font-weight: 700; }
   .ver-numeros-grid { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
   .ver-numeros-grid .bonding-pill { min-width: 160px; flex: 1 1 180px; }
   .ver-numeros-project .asset-mw-hud,
@@ -3606,6 +3636,8 @@
   body:has(.asset-room.open) #btnNextQ { z-index: 8650 !important; display: inline-flex !important; }
   body:has(.asset-room.open) #btnInbox { position: relative; z-index: 8650; }
   body:has(.asset-room.open) .header { z-index: 8650; }
+  /* The HUD stays above the sala, so the sala starts below it (--hud-h is the live header height, set in JS) */
+  body:has(.asset-room.open) .asset-room { top: var(--hud-h, 0px); }
   .mobile-tabbar-btn.is-active { color: #007AFF; }
   /* The dev hint must honour [hidden] (display:block above was beating it and it peeked out behind Play) */
   body.footer-mock .mobile-tabbar-hint[hidden] { display: none !important; }
@@ -4689,6 +4721,8 @@
   }
   .asset-opt-meta span { color: #64748b; }
   .asset-opt-meta strong { color: #0f172a; font-weight: 700; }
+  .asset-opt-meta span { min-width: 0; max-width: 100%; }
+  .asset-opt-meta strong.num { white-space: normal; overflow-wrap: anywhere; }
   .asset-opt-card .btn-confirm {
     background: #007AFF;
     color: #fff;
@@ -6005,6 +6039,7 @@
               <div><strong class="term-tip" title="NPV: quanto vale hoje o projeto para os investidores: receitas menos custos e pagamentos ao banco, a valores de hoje, com 8% ao ano">NPV</strong><span class="num" id="auctionTrapVan">—</span></div>
               <div><strong class="term-tip" title="IRR: rentabilidade por ano do dinheiro dos investidores (capital próprio), depois de pagar ao banco. Exigem pelo menos 8%.">IRR</strong><span class="num" id="auctionTrapIrr">—</span></div>
             </div>
+            <p class="auction-trap-pots" id="auctionTrapPots" hidden></p>
             <div class="equity-short" id="auctionTrapEquity" hidden></div>
             <p class="auction-trap-pending" id="auctionTrapPending" hidden>Por aceitar: o TRC só entra no portefólio quando carregares em «Aceitar TRC e sair».</p>
             <p id="auctionTrapNote" style="font-size:12px;color:#94a3b8">Podes aceitar o TRC e sair, ou continuar a licitar os lotes que faltam.</p>
@@ -6053,10 +6088,21 @@
   <details class="ver-numeros" id="verNumeros">
     <summary>Ver números</summary>
     <div class="ver-numeros-body">
-      <div class="asset-money-strip" id="assetMoneyStrip" aria-label="Dinheiro da empresa" aria-live="polite">
-        <div class="asset-money-cell" id="assetMoneyCaixaCell" data-tut="hud.cash"><span class="k">Caixa</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span></div>
-        <div class="asset-money-cell" id="assetMoneyNavCell" data-tut="hud.value"><span class="k" title="Valor estimado da empresa">Valor da empresa</span><span class="v num" id="assetMoneyNav">—</span><span class="d num" id="assetMoneyNavDelta"></span></div>
-        <div class="asset-money-cell" id="assetMoneyBondingCell" data-tut="hud.guarantees"><span class="k" title="Garantias bancárias livres">Garantias</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span></div>
+      <div class="money-pots" id="assetMoneyStrip" aria-label="O dinheiro da empresa, em três potes separados" aria-live="polite">
+        <div class="money-pot pot-dev" id="assetMoneyCaixaCell" data-tut="hud.cash">
+          <span class="k">Desenvolvimento</span><span class="v num" id="assetMoneyCaixa">—</span><span class="d num" id="assetMoneyCaixaDelta"></span>
+          <span class="s">para terreno, estudos e licenças</span>
+        </div>
+        <div class="money-pot pot-build" id="assetMoneyBuildCell">
+          <span class="k">Construção</span><span class="v num" id="assetMoneyBuild">—</span>
+          <span class="m num" id="assetMoneyBuildSplit"></span>
+          <span class="s">abre na decisão final de investimento</span>
+        </div>
+        <div class="money-pot pot-bond" id="assetMoneyBondingCell" data-tut="hud.guarantees">
+          <span class="k">Garantias do banco</span><span class="v num" id="assetMoneyBonding">—</span><span class="d num" id="assetMoneyBondingDelta"></span>
+          <span class="m num" id="assetMoneyBondingHeld"></span>
+          <span class="s">cauções presas, não gastas</span>
+        </div>
         <span class="econ-provisional" title="Valores em € provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span>
       </div>
       <div class="ver-numeros-grid">
@@ -7192,8 +7238,15 @@
     return p + '% TRC';
   }
 
+  /** COD reached: the plan is built and plugged in. Before that the MW are only reserved. */
+  function assetMwAtCod() {
+    if (typeof mailLoop === 'undefined' || !mailLoop) return false;
+    return mailLoop.projectPhase === 'cod' || !!(mailLoop.tagMonth && mailLoop.tagMonth.cod_reached != null);
+  }
+
   function renderFreeMwHud(node) {
     const s = ensureAssetMwState(node);
+    const atCod = assetMwAtCod();
     const free = freeMwPct(node);
     const own = s.own_plugged_pct | 0;
     const rent = s.reserved_by_buyer_pct | 0;
@@ -7206,9 +7259,9 @@
           <div class="sub">Podes usar em novos planos</div>
         </div>
         <div class="asset-mw-card">
-          <div class="k">MW ligados por ti</div>
+          <div class="k">${atCod ? 'MW ligados por ti' : 'MW no teu plano'}</div>
           <div class="v num">${formatMwHudPct(own, base)}</div>
-          <div class="sub">As tuas centrais neste ponto</div>
+          <div class="sub">${atCod ? 'As tuas centrais neste ponto' : 'Reservados para a central que estás a licenciar'}</div>
         </div>
         <div class="asset-mw-card">
           <div class="k">MW em renda ao comprador</div>
@@ -7216,7 +7269,9 @@
           <div class="sub">Centrais que vendeste e continuam ligadas aqui</div>
         </div>
       </div>
-      <p class="asset-mw-note">A potência do TRC é o limite que a rede aceita neste ponto. MW livres = potência do TRC, menos os MW ligados por ti, menos os MW em renda ao comprador. <span class="prov-mark">valores provisórios</span></p>`;
+      <p class="asset-mw-note">${atCod
+        ? 'A potência do TRC é o limite que a rede aceita neste ponto. MW livres = potência do TRC, menos os MW ligados por ti, menos os MW em renda ao comprador.'
+        : 'A potência do TRC é o limite que a rede aceita neste ponto. Ainda não tens nada ligado: os MW do teu plano ficam guardados para a central até ela começar a produzir. MW livres = potência do TRC, menos os MW do teu plano, menos os MW em renda ao comprador.'} <span class="prov-mark">valores provisórios</span></p>`;
   }
 
   let mailTagAssume = null; // requires_state keys assumed true while checking a locked choice's `when`
@@ -8116,6 +8171,18 @@
     return why;
   }
 
+  /** --hud-h = live header height, so the sala (which sits under the raised HUD) starts below it. */
+  function syncHudHeightVar() {
+    const hdr = document.querySelector('header.header');
+    const h = hdr && hdr.offsetParent !== null ? Math.ceil(hdr.getBoundingClientRect().height) : 0;
+    document.documentElement.style.setProperty('--hud-h', h + 'px');
+  }
+  (function watchHudHeight() {
+    const hdr = document.querySelector('header.header');
+    if (hdr && typeof ResizeObserver === 'function') new ResizeObserver(syncHudHeightVar).observe(hdr);
+    window.addEventListener('resize', syncHudHeightVar);
+  })();
+
   function openAssetRoom(nodeId, opts) {
     opts = opts || {};
     const node = nodes.find((n) => n.id === nodeId);
@@ -8129,6 +8196,7 @@
       room.classList.add('open');
       room.setAttribute('aria-hidden', 'false');
     }
+    syncHudHeightVar();
     renderAssetRoom();
     lockPageScroll();
     tutEmit('open', 'sala', 300);
@@ -8335,7 +8403,7 @@
     const cells = [
       { key: 'caixa', val: state.caixa, el: 'assetMoneyCaixa', txt: fmtEur(state.caixa) },
       { key: 'nav', val: state.nav, el: 'assetMoneyNav', txt: fmtEur(state.nav) },
-      { key: 'bondingFree', val: state.bondingFree, el: 'assetMoneyBonding', txt: fmtEur(state.bondingFree) + ' livres' }
+      { key: 'bondingFree', val: state.bondingFree, el: 'assetMoneyBonding', txt: fmtEur(state.bondingFree) + ' livres' } // linha de garantias = state.bondingTotal (nível do mandato)
     ];
     const prev = opts.reset ? null : assetMoneyLast;
     cells.forEach((c) => {
@@ -8364,6 +8432,37 @@
       }, 2600);
     });
     assetMoneyLast = { caixa: state.caixa, nav: state.nav, bondingFree: state.bondingFree };
+    try { paintMoneyPots(); } catch (_) {}
+  }
+
+  /** Construção = Capex do lote, pago com dívida do banco + capital próprio (só abre na decisão final de investimento).
+   *  Valores e regra: Economy. Capex = leilao_faixa capex_MEUR.proposed (senão lotEcon().capex);
+   *  capital próprio = projectEquityFit().need (pela oferta ganha); dívida = Capex − capital próprio (HIPÓTESE, Economy). */
+  function constructionPot(lotId) {
+    if (!lotId) return null;
+    let capex = null;
+    try {
+      const f = (typeof faixaLot === 'function') ? faixaLot(lotId) : null;
+      if (f && f.capex_MEUR) capex = Number(f.capex_MEUR.proposed != null ? f.capex_MEUR.proposed : f.capex_MEUR.approved_s6);
+    } catch (_) {}
+    if (!(capex > 0)) { try { capex = Number(lotEcon(lotId).capex); } catch (_) {} }
+    if (!(capex > 0)) return null;
+    let equity = null;
+    try { equity = Number(projectEquityFit(lotId).need); } catch (_) {}
+    if (!(equity >= 0)) { try { equity = Number(lotEcon(lotId).equityNeed); } catch (_) {} }
+    const debt = (equity >= 0) ? +Math.max(0, capex - equity).toFixed(1) : null;
+    return { capex: capex, equity: equity, debt: debt };
+  }
+  function paintMoneyPots() {
+    const id = (typeof assetRoomState !== 'undefined' && assetRoomState.nodeId) || (typeof auctionState !== 'undefined' && auctionState.wonId) || null;
+    const c = constructionPot(id);
+    const v = document.getElementById('assetMoneyBuild');
+    const split = document.getElementById('assetMoneyBuildSplit');
+    if (v) v.textContent = c ? fmtEur(c.capex) : '—';
+    if (split) split.textContent = (c && c.debt != null) ? (fmtEur(c.debt) + ' do banco + ' + fmtEur(c.equity) + ' de capital próprio') : '';
+    const held = document.getElementById('assetMoneyBondingHeld');
+    const presas = +Math.max(0, (Number(state.bondingTotal) || 0) - (Number(state.bondingFree) || 0)).toFixed(3);
+    if (held) held.textContent = 'Presas: ' + fmtEur(presas);
   }
 
   function cashHudTone() {
@@ -11615,6 +11714,20 @@
     btn.dataset.cashShort = '1';
     if (note) note.textContent = msg;
   }
+  /** «TRC ganho»: de que pote sai cada valor. Mesma regra que applyTrcWinEconomics (linha livre ≥ caução → Garantias; senão → caixa). */
+  function paintTrcWinPots(lot) {
+    const el = document.getElementById('auctionTrapPots');
+    if (!el || !lot) return;
+    const a = trcWinAmounts(lot);
+    const ec = econState();
+    const done = ec.trcApplied && ec.trcApplied[lot.id];
+    const short = done ? !!done.inCash : !((Number(state.bondingFree) || 0) + 1e-9 >= a.bond);
+    el.innerHTML = 'Arranque do desenvolvimento: <b class="num">' + fmtMoneyAbs(a.kick) + '</b>, sai do Desenvolvimento. ' +
+      'Caução: <b class="num">' + fmtMoneyAbs(a.bond) + '</b>, fica presa nas Garantias do banco.' +
+      (short ? '<span class="warn">A linha de garantias não chega: a caução sai da caixa.</span>' : '');
+    el.hidden = false;
+  }
+
   function applyTrcWinEconomics(lot) {
     const id = lot && lot.id;
     const ec = econState();
@@ -11938,6 +12051,7 @@
     try { const tc = document.querySelector('#auctionScreenTrap .auction-trap'); if (tc) tc.classList.toggle('is-win', outcome === 'win'); } catch (_) {}
     if (outcome === 'lose') {
       try { const te = document.getElementById('auctionTrapEquity'); if (te) { te.hidden = true; te.innerHTML = ''; } } catch (_) {}
+      try { const tp = document.getElementById('auctionTrapPots'); if (tp) { tp.hidden = true; tp.innerHTML = ''; } } catch (_) {}
       if (badge) { badge.textContent = 'Lote perdido'; badge.style.background = '#f1f5f9'; badge.style.color = '#334155'; }
       title.textContent = result.lot.name + ' foi para ' + result.lot.rival;
       body.textContent =
@@ -11980,6 +12094,7 @@
         : ('Ganhaste a ' + result.bid + ' €/MWh (a tua oferta). O TRC é teu e o jogo continua com este projeto.');
       if (stats) stats.style.display = 'grid';
       try { renderEquityShort(document.getElementById('auctionTrapEquity'), result.lot, result.bid); } catch (_) {}
+      try { paintTrcWinPots(result.lot); } catch (_) {}
       document.getElementById('auctionTrapBid').textContent = result.bid + ' €/MWh';
       document.getElementById('auctionTrapVan').textContent = auctionFmtVan(result.eco.van);
       document.getElementById('auctionTrapIrr').textContent = auctionFmtIrr(result.eco.irr);
@@ -14327,7 +14442,7 @@
     }
     ctx.risk_reasons = reasons.length ? reasons.join('; ') : 'os prazos que ficaram por cumprir';
     ctx.end_reason_text = endReasonText();
-    ctx.months_played = String((mailLoop && mailLoop.month) | 0);
+    ctx.months_played = String(Math.max(0, (mailLoop && mailLoop.month) | 0)); // month is -1 before the Correio starts
     let spent = 0;
     try { spent = Number(econState().carSpent) || 0; } catch (_) {}
     ctx.car_spent = fmtEur(Math.abs(spent));
