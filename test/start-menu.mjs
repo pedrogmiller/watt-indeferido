@@ -926,16 +926,6 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('[data-mail-choice="ir_leilao"]').click();
     await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
     if (await page.locator('#inboxDrawer.open').count()) throw new Error('inbox still open over the auction');
-    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
-    await page.locator('#auctionClose').click();
-    await page.waitForFunction(() => {
-      const room = document.getElementById('auctionRoom');
-      return room && !room.classList.contains('open');
-    });
-    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
-    if (headerAuction) await page.locator('#btnOpenAuction').click();
-    else await page.locator('#tabAuction').click();
-    await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
     const visibleFiction = await page.locator('.auction-fiction').evaluateAll((els) => els.filter((el) => {
       const s = getComputedStyle(el);
       const r = el.getBoundingClientRect();
