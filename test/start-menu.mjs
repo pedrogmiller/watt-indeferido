@@ -694,7 +694,11 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('[data-menu="novo"]').click();
     await page.waitForSelector('#arranque[data-step="jogador"] #arrNome');
     const period = (await page.locator('#periodLabel').innerText()).trim();
-    if (period !== '2027 · Q1') throw new Error('opening period ' + period);
+    const clock = await page.evaluate(() => {
+      const s = window.__wattQA && window.__wattQA.state;
+      return s ? (s.year + ' · Q' + s.quarter) : '';
+    });
+    if (period !== clock || period !== '2026 · Q3') throw new Error('opening period ' + period + ' clock ' + clock);
     if (await page.locator('#btnSettings').isVisible()) throw new Error('gear visible during opening');
     if (await page.locator('#arranqueFinancas').isVisible()) throw new Error('finanças pill on jogador');
     const nome = await page.locator('#arrNome').inputValue();
@@ -709,6 +713,28 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (await page.locator('#arrNac').inputValue() !== 'Portuguesa') throw new Error('default nationality');
     const blue = await page.locator('#arranqueNext').evaluate((el) => getComputedStyle(el).backgroundColor);
     if (blue !== 'rgb(0, 122, 255)') throw new Error('opening CTA ' + blue);
+
+    const rejectNames = ['EDP', 'iberdrola', 'EDP Renováveis', 'EDPR', 'Ventient', 'TotalEnergies', 'Akuo Energy'];
+    for (const name of rejectNames) {
+      await page.locator('#arrEmpresa').fill(name);
+      await page.locator('#arranqueNext').click();
+      await page.waitForFunction((n) => {
+        const input = document.getElementById('arrEmpresa');
+        const root = document.getElementById('arranque');
+        return !!(input && root && root.dataset.step === 'jogador' && input.getAttribute('aria-invalid') === 'true' && input.value === n);
+      }, name);
+      const hint = (await page.locator('#arrEmpresaHint').innerText()).trim();
+      if (hint !== 'Não podes usar o nome de uma empresa real.') throw new Error('reject hint for ' + name + ': ' + hint);
+    }
+    const acceptNames = ['Galpinha', 'Sol do Sul, Lda.', 'Energia Indeferida, Lda.'];
+    for (const name of acceptNames) {
+      await page.locator('#arrEmpresa').fill(name);
+      await page.locator('#arranqueNext').click();
+      await page.waitForSelector('#arranque[data-step="pais"]');
+      await page.locator('#arranqueBack').click();
+      await page.waitForSelector('#arranque[data-step="jogador"] #arrEmpresa');
+    }
+    await page.locator('#arrEmpresa').fill('');
 
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="pais"] [data-pais="portugal"]');
@@ -740,21 +766,6 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arranqueBack').click();
     await page.waitForSelector('#arranque[data-step="jogador"]');
 
-    await page.locator('#arrEmpresa').fill('EDP');
-    await page.locator('#arranqueNext').click();
-    await page.waitForFunction(() => {
-      const input = document.getElementById('arrEmpresa');
-      const root = document.getElementById('arranque');
-      return !!(input && root && root.dataset.step === 'jogador' && input.getAttribute('aria-invalid') === 'true');
-    });
-    await page.locator('#arrEmpresa').fill('iberdrola');
-    await page.locator('#arranqueNext').click();
-    await page.waitForFunction(() => {
-      const input = document.getElementById('arrEmpresa');
-      const root = document.getElementById('arranque');
-      return !!(input && root && root.dataset.step === 'jogador' && input.getAttribute('aria-invalid') === 'true' && /iberdrola/i.test(input.value));
-    });
-
     await page.locator('#arrNome').fill('Ana');
     await page.locator('#arrApelido').fill('Ferreira');
     await page.locator('#arrEmpresa').fill('Sol do Sul, Lda.');
@@ -762,6 +773,8 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (/HIPÓTESE|\[GM\]/.test(await page.locator('#arranque').innerText())) throw new Error('marker on jogador');
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="pais"]');
+    const pais = await page.locator('#arranque').innerText();
+    if (!/começa em 2026 · Q3/.test(pais)) throw new Error('pais auction date');
     await shot(page, 'abertura-pais-' + tag);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="finerge"]');
@@ -779,6 +792,7 @@ async function openingToAuction(browser, width, height, tag, win) {
     const body = await page.locator('#arranque').innerText();
     if (/HIPÓTESE|\[GM\]/.test(body)) throw new Error('marker on empresa');
     if (!/2,0 M€ para começar/.test(body)) throw new Error('starting cash copy');
+    if (!/As empresas a cinzento são reais/.test(body) || !/Os lances das empresas reais no jogo são fictícios\./.test(body)) throw new Error('fiction note missing');
     await shot(page, 'abertura-empresa-' + tag);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="ficha"] #arranqueFinCard');
@@ -789,6 +803,8 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (!/Ok/.test(finCard) || /\d/.test(finCard)) throw new Error('finanças card ' + finCard);
     const ficha = await page.locator('#arranque').innerText();
     if (!/Ana Ferreira/.test(ficha) || !/Portuguesa/.test(ficha)) throw new Error('ficha identity');
+    if (!/Fundada[\s\S]*2026 · Q3/.test(ficha)) throw new Error('ficha date ' + ficha.slice(0, 500));
+    if (/2027 · Q1/.test(ficha)) throw new Error('ficha still says 2027 · Q1');
     if (/HIPÓTESE|\[GM\]/.test(ficha)) throw new Error('marker on ficha');
     const steps = await page.locator('#arranqueSteps').evaluate((el) => el.textContent.replace(/\s+/g, ' '));
     if (/Controlo/.test(steps)) throw new Error('controlo step still listed: ' + steps);
@@ -841,6 +857,16 @@ async function openingToAuction(browser, width, height, tag, win) {
       await page.locator('#tabAuction').click();
     }
     await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
+    const visibleFiction = await page.locator('.auction-fiction').evaluateAll((els) => els.filter((el) => {
+      const s = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+      return !el.hidden && s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0 && r.height > 0;
+    }).length);
+    if (!visibleFiction) throw new Error('auction fiction note hidden');
+    const landed = ((await page.locator('#periodLabel').isVisible())
+      ? await page.locator('#periodLabel').innerText()
+      : await page.locator('#footerMockPeriod').innerText()).trim();
+    if (landed !== period) throw new Error('clock jump ' + period + ' → ' + landed);
     try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2500 }); } catch (_) {}
     await page.waitForFunction(() => {
       const q = window.__wattQA;

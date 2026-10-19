@@ -2494,6 +2494,20 @@
   .auction-rival.is-hot strong { color: #9a3412; }
   .auction-rival.is-flash { border-color: #f87171; background: #fef2f2; color: #b91c1c; }
   .auction-rival.is-quiet { opacity: 0.55; }
+  .auction-fiction {
+    font-size: 11px;
+    line-height: 1.35;
+    color: #94a3b8;
+    font-weight: 500;
+    margin: 0;
+  }
+  .auction-left .auction-fiction { padding: 6px 12px 8px; }
+  .auction-irony-trap .auction-fiction { margin-top: 4px; }
+  .auction-abertura .auction-fiction { margin-top: 8px; text-align: center; }
+  .auction-trap .auction-fiction { margin: 0 0 8px; }
+  @media (min-width: 1001px) {
+    .auction-fiction-narrow { display: none !important; }
+  }
 
   #auction-lot-list,
   .auction-lot-list {
@@ -6125,6 +6139,7 @@
         </div>
       </div>
       <div class="auction-rivals" id="auctionRivals" aria-label="Empresas rivais presentes"></div>
+      <p class="auction-fiction">Os lances das empresas reais no jogo são fictícios.</p>
       <div class="auction-lot-list" id="auction-lot-list" data-tut="auction.lots" role="listbox" aria-label="Lotes"></div>
       <div style="padding:10px 12px 14px;border-top:1px solid var(--border-subtle)">
         <div class="auction-leftover" id="auctionLeftoverNote" hidden></div>
@@ -6184,6 +6199,7 @@
                 <div class="k">Preço habitual dos rivais</div>
                 <div class="v" id="auctionNpcIrony">entre 20 e 30</div>
                 <div class="sub" id="auctionNpcBid">O preço exato dos rivais só se sabe no fim</div>
+                <p class="auction-fiction auction-fiction-narrow">Os lances das empresas reais no jogo são fictícios.</p>
               </div>
             </div>
             <div class="auction-irr-row">
@@ -6208,6 +6224,7 @@
             <h3 id="auctionAberturaTitle">A revelar as propostas…</h3>
             <p id="auctionAberturaBody">Os rivais estão a revelar as propostas. Se ganhares, recebes o preço que ofereceste.</p>
             <div class="auction-abertura-rivals" id="auctionAberturaRivals"></div>
+            <p class="auction-fiction auction-fiction-narrow">Os lances das empresas reais no jogo são fictícios.</p>
             <div class="auction-abertura-bar"><i id="auctionAberturaBar"></i></div>
           </div>
         </div>
@@ -6226,6 +6243,7 @@
             <p class="auction-trap-pots" id="auctionTrapPots" hidden></p>
             <div class="equity-short" id="auctionTrapEquity" hidden></div>
             <p class="auction-trap-pending" id="auctionTrapPending" hidden>Por aceitar: o TRC só entra no portefólio quando carregares em «Aceitar TRC e sair».</p>
+            <p class="auction-fiction auction-fiction-narrow" id="auctionFictionLose" hidden>Os lances das empresas reais no jogo são fictícios.</p>
             <p id="auctionTrapNote" style="font-size:12px;color:#94a3b8">Podes aceitar o TRC e sair, ou continuar a licitar os lotes que faltam.</p>
             <div class="auction-actions" style="justify-content:flex-start;flex-wrap:wrap">
               <button type="button" class="btn-auction-primary" id="auctionTrapDone" data-tut="trc.accept">Aceitar TRC e sair</button>
@@ -12235,6 +12253,8 @@
     const btnDone = document.getElementById('auctionTrapDone');
 
     try { const tc = document.querySelector('#auctionScreenTrap .auction-trap'); if (tc) tc.classList.toggle('is-win', outcome === 'win'); } catch (_) {}
+    const fictionLose = document.getElementById('auctionFictionLose');
+    if (fictionLose) fictionLose.hidden = outcome !== 'lose';
     if (outcome === 'lose') {
       try { const te = document.getElementById('auctionTrapEquity'); if (te) { te.hidden = true; te.innerHTML = ''; } } catch (_) {}
       try { const tp = document.getElementById('auctionTrapPots'); if (tp) { tp.hidden = true; tp.innerHTML = ''; } } catch (_) {}
@@ -16622,7 +16642,6 @@
   }
 
   function periodLabelText() {
-    if (document.body.classList.contains('at-arranque')) return '2027 · Q1';
     if (document.body.classList.contains('at-menu')) return 'v0.1';
     if (mailLoop && mailLoop.active && mailLoop.month >= 0 && state.auctionWon) {
       return objPeriodLabel(mailLoop.month | 0);
@@ -19248,23 +19267,53 @@
       pais: String(playerProfile.pais || 'portugal')
     };
   }
-  function arranqueNorm(s) {
-    return String(s || '').normalize('NFKC').replace(/\s+/g, ' ').trim().toLocaleLowerCase('pt');
+  function arranqueFold(s) {
+    return String(s || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase('pt')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
-  function arranqueForbidden(list) {
+  function arranqueAddAlias(set, raw) {
+    const n = arranqueFold(raw);
+    if (n && n.length >= 3) set.add(n);
+  }
+  function arranqueAliases(list) {
     const set = new Set();
     (list || []).forEach((c) => {
-      ['nome', 'nome_curto'].forEach((k) => {
-        const n = arranqueNorm(c && c[k]);
-        if (n) set.add(n);
+      arranqueAddAlias(set, c && c.nome_curto);
+      const nome = String((c && c.nome) || '');
+      arranqueAddAlias(set, nome.replace(/\s*\([^)]*\)\s*/g, ' '));
+      const parens = nome.match(/\(([^)]*)\)/g) || [];
+      parens.forEach((p) => {
+        p.slice(1, -1).split(',').forEach((part) => {
+          let bit = part.trim().replace(/^grupo\s*;\s*inclui\s+/i, '').replace(/^inclui\s+/i, '').trim();
+          if (!bit || /^grupo$/i.test(bit)) return;
+          arranqueAddAlias(set, bit);
+          const shorter = bit.replace(/\s+(Assurances|Assurance|Energy|Energia|Renewables|Renováveis|Group|Grupo|SGPS)$/i, '').trim();
+          if (shorter && shorter !== bit) arranqueAddAlias(set, shorter);
+          const words = bit.split(/\s+/);
+          if (words.length >= 2 && /^[A-Z]{2,}$/.test(words[0])) {
+            const initials = words.slice(1).map((w) => (w.match(/[A-Za-zÀ-ÿ]/) || [''])[0]).join('');
+            if (initials) arranqueAddAlias(set, words[0] + initials);
+          }
+        });
       });
     });
     return set;
   }
   function arranqueNameTaken(raw, list) {
-    const n = arranqueNorm(raw);
+    const n = arranqueFold(raw);
     if (!n) return false;
-    return arranqueForbidden(list).has(n);
+    let hit = false;
+    arranqueAliases(list).forEach((alias) => {
+      if (hit || !alias) return;
+      const re = new RegExp('(^| )' + alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '( |$)');
+      if (re.test(n)) hit = true;
+    });
+    return hit;
   }
   function loadArranqueCompanies() {
     if (arranqueCompanies) return Promise.resolve(arranqueCompanies);
@@ -19411,7 +19460,7 @@
       '<div class="ar-ls" role="radiogroup">' + items + '</div>' +
       '<p class="ar-ln">Mais países em breve.</p>' +
       '<p class="ar-ln">Para vender eletricidade, a central tem de estar ligada à rede pública. Em Portugal, a REN gere a rede de alta tensão e dá os pontos de ligação em leilão.</p>' +
-      '<p class="ar-ln">Portugal: 9 subestações com leilão · começa em 2027 · Q1</p>' +
+      '<p class="ar-ln">Portugal: 9 subestações com leilão · começa em ' + escapeHtml(periodLabelText()) + '</p>' +
       arranqueCta('Seguinte');
   }
   function arranqueScreenEmpresa() {
@@ -19435,6 +19484,7 @@
       '<p class="ar-ln ar-strong"><b>' + escapeHtml(nome) + '</b> · 2,0 M€ para começar · 4 pessoas · cerca de 0,4 M€ por ano de custos fixos</p>' +
       '<p class="ar-ln"><span class="ar-fn">*</span> soma parcial · ~ aproximado, por confirmar · — sem valor</p>' +
       '<p class="ar-ln">As empresas a cinzento são reais e vais encontrá-las nos leilões. Não as podes dirigir.</p>' +
+      '<p class="ar-ln">Os lances das empresas reais no jogo são fictícios.</p>' +
       arranqueCta('Seguinte');
   }
   function arranqueFichaBody() {
@@ -19448,7 +19498,7 @@
       '<dt>Administrador</dt><dd>' + escapeHtml(adm) + '</dd>' +
       '<dt>Nacionalidade</dt><dd>' + escapeHtml(arranqueDraft.nacionalidade || 'Portuguesa') + '</dd>' +
       '<dt>Sede</dt><dd>Lisboa</dd>' +
-      '<dt>Fundada</dt><dd>2027 · Q1</dd>' +
+      '<dt>Fundada</dt><dd>' + escapeHtml(periodLabelText()) + '</dd>' +
       '<dt>Equipa</dt><dd>4 no arranque, 5 depois do primeiro ponto ganho<div class="ar-subline">Diretor-geral, responsável pelo financiamento e 2 pessoas à procura de terrenos e ligações. Depois, um gestor de projeto.</div></dd>' +
       '<dt>Custos fixos</dt><dd>Cerca de 0,4 M€ por ano; 0,5 depois de ganhares o primeiro ponto de ligação<div class="ar-subline">Sobe para cerca de 0,6 durante a construção e 0,77 quando a primeira central começar a vender.</div></dd>' +
       '<dt>Investidores</dt><dd class="ar-soft">Não te dão o dinheiro logo no início. Aprovam o orçamento de cada projeto quando ganhas o ponto de ligação e entram com o capital quando decides construir, se o projeto convencer.</dd>' +
