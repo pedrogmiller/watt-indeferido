@@ -330,18 +330,49 @@ async function drainMail(page) {
   return false;
 }
 
+/** Novo jogo walks Jogador → País → Empresa → Ficha → Controlo, then the auction. */
+async function startNewGame(page, shotName) {
+  await page.locator('[data-menu="novo"]').click();
+  await page.waitForSelector('#arranque[data-step="jogador"] #arranqueNext');
+  if (shotName) await shot(page, shotName);
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="pais"]');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="edp"]', { timeout: 15000 });
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="ficha"]');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="controlo"] #arranqueAuction');
+  await page.locator('#arranqueAuction').click();
+  await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
+  const preset = await page.evaluate(() => {
+    const id = localStorage.getItem('watt.saves.active');
+    const idx = JSON.parse(localStorage.getItem('watt.saves.index.v1') || '[]');
+    const row = idx.find((s) => s.id === id);
+    return row && row.name;
+  });
+  if (!/Jogo de \d+ \w+ \d{4}/.test(preset || '')) throw new Error('default name: ' + preset);
+  try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
+  await page.locator('#auctionClose').click();
+  await page.waitForFunction(() => {
+    const room = document.getElementById('auctionRoom');
+    return room && !room.classList.contains('open');
+  });
+  if (await page.locator('#btnInbox').isVisible()) await page.locator('#btnInbox').click();
+  else await page.locator('#tabInbox').click();
+  await page.waitForSelector('#inboxDrawer.open', { timeout: 10000 });
+  if (!(await page.locator('#inboxDrawer.open [data-mail-choice="ver_mandato"]').count())) {
+    await page.locator('.mail-row').first().click();
+  }
+  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 10000 });
+}
+
 async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExtra) {
   const page = await browser.newPage({ viewport: { width, height } });
   track(page, 'cod-' + tag);
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('[data-menu="novo"]');
-  await page.locator('[data-menu="novo"]').click();
-  await page.waitForSelector('#newGameName');
-  const preset = await page.locator('#newGameName').inputValue();
-  if (!/Jogo de \d+ \w+ \d{4}/.test(preset)) throw new Error('default name: ' + preset);
-  await shot(page, 'novo-jogo-' + tag);
-  await page.locator('#newGameStart').click();
-  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
+  await startNewGame(page, 'novo-jogo-' + tag);
   if (await page.locator('#phase0Welcome').count()) throw new Error('welcome overlay duplicates the mail');
   const title = await page.locator('#inboxTitle').innerText();
   if (title.trim() !== 'Caixa de entrada') throw new Error('inbox title: ' + title);
@@ -580,9 +611,7 @@ async function playOtherLot(browser, width, height, tag) {
   track(page, 'evora-' + tag);
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('[data-menu="novo"]');
-  await page.locator('[data-menu="novo"]').click();
-  await page.locator('#newGameStart').click();
-  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
+  await startNewGame(page);
   await page.locator('[data-mail-choice="ver_mandato"]').click();
   await page.waitForSelector('#mandate0Close');
   await page.locator('#mandate0Close').click();
@@ -656,10 +685,215 @@ async function assetRoomChecks(page, tag) {
   await shot(page, 'sala-ver-numeros-' + tag);
 }
 
+async function cleanPage(browser, width, height) {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.setViewportSize({ width, height });
+  return { context, page };
+}
+
+/** Novo jogo → 5 ecrãs → leilão de Ourique ganho no lance por defeito 27. */
+async function openingToAuction(browser, width, height, tag, win) {
+  const { context, page } = await cleanPage(browser, width, height);
+  track(page, 'abertura-' + tag);
+  try {
+    await page.goto(BASE, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => localStorage.clear());
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.waitForSelector('[data-menu="novo"]');
+    await page.locator('[data-menu="novo"]').click();
+    await page.waitForSelector('#arranque[data-step="jogador"] #arrNome');
+    const period = (await page.locator('#periodLabel').innerText()).trim();
+    if (period !== '2027 · Q1') throw new Error('opening period ' + period);
+    if (await page.locator('#btnSettings').isVisible()) throw new Error('gear visible during opening');
+    if (await page.locator('#arranqueFinancas').isVisible()) throw new Error('finanças pill on jogador');
+    const nome = await page.locator('#arrNome').inputValue();
+    const apelido = await page.locator('#arrApelido').inputValue();
+    const empresa = await page.locator('#arrEmpresa').inputValue();
+    if (nome || apelido || empresa) throw new Error('fields should start empty');
+    const ph = await page.locator('#arrEmpresa').getAttribute('placeholder');
+    if (ph !== 'Ex.: Sol do Sul, Lda.') throw new Error('placeholder ' + ph);
+    const nacs = await page.locator('#arrNac option').allInnerTexts();
+    if (nacs.length !== 19) throw new Error('nacionalidades ' + nacs.length);
+    if (nacs[nacs.length - 1] !== 'Outra') throw new Error('Outra is not last');
+    if (await page.locator('#arrNac').inputValue() !== 'Portuguesa') throw new Error('default nationality');
+    const blue = await page.locator('#arranqueNext').evaluate((el) => getComputedStyle(el).backgroundColor);
+    if (blue !== 'rgb(0, 122, 255)') throw new Error('opening CTA ' + blue);
+
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranque[data-step="pais"] [data-pais="portugal"]');
+    if ((await page.locator('[data-pais="portugal"]').getAttribute('aria-checked')) !== 'true') throw new Error('Portugal not selected');
+    const locked = page.locator('#arranque .ar-li.off');
+    if (await locked.count() !== 8) throw new Error('locked countries ' + await locked.count());
+    const pe = await page.locator('[data-pais="espanha"]').evaluate((el) => getComputedStyle(el).pointerEvents);
+    if (pe !== 'none') throw new Error('locked country is clickable');
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranque[data-step="empresa"] [data-player="1"]');
+    const top = await page.locator('[data-player="1"]').innerText();
+    if (!/A tua empresa/.test(top) || !/Promotora/.test(top) || !/0 MW/.test(top)) throw new Error('empty company row: ' + top);
+    await page.locator('#arranqueBack').click();
+    await page.waitForSelector('#arranque[data-step="pais"]');
+    await page.locator('#arranqueBack').click();
+    await page.waitForSelector('#arranque[data-step="jogador"]');
+
+    await page.locator('#arrEmpresa').fill('EDP');
+    await page.locator('#arranqueNext').click();
+    await page.waitForFunction(() => {
+      const input = document.getElementById('arrEmpresa');
+      const root = document.getElementById('arranque');
+      return !!(input && root && root.dataset.step === 'jogador' && input.getAttribute('aria-invalid') === 'true');
+    });
+    await page.locator('#arrEmpresa').fill('iberdrola');
+    await page.locator('#arranqueNext').click();
+    await page.waitForFunction(() => {
+      const input = document.getElementById('arrEmpresa');
+      const root = document.getElementById('arranque');
+      return !!(input && root && root.dataset.step === 'jogador' && input.getAttribute('aria-invalid') === 'true' && /iberdrola/i.test(input.value));
+    });
+
+    await page.locator('#arrNome').fill('Ana');
+    await page.locator('#arrApelido').fill('Ferreira');
+    await page.locator('#arrEmpresa').fill('Sol do Sul, Lda.');
+    await shot(page, 'abertura-jogador-' + tag);
+    if (/HIPÓTESE|\[GM\]/.test(await page.locator('#arranque').innerText())) throw new Error('marker on jogador');
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranque[data-step="pais"]');
+    await shot(page, 'abertura-pais-' + tag);
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="finerge"]');
+    const list = await page.locator('#arranque .ar-ls').innerText();
+    if (!/Sol do Sul, Lda\./.test(list)) throw new Error('player company missing');
+    if (!/EDP/.test(list) || !/7\s*000/.test(list)) throw new Error('EDP mw: ' + list.slice(0, 400));
+    const finerge = await page.locator('[data-rival="finerge"]').innerText();
+    if (!/~/.test(finerge) || !/1\s*795/.test(finerge)) throw new Error('Finerge: ' + finerge);
+    const tagE = await page.locator('[data-rival="tagenergy"]').innerText();
+    if (!/—/.test(tagE)) throw new Error('TagEnergy: ' + tagE);
+    const edpPe = await page.locator('[data-rival="edp"]').evaluate((el) => getComputedStyle(el).pointerEvents);
+    if (edpPe !== 'none') throw new Error('rival is selectable');
+    if (!/rival/i.test(await page.locator('[data-rival="edp"]').innerText())) throw new Error('missing Rival');
+    if (await page.locator('[data-rival]').count() !== 16) throw new Error('rival count');
+    const body = await page.locator('#arranque').innerText();
+    if (/HIPÓTESE|\[GM\]/.test(body)) throw new Error('marker on empresa');
+    if (!/2,0 M€ para começar/.test(body)) throw new Error('starting cash copy');
+    await shot(page, 'abertura-empresa-' + tag);
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranque[data-step="ficha"] #arranqueFinCard');
+    if (!(await page.locator('#arranqueFinancas').isVisible())) throw new Error('finanças pill hidden on ficha');
+    const pill = await page.locator('#arranqueFinancas').innerText();
+    if (!/Ok/.test(pill) || /\d/.test(pill)) throw new Error('finanças pill ' + pill);
+    const finCard = await page.locator('#arranqueFinCard').innerText();
+    if (!/Ok/.test(finCard) || /\d/.test(finCard)) throw new Error('finanças card ' + finCard);
+    const ficha = await page.locator('#arranque').innerText();
+    if (!/Ana Ferreira/.test(ficha) || !/Portuguesa/.test(ficha)) throw new Error('ficha identity');
+    if (/HIPÓTESE|\[GM\]/.test(ficha)) throw new Error('marker on ficha');
+    await shot(page, 'abertura-ficha-' + tag);
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranque[data-step="controlo"] #arranqueAuction');
+    const controlo = await page.locator('#arranque').innerText();
+    if (!/Assumiste o controlo/.test(controlo)) throw new Error('controlo title');
+    if (!/Ana, a empresa é tua/.test(controlo)) throw new Error('controlo name');
+    if (!/Ir para o leilão/.test(controlo) || !/Ourique/.test(controlo)) throw new Error('controlo auction');
+    if (/HIPÓTESE|\[GM\]|Fim da maquete/.test(controlo)) throw new Error('marker on controlo');
+    const goBlue = await page.locator('#arranqueAuction').evaluate((el) => getComputedStyle(el).backgroundColor);
+    if (goBlue !== 'rgb(0, 122, 255)') throw new Error('auction CTA ' + goBlue);
+    await shot(page, 'abertura-controlo-' + tag);
+    if (!win) return;
+
+    await page.locator('#arranqueAuction').click();
+    await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
+    if (await page.locator('#arranque').isVisible()) throw new Error('opening still visible over the auction');
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2500 }); } catch (_) {}
+    await page.waitForFunction(() => {
+      const q = window.__wattQA;
+      return !!(q && q.winAt && q.winAt('ourique', 27) && q.winAt('ourique', 27).win);
+    }, null, { timeout: 20000 });
+    const presetBid = await page.locator('#auctionBidSlider').inputValue();
+    if (presetBid !== '27') throw new Error('default bid ' + presetBid);
+    const caixa = await page.evaluate(() => window.__wattQA.state.caixa);
+    if (!(Math.abs(caixa - 2) < 1e-9)) throw new Error('caixa ' + caixa);
+    await page.locator('#auction-confirm').click();
+    await page.waitForSelector('[data-screen="trap"].active #auctionTrapDone', { timeout: 10000 });
+    const trap = await page.locator('#auctionTrapDone').innerText();
+    if (!/Aceitar/.test(trap)) throw new Error('bid 27 did not win: ' + trap);
+    await page.locator('#auctionTrapDone').click();
+    await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, null, { timeout: 15000 });
+    const saved = await page.evaluate(() => {
+      const id = localStorage.getItem('watt.saves.active');
+      const raw = localStorage.getItem('watt.save.slot.' + id);
+      return raw ? JSON.parse(raw).player : null;
+    });
+    if (!saved || saved.nomeProprio !== 'Ana' || saved.apelido !== 'Ferreira') throw new Error('player save ' + JSON.stringify(saved));
+    if (saved.nomeEmpresa !== 'Sol do Sul, Lda.') throw new Error('company save ' + saved.nomeEmpresa);
+    if (saved.nacionalidade !== 'Portuguesa') throw new Error('nationality save');
+    await shot(page, 'abertura-leilao-' + tag);
+  } finally {
+    await context.close();
+  }
+}
+
+/** A save from before the opening loads straight into the game. */
+async function oldSaveSkipsOpening(browser, width, height, tag) {
+  const { context, page } = await cleanPage(browser, width, height);
+  track(page, 'old-save-' + tag);
+  try {
+    const raw = JSON.stringify(legacyBlob());
+    await page.goto(BASE, { waitUntil: 'domcontentloaded' });
+    await page.evaluate((saved) => {
+      localStorage.clear();
+      localStorage.setItem('watt.save.v1', saved);
+    }, raw);
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.waitForSelector('#startMenu [data-menu="carregar"]');
+    await page.locator('[data-menu="carregar"]').click();
+    await page.waitForSelector('#startModal [data-continue]');
+    await page.locator('#startModal [data-continue]').click();
+    await page.waitForFunction(() => {
+      return !document.body.classList.contains('at-menu') && !document.body.classList.contains('at-arranque');
+    }, null, { timeout: 15000 });
+    if (await page.locator('#arranque').isVisible()) throw new Error('opening shown for an old save');
+    const quem = page.getByRole('heading', { name: 'Quem és tu?' });
+    if (await quem.count() && await quem.first().isVisible()) throw new Error('jogador screen on old save');
+    const loaded = await page.evaluate(() => {
+      const q = window.__wattQA;
+      const id = localStorage.getItem('watt.saves.active');
+      const blob = JSON.parse(localStorage.getItem('watt.save.slot.' + id) || 'null');
+      return {
+        won: !!(q && q.state && q.state.auctionWon),
+        caixa: q && q.state && q.state.caixa,
+        player: blob && blob.player,
+        phase: q && q.mail && q.mail.projectPhase
+      };
+    });
+    if (!loaded.won) throw new Error('old save did not resume: ' + JSON.stringify(loaded));
+    if (loaded.player && (loaded.player.nomeProprio || loaded.player.nomeEmpresa)) throw new Error('old save grew a player: ' + JSON.stringify(loaded.player));
+    if (loaded.phase !== 'land') throw new Error('phase changed: ' + loaded.phase);
+    await shot(page, 'old-save-' + tag);
+  } finally {
+    await context.close();
+  }
+}
+
 const browser = await chromium.launch({ headless: true });
 const report = { ok: false, errors: [], shots: [] };
 try {
   const only = process.env.WATT_ONLY || '';
+  if (only !== 'cod' && only !== 'other') {
+  await openingToAuction(browser, 1440, 900, '1440', true);
+  await openingToAuction(browser, 390, 844, '390', true);
+  await oldSaveSkipsOpening(browser, 1440, 900, '1440');
+  await oldSaveSkipsOpening(browser, 390, 844, '390');
+  console.log('PASS opening flow and old save');
+  }
+  if (only === 'opening') {
+    report.ok = errors.length === 0;
+    report.errors = errors.slice();
+    if (errors.length) {
+      console.error('CONSOLE ERRORS\n' + errors.join('\n'));
+      process.exitCode = 1;
+    } else {
+      console.log('PASS no console errors');
+    }
+  } else {
   if (only !== 'cod' && only !== 'other') {
   await openEmptyMenu(browser, 390, 844, '390');
   await openEmptyMenu(browser, 1440, 900, '1440');
@@ -688,6 +922,7 @@ try {
     process.exitCode = 1;
   } else {
     console.log('PASS no console errors');
+  }
   }
 } catch (err) {
   report.ok = false;

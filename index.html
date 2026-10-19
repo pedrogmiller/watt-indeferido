@@ -5358,34 +5358,63 @@
     .obj-tbl td { display: inline-block; border: 0; padding: 0 6px 0 0; }
     .obj-tbl td:first-child { display: block; width: 100%; padding-bottom: 6px; }
   }
-  /* ═══ Menu inicial (maquete) ═══ */
+  /* ═══ Menu inicial e arranque (o jogo fica por baixo) ═══ */
   body.at-menu .header-metrics,
+  body.at-arranque .header-metrics,
   body.at-menu .mobile-caixa-pill,
+  body.at-arranque .mobile-caixa-pill,
   body.at-menu .footer-mock-period,
+  body.at-arranque .footer-mock-period,
   body.at-menu .econ-provisional-brand,
+  body.at-arranque .econ-provisional-brand,
   body.at-menu .header-home-btn,
+  body.at-arranque .header-home-btn,
   body.at-menu .header-auction-btn,
+  body.at-arranque .header-auction-btn,
   body.at-menu .header-inbox-btn,
+  body.at-arranque .header-inbox-btn,
   body.at-menu .header-help,
+  body.at-arranque .header-help,
   body.at-menu .header-settings-btn,
+  body.at-arranque .header-settings-btn,
   body.at-menu .tab-bar,
+  body.at-arranque .tab-bar,
   body.at-menu .main,
+  body.at-arranque .main,
   body.at-menu .fab-nextq,
+  body.at-arranque .fab-nextq,
   body.at-menu .activity,
+  body.at-arranque .activity,
   body.at-menu .play-action-gate,
+  body.at-arranque .play-action-gate,
   body.at-menu .mobile-tabbar,
-  body.at-menu .mobile-tabbar-hint { display: none !important; }
+  body.at-arranque .mobile-tabbar,
+  body.at-menu .mobile-tabbar-hint,
+  body.at-arranque .mobile-tabbar-hint { display: none !important; }
   body.at-menu.footer-mock #btnSettings,
+  body.at-arranque.footer-mock #btnSettings,
   body.at-menu.footer-mock #btnSearch,
+  body.at-arranque.footer-mock #btnSearch,
   body.at-menu.footer-mock #btnNextQ,
+  body.at-arranque.footer-mock #btnNextQ,
   body.at-menu.footer-mock #btnTutorial,
+  body.at-arranque.footer-mock #btnTutorial,
   body.at-menu.footer-mock .mobile-tabbar,
+  body.at-arranque.footer-mock .mobile-tabbar,
   body.at-menu.footer-mock .header-metrics,
-  body.at-menu.footer-mock #footerMockPeriod { display: none !important; }
-  body.at-menu.footer-mock .brand-period { display: block !important; }
-  body.at-menu .header { padding: 12px 20px; gap: 10px; }
+  body.at-arranque.footer-mock .header-metrics,
+  body.at-menu.footer-mock #footerMockPeriod,
+  body.at-arranque.footer-mock #footerMockPeriod { display: none !important; }
+  body.at-menu.footer-mock .brand-period,
+  body.at-arranque.footer-mock .brand-period { display: block !important; }
+  body.at-menu .header,
+  body.at-arranque .header { padding: 12px 20px; gap: 10px; }
   @media (max-width: 430px) {
-    body.at-menu.footer-mock .brand-text { display: flex !important; }
+    body.at-menu.footer-mock .brand-text,
+    body.at-arranque.footer-mock .brand-text { display: flex !important; }
+  }
+  @media (min-width: 900px) {
+    body.at-arranque .header { padding: 12px 28px; gap: 20px; }
   }
   .start-screen[hidden] { display: none !important; }
   .start-screen { flex: 1; display: flex; justify-content: center; }
@@ -5562,11 +5591,160 @@
   #mandate0Card .goal b, #mandate0Card .lock b { display: block; font-size: 14px; }
   #mandate0Card .goal span, #mandate0Card .lock span { display: block; margin-top: 4px; font-size: 12px; color: #64748b; }
   #mandate0Card .lock { background: #f8fafc; }
-  body.at-menu #mandate0Card { display: none !important; }
+  body.at-menu #mandate0Card,
+  body.at-arranque #mandate0Card { display: none !important; }
   .settings-btn.danger-solid { background: var(--critical); border-color: var(--critical); color: #fff; }
   .settings-btn.danger-solid:hover { background: #b91c1c; border-color: #b91c1c; }
   body.at-menu #objSheet,
-  body.at-menu .obj-budget { display: none !important; }
+  body.at-arranque #objSheet,
+  body.at-menu .obj-budget,
+  body.at-arranque .obj-budget { display: none !important; }
+
+  /* ═══ Arranque de jogo novo (Jogador · País · Empresa · Ficha · Controlo) ═══ */
+  #arranqueFinancas[hidden] { display: none !important; }
+  #arranqueFinancas .metric-value.ok { color: #166534; }
+  body.at-arranque #arranqueFinancas.is-on { display: flex !important; margin-left: auto; }
+  #arranque[hidden] { display: none !important; }
+  #arranque { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  #arranque .ar-steps {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 10px;
+    display: flex;
+    overflow-x: auto;
+  }
+  #arranque .ar-step {
+    border-bottom: 2px solid transparent;
+    padding: 10px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #94a3b8;
+    white-space: nowrap;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  #arranque .ar-n {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 1.5px solid #cbd5e1; font-size: 10px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #arranque .ar-step.done { color: #166534; }
+  #arranque .ar-step.done .ar-n { background: #16a34a; border-color: #16a34a; color: #fff; }
+  #arranque .ar-step.now { color: var(--text-main); border-bottom-color: #0f172a; }
+  #arranque .ar-step.now .ar-n { background: #007AFF; border-color: #007AFF; color: #fff; }
+  #arranque .ar-main { flex: 1; padding: 18px 14px 110px; max-width: 760px; width: 100%; margin: 0 auto; }
+  #arranque h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; text-align: left; }
+  #arranque .ar-lead { color: var(--text-muted); margin: 2px 0 16px; text-align: left; }
+  #arranque .ar-card {
+    background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card); padding: 14px;
+  }
+  #arranque .ar-k { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; }
+  #arranque label { font-size: 12px; color: var(--text-muted); font-weight: 600; display: block; }
+  #arranque input, #arranque select {
+    width: 100%; font-size: 16px; padding: 10px 12px; border: 1px solid var(--border-subtle);
+    border-radius: 8px; margin: 4px 0 14px; background: #fff; color: var(--text-main); font-family: var(--font);
+  }
+  #arranque input:focus, #arranque select:focus { outline: 2px solid #007AFF; outline-offset: -1px; border-color: #007AFF; }
+  #arranque input[aria-invalid="true"] { border-color: var(--critical); }
+  #arranque .ar-hint { font-size: 12px; color: var(--text-muted); margin: -8px 0 14px; }
+  #arranque .ar-hint.bad { color: var(--critical); font-weight: 700; }
+  #arranque .ar-row2 { display: grid; gap: 0 12px; }
+  #arranque .ar-btn-p {
+    background: #007AFF; color: #fff; border: none; border-radius: var(--radius-sm);
+    padding: 12px 18px; font-size: 15px; font-weight: 600; cursor: pointer; min-height: 48px; font-family: var(--font);
+  }
+  #arranque .ar-btn-p:hover { background: #0066d6; }
+  #arranque .ar-btn-p.ar-big { font-size: 16px; min-height: 54px; width: 100%; margin-top: 16px; }
+  #arranque .ar-btn-p:disabled { opacity: 0.55; cursor: default; }
+  #arranque .ar-btn-g {
+    background: #fff; color: #334155; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);
+    padding: 11px 16px; font-size: 14px; font-weight: 600; min-height: 48px; cursor: pointer; font-family: var(--font);
+  }
+  #arranque .ar-cta {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, var(--bg-app) 72%, rgba(248, 250, 252, 0));
+    padding: 16px 14px calc(12px + env(safe-area-inset-bottom)); z-index: 60;
+  }
+  #arranque .ar-cta-in { max-width: 760px; margin: 0 auto; display: flex; gap: 8px; }
+  #arranque .ar-cta .ar-btn-p { flex: 1; }
+  #arranque .ar-ls {
+    display: grid; grid-template-columns: 1fr; background: #fff;
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card); padding: 4px;
+  }
+  #arranque .ar-li {
+    display: flex; align-items: center; gap: 8px; min-height: 34px; padding: 5px 10px;
+    border-radius: 6px; border: 1.5px solid transparent; font-size: 14px;
+  }
+  #arranque .ar-li.on { border-color: #007AFF; background: #f5f9ff; }
+  #arranque .ar-li.on .ar-nm { font-weight: 700; color: #0f172a; }
+  #arranque .ar-nm { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  #arranque .ar-tg {
+    display: flex; gap: 6px; align-items: center; flex: 0 0 auto;
+    font-size: 12px; color: #64748b; font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  #arranque .ar-li.off { opacity: 0.5; cursor: default; pointer-events: none; }
+  #arranque .ar-lk { flex: 0 0 13px; color: #64748b; }
+  #arranque .ar-rv {
+    font-style: normal; font-size: 10px; font-weight: 700; letter-spacing: 0.03em;
+    text-transform: uppercase; color: #64748b; border: 1px solid #e2e8f0; border-radius: 999px; padding: 0 6px;
+  }
+  #arranque .ar-ln { font-size: 12px; color: #64748b; margin-top: 6px; line-height: 1.45; }
+  #arranque .ar-ln.ar-strong { color: #334155; }
+  #arranque .ar-fn { font-size: 10px; color: #64748b; vertical-align: super; }
+  #arranque .ar-sheet { display: grid; gap: 12px; }
+  #arranque .ar-dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 13px; margin-top: 8px; }
+  #arranque .ar-dl dt { color: #64748b; }
+  #arranque .ar-dl dd { font-weight: 600; }
+  #arranque .ar-dl dd.ar-soft { font-weight: 500; }
+  #arranque .ar-subline { font-size: 12px; color: #64748b; font-weight: 500; margin-top: 2px; }
+  #arranque .ar-okbig { display: inline-flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 800; color: #166534; margin-top: 6px; }
+  #arranque .ar-okbig i { width: 12px; height: 12px; border-radius: 50%; background: #16a34a; display: block; }
+  #arranque .ar-empty { border: 1px dashed #cbd5e1; border-radius: 10px; padding: 10px 12px; font-size: 13px; color: #475569; background: #f8fafc; margin-top: 8px; }
+  #arranque .ar-co-head { display: flex; gap: 12px; align-items: center; }
+  #arranque .ar-co-av {
+    flex: 0 0 48px; height: 48px; border-radius: 12px; background: #0f172a; color: #fff;
+    font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center;
+  }
+  #arranque .ar-co-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+  #arranque .ar-co-sub { font-size: 13px; color: #64748b; }
+  #arranque .ar-end { text-align: center; padding: 26px 16px; }
+  #arranque .ar-seal {
+    width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 10px; background: #dbeafe;
+    border: 2px solid #93c5fd; display: flex; align-items: center; justify-content: center; font-size: 28px;
+  }
+  #arranque .ar-end h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  #arranque .ar-end .ar-co { font-size: 17px; font-weight: 700; margin-top: 2px; }
+  #arranque .ar-end p { color: #475569; margin-top: 6px; }
+  #arranque .ar-next {
+    display: flex; gap: 10px; align-items: center; text-align: left;
+    border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-top: 16px; background: #fff;
+  }
+  #arranque .ar-next .ar-ic {
+    flex: 0 0 40px; height: 40px; border-radius: 10px; background: #fff7ed; border: 1px solid #fed7aa;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  #arranque .ar-next b { display: block; }
+  #arranque .ar-next .ar-meta { font-size: 12px; color: #64748b; }
+  #arranque .ar-wait { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+  @media (max-width: 899px) {
+    #arranque .ar-step:not(.now) .ar-l { display: none; }
+    #arranque .ar-steps { justify-content: space-between; }
+  }
+  @media (min-width: 900px) {
+    #arranque .ar-steps { padding: 0 28px; justify-content: center; }
+    #arranque .ar-main { padding: 28px 28px 40px; }
+    #arranque h1 { font-size: 26px; }
+    #arranque .ar-row2 { grid-template-columns: 1fr 1fr; }
+    #arranque .ar-sheet { grid-template-columns: 1fr 1fr; }
+    #arranque .ar-sheet .ar-wide { grid-column: 1 / -1; }
+    #arranque .ar-ls { grid-template-columns: 1fr 1fr; column-gap: 12px; }
+    #arranque .ar-cta { position: static; background: none; padding: 18px 0 0; }
+    #arranque .ar-cta-in { justify-content: flex-end; }
+    #arranque .ar-cta .ar-btn-p { flex: 0 0 auto; min-width: 220px; }
+  }
 
 </style>
 <link rel="stylesheet" href="tut.css" />
@@ -5608,6 +5786,10 @@
       <span class="brand-period" id="periodLabel">2026 · Q3</span>
       <span class="econ-provisional econ-provisional-brand" id="econProvisional" title="Os valores em € do header e da sala são provisórios: estimativas de trabalho, ainda podem mudar.">€ · valores provisórios</span>
     </div>
+  </div>
+  <div class="metric-pill" id="arranqueFinancas" hidden>
+    <span class="metric-label">Finanças</span>
+    <span class="metric-value ok">Ok</span>
   </div>
   <span class="mobile-caixa-pill" id="mobileCaixaPill" data-tut="hud.cash" title="Caixa disponível"><span class="k">Caixa</span> <span class="v num" id="mobileCaixaVal">2,0 M€</span><span class="pill-prov" title="Os valores em € são provisórios: estimativas de trabalho, ainda podem mudar.">valores provisórios</span></span>
   <span class="footer-mock-period" id="footerMockPeriod" hidden aria-hidden="true">2026 · Q3</span>
@@ -5654,6 +5836,10 @@
   <div class="start-main">
     <div class="menu" id="startMenuCard"></div>
   </div>
+</div>
+<div id="arranque" hidden data-step="jogador">
+  <nav class="ar-steps" id="arranqueSteps" aria-label="Arranque"></nav>
+  <div class="ar-main" id="arranqueMain"></div>
 </div>
 <div id="startModal"></div>
 
@@ -6303,6 +6489,8 @@
     minimized: new Set(['ourique']), // hidden until auction win (not gifted)
     auctionWon: false,
   };
+  /** Nome do jogador e da empresa, gravados no save para as cartas. Null em jogos antigos. */
+  let playerProfile = null;
 
   const NODE_SHORT = {
     ourique: 'Ourique',
@@ -12801,10 +12989,24 @@
     });
     return out;
   }
+  /** Player fields for later letters: {{jogador}} {{apelido}} {{nome}} {{empresa}} {{nacionalidade}}. */
+  function playerMailCtx() {
+    const p = playerProfile || {};
+    const proprio = String(p.nomeProprio || '').trim();
+    const apelido = String(p.apelido || '').trim();
+    const empresa = String(p.nomeEmpresa || '').trim();
+    return {
+      jogador: proprio,
+      apelido: apelido,
+      nome: [proprio, apelido].filter(Boolean).join(' '),
+      empresa: empresa || 'A tua empresa',
+      nacionalidade: p.nacionalidade || ''
+    };
+  }
   /** Fills {{key}} from ctx and the single-brace M0 placeholders ({ask_s} … {cash_l}). Unknown single braces stay. */
   function fillMailTemplate(str, ctx) {
     if (str == null) return '';
-    ctx = ctx || {};
+    ctx = Object.assign({}, playerMailCtx(), ctx || {});
     let out = String(str).replace(/\{\{(\w+)\}\}/g, function (_, key) {
       return ctx[key] != null ? String(ctx[key]) : '';
     });
@@ -16422,6 +16624,7 @@
   }
 
   function periodLabelText() {
+    if (document.body.classList.contains('at-arranque')) return '2027 · Q1';
     if (document.body.classList.contains('at-menu')) return 'v0.1';
     if (mailLoop && mailLoop.active && mailLoop.month >= 0 && state.auctionWon) {
       return objPeriodLabel(mailLoop.month | 0);
@@ -18236,6 +18439,7 @@
       mailState: mailCopy,
       mailLoop: mailLoopCopy,
       mandateState: mandateCopy,
+      player: playerSnapshot(),
       nodes: JSON.parse(JSON.stringify(nodes)),
       activities: JSON.parse(JSON.stringify(activities)),
       actions: actionsCopy,
@@ -18430,6 +18634,16 @@
       try { localStorage.setItem(ONBOARDING_KEY, '1'); } catch (_) {}
     }
     if (blob.flags && typeof blob.flags.phase0Seen === 'boolean') phase0WelcomeSeen = blob.flags.phase0Seen;
+    playerProfile = null;
+    if (blob.player && typeof blob.player === 'object') {
+      playerProfile = {
+        nomeProprio: String(blob.player.nomeProprio || ''),
+        apelido: String(blob.player.apelido || ''),
+        nomeEmpresa: String(blob.player.nomeEmpresa || ''),
+        nacionalidade: String(blob.player.nacionalidade || 'Portuguesa'),
+        pais: String(blob.player.pais || 'portugal')
+      };
+    }
     // After a win, never leave Home looking like «Sem central»: expand ≥1 awarded TRC
     if (state.auctionWon) {
       const won = (auctionState && auctionState.wonLots) ? auctionState.wonLots.slice() : [];
@@ -18994,19 +19208,392 @@
     document.querySelectorAll('#startModal [data-continue]').forEach((b) => b.addEventListener('click', () => enterSlot(b.getAttribute('data-continue'))));
     document.querySelectorAll('#startModal [data-delete]').forEach((b) => b.addEventListener('click', () => openDeleteSheet(b.getAttribute('data-delete'))));
   }
-  function openNewGameSheet() {
-    const name = defaultGameName(new Date());
-    openStartSheet('<h2>Novo jogo<button type="button" class="x" data-close-sheet aria-label="Fechar">×</button></h2><p class="m">Começas no Mandato 0: Ganhar o leilão. A primeira mensagem está na Caixa de entrada.</p><label for="newGameName">Nome do jogo</label><input id="newGameName" value="' + escapeHtml(name) + '"><div class="acts"><button type="button" class="btn sm" data-close-sheet>Cancelar</button><button type="button" class="btn primary sm" id="newGameStart">Começar</button></div>');
-    const input = document.getElementById('newGameName');
-    const start = document.getElementById('newGameStart');
-    if (input) {
-      input.addEventListener('focus', () => { try { input.select(); } catch (_) {} });
-    }
-    if (start) start.addEventListener('click', () => {
-      const n = (input && input.value || '').trim() || name;
-      try { sessionStorage.setItem('watt.newSlotName', n); } catch (_) {}
-      location.replace(location.pathname + location.hash);
+  /* ── Arranque (Novo jogo): Jogador · País · Empresa · Ficha · Controlo ──
+   * A lista de empresas reais vem de content/data/intervenientes.json
+   * (nome_curto, tipo, mw, estado). Sem selos [GM] / HIPÓTESE no ecrã. */
+  const ARRANQUE_DATA_URL = 'content/data/intervenientes.json';
+  const ARRANQUE_LS = {
+    nomeProprio: 'wi.arranque.nomeProprio',
+    apelido: 'wi.arranque.apelido',
+    nomeEmpresa: 'wi.arranque.nomeEmpresa',
+    nacionalidade: 'wi.arranque.nacionalidade'
+  };
+  const ARRANQUE_NACS = ['Alemã', 'Angolana', 'Belga', 'Brasileira', 'Britânica', 'Cabo-verdiana', 'Espanhola', 'Francesa', 'Grega', 'Italiana', 'Moçambicana', 'Neerlandesa', 'Norte-americana', 'Polaca', 'Portuguesa', 'Romena', 'Suíça', 'Ucraniana', 'Outra'];
+  const ARRANQUE_PAISES = [
+    { id: 'portugal', nome: '🇵🇹 Portugal', op: 'REN', on: true },
+    { id: 'espanha', nome: '🇪🇸 Espanha', op: 'REE' },
+    { id: 'franca', nome: '🇫🇷 França', op: 'RTE' },
+    { id: 'italia', nome: '🇮🇹 Itália', op: 'Terna' },
+    { id: 'alemanha', nome: '🇩🇪 Alemanha', op: '4 operadores', title: '50Hertz, Amprion, TenneT, TransnetBW' },
+    { id: 'reino-unido', nome: '🇬🇧 Reino Unido', op: 'National Grid' },
+    { id: 'grecia', nome: '🇬🇷 Grécia', op: 'IPTO/ADMIE' },
+    { id: 'polonia', nome: '🇵🇱 Polónia', op: 'PSE' },
+    { id: 'romenia', nome: '🇷🇴 Roménia', op: 'Transelectrica' }
+  ];
+  const ARRANQUE_TIPO_PT = { utility: 'Elétrica', ipp: 'Produtora', promotor: 'Promotora', fundo: 'Fundo' };
+  const ARRANQUE_LOCK = '<svg class="ar-lk" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+  const ARRANQUE_STEPS = [['jogador', 'Jogador'], ['pais', 'País'], ['empresa', 'Empresa'], ['ficha', 'Ficha']];
+  let arranqueStep = 'jogador';
+  let arranqueDraft = { nomeProprio: '', apelido: '', nomeEmpresa: '', nacionalidade: 'Portuguesa' };
+  let arranqueNameError = false;
+  let arranqueCompanies = null;
+  let arranqueCompaniesError = null;
+  let arranqueCompaniesLoad = null;
+
+  function playerSnapshot() {
+    if (!playerProfile) return null;
+    return {
+      nomeProprio: String(playerProfile.nomeProprio || ''),
+      apelido: String(playerProfile.apelido || ''),
+      nomeEmpresa: String(playerProfile.nomeEmpresa || ''),
+      nacionalidade: String(playerProfile.nacionalidade || 'Portuguesa'),
+      pais: String(playerProfile.pais || 'portugal')
+    };
+  }
+  function arranqueNorm(s) {
+    return String(s || '').normalize('NFKC').replace(/\s+/g, ' ').trim().toLocaleLowerCase('pt');
+  }
+  function arranqueForbidden(list) {
+    const set = new Set();
+    (list || []).forEach((c) => {
+      ['nome', 'nome_curto'].forEach((k) => {
+        const n = arranqueNorm(c && c[k]);
+        if (n) set.add(n);
+      });
     });
+    return set;
+  }
+  function arranqueNameTaken(raw, list) {
+    const n = arranqueNorm(raw);
+    if (!n) return false;
+    return arranqueForbidden(list).has(n);
+  }
+  function loadArranqueCompanies() {
+    if (arranqueCompanies) return Promise.resolve(arranqueCompanies);
+    if (arranqueCompaniesLoad) return arranqueCompaniesLoad;
+    arranqueCompaniesError = null;
+    arranqueCompaniesLoad = fetch(ARRANQUE_DATA_URL, { cache: 'no-store' }).then((r) => {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    }).then((list) => {
+      if (!Array.isArray(list) || !list.length) throw new Error('lista vazia');
+      arranqueCompanies = list;
+      return list;
+    }).catch((err) => {
+      arranqueCompaniesError = err;
+      arranqueCompaniesLoad = null;
+      try { console.warn('[watt.arranque] intervenientes', err); } catch (_) {}
+      return null;
+    });
+    return arranqueCompaniesLoad;
+  }
+  function readArranqueDraft() {
+    const d = { nomeProprio: '', apelido: '', nomeEmpresa: '', nacionalidade: 'Portuguesa' };
+    try {
+      d.nomeProprio = localStorage.getItem(ARRANQUE_LS.nomeProprio) || '';
+      d.apelido = localStorage.getItem(ARRANQUE_LS.apelido) || '';
+      d.nomeEmpresa = localStorage.getItem(ARRANQUE_LS.nomeEmpresa) || '';
+      const nac = localStorage.getItem(ARRANQUE_LS.nacionalidade) || '';
+      if (ARRANQUE_NACS.indexOf(nac) >= 0) d.nacionalidade = nac;
+    } catch (_) {}
+    arranqueDraft = d;
+  }
+  function writeArranqueField(key, value) {
+    arranqueDraft[key] = value;
+    try { if (ARRANQUE_LS[key]) localStorage.setItem(ARRANQUE_LS[key], value); } catch (_) {}
+  }
+  function arranqueEmpresaNome() {
+    const t = String(arranqueDraft.nomeEmpresa || '').trim();
+    return t || 'A tua empresa';
+  }
+  function arranqueIniciais(nome) {
+    const parts = String(nome || '').split(/\s+/).filter((w) => /^\p{L}/u.test(w));
+    const ini = parts.slice(0, 2).map((w) => w[0].toUpperCase()).join('');
+    return ini || '?';
+  }
+  function arranqueFmtNum(n) {
+    const r = Math.round(Number(n) * 10) / 10;
+    const bits = String(r).split('.');
+    const i = bits[0].replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+    return i + (bits[1] ? ',' + bits[1] : '');
+  }
+  /** «—» sem valor · «*» soma parcial · «~» estimativa por confirmar (um só número, como a Finerge na maquete). */
+  function arranqueMwLabel(c) {
+    const mw = (c && c.mw) || {};
+    const vals = Object.keys(mw).map((k) => mw[k]);
+    const known = vals.filter((v) => v !== null && v !== undefined && v !== '');
+    if (!known.length) return '—';
+    const sum = known.reduce((a, b) => a + Number(b), 0);
+    const partial = known.length < vals.length;
+    const estimate = c.estado === 'por_confirmar' && known.length === 1 && partial;
+    if (estimate) return '~' + arranqueFmtNum(sum) + ' MW';
+    return arranqueFmtNum(sum) + (partial ? '<span class="ar-fn">*</span>' : '') + ' MW';
+  }
+  function arranqueStepsHtml() {
+    const idx = ARRANQUE_STEPS.findIndex((p) => p[0] === arranqueStep);
+    const fim = arranqueStep === 'controlo';
+    return ARRANQUE_STEPS.map((p, i) => {
+      const done = fim || (idx >= 0 && i < idx);
+      const now = !fim && i === idx;
+      const cls = done ? 'done' : (now ? 'now' : '');
+      return '<div class="ar-step ' + cls + '"><span class="ar-n">' + (done ? '✓' : String(i + 1)) + '</span><span class="ar-l">' + p[1] + '</span></div>';
+    }).join('');
+  }
+  function arranqueCta(label) {
+    const back = '<button type="button" class="ar-btn-g" id="arranqueBack" data-ar="back">Voltar</button>';
+    return '<div class="ar-cta"><div class="ar-cta-in">' + back +
+      '<button type="button" class="ar-btn-p" id="arranqueNext" data-ar="next">' + label + '</button></div></div>';
+  }
+  function arranqueLi(nome, tags, opts) {
+    opts = opts || {};
+    const cls = (opts.on ? ' on' : '') + (opts.locked ? ' off' : '');
+    const attrs = opts.locked
+      ? ' aria-disabled="true"'
+      : ' role="radio" aria-checked="' + (opts.on ? 'true' : 'false') + '"';
+    const data = opts.data || '';
+    const tagHtml = (tags || []).map((t) => '<span>' + t + '</span>').join('');
+    return '<div class="ar-li' + cls + '"' + attrs + data + '>' +
+      (opts.locked ? ARRANQUE_LOCK : '') +
+      '<span class="ar-nm">' + nome + '</span><span class="ar-tg">' + tagHtml + '</span></div>';
+  }
+  function renderArranque(step) {
+    arranqueStep = step || arranqueStep || 'jogador';
+    const root = document.getElementById('arranque');
+    const steps = document.getElementById('arranqueSteps');
+    const main = document.getElementById('arranqueMain');
+    if (!root || !main) return;
+    root.dataset.step = arranqueStep;
+    if (steps) steps.innerHTML = arranqueStepsHtml();
+    const screens = {
+      jogador: arranqueScreenJogador,
+      pais: arranqueScreenPais,
+      empresa: arranqueScreenEmpresa,
+      ficha: arranqueScreenFicha,
+      controlo: arranqueScreenControlo
+    };
+    main.innerHTML = (screens[arranqueStep] || screens.jogador)();
+    const fin = document.getElementById('arranqueFinancas');
+    const showFin = arranqueStep === 'ficha' || arranqueStep === 'controlo';
+    if (fin) {
+      fin.hidden = !showFin;
+      fin.classList.toggle('is-on', showFin);
+    }
+    if (arranqueStep === 'empresa' || arranqueStep === 'jogador') {
+      loadArranqueCompanies().then(() => {
+        if (arranqueStep !== 'empresa') return;
+        const host = document.getElementById('arranqueMain');
+        if (host && !host.querySelector('[data-rival]')) host.innerHTML = arranqueScreenEmpresa();
+      });
+    }
+    try { syncPeriodChrome(); } catch (_) {}
+  }
+  function arranqueScreenJogador() {
+    const d = arranqueDraft;
+    const err = arranqueNameError ? ' bad' : '';
+    const invalid = arranqueNameError ? ' aria-invalid="true"' : '';
+    const opts = ARRANQUE_NACS.map((n) => '<option' + (n === d.nacionalidade ? ' selected' : '') + '>' + escapeHtml(n) + '</option>').join('');
+    return '<h1>Quem és tu?</h1><p class="ar-lead">O teu nome aparece nas cartas e nas notícias.</p>' +
+      '<div class="ar-card"><div class="ar-row2">' +
+      '<div><label for="arrNome">Nome próprio</label><input id="arrNome" value="' + escapeHtml(d.nomeProprio) + '" placeholder="Ex.: Ana" autocomplete="given-name"></div>' +
+      '<div><label for="arrApelido">Apelido</label><input id="arrApelido" value="' + escapeHtml(d.apelido) + '" placeholder="Ex.: Ferreira" autocomplete="family-name"></div>' +
+      '</div>' +
+      '<label for="arrEmpresa">Nome da empresa</label><input id="arrEmpresa" value="' + escapeHtml(d.nomeEmpresa) + '" placeholder="Ex.: Sol do Sul, Lda." maxlength="40" aria-describedby="arrEmpresaHint"' + invalid + '>' +
+      '<p class="ar-hint' + err + '" id="arrEmpresaHint"' + (arranqueNameError ? ' role="alert"' : '') + '>Não podes usar o nome de uma empresa real.</p>' +
+      '<label for="arrNac">Nacionalidade</label><select id="arrNac">' + opts + '</select></div>' +
+      arranqueCta('Seguinte');
+  }
+  function arranqueScreenPais() {
+    const items = ARRANQUE_PAISES.map((p) => {
+      const op = p.title ? '<span title="' + escapeHtml(p.title) + '">' + escapeHtml(p.op) + '</span>' : escapeHtml(p.op);
+      return arranqueLi(escapeHtml(p.nome), [op], {
+        on: !!p.on,
+        locked: !p.on,
+        data: ' data-pais="' + p.id + '"'
+      });
+    }).join('');
+    return '<h1>Escolhe o país</h1><p class="ar-lead">Onde vais desenvolver as tuas centrais.</p>' +
+      '<div class="ar-ls" role="radiogroup">' + items + '</div>' +
+      '<p class="ar-ln">Mais países em breve.</p>' +
+      '<p class="ar-ln">Para vender eletricidade, a central tem de estar ligada à rede pública. Em Portugal, a REN gere a rede de alta tensão e dá os pontos de ligação em leilão.</p>' +
+      '<p class="ar-ln">Portugal: 9 subestações com leilão · começa em 2027 · Q1</p>' +
+      arranqueCta('Seguinte');
+  }
+  function arranqueScreenEmpresa() {
+    const nome = arranqueEmpresaNome();
+    const player = arranqueLi(escapeHtml(nome), ['Promotora · 0 MW'], { on: true, data: ' data-player="1"' });
+    let rivals = '';
+    if (!arranqueCompanies) {
+      rivals = '<p class="ar-wait">' + (arranqueCompaniesError ? 'Não foi possível carregar a lista de empresas.' : 'A carregar empresas…') + '</p>';
+    } else {
+      rivals = arranqueCompanies.map((c) => {
+        const tipo = ARRANQUE_TIPO_PT[c.tipo] || '—';
+        const id = escapeHtml(c.id || '');
+        return arranqueLi(escapeHtml(c.nome_curto || c.nome || '—'), [tipo + ' · ' + arranqueMwLabel(c), '<i class="ar-rv">Rival</i>'], {
+          locked: true,
+          data: ' data-rival="' + id + '"'
+        });
+      }).join('');
+    }
+    return '<h1>A tua empresa</h1><p class="ar-lead">Começas com uma empresa nova, sem centrais. Tens 2,0 M€ para concorrer a leilões. Quando ganhares um ponto de ligação, os investidores aprovam o orçamento do projeto.</p>' +
+      '<div class="ar-ls" role="radiogroup">' + player + rivals + '</div>' +
+      '<p class="ar-ln ar-strong"><b>' + escapeHtml(nome) + '</b> · 2,0 M€ para começar · 4 pessoas · cerca de 0,4 M€ por ano de custos fixos</p>' +
+      '<p class="ar-ln"><span class="ar-fn">*</span> soma parcial · ~ aproximado, por confirmar · — sem valor</p>' +
+      '<p class="ar-ln">As empresas a cinzento são reais e vais encontrá-las nos leilões. Não as podes dirigir.</p>' +
+      arranqueCta('Seguinte');
+  }
+  function arranqueFichaBody() {
+    const nome = arranqueEmpresaNome();
+    const typed = String(arranqueDraft.nomeEmpresa || '').trim();
+    const adm = [arranqueDraft.nomeProprio, arranqueDraft.apelido].map((s) => String(s || '').trim()).filter(Boolean).join(' ') || '—';
+    const ini = typed ? arranqueIniciais(typed) : '?';
+    return '<div class="ar-sheet">' +
+      '<div class="ar-card ar-wide"><div class="ar-co-head"><div class="ar-co-av">' + escapeHtml(ini) + '</div><div><div class="ar-co-name">' + escapeHtml(nome) + '</div><div class="ar-co-sub">Empresa nova · Promotora · Portugal</div></div></div></div>' +
+      '<div class="ar-card"><div class="ar-k">Informação geral</div><dl class="ar-dl">' +
+      '<dt>Administrador</dt><dd>' + escapeHtml(adm) + '</dd>' +
+      '<dt>Nacionalidade</dt><dd>' + escapeHtml(arranqueDraft.nacionalidade || 'Portuguesa') + '</dd>' +
+      '<dt>Sede</dt><dd>Lisboa</dd>' +
+      '<dt>Fundada</dt><dd>2027 · Q1</dd>' +
+      '<dt>Equipa</dt><dd>4 no arranque, 5 depois do primeiro ponto ganho<div class="ar-subline">Diretor-geral, responsável pelo financiamento e 2 pessoas à procura de terrenos e ligações. Depois, um gestor de projeto.</div></dd>' +
+      '<dt>Custos fixos</dt><dd>Cerca de 0,4 M€ por ano; 0,5 depois de ganhares o primeiro ponto de ligação<div class="ar-subline">Sobe para cerca de 0,6 durante a construção e 0,77 quando a primeira central começar a vender.</div></dd>' +
+      '<dt>Investidores</dt><dd class="ar-soft">Não te dão o dinheiro logo no início. Aprovam o orçamento de cada projeto quando ganhas o ponto de ligação e entram com o capital quando decides construir, se o projeto convencer.</dd>' +
+      '<dt>O que faz</dt><dd class="ar-soft">Procura terrenos, ganha ligações à rede, licencia projetos e constrói centrais.</dd>' +
+      '</dl></div>' +
+      '<div class="ar-card" id="arranqueFinCard"><div class="ar-k">Finanças</div><div class="ar-okbig"><i></i>Ok</div><p style="font-size:13px;color:#475569;margin-top:4px">Os valores exatos chegam na carta dos investidores, depois de assumires o controlo.</p></div>' +
+      '<div class="ar-card ar-wide"><div class="ar-k">Ativos</div><dl class="ar-dl">' +
+      '<dt>Centrais a produzir</dt><dd>0</dd>' +
+      '<dt>Projetos em licenciamento</dt><dd>0</dd>' +
+      '<dt>Ligações à rede</dt><dd>0</dd>' +
+      '</dl><div class="ar-empty">Ainda não tens nenhuma ligação à rede. A primeira ganha-se num leilão da REN.</div></div>' +
+      '</div>';
+  }
+  function arranqueScreenFicha() {
+    return '<h1>Ficha da empresa</h1><p class="ar-lead">Confirma os dados antes de começar.</p>' +
+      arranqueFichaBody() + arranqueCta('Assumir o controlo');
+  }
+  function arranqueScreenControlo() {
+    const nome = arranqueEmpresaNome();
+    const proprio = String(arranqueDraft.nomeProprio || '').trim();
+    const tua = proprio ? escapeHtml(proprio) + ', a empresa é tua.' : 'A empresa é tua.';
+    return '<div class="ar-card ar-end"><div class="ar-seal" aria-hidden="true">🔑</div><h2>Assumiste o controlo</h2>' +
+      '<div class="ar-co">' + escapeHtml(nome) + '</div>' +
+      '<p>' + tua + ' Primeiro passo: ganhar uma ligação à rede.</p>' +
+      '<div class="ar-next"><div class="ar-ic" aria-hidden="true">⚡</div><div><b>Leilão de ligação · Subestação de Ourique</b><div class="ar-meta">400 kV · 120 MWp · a REN abriu o leilão em 2027 · Q1</div></div></div>' +
+      '<button type="button" class="ar-btn-p ar-big" id="arranqueAuction" data-ar="auction">Ir para o leilão</button></div>';
+  }
+  function hideArranque() {
+    document.body.classList.remove('at-arranque');
+    const el = document.getElementById('arranque');
+    if (el) el.hidden = true;
+    const fin = document.getElementById('arranqueFinancas');
+    if (fin) { fin.hidden = true; fin.classList.remove('is-on'); }
+  }
+  function showArranque() {
+    closeStartModal();
+    const menu = document.getElementById('startMenu');
+    if (menu) menu.hidden = true;
+    document.body.classList.remove('at-menu');
+    document.body.classList.add('at-arranque');
+    readArranqueDraft();
+    arranqueNameError = false;
+    const el = document.getElementById('arranque');
+    if (el) el.hidden = false;
+    wireArranque();
+    renderArranque('jogador');
+    loadArranqueCompanies();
+  }
+  function arranqueBackToMenu() {
+    hideArranque();
+    showStartMenu();
+  }
+  async function arranqueAdvance() {
+    if (arranqueStep === 'jogador') {
+      const list = await loadArranqueCompanies();
+      if (!list) {
+        arranqueNameError = true;
+        const hint = document.getElementById('arrEmpresaHint');
+        if (hint) {
+          hint.classList.add('bad');
+          hint.setAttribute('role', 'alert');
+          hint.textContent = 'Não foi possível carregar a lista de empresas. Recarrega a página.';
+        }
+        const input = document.getElementById('arrEmpresa');
+        if (input) input.setAttribute('aria-invalid', 'true');
+        return;
+      }
+      if (arranqueNameTaken(arranqueDraft.nomeEmpresa, list)) {
+        arranqueNameError = true;
+        renderArranque('jogador');
+        const input = document.getElementById('arrEmpresa');
+        if (input) { try { input.focus(); } catch (_) {} }
+        return;
+      }
+      arranqueNameError = false;
+      renderArranque('pais');
+      return;
+    }
+    if (arranqueStep === 'pais') { renderArranque('empresa'); return; }
+    if (arranqueStep === 'empresa') {
+      if (!arranqueCompanies) await loadArranqueCompanies();
+      if (!arranqueCompanies) return;
+      renderArranque('ficha');
+      return;
+    }
+    if (arranqueStep === 'ficha') { renderArranque('controlo'); }
+  }
+  function arranqueBack() {
+    if (arranqueStep === 'jogador') { arranqueBackToMenu(); return; }
+    if (arranqueStep === 'pais') { renderArranque('jogador'); return; }
+    if (arranqueStep === 'empresa') { renderArranque('pais'); return; }
+    if (arranqueStep === 'ficha') { renderArranque('empresa'); return; }
+  }
+  function finishArranque() {
+    const d = arranqueDraft;
+    playerProfile = {
+      nomeProprio: String(d.nomeProprio || '').trim(),
+      apelido: String(d.apelido || '').trim(),
+      nomeEmpresa: String(d.nomeEmpresa || '').trim(),
+      nacionalidade: d.nacionalidade || 'Portuguesa',
+      pais: 'portugal'
+    };
+    beginNewSlot(defaultGameName(new Date()), { openAuction: true });
+  }
+  function onArranqueInput(ev) {
+    const t = ev.target;
+    if (!t) return;
+    if (t.id === 'arrNome') writeArranqueField('nomeProprio', t.value);
+    else if (t.id === 'arrApelido') writeArranqueField('apelido', t.value);
+    else if (t.id === 'arrEmpresa') {
+      writeArranqueField('nomeEmpresa', t.value.slice(0, 40));
+      if (arranqueNameError) {
+        arranqueNameError = false;
+        t.removeAttribute('aria-invalid');
+        const hint = document.getElementById('arrEmpresaHint');
+        if (hint) {
+          hint.classList.remove('bad');
+          hint.removeAttribute('role');
+          hint.textContent = 'Não podes usar o nome de uma empresa real.';
+        }
+      }
+    } else if (t.id === 'arrNac') writeArranqueField('nacionalidade', t.value);
+  }
+  function onArranqueClick(ev) {
+    const t = ev.target.closest('[data-ar]');
+    if (!t || t.disabled) return;
+    const act = t.getAttribute('data-ar');
+    if (act === 'back') arranqueBack();
+    else if (act === 'next') arranqueAdvance();
+    else if (act === 'auction') finishArranque();
+  }
+  function wireArranque() {
+    const root = document.getElementById('arranque');
+    if (!root || root.dataset.wired === '1') return;
+    root.dataset.wired = '1';
+    root.addEventListener('click', onArranqueClick);
+    root.addEventListener('input', onArranqueInput);
+    root.addEventListener('change', onArranqueInput);
+  }
+  function openNewGameSheet() {
+    showArranque();
   }
   function openDeleteSheet(id) {
     const slot = readSavesIndex().find((s) => s.id === id);
@@ -19107,7 +19694,7 @@
       ? (slots.length === 1 ? '1 jogo guardado' : slots.length + ' jogos guardados') + ' neste navegador · último: ' + escapeHtml(last.place || '') + ' · ' + escapeHtml(last.dateLabel || '')
       : 'Ainda não tens jogos guardados';
     const load = menuButton(has, 'Carregar jogo', loadSub, 'carregar');
-    const novo = menuButton(!has, 'Novo jogo', 'Mandato 0: Ganhar o leilão · começa na Caixa de entrada', 'novo');
+    const novo = menuButton(!has, 'Novo jogo', 'Jogador, país e empresa · depois o leilão', 'novo');
     host.innerHTML = '<h1>Preparar jogo</h1><p class="lead">Desenvolve uma central solar, do leilão à ligação à rede.</p>' +
       '<div class="card"><div class="stack">' + load + novo +
       menuButton(false, 'Como se joga', 'Explicado em 30 segundos', 'como') +
@@ -19141,7 +19728,8 @@
     closeStartModal();
     try { syncPeriodChrome(); } catch (_) {}
   }
-  function beginNewSlot(name) {
+  function beginNewSlot(name, opts) {
+    opts = opts || {};
     const id = newSlotId();
     const entry = {
       id: id,
@@ -19162,16 +19750,21 @@
       mandateState.acknowledged = true;
       mandateState.letterRead = true;
     } catch (_) {}
+    hideArranque();
     hideStartMenu();
     loadPhase0Copy().then((copy) => {
       seedPhase0Mails(copy);
       phase0WelcomeSeen = true;
-      try { openInbox(); } catch (err) { console.warn('[watt.menu] inbox', err); }
-      try {
-        const first = (mailState.items || []).find((m) => m && m.phase0);
-        if (first && typeof openLetter === 'function') openLetter(first.id);
-      } catch (_) {}
       try { persistSave('new-slot'); } catch (_) {}
+      try {
+        if (opts.openAuction) {
+          openAuctionRoom();
+        } else {
+          openInbox();
+          const first = (mailState.items || []).find((m) => m && m.phase0);
+          if (first && typeof openLetter === 'function') openLetter(first.id);
+        }
+      } catch (err) { console.warn('[watt.menu] start', err); }
     });
   }
   function maybeResumePhase0() {
@@ -20103,7 +20696,7 @@
     // QA hook (local only): read-only handles for headless tests
     if (/^(127\.0\.0\.1|localhost)$/.test(location.hostname) || /[?&]qa=1/.test(location.search)) {
       window.__wattQA = {
-        get state() { return state; }, get auction() { return auctionState; }, get lots() { return AUCTION_LOTS; },
+        get state() { return state; }, get player() { return playerProfile; }, get auction() { return auctionState; }, get lots() { return AUCTION_LOTS; },
         get mail() { return mailLoop; }, get mailState() { return mailState; }, get nodes() { return nodes; },
         biddable: () => biddableAuctionLots().map((l) => l.id), econ: () => econBudget(),
         landChosen: () => landChosen(), envPath: () => currentEnvPath(), onAiaRoute: () => onAiaRoute(),
