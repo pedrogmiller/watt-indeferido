@@ -16,6 +16,11 @@
       ],
       "entries": [
         {
+          "skeleton": "mail-investidores-mandato-01",
+          "skin": "default",
+          "relevant": true
+        },
+        {
           "skeleton": "mail-consultor-m0",
           "skin": "default",
           "relevant": true
