@@ -344,7 +344,7 @@ async function startNewGame(page, shotName) {
   await page.locator('#arranqueNext').click();
   await page.waitForSelector('#arranqueConfirm.open #arranqueConfirmYes');
   await page.locator('#arranqueConfirmYes').click();
-  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
+  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ir_leilao"]', { timeout: 15000 });
   const preset = await page.evaluate(() => {
     const id = localStorage.getItem('watt.saves.active');
     const idx = JSON.parse(localStorage.getItem('watt.saves.index.v1') || '[]');
@@ -370,12 +370,12 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   if (/PLACEHOLDER GM/.test(mail)) throw new Error('placeholder copy still showing');
   if (!/Bem-vindo/.test(mail)) throw new Error('welcome subject: ' + mail.slice(0, 240));
   if (!/Investidores/.test(mail) || !/Para: ti/.test(mail)) throw new Error('welcome from/to: ' + mail.slice(0, 240));
-  if (!/ponto de ligação à rede/.test(mail)) throw new Error('welcome body');
-  if (!/Ver o mandato/.test(mail)) throw new Error('welcome button');
+  if (!/A empresa é tua\./.test(mail) || !/2 M€/.test(mail)) throw new Error('welcome body');
+  if (!/Ir para o leilão/.test(mail)) throw new Error('welcome button');
   await shot(page, 'caixa-entrada-' + tag);
   const fabBlue = await page.locator('#btnNextQ').evaluate((el) => getComputedStyle(el).backgroundColor);
   if (fabBlue !== 'rgb(0, 122, 255)') throw new Error('body CTA color ' + fabBlue);
-  const mailBlue = await page.locator('[data-mail-choice="ver_mandato"]').evaluate((el) => getComputedStyle(el).backgroundColor);
+  const mailBlue = await page.locator('[data-mail-choice="ir_leilao"]').evaluate((el) => getComputedStyle(el).backgroundColor);
   if (mailBlue !== 'rgb(0, 122, 255)') throw new Error('mail CTA color ' + mailBlue);
   if (await page.locator('#startMenu').isVisible()) throw new Error('menu still visible in game');
   if (!(await page.locator('#btnSettings').isVisible())) throw new Error('gear hidden during the game');
@@ -384,7 +384,12 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
     const bp = window.__wattQA && window.__wattQA.bomPreco && window.__wattQA.bomPreco();
     return !!(bp && bp.lots && bp.lots.ourique === 29 && Object.keys(bp.lots).length === 1);
   }, null, { timeout: 15000 });
-  await page.locator('[data-mail-choice="ver_mandato"]').click();
+  await page.locator('#inboxBackdrop').click();
+  await page.waitForFunction(() => {
+    const drawer = document.getElementById('inboxDrawer');
+    return drawer && !drawer.classList.contains('open');
+  });
+  await page.evaluate(() => window.__wattQA.openMandate0());
   await page.waitForSelector('#mandate0Card');
   if (await page.locator('#inboxDrawer.open').count()) throw new Error('inbox still open over Mandato 0');
   const m0 = await page.locator('#mandate0Card').innerText();
@@ -602,9 +607,11 @@ async function playOtherLot(browser, width, height, tag) {
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('[data-menu="novo"]');
   await startNewGame(page);
-  await page.locator('[data-mail-choice="ver_mandato"]').click();
-  await page.waitForSelector('#mandate0Close');
-  await page.locator('#mandate0Close').click();
+  await page.locator('#inboxBackdrop').click();
+  await page.waitForFunction(() => {
+    const drawer = document.getElementById('inboxDrawer');
+    return drawer && !drawer.classList.contains('open');
+  });
   if (await page.locator('#btnOpenAuction').isVisible()) await page.locator('#btnOpenAuction').click();
   else await page.locator('#tabAuction').click();
   await page.waitForSelector('#auctionRoom.open', { timeout: 10000 });
@@ -680,6 +687,62 @@ async function cleanPage(browser, width, height) {
   const page = await context.newPage();
   await page.setViewportSize({ width, height });
   return { context, page };
+}
+
+const WELCOME_REST = [
+  'Tens 2 M€ para começar. Este dinheiro serve para concorrer a leilões: preparar o dossier, analisar os lotes e pagar estudos.',
+  'Quando ganhares um ponto de ligação, aprovamos o orçamento para desenvolver esse projeto. Se o projeto convencer, entramos com o capital para construir.',
+  'O primeiro leilão já abriu: Subestação de Ourique. Lê o Correio antes de licitar.'
+].join('\n\n');
+
+async function assertWelcomeLetter(page, expect) {
+  const subject = (await page.locator('#mailDetailSubject').innerText()).replace(/\s+/g, ' ').trim();
+  if (subject !== expect.subject) throw new Error('subject «' + subject + '»');
+  const body = (await page.locator('.mail-detail-body').innerText()).replace(/\u00a0/g, ' ').trim();
+  const want = expect.lead + '\n\n' + WELCOME_REST;
+  if (body !== want) throw new Error('body «' + body + '»');
+  const btn = page.locator('[data-mail-choice="ir_leilao"]');
+  if ((await btn.innerText()).trim() !== 'Ir para o leilão') throw new Error('button «' + (await btn.innerText()) + '»');
+  const blue = await btn.evaluate((el) => getComputedStyle(el).backgroundColor);
+  if (blue !== 'rgb(0, 122, 255)') throw new Error('letter button ' + blue);
+}
+
+async function walkToWelcome(page, fields) {
+  await page.evaluate(() => localStorage.clear());
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.waitForSelector('[data-menu="novo"]');
+  await page.locator('[data-menu="novo"]').click();
+  await page.waitForSelector('#arranque[data-step="jogador"] #arrNome');
+  await page.locator('#arrNome').fill(fields.nome || '');
+  await page.locator('#arrApelido').fill(fields.apelido || '');
+  await page.locator('#arrEmpresa').fill(fields.empresa || '');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="pais"]');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="empresa"] [data-player="1"]', { timeout: 15000 });
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="ficha"] #arranqueNext');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranqueConfirm.open #arranqueConfirmYes');
+  await page.locator('#arranqueConfirmYes').click();
+  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ir_leilao"]', { timeout: 15000 });
+}
+
+/** Empty first name, with and without a company, plus a name and no company. */
+async function assertNameVariants(page) {
+  const cases = [
+    { nome: '', empresa: '', subject: 'Bem-vindo', lead: 'A empresa é tua.' },
+    { nome: '', empresa: 'Sol do Sul, Lda.', subject: 'Bem-vindo', lead: 'A Sol do Sul, Lda. é tua.' },
+    { nome: 'Ana', empresa: '', subject: 'Bem-vindo, Ana', lead: 'Ana, a tua empresa é tua.' }
+  ];
+  for (const c of cases) {
+    await walkToWelcome(page, c);
+    await assertWelcomeLetter(page, c);
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1500 }); } catch (_) {}
+    await page.locator('[data-mail-choice="ir_leilao"]').click();
+    await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
+    if (await page.locator('#inboxDrawer.open').count()) throw new Error('button left the inbox open');
+  }
 }
 
 /** Novo jogo → 4 ecrãs → confirmação → caixa de entrada → leilão pelo ícone, ganho no lance 27. */
@@ -834,28 +897,44 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.waitForFunction(() => {
       return !document.body.classList.contains('at-arranque') && !document.body.classList.contains('at-menu');
     }, null, { timeout: 15000 });
-    await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
+    await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ir_leilao"]', { timeout: 15000 });
     if (await page.locator('#arranque').isVisible()) throw new Error('opening still visible over the inbox');
     if (await page.locator('#auctionRoom.open').count()) throw new Error('auction opened instead of the inbox');
     const letter = await page.locator('#inboxBody').innerText();
-    if (!/Bem-vindo/.test(letter) || !/Investidores/.test(letter)) throw new Error('first letter ' + letter.slice(0, 240));
+    if (!/Investidores/.test(letter)) throw new Error('first letter ' + letter.slice(0, 240));
+    await assertWelcomeLetter(page, {
+      subject: 'Bem-vindo, Ana',
+      lead: 'Ana, a Sol do Sul, Lda. é tua.'
+    });
     const headerAuction = await page.locator('#btnOpenAuction').isVisible();
     const badge = page.locator(headerAuction ? '#auctionBadge' : '#tabAuctionBadge');
     if (!(await badge.isVisible())) throw new Error('auction badge hidden');
     const badgeN = (await badge.innerText()).trim();
     if (!/^[1-9]/.test(badgeN)) throw new Error('auction badge ' + badgeN);
     await shot(page, 'abertura-caixa-' + tag);
-    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
-    if (headerAuction) {
-      await page.locator('#inboxBackdrop').click();
-      await page.waitForFunction(() => {
-        const drawer = document.getElementById('inboxDrawer');
-        return drawer && !drawer.classList.contains('open');
-      });
-      await page.locator('#btnOpenAuction').click();
-    } else {
-      await page.locator('#tabAuction').click();
+    const baked = await page.evaluate(() => {
+      const id = localStorage.getItem('watt.saves.active');
+      const blob = JSON.parse(localStorage.getItem('watt.save.slot.' + id) || 'null');
+      const letter = blob && blob.mailState && (blob.mailState.items || []).find((m) => m && m.id === 'm0-bem-vindo');
+      return letter && { subject: letter.subject, body: letter.body };
+    });
+    if (!baked || baked.subject !== 'Bem-vindo, Ana' || !String(baked.body).startsWith('Ana, a Sol do Sul, Lda. é tua.')) {
+      throw new Error('saved letter ' + JSON.stringify(baked));
     }
+    if (/\{\{/.test(baked.subject + baked.body)) throw new Error('tokens left in the saved letter');
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
+    await page.locator('[data-mail-choice="ir_leilao"]').click();
+    await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
+    if (await page.locator('#inboxDrawer.open').count()) throw new Error('inbox still open over the auction');
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
+    await page.locator('#auctionClose').click();
+    await page.waitForFunction(() => {
+      const room = document.getElementById('auctionRoom');
+      return room && !room.classList.contains('open');
+    });
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
+    if (headerAuction) await page.locator('#btnOpenAuction').click();
+    else await page.locator('#tabAuction').click();
     await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
     const visibleFiction = await page.locator('.auction-fiction').evaluateAll((els) => els.filter((el) => {
       const s = getComputedStyle(el);
@@ -891,6 +970,7 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (saved.nomeEmpresa !== 'Sol do Sul, Lda.') throw new Error('company save ' + saved.nomeEmpresa);
     if (saved.nacionalidade !== 'Portuguesa') throw new Error('nationality save');
     await shot(page, 'abertura-leilao-' + tag);
+    await assertNameVariants(page);
   } finally {
     await context.close();
   }
@@ -926,13 +1006,52 @@ async function oldSaveSkipsOpening(browser, width, height, tag) {
         won: !!(q && q.state && q.state.auctionWon),
         caixa: q && q.state && q.state.caixa,
         player: blob && blob.player,
-        phase: q && q.mail && q.mail.projectPhase
+        phase: q && q.mail && q.mail.projectPhase,
+        letters: ((blob && blob.mailState && blob.mailState.items) || []).map((m) => m && m.subject).filter(Boolean)
       };
     });
     if (!loaded.won) throw new Error('old save did not resume: ' + JSON.stringify(loaded));
     if (loaded.player && (loaded.player.nomeProprio || loaded.player.nomeEmpresa)) throw new Error('old save grew a player: ' + JSON.stringify(loaded.player));
     if (loaded.phase !== 'land') throw new Error('phase changed: ' + loaded.phase);
+    if (loaded.letters.length) throw new Error('old save grew a letter: ' + loaded.letters.join(', '));
     await shot(page, 'old-save-' + tag);
+    const oldBody = 'CARTA ANTIGA QUE FICA.';
+    const keptRaw = JSON.stringify(Object.assign(legacyBlob(), {
+      state: Object.assign({}, legacyBlob().state, { auctionWon: false }),
+      auctionState: { wonId: null, wonLots: [], wave: 0 },
+      mailLoop: { active: false, month: -1 },
+      flags: { onboardingDone: true, phase0Seen: false },
+      mailState: {
+        items: [{
+          id: 'm0-bem-vindo', phase0: true, read: false, type: 'investidores',
+          subject: 'Bem-vindo', sender: 'Investidores', to: 'ti', when: 'agora',
+          body: oldBody,
+          choices: [{ id: 'ver_mandato', label: 'Ver o mandato', opens: 'mandato' }]
+        }],
+        view: 'list', activeId: null, open: false
+      }
+    }));
+    await page.evaluate((saved) => {
+      localStorage.clear();
+      localStorage.setItem('watt.save.v1', saved);
+    }, keptRaw);
+    await page.reload({ waitUntil: 'networkidle' });
+    await page.waitForSelector('#startMenu [data-menu="carregar"]');
+    await page.locator('[data-menu="carregar"]').click();
+    await page.waitForSelector('#startModal [data-continue]');
+    await page.locator('#startModal [data-continue]').click();
+    await page.waitForFunction(() => {
+      const q = window.__wattQA;
+      return !!(q && q.mailState && q.mailState.open);
+    }, null, { timeout: 15000 });
+    const kept = await page.evaluate(() => {
+      const items = (window.__wattQA.mailState && window.__wattQA.mailState.items) || [];
+      const letter = items.find((m) => m && m.id === 'm0-bem-vindo');
+      return letter && { subject: letter.subject, body: letter.body, label: letter.choices && letter.choices[0] && letter.choices[0].label };
+    });
+    if (!kept || kept.body !== oldBody || kept.subject !== 'Bem-vindo' || kept.label !== 'Ver o mandato') {
+      throw new Error('old letter replaced: ' + JSON.stringify(kept));
+    }
   } finally {
     await context.close();
   }

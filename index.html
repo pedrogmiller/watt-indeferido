@@ -19052,10 +19052,10 @@
           type: 'investidores',
           sender: 'Investidores',
           to: 'ti',
-          subject: 'Bem-vindo',
+          subject: 'Bem-vindo, {{jogador}}',
           when: 'agora',
-          body: 'Confiamos-te a nossa nova empresa de renováveis. Antes de tudo, precisamos de um ponto de ligação à rede: ganha um TRC no próximo leilão. O teu orçamento está nas Finanças.',
-          choices: [{ id: 'ver_mandato', label: 'Ver o mandato', opens: 'mandato' }]
+          body: '{{jogador}}, a {{empresa}} é tua.\n\nTens 2 M€ para começar. Este dinheiro serve para concorrer a leilões: preparar o dossier, analisar os lotes e pagar estudos.\n\nQuando ganhares um ponto de ligação, aprovamos o orçamento para desenvolver esse projeto. Se o projeto convencer, entramos com o capital para construir.\n\nO primeiro leilão já abriu: Subestação de Ourique. Lê o Correio antes de licitar.',
+          choices: [{ id: 'ir_leilao', label: 'Ir para o leilão', opens: 'auction' }]
         }]
       };
       return phase0CopyCache;
@@ -19066,30 +19066,51 @@
       mandateTitles = Object.assign({}, MANDATE_TITLE_DEFAULT, copy.mandate_titles);
     }
   }
+  /** Bakes the Bem-vindo greeting. A saved letter is plain text and is not rewritten later. */
+  function resolveBemVindoMail(m) {
+    if (!m || m.id !== 'm0-bem-vindo') return m;
+    const p = playerProfile || {};
+    const name = String(p.nomeProprio || '').trim();
+    const firm = String(p.nomeEmpresa || '').trim();
+    let lead;
+    if (name && firm) lead = name + ', a ' + firm + ' é tua.';
+    else if (name) lead = name + ', a tua empresa é tua.';
+    else if (firm) lead = 'A ' + firm + ' é tua.';
+    else lead = 'A empresa é tua.';
+    const parts = String(m.body || '').replace(/\r\n/g, '\n').split('\n\n');
+    if (parts.length && /\{\{(jogador|empresa)\}\}/.test(parts[0])) parts[0] = lead;
+    return Object.assign({}, m, {
+      subject: name ? ('Bem-vindo, ' + name) : 'Bem-vindo',
+      body: parts.join('\n\n')
+    });
+  }
   function seedPhase0Mails(copy) {
     const mails = (copy && Array.isArray(copy.mails)) ? copy.mails : [];
-    mailState.items = mails.map((m) => ({
-      id: m.id,
-      skeletonId: m.id,
-      type: m.type || 'consultor',
-      subject: m.subject || '',
-      sender: m.sender || 'Consultor',
-      when: m.when || 'agora',
-      read: false,
-      body: m.body || '',
-      phase0: true,
-      to: m.to || null,
-      choices: (m.choices || []).map((c) => ({
-        id: c.id,
-        label: c.label,
-        effects: Array.isArray(c.effects) ? c.effects.slice() : [],
-        opens: c.opens || null,
-        hint: c.hint || null,
-        consequence_pt: c.consequence_pt || null
-      })),
-      cta: null,
-      effects: []
-    }));
+    mailState.items = mails.map((raw) => {
+      const m = resolveBemVindoMail(raw);
+      return {
+        id: m.id,
+        skeletonId: m.id,
+        type: m.type || 'consultor',
+        subject: m.subject || '',
+        sender: m.sender || 'Consultor',
+        when: m.when || 'agora',
+        read: false,
+        body: m.body || '',
+        phase0: true,
+        to: m.to || null,
+        choices: (m.choices || []).map((c) => ({
+          id: c.id,
+          label: c.label,
+          effects: Array.isArray(c.effects) ? c.effects.slice() : [],
+          opens: c.opens || null,
+          hint: c.hint || null,
+          consequence_pt: c.consequence_pt || null
+        })),
+        cta: null,
+        effects: []
+      };
+    });
     try { renderInboxBadge(); } catch (_) {}
   }
   function wonAuctionPick() {
