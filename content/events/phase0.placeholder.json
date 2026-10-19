@@ -26,14 +26,14 @@
       "type": "investidores",
       "sender": "Investidores",
       "to": "ti",
-      "subject": "Bem-vindo",
+      "subject": "Bem-vindo, {{jogador}}",
       "when": "agora",
-      "body": "Confiamos-te a nossa nova empresa de renováveis. Antes de tudo, precisamos de um ponto de ligação à rede: ganha um TRC no próximo leilão. O teu orçamento está nas Finanças.",
+      "body": "{{jogador}}, a {{empresa}} é tua.\n\nTens 2 M€ para começar. Este dinheiro serve para concorrer a leilões: preparar o dossier, analisar os lotes e pagar estudos.\n\nQuando ganhares um ponto de ligação, aprovamos o orçamento para desenvolver esse projeto. Se o projeto convencer, entramos com o capital para construir.\n\nO primeiro leilão já abriu: Subestação de Ourique. Lê o Correio antes de licitar.",
       "choices": [
         {
-          "id": "ver_mandato",
-          "label": "Ver o mandato",
-          "opens": "mandato"
+          "id": "ir_leilao",
+          "label": "Ir para o leilão",
+          "opens": "auction"
         }
       ]
     }
