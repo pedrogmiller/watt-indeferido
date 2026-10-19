@@ -64,6 +64,7 @@ async function readScreens(page) {
   await page.waitForSelector('#assetZoneVital');
   return page.evaluate(() => ({
     sala: (document.querySelector('#assetZoneVital') || {}).innerText || '',
+    big: ((document.querySelector('#assetZoneVital .asset-vital-card .v') || {}).textContent || '').trim(),
     fin: (document.getElementById('objBody') || {}).innerText || '',
     end: (document.getElementById('endScreenBody') || {}).innerText || '',
     van: window.__wattQA.nodes.find((x) => x.id === 'ourique').van,
@@ -184,6 +185,68 @@ try {
     const ui = await readScreens(page);
     assert(ui.sala.includes('85 %') && ui.sala.includes('15 %'), 'sala percents');
     assert(ui.end.includes('TIR do projeto'), 'TIR label');
+    await page.close();
+  }
+
+  // Partner 25 % and a rescue. 10 × 0,75 × 0,85 = 6,375, shown as the same figure in the sentence.
+  {
+    const page = await openPage(browser, 'partner-gain', errors);
+    const snap = await page.evaluate(new Function(ARM + `
+      armProject(10);
+      window.__wattQA.mail.partnerStake = 0.25;
+      window.WattDebug.addTags(['rescue_capital_dilution']);
+      const n = window.__wattQA.nodes.find((x) => x.id === 'ourique');
+      const eco = window.__wattQA.npvIrr();
+      return {
+        van: n.van,
+        player: eco.npvNow,
+        helper: window.__wattQA.playerNpv(10),
+        project: eco.npvProject,
+        line: window.__wattQA.rescueLine(n.van),
+        irr: eco.irr
+      };
+    `));
+    const raw = 10 * 0.75 * 0.85;
+    assert(Math.abs(raw - 6.375) < 1e-9, 'expected 6.375 before cents, got ' + raw);
+    assert(snap.player === +raw.toFixed(2) && snap.helper === snap.player, 'player NPV ' + snap.player);
+    assert(snap.van === 10 && snap.project === 10, 'stored project NPV changed: ' + snap.van);
+    assert(Math.abs(snap.irr - (8 + 0.16 * 10)) < 1e-9, 'partner rescue changed the project IRR: ' + snap.irr);
+    const ui = await readScreens(page);
+    const gain = 'NPV do projeto 10,0 M€ · a tua parte (64 %) ' + ui.big + ' · o fundo de resgate fica com 15 % do ganho · o sócio fica com 25 %';
+    assert(ui.big === '6,4 M€', 'big figure ' + ui.big);
+    assert(ui.line === gain, 'partner gain line: ' + ui.line);
+    assert(ui.sala.includes(ui.line), 'sala sentence does not match the big figure');
+    assert(ui.fin.includes(ui.line), 'finanças missing the partner line');
+    assert(ui.end.includes(ui.line), 'end screen missing the partner line');
+    assert(ui.end.includes('TIR do projeto'), 'TIR label');
+    await page.close();
+  }
+
+  // Partner and a rescue while the project loses money: the loss sentence is unchanged, and the loss is all the player's.
+  {
+    const page = await openPage(browser, 'partner-loss', errors);
+    const snap = await page.evaluate(new Function(ARM + `
+      armProject(-4);
+      window.__wattQA.mail.partnerStake = 0.25;
+      window.WattDebug.addTags(['rescue_capital_dilution']);
+      const n = window.__wattQA.nodes.find((x) => x.id === 'ourique');
+      const eco = window.__wattQA.npvIrr();
+      return {
+        van: n.van,
+        player: eco.npvNow,
+        helper: window.__wattQA.playerNpv(n.van),
+        line: window.__wattQA.rescueLine(n.van)
+      };
+    `));
+    assert(snap.van === -4, 'negative project NPV was mutated: ' + snap.van);
+    assert(snap.player === -4 && snap.helper === -4, 'partner shared the loss: ' + snap.player);
+    assert(snap.line === LOSS, 'loss line changed: ' + snap.line);
+    assert(!/sócio|a tua parte/.test(snap.line), 'loss line mentions a share');
+    const ui = await readScreens(page);
+    assert(ui.big === '−4,0 M€', 'big figure on a loss: ' + ui.big);
+    assert(ui.line === LOSS, 'screen loss line: ' + ui.line);
+    assert(ui.sala.includes(LOSS) && ui.end.includes(LOSS) && ui.fin.includes(LOSS), 'loss sentence missing on screen');
+    assert(!/o sócio fica/.test(ui.sala + ui.end + ui.fin), 'partner share shown on a loss');
     await page.close();
   }
 

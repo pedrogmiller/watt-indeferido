@@ -6676,17 +6676,22 @@
     if (rescuePreferredOn()) out *= (1 - RESCUE_DILUTION);
     return +out.toFixed(2);
   }
-  /** PT-PT line for a rescue. Empty when no rescue was taken under this rule. 85/15 come from RESCUE_DILUTION. */
+  /** PT-PT line for a rescue. Empty when no rescue was taken under this rule.
+   *  «A tua parte» is playerNpv (partner and fund). The percent is that share of the project, rounded.
+   *  The fund's slice stays RESCUE_DILUTION. A partner adds their stake at the end. Losses are unsplit. */
   function rescueShareLine(projectVan) {
     if (!rescuePreferredOn()) return '';
     const v = Number(projectVan);
     if (!Number.isFinite(v)) return '';
     const fundPct = Math.round(RESCUE_DILUTION * 100);
-    const minePct = 100 - fundPct;
     const projectTxt = fmtEur(v);
     if (v > 0) {
-      const mine = +(v * (1 - RESCUE_DILUTION)).toFixed(2);
-      return 'NPV do projeto ' + projectTxt + ' · a tua parte (' + minePct + ' %) ' + fmtEur(mine) + ' · o fundo de resgate fica com ' + fundPct + ' % do ganho';
+      const mine = playerNpv(v);
+      const minePct = Math.round((mine / v) * 100);
+      let line = 'NPV do projeto ' + projectTxt + ' · a tua parte (' + minePct + ' %) ' + fmtEur(mine) + ' · o fundo de resgate fica com ' + fundPct + ' % do ganho';
+      const stake = (typeof mailLoop !== 'undefined' && mailLoop && Number(mailLoop.partnerStake)) || 0;
+      if (stake > 0) line += ' · o sócio fica com ' + Math.round(stake * 100) + ' %';
+      return line;
     }
     return 'NPV do projeto ' + projectTxt + ' · o prejuízo é todo teu: o fundo de resgate recebe primeiro';
   }
