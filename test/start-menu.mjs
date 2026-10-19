@@ -85,7 +85,7 @@ async function openEmptyMenu(browser, width, height, tag) {
   await assertMenuChrome(page, width);
   const text = await menuTexts(page);
   if (!/Ainda não tens jogos guardados/.test(text)) throw new Error('empty subtitle: ' + text);
-  if (!/Preparar jogo/.test(text)) throw new Error('title');
+  if ((await page.locator('#startMenu h1').innerText()).trim() !== 'Novo jogo') throw new Error('title');
   if (!/Desenvolve uma central solar/.test(text)) throw new Error('lead');
   await shot(page, 'menu-empty-' + tag);
   await page.locator('[data-menu="como"]').click();
@@ -815,7 +815,7 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranqueConfirm.open');
     const emptyQ = (await page.locator('#arranqueConfirmTitle').innerText()).trim();
-    if (emptyQ !== 'Queres assumir o controlo da tua empresa?') throw new Error('empty confirm ' + emptyQ);
+    if (emptyQ !== 'Assumir o controlo da tua empresa?') throw new Error('empty confirm ' + emptyQ);
     await page.locator('#arranqueConfirmNo').click();
     await page.waitForFunction(() => {
       const el = document.getElementById('arranqueConfirm');
@@ -833,10 +833,16 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arrApelido').fill('Ferreira');
     await page.locator('#arrEmpresa').fill('Sol do Sul, Lda.');
     await shot(page, 'abertura-jogador-' + tag);
+    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Dados pessoais') throw new Error('jogador title');
+    if ((await page.locator('#arranque .ar-lead').innerText()).trim() !== 'O nome aparece nas cartas e nas notícias.') throw new Error('jogador lead');
+    if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Seguinte') throw new Error('jogador button');
     if (/HIPÓTESE|\[GM\]/.test(await page.locator('#arranque').innerText())) throw new Error('marker on jogador');
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="pais"]');
     const pais = await page.locator('#arranque').innerText();
+    if ((await page.locator('#arranque h1').innerText()).trim() !== 'País') throw new Error('pais title');
+    if ((await page.locator('#arranque .ar-lead').innerText()).trim() !== 'Onde a empresa vai desenvolver centrais.') throw new Error('pais lead');
+    if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Seguinte') throw new Error('pais button');
     if (!/começa em 2026 · Q3/.test(pais)) throw new Error('pais auction date');
     await shot(page, 'abertura-pais-' + tag);
     await page.locator('#arranqueNext').click();
@@ -854,6 +860,10 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (await page.locator('[data-rival]').count() !== 16) throw new Error('rival count');
     const body = await page.locator('#arranque').innerText();
     if (/HIPÓTESE|\[GM\]/.test(body)) throw new Error('marker on empresa');
+    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Empresa') throw new Error('empresa title');
+    if ((await page.locator('#arranque .ar-lead').innerText()).trim() !== 'Empresa nova, sem centrais. 2,0 M€ para começar.') throw new Error('empresa lead');
+    if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Seguinte') throw new Error('empresa button');
+    if (/Começas com uma empresa nova/.test(body)) throw new Error('old empresa lead');
     if (!/2,0 M€ para começar/.test(body)) throw new Error('starting cash copy');
     if (!/As empresas a cinzento são reais/.test(body) || !/Os lances das empresas reais no jogo são fictícios\./.test(body)) throw new Error('fiction note missing');
     await shot(page, 'abertura-empresa-' + tag);
@@ -868,6 +878,10 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (!/Ana Ferreira/.test(ficha) || !/Portuguesa/.test(ficha)) throw new Error('ficha identity');
     if (!/Fundada[\s\S]*2026 · Q3/.test(ficha)) throw new Error('ficha date ' + ficha.slice(0, 500));
     if (/2027 · Q1/.test(ficha)) throw new Error('ficha still says 2027 · Q1');
+    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Ficha da empresa') throw new Error('ficha title');
+    if (await page.locator('#arranque .ar-lead').count()) throw new Error('ficha still has a lead');
+    if (/Confirma os dados antes de começar/.test(ficha)) throw new Error('old ficha lead');
+    if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Assumir o controlo') throw new Error('ficha button');
     if (/HIPÓTESE|\[GM\]/.test(ficha)) throw new Error('marker on ficha');
     const steps = await page.locator('#arranqueSteps').evaluate((el) => el.textContent.replace(/\s+/g, ' '));
     if (/Controlo/.test(steps)) throw new Error('controlo step still listed: ' + steps);
@@ -876,7 +890,7 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranqueConfirm.open');
     const namedQ = (await page.locator('#arranqueConfirmTitle').innerText()).trim();
-    if (namedQ !== 'Queres assumir o controlo de Sol do Sul, Lda.?') throw new Error('named confirm ' + namedQ);
+    if (namedQ !== 'Assumir o controlo de Sol do Sul, Lda.?') throw new Error('named confirm ' + namedQ);
     const simBlue = await page.locator('#arranqueConfirmYes').evaluate((el) => getComputedStyle(el).backgroundColor);
     if (simBlue !== 'rgb(0, 122, 255)') throw new Error('confirm Sim ' + simBlue);
     await page.locator('#arranqueConfirmNo').click();
@@ -987,7 +1001,7 @@ async function oldSaveSkipsOpening(browser, width, height, tag) {
       return !document.body.classList.contains('at-menu') && !document.body.classList.contains('at-arranque');
     }, null, { timeout: 15000 });
     if (await page.locator('#arranque').isVisible()) throw new Error('opening shown for an old save');
-    const quem = page.getByRole('heading', { name: 'Quem és tu?' });
+    const quem = page.getByRole('heading', { name: 'Dados pessoais' });
     if (await quem.count() && await quem.first().isVisible()) throw new Error('jogador screen on old save');
     const loaded = await page.evaluate(() => {
       const q = window.__wattQA;

@@ -5846,7 +5846,7 @@
 </div>
 <div class="settings-confirm" id="arranqueConfirm" hidden role="dialog" aria-modal="true" aria-labelledby="arranqueConfirmTitle">
   <div class="settings-confirm-card">
-    <div class="settings-confirm-title" id="arranqueConfirmTitle">Queres assumir o controlo da tua empresa?</div>
+    <div class="settings-confirm-title" id="arranqueConfirmTitle">Assumir o controlo da tua empresa?</div>
     <div class="settings-confirm-actions">
       <button type="button" class="settings-btn" id="arranqueConfirmNo">Não</button>
       <button type="button" class="settings-btn arranque-confirm-yes" id="arranqueConfirmYes">Sim</button>
@@ -19458,7 +19458,7 @@
     const err = arranqueNameError ? ' bad' : '';
     const invalid = arranqueNameError ? ' aria-invalid="true"' : '';
     const opts = ARRANQUE_NACS.map((n) => '<option' + (n === d.nacionalidade ? ' selected' : '') + '>' + escapeHtml(n) + '</option>').join('');
-    return '<h1>Quem és tu?</h1><p class="ar-lead">O teu nome aparece nas cartas e nas notícias.</p>' +
+    return '<h1>Dados pessoais</h1><p class="ar-lead">O nome aparece nas cartas e nas notícias.</p>' +
       '<div class="ar-card"><div class="ar-row2">' +
       '<div><label for="arrNome">Nome próprio</label><input id="arrNome" value="' + escapeHtml(d.nomeProprio) + '" placeholder="Ex.: Ana" autocomplete="given-name"></div>' +
       '<div><label for="arrApelido">Apelido</label><input id="arrApelido" value="' + escapeHtml(d.apelido) + '" placeholder="Ex.: Ferreira" autocomplete="family-name"></div>' +
@@ -19477,7 +19477,7 @@
         data: ' data-pais="' + p.id + '"'
       });
     }).join('');
-    return '<h1>Escolhe o país</h1><p class="ar-lead">Onde vais desenvolver as tuas centrais.</p>' +
+    return '<h1>País</h1><p class="ar-lead">Onde a empresa vai desenvolver centrais.</p>' +
       '<div class="ar-ls" role="radiogroup">' + items + '</div>' +
       '<p class="ar-ln">Mais países em breve.</p>' +
       '<p class="ar-ln">Para vender eletricidade, a central tem de estar ligada à rede pública. Em Portugal, a REN gere a rede de alta tensão e dá os pontos de ligação em leilão.</p>' +
@@ -19500,7 +19500,7 @@
         });
       }).join('');
     }
-    return '<h1>A tua empresa</h1><p class="ar-lead">Começas com uma empresa nova, sem centrais. Tens 2,0 M€ para concorrer a leilões. Quando ganhares um ponto de ligação, os investidores aprovam o orçamento do projeto.</p>' +
+    return '<h1>Empresa</h1><p class="ar-lead">Empresa nova, sem centrais. 2,0 M€ para começar.</p>' +
       '<div class="ar-ls" role="radiogroup">' + player + rivals + '</div>' +
       '<p class="ar-ln ar-strong"><b>' + escapeHtml(nome) + '</b> · 2,0 M€ para começar · 4 pessoas · cerca de 0,4 M€ por ano de custos fixos</p>' +
       '<p class="ar-ln"><span class="ar-fn">*</span> soma parcial · ~ aproximado, por confirmar · — sem valor</p>' +
@@ -19534,13 +19534,13 @@
       '</div>';
   }
   function arranqueScreenFicha() {
-    return '<h1>Ficha da empresa</h1><p class="ar-lead">Confirma os dados antes de começar.</p>' +
+    return '<h1>Ficha da empresa</h1>' +
       arranqueFichaBody() + arranqueCta('Assumir o controlo');
   }
   function arranqueConfirmQuestion() {
     const typed = String(arranqueDraft.nomeEmpresa || '').trim();
-    if (!typed) return 'Queres assumir o controlo da tua empresa?';
-    return 'Queres assumir o controlo de ' + typed + '?';
+    if (!typed) return 'Assumir o controlo da tua empresa?';
+    return 'Assumir o controlo de ' + typed + '?';
   }
   function openArranqueConfirm() {
     const el = document.getElementById('arranqueConfirm');
@@ -19800,7 +19800,7 @@
       : 'Ainda não tens jogos guardados';
     const load = menuButton(has, 'Carregar jogo', loadSub, 'carregar');
     const novo = menuButton(!has, 'Novo jogo', 'Jogador, país e empresa · depois o leilão', 'novo');
-    host.innerHTML = '<h1>Preparar jogo</h1><p class="lead">Desenvolve uma central solar, do leilão à ligação à rede.</p>' +
+    host.innerHTML = '<h1>Novo jogo</h1><p class="lead">Desenvolve uma central solar, do leilão à ligação à rede.</p>' +
       '<div class="card"><div class="stack">' + load + novo +
       menuButton(false, 'Como se joga', 'Explicado em 30 segundos', 'como') +
       menuButton(false, 'Definições', 'Dicas, exportar e importar, apagar jogos', 'definicoes') +
