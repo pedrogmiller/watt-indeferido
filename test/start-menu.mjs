@@ -844,7 +844,14 @@ async function openingToAuction(browser, width, height, tag, win) {
     if ((await page.locator('#arranque h1').innerText()).trim() !== 'País') throw new Error('pais title');
     if ((await page.locator('#arranque .ar-lead').innerText()).trim() !== 'Onde a empresa vai desenvolver centrais.') throw new Error('pais lead');
     if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Seguinte') throw new Error('pais button');
-    if (!/começa em 2026 · Q3/.test(pais)) throw new Error('pais auction date');
+    const renFact = await page.locator('#arranque .ar-ln').evaluateAll((els) => {
+      const el = els.find((n) => n.textContent.includes('71 subestações'));
+      return el ? el.textContent : '';
+    });
+    if (renFact !== 'A REN gere 71 subestações e quase 10\u00a0000 km de linhas de alta tensão em Portugal continental.') {
+      throw new Error('pais ren fact: ' + JSON.stringify(renFact));
+    }
+    if (/9 subestações com leilão|começa em/.test(pais)) throw new Error('old pais auction line');
     await shot(page, 'abertura-pais-' + tag);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="finerge"]');
