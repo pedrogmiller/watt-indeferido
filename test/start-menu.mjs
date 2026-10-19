@@ -936,7 +936,7 @@ async function openingToAuction(browser, width, height, tag, win) {
       ? await page.locator('#periodLabel').innerText()
       : await page.locator('#footerMockPeriod').innerText()).trim();
     if (landed !== period) throw new Error('clock jump ' + period + ' → ' + landed);
-    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2500 }); } catch (_) {}
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 8000 }); } catch (_) {}
     await page.waitForFunction(() => {
       const q = window.__wattQA;
       return !!(q && q.winAt && q.winAt('ourique', 27) && q.winAt('ourique', 27).win);
@@ -949,6 +949,7 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.waitForSelector('[data-screen="trap"].active #auctionTrapDone', { timeout: 10000 });
     const trap = await page.locator('#auctionTrapDone').innerText();
     if (!/Aceitar/.test(trap)) throw new Error('bid 27 did not win: ' + trap);
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 1500 }); } catch (_) {}
     await page.locator('#auctionTrapDone').click();
     await page.waitForFunction(() => window.__wattQA && window.__wattQA.state && window.__wattQA.state.auctionWon, null, { timeout: 15000 });
     const saved = await page.evaluate(() => {
