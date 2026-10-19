@@ -19239,6 +19239,7 @@
   let arranqueCompanies = null;
   let arranqueCompaniesError = null;
   let arranqueCompaniesLoad = null;
+  let arranqueOuriqueTimer = null;
 
   function playerSnapshot() {
     if (!playerProfile) return null;
@@ -19386,6 +19387,8 @@
       });
     }
     try { syncPeriodChrome(); } catch (_) {}
+    if (arranqueStep === 'controlo') arranqueWatchOuriqueLot();
+    else arranqueStopOuriqueWatch();
   }
   function arranqueScreenJogador() {
     const d = arranqueDraft;
@@ -19470,6 +19473,55 @@
     return '<h1>Ficha da empresa</h1><p class="ar-lead">Confirma os dados antes de começar.</p>' +
       arranqueFichaBody() + arranqueCta('Assumir o controlo');
   }
+  /** The same Ourique object the auction room renders (AUCTION_WAVES, after the faixa file). */
+  function arranqueFindOuriqueLot() {
+    let lot = null;
+    try {
+      AUCTION_WAVES.forEach((w) => {
+        if (!lot) lot = (w || []).find((l) => l && l.id === 'ourique') || null;
+      });
+    } catch (_) {}
+    return lot;
+  }
+  function arranqueOuriqueMetaText() {
+    const lot = arranqueFindOuriqueLot();
+    const kv = lot && lot.kv != null && lot.kv !== '' ? (String(lot.kv).replace(/\s*kV$/i, '').trim() + ' kV') : '';
+    const mw = lot && lot.mw != null ? String(lot.mw).trim() : '';
+    return [kv, mw, 'a REN abriu o leilão em 2027 · Q1'].filter(Boolean).join(' · ');
+  }
+  function arranquePaintOuriqueMeta() {
+    const el = document.getElementById('arranqueOuriqueMeta');
+    if (!el) return;
+    const text = arranqueOuriqueMetaText();
+    if (el.textContent !== text) el.textContent = text;
+  }
+  /** True once the faixa file has been applied, so Controlo cannot still show the pre-file voltage. */
+  function arranqueOuriqueReady() {
+    const lot = arranqueFindOuriqueLot();
+    if (!lot) return false;
+    let row = null;
+    try { row = faixaLot('ourique'); } catch (_) {}
+    if (!row) return false;
+    if (row.kv == null) return true;
+    return Number(lot.kv) === Number(row.kv);
+  }
+  function arranqueStopOuriqueWatch() {
+    if (arranqueOuriqueTimer) {
+      clearInterval(arranqueOuriqueTimer);
+      arranqueOuriqueTimer = null;
+    }
+  }
+  function arranqueWatchOuriqueLot() {
+    arranqueStopOuriqueWatch();
+    if (arranqueStep !== 'controlo') return;
+    const tick = () => {
+      if (arranqueStep !== 'controlo') { arranqueStopOuriqueWatch(); return; }
+      arranquePaintOuriqueMeta();
+      if (arranqueOuriqueReady()) arranqueStopOuriqueWatch();
+    };
+    tick();
+    if (!arranqueOuriqueReady()) arranqueOuriqueTimer = setInterval(tick, 50);
+  }
   function arranqueScreenControlo() {
     const nome = arranqueEmpresaNome();
     const proprio = String(arranqueDraft.nomeProprio || '').trim();
@@ -19477,10 +19529,11 @@
     return '<div class="ar-card ar-end"><div class="ar-seal" aria-hidden="true">🔑</div><h2>Assumiste o controlo</h2>' +
       '<div class="ar-co">' + escapeHtml(nome) + '</div>' +
       '<p>' + tua + ' Primeiro passo: ganhar uma ligação à rede.</p>' +
-      '<div class="ar-next"><div class="ar-ic" aria-hidden="true">⚡</div><div><b>Leilão de ligação · Subestação de Ourique</b><div class="ar-meta">400 kV · 120 MWp · a REN abriu o leilão em 2027 · Q1</div></div></div>' +
+      '<div class="ar-next"><div class="ar-ic" aria-hidden="true">⚡</div><div><b>Leilão de ligação · Subestação de Ourique</b><div class="ar-meta" id="arranqueOuriqueMeta">' + escapeHtml(arranqueOuriqueMetaText()) + '</div></div></div>' +
       '<button type="button" class="ar-btn-p ar-big" id="arranqueAuction" data-ar="auction">Ir para o leilão</button></div>';
   }
   function hideArranque() {
+    arranqueStopOuriqueWatch();
     document.body.classList.remove('at-arranque');
     const el = document.getElementById('arranque');
     if (el) el.hidden = true;

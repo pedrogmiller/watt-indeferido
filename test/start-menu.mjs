@@ -789,11 +789,23 @@ async function openingToAuction(browser, width, height, tag, win) {
     await shot(page, 'abertura-ficha-' + tag);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="controlo"] #arranqueAuction');
+    await page.waitForFunction(() => {
+      const el = document.getElementById('arranqueOuriqueMeta');
+      const q = window.__wattQA;
+      if (!el || !q || typeof q.faixa !== 'function' || !q.faixa()) return false;
+      const lot = (q.lots || []).find((l) => l.id === 'ourique');
+      if (!lot || lot.kv == null || !lot.mw) return false;
+      const kv = String(lot.kv).replace(/\s*kV$/i, '').trim() + ' kV';
+      const text = el.textContent || '';
+      return text.indexOf(kv) === 0 && text.indexOf(String(lot.mw).trim()) !== -1;
+    }, null, { timeout: 15000 });
     const controlo = await page.locator('#arranque').innerText();
     if (!/Assumiste o controlo/.test(controlo)) throw new Error('controlo title');
     if (!/Ana, a empresa é tua/.test(controlo)) throw new Error('controlo name');
     if (!/Ir para o leilão/.test(controlo) || !/Ourique/.test(controlo)) throw new Error('controlo auction');
     if (/HIPÓTESE|\[GM\]|Fim da maquete/.test(controlo)) throw new Error('marker on controlo');
+    const ouriqueMeta = await page.locator('#arranqueOuriqueMeta').innerText();
+    if (!/^150 kV · 120 MWp · /.test(ouriqueMeta)) throw new Error('ourique meta ' + ouriqueMeta);
     const goBlue = await page.locator('#arranqueAuction').evaluate((el) => getComputedStyle(el).backgroundColor);
     if (goBlue !== 'rgb(0, 122, 255)') throw new Error('auction CTA ' + goBlue);
     await shot(page, 'abertura-controlo-' + tag);
@@ -809,6 +821,11 @@ async function openingToAuction(browser, width, height, tag, win) {
     }, null, { timeout: 20000 });
     const presetBid = await page.locator('#auctionBidSlider').inputValue();
     if (presetBid !== '27') throw new Error('default bid ' + presetBid);
+    const auctionSub = await page.locator('#auctionSub').innerText();
+    const kvBit = ouriqueMeta.match(/^(\d+(?:\/\d+)? kV)/);
+    const mwBit = ouriqueMeta.match(/(\d[\d\s]*MWp)/);
+    if (!kvBit || auctionSub.indexOf(kvBit[1]) !== 0) throw new Error('auction voltage ' + auctionSub + ' vs ' + ouriqueMeta);
+    if (!mwBit || auctionSub.indexOf(mwBit[1]) === -1) throw new Error('auction size ' + auctionSub + ' vs ' + ouriqueMeta);
     const caixa = await page.evaluate(() => window.__wattQA.state.caixa);
     if (!(Math.abs(caixa - 2) < 1e-9)) throw new Error('caixa ' + caixa);
     await page.locator('#auction-confirm').click();
