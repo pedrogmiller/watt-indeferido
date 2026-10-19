@@ -384,7 +384,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
     const bp = window.__wattQA && window.__wattQA.bomPreco && window.__wattQA.bomPreco();
     return !!(bp && bp.lots && bp.lots.ourique === 29 && Object.keys(bp.lots).length === 1);
   }, null, { timeout: 15000 });
-  await page.locator('#inboxBackdrop').click();
+  await page.evaluate(() => document.getElementById('inboxBackdrop').click());
   await page.waitForFunction(() => {
     const drawer = document.getElementById('inboxDrawer');
     return drawer && !drawer.classList.contains('open');
@@ -607,7 +607,7 @@ async function playOtherLot(browser, width, height, tag) {
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('[data-menu="novo"]');
   await startNewGame(page);
-  await page.locator('#inboxBackdrop').click();
+  await page.evaluate(() => document.getElementById('inboxBackdrop').click());
   await page.waitForFunction(() => {
     const drawer = document.getElementById('inboxDrawer');
     return drawer && !drawer.classList.contains('open');
