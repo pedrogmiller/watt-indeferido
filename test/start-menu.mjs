@@ -60,10 +60,11 @@ async function assertMenuChrome(page, width) {
   const period = await page.locator('#periodLabel').innerText();
   if (period.trim() !== 'v0.1') throw new Error('period is ' + period);
   const text = await menuTexts(page);
+  const buttons = await page.locator('#startMenuCard .stack').innerText();
   const order = ['Carregar jogo', 'Novo jogo', 'Como se joga', 'Definições', 'Dar opinião'];
   let at = -1;
   for (const label of order) {
-    const i = text.indexOf(label);
+    const i = buttons.indexOf(label);
     if (i < 0) throw new Error('missing button ' + label + ' at ' + width);
     if (i < at) throw new Error('button order at ' + width + ': ' + label);
     at = i;
