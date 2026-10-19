@@ -1,0 +1,957 @@
+[
+  {
+    "id": "edp",
+    "nome": "EDP (grupo; inclui EDP Renováveis)",
+    "nome_curto": "EDP",
+    "tipo": "utility",
+    "mw": {
+      "solar": 600,
+      "eolica": 1300,
+      "hidrica": 5100,
+      "bess": null
+    },
+    "leiloes": [
+      {
+        "ano": 2021,
+        "lote": 1,
+        "subestacao": "Alqueva",
+        "mw_ou_mva": 70
+      }
+    ],
+    "fonte_url": "/workspace/shared/bess-pack-2026-10-09/Apresentacoes_Solar_Plaza/3.1-BertoMartins-EDP.pdf",
+    "fonte_data": "2026-09-29",
+    "fontes": [
+      {
+        "ref": 11,
+        "url": "/workspace/shared/bess-pack-2026-10-09/Apresentacoes_Solar_Plaza/3.1-BertoMartins-EDP.pdf",
+        "data": "2026-09-29"
+      },
+      {
+        "ref": 12,
+        "url": "https://edpr-investors.com/sites/edpr-investors/files/document/2026-01/FY25_Operating_Data_preview.pdf",
+        "data": "2026-01-22"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Valores EDP PT do deck [11], arredondados: solar = 300 utility + 300 DG. O EDPR [12] dá 249 MW «Solar & BESS» juntos (dez-2025) e 1 177 + 20 equity onshore + 8 offshore; não se somam aos do deck. Baterias por confirmar. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2021 L1 (EDP Renewables SGPS) confere [6]; nenhum lote em 2019/2020 [2][4].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "iberdrola",
+    "nome": "Iberdrola",
+    "nome_curto": "Iberdrola",
+    "tipo": "utility",
+    "mw": {
+      "solar": 186,
+      "eolica": 92,
+      "hidrica": 1158,
+      "bess": null
+    },
+    "leiloes": [
+      {
+        "ano": 2019,
+        "lote": 1,
+        "subestacao": "Albufeira, A. Pera, Montechoro, S. B. Messines, Silves, Vilamoura, Vilamoura B (15 kV)",
+        "mw_ou_mva": 10
+      },
+      {
+        "ano": 2019,
+        "lote": 2,
+        "subestacao": "Lameiras, Montechoro (60 kV)",
+        "mw_ou_mva": 20
+      },
+      {
+        "ano": 2019,
+        "lote": 7,
+        "subestacao": "Montijo, Pinhal Novo (60 kV)",
+        "mw_ou_mva": 29
+      },
+      {
+        "ano": 2019,
+        "lote": 8,
+        "subestacao": "Aroeira, Algeruz (60 kV)",
+        "mw_ou_mva": 20
+      },
+      {
+        "ano": 2019,
+        "lote": 9,
+        "subestacao": "Barreiro, Q. Conde, Santana, Alcochete, Vila Chã, Coina (60 kV)",
+        "mw_ou_mva": 10
+      },
+      {
+        "ano": 2019,
+        "lote": 10,
+        "subestacao": "Barreiro, Coina, Fogueteiro, Quimiparque, Q. Conde, Santana, Seixal, Vila Chã, C. Caparica, Laranjeiro, Mutela, Portagem, Sobreda (15 kV)",
+        "mw_ou_mva": 10
+      },
+      {
+        "ano": 2019,
+        "lote": 11,
+        "subestacao": "Carregado, Trajouce, A. S. João (220 kV)",
+        "mw_ou_mva": 50
+      },
+      {
+        "ano": 2020,
+        "lote": 5,
+        "subestacao": "Estoi/Tunes 150 kV",
+        "mw_ou_mva": 69
+      }
+    ],
+    "fonte_url": "https://www.iberdrola.pt/sobre-nos/iberdrola-portugal",
+    "fonte_data": "2026-10-17 (consulta; página sem data)",
+    "fontes": [
+      {
+        "ref": 15,
+        "url": "https://www.iberdrola.pt/sobre-nos/iberdrola-portugal",
+        "data": "2026-10-17 (consulta; página sem data)"
+      },
+      {
+        "ref": 13,
+        "url": "https://www.iberdrola.com/quem-somos/geracao-eletrica-power/energia-hidreletrica/gigabateria-tamega",
+        "data": "2026-01"
+      },
+      {
+        "ref": 8,
+        "url": "https://jornaleconomico.sapo.pt/noticias/centrais-solares-do-leilao-de-2020-continuam-sem-ver-a-luz-do-sol/",
+        "data": "2024-01-08"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 3,
+        "url": "https://dgeg.gov.pt/media/o0cdfze2/pecasprocedimento.zip",
+        "data": "2019-06-06"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 5,
+        "url": "https://dgeg.gov.pt/media/c2kjaran/pecasprocedimento-2020.zip",
+        "data": "2020-05-29"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "por_confirmar",
+    "jogavel": false,
+    "notas": "Solar Σ 186 vem de fonte secundária (Jornal Económico [8]); unidade MW/MWp não clara. Eólica Tâmega 274 MW em construção não contada. Lote 2019 L11 partilhado com a Everstream (50/50). Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 7 lotes 2019 e 2020 L5 conferem [2][4]; nenhum em 2021 [6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "endesa",
+    "nome": "Endesa",
+    "nome_curto": "Endesa",
+    "tipo": "utility",
+    "mw": {
+      "solar": 0,
+      "eolica": 0,
+      "hidrica": 0,
+      "bess": 0
+    },
+    "leiloes": [
+      {
+        "ano": 2020,
+        "lote": 3,
+        "subestacao": "Alqueva/Tavira 400 kV",
+        "mw_ou_mva": 99
+      },
+      {
+        "ano": 2021,
+        "lote": 4,
+        "subestacao": "Alto Rabagão (subest. Frades)",
+        "mw_ou_mva": 42
+      }
+    ],
+    "fonte_url": "https://www.endesa.com/en/the-e-face/ecological-transition/guillermo-soler-calero-drive-transition-portugal",
+    "fonte_data": "2024-09-20",
+    "fontes": [
+      {
+        "ref": 17,
+        "url": "https://www.endesa.com/en/the-e-face/ecological-transition/guillermo-soler-calero-drive-transition-portugal",
+        "data": "2024-09-20"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 5,
+        "url": "https://dgeg.gov.pt/media/c2kjaran/pecasprocedimento-2020.zip",
+        "data": "2020-05-29"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "0 em todas as tecnologias: em 20-09-2024 a Endesa diz que em Portugal opera só a CCGT a gás do Pego e que está «developing a portfolio of 1 GW of renewable energy and energy storage projects» [17]. O Pego híbrido (365 MWp solar, 264 MW eólica, 168,6 MW baterias) está em projeto e não conta. Lote 2020 L3 na modalidade com armazenamento. Data de referência 20-09-2024; reconfirmar se entretanto algo entrou em operação. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2020 L3 e 2021 L4 (Endesa Generación Portugal) conferem [4][6]; nenhum em 2019 [2].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "galp",
+    "nome": "Galp",
+    "nome_curto": "Galp",
+    "tipo": "utility",
+    "mw": {
+      "solar": 144,
+      "eolica": null,
+      "hidrica": null,
+      "bess": 5
+    },
+    "leiloes": [],
+    "fonte_url": "https://www.galp.com/parquesolaralcoutim/en/",
+    "fonte_data": "2026-10-17 (consulta; página sem data)",
+    "fontes": [
+      {
+        "ref": 19,
+        "url": "https://www.galp.com/parquesolaralcoutim/en/",
+        "data": "2026-10-17 (consulta; página sem data)"
+      },
+      {
+        "ref": 18,
+        "url": "https://www.galp.com/corp/pt/media/comunicados-de-imprensa/comunicado/id/1627/galp-instala-74-mw-de-baterias-para-armazenar-energia-em-portugal-e-espanha",
+        "data": "2025-07-31"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Solar = 144 MWp do Parque de Alcoutim [19]; os ~300 MW (fim de 2024) são só imprensa e não entram. BESS = 5 MW / 20 MWh em operação; 60,5 MW em construção não contam (jul-2025). Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: Galp não aparece nem é dona de nenhum adjudicatário nas três listas [2][4][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "finerge",
+    "nome": "Finerge",
+    "nome_curto": "Finerge",
+    "tipo": "ipp",
+    "mw": {
+      "solar": null,
+      "eolica": 1795,
+      "hidrica": null,
+      "bess": null
+    },
+    "leiloes": [
+      {
+        "ano": 2021,
+        "lote": 5,
+        "subestacao": "Paradela (Frades)",
+        "mw_ou_mva": 13
+      },
+      {
+        "ano": 2021,
+        "lote": 6,
+        "subestacao": "Salamonde (Caniçada)",
+        "mw_ou_mva": 8
+      },
+      {
+        "ano": 2021,
+        "lote": 7,
+        "subestacao": "Tabuaço (Vila da Rua)",
+        "mw_ou_mva": 17
+      }
+    ],
+    "fonte_url": "https://www.apren.pt/wp-content/uploads/2026/06/INEGI_APREN-Parques-Eolicos-em-Portugal.pdf",
+    "fonte_data": "2025-12-31 (dados; relatório INEGI/APREN)",
+    "fontes": [
+      {
+        "ref": 34,
+        "url": "https://pt.linkedin.com/posts/finerge_sustentabilidade-finerge-activity-7361671681070829568-GnIO",
+        "data": "2025-08-14"
+      },
+      {
+        "ref": 35,
+        "url": "https://www.finerge.pt/en/the-company/",
+        "data": "2026-10-17 (consulta)"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      },
+      {
+        "ref": 38,
+        "url": "https://www.apren.pt/wp-content/uploads/2026/06/INEGI_APREN-Parques-Eolicos-em-Portugal.pdf",
+        "data": "2025-12-31 (dados; relatório INEGI/APREN)"
+      },
+      {
+        "ref": 42,
+        "url": "https://newenergybrasil.com.br/26-511322626-finerge-obtem-115-milhoes-para-quatro-usinas-fotovoltaicas-em-portugal/",
+        "data": "2026-04-30 (republica o Expresso de 30-04-2026)"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      }
+    ],
+    "estado": "por_confirmar",
+    "jogavel": false,
+    "notas": "Eólica 1795 MW é uma ESTIMATIVA aprovada pelo Pedro (18-10-2026): 30,1 % × 5 965,0 MW de eólica ligada à rede em Portugal (INEGI/APREN, dados de 31-12-2025) [38]; bate com os «mais de 1,8 GW» de eólica em Portugal do Expresso (30-04-2026) [42], que dá também «1,9 GW em Portugal» no total. Solar, hídrica e baterias por confirmar: a lista do site [35] é incompleta e mistura PT e ES. Total da empresa: 2 167 MW em PT+ES [34]. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2021 L5, L6 e L7 conferem [6]; nenhum em 2019/2020 [2][4].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "iberwind",
+    "nome": "Iberwind (Ventient)",
+    "nome_curto": "Iberwind",
+    "tipo": "ipp",
+    "mw": {
+      "solar": 0,
+      "eolica": 726,
+      "hidrica": 0,
+      "bess": 0
+    },
+    "leiloes": [],
+    "fonte_url": "https://www.energias-renovables.com/eolica/ventient-energy-adquiere-el-operador-eolico-portugues-20200831",
+    "fonte_data": "2020-08-31",
+    "fontes": [
+      {
+        "ref": 26,
+        "url": "https://www.energias-renovables.com/eolica/ventient-energy-adquiere-el-operador-eolico-portugues-20200831",
+        "data": "2020-08-31"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "por_confirmar",
+    "jogavel": false,
+    "notas": "726 MW em 31 parques eólicos (ago-2020); fonte secundária que cita a Ventient. Sobreequipamentos posteriores por confirmar. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: Iberwind/Ventient não aparece nem é dona de nenhum adjudicatário nas três listas [2][4][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "generg",
+    "nome": "Generg (TotalEnergies)",
+    "nome_curto": "Generg",
+    "tipo": "ipp",
+    "mw": {
+      "solar": 18.9,
+      "eolica": 493.0,
+      "hidrica": 33.2,
+      "bess": 0
+    },
+    "leiloes": [],
+    "fonte_url": "https://www.generg.pt/pt/portfolio/",
+    "fonte_data": "2026-10-17 (consulta; página sem data)",
+    "fontes": [
+      {
+        "ref": 27,
+        "url": "https://www.generg.pt/pt/portfolio/",
+        "data": "2026-10-17 (consulta; página sem data)"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      },
+      {
+        "ref": 39,
+        "url": "https://www.generg.pt/media/1446/rec2019-generg-sgps.pdf",
+        "data": "2019-12-31 (R&C 2019)"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Solar em MWp. 100 % TotalEnergies desde 25-07-2023. Página do portfólio sem data. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: Generg não aparece nas listas [2][4][6]. O R&C 2019 [39] confirma que «o Grupo não apresentou nenhuma oferta» no leilão 2019: a Power & Sol (lote 2019 L23, 100 MW) foi vendida à Total Solar a 25-07-2019, antes dos resultados, e não conta como da Generg.",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "akuo",
+    "nome": "Akuo",
+    "nome_curto": "Akuo",
+    "tipo": "ipp",
+    "mw": {
+      "solar": 373,
+      "eolica": null,
+      "hidrica": null,
+      "bess": 0
+    },
+    "leiloes": [
+      {
+        "ano": 2019,
+        "lote": 3,
+        "subestacao": "Estremoz/Divor 400 kV",
+        "mw_ou_mva": 150
+      },
+      {
+        "ano": 2019,
+        "lote": 15,
+        "subestacao": "Falagueira 400 kV",
+        "mw_ou_mva": 100
+      },
+      {
+        "ano": 2019,
+        "lote": 16,
+        "subestacao": "Pego 400 kV",
+        "mw_ou_mva": 120
+      }
+    ],
+    "fonte_url": "/workspace/shared/bess-pack-2026-10-09/Apresentacoes_Solar_Plaza/4.3-JoseVieira-AkuoEnergy.pdf",
+    "fonte_data": "2026-09-29",
+    "fontes": [
+      {
+        "ref": 21,
+        "url": "/workspace/shared/bess-pack-2026-10-09/Apresentacoes_Solar_Plaza/4.3-JoseVieira-AkuoEnergy.pdf",
+        "data": "2026-09-29"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 3,
+        "url": "https://dgeg.gov.pt/media/o0cdfze2/pecasprocedimento.zip",
+        "data": "2019-06-06"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Solar Σ 373 MWp = Santas 226,03 + Amar/Margalha 147 (deck [21]). SantasBat ~80 MW / ~220 MWh em execução, não contado. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2019 L3, L15 e L16 conferem [2]; nenhum em 2020/2021 [4][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "voltalia",
+    "nome": "Voltalia",
+    "nome_curto": "Voltalia",
+    "tipo": "ipp",
+    "mw": {
+      "solar": 78,
+      "eolica": 0,
+      "hidrica": 0,
+      "bess": null
+    },
+    "leiloes": [
+      {
+        "ano": 2021,
+        "lote": 3,
+        "subestacao": "Cabril (subest. Penela)",
+        "mw_ou_mva": 33
+      }
+    ],
+    "fonte_url": "https://www.voltalia.com/news-releases/news-release-details/2025-full-year-results",
+    "fonte_data": "2026-03-12",
+    "fontes": [
+      {
+        "ref": 23,
+        "url": "https://www.voltalia.com/news-releases/news-release-details/2025-full-year-results",
+        "data": "2026-03-12"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Capacidade em operação a 31-12-2025. Armazenamento por confirmar. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2021 L3 (Voltalia Portugal) confere [6]; nenhum em 2019/2020 [2][4].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "lightsource-bp",
+    "nome": "Lightsource bp",
+    "nome_curto": "Lightsource bp",
+    "tipo": "promotor",
+    "mw": {
+      "solar": 0,
+      "eolica": null,
+      "hidrica": null,
+      "bess": null
+    },
+    "leiloes": [],
+    "fonte_url": "https://lightsourcebp.com/pt/sobre-nos/projetos/",
+    "fonte_data": "2026-10-18 (consulta)",
+    "fontes": [
+      {
+        "ref": 24,
+        "url": "https://lightsourcebp.com/pt/sobre-nos/projetos/",
+        "data": "2026-10-18 (consulta)"
+      },
+      {
+        "ref": 25,
+        "url": "https://lightsourcebp.com/news/portugal-exus-renewables-acquires-lightsource-bps-130mwp-cibele-portuguese-solar-farm/",
+        "data": "2025-01-08"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Solar = 0: a página de projetos em Portugal [24] (consultada a 18-10-2026) lista só 5 parques, todos «a ser desenvolvido» (Sophia, Chamusca, Planalto, Alqueva, Paiva); Cibele (130 MWp) foi vendido à Exus em RtB [25]. Eólica, hídrica e baterias ficam null (a página só trata de solar). Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: Lightsource bp não aparece nem é dona de nenhum adjudicatário nas três listas [2][4][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "tagenergy",
+    "nome": "TagEnergy",
+    "nome_curto": "TagEnergy",
+    "tipo": "promotor",
+    "mw": {
+      "solar": null,
+      "eolica": null,
+      "hidrica": null,
+      "bess": null
+    },
+    "leiloes": [
+      {
+        "ano": 2020,
+        "lote": 8,
+        "subestacao": "Almancil/Quarteira/Braciais/Torre Natal/Tavira 15 kV",
+        "mw_ou_mva": 10
+      },
+      {
+        "ano": 2020,
+        "lote": 9,
+        "subestacao": "Lagoa/Armação de Pêra 15 kV",
+        "mw_ou_mva": 10
+      }
+    ],
+    "fonte_url": null,
+    "fonte_data": null,
+    "fontes": [
+      {
+        "ref": 29,
+        "url": "https://tag-en.com/about/",
+        "data": "2026-10-17 (consulta)"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 5,
+        "url": "https://dgeg.gov.pt/media/c2kjaran/pecasprocedimento-2020.zip",
+        "data": "2020-05-29"
+      },
+      {
+        "ref": 8,
+        "url": "https://jornaleconomico.sapo.pt/noticias/centrais-solares-do-leilao-de-2020-continuam-sem-ver-a-luz-do-sol/",
+        "data": "2024-01-08"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "por_confirmar",
+    "jogavel": false,
+    "notas": "Tipo em §1: «Promotor / IPP». O site [29] dá só uma carteira de «more than 6 GW» em 5 países, sem MW em operação em Portugal. Em jan-2024 nenhuma central do leilão 2020 estava construída [8]. MW atuais por confirmar. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2020 L8 e L9 (TagEnergy SA) conferem [4]; nenhum em 2019/2021 [2][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "prosolia-energy",
+    "nome": "Prosolia Energy",
+    "nome_curto": "Prosolia",
+    "tipo": "ipp",
+    "mw": {
+      "solar": 77.4,
+      "eolica": null,
+      "hidrica": null,
+      "bess": 15
+    },
+    "leiloes": [
+      {
+        "ano": 2019,
+        "lote": 24,
+        "subestacao": "Nelas/Tortosendo 60 kV",
+        "mw_ou_mva": 29
+      }
+    ],
+    "fonte_url": "https://prosolia.com/news/albispark-battery-energy-storage-portugal/",
+    "fonte_data": "2026-07-23",
+    "fontes": [
+      {
+        "ref": 30,
+        "url": "https://prosolia.com/news/albispark-battery-energy-storage-portugal/",
+        "data": "2026-07-23"
+      },
+      {
+        "ref": 31,
+        "url": "https://greensavers.sapo.pt/central-solar-na-covilha-produz-energia-para-abastecer-60-mil-habitacoes/",
+        "data": "2025-05-27"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 3,
+        "url": "https://dgeg.gov.pt/media/o0cdfze2/pecasprocedimento.zip",
+        "data": "2019-06-06"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "por_confirmar",
+    "jogavel": false,
+    "notas": "Solar Σ 77,4 = Boidobra 43 MW (fonte secundária [31]) + Albispark 34,4 MWp [30]. BESS 15 MW / 60 MWh (Albispark, jul-2026). Leilões: 2019 L24 (Prosolia Portugal) confere com a DGEG [2]. Não verificado por completo: a Days of Luck (lote 2019 L22, 110 MW) aparece em fonte secundária como detida pela Dos Grados e pela Prosolia; o L22 não foi acrescentado, por confirmar.",
+    "leiloes_verificado": false
+  },
+  {
+    "id": "hyperion-renewables",
+    "nome": "Hyperion Renewables",
+    "nome_curto": "Hyperion",
+    "tipo": "promotor",
+    "mw": {
+      "solar": 80,
+      "eolica": 0,
+      "hidrica": null,
+      "bess": null
+    },
+    "leiloes": [],
+    "fonte_url": "/workspace/shared/bess-pack-2026-10-09/Apresentacoes_Solar_Plaza/2.3-FilipaMendonca-Hyperion.pdf",
+    "fonte_data": "2026-09-29",
+    "fontes": [
+      {
+        "ref": 32,
+        "url": "/workspace/shared/bess-pack-2026-10-09/Apresentacoes_Solar_Plaza/2.3-FilipaMendonca-Hyperion.pdf",
+        "data": "2026-09-29"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      },
+      {
+        "ref": 7,
+        "url": "https://www.pv-magazine.com/2019/08/09/winners-projects-prices-of-portugals-record-pv-auction/",
+        "data": "2019-08-09"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Tipo em §1: «Promotor → IPP». Solar Σ 80 MWp = Cavaleira 52 + Vale de Moura 28. BESS 16 MW / 64 MWh em instalação, não contado. Carteira Theia (295,45 MW, mista) não incluída. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: Hyperion concorreu em 2019 sem ganhar [7]; não aparece nem é dona de nenhum adjudicatário nas três listas [2][4][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "movhera",
+    "nome": "Movhera (Engie, Crédit Agricole Assurances, Mirova)",
+    "nome_curto": "Movhera",
+    "tipo": "fundo",
+    "mw": {
+      "solar": 0,
+      "eolica": 0,
+      "hidrica": 1691,
+      "bess": 0
+    },
+    "leiloes": [],
+    "fonte_url": "https://www.movhera.pt/pt/our-assets",
+    "fonte_data": "2026-10-17 (consulta)",
+    "fontes": [
+      {
+        "ref": 36,
+        "url": "https://www.movhera.pt/pt/our-assets",
+        "data": "2026-10-17 (consulta)"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "validado",
+    "jogavel": false,
+    "notas": "Tipo em §1: «Fundo / IPP». Hídrica Σ de 6 centrais (o site diz «1,7 GW»); bombagem contada na hídrica. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: Movhera não aparece nem é dona de nenhum adjudicatário nas três listas [2][4][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "hanwha-q-cells",
+    "nome": "Hanwha Q CELLS",
+    "nome_curto": "Hanwha Q CELLS",
+    "tipo": "promotor",
+    "mw": {
+      "solar": null,
+      "eolica": null,
+      "hidrica": null,
+      "bess": null
+    },
+    "leiloes": [
+      {
+        "ano": 2020,
+        "lote": 2,
+        "subestacao": "Portimão/Ourique 400 kV",
+        "mw_ou_mva": 109
+      },
+      {
+        "ano": 2020,
+        "lote": 4,
+        "subestacao": "Ferreira do Alentejo/Portimão 150 kV",
+        "mw_ou_mva": 50
+      },
+      {
+        "ano": 2020,
+        "lote": 6,
+        "subestacao": "Ourique 400 kV/Tavira 150 kV",
+        "mw_ou_mva": 99
+      },
+      {
+        "ano": 2020,
+        "lote": 10,
+        "subestacao": "Alcácer do Sal/Vale do Gaio 60 kV",
+        "mw_ou_mva": 19
+      },
+      {
+        "ano": 2020,
+        "lote": 11,
+        "subestacao": "Beja 60 kV",
+        "mw_ou_mva": 19
+      },
+      {
+        "ano": 2020,
+        "lote": 12,
+        "subestacao": "Porteirinhos 60 kV",
+        "mw_ou_mva": 19
+      }
+    ],
+    "fonte_url": null,
+    "fonte_data": null,
+    "fontes": [
+      {
+        "ref": 37,
+        "url": "https://www.hanwha.com/newsroom/news/press-releases/hanwha-q-cells-awarded-315-mw-solar-capacity-in-first-solar-storage-auction-in-portugal.do",
+        "data": "2020-09-24"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 5,
+        "url": "https://dgeg.gov.pt/media/c2kjaran/pecasprocedimento-2020.zip",
+        "data": "2020-05-29"
+      },
+      {
+        "ref": 8,
+        "url": "https://jornaleconomico.sapo.pt/noticias/centrais-solares-do-leilao-de-2020-continuam-sem-ver-a-luz-do-sol/",
+        "data": "2024-01-08"
+      },
+      {
+        "ref": 43,
+        "url": "https://www.gem.wiki/Hanwha_Ourique_solar_farm",
+        "data": "2026-10-18 (consulta)"
+      },
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "por_confirmar",
+    "jogavel": false,
+    "notas": "315 MVA no leilão 2020, todos com armazenamento; nenhuma central construída em jan-2024 [8]. O Global Energy Monitor [43] (secundário) classifica Ourique (109 + 99) como «Cancelled (inferred April 2025)». Sem fonte para um 0. Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2020 L2, L4, L6, L10, L11 e L12 conferem [4]; nenhum em 2019/2021 [2][6].",
+    "leiloes_verificado": true
+  },
+  {
+    "id": "aura-power",
+    "nome": "Aura Power",
+    "nome_curto": "Aura Power",
+    "tipo": "promotor",
+    "mw": {
+      "solar": null,
+      "eolica": null,
+      "hidrica": null,
+      "bess": null
+    },
+    "leiloes": [
+      {
+        "ano": 2019,
+        "lote": 18,
+        "subestacao": "Rio Maior 400 kV",
+        "mw_ou_mva": 150
+      },
+      {
+        "ano": 2019,
+        "lote": 20,
+        "subestacao": "Azóia/Batalha 60 kV",
+        "mw_ou_mva": 18
+      }
+    ],
+    "fonte_url": null,
+    "fonte_data": null,
+    "fontes": [
+      {
+        "ref": 2,
+        "url": "https://dgeg.gov.pt/media/ne1n1r3d/resultadoleilao.zip",
+        "data": "2019-08-07"
+      },
+      {
+        "ref": 3,
+        "url": "https://dgeg.gov.pt/media/o0cdfze2/pecasprocedimento.zip",
+        "data": "2019-06-06"
+      },
+      {
+        "ref": 40,
+        "url": "https://neoen.com/es/noticias/2025/neoen-inaugurates-portugals-largest-solar-park-272-mwp-and-affirms-strong-ambitions-in-the-country/",
+        "data": "2025-06-05"
+      },
+      {
+        "ref": 41,
+        "url": "https://www.aurapower.com/latest-news/construction-begins-on-one-of-portugals-largest-solar-farms",
+        "data": "2023-01-20"
+      },
+      {
+        "ref": 4,
+        "url": "https://dgeg.gov.pt/media/gr0hj3hu/resultado-global-do-leilão-solar-2020-3.pdf",
+        "data": "2020-09-03"
+      },
+      {
+        "ref": 6,
+        "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf",
+        "data": "2022-04-19"
+      }
+    ],
+    "estado": "por_confirmar",
+    "jogavel": false,
+    "notas": "Rio Maior (204 MWp, lote 2019 L18) começou a ser construída em jan-2023 «jointly owned by Aura Power and Neoen» [41]; em 05-06-2025 a Neoen diz que Rio Maior e Torre Bela são «both fully owned by Neoen» [40]. Não há fonte para o lote L20 (Azóia/Batalha) nem para outros ativos da Aura em Portugal; MW ficam null. Lote 2019 L18 partilhado com a Neoen (150/50). Leilões conferidos nas listas oficiais DGEG de 2019 [2], 2020 [4] e 2021 flutuante [6]: 2019 L18 e L20 conferem [2]; nenhum em 2020/2021 [4][6].",
+    "leiloes_verificado": true
+  }
+]
