@@ -330,7 +330,7 @@ async function drainMail(page) {
   return false;
 }
 
-/** Novo jogo walks Jogador → País → Empresa → Ficha → Controlo, then the auction. */
+/** Novo jogo walks Jogador → País → Empresa → Ficha, confirms, and lands in the inbox. */
 async function startNewGame(page, shotName) {
   await page.locator('[data-menu="novo"]').click();
   await page.waitForSelector('#arranque[data-step="jogador"] #arranqueNext');
@@ -342,9 +342,9 @@ async function startNewGame(page, shotName) {
   await page.locator('#arranqueNext').click();
   await page.waitForSelector('#arranque[data-step="ficha"]');
   await page.locator('#arranqueNext').click();
-  await page.waitForSelector('#arranque[data-step="controlo"] #arranqueAuction');
-  await page.locator('#arranqueAuction').click();
-  await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
+  await page.waitForSelector('#arranqueConfirm.open #arranqueConfirmYes');
+  await page.locator('#arranqueConfirmYes').click();
+  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
   const preset = await page.evaluate(() => {
     const id = localStorage.getItem('watt.saves.active');
     const idx = JSON.parse(localStorage.getItem('watt.saves.index.v1') || '[]');
@@ -353,18 +353,8 @@ async function startNewGame(page, shotName) {
   });
   if (!/Jogo de \d+ \w+ \d{4}/.test(preset || '')) throw new Error('default name: ' + preset);
   try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
-  await page.locator('#auctionClose').click();
-  await page.waitForFunction(() => {
-    const room = document.getElementById('auctionRoom');
-    return room && !room.classList.contains('open');
-  });
-  if (await page.locator('#btnInbox').isVisible()) await page.locator('#btnInbox').click();
-  else await page.locator('#tabInbox').click();
-  await page.waitForSelector('#inboxDrawer.open', { timeout: 10000 });
-  if (!(await page.locator('#inboxDrawer.open [data-mail-choice="ver_mandato"]').count())) {
-    await page.locator('.mail-row').first().click();
-  }
-  await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 10000 });
+  if (await page.locator('#arranque').isVisible()) throw new Error('opening still visible');
+  if (await page.locator('#auctionRoom.open').count()) throw new Error('auction opened from the confirmation');
 }
 
 async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExtra) {
@@ -692,7 +682,7 @@ async function cleanPage(browser, width, height) {
   return { context, page };
 }
 
-/** Novo jogo → 5 ecrãs → leilão de Ourique ganho no lance por defeito 27. */
+/** Novo jogo → 4 ecrãs → confirmação → caixa de entrada → leilão pelo ícone, ganho no lance 27. */
 async function openingToAuction(browser, width, height, tag, win) {
   const { context, page } = await cleanPage(browser, width, height);
   track(page, 'abertura-' + tag);
@@ -731,6 +721,20 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.waitForSelector('#arranque[data-step="empresa"] [data-player="1"]');
     const top = await page.locator('[data-player="1"]').innerText();
     if (!/A tua empresa/.test(top) || !/Promotora/.test(top) || !/0 MW/.test(top)) throw new Error('empty company row: ' + top);
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranque[data-step="ficha"] #arranqueNext');
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranqueConfirm.open');
+    const emptyQ = (await page.locator('#arranqueConfirmTitle').innerText()).trim();
+    if (emptyQ !== 'Queres assumir o controlo da tua empresa?') throw new Error('empty confirm ' + emptyQ);
+    await page.locator('#arranqueConfirmNo').click();
+    await page.waitForFunction(() => {
+      const el = document.getElementById('arranqueConfirm');
+      const root = document.getElementById('arranque');
+      return !!(el && el.hidden && root && root.dataset.step === 'ficha' && !el.classList.contains('open'));
+    });
+    await page.locator('#arranqueBack').click();
+    await page.waitForSelector('#arranque[data-step="empresa"]');
     await page.locator('#arranqueBack').click();
     await page.waitForSelector('#arranque[data-step="pais"]');
     await page.locator('#arranqueBack').click();
@@ -786,34 +790,57 @@ async function openingToAuction(browser, width, height, tag, win) {
     const ficha = await page.locator('#arranque').innerText();
     if (!/Ana Ferreira/.test(ficha) || !/Portuguesa/.test(ficha)) throw new Error('ficha identity');
     if (/HIPÓTESE|\[GM\]/.test(ficha)) throw new Error('marker on ficha');
+    const steps = await page.locator('#arranqueSteps').evaluate((el) => el.textContent.replace(/\s+/g, ' '));
+    if (/Controlo/.test(steps)) throw new Error('controlo step still listed: ' + steps);
+    if (!/Jogador/.test(steps) || !/País/.test(steps) || !/Empresa/.test(steps) || !/Ficha/.test(steps)) throw new Error('steps ' + steps);
     await shot(page, 'abertura-ficha-' + tag);
     await page.locator('#arranqueNext').click();
-    await page.waitForSelector('#arranque[data-step="controlo"] #arranqueAuction');
+    await page.waitForSelector('#arranqueConfirm.open');
+    const namedQ = (await page.locator('#arranqueConfirmTitle').innerText()).trim();
+    if (namedQ !== 'Queres assumir o controlo de Sol do Sul, Lda.?') throw new Error('named confirm ' + namedQ);
+    const simBlue = await page.locator('#arranqueConfirmYes').evaluate((el) => getComputedStyle(el).backgroundColor);
+    if (simBlue !== 'rgb(0, 122, 255)') throw new Error('confirm Sim ' + simBlue);
+    await page.locator('#arranqueConfirmNo').click();
     await page.waitForFunction(() => {
-      const el = document.getElementById('arranqueOuriqueMeta');
-      const q = window.__wattQA;
-      if (!el || !q || typeof q.faixa !== 'function' || !q.faixa()) return false;
-      const lot = (q.lots || []).find((l) => l.id === 'ourique');
-      if (!lot || lot.kv == null || !lot.mw) return false;
-      const kv = String(lot.kv).replace(/\s*kV$/i, '').trim() + ' kV';
-      const text = el.textContent || '';
-      return text.indexOf(kv) === 0 && text.indexOf(String(lot.mw).trim()) !== -1;
-    }, null, { timeout: 15000 });
-    const controlo = await page.locator('#arranque').innerText();
-    if (!/Assumiste o controlo/.test(controlo)) throw new Error('controlo title');
-    if (!/Ana, a empresa é tua/.test(controlo)) throw new Error('controlo name');
-    if (!/Ir para o leilão/.test(controlo) || !/Ourique/.test(controlo)) throw new Error('controlo auction');
-    if (/HIPÓTESE|\[GM\]|Fim da maquete/.test(controlo)) throw new Error('marker on controlo');
-    const ouriqueMeta = await page.locator('#arranqueOuriqueMeta').innerText();
-    if (!/^150 kV · 120 MWp · /.test(ouriqueMeta)) throw new Error('ourique meta ' + ouriqueMeta);
-    const goBlue = await page.locator('#arranqueAuction').evaluate((el) => getComputedStyle(el).backgroundColor);
-    if (goBlue !== 'rgb(0, 122, 255)') throw new Error('auction CTA ' + goBlue);
-    await shot(page, 'abertura-controlo-' + tag);
-    if (!win) return;
+      const el = document.getElementById('arranqueConfirm');
+      const root = document.getElementById('arranque');
+      return !!(el && el.hidden && root && root.dataset.step === 'ficha');
+    });
+    await page.locator('#arranqueNext').click();
+    await page.waitForSelector('#arranqueConfirm.open');
+    await shot(page, 'abertura-confirmacao-' + tag);
+    if (!win) {
+      await page.locator('#arranqueConfirmNo').click();
+      return;
+    }
 
-    await page.locator('#arranqueAuction').click();
+    await page.locator('#arranqueConfirmYes').click();
+    await page.waitForFunction(() => {
+      return !document.body.classList.contains('at-arranque') && !document.body.classList.contains('at-menu');
+    }, null, { timeout: 15000 });
+    await page.waitForSelector('#inboxDrawer.open [data-mail-choice="ver_mandato"]', { timeout: 15000 });
+    if (await page.locator('#arranque').isVisible()) throw new Error('opening still visible over the inbox');
+    if (await page.locator('#auctionRoom.open').count()) throw new Error('auction opened instead of the inbox');
+    const letter = await page.locator('#inboxBody').innerText();
+    if (!/Bem-vindo/.test(letter) || !/Investidores/.test(letter)) throw new Error('first letter ' + letter.slice(0, 240));
+    const headerAuction = await page.locator('#btnOpenAuction').isVisible();
+    const badge = page.locator(headerAuction ? '#auctionBadge' : '#tabAuctionBadge');
+    if (!(await badge.isVisible())) throw new Error('auction badge hidden');
+    const badgeN = (await badge.innerText()).trim();
+    if (!/^[1-9]/.test(badgeN)) throw new Error('auction badge ' + badgeN);
+    await shot(page, 'abertura-caixa-' + tag);
+    try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2000 }); } catch (_) {}
+    if (headerAuction) {
+      await page.locator('#inboxBackdrop').click();
+      await page.waitForFunction(() => {
+        const drawer = document.getElementById('inboxDrawer');
+        return drawer && !drawer.classList.contains('open');
+      });
+      await page.locator('#btnOpenAuction').click();
+    } else {
+      await page.locator('#tabAuction').click();
+    }
     await page.waitForSelector('#auctionRoom.open', { timeout: 15000 });
-    if (await page.locator('#arranque').isVisible()) throw new Error('opening still visible over the auction');
     try { await page.locator('.tut-root.open .tut-off').click({ timeout: 2500 }); } catch (_) {}
     await page.waitForFunction(() => {
       const q = window.__wattQA;
@@ -821,11 +848,6 @@ async function openingToAuction(browser, width, height, tag, win) {
     }, null, { timeout: 20000 });
     const presetBid = await page.locator('#auctionBidSlider').inputValue();
     if (presetBid !== '27') throw new Error('default bid ' + presetBid);
-    const auctionSub = await page.locator('#auctionSub').innerText();
-    const kvBit = ouriqueMeta.match(/^(\d+(?:\/\d+)? kV)/);
-    const mwBit = ouriqueMeta.match(/(\d[\d\s]*MWp)/);
-    if (!kvBit || auctionSub.indexOf(kvBit[1]) !== 0) throw new Error('auction voltage ' + auctionSub + ' vs ' + ouriqueMeta);
-    if (!mwBit || auctionSub.indexOf(mwBit[1]) === -1) throw new Error('auction size ' + auctionSub + ' vs ' + ouriqueMeta);
     const caixa = await page.evaluate(() => window.__wattQA.state.caixa);
     if (!(Math.abs(caixa - 2) < 1e-9)) throw new Error('caixa ' + caixa);
     await page.locator('#auction-confirm').click();

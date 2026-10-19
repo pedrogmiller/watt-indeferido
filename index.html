@@ -5600,7 +5600,14 @@
   body.at-menu .obj-budget,
   body.at-arranque .obj-budget { display: none !important; }
 
-  /* ═══ Arranque de jogo novo (Jogador · País · Empresa · Ficha · Controlo) ═══ */
+  /* ═══ Arranque de jogo novo (Jogador · País · Empresa · Ficha) ═══ */
+  #arranqueConfirm .arranque-confirm-yes {
+    background: #007AFF;
+    border-color: #007AFF;
+    color: #fff;
+  }
+  #arranqueConfirm .arranque-confirm-yes:hover { background: #0066d6; border-color: #0066d6; }
+  #arranqueConfirm .settings-confirm-title { margin-bottom: 18px; }
   #arranqueFinancas[hidden] { display: none !important; }
   #arranqueFinancas .metric-value.ok { color: #166534; }
   body.at-arranque #arranqueFinancas.is-on { display: flex !important; margin-left: auto; }
@@ -5710,24 +5717,6 @@
   }
   #arranque .ar-co-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
   #arranque .ar-co-sub { font-size: 13px; color: #64748b; }
-  #arranque .ar-end { text-align: center; padding: 26px 16px; }
-  #arranque .ar-seal {
-    width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 10px; background: #dbeafe;
-    border: 2px solid #93c5fd; display: flex; align-items: center; justify-content: center; font-size: 28px;
-  }
-  #arranque .ar-end h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
-  #arranque .ar-end .ar-co { font-size: 17px; font-weight: 700; margin-top: 2px; }
-  #arranque .ar-end p { color: #475569; margin-top: 6px; }
-  #arranque .ar-next {
-    display: flex; gap: 10px; align-items: center; text-align: left;
-    border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-top: 16px; background: #fff;
-  }
-  #arranque .ar-next .ar-ic {
-    flex: 0 0 40px; height: 40px; border-radius: 10px; background: #fff7ed; border: 1px solid #fed7aa;
-    display: flex; align-items: center; justify-content: center; font-size: 20px;
-  }
-  #arranque .ar-next b { display: block; }
-  #arranque .ar-next .ar-meta { font-size: 12px; color: #64748b; }
   #arranque .ar-wait { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
   @media (max-width: 899px) {
     #arranque .ar-step:not(.now) .ar-l { display: none; }
@@ -5840,6 +5829,15 @@
 <div id="arranque" hidden data-step="jogador">
   <nav class="ar-steps" id="arranqueSteps" aria-label="Arranque"></nav>
   <div class="ar-main" id="arranqueMain"></div>
+</div>
+<div class="settings-confirm" id="arranqueConfirm" hidden role="dialog" aria-modal="true" aria-labelledby="arranqueConfirmTitle">
+  <div class="settings-confirm-card">
+    <div class="settings-confirm-title" id="arranqueConfirmTitle">Queres assumir o controlo da tua empresa?</div>
+    <div class="settings-confirm-actions">
+      <button type="button" class="settings-btn" id="arranqueConfirmNo">Não</button>
+      <button type="button" class="settings-btn arranque-confirm-yes" id="arranqueConfirmYes">Sim</button>
+    </div>
+  </div>
 </div>
 <div id="startModal"></div>
 
@@ -19239,7 +19237,6 @@
   let arranqueCompanies = null;
   let arranqueCompaniesError = null;
   let arranqueCompaniesLoad = null;
-  let arranqueOuriqueTimer = null;
 
   function playerSnapshot() {
     if (!playerProfile) return null;
@@ -19332,10 +19329,9 @@
   }
   function arranqueStepsHtml() {
     const idx = ARRANQUE_STEPS.findIndex((p) => p[0] === arranqueStep);
-    const fim = arranqueStep === 'controlo';
     return ARRANQUE_STEPS.map((p, i) => {
-      const done = fim || (idx >= 0 && i < idx);
-      const now = !fim && i === idx;
+      const done = idx >= 0 && i < idx;
+      const now = i === idx;
       const cls = done ? 'done' : (now ? 'now' : '');
       return '<div class="ar-step ' + cls + '"><span class="ar-n">' + (done ? '✓' : String(i + 1)) + '</span><span class="ar-l">' + p[1] + '</span></div>';
     }).join('');
@@ -19369,12 +19365,11 @@
       jogador: arranqueScreenJogador,
       pais: arranqueScreenPais,
       empresa: arranqueScreenEmpresa,
-      ficha: arranqueScreenFicha,
-      controlo: arranqueScreenControlo
+      ficha: arranqueScreenFicha
     };
     main.innerHTML = (screens[arranqueStep] || screens.jogador)();
     const fin = document.getElementById('arranqueFinancas');
-    const showFin = arranqueStep === 'ficha' || arranqueStep === 'controlo';
+    const showFin = arranqueStep === 'ficha';
     if (fin) {
       fin.hidden = !showFin;
       fin.classList.toggle('is-on', showFin);
@@ -19387,8 +19382,6 @@
       });
     }
     try { syncPeriodChrome(); } catch (_) {}
-    if (arranqueStep === 'controlo') arranqueWatchOuriqueLot();
-    else arranqueStopOuriqueWatch();
   }
   function arranqueScreenJogador() {
     const d = arranqueDraft;
@@ -19473,67 +19466,37 @@
     return '<h1>Ficha da empresa</h1><p class="ar-lead">Confirma os dados antes de começar.</p>' +
       arranqueFichaBody() + arranqueCta('Assumir o controlo');
   }
-  /** The same Ourique object the auction room renders (AUCTION_WAVES, after the faixa file). */
-  function arranqueFindOuriqueLot() {
-    let lot = null;
-    try {
-      AUCTION_WAVES.forEach((w) => {
-        if (!lot) lot = (w || []).find((l) => l && l.id === 'ourique') || null;
-      });
-    } catch (_) {}
-    return lot;
+  function arranqueConfirmQuestion() {
+    const typed = String(arranqueDraft.nomeEmpresa || '').trim();
+    if (!typed) return 'Queres assumir o controlo da tua empresa?';
+    return 'Queres assumir o controlo de ' + typed + '?';
   }
-  function arranqueOuriqueMetaText() {
-    const lot = arranqueFindOuriqueLot();
-    const kv = lot && lot.kv != null && lot.kv !== '' ? (String(lot.kv).replace(/\s*kV$/i, '').trim() + ' kV') : '';
-    const mw = lot && lot.mw != null ? String(lot.mw).trim() : '';
-    return [kv, mw, 'a REN abriu o leilão em 2027 · Q1'].filter(Boolean).join(' · ');
+  function openArranqueConfirm() {
+    const el = document.getElementById('arranqueConfirm');
+    const title = document.getElementById('arranqueConfirmTitle');
+    const yes = document.getElementById('arranqueConfirmYes');
+    if (!el || !title) return;
+    title.textContent = arranqueConfirmQuestion();
+    if (yes) yes.disabled = false;
+    el.hidden = false;
+    el.classList.add('open');
+    if (yes) { try { yes.focus(); } catch (_) {} }
   }
-  function arranquePaintOuriqueMeta() {
-    const el = document.getElementById('arranqueOuriqueMeta');
+  function closeArranqueConfirm() {
+    const el = document.getElementById('arranqueConfirm');
     if (!el) return;
-    const text = arranqueOuriqueMetaText();
-    if (el.textContent !== text) el.textContent = text;
+    el.classList.remove('open');
+    el.hidden = true;
   }
-  /** True once the faixa file has been applied, so Controlo cannot still show the pre-file voltage. */
-  function arranqueOuriqueReady() {
-    const lot = arranqueFindOuriqueLot();
-    if (!lot) return false;
-    let row = null;
-    try { row = faixaLot('ourique'); } catch (_) {}
-    if (!row) return false;
-    if (row.kv == null) return true;
-    return Number(lot.kv) === Number(row.kv);
-  }
-  function arranqueStopOuriqueWatch() {
-    if (arranqueOuriqueTimer) {
-      clearInterval(arranqueOuriqueTimer);
-      arranqueOuriqueTimer = null;
-    }
-  }
-  function arranqueWatchOuriqueLot() {
-    arranqueStopOuriqueWatch();
-    if (arranqueStep !== 'controlo') return;
-    const tick = () => {
-      if (arranqueStep !== 'controlo') { arranqueStopOuriqueWatch(); return; }
-      arranquePaintOuriqueMeta();
-      if (arranqueOuriqueReady()) arranqueStopOuriqueWatch();
-    };
-    tick();
-    if (!arranqueOuriqueReady()) arranqueOuriqueTimer = setInterval(tick, 50);
-  }
-  function arranqueScreenControlo() {
-    const nome = arranqueEmpresaNome();
-    const proprio = String(arranqueDraft.nomeProprio || '').trim();
-    const tua = proprio ? escapeHtml(proprio) + ', a empresa é tua.' : 'A empresa é tua.';
-    return '<div class="ar-card ar-end"><div class="ar-seal" aria-hidden="true">🔑</div><h2>Assumiste o controlo</h2>' +
-      '<div class="ar-co">' + escapeHtml(nome) + '</div>' +
-      '<p>' + tua + ' Primeiro passo: ganhar uma ligação à rede.</p>' +
-      '<div class="ar-next"><div class="ar-ic" aria-hidden="true">⚡</div><div><b>Leilão de ligação · Subestação de Ourique</b><div class="ar-meta" id="arranqueOuriqueMeta">' + escapeHtml(arranqueOuriqueMetaText()) + '</div></div></div>' +
-      '<button type="button" class="ar-btn-p ar-big" id="arranqueAuction" data-ar="auction">Ir para o leilão</button></div>';
+  function confirmArranque() {
+    const yes = document.getElementById('arranqueConfirmYes');
+    if (yes && yes.disabled) return;
+    if (yes) yes.disabled = true;
+    closeArranqueConfirm();
+    finishArranque();
   }
   function hideArranque() {
-    arranqueStopOuriqueWatch();
+    closeArranqueConfirm();
     document.body.classList.remove('at-arranque');
     const el = document.getElementById('arranque');
     if (el) el.hidden = true;
@@ -19591,7 +19554,7 @@
       renderArranque('ficha');
       return;
     }
-    if (arranqueStep === 'ficha') { renderArranque('controlo'); }
+    if (arranqueStep === 'ficha') openArranqueConfirm();
   }
   function arranqueBack() {
     if (arranqueStep === 'jogador') { arranqueBackToMenu(); return; }
@@ -19608,7 +19571,7 @@
       nacionalidade: d.nacionalidade || 'Portuguesa',
       pais: 'portugal'
     };
-    beginNewSlot(defaultGameName(new Date()), { openAuction: true });
+    beginNewSlot(defaultGameName(new Date()));
   }
   function onArranqueInput(ev) {
     const t = ev.target;
@@ -19635,16 +19598,34 @@
     const act = t.getAttribute('data-ar');
     if (act === 'back') arranqueBack();
     else if (act === 'next') arranqueAdvance();
-    else if (act === 'auction') finishArranque();
   }
   function wireArranque() {
     const root = document.getElementById('arranque');
-    if (!root || root.dataset.wired === '1') return;
-    root.dataset.wired = '1';
-    root.addEventListener('click', onArranqueClick);
-    root.addEventListener('input', onArranqueInput);
-    root.addEventListener('change', onArranqueInput);
+    if (root && root.dataset.wired !== '1') {
+      root.dataset.wired = '1';
+      root.addEventListener('click', onArranqueClick);
+      root.addEventListener('input', onArranqueInput);
+      root.addEventListener('change', onArranqueInput);
+    }
+    const no = document.getElementById('arranqueConfirmNo');
+    const yes = document.getElementById('arranqueConfirmYes');
+    if (no && no.dataset.wired !== '1') {
+      no.dataset.wired = '1';
+      no.addEventListener('click', closeArranqueConfirm);
+    }
+    if (yes && yes.dataset.wired !== '1') {
+      yes.dataset.wired = '1';
+      yes.addEventListener('click', confirmArranque);
+    }
   }
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const el = document.getElementById('arranqueConfirm');
+    if (!el || !el.classList.contains('open')) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    closeArranqueConfirm();
+  }, true);
   function openNewGameSheet() {
     showArranque();
   }
