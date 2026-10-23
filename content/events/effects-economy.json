@@ -7963,5 +7963,27 @@
   "trc_risk_warned"
  ],
  "_meta_v01_hybrid_patch": "DRAFT 2026-10-10 PT — v0.1 game value, not real: stands in for the hybrid (wind) value that arrives in v0.2. Base: watt-indeferido origin/main bd8a624 (PR #14) content/events/effects-economy.json. Muda só effects.bess_dev_flag.nav e engine_events.mission_bess.nav (−0,83 → 7.2) e junta months_track='hybrid' nas duas linhas; equity, months, cash, CAR e capex iguais. PRESSUPÕE as correções da consola em /workspace/licenca/v01-hybrid-patch/CONSOLE-FIXES.md (linha inteira, env_mitigation_flag 1×, months na pista híbrida, trafo tardio pago). Com a consola de hoje (8/15) reserva só +3,84. Precisa de confirmação direta do Pedro.",
- "_meta_v01_hybrid_patch_b": "DRAFT 2026-10-10 PT — GAME v0.1, v0.1 game value, not real: stands in for the hybrid (wind) value that arrives in v0.2. Base: watt-indeferido PR #16 head 7b3ccbe content/events/effects-economy.json. Muda só effects.bess_dev_flag e engine_events.mission_bess: nav 7.2 → 9.3; cash −0.4 → null; car 0.4 → null; equity 2.16 → 2.56; novo nav_per_cod_month −0.26 (lido pela consola só com a alteração C1 em /workspace/licenca/v01-hybrid-patch-b/CONSOLE-NOTES-b.md; sem C1 a desleixada continua a ganhar). Teste de equity na FID continua a falhar (48,5 → ~51,9 vs 45 M€ sem sócio): questão em aberto, inalterada. Precisa de confirmação direta do Pedro."
+ "_meta_v01_hybrid_patch_b": "DRAFT 2026-10-10 PT — GAME v0.1, v0.1 game value, not real: stands in for the hybrid (wind) value that arrives in v0.2. Base: watt-indeferido PR #16 head 7b3ccbe content/events/effects-economy.json. Muda só effects.bess_dev_flag e engine_events.mission_bess: nav 7.2 → 9.3; cash −0.4 → null; car 0.4 → null; equity 2.16 → 2.56; novo nav_per_cod_month −0.26 (lido pela consola só com a alteração C1 em /workspace/licenca/v01-hybrid-patch-b/CONSOLE-NOTES-b.md; sem C1 a desleixada continua a ganhar). Teste de equity na FID continua a falhar (48,5 → ~51,9 vs 45 M€ sem sócio): questão em aberto, inalterada. Precisa de confirmação direta do Pedro.",
+ "gas_v01_2026_10_23": {
+  "label": "HIPÓTESE",
+  "origin": "licenca/gas-economia.md, «Chaves para as cartas do gás», 23-10-2026",
+  "delta_preco_noite_eur_mwh": 25,
+  "meses_gas_caro": 3,
+  "intervalo_meses_gas": 12,
+  "margem_gas_rival_pct": 0.25,
+  "margem_gas_rival_MEUR": {
+   "edp": 8.6,
+   "endesa": 1.8,
+   "trustenergy": 1.8
+  },
+  "receita_bess_ja_eur_mwh": 5000,
+  "receita_bess_noite_eur_mwh": 7800,
+  "prob_noite_falha": 0.3,
+  "receita_bess_noite_baixa_eur_mwh": 3500,
+  "bess_mwh": 30,
+  "bess_mwh_origin": "bateria v0.1 de 15 MW / 30 MWh (effects-economy.json, nota do BESS)",
+  "prob_evento_gas_mes": 0.08,
+  "prob_ano_mau_renovaveis": 0.3,
+  "probs_origin": "SEM FONTE: o rascunho diz «evento sorteado» e «fim de ano com ano mau», sem probabilidade. Valores provisórios para a Economy rever."
+ }
 }

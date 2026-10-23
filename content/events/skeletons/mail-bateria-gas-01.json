@@ -1,0 +1,31 @@
+{
+  "id": "mail-bateria-gas-01",
+  "phase": "post_win",
+  "trigger": {
+    "requires_all_effects": [
+      "gas_caro_ativo",
+      "bess_operating"
+    ]
+  },
+  "priority": "high",
+  "from_type": "MERCADO",
+  "choices": [
+    {
+      "id": "ja",
+      "label": "Vender já",
+      "effects": [
+        "bess_valor_up",
+        "bess_venda_ja"
+      ]
+    },
+    {
+      "id": "noite",
+      "label": "Guardar para a noite",
+      "effects": [
+        "bess_valor_up",
+        "bess_venda_noite"
+      ]
+    }
+  ],
+  "notes_for_economy": "receita_bess_* × bess_mwh (effects-economy.json gas_v01_2026_10_23)."
+}

@@ -66,7 +66,7 @@
       },
       "target": "auction.bid",
       "title": "A tua oferta em €/MWh",
-      "body": "Os rivais licitam 20–30 €/MWh. Tão barato, só com solar perdes dinheiro. A ligação dá para mais.",
+      "body": "O mercado licita 20–30 €/MWh. Tão barato, só com solar perdes dinheiro. A ligação dá para mais.",
       "blocks_play": false,
       "order": 20,
       "nota_gm": "Leilão inverso: oferta mais baixa ganha (dica do live: «sobe a oferta até o NPV ficar positivo», 8 % ao ano).",
@@ -105,11 +105,11 @@
       },
       "target": "auction.fora_card",
       "title": "Ficaste de fora",
-      "body": "Os rivais ganharam os lotes. Não perdeste dinheiro: carrega em «Abrir o próximo leilão».",
+      "body": "O mercado ganhou os lotes. Não perdeste dinheiro: carrega em «Abrir o próximo leilão».",
       "blocks_play": false,
       "order": 40,
       "nota_gm": "Ecrã «Fora deste leilão» → «Abrir o próximo leilão». effect provisório.",
-      "body_long": "Os rivais ganharam os lotes. Não perdeste dinheiro: espera pelo próximo leilão e tenta outra vez.",
+      "body_long": "O mercado ganhou os lotes. Não perdeste dinheiro: espera pelo próximo leilão e tenta outra vez.",
       "ui_tut_0fee34b_2026_10_07": true
     },
     {

@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-mercado-gas-01",
+  "skin_id": "default",
+  "from_name": "Boletim de Mercado — Energia Hoje",
+  "subject": "O gás subiu. As noites ficaram mais caras.",
+  "body": "O preço do gás voltou a subir na Europa.\n\nDe dia, o sol mantém a eletricidade barata.\n\nÀ noite, sem sol, as centrais a gás pesam mais no preço. Por isso, a eletricidade fica mais cara nessas horas.\n\nJá aconteceu antes. Em 2022, Portugal e Espanha criaram uma regra temporária para travar o preço do gás usado nas centrais.",
+  "params": {}
+}

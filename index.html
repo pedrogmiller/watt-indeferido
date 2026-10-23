@@ -3976,6 +3976,7 @@
   .mail-type-chip.rede { color: #0e7490; background: #ecfeff; border-color: #a5f3fc; }
   .mail-type-chip.comunidade { color: #be185d; background: #fdf2f8; border-color: #fbcfe8; }
   .mail-type-chip.media { color: #b45309; background: #fffbeb; border-color: #fcd34d; }
+  .mail-type-chip.mercado { color: #0f766e; background: #f0fdfa; border-color: #5eead4; }
   .mail-type-chip.apa { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
   .mail-type-chip.dgeg { color: #1e3a8a; background: #eff6ff; border-color: #bfdbfe; }
   .mail-type-chip.concorrente { color: #9f1239; background: #fff1f2; border-color: #fecdd3; }
@@ -6172,7 +6173,7 @@
           </div>
         </div>
       </div>
-      <div class="auction-rivals" id="auctionRivals" aria-label="Empresas rivais presentes"></div>
+      <div class="auction-rivals" id="auctionRivals" aria-label="Empresas no leilão"></div>
       <p class="auction-fiction">Os lances das empresas reais no jogo são fictícios.</p>
       <div class="auction-lot-list" id="auction-lot-list" data-tut="auction.lots" role="listbox" aria-label="Lotes"></div>
       <div style="padding:10px 12px 14px;border-top:1px solid var(--border-subtle)">
@@ -6223,16 +6224,16 @@
             <div class="auction-consultant-label">Consultor <span class="prov-mark">valores provisórios</span></div>
             <div class="auction-consultant-line" id="auctionConsultantLine">Se fechares a 30 €/MWh → NPV —</div>
             <p class="auction-consultor-line" id="auctionConsultorLine" hidden></p>
-            <div class="auction-irony" aria-label="As tuas contas e o preço dos rivais">
+            <div class="auction-irony" aria-label="As tuas contas e o preço do mercado">
               <div class="auction-irony-good">
                 <div class="k" title="NPV: quanto vale hoje o projeto para os investidores: receitas menos custos e pagamentos ao banco, a valores de hoje, com 8% ao ano">NPV · valor do projeto hoje</div>
                 <div class="v good num" id="auctionVan">+2,2 M€</div>
                 <div class="sub" id="auctionVanSub">Com esta oferta, passa o mínimo exigido</div>
               </div>
               <div class="auction-irony-trap">
-                <div class="k">Preço habitual dos rivais</div>
+                <div class="k">Preço habitual do mercado</div>
                 <div class="v" id="auctionNpcIrony">entre 20 e 30</div>
-                <div class="sub" id="auctionNpcBid">O preço exato dos rivais só se sabe no fim</div>
+                <div class="sub" id="auctionNpcBid">O preço exato do mercado só se sabe no fim</div>
                 <p class="auction-fiction auction-fiction-narrow">Os lances das empresas reais no jogo são fictícios.</p>
               </div>
             </div>
@@ -6256,7 +6257,7 @@
           <div class="auction-abertura">
             <div class="auction-abertura-badge">Abertura das propostas</div>
             <h3 id="auctionAberturaTitle">A revelar as propostas…</h3>
-            <p id="auctionAberturaBody">Os rivais estão a revelar as propostas. Se ganhares, recebes o preço que ofereceste.</p>
+            <p id="auctionAberturaBody">O mercado está a revelar as propostas. Se ganhares, recebes o preço que ofereceste.</p>
             <div class="auction-abertura-rivals" id="auctionAberturaRivals"></div>
             <p class="auction-fiction auction-fiction-narrow">Os lances das empresas reais no jogo são fictícios.</p>
             <div class="auction-abertura-bar"><i id="auctionAberturaBar"></i></div>
@@ -6291,7 +6292,7 @@
           <div class="auction-fora-card" data-tut="auction.fora_card">
             <div class="auction-trap-badge" style="background:#f1f5f9;color:#334155">Fora deste leilão</div>
             <h3>Não ganhaste nenhum lote.</h3>
-            <p id="auctionForaBody">Os rivais ganharam os lotes. Não perdeste dinheiro e o jogo continua. Espera pelo próximo leilão.</p>
+            <p id="auctionForaBody">O mercado ganhou os lotes. Não perdeste dinheiro e o jogo continua. Espera pelo próximo leilão.</p>
             <div class="auction-fora-facts">
               <div class="auction-fora-fact"><div class="k">Caixa</div><div class="v ok num" id="auctionForaCash">2,0 M€</div></div>
               <div class="auction-fora-fact"><div class="k">TRC</div><div class="v num" id="auctionForaTrc">0</div></div>
@@ -7104,7 +7105,7 @@
       if (sub) sub.textContent = 'Ganhaste um lote. Aceita o TRC no leilão para ele entrar nas tuas centrais.';
     } else if (aS.allLost) {
       if (title) title.textContent = 'Fora deste leilão';
-      if (sub) sub.textContent = 'Os rivais ficaram com os lotes desta ronda. Não perdeste dinheiro. Abre o próximo leilão.';
+      if (sub) sub.textContent = 'O mercado ficou com os lotes desta ronda. Não perdeste dinheiro. Abre o próximo leilão.';
     } else {
       if (title) title.textContent = 'Sem central';
       if (sub) sub.textContent = 'Ainda não tens TRC. Abre o leilão para ganhar o primeiro.';
@@ -9176,7 +9177,7 @@
       overlay_highlight: true,
       card_data: {
         title: '3 lotes em leilão',
-        body: 'Cada lote é um TRC numa subestação. Podes licitar mais do que um, mas só podes ficar com um. Vê os prós e contras de cada lote. Os que não ganhares ficam para os rivais.',
+        body: 'Cada lote é um TRC numa subestação. Podes licitar mais do que um, mas só podes ficar com um. Vê os prós e contras de cada lote. Os que não ganhares ficam para o mercado.',
         action_instruction: 'Clica num lote',
         btn_label: 'Saltar'
       }
@@ -9189,7 +9190,7 @@
       overlay_highlight: true,
       card_data: {
         title: 'A tua oferta',
-        body: 'O preço que escreveres é o que ficas a receber. Não o do rival.',
+        body: 'O preço que escreveres é o que ficas a receber. Não o do mercado.',
         action_instruction: 'Mexe na oferta',
         btn_label: 'Saltar'
       }
@@ -9202,7 +9203,7 @@
       overlay_highlight: true,
       card_data: {
         title: 'Olha o consultor',
-        body: 'A oferta começa em 27 €/MWh. Aqui ganhas o lote, mas o projeto perde dinheiro (NPV negativo). Sobe a oferta até o NPV ficar positivo: os investidores querem pelo menos 8% ao ano sobre o dinheiro deles, depois de pagar ao banco. Se passares o preço dos rivais, perdes o lote.',
+        body: 'A oferta começa em 27 €/MWh. Aqui ganhas o lote, mas o projeto perde dinheiro (NPV negativo). Sobe a oferta até o NPV ficar positivo: os investidores querem pelo menos 8% ao ano sobre o dinheiro deles, depois de pagar ao banco. Se passares o preço do mercado, perdes o lote.',
         action_instruction: 'Lê o painel',
         btn_label: 'Jogar'
       }
@@ -11229,13 +11230,13 @@
       const noGood = !!(fx && fx.proposed_auction && fx.proposed_auction.no_good_price);
       hint = (L && L.npcFloor != null ? wouldWinAuction(bid, L) : bid <= 22)
         ? (noGood
-          ? 'Com esta oferta ganhas, mas o NPV fica negativo. Neste lote não há preço bom: o rival pede menos do que o projeto precisa, por isso qualquer oferta que ganhe perde dinheiro.'
+          ? 'Com esta oferta ganhas, mas o NPV fica negativo. Neste lote não há preço bom: o mercado pede menos do que o projeto precisa, por isso qualquer oferta que ganhe perde dinheiro.'
           : 'Com esta oferta ganhas com facilidade, mas recebes o preço que propões e esse preço não paga o projeto: o NPV fica negativo.')
-        : 'Com esta oferta o NPV fica negativo: o projeto perde dinheiro. Se ganhares, recebes o preço que ofereceste, não o preço do rival.';
+        : 'Com esta oferta o NPV fica negativo: o projeto perde dinheiro. Se ganhares, recebes o preço que ofereceste, não o preço do mercado.';
     } else if (tone === 'anemic') {
-      hint = 'O NPV é positivo, mas a rentabilidade por ano (IRR) fica abaixo do mínimo exigido (' + hPct + '). Em 2019 os vencedores ofereceram 15–25 €/MWh. Hoje construir e pedir dinheiro emprestado custa mais: os rivais pedem mais.';
+      hint = 'O NPV é positivo, mas a rentabilidade por ano (IRR) fica abaixo do mínimo exigido (' + hPct + '). Em 2019 os vencedores ofereceram 15–25 €/MWh. Hoje construir e pedir dinheiro emprestado custa mais: o mercado pede mais.';
     } else {
-      hint = 'O NPV é positivo e a rentabilidade por ano passa o mínimo exigido (' + hPct + '). Em 2019 os vencedores ofereceram 15–25 €/MWh. Hoje construir e pedir dinheiro emprestado custa mais: os rivais pedem mais.';
+      hint = 'O NPV é positivo e a rentabilidade por ano passa o mínimo exigido (' + hPct + '). Em 2019 os vencedores ofereceram 15–25 €/MWh. Hoje construir e pedir dinheiro emprestado custa mais: o mercado pede mais.';
     }
     if (bid > AUCTION_MAX_BID) hint = 'Acima do preço máximo do leilão (' + AUCTION_MAX_BID + ' €/MWh): esta oferta é recusada.';
     return { van, irr, tone, hint, lotId: L && L.id, scale: cf ? cf.scale : lotCapexRatio(L), source: fx ? 'leilao_faixa' : 'mock' };
@@ -11435,13 +11436,13 @@
     renderAuctionRivals();
     const hasWin = auctionHasAnyWin();
     if (!hasWin) {
-      enterAuctionFora('O tempo acabou e os lotes que faltavam ficaram para os rivais.');
+      enterAuctionFora('O tempo acabou e os lotes que faltavam ficaram para o mercado.');
     } else {
       auctionState.clockPaused = true;
       stopAuctionClock();
       showToast(auctionHasPendingTrc()
-        ? 'O tempo acabou. Os rivais ficaram com os lotes que faltavam. Sai do leilão para aceitares o teu TRC.'
-        : 'O tempo acabou. Os rivais ficaram com os lotes que faltavam. O teu TRC está no início.');
+        ? 'O tempo acabou. O mercado ficou com os lotes que faltavam. Sai do leilão para aceitares o teu TRC.'
+        : 'O tempo acabou. O mercado ficou com os lotes que faltavam. O teu TRC está no início.');
       syncAuctionExitGates();
     }
   }
@@ -12180,7 +12181,7 @@
     const body = document.getElementById('auctionForaBody');
     if (body) {
       body.textContent =
-        (reason || 'Os rivais ganharam os lotes.') +
+        (reason || 'O mercado ganhou os lotes.') +
         ' Não perdeste dinheiro e o jogo continua.' + (auctionState.roundsOver ? '' : ' Volta ao início ou abre o próximo leilão.');
     }
     const cash = document.getElementById('auctionForaCash');
@@ -12219,7 +12220,7 @@
     setAuctionScreen('abertura');
     document.getElementById('auctionAberturaTitle').textContent = 'A revelar as propostas · ' + lot.name;
     document.getElementById('auctionAberturaBody').textContent =
-      'A tua oferta: ' + bid + ' €/MWh. Os rivais estão a revelar as propostas. Se ganhares, recebes este preço.';
+      'A tua oferta: ' + bid + ' €/MWh. O mercado está a revelar as propostas. Se ganhares, recebes este preço.';
     const box = document.getElementById('auctionAberturaRivals');
     box.innerHTML = AUCTION_RIVALS.map((r) =>
       '<span class="auction-pulse-chip" data-rival="' + r.id + '">' + r.name + '</span>'
@@ -12261,8 +12262,8 @@
       const left = biddableAuctionLots();
       if (left.length === 0 && !auctionHasAnyWin()) {
         enterAuctionFora(availableAuctionLots().length
-          ? 'Os rivais ganharam os lotes em que podias licitar. Os outros não cabem no teu orçamento.'
-          : 'Os rivais ganharam os lotes desta ronda.');
+          ? 'O mercado ganhou os lotes em que podias licitar. Os outros não cabem no teu orçamento.'
+          : 'O mercado ganhou os lotes desta ronda.');
         return;
       }
       auctionState.lastResult = { lot: lot, bid: bid, eco: eco, lost: true, outcome: 'lose' };
@@ -12462,7 +12463,7 @@
     if (fora) fora.hidden = auctionState.wave + 1 >= AUCTION_WAVES.length;
     syncAuctionExitGates();
     const kickerSub = document.getElementById('auctionLeftSub');
-    if (kickerSub) kickerSub.textContent = 'Leilão ao vivo. Se o tempo acabar, os rivais ficam com os lotes que faltam.';
+    if (kickerSub) kickerSub.textContent = 'Leilão ao vivo. Se o tempo acabar, o mercado fica com os lotes que faltam.';
     if (opts.keepCoach || (typeof coachActive !== 'undefined' && coachActive)) {
       auctionState.clockPaused = true;
       renderAuctionClock();
@@ -12914,6 +12915,7 @@
     rede: 'Rede',
     comunidade: 'Comunidade',
     media: 'Imprensa',
+    mercado: 'Mercado',
     apa: 'APA',
     dgeg: 'DGEG',
     concorrente: 'Concorrente',
@@ -12942,6 +12944,7 @@
     REDE: 'rede',
     COMUNIDADE: 'comunidade',
     MEDIA: 'media',
+    MERCADO: 'mercado',
     APA: 'apa',
     BANCO: 'banco',
     DGEG: 'dgeg',
@@ -15995,7 +15998,7 @@
     bank_seed_seen: 'O banco vai acompanhar o projeto',
     dgeg_obligations_seen: 'Viste as obrigações do TRC',
     rede_calendar_seen: 'Viste o calendário da ligação à rede',
-    competitor_seen: 'Tomaste nota do rival',
+    competitor_seen: 'Tomaste nota da concorrência no mercado',
     dica_ack: 'Anotado',
     capex_rede_flag: 'Aceitaste um custo de obras na rede',
     grid_agreement_signed: 'Acordo com a REN assinado',
@@ -16574,6 +16577,7 @@
         console.info('[WattMail] buyer_caution_+50pct ignored after the LE');
         return;
       }
+      if ((key === 'bess_venda_ja' || key === 'bess_venda_noite') && !opts.skipEconomics) { try { gasBessSale(key); } catch (_) {} }
       mailLoop.tags[key] = (mailLoop.tags[key] || 0) + 1;
       mailLoop.tagMonth = mailLoop.tagMonth || {};
       mailLoop.tagMonth[key] = mailLoop.month | 0;
@@ -17337,6 +17341,109 @@
     return result;
   }
 
+  /* ── Cartas do gás v0.1 (2026-10-23): contexto de mercado, só no Correio. Valores: effects-economy.json gas_v01_2026_10_23. ──
+   * Carta 1 (mail-mercado-gas-01): sorteio mensal; liga gas_caro_ativo durante meses_gas_caro; preço da noite +delta_preco_noite;
+   *   pelo menos intervalo_meses_gas meses entre ocorrências. Carta 2 (mail-rival-gas-01): no fim de cada ano, sorteio «ano mau».
+   * Carta 3 (mail-bateria-gas-01): com gas_caro_ativo e bess_operating, uma vez por episódio de gás caro. */
+  const GAS_CARDS = { gas: 'mail-mercado-gas-01', ano: 'mail-rival-gas-01', bess: 'mail-bateria-gas-01' };
+  function gasEcon() {
+    const p = window.__wattEventPack;
+    return (p && p.effects_economy && p.effects_economy.gas_v01_2026_10_23) || null;
+  }
+  function gasState() {
+    mailLoop.gas = mailLoop.gas || { lastGasMonth: null, gasUntil: null, lastYearChecked: 0, bessEpisode: null, rivalCaixaMEUR: {}, nightDelta: 0 };
+    return mailLoop.gas;
+  }
+  /** €/MWh a somar ao preço da noite (horas sem sol) no mês dado. O preço de dia e a captura solar não mudam. */
+  function gasNightPriceDelta(month) {
+    const g = gasState();
+    const m = (month == null ? mailLoop.month : month) | 0;
+    return (g.gasUntil != null && m < g.gasUntil) ? (Number(g.nightDelta) || 0) : 0;
+  }
+  function gasTick(month) {
+    const g = gasState();
+    const t = mailLoop.tags = mailLoop.tags || {};
+    if (g.gasUntil != null && month >= g.gasUntil) {
+      t.gas_caro_ativo = 0; t.preco_noite_up = 0; g.nightDelta = 0; g.gasUntil = null;
+    }
+    const bessOn = assetMwAtCod() && (typeof batteryHasStarted === 'function') && batteryHasStarted();
+    t.bess_operating = bessOn ? 1 : 0;
+  }
+  function gasCanFire(month) {
+    const e = gasEcon(); const g = gasState();
+    if (!e) return false;
+    if (g.gasUntil != null && month < g.gasUntil) return false;
+    return g.lastGasMonth == null || (month - g.lastGasMonth) >= (Number(e.intervalo_meses_gas) || 12);
+  }
+  function gasCompose(skId, month, ctx) {
+    const pack = window.__wattEventPack;
+    const sk = pack && pack.skeletons.find((s) => s.id === skId);
+    const skin = sk && getSkinById(skId, 'default', pack);
+    if (!sk || !skin) { console.warn('[WattGas] missing card', skId); return null; }
+    const L = composeLetter({ skeleton: sk, skin: skin, seSheet: getSeSheet(mailLoop.seId || 'ourique', pack), opts: { id: skId + ':m' + month, when: 'Mês ' + month, ctx: ctx || null } });
+    L.ruleId = 'gas';
+    return L;
+  }
+  function gasFireGas(month) {
+    const e = gasEcon(); const g = gasState();
+    g.lastGasMonth = month;
+    g.gasUntil = month + (Number(e.meses_gas_caro) || 0);
+    g.nightDelta = Number(e.delta_preco_noite_eur_mwh) || 0;
+    g.bessEpisode = null;
+    return gasCompose(GAS_CARDS.gas, month);
+  }
+  function gasFireAno(month) {
+    const e = gasEcon(); const g = gasState();
+    const m = e.margem_gas_rival_MEUR || {};
+    const ids = Object.keys(m);
+    if (!ids.length) return null;
+    const id = ids[Math.floor(Math.random() * ids.length)];
+    g.rivalCaixaMEUR[id] = +(((g.rivalCaixaMEUR[id] || 0) + Number(m[id] || 0))).toFixed(3);
+    g.lastAnoMau = month;
+    return gasCompose(GAS_CARDS.ano, month);
+  }
+  function gasFireBess(month) {
+    const g = gasState();
+    g.bessEpisode = g.lastGasMonth;
+    return gasCompose(GAS_CARDS.bess, month);
+  }
+  /** Cartas do gás para o mês (força com window.__wattQA.forceGas('gas'|'ano'|'bess')). */
+  function gasMarketLettersFor(month) {
+    const e = gasEcon();
+    if (!e || !mailLoop || !mailLoop.active || month <= 0) return [];
+    gasTick(month);
+    const g = gasState();
+    const force = g._force || {};
+    g._force = {};
+    const out = [];
+    if ((force.gas || Math.random() < (Number(e.prob_evento_gas_mes) || 0)) && gasCanFire(month)) {
+      const L = gasFireGas(month); if (L) out.push(L);
+    }
+    const year = Math.floor(month / 12);
+    if (force.ano || (year > (g.lastYearChecked | 0))) {
+      g.lastYearChecked = Math.max(g.lastYearChecked | 0, year);
+      if (force.ano || Math.random() < (Number(e.prob_ano_mau_renovaveis) || 0)) { const L = gasFireAno(month); if (L) out.push(L); }
+    }
+    const t = mailLoop.tags || {};
+    if (((t.gas_caro_ativo | 0) > 0 || out.some((L) => L.skeletonId === GAS_CARDS.gas)) && (force.bess || (t.bess_operating | 0) > 0) && g.bessEpisode !== g.lastGasMonth) {
+      const L = gasFireBess(month); if (L) out.push(L);
+    }
+    return out;
+  }
+  /** bess_venda_ja / bess_venda_noite: receita × MWh da bateria, em M€, para a caixa. */
+  function gasBessSale(key) {
+    const e = gasEcon();
+    if (!e) return 0;
+    const mwh = Number(e.bess_mwh) || 0;
+    let eur = 0;
+    if (key === 'bess_venda_ja') eur = Number(e.receita_bess_ja_eur_mwh) || 0;
+    else eur = (Math.random() < (Number(e.prob_noite_falha) || 0)) ? (Number(e.receita_bess_noite_baixa_eur_mwh) || 0) : (Number(e.receita_bess_noite_eur_mwh) || 0);
+    const meur = +(mwh * eur / 1e6).toFixed(3);
+    gasState().lastBessSaleMEUR = meur;
+    if (meur > 0) { try { applyEconRow({ cash: meur }, mailLoop.seId || 'ourique', { cause: key }); } catch (err) { console.warn('[WattGas] bess sale', err); } }
+    return meur;
+  }
+
   async function deliverMonthCandidates(month, opts) {
     opts = opts || {};
     const plan = await planMonthDelivery(month);
@@ -17344,7 +17451,9 @@
     const averbLetters = await averbamentoLetterFor(month);
     const already = (plan.letters || []).filter((L) => !(typeof isInboxNote === 'function' && isInboxNote(L))).length + icnfLetters.length + averbLetters.length;
     const ruleLetters = await draftRuleLettersFor(month, { already: already });
-    const planned = (plan.letters || []).concat(icnfLetters, averbLetters, ruleLetters);
+    let gasLetters = [];
+    try { gasLetters = gasMarketLettersFor(month); } catch (err) { console.warn('[WattGas]', err); }
+    const planned = (plan.letters || []).concat(icnfLetters, averbLetters, ruleLetters, gasLetters);
     const notes = [];
     const newLetters = [];
     planned.forEach((L) => {
@@ -19562,7 +19671,7 @@
     hidrica: '<path d="M8 2C5 7 4 9 4 11a4 4 0 008 0c0-2-1-4-4-9z"/>',
     bess: '<rect x="3" y="4" width="10" height="9" rx="1"/>',
     biomassa: '<path d="M3 13c0-6 4-10 10-10 0 6-4 10-10 10zM3 13l6-6"/>',
-    gas: '<path d="M8 2c2 3 4 5 4 8a4 4 0 01-8 0c0-2 1-3 2-4 0 2 1 3 2 3 0-2-1-4 0-7z"/>'
+    gas: '<path d="M8 1.5c.6 2.4 3.2 3.9 3.2 6.6 0 1.4-.6 2.5-1.5 3.1.2-1.5-.6-2.7-1.9-3.4.1 1.7-1.6 2.4-1.6 3.9-1.2-.6-2-1.8-2-3.2 0-2.8 3.3-4.3 3.8-7z"/><path d="M3.5 14.5h9" fill="none"/>'
   };
   const ARRANQUE_AREAS = ['Licenciamento', 'Negociação', 'Técnica', 'Financiamento', 'Institucional'];
   let arranqueEmp = null;
@@ -19612,7 +19721,6 @@
   function arranqueIcons(c) {
     const m = {};
     (c.parques || []).forEach((p) => {
-      if (p.tec === 'gas') return;
       const v = (typeof p.mw === 'object') ? p.mw.v : p.mw;
       m[p.tec] = m[p.tec] || { op: 0, pi: 0 };
       m[p.tec][p.estado === 'op' ? 'op' : 'pi'] += Number(v) || 0;
@@ -19629,9 +19737,8 @@
     } else {
       rows += arranqueEmp.empresas.map((c) => {
         const flag = c.sede && c.sede.pais ? (ARRANQUE_FLAG[c.sede.pais] || '') : '<span class="ar-sd">—</span>';
-        const gas = c.gas && c.gas.v ? '<span class="ar-gs">+ gás ' + arranqueFmtNum(c.gas.v) + '</span>' : '';
         return '<button type="button" class="ar-er" data-rival="' + escapeHtml(c.id) + '" data-ar="ficha" data-id="' + escapeHtml(c.id) + '"><span class="ar-ef">' + flag + '</span><span class="ar-en">' + escapeHtml(c.nome) + '</span>' + arranqueIcons(c) +
-          '<span class="ar-em">' + arranqueVal(arranqueMwOp(c), 'MW') + gas + '</span></button>';
+          '<span class="ar-em">' + arranqueVal(arranqueMwOp(c), 'MW') + '</span></button>';
       }).join('');
     }
     return '<h1>Empresas</h1>' +
@@ -19715,13 +19822,12 @@
     const f = c.financas || {};
     const sede = c.sede && c.sede.cidade ? (c.sede.q === 'est' ? arranqueTip('≈', 'estimativa') + ' ' : '') + escapeHtml(c.sede.cidade) + (ARRANQUE_FLAG[c.sede.pais] ? ' ' + ARRANQUE_FLAG[c.sede.pais] : '') : '<span class="ar-sd">—</span>';
     const mwRows = Object.keys(c.mw || {}).map((t) => '<tr><td>' + ARRANQUE_TEC[t] + '</td><td class="n">' + arranqueVal(c.mw[t], 'MW') + '</td></tr>').join('');
-    const gas = c.gas && c.gas.v ? '<tr><td>Gás (à parte)' + (c.gas.nota ? '<span class="ar-sub">' + escapeHtml(c.gas.nota) + '</span>' : '') + '</td><td class="n">' + arranqueVal(c.gas, 'MW') + '</td></tr>' : '<tr><td>Gás (à parte)</td><td class="n"><span class="ar-sd">—</span></td></tr>';
     return '<div class="ar-hd"><div><b class="ar-co-name">' + escapeHtml(c.nome) + '</b> · ' + arranqueTipoPt(c) + ' · ' + arranqueVal(arranqueMwOp(c), 'MW') + '</div>' +
       arranqueCuriosidade(c.curiosidades, c.id === 'galp') +
       '<div>Sede: ' + sede + '</div>' +
       '<div>Country manager: ' + escapeHtml(c.cm || '—') + ' ' + ARRANQUE_EX() + '</div></div>' +
       (c.plantel ? arranquePlantel(c.plantel) : '') +
-      arranqueSec('MW em operação') + '<table class="ar-tb"><tbody>' + mwRows + gas + '</tbody></table>' +
+      arranqueSec('MW em operação') + '<table class="ar-tb"><tbody>' + mwRows + '</tbody></table>' +
       arranqueAtivos(c, null) +
       arranqueSec('Finanças ' + ARRANQUE_EX()) + '<table class="ar-tb"><tbody>' +
       '<tr><td>Receitas por ano</td><td class="n">' + arranqueM(f.receitas) + '</td></tr>' +
@@ -21013,6 +21119,7 @@
       window.__wattQA = {
         get state() { return state; }, get player() { return playerProfile; }, get auction() { return auctionState; }, get lots() { return AUCTION_LOTS; },
         get mail() { return mailLoop; }, get mailState() { return mailState; }, get nodes() { return nodes; },
+        forceGas: (k) => { const g = gasState(); g._force = g._force || {}; g._force[k] = true; return g; }, gas: () => ({ state: gasState(), nightDelta: gasNightPriceDelta(), econ: gasEcon() }), gasLetters: (m) => gasMarketLettersFor(m),
         biddable: () => biddableAuctionLots().map((l) => l.id), econ: () => econBudget(),
         landChosen: () => landChosen(), envPath: () => currentEnvPath(), onAiaRoute: () => onAiaRoute(),
         envRoute: (patch) => { const sh = JSON.parse(JSON.stringify(getSeSheet(mailLoop.seId || 'ourique') || {})); Object.assign(sh.env_draft = sh.env_draft || {}, patch || {}); return computeEnvRoute(sh, null); },
