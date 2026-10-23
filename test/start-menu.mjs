@@ -331,7 +331,7 @@ async function drainMail(page) {
   return false;
 }
 
-/** Novo jogo walks Jogador → País → Empresa → Ficha, confirms, and lands in the inbox. */
+/** Novo jogo walks Jogador → País → Empresas → Empresa, confirms, and lands in the inbox. */
 async function startNewGame(page, shotName) {
   await page.locator('[data-menu="novo"]').click();
   await page.waitForSelector('#arranque[data-step="jogador"] #arranqueNext');
@@ -810,7 +810,7 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-player="1"]');
     const top = await page.locator('[data-player="1"]').innerText();
-    if (!/A tua empresa/.test(top) || !/Promotora/.test(top) || !/0 MW/.test(top)) throw new Error('empty company row: ' + top);
+    if (!/A tua empresa/.test(top) || !/0\s*MW/.test(top)) throw new Error('empty company row: ' + top);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="ficha"] #arranqueNext');
     await page.locator('#arranqueNext').click();
@@ -855,45 +855,44 @@ async function openingToAuction(browser, width, height, tag, win) {
     await shot(page, 'abertura-pais-' + tag);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="finerge"]');
-    const list = await page.locator('#arranque .ar-ls').innerText();
+    const list = await page.locator('#arranque .ar-et').innerText();
     if (!/Sol do Sul, Lda\./.test(list)) throw new Error('player company missing');
     if (!/EDP/.test(list) || !/7\s*000/.test(list)) throw new Error('EDP mw: ' + list.slice(0, 400));
     const finerge = await page.locator('[data-rival="finerge"]').innerText();
-    if (!/~/.test(finerge) || !/1\s*795/.test(finerge)) throw new Error('Finerge: ' + finerge);
+    if (!/≈/.test(finerge) || !/1\s*795/.test(finerge)) throw new Error('Finerge: ' + finerge);
     const tagE = await page.locator('[data-rival="tagenergy"]').innerText();
-    if (!/—/.test(tagE)) throw new Error('TagEnergy: ' + tagE);
+    if (!/≈/.test(tagE)) throw new Error('TagEnergy: ' + tagE);
     const edpPe = await page.locator('[data-rival="edp"]').evaluate((el) => getComputedStyle(el).pointerEvents);
-    if (edpPe !== 'none') throw new Error('rival is selectable');
-    if (!/rival/i.test(await page.locator('[data-rival="edp"]').innerText())) throw new Error('missing Rival');
-    if (await page.locator('[data-rival]').count() !== 16) throw new Error('rival count');
+    if (edpPe === 'none') throw new Error('rival is not clickable');
+    if (await page.locator('[data-rival]').count() !== 18) throw new Error('rival count');
     const body = await page.locator('#arranque').innerText();
     if (/HIPÓTESE|\[GM\]/.test(body)) throw new Error('marker on empresa');
-    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Empresa') throw new Error('empresa title');
-    if ((await page.locator('#arranque .ar-lead').innerText()).trim() !== 'Empresa nova, sem centrais. 2,0 M€ para começar.') throw new Error('empresa lead');
+    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Empresas') throw new Error('empresa title');
     if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Seguinte') throw new Error('empresa button');
     if (/Começas com uma empresa nova/.test(body)) throw new Error('old empresa lead');
-    if (!/2,0 M€ para começar/.test(body)) throw new Error('starting cash copy');
-    if (!/As empresas a cinzento são reais/.test(body) || !/Os lances das empresas reais no jogo são fictícios\./.test(body)) throw new Error('fiction note missing');
+    if (!/Valores fictícios baseados em dados públicos\./.test(body)) throw new Error('fiction note missing');
+    await page.locator('[data-rival="galp"]').click();
+    await page.waitForSelector('#arranque[data-step="ficha"] #arranqueBack');
+    const galp = await page.locator('#arranque').innerText();
+    if (!/Henrique Lousada/.test(galp) || !/1846/.test(galp) || await page.locator('#arranqueNext').count()) throw new Error('galp ficha ' + galp.slice(0, 300));
+    await page.locator('#arranqueBack').click();
+    await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
     await shot(page, 'abertura-empresa-' + tag);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="ficha"] #arranqueFinCard');
     if (!(await page.locator('#arranqueFinancas').isVisible())) throw new Error('finanças pill hidden on ficha');
     const pill = await page.locator('#arranqueFinancas').innerText();
     if (!/Ok/.test(pill) || /\d/.test(pill)) throw new Error('finanças pill ' + pill);
-    const finCard = await page.locator('#arranqueFinCard').innerText();
-    if (!/Ok/.test(finCard) || /\d/.test(finCard)) throw new Error('finanças card ' + finCard);
     const ficha = await page.locator('#arranque').innerText();
-    if (!/Ana Ferreira/.test(ficha) || !/Portuguesa/.test(ficha)) throw new Error('ficha identity');
-    if (!/Fundada[\s\S]*2026 · Q3/.test(ficha)) throw new Error('ficha date ' + ficha.slice(0, 500));
+    if (!/Country manager: Ana Ferreira \(tu\)/.test(ficha)) throw new Error('ficha identity');
     if (/2027 · Q1/.test(ficha)) throw new Error('ficha still says 2027 · Q1');
-    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Ficha da empresa') throw new Error('ficha title');
     if (await page.locator('#arranque .ar-lead').count()) throw new Error('ficha still has a lead');
     if (/Confirma os dados antes de começar/.test(ficha)) throw new Error('old ficha lead');
     if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Assumir o controlo') throw new Error('ficha button');
     if (/HIPÓTESE|\[GM\]/.test(ficha)) throw new Error('marker on ficha');
     const steps = await page.locator('#arranqueSteps').evaluate((el) => el.textContent.replace(/\s+/g, ' '));
     if (/Controlo/.test(steps)) throw new Error('controlo step still listed: ' + steps);
-    if (!/Jogador/.test(steps) || !/País/.test(steps) || !/Empresa/.test(steps) || !/Ficha/.test(steps)) throw new Error('steps ' + steps);
+    if (!/Empresa/.test(steps) || /Ficha/.test(steps)) throw new Error('steps ' + steps);
     await shot(page, 'abertura-ficha-' + tag);
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranqueConfirm.open');

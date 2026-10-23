@@ -5732,6 +5732,40 @@
   #arranque .ar-co-name { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
   #arranque .ar-co-sub { font-size: 13px; color: #64748b; }
   #arranque .ar-wait { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+  #arranque .ar-et { background: #fff; border-top: 1px solid var(--border-subtle); }
+  #arranque .ar-eh, #arranque .ar-er { display: grid; grid-template-columns: 24px minmax(0, 1fr) 58px 104px; gap: 6px; align-items: center; padding: 6px 4px; border-bottom: 1px solid #eef2f6; }
+  #arranque .ar-eh { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; }
+  #arranque .ar-eh span:last-child, #arranque .ar-em { text-align: right; }
+  #arranque .ar-er { width: 100%; background: none; border: none; border-bottom: 1px solid #eef2f6; font: inherit; font-size: 14px; color: inherit; text-align: left; cursor: pointer; }
+  #arranque .ar-er:hover { background: #f1f6ff; }
+  #arranque .ar-er.on { background: #f5f9ff; box-shadow: inset 3px 0 0 #007AFF; font-weight: 700; }
+  #arranque .ar-en { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+  #arranque .ar-em { font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 13px; }
+  #arranque .ar-gs { display: block; font-size: 11px; color: #64748b; }
+  #arranque .ar-ic { display: inline-flex; gap: 3px; }
+  #arranque .ar-ic svg, #arranque .ar-pi svg { width: 14px; height: 14px; display: block; }
+  #arranque .ar-pi { display: inline-block; vertical-align: -2px; margin-right: 5px; }
+  #arranque .ar-sd { color: #94a3b8; }
+  #arranque .ar-q { position: relative; color: #94a3b8; font-size: 10px; font-weight: 500; cursor: help; letter-spacing: 0.02em; }
+  #arranque .ar-q:focus { outline: none; }
+  #arranque .ar-q.tip-on::after, #arranque .ar-q:focus::after { content: attr(data-tip); position: absolute; left: 0; bottom: 130%; background: #0f172a; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+  #arranque .ar-hd { font-size: 14px; display: grid; gap: 3px; }
+  #arranque .ar-hd .ar-co-name { font-size: 20px; }
+  #arranque .ar-mu { color: #64748b; font-size: 13px; }
+  #arranque .ar-cur { font-size: 13px; color: #334155; }
+  #arranque .ar-src { font-size: 11px; color: #64748b; }
+  #arranque .ar-sec { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin: 22px 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--border-subtle); }
+  #arranque .ar-tb { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  #arranque .ar-tb th { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; text-align: left; padding: 5px; border-bottom: 1px solid var(--border-subtle); }
+  #arranque .ar-tb td { padding: 6px 5px; border-bottom: 1px solid #eef2f6; vertical-align: top; }
+  #arranque .ar-tb .n { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  #arranque .ar-tb tr.ar-vg td { color: #94a3b8; }
+  #arranque .ar-tb tr.ar-lg td { background: #f1f5f9; border-top: 1px solid #cbd5e1; }
+  #arranque .ar-tb tr.ar-pq td:first-child { padding-left: 14px; }
+  #arranque .ar-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; background: #334155; border-radius: 3px; padding: 1px 5px; margin-right: 6px; }
+  #arranque .ar-lg2 { font-size: 12px; color: #334155; margin-top: 3px; }
+  #arranque .ar-lgp { font-size: 12px; color: #64748b; margin-left: 6px; font-weight: 400; }
+  #arranque .ar-sub { display: block; font-size: 11px; color: #64748b; }
   @media (max-width: 899px) {
     #arranque .ar-step:not(.now) .ar-l { display: none; }
     #arranque .ar-steps { justify-content: space-between; }
@@ -19304,7 +19338,9 @@
   ];
   const ARRANQUE_TIPO_PT = { utility: 'Elétrica', ipp: 'Produtora', promotor: 'Promotora', fundo: 'Fundo' };
   const ARRANQUE_LOCK = '<svg class="ar-lk" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
-  const ARRANQUE_STEPS = [['jogador', 'Jogador'], ['pais', 'País'], ['empresa', 'Empresa'], ['ficha', 'Ficha']];
+  const ARRANQUE_STEPS = [['jogador', 'Jogador'], ['pais', 'País'], ['empresa', 'Empresas'], ['ficha', 'Empresa']];
+  // ?arranque_trc=ourique: pré-visualização da ficha do jogador com o TRC de Ourique (só ecrã, não mexe no jogo).
+  const arranqueFichaTrc = (() => { try { return new URLSearchParams(location.search).get('arranque_trc') === 'ourique'; } catch (_) { return false; } })();
   let arranqueStep = 'jogador';
   let arranqueDraft = { nomeProprio: '', apelido: '', nomeEmpresa: '', nacionalidade: 'Portuguesa' };
   let arranqueNameError = false;
@@ -19473,17 +19509,14 @@
     };
     main.innerHTML = (screens[arranqueStep] || screens.jogador)();
     const fin = document.getElementById('arranqueFinancas');
-    const showFin = arranqueStep === 'ficha';
+    const showFin = arranqueStep === 'ficha' && arranqueFichaId === 'jogador';
     if (fin) {
       fin.hidden = !showFin;
       fin.classList.toggle('is-on', showFin);
     }
-    if (arranqueStep === 'empresa' || arranqueStep === 'jogador') {
-      loadArranqueCompanies().then(() => {
-        if (arranqueStep !== 'empresa') return;
-        const host = document.getElementById('arranqueMain');
-        if (host && !host.querySelector('[data-rival]')) host.innerHTML = arranqueScreenEmpresa();
-      });
+    if (!arranqueEmp && (arranqueStep === 'empresa' || arranqueStep === 'ficha')) {
+      const want = arranqueStep;
+      loadArranqueEmpresas().then(() => { if (arranqueStep === want) renderArranque(want); });
     }
     try { syncPeriodChrome(); } catch (_) {}
   }
@@ -19519,58 +19552,188 @@
       '<p class="ar-ln">A REN gere 71 subestações e quase 10\u00a0000 km de linhas de alta tensão em Portugal continental.</p>' +
       arranqueCta('Seguinte');
   }
+  /* ── Ecrãs Empresas (lista) e Empresa (ficha) · dados em content/data/empresas-arranque.json ── */
+  const ARRANQUE_EMP_URL = 'content/data/empresas-arranque.json';
+  const ARRANQUE_FLAG = { PT: '🇵🇹', ES: '🇪🇸', FR: '🇫🇷', GB: '🇬🇧', KR: '🇰🇷' };
+  const ARRANQUE_TEC = { solar: 'Solar', eolica: 'Eólica', hidrica: 'Hídrica', bess: 'Baterias', biomassa: 'Biomassa', gas: 'Gás' };
+  const ARRANQUE_TEC_SVG = {
+    solar: '<circle cx="8" cy="8" r="4"/>',
+    eolica: '<path d="M8 2v12M8 8l5 3M8 8l-5 3"/>',
+    hidrica: '<path d="M8 2C5 7 4 9 4 11a4 4 0 008 0c0-2-1-4-4-9z"/>',
+    bess: '<rect x="3" y="4" width="10" height="9" rx="1"/>',
+    biomassa: '<path d="M3 13c0-6 4-10 10-10 0 6-4 10-10 10zM3 13l6-6"/>',
+    gas: '<path d="M8 2c2 3 4 5 4 8a4 4 0 01-8 0c0-2 1-3 2-4 0 2 1 3 2 3 0-2-1-4 0-7z"/>'
+  };
+  const ARRANQUE_AREAS = ['Licenciamento', 'Negociação', 'Técnica', 'Financiamento', 'Institucional'];
+  let arranqueEmp = null;
+  let arranqueEmpLoad = null;
+  let arranqueFichaId = 'jogador';
+  let arranqueGalpTurn = 0;
+  function loadArranqueEmpresas() {
+    if (arranqueEmp) return Promise.resolve(arranqueEmp);
+    if (arranqueEmpLoad) return arranqueEmpLoad;
+    arranqueEmpLoad = fetch(ARRANQUE_EMP_URL, { cache: 'no-store' }).then((r) => {
+      if (!r.ok) throw new Error(String(r.status));
+      return r.json();
+    }).then((d) => {
+      if (!d || !Array.isArray(d.empresas)) throw new Error('empresas vazias');
+      arranqueEmp = d;
+      return d;
+    }).catch((err) => {
+      arranqueEmpLoad = null;
+      try { console.warn('[watt.arranque] empresas', err); } catch (_) {}
+      return null;
+    });
+    return arranqueEmpLoad;
+  }
+  function arranqueTip(sym, tip) {
+    return '<span class="ar-q" tabindex="0" role="note" data-tip="' + tip + '" title="' + tip + '">' + sym + '</span>';
+  }
+  const ARRANQUE_EX = () => arranqueTip('EXEMPLO', 'exemplo');
+  /** Valor com qualidade: fonte → número; est → «≈ número»; sem_dados/null → «—» cinzento. */
+  function arranqueVal(o, unit) {
+    if (o === null || o === undefined) return '<span class="ar-sd">—</span>';
+    const q = (typeof o === 'object') ? o.q : 'fonte';
+    const v = (typeof o === 'object') ? o.v : o;
+    if (q === 'sem_dados' || v === null || v === undefined) return '<span class="ar-sd">—</span>';
+    const s = arranqueFmtNum(v) + (unit ? '\u00a0' + unit : '');
+    return q === 'est' ? arranqueTip('≈', 'estimativa') + '\u00a0' + s : s;
+  }
+  function arranqueMwOp(c) {
+    const mw = c.mw || {};
+    let sum = 0; let any = false; let est = false;
+    Object.keys(mw).forEach((k) => {
+      const o = mw[k];
+      if (!o || o.v === null || o.v === undefined || o.q === 'sem_dados') return;
+      any = true; sum += Number(o.v); if (o.q === 'est') est = true;
+    });
+    return any ? { v: sum, q: est ? 'est' : 'fonte' } : null;
+  }
+  function arranqueIcons(c) {
+    const m = {};
+    (c.parques || []).forEach((p) => {
+      if (p.tec === 'gas') return;
+      const v = (typeof p.mw === 'object') ? p.mw.v : p.mw;
+      m[p.tec] = m[p.tec] || { op: 0, pi: 0 };
+      m[p.tec][p.estado === 'op' ? 'op' : 'pi'] += Number(v) || 0;
+    });
+    return '<span class="ar-ic">' + Object.keys(m).sort((a, b) => (m[b].op + m[b].pi) - (m[a].op + m[a].pi)).slice(0, 3).map((t) =>
+      '<svg viewBox="0 0 16 16" aria-label="' + ARRANQUE_TEC[t] + '" fill="' + (m[t].op > 0 ? '#0f172a' : 'none') + '" stroke="#0f172a" stroke-width="1.4">' + ARRANQUE_TEC_SVG[t] + '</svg>').join('') + '</span>';
+  }
+  function arranqueTipoPt(c) { return ARRANQUE_TIPO_PT[c.tipo] || '—'; }
   function arranqueScreenEmpresa() {
     const nome = arranqueEmpresaNome();
-    const player = arranqueLi(escapeHtml(nome), ['Promotora · 0 MW'], { on: true, data: ' data-player="1"' });
-    let rivals = '';
-    if (!arranqueCompanies) {
-      rivals = '<p class="ar-wait">' + (arranqueCompaniesError ? 'Não foi possível carregar a lista de empresas.' : 'A carregar empresas…') + '</p>';
+    let rows = '<button type="button" class="ar-er on" data-player="1" data-ar="ficha" data-id="jogador"><span class="ar-ef">🇵🇹</span><span class="ar-en">' + escapeHtml(nome) + ' · tu</span><span class="ar-ic"></span><span class="ar-em">0\u00a0MW</span></button>';
+    if (!arranqueEmp) {
+      rows += '<p class="ar-wait">' + (arranqueEmpLoad ? 'A carregar empresas…' : 'Não foi possível carregar a lista de empresas.') + '</p>';
     } else {
-      rivals = arranqueCompanies.map((c) => {
-        const tipo = ARRANQUE_TIPO_PT[c.tipo] || '—';
-        const id = escapeHtml(c.id || '');
-        return arranqueLi(escapeHtml(c.nome_curto || c.nome || '—'), [tipo + ' · ' + arranqueMwLabel(c), '<i class="ar-rv">Rival</i>'], {
-          locked: true,
-          data: ' data-rival="' + id + '"'
-        });
+      rows += arranqueEmp.empresas.map((c) => {
+        const flag = c.sede && c.sede.pais ? (ARRANQUE_FLAG[c.sede.pais] || '') : '<span class="ar-sd">—</span>';
+        const gas = c.gas && c.gas.v ? '<span class="ar-gs">+ gás ' + arranqueFmtNum(c.gas.v) + '</span>' : '';
+        return '<button type="button" class="ar-er" data-rival="' + escapeHtml(c.id) + '" data-ar="ficha" data-id="' + escapeHtml(c.id) + '"><span class="ar-ef">' + flag + '</span><span class="ar-en">' + escapeHtml(c.nome) + '</span>' + arranqueIcons(c) +
+          '<span class="ar-em">' + arranqueVal(arranqueMwOp(c), 'MW') + gas + '</span></button>';
       }).join('');
     }
-    return '<h1>Empresa</h1><p class="ar-lead">Empresa nova, sem centrais. 2,0 M€ para começar.</p>' +
-      '<div class="ar-ls" role="radiogroup">' + player + rivals + '</div>' +
-      '<p class="ar-ln ar-strong"><b>' + escapeHtml(nome) + '</b> · 2,0 M€ para começar · 4 pessoas · cerca de 0,4 M€ por ano de custos fixos</p>' +
-      '<p class="ar-ln"><span class="ar-fn">*</span> soma parcial · ~ aproximado, por confirmar · — sem valor</p>' +
-      '<p class="ar-ln">As empresas a cinzento são reais e vais encontrá-las nos leilões. Não as podes dirigir.</p>' +
-      '<p class="ar-ln">Os lances das empresas reais no jogo são fictícios.</p>' +
+    return '<h1>Empresas</h1>' +
+      '<div class="ar-et"><div class="ar-eh"><span></span><span>Nome</span><span>Tec</span><span>MW</span></div>' + rows + '</div>' +
+      '<p class="ar-ln">Valores fictícios baseados em dados públicos.</p>' +
       arranqueCta('Seguinte');
   }
+  function arranqueSec(t) { return '<h2 class="ar-sec">' + t + '</h2>'; }
+  function arranqueM(v) { return (v === null || v === undefined) ? '<span class="ar-sd">—</span>' : arranqueFmtMoney(v); }
+  function arranqueFmtMoney(v) { return Number(v).toFixed(Math.abs(v * 10 - Math.round(v * 10)) > 1e-9 ? 2 : 1).replace('.', ',') + '\u00a0M€'; }
+  function arranqueCuriosidade(list, rotate) {
+    if (!list || !list.length) return '';
+    const c = list[rotate ? ((arranqueGalpTurn + list.length - 1) % list.length) : 0];
+    return '<p class="ar-cur"><i>' + escapeHtml(c.t) + '</i> <a href="' + escapeHtml(c.url) + '" target="_blank" rel="noopener" class="ar-src">fonte</a></p>';
+  }
+  function arranquePlantel(pl) {
+    if (!pl || !pl.length) return arranqueSec('Plantel') + '<p class="ar-ln"><span class="ar-sd">—</span></p>';
+    const by = {};
+    pl.forEach((p) => { if (p) by[p[1]] = p; });
+    return arranqueSec('Plantel ' + ARRANQUE_EX()) + '<table class="ar-tb"><thead><tr><th>Nome</th><th>Área</th><th class="n">Nota</th><th class="n">Pessoas</th></tr></thead><tbody>' +
+      ARRANQUE_AREAS.map((a) => {
+        const p = by[a];
+        return p && p[0] ? '<tr><td>' + escapeHtml(p[0]) + '</td><td>' + a + '</td><td class="n">' + p[2] + '</td><td class="n">' + p[3] + '</td></tr>'
+          : '<tr class="ar-vg"><td>—</td><td>' + a + '</td><td class="n">—</td><td class="n">—</td></tr>';
+      }).join('') + '</tbody></table>';
+  }
+  function arranqueParqueRow(p) {
+    const v = (typeof p.mw === 'object') ? p.mw : { v: p.mw, q: 'fonte' };
+    const op = p.estado === 'op';
+    return '<tr class="ar-pq"><td><span class="ar-pi"><svg viewBox="0 0 16 16" fill="' + (op ? '#0f172a' : 'none') + '" stroke="#0f172a" stroke-width="1.4">' + (ARRANQUE_TEC_SVG[p.tec] || '') + '</svg></span>' + escapeHtml(p.nome) + '</td><td>' + (ARRANQUE_TEC[p.tec] || '—') + '</td><td class="n">' + arranqueVal(v, p.un === 'MVA' ? 'MVA' : '') + '</td><td>' + (op ? 'Operação' : 'Pipeline') + '</td></tr>';
+  }
+  function arranqueAtivos(c, trc) {
+    const ps = (c && c.parques) || [];
+    if (!ps.length && !trc) return arranqueSec('Ativos') + '<p class="ar-ln">Ainda não tens ativos. O primeiro ganha-se no leilão da REN.</p>';
+    let body = '';
+    if (trc) {
+      body += '<tr class="ar-lg"><td colspan="4"><div><span class="ar-tag">Ligação</span><b>SE ' + escapeHtml(trc.se) + ' · ligação a ' + trc.kv + ' kV · ' + trc.mva + ' MVA</b></div>' +
+        '<div class="ar-lg2">' + trc.mva + ' MVA reservados · ' + trc.usados + ' MVA usados · ' + (trc.mva - trc.usados) + ' MVA de injeção livres</div></td></tr>';
+    }
+    const groups = []; const idx = {};
+    ps.forEach((p) => {
+      const k = p.se || '';
+      if (!(k in idx)) { idx[k] = groups.length; groups.push({ se: p.se, q: p.se_q, kv: p.kv, list: [] }); }
+      groups[idx[k]].list.push(p);
+    });
+    groups.sort((a, b) => (a.se ? 0 : 1) - (b.se ? 0 : 1));
+    groups.forEach((g) => {
+      const anyOp = g.list.some((p) => p.estado === 'op');
+      const head = g.se
+        ? '<b>' + (g.q === 'est' ? arranqueTip('≈', 'estimativa') + ' ' : '') + 'SE ' + escapeHtml(g.se) + (g.kv ? ' · ' + g.kv + ' kV' : '') + '</b>'
+        : '<b>Ligação sem dados</b><span class="ar-lgp">fonte por confirmar</span>';
+      body += '<tr class="ar-lg"><td colspan="4"><div><span class="ar-tag">Ligação</span>' + head + '</div>' +
+        (g.se && anyOp ? '<div class="ar-lg2">Válida enquanto a central operar</div>' : '') + '</td></tr>' +
+        g.list.map(arranqueParqueRow).join('');
+    });
+    return arranqueSec('Ativos') + '<table class="ar-tb ar-at"><thead><tr><th>Ativo</th><th>Tec</th><th class="n">MW</th><th>Estado</th></tr></thead><tbody>' + body + '</tbody></table>';
+  }
   function arranqueFichaBody() {
-    const nome = arranqueEmpresaNome();
-    const typed = String(arranqueDraft.nomeEmpresa || '').trim();
-    const adm = [arranqueDraft.nomeProprio, arranqueDraft.apelido].map((s) => String(s || '').trim()).filter(Boolean).join(' ') || '—';
-    const ini = typed ? arranqueIniciais(typed) : '?';
-    return '<div class="ar-sheet">' +
-      '<div class="ar-card ar-wide"><div class="ar-co-head"><div class="ar-co-av">' + escapeHtml(ini) + '</div><div><div class="ar-co-name">' + escapeHtml(nome) + '</div><div class="ar-co-sub">Empresa nova · Promotora · Portugal</div></div></div></div>' +
-      '<div class="ar-card"><div class="ar-k">Informação geral</div><dl class="ar-dl">' +
-      '<dt>Administrador</dt><dd>' + escapeHtml(adm) + '</dd>' +
-      '<dt>Nacionalidade</dt><dd>' + escapeHtml(arranqueDraft.nacionalidade || 'Portuguesa') + '</dd>' +
-      '<dt>Sede</dt><dd>Lisboa</dd>' +
-      '<dt>Fundada</dt><dd>' + escapeHtml(periodLabelText()) + '</dd>' +
-      '<dt>Equipa</dt><dd>4 no arranque, 5 depois do primeiro ponto ganho<div class="ar-subline">Diretor-geral, responsável pelo financiamento e 2 pessoas à procura de terrenos e ligações. Depois, um gestor de projeto.</div></dd>' +
-      '<dt>Custos fixos</dt><dd>Cerca de 0,4 M€ por ano; 0,5 depois de ganhares o primeiro ponto de ligação<div class="ar-subline">Sobe para cerca de 0,6 durante a construção e 0,77 quando a primeira central começar a vender.</div></dd>' +
-      '<dt>Investidores</dt><dd class="ar-soft">Não te dão o dinheiro logo no início. Aprovam o orçamento de cada projeto quando ganhas o ponto de ligação e entram com o capital quando decides construir, se o projeto convencer.</dd>' +
-      '<dt>O que faz</dt><dd class="ar-soft">Procura terrenos, ganha ligações à rede, licencia projetos e constrói centrais.</dd>' +
-      '</dl></div>' +
-      '<div class="ar-card" id="arranqueFinCard"><div class="ar-k">Finanças</div><div class="ar-okbig"><i></i>Ok</div><p style="font-size:13px;color:#475569;margin-top:4px">Os valores exatos chegam na carta dos investidores, depois de assumires o controlo.</p></div>' +
-      '<div class="ar-card ar-wide"><div class="ar-k">Ativos</div><dl class="ar-dl">' +
-      '<dt>Centrais a produzir</dt><dd>0</dd>' +
-      '<dt>Projetos em licenciamento</dt><dd>0</dd>' +
-      '<dt>Ligações à rede</dt><dd>0</dd>' +
-      '</dl><div class="ar-empty">Ainda não tens nenhuma ligação à rede. A primeira ganha-se num leilão da REN.</div></div>' +
-      '</div>';
+    const d = arranqueEmp;
+    const me = arranqueFichaId === 'jogador';
+    if (me) {
+      const nj = [arranqueDraft.nomeProprio, arranqueDraft.apelido].map((s) => String(s || '').trim()).filter(Boolean).join(' ');
+      const j = (d && d.jogador) || {};
+      const trc = arranqueFichaTrc && j.trc_ourique ? j.trc_ourique : null;
+      return '<div class="ar-hd"><div><b class="ar-co-name">' + escapeHtml(arranqueEmpresaNome()) + '</b> · Promotora · 0 MW</div>' +
+        '<div class="ar-mu">Desenvolve projetos solares e vende-os a investidores.</div>' +
+        arranqueCuriosidade(j.curiosidades, false) +
+        '<div>Country manager: ' + (nj ? escapeHtml(nj) + ' (tu)' : 'tu') + '</div></div>' +
+        arranquePlantel(j.plantel) + arranqueAtivos(null, trc) +
+        arranqueSec('Finanças') + '<table class="ar-tb" id="arranqueFinCard"><tbody>' +
+        '<tr><td>Receitas por ano</td><td class="n">' + arranqueM(0) + '</td></tr>' +
+        '<tr><td>Dívida</td><td class="n">' + arranqueM(state.divida) + '</td></tr>' +
+        '<tr><td>Caixa</td><td class="n">' + arranqueM(state.caixa) + '</td></tr>' +
+        '<tr><td>Custo fixo</td><td class="n">Cerca de 0,4 M€ por ano</td></tr></tbody></table>' +
+        '<table class="ar-tb"><thead><tr><th>Evolução do custo fixo</th><th class="n">M€ por ano</th></tr></thead><tbody>' +
+        '<tr><td>Antes do 1.º ponto de ligação</td><td class="n">0,4</td></tr><tr><td>Com o 1.º ponto de ligação</td><td class="n">0,5</td></tr>' +
+        '<tr><td>Na construção</td><td class="n">0,6</td></tr><tr><td>Com a 1.ª central a vender</td><td class="n">0,77</td></tr></tbody></table>';
+    }
+    const c = d && d.empresas.find((x) => x.id === arranqueFichaId);
+    if (!c) return '<p class="ar-wait">A carregar empresa…</p>';
+    const f = c.financas || {};
+    const sede = c.sede && c.sede.cidade ? (c.sede.q === 'est' ? arranqueTip('≈', 'estimativa') + ' ' : '') + escapeHtml(c.sede.cidade) + (ARRANQUE_FLAG[c.sede.pais] ? ' ' + ARRANQUE_FLAG[c.sede.pais] : '') : '<span class="ar-sd">—</span>';
+    const mwRows = Object.keys(c.mw || {}).map((t) => '<tr><td>' + ARRANQUE_TEC[t] + '</td><td class="n">' + arranqueVal(c.mw[t], 'MW') + '</td></tr>').join('');
+    const gas = c.gas && c.gas.v ? '<tr><td>Gás (à parte)' + (c.gas.nota ? '<span class="ar-sub">' + escapeHtml(c.gas.nota) + '</span>' : '') + '</td><td class="n">' + arranqueVal(c.gas, 'MW') + '</td></tr>' : '<tr><td>Gás (à parte)</td><td class="n"><span class="ar-sd">—</span></td></tr>';
+    return '<div class="ar-hd"><div><b class="ar-co-name">' + escapeHtml(c.nome) + '</b> · ' + arranqueTipoPt(c) + ' · ' + arranqueVal(arranqueMwOp(c), 'MW') + '</div>' +
+      arranqueCuriosidade(c.curiosidades, c.id === 'galp') +
+      '<div>Sede: ' + sede + '</div>' +
+      '<div>Country manager: ' + escapeHtml(c.cm || '—') + ' ' + ARRANQUE_EX() + '</div></div>' +
+      (c.plantel ? arranquePlantel(c.plantel) : '') +
+      arranqueSec('MW em operação') + '<table class="ar-tb"><tbody>' + mwRows + gas + '</tbody></table>' +
+      arranqueAtivos(c, null) +
+      arranqueSec('Finanças ' + ARRANQUE_EX()) + '<table class="ar-tb"><tbody>' +
+      '<tr><td>Receitas por ano</td><td class="n">' + arranqueM(f.receitas) + '</td></tr>' +
+      '<tr><td>Dívida</td><td class="n">' + arranqueM(f.divida) + '</td></tr>' +
+      '<tr><td>Caixa</td><td class="n">' + arranqueM(f.caixa) + '</td></tr>' +
+      '<tr><td>Custo fixo por ano</td><td class="n">' + arranqueM(f.custo_fixo) + '</td></tr></tbody></table>';
   }
   function arranqueScreenFicha() {
-    return '<h1>Ficha da empresa</h1>' +
-      arranqueFichaBody() + arranqueCta('Assumir o controlo');
+    if (arranqueFichaId !== 'jogador') {
+      return arranqueFichaBody() + '<div class="ar-cta"><div class="ar-cta-in"><button type="button" class="ar-btn-g" id="arranqueBack" data-ar="back">Voltar</button></div></div>';
+    }
+    return arranqueFichaBody() + arranqueCta('Assumir o controlo');
   }
   function arranqueConfirmQuestion() {
     const typed = String(arranqueDraft.nomeEmpresa || '').trim();
@@ -19620,8 +19783,16 @@
     const el = document.getElementById('arranque');
     if (el) el.hidden = false;
     wireArranque();
+    arranqueFichaId = 'jogador';
     renderArranque('jogador');
     loadArranqueCompanies();
+    loadArranqueEmpresas();
+  }
+  function arranqueOpenFicha(id) {
+    arranqueFichaId = id;
+    if (id === 'galp') arranqueGalpTurn += 1;
+    renderArranque('ficha');
+    try { window.scrollTo(0, 0); } catch (_) {}
   }
   function arranqueBackToMenu() {
     hideArranque();
@@ -19655,12 +19826,12 @@
     }
     if (arranqueStep === 'pais') { renderArranque('empresa'); return; }
     if (arranqueStep === 'empresa') {
-      if (!arranqueCompanies) await loadArranqueCompanies();
-      if (!arranqueCompanies) return;
-      renderArranque('ficha');
+      if (!arranqueEmp) await loadArranqueEmpresas();
+      if (!arranqueEmp) return;
+      arranqueOpenFicha('jogador');
       return;
     }
-    if (arranqueStep === 'ficha') openArranqueConfirm();
+    if (arranqueStep === 'ficha' && arranqueFichaId === 'jogador') openArranqueConfirm();
   }
   function arranqueBack() {
     if (arranqueStep === 'jogador') { arranqueBackToMenu(); return; }
@@ -19699,11 +19870,15 @@
     } else if (t.id === 'arrNac') writeArranqueField('nacionalidade', t.value);
   }
   function onArranqueClick(ev) {
+    const tip = ev.target.closest('.ar-q');
+    document.querySelectorAll('#arranque .ar-q.tip-on').forEach((el) => { if (el !== tip) el.classList.remove('tip-on'); });
+    if (tip) { tip.classList.toggle('tip-on'); ev.stopPropagation(); return; }
     const t = ev.target.closest('[data-ar]');
     if (!t || t.disabled) return;
     const act = t.getAttribute('data-ar');
     if (act === 'back') arranqueBack();
     else if (act === 'next') arranqueAdvance();
+    else if (act === 'ficha') arranqueOpenFicha(t.getAttribute('data-id') || 'jogador');
   }
   function wireArranque() {
     const root = document.getElementById('arranque');
