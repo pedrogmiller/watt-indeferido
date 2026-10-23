@@ -980,6 +980,18 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arranqueBack').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
     await shot(page, 'abertura-empresa-' + tag);
+    for (const [id, filled] of [['galp', true], ['prosolia', true], ['aura-power', false]]) {
+      const ic = page.locator('[data-rival="' + id + '"] svg[aria-label="Baterias"]');
+      if (!(await ic.count())) throw new Error(id + ' battery icon');
+      const fill = await ic.getAttribute('fill');
+      if ((fill !== 'none') !== filled) throw new Error(id + ' battery fill ' + fill);
+      if ((await ic.locator('rect').count()) !== 2) throw new Error(id + ' battery shape');
+      await page.locator('[data-rival="' + id + '"]').click();
+      await page.waitForSelector('#arranque[data-step="ficha"] #arranqueBack');
+      { const vp = page.viewportSize(); const h = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)); await page.setViewportSize({ width: vp.width, height: Math.max(vp.height, h) }); await page.screenshot({ path: path.join(OUT, 'ficha-' + id + '-' + tag + '.png') }); await page.setViewportSize(vp); }
+      await page.locator('#arranqueBack').click();
+      await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
+    }
     for (const [id, mw, tot] of [['edp', /2\s*002/, /9\s*002/], ['endesa', /418,5/, /418,5/], ['trustenergy', /418,5/, /418,5/]]) {
       const row = await page.locator('[data-rival="' + id + '"]').innerText();
       if (!tot.test(row)) throw new Error(id + ' list total ' + row);
