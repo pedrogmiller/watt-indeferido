@@ -980,18 +980,28 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arranqueBack').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
     await shot(page, 'abertura-empresa-' + tag);
-    for (const [id, filled] of [['galp', true], ['prosolia', true], ['aura-power', false]]) {
-      const ic = page.locator('[data-rival="' + id + '"] svg[aria-label="Baterias"]');
-      if (!(await ic.count())) throw new Error(id + ' battery icon');
-      const fill = await ic.getAttribute('fill');
-      if ((fill !== 'none') !== filled) throw new Error(id + ' battery fill ' + fill);
-      if ((await ic.locator('rect').count()) !== 2) throw new Error(id + ' battery shape');
+    const iconRef = {};
+    const checkIcons = async (where) => {
+      const list = await page.locator('#arranque').evaluate((root) => [...root.querySelectorAll('svg[aria-label]')].filter((el) => el.closest('.ar-ic, .ar-pi')).map((el) => ({ t: el.getAttribute('aria-label'), h: el.outerHTML })));
+      for (const x of list) {
+        if (!x.t) continue;
+        if (iconRef[x.t] === undefined) iconRef[x.t] = x.h;
+        else if (iconRef[x.t] !== x.h) throw new Error('icon ' + x.t + ' differs on ' + where);
+      }
+      return list.length;
+    };
+    await checkIcons('empresas');
+    for (const id of ['galp', 'prosolia', 'aura-power', 'edp', 'endesa', 'iberdrola', 'greenvolt']) {
+      if (!(await page.locator('[data-rival="' + id + '"] svg').count())) throw new Error(id + ' no icon');
       await page.locator('[data-rival="' + id + '"]').click();
       await page.waitForSelector('#arranque[data-step="ficha"] #arranqueBack');
       { const vp = page.viewportSize(); const h = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)); await page.setViewportSize({ width: vp.width, height: Math.max(vp.height, h) }); await page.screenshot({ path: path.join(OUT, 'ficha-' + id + '-' + tag + '.png') }); await page.setViewportSize(vp); }
+      await checkIcons('ficha ' + id);
       await page.locator('#arranqueBack').click();
       await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
     }
+    for (const t of ['Solar', 'Hídrica', 'Baterias', 'Gás', 'Biomassa', 'Eólica']) if (!iconRef[t]) throw new Error('no icon seen for ' + t);
+    if (/fill="#0f172a" stroke="#0f172a" stroke-width="1.4"/.test(Object.values(iconRef).join(''))) throw new Error('filled variant still present');
     for (const [id, mw, tot] of [['edp', /2\s*002/, /9\s*002/], ['endesa', /418,5/, /418,5/], ['trustenergy', /418,5/, /418,5/]]) {
       const row = await page.locator('[data-rival="' + id + '"]').innerText();
       if (!tot.test(row)) throw new Error(id + ' list total ' + row);
