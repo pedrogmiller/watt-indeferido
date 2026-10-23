@@ -959,7 +959,7 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="finerge"]');
     const list = await page.locator('#arranque .ar-et').innerText();
     if (!/Sol do Sul, Lda\./.test(list)) throw new Error('player company missing');
-    if (!/EDP/.test(list) || !/7\s*000/.test(list)) throw new Error('EDP mw: ' + list.slice(0, 400));
+    if (!/EDP/.test(list) || !/9\s*002/.test(list)) throw new Error('EDP mw: ' + list.slice(0, 400));
     const finerge = await page.locator('[data-rival="finerge"]').innerText();
     if (!/≈/.test(finerge) || !/1\s*795/.test(finerge)) throw new Error('Finerge: ' + finerge);
     const tagE = await page.locator('[data-rival="tagenergy"]').innerText();
@@ -980,6 +980,19 @@ async function openingToAuction(browser, width, height, tag, win) {
     await page.locator('#arranqueBack').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
     await shot(page, 'abertura-empresa-' + tag);
+    for (const [id, mw, tot] of [['edp', /2\s*002/, /9\s*002/], ['endesa', /418,5/, /418,5/], ['trustenergy', /418,5/, /418,5/]]) {
+      const row = await page.locator('[data-rival="' + id + '"]').innerText();
+      if (!tot.test(row)) throw new Error(id + ' list total ' + row);
+      if (!(await page.locator('[data-rival="' + id + '"] svg[aria-label="Gás"]').count())) throw new Error(id + ' gas icon');
+      await page.locator('[data-rival="' + id + '"]').click();
+      await page.waitForSelector('#arranque[data-step="ficha"] #arranqueBack');
+      const fx = await page.locator('#arranque').innerText();
+      if (/à parte/.test(fx) || !/Gás/.test(fx) || !mw.test(fx)) throw new Error(id + ' ficha gas ' + fx.slice(0, 500));
+      if (/rival/i.test(fx)) throw new Error(id + ' ficha rival');
+      { const vp = page.viewportSize(); const h = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)); await page.setViewportSize({ width: vp.width, height: Math.max(vp.height, h) }); await page.screenshot({ path: path.join(OUT, 'ficha-' + id + '-' + tag + '.png') }); await page.setViewportSize(vp); }
+      await page.locator('#arranqueBack').click();
+      await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
+    }
     await page.locator('#arranqueNext').click();
     await page.waitForSelector('#arranque[data-step="ficha"] #arranqueFinCard');
     if (!(await page.locator('#arranqueFinancas').isVisible())) throw new Error('finanças pill hidden on ficha');

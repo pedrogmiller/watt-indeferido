@@ -19671,7 +19671,7 @@
     hidrica: '<path d="M8 2C5 7 4 9 4 11a4 4 0 008 0c0-2-1-4-4-9z"/>',
     bess: '<rect x="3" y="4" width="10" height="9" rx="1"/>',
     biomassa: '<path d="M3 13c0-6 4-10 10-10 0 6-4 10-10 10zM3 13l6-6"/>',
-    gas: '<path d="M8 2c2 3 4 5 4 8a4 4 0 01-8 0c0-2 1-3 2-4 0 2 1 3 2 3 0-2-1-4 0-7z"/>'
+    gas: '<path d="M8 1.5c.6 2.4 3.2 3.9 3.2 6.6 0 1.4-.6 2.5-1.5 3.1.2-1.5-.6-2.7-1.9-3.4.1 1.7-1.6 2.4-1.6 3.9-1.2-.6-2-1.8-2-3.2 0-2.8 3.3-4.3 3.8-7z"/><path d="M3.5 14.5h9" fill="none"/>'
   };
   const ARRANQUE_AREAS = ['Licenciamento', 'Negociação', 'Técnica', 'Financiamento', 'Institucional'];
   let arranqueEmp = null;
@@ -19721,7 +19721,6 @@
   function arranqueIcons(c) {
     const m = {};
     (c.parques || []).forEach((p) => {
-      if (p.tec === 'gas') return;
       const v = (typeof p.mw === 'object') ? p.mw.v : p.mw;
       m[p.tec] = m[p.tec] || { op: 0, pi: 0 };
       m[p.tec][p.estado === 'op' ? 'op' : 'pi'] += Number(v) || 0;
@@ -19738,9 +19737,8 @@
     } else {
       rows += arranqueEmp.empresas.map((c) => {
         const flag = c.sede && c.sede.pais ? (ARRANQUE_FLAG[c.sede.pais] || '') : '<span class="ar-sd">—</span>';
-        const gas = c.gas && c.gas.v ? '<span class="ar-gs">+ gás ' + arranqueFmtNum(c.gas.v) + '</span>' : '';
         return '<button type="button" class="ar-er" data-rival="' + escapeHtml(c.id) + '" data-ar="ficha" data-id="' + escapeHtml(c.id) + '"><span class="ar-ef">' + flag + '</span><span class="ar-en">' + escapeHtml(c.nome) + '</span>' + arranqueIcons(c) +
-          '<span class="ar-em">' + arranqueVal(arranqueMwOp(c), 'MW') + gas + '</span></button>';
+          '<span class="ar-em">' + arranqueVal(arranqueMwOp(c), 'MW') + '</span></button>';
       }).join('');
     }
     return '<h1>Empresas</h1>' +
@@ -19824,13 +19822,12 @@
     const f = c.financas || {};
     const sede = c.sede && c.sede.cidade ? (c.sede.q === 'est' ? arranqueTip('≈', 'estimativa') + ' ' : '') + escapeHtml(c.sede.cidade) + (ARRANQUE_FLAG[c.sede.pais] ? ' ' + ARRANQUE_FLAG[c.sede.pais] : '') : '<span class="ar-sd">—</span>';
     const mwRows = Object.keys(c.mw || {}).map((t) => '<tr><td>' + ARRANQUE_TEC[t] + '</td><td class="n">' + arranqueVal(c.mw[t], 'MW') + '</td></tr>').join('');
-    const gas = c.gas && c.gas.v ? '<tr><td>Gás (à parte)' + (c.gas.nota ? '<span class="ar-sub">' + escapeHtml(c.gas.nota) + '</span>' : '') + '</td><td class="n">' + arranqueVal(c.gas, 'MW') + '</td></tr>' : '<tr><td>Gás (à parte)</td><td class="n"><span class="ar-sd">—</span></td></tr>';
     return '<div class="ar-hd"><div><b class="ar-co-name">' + escapeHtml(c.nome) + '</b> · ' + arranqueTipoPt(c) + ' · ' + arranqueVal(arranqueMwOp(c), 'MW') + '</div>' +
       arranqueCuriosidade(c.curiosidades, c.id === 'galp') +
       '<div>Sede: ' + sede + '</div>' +
       '<div>Country manager: ' + escapeHtml(c.cm || '—') + ' ' + ARRANQUE_EX() + '</div></div>' +
       (c.plantel ? arranquePlantel(c.plantel) : '') +
-      arranqueSec('MW em operação') + '<table class="ar-tb"><tbody>' + mwRows + gas + '</tbody></table>' +
+      arranqueSec('MW em operação') + '<table class="ar-tb"><tbody>' + mwRows + '</tbody></table>' +
       arranqueAtivos(c, null) +
       arranqueSec('Finanças ' + ARRANQUE_EX()) + '<table class="ar-tb"><tbody>' +
       '<tr><td>Receitas por ano</td><td class="n">' + arranqueM(f.receitas) + '</td></tr>' +

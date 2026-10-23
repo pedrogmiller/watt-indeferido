@@ -74,10 +74,6 @@
      "q": "fonte"
     }
    },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
-   },
    "parques": [
     {
      "nome": "Parque de Alcoutim",
@@ -175,12 +171,11 @@
     "bess": {
      "v": null,
      "q": "sem_dados"
+    },
+    "gas": {
+     "v": 2002,
+     "q": "fonte"
     }
-   },
-   "gas": {
-    "v": 2000,
-    "q": "fonte",
-    "nota": "CCGT"
    },
    "parques": [
     {
@@ -207,6 +202,26 @@
      "mw": 13,
      "un": "MW",
      "estado": "op"
+    },
+    {
+     "nome": "Ribatejo (gás)",
+     "tec": "gas",
+     "mw": 1176,
+     "un": "MW",
+     "estado": "op",
+     "se": "Ribatejo",
+     "se_q": "fonte",
+     "kv": 400
+    },
+    {
+     "nome": "Lares (gás)",
+     "tec": "gas",
+     "mw": 826,
+     "un": "MW",
+     "estado": "op",
+     "se": "Lavos",
+     "se_q": "fonte",
+     "kv": 400
     }
    ],
    "curiosidades": [
@@ -249,10 +264,6 @@
      "v": null,
      "q": "sem_dados"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -375,23 +386,13 @@
     "bess": {
      "v": 0,
      "q": "fonte"
+    },
+    "gas": {
+     "v": 418.5,
+     "q": "est"
     }
    },
-   "gas": {
-    "v": 837,
-    "q": "fonte",
-    "nota": "Pego, controlo conjunto com a TrustEnergy"
-   },
    "parques": [
-    {
-     "nome": "Pego (gás)",
-     "tec": "gas",
-     "mw": 837,
-     "un": "MW",
-     "estado": "op",
-     "se": "Pego",
-     "se_q": "est"
-    },
     {
      "nome": "Pego híbrido",
      "tec": "solar",
@@ -400,6 +401,18 @@
      "estado": "pipe",
      "se": "Pego",
      "se_q": "fonte"
+    },
+    {
+     "nome": "Pego (gás, metade)",
+     "tec": "gas",
+     "mw": {
+      "v": 418.5,
+      "q": "est"
+     },
+     "un": "MW",
+     "estado": "op",
+     "se": "Pego",
+     "se_q": "est"
     }
    ],
    "curiosidades": [
@@ -442,10 +455,6 @@
      "v": null,
      "q": "sem_dados"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -527,10 +536,6 @@
      "q": "fonte"
     }
    },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
-   },
    "parques": [
     {
      "nome": "31 parques eólicos",
@@ -580,10 +585,6 @@
      "v": 0,
      "q": "fonte"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -649,10 +650,6 @@
      "q": "fonte"
     }
    },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
-   },
    "parques": [
     {
      "nome": "Santas",
@@ -715,10 +712,6 @@
      "q": "sem_dados"
     }
    },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
-   },
    "parques": [
     {
      "nome": "Solar flutuante do Cabril",
@@ -758,10 +751,6 @@
      "v": 0,
      "q": "fonte"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -814,10 +803,6 @@
      "v": 0,
      "q": "fonte"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -879,10 +864,6 @@
      "v": 15,
      "q": "fonte"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -956,10 +937,6 @@
      "q": "fonte"
     }
    },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
-   },
    "parques": [
     {
      "nome": "Cavaleira",
@@ -1020,10 +997,6 @@
      "v": 0,
      "q": "fonte"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -1113,10 +1086,6 @@
      "q": "fonte"
     }
    },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
-   },
    "parques": [
     {
      "nome": "Larinho e Canha",
@@ -1203,10 +1172,6 @@
      "q": "fonte"
     }
    },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
-   },
    "parques": [
     {
      "nome": "Baterias de Ferreira do Alentejo",
@@ -1275,18 +1240,20 @@
     "eolica": {
      "v": null,
      "q": "sem_dados"
+    },
+    "gas": {
+     "v": 418.5,
+     "q": "est"
     }
-   },
-   "gas": {
-    "v": 837,
-    "q": "fonte",
-    "nota": "Pego, controlo conjunto com a Endesa"
    },
    "parques": [
     {
-     "nome": "Pego (gás)",
+     "nome": "Pego (gás, metade)",
      "tec": "gas",
-     "mw": 837,
+     "mw": {
+      "v": 418.5,
+      "q": "est"
+     },
      "un": "MW",
      "estado": "op",
      "se": "Pego",
@@ -1329,10 +1296,6 @@
      "v": 90.5,
      "q": "fonte"
     }
-   },
-   "gas": {
-    "v": null,
-    "q": "sem_dados"
    },
    "parques": [
     {
@@ -1379,5 +1342,6 @@
     "custo_fixo": 1.4
    }
   }
- ]
+ ],
+ "_nota_gas": "Gás conta nos MW (decisão do Pedro 23-10-2026). MW de /workspace/licenca/financas-rivais.json (mw_pt.gas): EDP 1 176 Ribatejo + 826 Lares = 2 002; Pego 837 repartido 50/50 Endesa/TrustEnergy (ESTIMATIVA). parque-pt-gas.md dá Lares 862 MW (diferença por confirmar)."
 }
