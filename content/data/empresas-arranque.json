@@ -1156,7 +1156,7 @@
    "cm": "André Lobato",
    "mw": {
     "solar": {
-     "v": 0,
+     "v": 27,
      "q": "est"
     },
     "eolica": {
@@ -1173,6 +1173,16 @@
     }
    },
    "parques": [
+    {
+     "nome": "Casal da Cortiça",
+     "tec": "solar",
+     "mw": {
+      "v": 26.97,
+      "q": "est"
+     },
+     "un": "MW",
+     "estado": "op"
+    },
     {
      "nome": "Baterias de Ferreira do Alentejo",
      "tec": "bess",
@@ -1209,18 +1219,45 @@
      "estado": "pipe"
     }
    ],
-   "curiosidades": [
-    {
-     "t": "Começou a construir Rio Maior com a Neoen, que hoje a detém a 100 %.",
-     "url": "https://www.aurapower.com/latest-news/construction-begins-on-one-of-portugals-largest-solar-farms"
-    }
-   ],
+   "curiosidades": [],
    "financas": {
-    "caixa": 0.5,
-    "divida": 0.0,
-    "receitas": 0.0,
-    "custo_fixo": 0.4
-   }
+    "caixa": 1.0,
+    "divida": 11,
+    "receitas": 2.2,
+    "custo_fixo": 1.8
+   },
+   "plantel": [
+    [
+     "Natália Prates",
+     "Licenciamento",
+     13,
+     4
+    ],
+    [
+     "Gaspar Moniz",
+     "Negociação",
+     11,
+     2
+    ],
+    [
+     "Benedita Alves",
+     "Técnica",
+     11,
+     2
+    ],
+    [
+     "Raul Fontinha",
+     "Financiamento",
+     12,
+     2
+    ],
+    [
+     "Celeste Rosa",
+     "Institucional",
+     10,
+     1
+    ]
+   ]
   },
   {
    "id": "trustenergy",
@@ -1341,7 +1378,141 @@
     "receitas": 7.2,
     "custo_fixo": 1.4
    }
+  },
+  {
+   "id": "neoen",
+   "nome": "Neoen",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Lisboa",
+    "q": "fonte"
+   },
+   "cm": "Vicente Alvarenga",
+   "mw": {
+    "solar": {
+     "v": 283,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "parques": [
+    {
+     "nome": "Rio Maior",
+     "tec": "solar",
+     "mw": 204,
+     "un": "MW",
+     "estado": "op",
+     "se": "Rio Maior",
+     "se_q": "fonte",
+     "kv": 400
+    },
+    {
+     "nome": "Torre Bela",
+     "tec": "solar",
+     "mw": 68,
+     "un": "MW",
+     "estado": "op",
+     "se": "Rio Maior",
+     "se_q": "fonte",
+     "kv": 400
+    },
+    {
+     "nome": "Coruche",
+     "tec": "solar",
+     "mw": 8.8,
+     "un": "MW",
+     "estado": "op"
+    },
+    {
+     "nome": "Seixal",
+     "tec": "solar",
+     "mw": 2.2,
+     "un": "MW",
+     "estado": "op"
+    },
+    {
+     "nome": "Foral (em construção)",
+     "tec": "solar",
+     "mw": 43,
+     "un": "MW",
+     "estado": "pipe"
+    },
+    {
+     "nome": "Alguber",
+     "tec": "eolica",
+     "mw": 90,
+     "un": "MW",
+     "estado": "pipe",
+     "se": "Rio Maior",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "As centrais de Rio Maior e Torre Bela, da Neoen, formam o maior parque solar de Portugal: 272 MWp, inaugurado em junho de 2025.",
+     "url": "https://neoen.com/es/noticias/2025/neoen-inaugurates-portugals-largest-solar-park-272-mwp-and-affirms-strong-ambitions-in-the-country/"
+    },
+    {
+     "t": "No parque solar de Rio Maior e Torre Bela, a Neoen manteve mais de 6000 sobreiros em quase 200 hectares de áreas protegidas, separadas por corredores verdes.",
+     "url": "https://neoen.com/es/noticias/2025/neoen-inaugurates-portugals-largest-solar-park-272-mwp-and-affirms-strong-ambitions-in-the-country/"
+    },
+    {
+     "t": "Cerca de 80 % da energia do parque de Rio Maior e Torre Bela é comprada pelo Estado durante 15 anos, um contrato ganho no leilão de 2019.",
+     "url": "https://neoen.com/es/noticias/2025/neoen-inaugurates-portugals-largest-solar-park-272-mwp-and-affirms-strong-ambitions-in-the-country/"
+    }
+   ],
+   "plantel": [
+    [
+     "Amélia Courela",
+     "Licenciamento",
+     15,
+     8
+    ],
+    [
+     "Tomás Vidigal",
+     "Negociação",
+     14,
+     5
+    ],
+    [
+     "Adelaide Seixo",
+     "Técnica",
+     17,
+     14
+    ],
+    [
+     "Leandro Botelho",
+     "Financiamento",
+     16,
+     8
+    ],
+    [
+     "Olga Ventura",
+     "Institucional",
+     12,
+     3
+    ]
+   ],
+   "financas": {
+    "caixa": 2.7,
+    "divida": 119,
+    "receitas": 22.9,
+    "custo_fixo": 5.4
+   }
   }
  ],
- "_nota_gas": "Gás conta nos MW (decisão do Pedro 23-10-2026). MW de /workspace/licenca/financas-rivais.json (mw_pt.gas): EDP 1 176 Ribatejo + 826 Lares = 2 002; Pego 837 repartido 50/50 Endesa/TrustEnergy (ESTIMATIVA). parque-pt-gas.md dá Lares 862 MW (diferença por confirmar)."
+ "_nota_gas": "Gás conta nos MW (decisão do Pedro 23-10-2026). MW de /workspace/licenca/financas-rivais.json (mw_pt.gas): EDP 1 176 Ribatejo + 826 Lares = 2 002; Pego 837 repartido 50/50 Endesa/TrustEnergy (ESTIMATIVA). parque-pt-gas.md dá Lares 862 MW (diferença por confirmar).",
+ "_nota_neoen_aura": "23-10-2026: Neoen (19.ª) e Aura Power revista. Fontes: licenca/intervenientes.json, empresas-dados-verificados.md (Neoen N16–N21), financas-rivais.json (finanças, MW), planteis-rivais.md (§15 RASCUNHO, §19), gm-nomes-trivia.md (§4). Curiosidade da Aura sem fonte: fora. Cabrela 13,2 MWp fora (não consta em 2025)."
 }
