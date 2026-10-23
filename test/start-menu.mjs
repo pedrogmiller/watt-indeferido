@@ -452,6 +452,7 @@ async function gasHook(page, tag, month, st) {
     r.card3 = { before, after: after.c, sale: after.sale, bess_venda_noite: after.t.bess_venda_noite, bess_valor_up: after.t.bess_valor_up, clip: o.clip };
     if (![0.234, 0.105].includes(after.sale)) throw new Error('bess sale ' + JSON.stringify(r.card3));
     if (!/Gás caro: a tua bateria vale mais esta noite/.test(o.text)) throw new Error('card3 text');
+    if (!/MERCADO|Mercado/.test(o.text) || /IMPRENSA|Imprensa/.test(o.text.split('Gás caro')[0].slice(-200))) throw new Error('card3 badge');
     if (await page.locator('#inboxDrawer.open .mail-detail').count()) await page.locator('#inboxBackBtn').click();
   }
 }

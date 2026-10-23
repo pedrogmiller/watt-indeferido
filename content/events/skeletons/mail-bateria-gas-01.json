@@ -8,7 +8,7 @@
     ]
   },
   "priority": "high",
-  "from_type": "MEDIA",
+  "from_type": "MERCADO",
   "choices": [
     {
       "id": "ja",
