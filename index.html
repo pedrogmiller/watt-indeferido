@@ -6657,13 +6657,43 @@
   function fmtVan(n) {
     return fmtSigned(n, false);
   }
-  /** Player NPV. The partner takes 25% only while the project NPV is positive (FIX L). node.van stays the project value. */
+  /** True only for a rescue taken under the preferred-equity rule. Old saves that already
+   *  multiplied van set dilutionApplied and leave rescuePreferred unset, so they are not diluted again. */
+  function rescuePreferredOn() {
+    return !!(typeof mailLoop !== 'undefined' && mailLoop && mailLoop.rescuePreferred);
+  }
+  /** Player NPV at display and evaluation time. node.van stays the undiluted project value.
+   *  Partner (FIX L): 25% only while the project NPV is positive.
+   *  Rescue fund: preferred equity. Paid first, takes RESCUE_DILUTION of a gain, and none of a loss.
+   *  A negative NPV at rescue that later turns positive is diluted then, not at rescue time. */
   function playerNpv(van) {
     const v = Number(van);
     if (!Number.isFinite(v)) return van;
+    if (!(v > 0)) return v;
+    let out = v;
     const stake = (typeof mailLoop !== 'undefined' && mailLoop && Number(mailLoop.partnerStake)) || 0;
-    if (stake > 0 && v > 0) return +(v * (1 - stake)).toFixed(2);
-    return v;
+    if (stake > 0) out *= (1 - stake);
+    if (rescuePreferredOn()) out *= (1 - RESCUE_DILUTION);
+    return +out.toFixed(2);
+  }
+  /** PT-PT line for a rescue. Empty when no rescue was taken under this rule.
+   *  «A tua parte» is playerNpv (partner and fund). The percent is that share of the project, rounded.
+   *  The fund's slice stays RESCUE_DILUTION. A partner adds their stake at the end. Losses are unsplit. */
+  function rescueShareLine(projectVan) {
+    if (!rescuePreferredOn()) return '';
+    const v = Number(projectVan);
+    if (!Number.isFinite(v)) return '';
+    const fundPct = Math.round(RESCUE_DILUTION * 100);
+    const projectTxt = fmtEur(v);
+    if (v > 0) {
+      const mine = playerNpv(v);
+      const minePct = Math.round((mine / v) * 100);
+      let line = 'NPV do projeto ' + projectTxt + ' · a tua parte (' + minePct + ' %) ' + fmtEur(mine) + ' · o fundo de resgate fica com ' + fundPct + ' % do ganho';
+      const stake = (typeof mailLoop !== 'undefined' && mailLoop && Number(mailLoop.partnerStake)) || 0;
+      if (stake > 0) line += ' · o sócio fica com ' + Math.round(stake * 100) + ' %';
+      return line;
+    }
+    return 'NPV do projeto ' + projectTxt + ' · o prejuízo é todo teu: o fundo de resgate recebe primeiro';
   }
   /** Remaining construction contingency, once the obra has started (FIX H). */
   function contingencyHudHtml() {
@@ -7147,9 +7177,9 @@
   }
 
   function isOuriqueProfitable() {
-    // any project you own that is making money (NPV > 0) opens the next tenders
+    // Player NPV (partner and rescue fund). A gain the fund shares still counts as making money.
     const won = (typeof auctionState !== 'undefined' && auctionState.wonLots) ? auctionState.wonLots : [];
-    return nodes.some((n) => won.indexOf(n.id) !== -1 && !(n.mwState && n.mwState.removed) && n.van > 0);
+    return nodes.some((n) => won.indexOf(n.id) !== -1 && !(n.mwState && n.mwState.removed) && playerNpv(n.van) > 0);
   }
 
   function renderPipeline() {
@@ -7926,7 +7956,7 @@
     return list.map((a) => {
       const done = applied.has(a.id);
       const isFarm = a.id === 'farm';
-      const blockedFarm = isFarm && !(node.van > 0);
+      const blockedFarm = isFarm && !(playerNpv(node.van) > 0);
       const soldStake = isFarm && typeof mailLoop !== 'undefined' && mailLoop && mailLoop.tags
         && (((mailLoop.tags.stake_sale_25 | 0) > 0) || ((mailLoop.tags.stake_sale_pre_lp | 0) > 0));
       const cashMsg = (!done && !blockedFarm && !soldStake) ? actionCashBlock(nodeId, a.id) : '';
@@ -7979,9 +8009,12 @@
     const tension = node.tensao || 'Ganhaste barato: agora tens de melhorar o projeto';
     const tensionTone = node.tensaoTone || 'red';
     const npvStr = (typeof fmtVan === 'function') ? fmtVan(shownVan) : (String(shownVan).replace('.', ',') + ' M€');
-    const npvSub = (typeof mailLoop !== 'undefined' && mailLoop && Number(mailLoop.partnerStake) > 0 && node.van > 0)
-      ? 'A tua parte, com o sócio'
-      : 'Quanto o projeto vale hoje';
+    const rescueLine = rescueShareLine(node.van);
+    const npvSub = rescueLine
+      ? rescueLine
+      : ((typeof mailLoop !== 'undefined' && mailLoop && Number(mailLoop.partnerStake) > 0 && node.van > 0)
+        ? 'A tua parte, com o sócio'
+        : 'Quanto o projeto vale hoje');
     const carBand = assetCarBandLabel();
     const missionOpen = !!node.missionOpen;
     const phase = (typeof mailLoop !== 'undefined' && mailLoop.active)
@@ -14272,6 +14305,7 @@
   const RESCUE_BRIDGE_CAP_RATIO = 0.25;
   const RESCUE_BRIDGE_BURN_MONTHS = 3;
   const PARTNER_STAKE = 0.25;
+  /** HIPÓTESE. Share of a gain taken by the rescue fund (preferred equity). The fund shares no loss. */
   const RESCUE_DILUTION = 0.15;
   /** FID equity test, construction interest excluded (P53). Ourique exact need. */
   const FID_EQUITY_EXACT_MEUR = { ourique: { 38: 44.4, 40: 41.0 } };
@@ -14611,15 +14645,11 @@
       if (n && typeof n.van === 'number') npvNow = n.van;
     } catch (_) {}
     if (npvNow == null) npvNow = npvAuction;
-    // IRR uses the project NPV. Rescue dilution rewrites node.van; the partner does not (FIX L).
-    let irrBase = npvNow;
-    const dilution = (mailLoop && Number(mailLoop.dilution)) || 0;
-    if (irrBase != null && mailLoop && mailLoop.dilutionApplied && dilution > 0 && dilution < 1) {
-      irrBase = irrBase / (1 - dilution);
-    }
+    const npvProject = npvNow;
+    // TIR do projeto: undiluted project flows. The rescue fund and the partner do not change it.
+    if (npvProject != null) irr = 8 + 0.16 * npvProject;
     if (npvNow != null) npvNow = playerNpv(npvNow);
-    if (irrBase != null) irr = 8 + 0.16 * irrBase;
-    return { npvAuction: npvAuction, npvNow: npvNow, irr: irr };
+    return { npvAuction: npvAuction, npvNow: npvNow, npvProject: npvProject, irr: irr };
   }
   function stakesPlaceholderCtx(extra) {
     extra = extra || {};
@@ -15318,7 +15348,7 @@
     if (effectList.indexOf('end_screen_open') !== -1) openEndScreen();
   }
 
-  /** COD with only solar and a negative NPV is a loss: the auction price does not pay for the plant. */
+  /** COD with only solar and a negative player NPV is a loss. The check uses playerNpv, not a mutated node.van. */
   const SOLAR_ONLY_COD_LINE = 'Chegaste ao COD, mas só com solar ao preço do leilão o ativo perde dinheiro. Em Portugal, o lucro vem de hibridizar o ponto de ligação. Tenta de novo e aceita a carta de hibridização.';
   function solarOnlyCodLoss() {
     if (!mailLoop) return false;
@@ -15363,8 +15393,8 @@
       ['Meses que a caixa ainda cobre', monthsCoverPhrase(ctx.months_left)],
       ['Dinheiro de desenvolvimento gasto', ctx.car_spent],
       ['NPV no leilão', ctx.npv_auction],
-      ['NPV agora', ctx.npv_now],
-      ['IRR do capital próprio', (won || solarLoss) ? ctx.irr : '—'],
+      ['NPV agora', rescueShareLine(eco.npvProject) || ctx.npv_now],
+      ['TIR do projeto', (won || solarLoss) ? ctx.irr : '—'],
       ['COD', (won || solarLoss) ? (ctx.cod_month + ' (plano ' + ctx.cod_month_plan + ')') : '—'],
       ['Prazos cumpridos', met.length ? String(met.length) : '0'],
       ['Prazos falhados', missed.length ? missed.map((k) => DEADLINE_LABEL_PT[k] || k).join(', ') : 'nenhum'],
@@ -15444,10 +15474,8 @@
     if (has('rescue_capital_dilution') && !mailLoop.dilutionApplied) {
       mailLoop.dilution = RESCUE_DILUTION;
       mailLoop.dilutionApplied = true;
-      try {
-        const n = nodes.find((x) => x.id === (mailLoop.seId || 'ourique'));
-        if (n && typeof n.van === 'number') n.van = +(n.van * (1 - RESCUE_DILUTION)).toFixed(2);
-      } catch (_) {}
+      // Preferred equity: keep the project's undiluted NPV. playerNpv() applies the fund's share of a gain.
+      mailLoop.rescuePreferred = true;
     }
     if (has('cash_rescue_used') && !mailLoop.rescueBridgeApplied) {
       const add = rescueBridgeAmount();
@@ -16773,10 +16801,10 @@
     const eq = objEquityPack();
     const bond = won ? objBondAmount() : 0;
     const cod = objCodMonths();
-    let npvNow = null, npvAuction = null;
+    let npvNow = null, npvAuction = null, npvProject = null;
     try {
       const eco = (typeof stakesNpvIrr === 'function') ? stakesNpvIrr() : null;
-      if (eco) { npvNow = eco.npvNow; npvAuction = eco.npvAuction; }
+      if (eco) { npvNow = eco.npvNow; npvAuction = eco.npvAuction; npvProject = eco.npvProject; }
     } catch (_) {}
     if (npvNow == null) {
       try {
@@ -16793,6 +16821,7 @@
     let avHybrid = 'g';
     if (atCod && !hybrid) avHybrid = 'r';
     else if (month > 18 && !hybrid) avHybrid = 'p';
+    // «Ativo com NPV positivo no COD» uses the player's NPV, including the rescue fund's share of a gain.
     let avNpv = 'p';
     if ((npvNow != null && npvNow > 0) || hybrid) avNpv = 'g';
     if (atCod && !(npvNow > 0)) avNpv = 'r';
@@ -16801,7 +16830,9 @@
     const leftTxt = left > 0 ? ('faltam ' + left + (left === 1 ? ' mês' : ' meses')) : (left === 0 ? 'é este mês' : 'o prazo já passou');
     return {
       won: won, month: month, cash: cash, spend: spend.left, bond: bond, eq: eq,
-      cod: cod, npvNow: npvNow, npvAuction: npvAuction, hybrid: hybrid, phase: phase,
+      cod: cod, npvNow: npvNow, npvAuction: npvAuction, npvProject: npvProject,
+      rescueLine: rescueShareLine(npvProject),
+      hybrid: hybrid, phase: phase,
       av: [avLicence, avHybrid, avNpv, avCod], gridMiss: gridMiss, leftTxt: leftTxt, atCod: atCod
     };
   }
@@ -16854,7 +16885,7 @@
       ['Hibridizar o ponto de ligação', 'e',
         '0 € agora · ' + objMeur(2.56) + ' de capital próprio na decisão final ' + OBJ_HIP + ' · demora 9 meses · não atrasa o COD solar'],
       ['Ativo com NPV positivo no COD', 'e',
-        'NPV agora (a tua parte) ' + npvBit + ' ' + OBJ_HIP + ' · com híbrido ≈ +2 M€ no COD ' + OBJ_EX],
+        'NPV agora (a tua parte) ' + npvBit + ' ' + OBJ_HIP + (snap.rescueLine ? (' · ' + snap.rescueLine) : '') + ' · com híbrido ≈ +2 M€ no COD ' + OBJ_EX],
       ['Chegar ao COD até ao mês planeado', 'x',
         'Planeado ' + objMonthShort(snap.cod.plan) + ' · previsto ' + objMonthShort(snap.cod.fc) + (snap.cod.live ? '' : '') +
         ' · cada mês de atraso custa −0,19 M€ de NPV (−0,45 com híbrido) · conta para a reputação']
@@ -16916,6 +16947,7 @@
       '<div class="obj-note">' + (eq.hybrid ? 'Com híbrido.' : 'Só solar.') + ' O sócio atrasa a decisão final cerca de 4 meses e fica com 25% do NPV.</div></div>' +
       '<div class="obj-card"><div class="obj-k">NPV agora (a tua parte)</div><div class="obj-fv' + npvCls + '">' + npvTxt + (snap.npvNow == null ? '' : OBJ_HIP) + '</div>' +
       '<div class="obj-note">no leilão: ' + auctionTxt + ' · 75% se tiveres sócio</div>' +
+      (snap.rescueLine ? ('<div class="obj-note">' + snap.rescueLine + '</div>') : '') +
       '<div class="obj-fl" style="margin-top:6px"><span>Com híbrido</span><span class="obj-ok">≈ +2 M€ no COD ' + OBJ_EX + '</span></div></div>' +
       '<div class="obj-card"><div class="obj-k">Garantia bancária</div><div class="obj-fv">' + objMeur(snap.bond) + '</div><div class="obj-note">Caução da ligação. Não é um gasto: só se perde se o TRC caducar.</div></div></div>';
   }
@@ -18616,6 +18648,8 @@
       mailLoop.partnerNpvApplied = !!ml.partnerNpvApplied;
       mailLoop.dilution = Number(ml.dilution) || 0;
       mailLoop.dilutionApplied = !!ml.dilutionApplied;
+      // Absent on old saves that already multiplied van. Leave that van as stored.
+      mailLoop.rescuePreferred = !!ml.rescuePreferred;
       mailLoop.obraContingency = (typeof ml.obraContingency === 'number') ? ml.obraContingency : null;
       mailLoop.obraContingencyInitial = (typeof ml.obraContingencyInitial === 'number') ? ml.obraContingencyInitial : null;
       mailLoop.obraMeters = (ml.obraMeters && typeof ml.obraMeters === 'object') ? ml.obraMeters : {};
@@ -20811,6 +20845,12 @@
         faixa: () => !!LEILAO_FAIXA, bomPreco: () => BOM_PRECO, openMandate0: () => openMandate0(), overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, winAt: (id, bid) => { let lot = null; try { AUCTION_WAVES.forEach((w) => { if (!lot) lot = w.find((l) => l.id === id) || null; }); } catch (_) {} if (!lot) return null; return { win: wouldWinAuction(Number(bid), lot), floor: lot.npcFloor, best: rivalBest(lot) }; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
         saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable(),
         canSpend: (n) => canSpend(n),
+        playerNpv: (v) => playerNpv(v),
+        npvIrr: () => stakesNpvIrr(),
+        rescueLine: (v) => rescueShareLine(v),
+        profitable: () => isOuriqueProfitable(),
+        openEnd: () => openEndScreen(),
+        openFinancas: () => openObjetivos('financas'),
         cashGap: (n) => cashGapMessage(n),
         choiceCost: (letterId, choiceId) => {
           const letter = (mailState.items || []).find((m) => m.id === letterId);

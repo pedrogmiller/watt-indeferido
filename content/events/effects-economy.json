@@ -3306,7 +3306,7 @@
   "rescue_capital_dilution": {
    "cash": null,
    "debt": null,
-   "nav": "−d × NPV_asset",
+   "nav": null,
    "bonding": null,
    "car": null,
    "equity": null,
@@ -3314,8 +3314,8 @@
    "prob": null,
    "label": "HIPÓTESE (âncora REAL: desconto de 20 % em notas convertíveis/pontes, Carta 2024)",
    "origin": "endings-stakes-v01.md; lp-cod-rules endings_stakes_v01 / r-es-* (GM 2026-10-03); tools/finais_tensao_v01.json; Carta Q1 2024 / State of Pre-Seed 2024 (desconto mediano 20 %)",
-   "note": "Os investidores ficam com mais do projeto em troca da ponte: diluição = ponte ÷ (0,8 × valor do projeto + ponte), valor = (NPV t0 + VP do CAR já gasto) levado ao mês atual. Ourique: oferta 40 → 9–11 %; oferta 38 → 17–25 %. Mostrar **15 %** (limites 10–30 %). Efeito: NPV e FCF do jogador × (1 − d). Ex.: NPV 3,2 → 2,7 (40). Vem com cash_rescue_used (a ponte) e reputation_-1.",
-   "formula": "d = clamp(B / (0.8*V + B), 0.10, 0.30) ; display 0.15 ; player_share *= (1 − d)"
+   "note": "Os investidores ficam com mais do projeto em troca da ponte: diluição = ponte ÷ (0,8 × valor do projeto + ponte), valor = (NPV t0 + VP do CAR já gasto) levado ao mês atual. Ourique: oferta 40 → 9–11 %; oferta 38 → 17–25 %. Mostrar **15 %** (limites 10–30 %). O 15 % continua HIPÓTESE. Regra aprovada (Pedro): capital preferencial. O fundo é pago primeiro e fica com 15 % do ganho, sem partilhar prejuízo. node.van fica o NPV do projeto, sem multiplicar no resgate. A parte do jogador calcula-se ao mostrar e ao avaliar, em cada mês e no COD: NPV se ≤ 0; NPV × (1 − 0,15) se > 0 e houve resgate. Assim um NPV negativo no resgate que depois fica positivo também fica certo. A TIR é a do projeto, sem dividir por 0,85. Um jogo antigo com van já multiplicado não se reverte. Vem com cash_rescue_used (a ponte) e reputation_-1.",
+   "formula": "d = 0.15 (HIPÓTESE) ; stored project NPV unchanged ; playerNPV = projectNPV > 0 && rescue ? projectNPV * (1 − d) : projectNPV"
   },
   "cash_rescue_refused": {
    "cash": null,
