@@ -1,0 +1,9 @@
+{
+  "skeleton_id": "mail-bateria-gas-01",
+  "skin_id": "default",
+  "from_name": "Mesa de Trading",
+  "subject": "Gás caro: a tua bateria vale mais esta noite",
+  "body": "Com o gás caro, a eletricidade da noite está a pagar bem.\n\nA tua bateria está cheia com energia barata do meio-dia.\n\nPodes vender já, a um preço seguro. Ou esperar pela noite, que costuma pagar mais. Mas a noite pode surpreender.",
+  "params": {},
+  "note_gm": "from_name do rascunho: «Mesa de Trading — {comercializador_nome}»; sem nome aprovado, fica «Mesa de Trading»."
+}

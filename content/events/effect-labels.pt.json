@@ -60,7 +60,7 @@
   "community_trust_up": "A população confia mais no teu projeto",
   "competitor_buy_proposed": "Propuseste comprar o projeto do concorrente",
   "competitor_seeks_connection": "Um concorrente procura ligação perto do teu projeto",
-  "competitor_seen": "Tomaste nota do rival",
+  "competitor_seen": "Tomaste nota da concorrência no mercado",
   "competitor_share_proposed": "Propuseste partilhar a ligação",
   "competitor_watch": "Estás a acompanhar este concorrente",
   "constraint_reveal": "Ficaste a conhecer um problema do terreno mais cedo",
@@ -398,5 +398,16 @@
   "fa_bess_refused": "O Fundo Ambiental recusou a candidatura",
   "fa_bess_answer_seen": "",
   "transformer_order_early": "Encomendaste o transformador: saíram 0,25 M€ da caixa",
-  "transformer_order_late": "Deixaste a encomenda do transformador para depois da decisão final"
+  "transformer_order_late": "Deixaste a encomenda do transformador para depois da decisão final",
+  "gas_caro_ativo": "Gás caro: as noites pagam mais",
+  "preco_noite_up": "O preço da eletricidade à noite subiu",
+  "preco_dia_sem_efeito": "O preço de dia não mudou",
+  "evento_gas_sobe": "O gás subiu",
+  "ano_mau_renovaveis": "Ano fraco para as renováveis",
+  "rival_caixa_up": "Um grande grupo energético ficou com mais caixa",
+  "rival_agressivo_proximo_leilao": "No próximo leilão, o mercado pode licitar mais baixo",
+  "bess_operating": "A bateria está a funcionar",
+  "bess_valor_up": "A bateria vale mais esta noite",
+  "bess_venda_ja": "Vendeste a energia da bateria já",
+  "bess_venda_noite": "Guardaste a energia da bateria para a noite"
 }

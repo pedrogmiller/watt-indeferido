@@ -358,6 +358,104 @@ async function startNewGame(page, shotName) {
   if (await page.locator('#auctionRoom.open').count()) throw new Error('auction opened from the confirmation');
 }
 
+/** Cartas do gás (WATT_GAS=1): força as 3 cartas, verifica efeito e intervalo, fotografa. Também procura «rival» visível. */
+const gasReport = {};
+async function visibleRival(page) {
+  return page.evaluate(() => {
+    const hits = [];
+    const txt = document.body.innerText || '';
+    const m = txt.match(/.{0,40}rival.{0,40}/gi);
+    if (m) hits.push(...m);
+    document.querySelectorAll('[aria-label],[title],[placeholder]').forEach((el) => {
+      ['aria-label', 'title', 'placeholder'].forEach((a) => { const v = el.getAttribute(a); if (v && /rival/i.test(v)) hits.push(a + ': ' + v); });
+    });
+    return hits;
+  });
+}
+async function openGasLetter(page, prefix, name) {
+  await dismissLayers(page);
+  if (!(await page.locator('#inboxDrawer.open').count())) {
+    if (await page.locator('#btnInbox').isVisible()) await page.locator('#btnInbox').click(); else await page.locator('#tabInbox').click();
+    await page.waitForTimeout(300);
+  }
+  for (let i = 0; i < 3 && await page.locator('#inboxDrawer.open .mail-detail').count(); i++) { await page.locator('#inboxBackBtn').click(); await page.waitForTimeout(120); }
+  const row = page.locator('.mail-row[data-mail-id^="' + prefix + '"]').first();
+  await row.click({ force: true });
+  await page.waitForTimeout(300);
+  const text = await page.locator('#inboxDrawer').innerText();
+  const clip = await page.evaluate(() => {
+    const out = [];
+    document.querySelectorAll('#inboxDrawer .mail-detail, #inboxDrawer .mail-detail *').forEach((el) => {
+      if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX !== 'visible' && el.clientWidth > 0) out.push(el.className || el.tagName);
+    });
+    const d = document.getElementById('inboxDrawer').getBoundingClientRect();
+    if (d.right > window.innerWidth + 1) out.push('drawer off-screen');
+    return out;
+  });
+  await page.screenshot({ path: path.join(OUT, name + '.png') });
+  return { text, clip };
+}
+async function gasHook(page, tag, month, st) {
+  const qa = (fn, arg) => page.evaluate(fn, arg);
+  const r = gasReport[tag] = gasReport[tag] || { rivalHits: [] };
+  const hits = await visibleRival(page);
+  if (hits.length) r.rivalHits.push(...hits.map((h) => 'M' + month + ' ' + h));
+  const items = await qa(() => window.__wattQA.mailState.items.map((l) => l.id));
+  const has = (p) => items.filter((id) => id.startsWith(p));
+  if (month < 2) return;
+  if (!st.g1) {
+    const g = has('mail-mercado-gas-01');
+    if (!g.length) { await qa(() => window.__wattQA.forceGas('gas')); return; }
+    st.g1 = true;
+    const gs = await qa(() => { const x = window.__wattQA.gas(); return { s: x.state, d: x.nightDelta, t: window.__wattQA.mail.tags }; });
+    st.gasMonth = gs.s.lastGasMonth;
+    const o = await openGasLetter(page, 'mail-mercado-gas-01', 'carta1-gas-sobe-' + tag);
+    r.card1 = { month: st.gasMonth, until: gs.s.gasUntil, nightDelta: gs.d, tags: { gas_caro_ativo: gs.t.gas_caro_ativo, preco_noite_up: gs.t.preco_noite_up, preco_dia_sem_efeito: gs.t.preco_dia_sem_efeito }, clip: o.clip };
+    if (gs.d !== 25 || gs.s.gasUntil !== st.gasMonth + 3) throw new Error('gas effect ' + JSON.stringify(r.card1));
+    if (!/O gás subiu\. As noites ficaram mais caras\./.test(o.text) || !/Em 2022, Portugal e Espanha/.test(o.text)) throw new Error('card1 text');
+    await qa(() => window.__wattQA.forceGas('ano'));
+    return;
+  }
+  if (!st.g2) {
+    if (!has('mail-rival-gas-01').length) { await qa(() => window.__wattQA.forceGas('ano')); return; }
+    st.g2 = true;
+    const o = await openGasLetter(page, 'mail-rival-gas-01', 'carta2-ano-fraco-' + tag);
+    const gs = await qa(() => ({ s: window.__wattQA.gas().state, t: window.__wattQA.mail.tags }));
+    r.card2 = { caixa: gs.s.rivalCaixaMEUR, tags: { rival_caixa_up: gs.t.rival_caixa_up, rival_agressivo_proximo_leilao: gs.t.rival_agressivo_proximo_leilao }, clip: o.clip };
+    if (!/Um grande grupo energético nem sentiu/.test(o.text) || /rival/i.test(o.text)) throw new Error('card2 text');
+  }
+  const gs = await qa(() => ({ s: window.__wattQA.gas().state, d: window.__wattQA.gas().nightDelta, t: window.__wattQA.mail.tags }));
+  if (month >= st.gasMonth + 3 && !st.expired) {
+    st.expired = true;
+    r.expiry = { month, nightDelta: gs.d, gas_caro_ativo: gs.t.gas_caro_ativo };
+    if (gs.d !== 0 || (gs.t.gas_caro_ativo | 0) !== 0) throw new Error('gas did not expire ' + JSON.stringify(r.expiry));
+  }
+  if (!st.g3) {
+    const g = has('mail-mercado-gas-01');
+    if (g.length > 1) {
+      st.g3 = true;
+      r.interval = { first: st.gasMonth, second: gs.s.lastGasMonth, gap: gs.s.lastGasMonth - st.gasMonth };
+      if (r.interval.gap < 12) throw new Error('interval ' + JSON.stringify(r.interval));
+    } else {
+      await qa((late) => { window.__wattQA.forceGas('gas'); if (late) window.__wattQA.forceGas('bess'); }, month >= st.gasMonth + 11);
+      return;
+    }
+  }
+  if (!st.b && has('mail-bateria-gas-01').length) {
+    st.b = true;
+    const o = await openGasLetter(page, 'mail-bateria-gas-01', 'carta3-bateria-' + tag);
+    const before = await qa(() => window.__wattQA.state.caixa);
+    const btn = page.locator('.mail-detail-actions button', { hasText: 'Guardar para a noite' });
+    await btn.click({ force: true });
+    await page.waitForTimeout(300);
+    const after = await qa(() => ({ c: window.__wattQA.state.caixa, sale: window.__wattQA.gas().state.lastBessSaleMEUR, t: window.__wattQA.mail.tags }));
+    r.card3 = { before, after: after.c, sale: after.sale, bess_venda_noite: after.t.bess_venda_noite, bess_valor_up: after.t.bess_valor_up, clip: o.clip };
+    if (![0.234, 0.105].includes(after.sale)) throw new Error('bess sale ' + JSON.stringify(r.card3));
+    if (!/Gás caro: a tua bateria vale mais esta noite/.test(o.text)) throw new Error('card3 text');
+    if (await page.locator('#inboxDrawer.open .mail-detail').count()) await page.locator('#inboxBackBtn').click();
+  }
+}
+
 async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExtra) {
   const page = await browser.newPage({ viewport: { width, height } });
   track(page, 'cod-' + tag);
@@ -512,6 +610,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   let guard = 0;
   let lastSig = '';
   let stuck = 0;
+  const gasSt = {};
   while (guard < 420) {
     guard += 1;
     await dismissLayers(page);
@@ -532,6 +631,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
       await shot(page, 'cod-end-' + tag);
       const codish = !!(reached && (reached.phase === 'cod' || reached.reason === 'cod' || reached.reason === 'cod_solar' || reached.status === 'won' || reached.cod));
       if (!codish) throw new Error('end is not COD: ' + endText.slice(0, 400) + ' ' + JSON.stringify(reached));
+      if (process.env.WATT_GAS) { const h = await visibleRival(page); if (h.length) (gasReport[tag] = gasReport[tag] || { rivalHits: [] }).rivalHits.push(...h.map((x) => 'END ' + x)); }
       return { endText: endText.slice(0, 500), reached, steps: guard };
     }
     if (await page.locator('#auctionRoom.open [data-screen="bid"].active').count()) {
@@ -547,6 +647,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
       await page.waitForTimeout(400);
       continue;
     }
+    if (process.env.WATT_GAS) await gasHook(page, tag, month, gasSt);
     if (await drainMail(page)) continue;
     const play = page.locator('#btnNextQ');
     if (!(await play.isVisible())) {
@@ -1128,6 +1229,7 @@ try {
   if (errors.length) console.error('CONSOLE ERRORS\n' + errors.join('\n'));
   process.exitCode = 1;
 } finally {
+  report.gas = gasReport;
   fs.writeFileSync(path.join(OUT, 'start-menu-report.json'), JSON.stringify(report, null, 2));
   await browser.close();
 }

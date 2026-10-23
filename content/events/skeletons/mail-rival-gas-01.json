@@ -1,0 +1,23 @@
+{
+  "id": "mail-rival-gas-01",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "ano_mau_renovaveis"
+  },
+  "priority": "normal",
+  "from_type": "MEDIA",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Tomar nota",
+      "effects": []
+    }
+  ],
+  "on_deliver_effects": [
+    "ano_mau_renovaveis",
+    "rival_caixa_up",
+    "rival_agressivo_proximo_leilao"
+  ],
+  "notes_for_economy": "rival_caixa_up = margem_gas_rival (effects-economy.json gas_v01_2026_10_23).",
+  "notes_for_ui": "Aviso de concorrência. Nunca mostrar «rival»."
+}

@@ -1,0 +1,25 @@
+{
+  "id": "mail-mercado-gas-01",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "evento_gas_sobe"
+  },
+  "priority": "normal",
+  "from_type": "MEDIA",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Tomar nota",
+      "effects": []
+    }
+  ],
+  "on_deliver_effects": [
+    "evento_gas_sobe",
+    "gas_caro_ativo",
+    "preco_noite_up",
+    "preco_dia_sem_efeito"
+  ],
+  "notes_for_economy": "Valores em effects-economy.json gas_v01_2026_10_23 (delta_preco_noite, meses_gas_caro, intervalo_meses_gas).",
+  "notes_for_ui": "Só informação.",
+  "source_note": "DL 33/2022 (https://diariodarepublica.pt/dr/detalhe/decreto-lei/33-2022-183432853); fim 31-12-2023 (https://dgeg.gov.pt/pt/estatistica/energia/precos-de-energia/mecanismo-iberico/). GM, cartas-gas-rascunho.md, 23-10-2026."
+}
