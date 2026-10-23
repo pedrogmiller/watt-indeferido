@@ -1,0 +1,1383 @@
+{
+ "_nota": "Ecrãs Empresas/Empresa do arranque. Fontes: licenca/empresas-dados-verificados.md, licenca/empresas-estimativas-scout.md, licenca/gm-nomes-trivia.md (23-10-2026). q: fonte | est (estimativa, mostra ≈) | sem_dados (mostra —). financas, plantel e country manager: EXEMPLO.",
+ "jogador": {
+  "cm_q": "jogador",
+  "curiosidades": [
+   {
+    "t": "No leilão solar de 2019, Portugal recebeu nove vezes mais procura do que a potência posta a concurso.",
+    "url": "https://www.portugal.gov.pt/pt/gc21/comunicacao/noticia?i=foram-ultrapassadas-as-melhores-expectativas-no-leilao-de-energia-solar"
+   }
+  ],
+  "plantel": [
+   [
+    "Rui Matos",
+    "Licenciamento",
+    12,
+    2
+   ],
+   [
+    "Inês Carvalho",
+    "Negociação",
+    11,
+    1
+   ],
+   [
+    null,
+    "Técnica"
+   ],
+   [
+    "Tiago Nunes",
+    "Financiamento",
+    10,
+    1
+   ],
+   [
+    null,
+    "Institucional"
+   ]
+  ],
+  "trc_ourique": {
+   "se": "Ourique",
+   "kv": 400,
+   "mva": 99,
+   "usados": 0,
+   "nota": "Lote 6 do leilão solar 2020 (PP 2020, Anexo I)",
+   "url": "https://www.dgeg.gov.pt/media/c2kjaran/pecasprocedimento-2020.zip"
+  }
+ },
+ "empresas": [
+  {
+   "id": "galp",
+   "nome": "Galp",
+   "tipo": "utility",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Lisboa",
+    "q": "fonte"
+   },
+   "cm": "Henrique Lousada",
+   "mw": {
+    "solar": {
+     "v": 144,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "hidrica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "bess": {
+     "v": 5,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Parque de Alcoutim",
+     "tec": "solar",
+     "mw": 144,
+     "un": "MW",
+     "estado": "op",
+     "se": "Tavira",
+     "se_q": "est"
+    },
+    {
+     "nome": "Baterias",
+     "tec": "bess",
+     "mw": 5,
+     "un": "MW",
+     "estado": "op"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "A história da Galp começa em 1846, quando Lisboa passou a ter candeeiros públicos a gás. A concessão foi entregue à Companhia Lisbonense de Iluminação a Gás.",
+     "url": "https://www.galp.com/corp/en/about-us/galp/our-roots"
+    },
+    {
+     "t": "O gás natural chegou a Portugal com um gasoduto de alta pressão entre Setúbal e Braga. Tem 350 km e começou a ser construído em 1994.",
+     "url": "https://www.galp.com/corp/en/about-us/galp/our-roots"
+    },
+    {
+     "t": "Em Alcoutim, no Algarve, a Galp junta baterias aos seus parques solares. As baterias guardam a energia do dia e entregam-na à rede ao início da noite, quando o consumo é maior.",
+     "url": "https://www.galp.com/corp/pt/media/comunicados-de-imprensa/comunicado/id/1627/galp-instala-74-mw-de-baterias-para-armazenar-energia-em-portugal-e-espanha"
+    }
+   ],
+   "plantel": [
+    [
+     "Marta Sousa",
+     "Licenciamento",
+     16,
+     25
+    ],
+    [
+     "Paulo Antunes",
+     "Negociação",
+     17,
+     12
+    ],
+    [
+     "Joana Pires",
+     "Técnica",
+     15,
+     60
+    ],
+    [
+     "Miguel Lopes",
+     "Financiamento",
+     18,
+     20
+    ],
+    [
+     "Helena Dias",
+     "Institucional",
+     14,
+     8
+    ]
+   ],
+   "financas": {
+    "caixa": 8.0,
+    "divida": 60.0,
+    "receitas": 12.0,
+    "custo_fixo": 2.4
+   }
+  },
+  {
+   "id": "edp",
+   "nome": "EDP",
+   "tipo": "utility",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Lisboa",
+    "q": "fonte"
+   },
+   "cm": "Sérgio Lacerda",
+   "mw": {
+    "solar": {
+     "v": 600,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 1300,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 5100,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": null,
+     "q": "sem_dados"
+    }
+   },
+   "gas": {
+    "v": 2000,
+    "q": "fonte",
+    "nota": "CCGT"
+   },
+   "parques": [
+    {
+     "nome": "Solar flutuante do Alqueva",
+     "tec": "solar",
+     "mw": 70,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Alqueva",
+     "se_q": "fonte"
+    },
+    {
+     "nome": "Pracana (híbrido)",
+     "tec": "solar",
+     "mw": 48,
+     "un": "MW",
+     "estado": "op",
+     "se": "Pego",
+     "se_q": "est"
+    },
+    {
+     "nome": "Charneca das Lebres (híbrido)",
+     "tec": "solar",
+     "mw": 13,
+     "un": "MW",
+     "estado": "op"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Ganhou o lote 1 do leilão solar flutuante, 70 MVA na albufeira do Alqueva.",
+     "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf"
+    }
+   ],
+   "financas": {
+    "caixa": 350.0,
+    "divida": 2800.0,
+    "receitas": 560.0,
+    "custo_fixo": 112.0
+   }
+  },
+  {
+   "id": "iberdrola",
+   "nome": "Iberdrola",
+   "tipo": "utility",
+   "sede": {
+    "pais": "ES",
+    "cidade": "Bilbau",
+    "q": "fonte"
+   },
+   "cm": "Beatriz Fontoura",
+   "mw": {
+    "solar": {
+     "v": 186,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 92,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 1158,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": null,
+     "q": "sem_dados"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Tâmega (Gouvães, Daivões, Alto Tâmega)",
+     "tec": "hidrica",
+     "mw": 1158,
+     "un": "MW",
+     "estado": "op",
+     "se": "Ribeira de Pena",
+     "se_q": "est",
+     "kv": 400
+    },
+    {
+     "nome": "Serra do Alvão",
+     "tec": "eolica",
+     "mw": 42,
+     "un": "MW",
+     "estado": "op",
+     "se": "Vila Pouca de Aguiar",
+     "se_q": "est"
+    },
+    {
+     "nome": "Alto do Monção",
+     "tec": "eolica",
+     "mw": 32,
+     "un": "MW",
+     "estado": "op",
+     "se": "Viana do Castelo",
+     "se_q": "est"
+    },
+    {
+     "nome": "Catefica",
+     "tec": "eolica",
+     "mw": 18,
+     "un": "MW",
+     "estado": "op",
+     "se": "Carregado",
+     "se_q": "est"
+    },
+    {
+     "nome": "Carregado",
+     "tec": "solar",
+     "mw": 62,
+     "un": "MW",
+     "estado": "op",
+     "se": "Carregado",
+     "se_q": "est"
+    },
+    {
+     "nome": "Alcochete I/II",
+     "tec": "solar",
+     "mw": 46,
+     "un": "MW",
+     "estado": "op",
+     "se": "Palmela",
+     "se_q": "est"
+    },
+    {
+     "nome": "Montechoro I/II",
+     "tec": "solar",
+     "mw": 37,
+     "un": "MW",
+     "estado": "op",
+     "se": "Tunes",
+     "se_q": "est"
+    },
+    {
+     "nome": "Algeruz II",
+     "tec": "solar",
+     "mw": 27,
+     "un": "MW",
+     "estado": "op",
+     "se": "Palmela",
+     "se_q": "est"
+    },
+    {
+     "nome": "Conde",
+     "tec": "solar",
+     "mw": 14,
+     "un": "MW",
+     "estado": "op"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "A central de Gouvães, no Tâmega, tem 880 MW de bombagem — a «gigabateria».",
+     "url": "https://www.iberdrola.com/quem-somos/geracao-eletrica-power/energia-hidreletrica/gigabateria-tamega"
+    }
+   ],
+   "financas": {
+    "caixa": 71.8,
+    "divida": 574.4,
+    "receitas": 114.9,
+    "custo_fixo": 23.0
+   }
+  },
+  {
+   "id": "endesa",
+   "nome": "Endesa",
+   "tipo": "utility",
+   "sede": {
+    "pais": "ES",
+    "cidade": "Madrid",
+    "q": "fonte"
+   },
+   "cm": "Nuno Barreiros",
+   "mw": {
+    "solar": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": 837,
+    "q": "fonte",
+    "nota": "Pego, controlo conjunto com a TrustEnergy"
+   },
+   "parques": [
+    {
+     "nome": "Pego (gás)",
+     "tec": "gas",
+     "mw": 837,
+     "un": "MW",
+     "estado": "op",
+     "se": "Pego",
+     "se_q": "est"
+    },
+    {
+     "nome": "Pego híbrido",
+     "tec": "solar",
+     "mw": 365,
+     "un": "MW",
+     "estado": "pipe",
+     "se": "Pego",
+     "se_q": "fonte"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Em Portugal operava só a central a gás do Pego e desenvolve um portefólio de cerca de 1 GW renovável e de armazenamento (set-2024).",
+     "url": "https://www.endesa.com/en/the-e-face/ecological-transition/guillermo-soler-calero-drive-transition-portugal"
+    }
+   ],
+   "financas": {
+    "caixa": 0.5,
+    "divida": 0.0,
+    "receitas": 0.0,
+    "custo_fixo": 0.4
+   }
+  },
+  {
+   "id": "finerge",
+   "nome": "Finerge",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Matosinhos",
+    "q": "fonte"
+   },
+   "cm": "Catarina Moutinho",
+   "mw": {
+    "solar": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "eolica": {
+     "v": 1795,
+     "q": "est"
+    },
+    "hidrica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "bess": {
+     "v": null,
+     "q": "sem_dados"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Solar flutuante de Paradela",
+     "tec": "solar",
+     "mw": 13,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Frades",
+     "se_q": "fonte"
+    },
+    {
+     "nome": "Solar flutuante de Salamonde",
+     "tec": "solar",
+     "mw": 8,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Caniçada",
+     "se_q": "fonte"
+    },
+    {
+     "nome": "Solar flutuante de Tabuaço",
+     "tec": "solar",
+     "mw": 17,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Vila da Rua",
+     "se_q": "est"
+    },
+    {
+     "nome": "Parques eólicos",
+     "tec": "eolica",
+     "mw": {
+      "v": 1795,
+      "q": "est"
+     },
+     "un": "MW",
+     "estado": "op"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Ganhou três dos lotes do leilão solar flutuante de 2021 (Paradela, Salamonde e Tabuaço).",
+     "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf"
+    }
+   ],
+   "financas": {
+    "caixa": 89.8,
+    "divida": 718.0,
+    "receitas": 143.6,
+    "custo_fixo": 28.7
+   }
+  },
+  {
+   "id": "iberwind",
+   "nome": "Iberwind",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Algés",
+    "q": "fonte"
+   },
+   "cm": "Rodrigo Sequeira",
+   "mw": {
+    "solar": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 726,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "31 parques eólicos",
+     "tec": "eolica",
+     "mw": 726,
+     "un": "MW",
+     "estado": "op"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Foi comprada pela Ventient em 2020 com 726 MW em 31 parques eólicos.",
+     "url": "https://www.energias-renovables.com/eolica/ventient-energy-adquiere-el-operador-eolico-portugues-20200831"
+    }
+   ],
+   "financas": {
+    "caixa": 36.3,
+    "divida": 290.4,
+    "receitas": 58.1,
+    "custo_fixo": 11.6
+   }
+  },
+  {
+   "id": "generg",
+   "nome": "Generg",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Lisboa",
+    "q": "fonte"
+   },
+   "cm": "Leonor Cardeira",
+   "mw": {
+    "solar": {
+     "v": 18.9,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 493,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 33.2,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Parques eólicos",
+     "tec": "eolica",
+     "mw": 493,
+     "un": "MW",
+     "estado": "op"
+    },
+    {
+     "nome": "Centrais hídricas",
+     "tec": "hidrica",
+     "mw": 33.2,
+     "un": "MW",
+     "estado": "op"
+    },
+    {
+     "nome": "Centrais solares",
+     "tec": "solar",
+     "mw": 18.9,
+     "un": "MW",
+     "estado": "op"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "É 100 % TotalEnergies desde 25-07-2023.",
+     "url": "https://www.generg.pt/pt/"
+    }
+   ],
+   "financas": {
+    "caixa": 27.3,
+    "divida": 218.0,
+    "receitas": 43.6,
+    "custo_fixo": 8.7
+   }
+  },
+  {
+   "id": "akuo",
+   "nome": "Akuo",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "FR",
+    "cidade": "Paris",
+    "q": "fonte"
+   },
+   "cm": "Vasco Teixeira de Melo",
+   "mw": {
+    "solar": {
+     "v": 373,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "hidrica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Santas",
+     "tec": "solar",
+     "mw": 226,
+     "un": "MW",
+     "estado": "op",
+     "se": "Estremoz",
+     "se_q": "fonte",
+     "kv": 400
+    },
+    {
+     "nome": "Amar/Margalha",
+     "tec": "solar",
+     "mw": 147,
+     "un": "MW",
+     "estado": "op",
+     "se": "Falagueira",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "A central de Santas, inaugurada em 26-09-2024, foi vencedora do leilão de agosto de 2019.",
+     "url": "https://www.akuoenergy.com/en/press/akuo-inaugurates-one-portugals-largest-solar-plants"
+    }
+   ],
+   "financas": {
+    "caixa": 18.7,
+    "divida": 149.2,
+    "receitas": 29.8,
+    "custo_fixo": 6.0
+   }
+  },
+  {
+   "id": "voltalia",
+   "nome": "Voltalia",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "FR",
+    "cidade": "Paris",
+    "q": "fonte"
+   },
+   "cm": "Patrícia Gameiro",
+   "mw": {
+    "solar": {
+     "v": 78,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": null,
+     "q": "sem_dados"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Solar flutuante do Cabril",
+     "tec": "solar",
+     "mw": 33,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Penela",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Ganhou o lote do Cabril no leilão solar flutuante de 2021.",
+     "url": "https://dgeg.gov.pt/media/piibrizd/quadro-final-a-publicar-leilão-2021_ass_ta_je_signed.pdf"
+    }
+   ],
+   "financas": {
+    "caixa": 3.9,
+    "divida": 31.2,
+    "receitas": 6.2,
+    "custo_fixo": 1.2
+   }
+  },
+  {
+   "id": "lightsource-bp",
+   "nome": "Lightsource bp",
+   "tipo": "promotor",
+   "sede": {
+    "pais": "GB",
+    "cidade": "Londres",
+    "q": "fonte"
+   },
+   "cm": "Hugo Pestana",
+   "mw": {
+    "solar": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Sophia",
+     "tec": "solar",
+     "mw": 573,
+     "un": "MW",
+     "estado": "pipe",
+     "se": "Fundão",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Vendeu o projeto Cibele (130 MWp) à Exus antes de o construir.",
+     "url": "https://lightsourcebp.com/news/portugal-exus-renewables-acquires-lightsource-bps-130mwp-cibele-portuguese-solar-farm/"
+    }
+   ],
+   "financas": {
+    "caixa": 0.5,
+    "divida": 0.0,
+    "receitas": 0.0,
+    "custo_fixo": 0.4
+   }
+  },
+  {
+   "id": "tagenergy",
+   "nome": "TagEnergy",
+   "tipo": "promotor",
+   "sede": {
+    "pais": "FR",
+    "cidade": "Paris",
+    "q": "est"
+   },
+   "cm": "Filipa Quintela",
+   "mw": {
+    "solar": {
+     "v": 0,
+     "q": "est"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Lote 2020 L8 (Almancil)",
+     "tec": "solar",
+     "mw": 10,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Faro",
+     "se_q": "est"
+    },
+    {
+     "nome": "Lote 2020 L9 (Armação de Pêra)",
+     "tec": "solar",
+     "mw": 10,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Portimão",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "A imprensa associa os seus lotes de 2020 ao grupo Impala, seu acionista.",
+     "url": "https://jornaleconomico.sapo.pt/noticias/centrais-solares-do-leilao-de-2020-continuam-sem-ver-a-luz-do-sol/"
+    }
+   ],
+   "financas": {
+    "caixa": 0.5,
+    "divida": 0.0,
+    "receitas": 0.0,
+    "custo_fixo": 0.4
+   }
+  },
+  {
+   "id": "prosolia",
+   "nome": "Prosolia Energy",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "ES",
+    "cidade": "Valência",
+    "q": "fonte"
+   },
+   "cm": "Bruno Cadete",
+   "mw": {
+    "solar": {
+     "v": 77.4,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "hidrica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "bess": {
+     "v": 15,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Albispark",
+     "tec": "solar",
+     "mw": 34.4,
+     "un": "MW",
+     "estado": "op",
+     "se": "Castelo Branco",
+     "se_q": "est",
+     "kv": 150
+    },
+    {
+     "nome": "Albispark (baterias)",
+     "tec": "bess",
+     "mw": 15,
+     "un": "MW",
+     "estado": "op",
+     "se": "Castelo Branco",
+     "se_q": "est",
+     "kv": 150
+    },
+    {
+     "nome": "Boidobra",
+     "tec": "solar",
+     "mw": 43,
+     "un": "MW",
+     "estado": "op",
+     "se": "Fundão",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "A Albispark, em Castelo Branco, junta 34,4 MWp solares a baterias de 15 MW / 60 MWh, ligadas à RNT a 150 kV.",
+     "url": "https://prosolia.com/news/albispark-battery-energy-storage-portugal/"
+    }
+   ],
+   "financas": {
+    "caixa": 4.6,
+    "divida": 37.0,
+    "receitas": 7.4,
+    "custo_fixo": 1.5
+   }
+  },
+  {
+   "id": "hyperion",
+   "nome": "Hyperion Renewables",
+   "tipo": "promotor",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Lisboa",
+    "q": "fonte"
+   },
+   "cm": "Marta Sampaio",
+   "mw": {
+    "solar": {
+     "v": 80,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Cavaleira",
+     "tec": "solar",
+     "mw": 52,
+     "un": "MW",
+     "estado": "op",
+     "se": "Estremoz",
+     "se_q": "est"
+    },
+    {
+     "nome": "Vale de Moura",
+     "tec": "solar",
+     "mw": 28,
+     "un": "MW",
+     "estado": "op",
+     "se": "Évora",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Obteve 210 M€ de financiamento para a carteira híbrida Theia (fev-2026).",
+     "url": "https://hyperionrenewables.com/hyperion-renewables-secures-e210m-financing-for-hybrid-renewables-in-portugal/"
+    }
+   ],
+   "financas": {
+    "caixa": 4.0,
+    "divida": 32.0,
+    "receitas": 6.4,
+    "custo_fixo": 1.3
+   }
+  },
+  {
+   "id": "movhera",
+   "nome": "Movhera",
+   "tipo": "fundo",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Miranda do Douro",
+    "q": "fonte"
+   },
+   "cm": "Gonçalo Rebelo",
+   "mw": {
+    "solar": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 1691,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Bemposta",
+     "tec": "hidrica",
+     "mw": 439,
+     "un": "MW",
+     "estado": "op",
+     "se": "Bemposta",
+     "se_q": "est"
+    },
+    {
+     "nome": "Picote",
+     "tec": "hidrica",
+     "mw": 433,
+     "un": "MW",
+     "estado": "op",
+     "se": "Picote",
+     "se_q": "est"
+    },
+    {
+     "nome": "Miranda",
+     "tec": "hidrica",
+     "mw": 363,
+     "un": "MW",
+     "estado": "op",
+     "se": "Miranda",
+     "se_q": "est"
+    },
+    {
+     "nome": "Foz Tua",
+     "tec": "hidrica",
+     "mw": 274,
+     "un": "MW",
+     "estado": "op",
+     "se": "Foz Tua",
+     "se_q": "est"
+    },
+    {
+     "nome": "Baixo Sabor e Feiticeiro",
+     "tec": "hidrica",
+     "mw": 182,
+     "un": "MW",
+     "estado": "op",
+     "se": "Lagoaça",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "As suas seis barragens do Douro foram compradas à EDP em 2020.",
+     "url": "https://www.movhera.pt/pt/our-assets"
+    }
+   ],
+   "financas": {
+    "caixa": 84.6,
+    "divida": 676.4,
+    "receitas": 135.3,
+    "custo_fixo": 27.1
+   }
+  },
+  {
+   "id": "hanwha",
+   "nome": "Hanwha Q CELLS",
+   "tipo": "promotor",
+   "sede": {
+    "pais": "KR",
+    "cidade": "Seul",
+    "q": "fonte"
+   },
+   "cm": "Marisa Calado",
+   "mw": {
+    "solar": {
+     "v": 25,
+     "q": "fonte"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Larinho e Canha",
+     "tec": "solar",
+     "mw": 25,
+     "un": "MW",
+     "estado": "op"
+    },
+    {
+     "nome": "Lote 2020 L4 (Ferreira do Alentejo)",
+     "tec": "solar",
+     "mw": 50,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Ferreira do Alentejo",
+     "se_q": "fonte"
+    },
+    {
+     "nome": "Lote 2020 L10 (Vale do Gaio)",
+     "tec": "solar",
+     "mw": 19,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Ferreira do Alentejo",
+     "se_q": "est"
+    },
+    {
+     "nome": "Lote 2020 L11 (Beja)",
+     "tec": "solar",
+     "mw": 19,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Ferreira do Alentejo",
+     "se_q": "est"
+    },
+    {
+     "nome": "Lote 2020 L12 (Porteirinhos)",
+     "tec": "solar",
+     "mw": 19,
+     "un": "MVA",
+     "estado": "pipe",
+     "se": "Ourique",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Ganhou 315 MVA no primeiro leilão solar com armazenamento em Portugal (2020).",
+     "url": "https://www.hanwha.com/newsroom/news/press-releases/hanwha-q-cells-awarded-315-mw-solar-capacity-in-first-solar-storage-auction-in-portugal.do"
+    }
+   ],
+   "financas": {
+    "caixa": 1.2,
+    "divida": 10.0,
+    "receitas": 2.0,
+    "custo_fixo": 0.4
+   }
+  },
+  {
+   "id": "aura-power",
+   "nome": "Aura Power",
+   "tipo": "promotor",
+   "sede": {
+    "pais": "GB",
+    "cidade": "Bristol",
+    "q": "fonte"
+   },
+   "cm": "André Lobato",
+   "mw": {
+    "solar": {
+     "v": 0,
+     "q": "est"
+    },
+    "eolica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "hidrica": {
+     "v": 0,
+     "q": "fonte"
+    },
+    "bess": {
+     "v": 0,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Baterias de Ferreira do Alentejo",
+     "tec": "bess",
+     "mw": 307,
+     "un": "MW",
+     "estado": "pipe",
+     "se": "Ferreira do Alentejo",
+     "se_q": "est"
+    },
+    {
+     "nome": "Baterias de Palmela",
+     "tec": "bess",
+     "mw": 108,
+     "un": "MW",
+     "estado": "pipe",
+     "se": "Palmela",
+     "se_q": "fonte",
+     "kv": 150
+    },
+    {
+     "nome": "Baterias de Pegões",
+     "tec": "bess",
+     "mw": 100,
+     "un": "MW",
+     "estado": "pipe",
+     "se": "Pegões",
+     "se_q": "est"
+    },
+    {
+     "nome": "S. Domingos de Ana Loura",
+     "tec": "solar",
+     "mw": 262,
+     "un": "MW",
+     "estado": "pipe"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Começou a construir Rio Maior com a Neoen, que hoje a detém a 100 %.",
+     "url": "https://www.aurapower.com/latest-news/construction-begins-on-one-of-portugals-largest-solar-farms"
+    }
+   ],
+   "financas": {
+    "caixa": 0.5,
+    "divida": 0.0,
+    "receitas": 0.0,
+    "custo_fixo": 0.4
+   }
+  },
+  {
+   "id": "trustenergy",
+   "nome": "TrustEnergy",
+   "tipo": "ipp",
+   "sede": {
+    "pais": null,
+    "cidade": null,
+    "q": "sem_dados"
+   },
+   "cm": "Teresa Vilaça",
+   "mw": {
+    "solar": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "eolica": {
+     "v": null,
+     "q": "sem_dados"
+    }
+   },
+   "gas": {
+    "v": 837,
+    "q": "fonte",
+    "nota": "Pego, controlo conjunto com a Endesa"
+   },
+   "parques": [
+    {
+     "nome": "Pego (gás)",
+     "tec": "gas",
+     "mw": 837,
+     "un": "MW",
+     "estado": "op",
+     "se": "Pego",
+     "se_q": "est"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Antes da cisão de 2024 era o «segundo maior ator no setor de eletricidade em Portugal».",
+     "url": "https://jornaleconomico.sapo.pt/noticias/trustenergy-franceses-e-japoneses-concluem-divorcio/"
+    }
+   ],
+   "financas": {
+    "caixa": 0.5,
+    "divida": 0.0,
+    "receitas": 0.0,
+    "custo_fixo": 0.4
+   }
+  },
+  {
+   "id": "greenvolt",
+   "nome": "Greenvolt",
+   "tipo": "ipp",
+   "sede": {
+    "pais": "PT",
+    "cidade": "Lisboa",
+    "q": "fonte"
+   },
+   "cm": "Ricardo Fontes",
+   "mw": {
+    "solar": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "bess": {
+     "v": null,
+     "q": "sem_dados"
+    },
+    "biomassa": {
+     "v": 90.5,
+     "q": "fonte"
+    }
+   },
+   "gas": {
+    "v": null,
+    "q": "sem_dados"
+   },
+   "parques": [
+    {
+     "nome": "Figueira da Foz II",
+     "tec": "biomassa",
+     "mw": 34.5,
+     "un": "MW",
+     "estado": "op",
+     "se": "Lavos",
+     "se_q": "est"
+    },
+    {
+     "nome": "Figueira da Foz I",
+     "tec": "biomassa",
+     "mw": 30,
+     "un": "MW",
+     "estado": "op"
+    },
+    {
+     "nome": "Ródão",
+     "tec": "biomassa",
+     "mw": 13,
+     "un": "MW",
+     "estado": "op"
+    },
+    {
+     "nome": "Constância",
+     "tec": "biomassa",
+     "mw": 13,
+     "un": "MW",
+     "estado": "op"
+    }
+   ],
+   "curiosidades": [
+    {
+     "t": "Diz-se líder de mercado na biomassa em Portugal, com centrais alimentadas por resíduos florestais.",
+     "url": "https://greenvolt.com/wp-content/uploads/2026/04/PT_-Greenvolt-Annual-Report-31.12.2025-1.pdf"
+    }
+   ],
+   "financas": {
+    "caixa": 4.5,
+    "divida": 36.2,
+    "receitas": 7.2,
+    "custo_fixo": 1.4
+   }
+  }
+ ]
+}
