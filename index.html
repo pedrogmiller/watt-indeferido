@@ -5764,6 +5764,7 @@
   #arranque .ar-tb tr.ar-lg td { background: #f1f5f9; border-top: 1px solid #cbd5e1; }
   #arranque .ar-tb tr.ar-pq td:first-child { padding-left: 14px; }
   #arranque .ar-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; background: #334155; border-radius: 3px; padding: 1px 5px; margin-right: 6px; }
+  #arranque .ar-pn { font-size: 11px; color: #64748b; margin-top: 2px; font-weight: 400; }
   #arranque .ar-lg2 { font-size: 12px; color: #334155; margin-top: 3px; }
   #arranque .ar-lgp { font-size: 12px; color: #64748b; margin-left: 6px; font-weight: 400; }
   #arranque .ar-sub { display: block; font-size: 11px; color: #64748b; }
@@ -19704,6 +19705,7 @@
     if (o === null || o === undefined) return '<span class="ar-sd">—</span>';
     const q = (typeof o === 'object') ? o.q : 'fonte';
     const v = (typeof o === 'object') ? o.v : o;
+    if (q === 'por_confirmar') return '<span class="ar-sd">por confirmar</span>';
     if (q === 'sem_dados' || v === null || v === undefined) return '<span class="ar-sd">—</span>';
     const s = arranqueFmtNum(v) + (unit ? '\u00a0' + unit : '');
     return q === 'est' ? arranqueTip('≈', 'estimativa') + '\u00a0' + s : s;
@@ -19768,7 +19770,7 @@
   function arranqueParqueRow(p) {
     const v = (typeof p.mw === 'object') ? p.mw : { v: p.mw, q: 'fonte' };
     const op = p.estado === 'op';
-    return '<tr class="ar-pq"><td><span class="ar-pi"><svg viewBox="0 0 16 16" aria-label="' + (ARRANQUE_TEC[p.tec] || '') + '" fill="none" stroke="#0f172a" stroke-width="1.4">' + (ARRANQUE_TEC_SVG[p.tec] || '') + '</svg></span>' + escapeHtml(p.nome) + '</td><td>' + (ARRANQUE_TEC[p.tec] || '—') + '</td><td class="n">' + arranqueVal(v, p.un === 'MVA' ? 'MVA' : '') + '</td><td>' + (op ? 'Operação' : 'Pipeline') + '</td></tr>';
+    return '<tr class="ar-pq"><td><span class="ar-pi"><svg viewBox="0 0 16 16" aria-label="' + (ARRANQUE_TEC[p.tec] || '') + '" fill="none" stroke="#0f172a" stroke-width="1.4">' + (ARRANQUE_TEC_SVG[p.tec] || '') + '</svg></span>' + escapeHtml(p.nome) + (p.nota ? '<div class="ar-pn">' + escapeHtml(p.nota) + '</div>' : '') + '</td><td>' + (ARRANQUE_TEC[p.tec] || '—') + '</td><td class="n">' + arranqueVal(v, p.un === 'MVA' ? 'MVA' : '') + (p.mwh ? '<div class="ar-pn">' + arranqueFmtNum(p.mwh) + '\u00a0MWh</div>' : '') + '</td><td>' + (op ? 'Operação' : 'Pipeline') + '</td></tr>';
   }
   function arranqueAtivos(c, trc) {
     const ps = (c && c.parques) || [];
@@ -19786,14 +19788,15 @@
     });
     groups.sort((a, b) => (a.se ? 0 : 1) - (b.se ? 0 : 1));
     groups.forEach((g) => {
-      const anyOp = g.list.some((p) => p.estado === 'op');
+      const anyOp = g.list.some((p) => p.estado === 'op' && p.trc_cod !== false);
       const head = g.se
         ? '<b>' + (g.q === 'est' ? arranqueTip('≈', 'estimativa') + ' ' : '') + 'SE ' + escapeHtml(g.se) + (g.kv ? ' · ' + g.kv + ' kV' : '') + '</b>'
         : '<b>Ligação sem dados</b><span class="ar-lgp">fonte por confirmar</span>';
       body += '<tr class="ar-lg"><td colspan="4"><div><span class="ar-tag">Ligação</span>' + head + '</div>' +
-        (g.se && anyOp ? '<div class="ar-lg2">Válida enquanto a central operar</div>' : '') + '</td></tr>' +
+        (g.se ? (anyOp ? '<div class="ar-lg2">Válida enquanto a central operar</div>' : (g.list.some((p) => p.trc_cod === false || p.estado !== 'op') && g.kv ? '<div class="ar-lg2">Prazo para começar a produzir</div>' : '')) : '') + '</td></tr>' +
         g.list.map(arranqueParqueRow).join('');
     });
+    if (c && c.pipeline_total) body += '<tr class="ar-pq"><td>Carteira em desenvolvimento<div class="ar-pn">' + escapeHtml(c.pipeline_total.t || '') + '</div></td><td>—</td><td class="n">' + arranqueFmtNum(c.pipeline_total.v) + '</td><td>Pipeline</td></tr>';
     return arranqueSec('Ativos') + '<table class="ar-tb ar-at"><thead><tr><th>Ativo</th><th>Tec</th><th class="n">MW</th><th>Estado</th></tr></thead><tbody>' + body + '</tbody></table>';
   }
   function arranqueFichaBody() {
