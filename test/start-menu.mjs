@@ -966,7 +966,20 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (!/≈/.test(tagE)) throw new Error('TagEnergy: ' + tagE);
     const edpPe = await page.locator('[data-rival="edp"]').evaluate((el) => getComputedStyle(el).pointerEvents);
     if (edpPe === 'none') throw new Error('rival is not clickable');
-    if (await page.locator('[data-rival]').count() !== 18) throw new Error('rival count');
+    if (await page.locator('[data-rival]').count() !== 19) throw new Error('company count');
+    for (const [id, re] of [['neoen', /Neoen[\s\S]*283\s*MW/], ['aura-power', /Aura Power[\s\S]*≈\s*27\s*MW/]]) {
+      const row = await page.locator('[data-rival="' + id + '"]').innerText();
+      if (!re.test(row)) throw new Error(id + ' row ' + row);
+      await page.locator('[data-rival="' + id + '"]').click();
+      await page.waitForSelector('#arranque[data-step="ficha"] #arranqueBack');
+      const fx = await page.locator('#arranque').innerText();
+      if (/rival/i.test(fx)) throw new Error(id + ' ficha rival');
+      if (id === 'neoen' && (!/Vicente Alvarenga/.test(fx) || !/Rio Maior/.test(fx) || !/Adelaide Seixo/.test(fx) || /Cabrela/.test(fx))) throw new Error('neoen ficha ' + fx.slice(0, 600));
+      if (id === 'aura-power' && (/Rio Maior|Neoen/.test(fx) || !/Casal da Cortiça/.test(fx) || !/Natália Prates/.test(fx))) throw new Error('aura ficha ' + fx.slice(0, 600));
+      { const vp = page.viewportSize(); const h = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)); await page.setViewportSize({ width: vp.width, height: Math.max(vp.height, h) }); await page.screenshot({ path: path.join(OUT, 'ficha-' + id + '-' + tag + '.png') }); await page.setViewportSize(vp); }
+      await page.locator('#arranqueBack').click();
+      await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
+    }
     const body = await page.locator('#arranque').innerText();
     if (/HIPÓTESE|\[GM\]/.test(body)) throw new Error('marker on empresa');
     if ((await page.locator('#arranque h1').innerText()).trim() !== 'Empresas') throw new Error('empresa title');
