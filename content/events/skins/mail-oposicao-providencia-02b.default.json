@@ -3,6 +3,6 @@
   "skin_id": "default",
   "from_name": "Tribunal Administrativo e Fiscal de {{tribunal}}",
   "subject": "O tribunal manteve a suspensão",
-  "body": "A obra continua parada até à decisão final. A ação principal continua, mas no jogo a obra só fica parada até {{econ_meses_teto_suspensao}} meses (no máximo 8). Ainda podes negociar ou redesenhar. O tempo {{conta_ou_parado}}. Atraso acumulado: {{atraso_total}} meses. Folga: {{meses_folga}} meses.",
+  "body": "A obra continua parada até à decisão final. A ação principal continua, mas no jogo a obra só fica parada até {{econ_meses_teto_suspensao}} meses (no máximo 8). Ainda podes negociar ou redesenhar. O tempo {{conta_ou_parado}}. Atraso acumulado: {{atraso_total}}. Folga: {{meses_folga}}.",
   "params": {}
 }

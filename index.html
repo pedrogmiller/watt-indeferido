@@ -17508,8 +17508,8 @@
     try { const d = objDateUtc((month | 0) + 1); ctx.data_sessao = '15 de ' + OBJ_MONTHS[d.getUTCMonth()]; } catch (_) { ctx.data_sessao = '15'; }
     const trcM = (mailLoop.tagMonth && mailLoop.tagMonth.trc_won != null) ? (mailLoop.tagMonth.trc_won | 0) : 0;
     ctx.mes_trc = String(Math.max(0, (month | 0) - trcM));
-    const mk = opoNextMarco(); ctx.proximo_marco = mk.label; ctx.meses_para_marco = String(mk.meses);
-    ctx.atraso_total = String(s.atrasoConta | 0); ctx.meses_folga = String(Math.max(0, opoFolga()));
+    const mk = opoNextMarco(); ctx.proximo_marco = mk.label; ctx.meses_para_marco = opoMeses(mk.meses);
+    ctx.atraso_total = opoMeses(s.atrasoConta | 0); ctx.meses_folga = opoMeses(Math.max(0, opoFolga()));
     ctx.autor_acao = (t.patrimonio_ocultado | 0) ? 'O Ministério Público' : ((t.env_mitigation_flag | 0) ? 'Uma associação ambiental' : 'Uma associação de moradores');
     ctx.ato_suspenso = (t.construction_started | 0) ? 'a licença de obras da Câmara' : ((t.lp_granted | 0) ? 'a licença de produção' : 'a declaração de impacte ambiental');
     let mw = 99; try { mw = Math.round(lotEcon(opoLot()).mva) || mw; } catch (_) {}
@@ -17554,6 +17554,7 @@
     s.conta = (t.patrimonio_ocultado | 0) > 0;
     ['providencia_cautelar_active', 'obra_suspensa', 'relogio_trc_pausa_pendente', 'garantia_custo_corre'].forEach((k) => { t[k] = (t[k] | 0) + 1; });
   }
+  function opoMeses(n) { n = Number(n) || 0; return n + (n === 1 ? ' mês' : ' meses'); }
   function opoEndSusp(month, tag) {
     const s = opoState(); const t = mailLoop.tags;
     if (!s.susp) return;
