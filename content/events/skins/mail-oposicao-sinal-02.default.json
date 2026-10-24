@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-sinal-02",
+  "skin_id": "default",
+  "from_name": "Junta de Freguesia de {{freguesia}}",
+  "subject": "Pedido de sessão de esclarecimento na Junta",
+  "body": "A população quer ouvir a empresa.\n\nMarcámos uma sessão para dia {{data_sessao}}, no salão da Junta.\n\nEsperamos muita gente. Há quem esteja zangado.\n\nAs perguntas mais repetidas: quantas árvores vão ser cortadas, por onde passa a linha e o que ganha a freguesia.",
+  "params": {}
+}

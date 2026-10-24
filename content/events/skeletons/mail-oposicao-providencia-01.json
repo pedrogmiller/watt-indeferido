@@ -1,0 +1,28 @@
+{
+  "id": "mail-oposicao-providencia-01",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "TRIBUNAL",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Avisar a DGEG já",
+      "effects": [
+        "oposicao_avisar_dgeg",
+        "suspensao_comunicada_dgeg"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Ver as opções",
+      "effects": [
+        "oposicao_ver_opcoes"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

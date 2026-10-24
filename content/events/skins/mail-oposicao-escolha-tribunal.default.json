@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-escolha-tribunal",
+  "skin_id": "default",
+  "from_name": "{{sociedade_advogados}} — Advogados",
+  "subject": "Estratégia de defesa no tribunal",
+  "body": "Podemos defender o projeto no tribunal.\n\nTemos argumentos: o projeto tem licenças e cumpriu a consulta pública.\n\nTambém podemos pedir à entidade pública que declare que parar a obra prejudica o interesse público. Isso pode levantar a suspensão mais depressa.\n\nMas não há garantias. E a comunidade vai ver isto como guerra.",
+  "params": {}
+}

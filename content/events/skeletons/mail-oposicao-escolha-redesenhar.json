@@ -1,0 +1,37 @@
+{
+  "id": "mail-oposicao-escolha-redesenhar",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Avançar com o redesenho",
+      "effects": [
+        "oposicao_redesenho_grande",
+        "cost_downsize",
+        "opp_downsize",
+        "redesenho_iniciado"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Redesenho pequeno (só a linha)",
+      "effects": [
+        "oposicao_redesenho_pequeno"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Desistir da ideia",
+      "effects": [
+        "oposicao_redesenho_voltar"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

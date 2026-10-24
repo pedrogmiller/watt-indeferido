@@ -3975,6 +3975,7 @@
   .mail-type-chip.advogado { color: #92400e; background: #fffbeb; border-color: #fde68a; }
   .mail-type-chip.rede { color: #0e7490; background: #ecfeff; border-color: #a5f3fc; }
   .mail-type-chip.comunidade { color: #be185d; background: #fdf2f8; border-color: #fbcfe8; }
+  .mail-type-chip.tribunal { color: #334155; background: #f1f5f9; border-color: #cbd5e1; }
   .mail-type-chip.media { color: #b45309; background: #fffbeb; border-color: #fcd34d; }
   .mail-type-chip.mercado { color: #0f766e; background: #f0fdfa; border-color: #5eead4; }
   .mail-type-chip.apa { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
@@ -12916,6 +12917,7 @@
     comunidade: 'Comunidade',
     media: 'Imprensa',
     mercado: 'Mercado',
+    tribunal: 'Tribunal',
     apa: 'APA',
     dgeg: 'DGEG',
     concorrente: 'Concorrente',
@@ -12944,6 +12946,7 @@
     REDE: 'rede',
     COMUNIDADE: 'comunidade',
     MEDIA: 'media',
+    TRIBUNAL: 'tribunal',
     MERCADO: 'mercado',
     APA: 'apa',
     BANCO: 'banco',
@@ -16623,6 +16626,7 @@
     try { flushSlipQueue(); } catch (err) { console.warn('[WattMail] slip flush', err); }
     try { shiftMechanicalCompletionForObraDelay(effects, opts); } catch (err) { console.warn('[WattMail] obra delay', err); }
     try { syncLineReady(); } catch (err) { console.warn('[WattMail] line ready', err); }
+    if (!opts.skipEconomics) { try { oposicaoOnEffects(effects.map(String)); } catch (err) { console.warn('[WattOpo] choice', err); } }
     try { if (typeof stakesApplySpecial === 'function') stakesApplySpecial(effects.map(String)); } catch (err) { console.warn('[WattStakes] effects', err); }
     if (effects.some((e) => LAND_CHOSEN_TAGS.indexOf(String(e)) !== -1 || e === 'reopen_tech_plan' || e === 'design_trim_threshold' || e === 'underground_cable')) {
       try { ensureEnvPath(); } catch (err) { console.warn('[WattMail] env route', err); }
@@ -17444,6 +17448,340 @@
     return meur;
   }
 
+  /* ── Oposição local / providência cautelar v0.1 (2026-10-23). Texto: GM (cartas literais). Valores: effects-economy.json oposicao_v01_2026_10_23.
+   * Raro (sorteio único por projeto), com sinais sempre antes (carta 5 só com ≥ 2 sinais recebidos e ≥ 1 ignorado),
+   * e com saída sempre aberta (negociar 6A, redesenhar 7A; teto de suspensão meses_teto_suspensao). */
+  const OPO = {
+    c1: 'mail-oposicao-sinal-01', c2: 'mail-oposicao-sinal-02', c2b: 'mail-oposicao-sinal-02b', c3: 'mail-oposicao-sinal-03', c4: 'mail-oposicao-sinal-04', c4b: 'mail-oposicao-sinal-04b',
+    c5: 'mail-oposicao-providencia-01', c5a: 'mail-oposicao-providencia-02a', c5b: 'mail-oposicao-providencia-02b',
+    c6: 'mail-oposicao-escolha-negociar', c7: 'mail-oposicao-escolha-redesenhar', c8: 'mail-oposicao-escolha-tribunal', c9: 'mail-oposicao-escolha-prorrogacao', c10: 'mail-oposicao-desistir'
+  };
+  const OPO_IGNORE = { oposicao_ignorar_peticao: 1, oposicao_so_comunicado: 1, oposicao_sem_resposta: 1, oposicao_adiar_reuniao: 1, oposicao_silencio: 1 };
+  function opoEcon() {
+    const p = window.__wattEventPack;
+    return (p && p.effects_economy && p.effects_economy.oposicao_v01_2026_10_23) || null;
+  }
+  function opoState() {
+    mailLoop.opo = mailLoop.opo || { rolled: false, active: false, closed: false, nivel: 0, trust: 0, sinais: 0, ignorados: 0, queue: [], pending: [], atrasoConta: 0, pausa: 0, susp: null, log: [] };
+    return mailLoop.opo;
+  }
+  function opoLot() { return (mailLoop && mailLoop.seId) || 'ourique'; }
+  function opoTxt(key) {
+    const t = (opoEcon() || {}).texto || {};
+    const v = t[key];
+    return (v && typeof v === 'object') ? (v[opoLot()] || v.ourique || '') : (v == null ? '' : v);
+  }
+  function opoFolga() { const e = opoEcon() || {}; const s = opoState(); return (Number(e.folga_trc_meses) || 0) - (s.atrasoConta | 0); }
+  function opoInTutorial() {
+    try { if (typeof tutActive === 'function') return !!tutActive(); } catch (_) {}
+    return false;
+  }
+  /** Probabilidade de sinais (carta 1) para o projeto atual. */
+  function opoProbSinais() {
+    const e = opoEcon();
+    if (!e) return 0;
+    const limiar = (e.lotes_limiar || []).indexOf(opoLot()) !== -1;
+    let p = limiar ? Number(e.prob_oposicao_limiar) : Number(e.prob_oposicao_base);
+    const t = mailLoop.tags || {};
+    if ((t.consulta_comunidade_cedo | 0) > 0) p -= 0.06;
+    return Math.max(0, p);
+  }
+  function opoNextMarco() {
+    const d = mailLoop.deadlines || {}; const fired = mailLoop.firedDeadlines || {};
+    const m = mailLoop.month | 0;
+    let best = null;
+    Object.keys(d).forEach((id) => {
+      const x = d[id];
+      if (!x || fired[id] || x.atMonth == null || (x.atMonth | 0) <= m || !DEADLINE_LABEL_PT[id]) return;
+      if (!best || (x.atMonth | 0) < best.at) best = { id: id, at: x.atMonth | 0 };
+    });
+    return best ? { label: DEADLINE_LABEL_PT[best.id], meses: best.at - m } : { label: 'Licença de exploração', meses: 0 };
+  }
+  function opoCtx(month) {
+    const e = opoEcon() || {}; const s = opoState(); const t = mailLoop.tags || {};
+    const ctx = {};
+    Object.keys(e).forEach((k) => { if (typeof e[k] === 'number') ctx['econ_' + k] = String(e[k]).replace('.', ','); });
+    ['meses_decisao_providencia', 'meses_teto_suspensao', 'meses_redesenho'].forEach((k) => { ctx['econ_' + k] = String(e[k]); });
+    ctx.projeto = opoTxt('projeto'); ctx.concelho = opoTxt('concelho'); ctx.freguesia = opoTxt('freguesia'); ctx.tribunal = opoTxt('tribunal');
+    ctx.sociedade_advogados = opoTxt('sociedade_advogados'); ctx.elemento_afetado = opoTxt('elemento_afetado');
+    ctx.n_assinaturas = String(s.stage3 ? opoTxt('n_assinaturas_3') : opoTxt('n_assinaturas_1')).replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
+    try { const d = objDateUtc((month | 0) + 1); ctx.data_sessao = '15 de ' + OBJ_MONTHS[d.getUTCMonth()]; } catch (_) { ctx.data_sessao = '15'; }
+    const trcM = (mailLoop.tagMonth && mailLoop.tagMonth.trc_won != null) ? (mailLoop.tagMonth.trc_won | 0) : 0;
+    ctx.mes_trc = String(Math.max(0, (month | 0) - trcM));
+    const mk = opoNextMarco(); ctx.proximo_marco = mk.label; ctx.meses_para_marco = opoMeses(mk.meses);
+    ctx.atraso_total = opoMeses(s.atrasoConta | 0); ctx.meses_folga = opoMeses(Math.max(0, opoFolga()));
+    ctx.autor_acao = (t.patrimonio_ocultado | 0) ? 'O Ministério Público' : ((t.env_mitigation_flag | 0) ? 'Uma associação ambiental' : 'Uma associação de moradores');
+    ctx.ato_suspenso = (t.construction_started | 0) ? 'a licença de obras da Câmara' : ((t.lp_granted | 0) ? 'a licença de produção' : 'a declaração de impacte ambiental');
+    let mw = 99; try { mw = Math.round(lotEcon(opoLot()).mva) || mw; } catch (_) {}
+    if (s.mwAtual == null) s.mwAtual = mw;
+    ctx.mw_atual = String(s.mwAtual); ctx.mw_novo = String(Math.round(s.mwAtual * (1 - (Number(e.reducao_redesenho) || 0))));
+    ctx.aviso_folga = (opoFolga() < (Number(e.meses_redesenho) || 0)) ? '\n\nAtenção: o redesenho demora mais do que a folga que tens. Podes perder o TRC.' : '';
+    ctx.conta_ou_parado = s.conta ? 'conta para a tua folga' : 'não conta para a tua folga';
+    return ctx;
+  }
+  function opoCompose(skId, month) {
+    const pack = window.__wattEventPack;
+    const sk = pack && pack.skeletons.find((x) => x.id === skId);
+    const skin = sk && getSkinById(skId, 'default', pack);
+    if (!sk || !skin) { console.warn('[WattOpo] missing card', skId); return null; }
+    const s = opoState();
+    s.n = (s.n | 0) + 1;
+    const L = composeLetter({ skeleton: sk, skin: skin, seSheet: getSeSheet(opoLot(), pack), opts: { id: skId + ':m' + month + ':' + s.n, when: 'Mês ' + month, ctx: opoCtx(month) } });
+    L.ruleId = 'oposicao';
+    s.log.push({ m: month, card: skId });
+    return L;
+  }
+  function opoQueue(card, at) { opoState().queue.push({ card: card, at: at | 0 }); }
+  /** Move the build and (if the time does not count) the TRC clock by n months. */
+  function opoPushDeadlines(n, counts) {
+    if (!(n > 0)) return;
+    ['epc_mechanical_completion', 'grid_connection', 'player_grid'].concat(counts ? [] : ['le_deadline']).forEach((id) => {
+      const d = mailLoop.deadlines && mailLoop.deadlines[id];
+      if (d && d.atMonth != null) { try { moveDeadline(id, (d.atMonth | 0) + n, 'oposicao', { extension: true }); } catch (_) {} }
+    });
+  }
+  function opoDelay(n, counts) {
+    const s = opoState();
+    if (counts) s.atrasoConta = (s.atrasoConta | 0) + n;
+    opoPushDeadlines(n, counts);
+    // Passou a folga do TRC: oferece sempre o pedido de prorrogação (carta 9) como saída.
+    if (counts && opoFolga() < 0 && !s.auto9 && !(mailLoop.tags.prorrogacao_excecional_granted | 0)) { s.auto9 = true; opoQueue('c9', (mailLoop.month | 0)); }
+  }
+  function opoRoll(p, key) { const s = opoState(); if (s.forced && key && Object.prototype.hasOwnProperty.call(s.forced, key)) return !!s.forced[key]; return Math.random() < p; }
+  function opoStartSusp(month) {
+    const s = opoState(); const t = mailLoop.tags;
+    s.susp = { start: month, decideAt: month + ((opoEcon() || {}).meses_decisao_providencia | 0), endAt: null, tribunal: false, negociou: false };
+    s.conta = (t.patrimonio_ocultado | 0) > 0;
+    ['providencia_cautelar_active', 'obra_suspensa', 'relogio_trc_pausa_pendente', 'garantia_custo_corre'].forEach((k) => { t[k] = (t[k] | 0) + 1; });
+  }
+  function opoMeses(n) { n = Number(n) || 0; return n + (n === 1 ? ' mês' : ' meses'); }
+  function opoEndSusp(month, tag) {
+    const s = opoState(); const t = mailLoop.tags;
+    if (!s.susp) return;
+    t.providencia_cautelar_active = 0; t.obra_suspensa = 0;
+    t[tag] = (t[tag] | 0) + 1; t.obra_retomada = (t.obra_retomada | 0) + 1;
+    s.susp = null; s.closed = true;
+    queueHudLine(mailEffectLabelPt('obra_retomada'));
+  }
+  /** Letters due this month (hooked into deliverMonthCandidates). */
+  function oposicaoLettersFor(month) {
+    const e = opoEcon();
+    if (!e || !mailLoop || !mailLoop.active || month <= 0) return [];
+    const s = opoState(); const t = mailLoop.tags = mailLoop.tags || {};
+    const out = [];
+    const ph = mailLoop.projectPhase || '';
+    // one roll per project, when the environmental assessment starts
+    if (!s.rolled && (ph === 'aia' || ph === 'licenca_producao' || ph === 'obra' || s.force)) {
+      if (!opoInTutorial() && !(e.excluir_primeiro_projeto && !((t.projetos_concluidos | 0) > 0))) {
+        s.rolled = true;
+        if (s.force || Math.random() < opoProbSinais()) { s.active = true; s.nivel = 1; t.oposicao_started = 1; opoQueue('c1', month); }
+      }
+    }
+    // pending timed outcomes
+    (s.pending || []).slice().forEach((p) => {
+      if (month < p.at) return;
+      s.pending.splice(s.pending.indexOf(p), 1);
+      opoResolve(p, month);
+    });
+    // suspension: pause clock each month, teto, decision
+    if (s.susp) {
+      s.pausa = (s.pausa | 0) + 1;
+      opoDelay(1, !!s.conta);
+      const elapsed = month - s.susp.start;
+      if (s.susp.endAt != null && month >= s.susp.endAt) opoEndSusp(month, s.susp.endTag || 'providencia_retirada');
+      else if (elapsed >= (Number(e.meses_teto_suspensao) || 0)) { opoQueue('c5a', month); opoEndSusp(month, 'providencia_levantada'); }
+      else if (!s.susp.decided && month >= s.susp.decideAt && !(s.pending || []).some((p) => p.kind === 'acordo' || p.kind === 'redesenho')) {
+        s.susp.decided = true;
+        const pRej = (Number(e.prob_providencia_rejeitada) || 0) + ((t.contestacao_forte | 0) ? (Number(e.bonus_rejeicao_contestacao) || 0) : 0);
+        const canKeep = s.susp.tribunal && !s.susp.negociou;
+        if (!canKeep || opoRoll(pRej, 'rej')) { opoQueue('c5a', month); opoEndSusp(month, 'providencia_rejeitada'); }
+        else { t.suspensao_longa = 1; opoQueue('c5b', month); }
+      }
+      if (s.susp && (t.suspensao_longa | 0) && opoFolga() <= (Number(e.limiar_folga_aviso) || 0) && !s.auto9) { s.auto9 = true; opoQueue('c9', month); }
+    }
+    // queue
+    const due = s.queue.filter((q) => q.at <= month);
+    s.queue = s.queue.filter((q) => q.at > month);
+    due.forEach((q) => { const L = opoCompose(OPO[q.card], month); if (L) out.push(L); });
+    return out;
+  }
+  function opoAfterSignal(month) {
+    const e = opoEcon(); const s = opoState(); const t = mailLoop.tags;
+    const gap = Number(e.meses_entre_sinais) || 0;
+    if (s.closed || s.susp) return;
+    if (s.stage === 1) { s.stage = 2; opoQueue('c2', month + (s.lastGood ? 1 : gap)); return; }
+    if (s.stage === 2) {
+      if (s.nivel >= 2) { s.stage = 3; s.stage3 = true; opoQueue('c3', month + gap); } else opoClose();
+      return;
+    }
+    if (s.stage === 3) {
+      if (s.nivel >= 2 && ((t.imprensa_negativa_flag | 0) || opoRoll(Number(e.prob_figura_publica) || 0, 'figura')) && !s.c4) { s.stage = 4; s.c4 = true; opoQueue('c4', month + gap); return; }
+      opoEscalate(month + gap);
+      return;
+    }
+    if (s.stage === 4) opoEscalate(month + gap);
+  }
+  /** Card 5 only after warnings: ≥ 2 signals received and ≥ 1 ignored, oposicao_nivel ≥ 3. */
+  function opoCanEscalate() { const s = opoState(); return s.sinais >= 2 && s.ignorados >= 1 && s.nivel >= 3; }
+  function opoEscalate(at) {
+    const e = opoEcon(); const s = opoState();
+    if (!opoCanEscalate()) { opoClose(); return; }
+    const limiar = (e.lotes_limiar || []).indexOf(opoLot()) !== -1;
+    const p = Number(e.prob_providencia) || 0; // por projeto: base 8 % × ~40 % × 35 % ≈ 3 %; limiar 4 % × ~40 % × 35 % ≈ 0,6–1 %
+    if (opoRoll(p, 'prov')) { s.stage = 5; opoQueue('c5', at); }
+    else opoClose();
+    void limiar;
+  }
+  function opoClose() { const s = opoState(); s.closed = true; s.stage = 'fechado'; }
+  function opoMenu(month, cards) { cards.forEach((c) => opoQueue(c, month + 1)); opoState().menu = cards.slice(); }
+  function opoDropMenu(keep) {
+    const ids = (opoState().menu || []).map((c) => OPO[c]).filter((id) => id !== keep);
+    if (!ids.length || !mailState || !Array.isArray(mailState.items)) return;
+    mailState.items = mailState.items.filter((L) => !(L && ids.indexOf(L.skeletonId) !== -1 && !L.econChoiceId && !L.deferredChoiceId));
+    opoState().menu = [];
+  }
+  function opoResolve(p, month) {
+    const e = opoEcon(); const s = opoState(); const t = mailLoop.tags;
+    if (p.kind === 'acordo') {
+      if (opoRoll(p.prob, 'acordo')) {
+        ['acordo_comunidade_flag', 'community_trust_up', 'reputation_carryover'].forEach((k) => { t[k] = (t[k] | 0) + 1; });
+        queueHudLine('A associação retirou a ação. A obra pode recomeçar.');
+        if (p.faixa) opoDownsize(Number(e.mw_perdidos_faixa) || 0);
+        if (s.susp) opoEndSusp(month, 'providencia_retirada'); else opoClose();
+      } else {
+        t.community_trust_down = (t.community_trust_down | 0) + 1;
+        queueHudLine('Não houve acordo. A ação continua.');
+        s.acordoFalhou = true;
+        if (s.susp) opoQueue('c7', month); else opoAfterSignal(month);
+      }
+    } else if (p.kind === 'redesenho') {
+      opoDownsize(p.mw);
+      if (s.susp) opoEndSusp(month, 'redesenho_imposto'); else { s.nivel = Math.max(0, s.nivel - 1); opoAfterSignal(month); }
+    } else if (p.kind === 'interesse') {
+      if (opoRoll(Number(e.prob_interesse_publico) || 0, 'interesse')) { t.apa_relation_up_small = (t.apa_relation_up_small | 0) + 1; if (s.susp) opoEndSusp(month, 'providencia_levantada'); }
+    } else if (p.kind === 'prorrogacao') {
+      const hi = (t.suspensao_comunicada_dgeg | 0) && !s.conta;
+      if (opoRoll(hi ? Number(e.prob_prorrogacao_alta) : Number(e.prob_prorrogacao), 'prorrog')) {
+        t.prorrogacao_excecional_granted = 1;
+        const n = Number(e.meses_prorrogacao) || 0;
+        s.atrasoConta = Math.max(0, (s.atrasoConta | 0) - n);
+        queueHudLine('O Governo aceitou prorrogar os teus prazos por ' + n + ' meses.');
+      } else queueHudLine('O pedido foi recusado. Os prazos mantêm-se.');
+    }
+  }
+  /** MW down → MVA and caução down in the same proportion (Pedro 23-10). */
+  function opoDownsize(mwLost) {
+    const s = opoState();
+    if (!(mwLost > 0) || !s.mwAtual) return;
+    const frac = Math.min(1, mwLost / s.mwAtual);
+    let bond = 0; try { bond = lotEcon(opoLot()).caucao * frac; } catch (_) {}
+    s.mwAtual = Math.round((s.mwAtual - mwLost) * 10) / 10;
+    s.caucaoLibertada = +(((s.caucaoLibertada || 0) + bond)).toFixed(3);
+    const t = mailLoop.tags; ['trc_mva_down', 'caucao_reduzida_proporcional'].forEach((k) => { t[k] = (t[k] | 0) + 1; });
+    if (bond > 0) { try { applyEconRow({ bonding: -(+bond.toFixed(3)) }, opoLot(), { cause: 'caucao_reduzida_proporcional', allowNegative: true }); } catch (err) { console.warn('[WattOpo] bond', err); } }
+  }
+  /** Choice handler (after the native cash gate in applyMailEffects). */
+  function oposicaoOnEffects(effects) {
+    const e = opoEcon(); if (!e) return;
+    const s = opoState(); const t = mailLoop.tags; const month = mailLoop.month | 0;
+    const has = (k) => effects.indexOf(k) !== -1;
+    const sig = ['oposicao_esclarecimento', 'oposicao_ignorar_peticao', 'oposicao_sessao_equipa', 'oposicao_so_comunicado', 'oposicao_sem_resposta', 'oposicao_propor_fundo', 'oposicao_dados_estudo', 'oposicao_adiar_reuniao', 'oposicao_entrevista', 'oposicao_rever_projeto', 'oposicao_silencio'];
+    const k = effects.find((x) => sig.indexOf(x) !== -1);
+    if (k) {
+      s.sinais = (s.sinais | 0) + 1;
+      if (OPO_IGNORE[k]) { s.ignorados = (s.ignorados | 0) + 1; s.nivel = Math.min(3, s.nivel + 1); s.trust -= 1; s.lastGood = false; }
+      else { s.nivel = Math.max(0, s.nivel - 1); s.trust += 1; s.lastGood = true; }
+      if (s.stage == null) s.stage = 1;
+      if (k === 'oposicao_sessao_equipa' && s.trust <= 0) { t.imprensa_negativa_flag = 1; opoQueue('c2b', month + 1); }
+      if (k === 'oposicao_dados_estudo' && opoRoll(Number(e.prob_parecer_desfavoravel) || 0, 'parecer')) { t.parecer_municipal_risco = 1; t.autarquia_relation_down = (t.autarquia_relation_down | 0) + 1; }
+      if (k === 'oposicao_adiar_reuniao') opoDelay(Number(e.meses_adiar_reuniao) || 0, true);
+      if (k === 'oposicao_propor_fundo') { s.stage = 3; opoQueue('c6', month + 1); return; }
+      if (k === 'oposicao_rever_projeto') { s.stage = 4; opoQueue('c7', month + 1); return; }
+      opoAfterSignal(month);
+      return;
+    }
+    if (has('oposicao_avisar_dgeg') || has('oposicao_ver_opcoes')) {
+      if (!s.susp) opoStartSusp(month);
+      if (has('oposicao_ver_opcoes') && !(t.suspensao_comunicada_dgeg | 0)) { s.conta = true; t.suspensao_nao_comunicada = 1; }
+      t[s.conta ? 'suspensao_judicial_imputavel' : 'suspensao_judicial_nao_imputavel'] = 1;
+      opoMenu(month, ['c6', 'c7', 'c8']);
+      return;
+    }
+    if (has('oposicao_5b_negociar')) { opoMenu(month - 1, ['c6']); return; }
+    if (has('oposicao_5b_redesenhar')) { opoMenu(month - 1, ['c7']); return; }
+    if (has('oposicao_5b_prorrogar')) { opoMenu(month - 1, ['c9']); return; }
+    if (has('oposicao_5b_desistir')) { opoMenu(month - 1, ['c10']); return; }
+    const neg = { oposicao_acordo_fundo_faixa: [Number(e.prob_acordo_alta), true], oposicao_acordo_fundo: [Number(e.prob_acordo_media), false], oposicao_acordo_desconto: [Number(e.prob_acordo_media), false] };
+    const nk = effects.find((x) => neg[x]);
+    if (nk) {
+      opoDropMenu(OPO.c6);
+      if (s.susp) s.susp.negociou = true;
+      s.pending = s.pending || [];
+      const at = month + (Number(e.meses_negociacao) || 0);
+      if (s.susp) s.susp.endAt = null;
+      s.pending.push({ kind: 'acordo', prob: neg[nk][0], faixa: neg[nk][1], at: at });
+      return;
+    }
+    if (has('oposicao_redesenho_grande') || has('oposicao_redesenho_pequeno')) {
+      opoDropMenu(OPO.c7);
+      const big = has('oposicao_redesenho_grande');
+      const n = big ? (Number(e.meses_redesenho) || 0) : (Number(e.meses_redesenho_pequeno) || 0);
+      const imposto = !!s.susp;
+      if (!imposto) { t.redesenho_voluntario = (t.redesenho_voluntario | 0) + 1; opoDelay(n, true); }
+      else t.redesenho_imposto = (t.redesenho_imposto | 0) + 1;
+      const mw = big ? Math.round(s.mwAtual * (Number(e.reducao_redesenho) || 0)) : 0;
+      s.pending = s.pending || [];
+      s.pending.push({ kind: 'redesenho', mw: mw, at: month + n });
+      if (big && s.susp) s.susp.endAt = month + n;
+      return;
+    }
+    if (has('oposicao_redesenho_voltar')) {
+      if (s.acordoFalhou) opoQueue('c7', month + 1);
+      else if (!s.susp && s.stage === 4) opoAfterSignal(month);
+      return;
+    }
+    if (has('oposicao_defesa_completa') || has('oposicao_defesa_minima') || has('oposicao_interesse_publico')) {
+      opoDropMenu(OPO.c8);
+      if (s.susp) s.susp.tribunal = true;
+      if (has('oposicao_interesse_publico')) { s.pending = s.pending || []; s.pending.push({ kind: 'interesse', at: month + 1 }); }
+      return;
+    }
+    if (has('oposicao_prorrogacao_prova')) { s.pending = s.pending || []; s.pending.push({ kind: 'prorrogacao', at: month + (Number(e.meses_resposta_prorrogacao) || 0) }); return; }
+    if (has('oposicao_aguentar') || has('oposicao_prorrogacao_desistir')) {
+      if (s.susp && (t.suspensao_longa | 0)) opoMenu(month, ['c6', 'c7']);
+      return;
+    }
+    if (has('oposicao_patrimonio_mudar')) { opoDelay(1, false); if (e.mw_perdidos_patrimonio) opoDownsize(Number(e.mw_perdidos_patrimonio)); return; }
+    if (has('oposicao_patrimonio_estudo')) { opoDelay(1, false); return; }
+  }
+  /** Cash rows for the cost choices, built from the data block so the native cash gate applies. */
+  function opoInstallCosts() {
+    const e = opoEcon(); if (!e || !e.custos_por_escolha) return;
+    Object.keys(e.custos_por_escolha).forEach((tag) => {
+      const v = Number(e[e.custos_por_escolha[tag]]);
+      if (v > 0) EFFECT_ECONOMICS[tag] = { cash: -v, label: 'HIPÓTESE', origin: 'effects-economy.json oposicao_v01_2026_10_23.' + e.custos_por_escolha[tag] };
+    });
+  }
+
+  /** QA: run one choice through the engine on a copy of the state and report where it lands (state is restored). */
+  function opoSim(effects, forced, withSusp) {
+    const keep = { opo: JSON.stringify(mailLoop.opo || null), tags: JSON.stringify(mailLoop.tags || {}), dl: JSON.stringify(mailLoop.deadlines || {}), items: mailState.items.slice(), month: mailLoop.month, caixa: state.caixa, hud: (typeof hudQueue !== 'undefined') ? null : null };
+    let res = null;
+    try {
+      const m0 = mailLoop.month | 0;
+      mailLoop.opo = null;
+      const s = opoState();
+      Object.assign(s, { rolled: true, active: true, nivel: 3, sinais: 3, ignorados: 2, stage: withSusp ? 5 : 3, forced: forced || {} });
+      if (withSusp) { opoStartSusp(m0); mailLoop.tags.suspensao_judicial_nao_imputavel = 1; }
+      oposicaoOnEffects(effects);
+      let m = m0; const cards = [];
+      for (let i = 1; i <= 14; i++) { m = m0 + i; mailLoop.month = m; const ls = oposicaoLettersFor(m); ls.forEach((L) => cards.push(L.skeletonId)); if (!s.susp && !s.pending.length && !s.queue.length) break; }
+      res = { stillSuspended: !!s.susp, monthsUsed: m - m0, atrasoConta: s.atrasoConta | 0, folga: opoFolga(), cards: cards, mw: s.mwAtual, ok: !s.susp && opoFolga() >= 0 };
+      s.pending = s.pending || [];
+    } catch (err) { res = { error: String(err) }; }
+    mailLoop.opo = JSON.parse(keep.opo); mailLoop.tags = JSON.parse(keep.tags); mailLoop.deadlines = JSON.parse(keep.dl); mailState.items = keep.items; mailLoop.month = keep.month; state.caixa = keep.caixa;
+    return res;
+  }
   async function deliverMonthCandidates(month, opts) {
     opts = opts || {};
     const plan = await planMonthDelivery(month);
@@ -17453,6 +17791,7 @@
     const ruleLetters = await draftRuleLettersFor(month, { already: already });
     let gasLetters = [];
     try { gasLetters = gasMarketLettersFor(month); } catch (err) { console.warn('[WattGas]', err); }
+    try { opoInstallCosts(); gasLetters = gasLetters.concat(oposicaoLettersFor(month)); } catch (err) { console.warn('[WattOpo]', err); }
     const planned = (plan.letters || []).concat(icnfLetters, averbLetters, ruleLetters, gasLetters);
     const notes = [];
     const newLetters = [];
@@ -21119,6 +21458,7 @@
       window.__wattQA = {
         get state() { return state; }, get player() { return playerProfile; }, get auction() { return auctionState; }, get lots() { return AUCTION_LOTS; },
         get mail() { return mailLoop; }, get mailState() { return mailState; }, get nodes() { return nodes; },
+        opo: () => ({ state: opoState(), econ: opoEcon(), prob: opoProbSinais(), canEscalate: opoCanEscalate(), folga: opoFolga() }), forceOpo: (o) => { const st = opoState(); Object.assign(st, o || {}); return st; }, opoLetters: (m) => oposicaoLettersFor(m), opoSim: (fx, forced, susp) => opoSim(fx, forced, susp),
         forceGas: (k) => { const g = gasState(); g._force = g._force || {}; g._force[k] = true; return g; }, gas: () => ({ state: gasState(), nightDelta: gasNightPriceDelta(), econ: gasEcon() }), gasLetters: (m) => gasMarketLettersFor(m),
         biddable: () => biddableAuctionLots().map((l) => l.id), econ: () => econBudget(),
         landChosen: () => landChosen(), envPath: () => currentEnvPath(), onAiaRoute: () => onAiaRoute(),

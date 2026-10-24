@@ -1,0 +1,38 @@
+{
+  "id": "mail-oposicao-sinal-04",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "MEDIA",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Dar uma entrevista e mostrar os números",
+      "effects": [
+        "oposicao_entrevista",
+        "community_trust_sem_efeito",
+        "reputation_up_small"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Anunciar que vai rever o projeto",
+      "effects": [
+        "oposicao_rever_projeto",
+        "redesenho_voluntario"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Ficar em silêncio",
+      "effects": [
+        "oposicao_silencio",
+        "reputation_down"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

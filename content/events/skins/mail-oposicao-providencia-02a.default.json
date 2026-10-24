@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-providencia-02a",
+  "skin_id": "default",
+  "from_name": "Tribunal Administrativo e Fiscal de {{tribunal}}",
+  "subject": "O tribunal rejeitou a providência",
+  "body": "O tribunal decidiu que a obra pode continuar. A ação principal continua, mas já não trava o projeto. Os moradores dizem que vão continuar a lutar.",
+  "params": {}
+}

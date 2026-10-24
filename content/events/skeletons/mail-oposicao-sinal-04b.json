@@ -1,0 +1,50 @@
+{
+  "id": "mail-oposicao-sinal-04b",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "EQUIPA",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Avisar já e mudar o equipamento de sítio",
+      "effects": [
+        "oposicao_patrimonio_mudar",
+        "patrimonio_comunicado",
+        "patrimonio_protegido",
+        "layout_ajuste"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Avisar e pedir um estudo antes de decidir",
+      "effects": [
+        "oposicao_patrimonio_estudo",
+        "patrimonio_comunicado",
+        "estudo_arqueologico_started"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Avisar, mas manter o desenho",
+      "effects": [
+        "oposicao_patrimonio_manter",
+        "patrimonio_comunicado",
+        "apa_relation_down"
+      ]
+    },
+    {
+      "id": "d",
+      "label": "Não avisar e continuar",
+      "effects": [
+        "oposicao_patrimonio_ocultar",
+        "patrimonio_flag",
+        "patrimonio_ocultado"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

@@ -374,13 +374,17 @@ async function visibleRival(page) {
 }
 async function openGasLetter(page, prefix, name) {
   await dismissLayers(page);
+  for (let i = 0; i < 4 && await page.locator('#inboxDrawer.open').count(); i++) { await page.locator('#inboxBackBtn').click({ force: true }); await page.waitForTimeout(120); }
+  if (await page.locator('#inboxDrawer.open').count()) { await page.evaluate(() => document.getElementById('inboxBackdrop').click()); await page.waitForTimeout(200); }
   if (!(await page.locator('#inboxDrawer.open').count())) {
     if (await page.locator('#btnInbox').isVisible()) await page.locator('#btnInbox').click(); else await page.locator('#tabInbox').click();
     await page.waitForTimeout(300);
   }
-  for (let i = 0; i < 3 && await page.locator('#inboxDrawer.open .mail-detail').count(); i++) { await page.locator('#inboxBackBtn').click(); await page.waitForTimeout(120); }
+  for (let i = 0; i < 3 && await page.locator('#inboxDrawer.open .mail-detail').count(); i++) { await page.locator('#inboxBackBtn').click(); await page.waitForTimeout(150); }
+  if (!(await page.locator('.mail-row[data-mail-id^="' + prefix + '"]').count())) { await page.evaluate((id) => { if (window.WattInbox) { window.WattInbox.open(); window.WattInbox.openLetter(id); } }, prefix); await page.waitForTimeout(250); }
   const row = page.locator('.mail-row[data-mail-id^="' + prefix + '"]').first();
-  await row.click({ force: true });
+  if (!(await row.count()) && await page.locator('#inboxDrawer.open .mail-detail').count()) { /* opened directly */ } else
+    await row.click({ force: true });
   await page.waitForTimeout(300);
   const text = await page.locator('#inboxDrawer').innerText();
   const clip = await page.evaluate(() => {
@@ -454,6 +458,136 @@ async function gasHook(page, tag, month, st) {
     if (!/Gás caro: a tua bateria vale mais esta noite/.test(o.text)) throw new Error('card3 text');
     if (!/MERCADO|Mercado/.test(o.text) || /IMPRENSA|Imprensa/.test(o.text.split('Gás caro')[0].slice(-200))) throw new Error('card3 badge');
     if (await page.locator('#inboxDrawer.open .mail-detail').count()) await page.locator('#inboxBackBtn').click();
+  }
+}
+
+/** Oposição local (WATT_OPO=1): força o evento, segue um caminho por jogo, fotografa cada carta e verifica avisos e saídas. */
+const OPO_PATHS = {
+  'falhado-27-1440': { name: 'bom', forced: {}, pick: { 'sinal-01': 'a', 'sinal-02': 'a', 'desistir': 'c', 'sinal-04b': 'a', 'sinal-02b': 'ok', 'providencia-02a': 'ok', 'escolha-negociar': 'c', 'escolha-redesenhar': 'c' }, gallery: { after: 'sinal-02', cards: ['c10', 'c4b', 'c2b', 'c5a', 'c6', 'c7'] } },
+  'falhado-27-390': { name: 'negociar', forced: { figura: true, prov: true, acordo: true }, pick: { 'sinal-01': 'b', 'sinal-02': 'c', 'sinal-03': 'c', 'sinal-04': 'c', 'providencia-01': 'a', 'escolha-negociar': 'a', 'escolha-redesenhar': 'c', 'providencia-02a': 'ok' }, gallery: { after: 'escolha-negociar', cards: ['c7', 'c5a'] } },
+  'conseguido-29-1440': { name: 'tribunal', forced: { figura: true, prov: true, rej: false }, pick: { 'sinal-01': 'b', 'sinal-02': 'b', 'sinal-03': 'c', 'sinal-04': 'c', 'providencia-01': 'b', 'escolha-tribunal': 'b', 'providencia-02b': 'redesenhar', 'escolha-redesenhar': 'b', 'escolha-prorrogacao': 'a' } },
+  'conseguido-29-390': { name: 'prorrogar', forced: { figura: true, prov: true, rej: false, prorrog: true }, pick: { 'sinal-01': 'b', 'sinal-02': 'c', 'sinal-03': 'c', 'sinal-04': 'c', 'providencia-01': 'a', 'escolha-tribunal': 'b', 'providencia-02b': 'prorrogar', 'escolha-prorrogacao': 'a', 'desistir': 'c', 'sinal-04b': 'a', 'sinal-02b': 'ok' } }
+};
+const opoReport = {};
+async function opoHook(page, tag, month, st) {
+  const P = OPO_PATHS[tag];
+  if (!P) return false;
+  const r = opoReport[tag] = opoReport[tag] || { path: P.name, cards: [], rivalHits: [], placeholders: [], clip: [] };
+  if (!st.init && month >= 1) {
+    st.init = true;
+    const pr = await page.evaluate((f) => { window.__wattQA.forceOpo({ force: true, forced: f }); return window.__wattQA.opo().prob; }, P.forced);
+    r.probSinaisOurique = pr;
+  }
+  { const h = await visibleRival(page); if (h.length) r.rivalHits.push(...h.map((x) => 'M' + month + ' ' + x)); }
+  const pend = await page.evaluate(() => window.__wattQA.mailState.items.filter((l) => l && /^mail-oposicao-/.test(l.skeletonId || '') && !l.econChoiceId && !l.deferredChoiceId).map((l) => ({ id: l.id, sk: l.skeletonId })));
+  let did = false;
+  pend.sort((a, b) => (/escolha-tribunal/.test(b.sk) ? 1 : 0) - (/escolha-tribunal/.test(a.sk) ? 1 : 0));
+  for (const L of pend) {
+    const key = L.sk.replace('mail-oposicao-', '');
+    const choice = P.pick[key];
+    if (!choice) continue;
+    if (st.skip && st.skip[L.id]) continue;
+    if (!(await page.evaluate((id) => window.__wattQA.mailState.items.some((l) => l && l.id === id && !l.econChoiceId && !l.deferredChoiceId), L.id))) continue;
+    const name = 'carta-' + key + '-' + tag;
+    const o = await openGasLetter(page, L.id, name); o.caixa = await page.evaluate(() => window.__wattQA.state.caixa);
+    r.cards.push({ m: month, card: key, choice, caixa: o.caixa });
+    if (/rival/i.test(o.text)) r.rivalHits.push(key);
+    if (/\{\{|\{[a-z_.]+\}/.test(o.text)) r.placeholders.push(key + ': ' + (o.text.match(/.{0,30}\{.{0,30}/) || [''])[0]);
+    if (o.clip.length) r.clip.push(key + ': ' + o.clip.join(','));
+    const btn = page.locator('.mail-detail-actions [data-mail-choice="' + choice + '"]');
+    if (!(await btn.count())) throw new Error('opo choice missing ' + key + ' ' + choice);
+    await btn.first().click({ force: true });
+    await page.waitForTimeout(250);
+    if (await page.locator('#inboxDrawer.open .mail-detail').count()) { await page.locator('#inboxBackBtn').click(); await page.waitForTimeout(100); }
+    const answered = (id) => page.evaluate((id) => !window.__wattQA.mailState.items.some((l) => l && l.id === id && !l.econChoiceId && !l.deferredChoiceId), id);
+    if (!(await answered(L.id))) {
+      // choice refused (e.g. not enough cash): try the other buttons on the card, as a player would
+      await openGasLetter(page, L.id, name + '-alt');
+      const all = await page.locator('.mail-detail-actions [data-mail-choice]').evaluateAll((els) => els.map((e) => e.getAttribute('data-mail-choice')));
+      let ok = false;
+      for (const c of all.filter((c) => c !== choice)) {
+        const b = page.locator('.mail-detail-actions [data-mail-choice="' + c + '"]');
+        if (!(await b.count())) continue;
+        await b.first().click({ force: true }); await page.waitForTimeout(250);
+        if (await answered(L.id)) { ok = true; r.cards.push({ m: month, card: key, choice: c, fallback: true }); break; }
+      }
+      if (await page.locator('#inboxDrawer.open .mail-detail').count()) { await page.locator('#inboxBackBtn').click(); await page.waitForTimeout(100); }
+      if (!ok) { r.noWayOut = (r.noWayOut || []).concat(key); st.skip = st.skip || {}; st.skip[L.id] = 1; continue; }
+    }
+    did = true;
+    if (P.gallery && key === P.gallery.after && !st.gallery) {
+      // só para screenshots: mostra as cartas que este caminho não chega a abrir (sem asserções de fluxo)
+      st.gallery = true;
+      await page.evaluate((cs) => { const s = window.__wattQA.opo().state; const m = window.__wattQA.mail.month | 0; cs.forEach((c) => s.queue.push({ card: c, at: m + 1 })); }, P.gallery.cards);
+    }
+    if (P.name === 'prorrogar' && key === 'escolha-prorrogacao') {
+      await page.evaluate(() => { const s = window.__wattQA.opo().state; const m = window.__wattQA.mail.month | 0; s.queue.push({ card: 'c10', at: m + 1 }, { card: 'c4b', at: m + 1 }, { card: 'c2b', at: m + 1 }); });
+    }
+  }
+  return did;
+}
+async function opoFinal(page, tag) {
+  const P = OPO_PATHS[tag]; if (!P) return;
+  const r = opoReport[tag];
+  if (r.noWayOut && r.noWayOut.length) throw new Error('opo: card with no usable choice ' + r.noWayOut.join(','));
+  const s = await page.evaluate(() => { const o = window.__wattQA.opo(); const t = window.__wattQA.mail.tags; return { st: o.state, folga: o.folga, tags: { retirada: t.providencia_retirada | 0, rejeitada: t.providencia_rejeitada | 0, levantada: t.providencia_levantada | 0, imposto: t.redesenho_imposto | 0, acordo: t.acordo_comunidade_flag | 0, prorrog: t.prorrogacao_excecional_granted | 0, trc_lost: t.trc_lost | 0, suspensa: t.obra_suspensa | 0 } }; });
+  r.final = { log: s.st.log.map((x) => x.m + ':' + x.card.replace('mail-oposicao-', '')), sinais: s.st.sinais, ignorados: s.st.ignorados, atrasoConta: s.st.atrasoConta, folga: s.folga, pausa: s.st.pausa, mw: s.st.mwAtual, tags: s.tags };
+  const log = s.st.log.map((x) => x.card);
+  const i5 = log.indexOf('mail-oposicao-providencia-01');
+  if (P.name === 'bom') { if (i5 !== -1) throw new Error('bom path escalated'); if (log.indexOf('mail-oposicao-sinal-01') !== 0) throw new Error('bom path no signal'); }
+  else {
+    if (i5 < 2) throw new Error('providência without 2 warnings first ' + JSON.stringify(log));
+    if (!(s.st.ignorados >= 1)) throw new Error('providência without an ignored warning');
+    if (s.tags.suspensa) throw new Error('still suspended at COD');
+    if (s.st.atrasoConta > 6 && !log.includes('mail-oposicao-escolha-prorrogacao')) throw new Error('folga blown without card 9 offered ' + s.st.atrasoConta);
+  }
+  if (P.name === 'negociar' && !(s.tags.retirada && s.tags.acordo)) throw new Error('negotiation did not end the action');
+  if (P.name === 'tribunal' && !s.tags.imposto) throw new Error('redesign did not end the suspension');
+  if (P.name === 'prorrogar' && !s.tags.prorrog) throw new Error('prorrogação not granted');
+  if (s.tags.trc_lost) throw new Error('TRC lost');
+  if (r.rivalHits.length || r.placeholders.length || r.clip.length) throw new Error('opo card text ' + JSON.stringify(r));
+  if (P.name === 'bom') {
+    r.warningsFirst = await page.evaluate(() => {
+      const s = window.__wattQA.opo().state; const keep = [s.sinais, s.ignorados, s.nivel];
+      const out = {};
+      [[0, 0, 3], [1, 1, 3], [2, 0, 3], [3, 1, 2], [2, 1, 3]].forEach(([a, b, c]) => { s.sinais = a; s.ignorados = b; s.nivel = c; out[a + '/' + b + '/' + c] = window.__wattQA.opo().canEscalate; });
+      [s.sinais, s.ignorados, s.nivel] = keep; return out;
+    });
+    const w = r.warningsFirst;
+    if (w['0/0/3'] || w['1/1/3'] || w['2/0/3'] || w['3/1/2'] || !w['2/1/3']) throw new Error('warnings-first rule ' + JSON.stringify(w));
+    const sims = {
+      '5A avisar DGEG': [['oposicao_avisar_dgeg', 'suspensao_comunicada_dgeg'], {}, true],
+      '5B ver opções (sem aviso)': [['oposicao_ver_opcoes'], {}, true],
+      '6A acordo (sai)': [['oposicao_acordo_fundo_faixa'], { acordo: true }, true],
+      '6A acordo (falha)': [['oposicao_acordo_fundo_faixa'], { acordo: false }, true],
+      '6B só fundo (falha)': [['oposicao_acordo_fundo'], { acordo: false }, true],
+      '6C desconto (sai)': [['oposicao_acordo_desconto'], { acordo: true }, true],
+      '7A redesenho': [['oposicao_redesenho_grande'], {}, true],
+      '7B redesenho pequeno': [['oposicao_redesenho_pequeno'], { rej: false }, true],
+      '7C voltar': [['oposicao_redesenho_voltar'], {}, true],
+      '8A defesa completa (perde)': [['oposicao_defesa_completa', 'contestacao_forte'], { rej: false }, true],
+      '8B defesa mínima (ganha)': [['oposicao_defesa_minima'], { rej: true }, true],
+      '8C interesse público (não sai)': [['oposicao_interesse_publico'], { interesse: false, rej: false }, true],
+      '9A prorrogação (recusada)': [['oposicao_prorrogacao_prova'], { prorrog: false }, true],
+      '9B desistir do pedido': [['oposicao_prorrogacao_desistir'], {}, true],
+      '10C aguentar': [['oposicao_aguentar'], {}, true],
+      '3A propor fundo (antes)': [['oposicao_propor_fundo'], { acordo: false, prov: false }, false],
+      '4A entrevista (antes)': [['oposicao_entrevista', 'reputation_up_small'], { prov: false }, false],
+      '1A esclarecimento': [['oposicao_esclarecimento'], {}, false],
+      '2A sessão': [['oposicao_sessao_equipa'], {}, false],
+      '3B dados do estudo': [['oposicao_dados_estudo'], { parecer: true, prov: false }, false],
+      '4b A mudar equipamento': [['oposicao_patrimonio_mudar'], {}, false],
+      '4b B estudo': [['oposicao_patrimonio_estudo'], {}, false],
+      '4B rever projeto (antes)': [['oposicao_rever_projeto'], { prov: false }, false]
+    };
+    r.choiceSims = {};
+    for (const [k, [fx, f, susp]] of Object.entries(sims)) {
+      const res = await page.evaluate(([a, b, c]) => window.__wattQA.opoSim(a, b, c), [fx, f, susp]);
+      r.choiceSims[k] = res;
+      if (!res || res.error || !res.ok) throw new Error('choice not viable ' + k + ' ' + JSON.stringify(res));
+    }
+    r.rarity = await page.evaluate(() => { const e = window.__wattQA.opo().econ; return { sinaisOurique: window.__wattQA.opo().prob, base: e.prob_oposicao_base, providencia: e.prob_providencia, limiar: e.prob_oposicao_limiar }; });
+    if (r.rarity.sinaisOurique !== 0.04) throw new Error('Ourique prob ' + r.rarity.sinaisOurique);
   }
 }
 
@@ -612,6 +746,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
   let lastSig = '';
   let stuck = 0;
   const gasSt = {};
+  const opoSt = {};
   while (guard < 420) {
     guard += 1;
     await dismissLayers(page);
@@ -632,7 +767,8 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
       await shot(page, 'cod-end-' + tag);
       const codish = !!(reached && (reached.phase === 'cod' || reached.reason === 'cod' || reached.reason === 'cod_solar' || reached.status === 'won' || reached.cod));
       if (!codish) throw new Error('end is not COD: ' + endText.slice(0, 400) + ' ' + JSON.stringify(reached));
-      if (process.env.WATT_GAS) { const h = await visibleRival(page); if (h.length) (gasReport[tag] = gasReport[tag] || { rivalHits: [] }).rivalHits.push(...h.map((x) => 'END ' + x)); }
+      if (process.env.WATT_OPO) await opoFinal(page, tag);
+      if (process.env.WATT_GAS || process.env.WATT_OPO) { const h = await visibleRival(page); if (h.length) (gasReport[tag] = gasReport[tag] || { rivalHits: [] }).rivalHits.push(...h.map((x) => 'END ' + x)); }
       return { endText: endText.slice(0, 500), reached, steps: guard };
     }
     if (await page.locator('#auctionRoom.open [data-screen="bid"].active').count()) {
@@ -649,6 +785,7 @@ async function playToCod(browser, width, height, tag, bid, outcome, stopAfterExt
       continue;
     }
     if (process.env.WATT_GAS) await gasHook(page, tag, month, gasSt);
+    if (process.env.WATT_OPO && await opoHook(page, tag, month, opoSt)) continue;
     if (await drainMail(page)) continue;
     const play = page.locator('#btnNextQ');
     if (!(await play.isVisible())) {
@@ -1266,6 +1403,7 @@ try {
   process.exitCode = 1;
 } finally {
   report.gas = gasReport;
+  report.opo = opoReport;
   fs.writeFileSync(path.join(OUT, 'start-menu-report.json'), JSON.stringify(report, null, 2));
   await browser.close();
 }

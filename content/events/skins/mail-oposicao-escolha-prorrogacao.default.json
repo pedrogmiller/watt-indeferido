@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-escolha-prorrogacao",
+  "skin_id": "default",
+  "from_name": "DGEG — Direção de Serviços de Energia Elétrica",
+  "subject": "Pedido de prorrogação dos prazos do TRC",
+  "body": "Recebemos o teu pedido.\n\nAs regras do leilão já te dão uma folga de 6 meses de atraso.\n\nUma prorrogação para lá disso só existe em casos excecionais e depende de uma decisão do Governo.\n\nVamos analisar. Junta a prova da decisão do tribunal e as datas.",
+  "params": {}
+}

@@ -1,0 +1,38 @@
+{
+  "id": "mail-oposicao-sinal-03",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Propor um fundo para a comunidade",
+      "effects": [
+        "oposicao_propor_fundo",
+        "community_trust_up"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Responder com os dados do estudo ambiental",
+      "effects": [
+        "oposicao_dados_estudo",
+        "community_trust_sem_efeito"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Pedir reunião daqui a 2 meses",
+      "effects": [
+        "oposicao_adiar_reuniao",
+        "oposicao_nivel_up",
+        "atraso_negociacao"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

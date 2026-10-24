@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-sinal-01",
+  "skin_id": "default",
+  "from_name": "Jornal da Região",
+  "subject": "Petição contra o parque solar em {{concelho}} já tem {{n_assinaturas}} assinaturas",
+  "body": "Um grupo de moradores lançou uma petição online contra o {{projeto}}.\n\nDizem que o parque é grande demais e que tira terra ao campo.\n\nPedem que o projeto pare até haver mais informação.\n\nA petição está a circular nas redes sociais da região.",
+  "params": {}
+}

@@ -1,0 +1,39 @@
+{
+  "id": "mail-oposicao-escolha-tribunal",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "CONSULTOR",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Defesa completa",
+      "effects": [
+        "oposicao_defesa_completa",
+        "contestacao_forte",
+        "community_trust_down"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Defesa mínima",
+      "effects": [
+        "oposicao_defesa_minima",
+        "community_trust_down"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Pedir a declaração de interesse público",
+      "effects": [
+        "oposicao_interesse_publico",
+        "resolucao_interesse_publico_pedida",
+        "community_trust_down"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

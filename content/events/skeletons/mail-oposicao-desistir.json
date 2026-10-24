@@ -1,0 +1,30 @@
+{
+  "id": "mail-oposicao-desistir",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "INVESTIDORES",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Desistir e perder o TRC",
+      "effects": [
+        "oposicao_desistir_trc",
+        "trc_lost",
+        "leilao_exclusao_5anos",
+        "end_state_lost"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Aguentar mais um pouco",
+      "effects": [
+        "oposicao_aguentar"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

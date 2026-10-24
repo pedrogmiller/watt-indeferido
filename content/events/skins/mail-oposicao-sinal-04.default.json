@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-sinal-04",
+  "skin_id": "default",
+  "from_name": "Imprensa Nacional — Secção Sociedade",
+  "subject": "Figuras públicas juntam-se contra o parque solar de {{concelho}}",
+  "body": "Uma artista conhecida, que vive na região, gravou um vídeo contra o {{projeto}}.\n\nOutras figuras públicas partilharam a mensagem.\n\nA consulta pública recebeu milhares de participações em poucos dias.\n\nAssociações ambientais pedem que o projeto seja chumbado.",
+  "params": {}
+}

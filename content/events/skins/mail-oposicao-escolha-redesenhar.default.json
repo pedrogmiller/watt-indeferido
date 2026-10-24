@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-escolha-redesenhar",
+  "skin_id": "default",
+  "from_name": "Equipa técnica — {{projeto}}",
+  "subject": "Proposta de projeto mais pequeno",
+  "body": "Podemos encolher o parque cerca de um terço.\n\nFugimos das zonas com mais árvores e encostamos a linha a uma linha que já existe.\n\nFicamos com {{mw_novo}} MW em vez de {{mw_atual}}.\n\nÉ preciso voltar à APA e fazer nova consulta pública. São mais {{econ_meses_redesenho}} meses.{{aviso_folga}}",
+  "params": {}
+}

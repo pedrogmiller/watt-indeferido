@@ -1,0 +1,29 @@
+{
+  "id": "mail-oposicao-sinal-01",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "MEDIA",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Publicar um esclarecimento",
+      "effects": [
+        "oposicao_esclarecimento",
+        "community_trust_up_small"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Ignorar por agora",
+      "effects": [
+        "oposicao_ignorar_peticao",
+        "oposicao_nivel_up"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

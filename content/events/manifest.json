@@ -98,7 +98,21 @@
     "skeletons/mail-transformador-encomenda-01.json",
     "skeletons/mail-mercado-gas-01.json",
     "skeletons/mail-rival-gas-01.json",
-    "skeletons/mail-bateria-gas-01.json"
+    "skeletons/mail-bateria-gas-01.json",
+    "skeletons/mail-oposicao-sinal-01.json",
+    "skeletons/mail-oposicao-sinal-02.json",
+    "skeletons/mail-oposicao-sinal-02b.json",
+    "skeletons/mail-oposicao-sinal-03.json",
+    "skeletons/mail-oposicao-sinal-04.json",
+    "skeletons/mail-oposicao-sinal-04b.json",
+    "skeletons/mail-oposicao-providencia-01.json",
+    "skeletons/mail-oposicao-providencia-02a.json",
+    "skeletons/mail-oposicao-providencia-02b.json",
+    "skeletons/mail-oposicao-escolha-negociar.json",
+    "skeletons/mail-oposicao-escolha-redesenhar.json",
+    "skeletons/mail-oposicao-escolha-tribunal.json",
+    "skeletons/mail-oposicao-escolha-prorrogacao.json",
+    "skeletons/mail-oposicao-desistir.json"
   ],
   "skins": [
     "skins/mail-advogado-dd-01.default.json",
@@ -269,7 +283,21 @@
     "skins/mail-prazo-derrapagem-01.rede-propria.json",
     "skins/mail-mercado-gas-01.default.json",
     "skins/mail-rival-gas-01.default.json",
-    "skins/mail-bateria-gas-01.default.json"
+    "skins/mail-bateria-gas-01.default.json",
+    "skins/mail-oposicao-sinal-01.default.json",
+    "skins/mail-oposicao-sinal-02.default.json",
+    "skins/mail-oposicao-sinal-02b.default.json",
+    "skins/mail-oposicao-sinal-03.default.json",
+    "skins/mail-oposicao-sinal-04.default.json",
+    "skins/mail-oposicao-sinal-04b.default.json",
+    "skins/mail-oposicao-providencia-01.default.json",
+    "skins/mail-oposicao-providencia-02a.default.json",
+    "skins/mail-oposicao-providencia-02b.default.json",
+    "skins/mail-oposicao-escolha-negociar.default.json",
+    "skins/mail-oposicao-escolha-redesenhar.default.json",
+    "skins/mail-oposicao-escolha-tribunal.default.json",
+    "skins/mail-oposicao-escolha-prorrogacao.default.json",
+    "skins/mail-oposicao-desistir.default.json"
   ],
   "se_sheets": [
     "se-sheets/ferreira-do-alentejo.json",
@@ -393,5 +421,10 @@
     "status": "aprovado pelo Pedro (via CoS) 23-10-2026",
     "spec": "licenca/cartas-gas-rascunho.md + licenca/gas-economia.md",
     "note": "3 cartas de mercado do gás; motor em index.html (gasMarketLettersFor). Valores em effects-economy.json gas_v01_2026_10_23."
+  },
+  "oposicao_v01_2026_10_23": {
+    "status": "RASCUNHO GM + Economy, aprovado em parte pelo Pedro 23-10-2026",
+    "spec": "licenca/oposicao-local-cartas-rascunho.md + licenca/oposicao-local-economia.md",
+    "note": "Motor em index.html (oposicaoLettersFor). Valores em effects-economy.json oposicao_v01_2026_10_23."
   }
 }
