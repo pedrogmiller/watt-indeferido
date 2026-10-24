@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-sinal-03",
+  "skin_id": "default",
+  "from_name": "Câmara Municipal de {{concelho}} — Gabinete do Presidente",
+  "subject": "Abaixo-assinado entregue na Câmara",
+  "body": "Recebemos um abaixo-assinado com {{n_assinaturas}} assinaturas contra o {{projeto}}.\n\nA Câmara vai dar parecer na consulta pública.\n\nAntes disso, queremos saber o que a empresa propõe para o concelho.\n\nSem respostas concretas, o parecer será desfavorável.",
+  "params": {}
+}

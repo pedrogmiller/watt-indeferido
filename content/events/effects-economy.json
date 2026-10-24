@@ -7985,5 +7985,102 @@
   "prob_evento_gas_mes": 0.08,
   "prob_ano_mau_renovaveis": 0.3,
   "probs_origin": "SEM FONTE: o rascunho diz «evento sorteado» e «fim de ano com ano mau», sem probabilidade. Valores provisórios para a Economy rever."
+ },
+ "oposicao_v01_2026_10_23": {
+  "label": "HIPÓTESE",
+  "origin": "licenca/oposicao-local-economia.md (tabela «Chaves» + adenda), 23-10-2026. Percentagens guardadas em fração (8 % → 0.08).",
+  "prob_oposicao_base": 0.08,
+  "limiar_area_ha": 100,
+  "meses_entre_sinais": 2,
+  "custo_comunicacao": 0.005,
+  "custo_sessao": 0.01,
+  "prob_parecer_desfavoravel": 0.5,
+  "prob_figura_publica": 0.25,
+  "prob_providencia": 0.35,
+  "prob_mp": 0.15,
+  "meses_decisao_providencia": 3,
+  "dias_aviso_dgeg": 15,
+  "custo_garantia_mes": 0.005,
+  "prob_providencia_rejeitada": 0.5,
+  "anos_acao_principal": 3,
+  "meses_teto_suspensao": 8,
+  "custo_fundo_comunitario": 0.15,
+  "mw_perdidos_faixa": 5,
+  "custo_desconto_luz_ano": 0.03,
+  "prob_acordo_alta": 0.85,
+  "prob_acordo_media": 0.6,
+  "meses_negociacao": 2,
+  "meses_redesenho": 4,
+  "custo_redesenho": 0.25,
+  "custo_redesenho_pequeno": 0.08,
+  "custo_advogados_alto": 0.12,
+  "custo_advogados_baixo": 0.04,
+  "prob_interesse_publico": 0.4,
+  "limiar_folga_aviso": 2,
+  "meses_resposta_prorrogacao": 2,
+  "prob_prorrogacao": 0.2,
+  "prob_oposicao_limiar": 0.04,
+  "folga_trc_meses": 6,
+  "folga_origin": "GM: «folga de 6 meses de atraso acumulado» (regra de contagem)",
+  "prob_providencia_limiar": 0.01,
+  "prob_providencia_limiar_origin": "GM, Nota Ourique: «~1 % de providência» (aprovado Pedro)",
+  "bonus_rejeicao_contestacao": 0.2,
+  "bonus_rejeicao_origin": "Economy: «+20 pp com contestacao_forte (70 %)»",
+  "prob_prorrogacao_alta": 0.5,
+  "prob_prorrogacao_alta_origin": "Economy: «50 % com suspensão não imputável + DGEG avisada»",
+  "reducao_redesenho": 0.34,
+  "reducao_redesenho_origin": "Economy, regra do redesenho: «−34 % → 65 MW»",
+  "meses_redesenho_pequeno": 2,
+  "meses_redesenho_pequeno_origin": "SEM CHAVE: tabela do GM diz 7B 2–3 m; valor mínimo, provisório",
+  "meses_adiar_reuniao": 1,
+  "meses_adiar_reuniao_origin": "GM: 3C «+1 mês»",
+  "meses_prorrogacao": 3,
+  "meses_prorrogacao_origin": "SEM CHAVE: tabela do GM diz «+3 a +6 de prazo»; valor mínimo, provisório",
+  "lotes_limiar": [
+   "ourique"
+  ],
+  "lotes_limiar_origin": "GM/Economy: Ourique no limiar de área (aprovado Pedro)",
+  "excluir_primeiro_projeto": false,
+  "excluir_primeiro_projeto_origin": "GM diz «nunca no primeiro projeto», mas na v0.1 Ourique é o único projeto; com true o evento nunca aparece. Desligado até o Pedro decidir.",
+  "ativo_4b": false,
+  "ativo_4b_origin": "Carta 4b sem valores na Economy (prob_achado_arqueologico, custo_ajuste_layout, mw_perdidos_patrimonio, custo_estudo_arqueologico, prob_mp_comunicado, dias_devolucao_caucao). Só por QA.",
+  "prob_achado_arqueologico": null,
+  "custo_ajuste_layout": null,
+  "mw_perdidos_patrimonio": null,
+  "custo_estudo_arqueologico": null,
+  "prob_mp_comunicado": null,
+  "dias_devolucao_caucao": null,
+  "texto": {
+   "projeto": {
+    "ourique": "parque solar de Ourique"
+   },
+   "concelho": {
+    "ourique": "Ourique"
+   },
+   "freguesia": {
+    "ourique": "Ourique"
+   },
+   "tribunal": {
+    "ourique": "Beja"
+   },
+   "n_assinaturas_1": 1200,
+   "n_assinaturas_3": 1800,
+   "sociedade_advogados": "Gabinete jurídico",
+   "elemento_afetado": "uma fila de painéis",
+   "origin": "SEM FONTE: nomes genéricos pela região (proposta do GM para o tribunal); n.º de assinaturas e nome do gabinete provisórios."
+  },
+  "custos_por_escolha": {
+   "oposicao_esclarecimento": "custo_comunicacao",
+   "oposicao_sessao_equipa": "custo_sessao",
+   "oposicao_acordo_fundo_faixa": "custo_fundo_comunitario",
+   "oposicao_acordo_fundo": "custo_fundo_comunitario",
+   "oposicao_acordo_desconto": "custo_desconto_luz_ano",
+   "oposicao_redesenho_grande": "custo_redesenho",
+   "oposicao_redesenho_pequeno": "custo_redesenho_pequeno",
+   "oposicao_defesa_completa": "custo_advogados_alto",
+   "oposicao_defesa_minima": "custo_advogados_baixo",
+   "oposicao_patrimonio_mudar": "custo_ajuste_layout",
+   "oposicao_patrimonio_estudo": "custo_estudo_arqueologico"
+  }
  }
 }

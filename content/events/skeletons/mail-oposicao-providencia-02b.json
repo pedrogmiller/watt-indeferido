@@ -1,0 +1,41 @@
+{
+  "id": "mail-oposicao-providencia-02b",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "TRIBUNAL",
+  "choices": [
+    {
+      "id": "negociar",
+      "label": "Negociar com a comunidade",
+      "effects": [
+        "oposicao_5b_negociar"
+      ]
+    },
+    {
+      "id": "redesenhar",
+      "label": "Redesenhar o projeto",
+      "effects": [
+        "oposicao_5b_redesenhar"
+      ]
+    },
+    {
+      "id": "prorrogar",
+      "label": "Pedir prorrogação",
+      "effects": [
+        "oposicao_5b_prorrogar"
+      ]
+    },
+    {
+      "id": "desistir",
+      "label": "Desistir do local",
+      "effects": [
+        "oposicao_5b_desistir"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

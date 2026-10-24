@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-desistir",
+  "skin_id": "default",
+  "from_name": "Direção — {{empresa}}",
+  "subject": "Abandonar o {{projeto}}?",
+  "body": "O projeto está parado e o tempo está a acabar.\n\nSe desistirmos, perdemos o que gastámos aqui.\n\nO TRC não pode ser vendido antes da licença de exploração.\n\nE quem perde o TRC fica 5 anos fora dos leilões.",
+  "params": {}
+}

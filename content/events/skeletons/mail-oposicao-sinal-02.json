@@ -1,0 +1,41 @@
+{
+  "id": "mail-oposicao-sinal-02",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "choices": [
+    {
+      "id": "a",
+      "label": "Ir com a equipa técnica e mapas",
+      "effects": [
+        "oposicao_sessao_equipa",
+        "community_trust_up",
+        "sessao_publica_feita"
+      ]
+    },
+    {
+      "id": "b",
+      "label": "Mandar só um comunicado",
+      "effects": [
+        "oposicao_so_comunicado",
+        "community_trust_down",
+        "oposicao_nivel_up"
+      ]
+    },
+    {
+      "id": "c",
+      "label": "Não responder",
+      "effects": [
+        "oposicao_sem_resposta",
+        "community_trust_down",
+        "oposicao_nivel_up",
+        "autarquia_relation_down"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

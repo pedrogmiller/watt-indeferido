@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-escolha-negociar",
+  "skin_id": "default",
+  "from_name": "Associação de Moradores de {{freguesia}}",
+  "subject": "Aceitamos sentar à mesa",
+  "body": "Estamos dispostos a falar.\n\nQueremos três coisas: menos área de painéis perto das casas, que os sobreiros fiquem, e benefícios para a freguesia que se vejam.\n\nSe chegarmos a acordo, retiramos a ação.\n\nMas o acordo tem de ser escrito e público.",
+  "params": {}
+}

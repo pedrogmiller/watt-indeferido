@@ -1,0 +1,20 @@
+{
+  "id": "mail-oposicao-sinal-02b",
+  "phase": "post_win",
+  "trigger": {
+    "market_event": "oposicao_local"
+  },
+  "priority": "high",
+  "from_type": "CAMARA",
+  "choices": [
+    {
+      "id": "ok",
+      "label": "Tomar nota",
+      "effects": [
+        "oposicao_sessao_mal_lida"
+      ]
+    }
+  ],
+  "notes_for_economy": "Valores em effects-economy.json oposicao_v01_2026_10_23.",
+  "source_note": "GM, licenca/oposicao-local-cartas-rascunho.md (23-10-2026), texto literal."
+}

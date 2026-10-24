@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-sinal-04b",
+  "skin_id": "default",
+  "from_name": "Equipa de acompanhamento arqueológico — {{projeto}}",
+  "subject": "Encontrámos gravuras antigas numa rocha do terreno",
+  "body": "A equipa encontrou gravuras numa rocha, perto de onde vai ficar {{elemento_afetado}}.\n\nPodem ser muito antigas. Ainda não sabemos o valor.\n\nA lei obriga a avisar a entidade do património.\n\nSe o sítio for estragado ou escondido, o Ministério Público pode levar o caso a tribunal e parar a obra.",
+  "params": {}
+}

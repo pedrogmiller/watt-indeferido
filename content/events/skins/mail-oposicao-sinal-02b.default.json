@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-sinal-02b",
+  "skin_id": "default",
+  "from_name": "Junta de Freguesia de {{freguesia}}",
+  "subject": "A sessão correu mal",
+  "body": "Houve gritos e a sessão acabou mais cedo. A imprensa estava lá.",
+  "params": {}
+}

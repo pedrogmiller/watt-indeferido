@@ -1,0 +1,8 @@
+{
+  "skeleton_id": "mail-oposicao-providencia-01",
+  "skin_id": "default",
+  "from_name": "Tribunal Administrativo e Fiscal de {{tribunal}}",
+  "subject": "Citação: providência cautelar contra o {{projeto}}",
+  "body": "{{autor_acao}} pediu ao tribunal que suspenda {{ato_suspenso}}.\n\nEnquanto o tribunal decide, a obra tem de parar.\n\nO tribunal costuma levar {{econ_meses_decisao_providencia}} meses a decidir. Pode levar mais.\n\nTens {{econ_dias_aviso_dgeg}} dias para avisar a DGEG.\n\nEstás no mês {{mes_trc}} do TRC. Próximo marco: {{proximo_marco}}, daqui a {{meses_para_marco}} meses.\n\nAtraso acumulado: {{atraso_total}} meses. Folga: {{meses_folga}} meses.",
+  "params": {}
+}
