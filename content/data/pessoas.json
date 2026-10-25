@@ -8,7 +8,7 @@
   "_fonte": "Decisão do Pedro (25/10): gratuito, um só tipo, sem erro. Espera de 1 mês: HIPÓTESE (Economy)."
  },
  "limites_relatorio": {
-  "_estado": "HIPÓTESE (Economy, motor-pesquisa-economia.md §3). NÃO aplicado na fase 1: espera o «ok» do Pedro.",
+  "_estado": "HIPÓTESE (Economy, motor-pesquisa-economia.md §3). Aplicado desde 25/10 com o «ok» do Pedro; os valores continuam por confirmar.",
   "max_em_curso": 3,
   "repetir_mesmo_alvo_meses": 12,
   "trava_levanta_se_alvo_muda": true,

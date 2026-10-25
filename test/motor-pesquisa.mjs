@@ -107,6 +107,37 @@ async function run(browser, width, height) {
   const inSave = await page.evaluate(() => { const id = localStorage.getItem('watt.saves.active'); const b = JSON.parse(localStorage.getItem('watt.save.slot.' + id) || 'null'); return b && b.motor; });
   ok(inSave && (inSave.done['p:pessoas-l1'] || (inSave.reps && inSave.reps['p:pessoas-l1'] != null)), tag + ' relatório guardado no save');
 
+  // Trava de 12 meses (valores de pessoas.json)
+  const lim = await page.evaluate(() => fetch('content/data/pessoas.json').then((r) => r.json()).then((d) => d.limites_relatorio));
+  ok(await page.locator('#moPedir').isDisabled(), tag + ' mesmo alvo bloqueado depois do relatório');
+  const esperado = await page.evaluate((m) => { const st = window.WIMotor.exportState(); return 'Novo relatório disponível em ' + window.__wiMonthLabel(st.last['p:pessoas-l1'].at + m) + '.'; }, lim.repetir_mesmo_alvo_meses);
+  const nota = (await page.locator('#moRepNota').innerText()).trim();
+  ok(nota === esperado && /^Novo relatório disponível em (janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro) de \d{4}\.$/.test(nota), tag + ' nota da trava «' + nota + '»');
+  await page.evaluate(() => window.WIMotor.setTrabalhaEm('pessoas-l1', 'empresa:akuo'));
+  ok(!(await page.locator('#moPedir').isDisabled()) && /\(Akuo\)/.test(await page.locator('#moTitulo').innerText()), tag + ' trava levanta quando o «Trabalha em» muda');
+  await page.evaluate(() => window.WIMotor.setTrabalhaEm('pessoas-l1', 'empresa:finerge'));
+  ok(await page.locator('#moPedir').isDisabled(), tag + ' trava volta quando regressa à mesma empresa');
+  // Limite de relatórios em curso
+  const cont0 = (await page.locator('#moContador').innerText()).trim();
+  ok(cont0 === '0/' + lim.max_em_curso + ' em curso', tag + ' contador «' + cont0 + '»');
+  await page.locator('#moVoltar').click();
+  const alvos = ['pessoas-1', 'pessoas-2', 'pessoas-x1', 'pessoas-x2'];
+  for (let i = 0; i < alvos.length; i++) {
+    await page.locator('[data-mo-sec="quadros"]').click();
+    await page.locator('#moLista [data-mo-pessoa="' + alvos[i] + '"]').click();
+    await page.waitForSelector('#moFicha');
+    if (i < lim.max_em_curso) {
+      await page.locator('#moPedir').click();
+      const c = (await page.locator('#moContador').innerText()).trim();
+      ok(c === (i + 1) + '/' + lim.max_em_curso + ' em curso', tag + ' contador sobe para ' + c);
+    } else {
+      ok(await page.locator('#moPedir').isDisabled(), tag + ' 4.º relatório desativado');
+      ok((await page.locator('#moRepNota').innerText()).trim() === 'Já tens ' + lim.max_em_curso + ' relatórios em curso. Espera que um termine.', tag + ' nota do limite');
+      if (width === 390) await page.screenshot({ path: path.join(OUT, 'limite-390.png') });
+    }
+    await page.locator('#moVoltar').click();
+  }
+  await page.locator('#moLista [data-mo-pessoa="pessoas-l1"]').click();
   // Cabeçalho → plantel do promotor
   await page.locator('#moTitulo a[data-mo-org]').click();
   await page.waitForSelector('#moPlantel');
@@ -158,6 +189,28 @@ async function run(browser, width, height) {
   ok(sw, tag + ' sem scroll horizontal');
   await page.keyboard.press('Escape');
   ok(await page.locator('#motorPanel[hidden]').count() === 1, tag + ' Esc fecha');
+  // Novo jogo na mesma sessão limpa o motor
+  ok(Object.keys((await page.evaluate(() => window.WIMotor.exportState())).reps).length > 0, tag + ' há relatórios antes do novo jogo');
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => window.__wattQA.startMenu());
+  await page.locator('[data-menu="novo"]').click();
+  await page.waitForSelector('#arranque[data-step="jogador"] #arranqueNext');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="pais"]');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="empresa"]', { timeout: 15000 });
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="ficha"]');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranqueConfirm.open #arranqueConfirmYes');
+  await page.locator('#arranqueConfirmYes').click();
+  await page.waitForSelector('#inboxDrawer.open', { timeout: 15000 });
+  const st2 = await page.evaluate(() => window.WIMotor.exportState());
+  ok(!Object.keys(st2.reps).length && !Object.keys(st2.done).length && !Object.keys(st2.last).length && !Object.keys(st2.onde).length, tag + ' novo jogo limpa relatórios e trava');
+  await page.keyboard.press('Escape');
+  await page.evaluate(() => window.WIMotor.open());
+  await page.waitForSelector('#motorPanel:not([hidden]) #moLista');
+  ok((await page.locator('#moContador').innerText()).trim() === '0/' + lim.max_em_curso + ' em curso' && await page.locator('#moFicha').count() === 0, tag + ' novo jogo: contador a zero e motor no início');
   await page.close();
 }
 

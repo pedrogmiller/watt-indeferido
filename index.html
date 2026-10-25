@@ -16754,6 +16754,12 @@
     const d = objDateUtc(mailMonth);
     return OBJ_MONTHS_SHORT[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
   }
+  // Motor de pesquisa: mês de calendário do jogo (ano×12 + mês) e o seu nome por extenso.
+  window.__wiCalMonth = () => {
+    if (mailLoop && mailLoop.active && mailLoop.month >= 0 && state.auctionWon) { const d = objDateUtc(mailLoop.month | 0); return d.getUTCFullYear() * 12 + d.getUTCMonth(); }
+    return state.year * 12 + ((state.quarter | 0) - 1) * 3;
+  };
+  window.__wiMonthLabel = (i) => OBJ_MONTHS[((i % 12) + 12) % 12] + ' de ' + Math.floor(i / 12);
   function objPeriodLabel(mailMonth) {
     const d = objDateUtc(mailMonth);
     return d.getUTCFullYear() + ' · Q' + (Math.floor(d.getUTCMonth() / 3) + 1);
@@ -19954,6 +19960,7 @@
     if (arranqueStep === 'ficha') { renderArranque('empresa'); return; }
   }
   function finishArranque() {
+    try { if (window.WIMotor) window.WIMotor.reset(); } catch (_) {}
     const d = arranqueDraft;
     playerProfile = {
       nomeProprio: String(d.nomeProprio || '').trim(),
@@ -21135,6 +21142,7 @@
         faixa: () => !!LEILAO_FAIXA, bomPreco: () => BOM_PRECO, openMandate0: () => openMandate0(), overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, winAt: (id, bid) => { let lot = null; try { AUCTION_WAVES.forEach((w) => { if (!lot) lot = w.find((l) => l.id === id) || null; }); } catch (_) {} if (!lot) return null; return { win: wouldWinAuction(Number(bid), lot), floor: lot.npcFloor, best: rivalBest(lot) }; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
         saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable(),
         canSpend: (n) => canSpend(n),
+        startMenu: () => showStartMenu(),
         playerNpv: (v) => playerNpv(v),
         npvIrr: () => stakesNpvIrr(),
         rescueLine: (v) => rescueShareLine(v),

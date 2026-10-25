@@ -17,7 +17,9 @@
 
   let D = null; let loading = null;
   // Estado do jogo (vai no save): relatórios pedidos { chave: meses em falta } e recebidos { chave: true }
-  let S = { reps: {}, done: {} };
+  // last: { chave: { at: mês de calendário do pedido, onde: Trabalha em nesse momento } }; onde: mudanças de Trabalha em durante o jogo
+  let S = { reps: {}, done: {}, last: {}, onde: {} };
+  function emptyState() { return { reps: {}, done: {}, last: {}, onde: {} }; }
   const nav = { stack: [] };
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
@@ -51,7 +53,21 @@
 
   function espera() { return (D && D.cfg.relatorio && D.cfg.relatorio.espera_meses) || 0; }
   function repKey(kind, id) { return kind + ':' + id; }
-  function repEstado(k) { if (S.done[k]) return 'feito'; if (S.reps[k] != null) return 'curso'; return null; }
+  function lim() { return (D && D.cfg.limites_relatorio) || {}; }
+  function emCurso() { return Object.keys(S.reps).length; }
+  function nowMes() { try { if (typeof window.__wiCalMonth === 'function') return window.__wiCalMonth(); } catch (_) {} return 0; }
+  function mesLabel(i) { try { if (typeof window.__wiMonthLabel === 'function') return window.__wiMonthLabel(i); } catch (_) {} return String(i); }
+  function ondeAtual(k) { if (k.indexOf('p:') !== 0) return null; const id = k.slice(2); if (S.onde[id] != null) return S.onde[id]; const p = D.pessoas.find((x) => x.id === id); return p ? p.trabalha_em : null; }
+  // Mês a partir do qual o mesmo alvo pode ter novo relatório, ou null se não há trava.
+  function travaAte(k) {
+    const L = lim(); const meses = L.repetir_mesmo_alvo_meses; const last = S.last[k];
+    if (!meses || !last) return null;
+    if (L.trava_levanta_se_alvo_muda && ondeAtual(k) !== last.onde) return null;
+    const ate = last.at + meses;
+    return nowMes() < ate ? ate : null;
+  }
+  function cheio() { const m = lim().max_em_curso; return !!m && emCurso() >= m; }
+  function repEstado(k) { if (S.reps[k] != null) return 'curso'; if (S.done[k]) return 'feito'; return null; }
   function tick(n) {
     const steps = Math.max(0, n | 0); if (!steps) return;
     let mudou = false;
@@ -70,18 +86,20 @@
     return '<h2 class="mo-titulo" id="moTitulo">' + esc(nome) + ' <span class="mo-emp">(' + (l || 'Livre') + ')</span></h2>';
   }
   function navBar(crumb) {
-    return '<div class="mo-nav"><button type="button" class="mo-btn-g" id="moVoltar">‹ Voltar</button><button type="button" class="mo-btn-g" id="moInicio">⌂ Início</button><span class="mo-crumb">' + esc(crumb) + '</span></div>';
+    const m = lim().max_em_curso;
+    return '<div class="mo-nav"><button type="button" class="mo-btn-g" id="moVoltar">‹ Voltar</button><button type="button" class="mo-btn-g" id="moInicio">⌂ Início</button><span class="mo-crumb">' + esc(crumb) + '</span>' + (m ? '<span class="mo-contador" id="moContador">' + emCurso() + '/' + m + ' em curso</span>' : '') + '</div>';
   }
   function secNav(cur) {
     return SECOES.map(([g, list]) => '<div class="mo-grupo"><div class="mo-glabel">' + g + '</div><div class="mo-tabs">' +
       list.map(([id, l]) => '<button type="button" class="mo-tab' + (id === cur ? ' on' : '') + '" data-mo-sec="' + id + '">' + l + '</button>').join('') + '</div></div>').join('');
   }
+  function onde(p) { return S.onde[p.id] != null ? S.onde[p.id] : p.trabalha_em; }
   function pessoaRow(p) {
-    const l = orgLink(p.trabalha_em);
+    const l = orgLink(onde(p));
     return '<li class="mo-row"><a href="#" class="mo-link mo-nome" data-mo-pessoa="' + esc(p.id) + '">' + esc(p.nome) + '</a><span class="mo-sub">' + esc(p.cargo || '') + ' · ' + (l || 'Livre') + '</span></li>';
   }
   function orgRow(o) {
-    const n = D.pessoas.filter((p) => p.trabalha_em === o.ref).length;
+    const n = D.pessoas.filter((p) => onde(p) === o.ref).length;
     return '<li class="mo-row"><a href="#" class="mo-link mo-nome" data-mo-org="' + esc(o.ref) + '">' + esc(curto(o.nome)) + '</a><span class="mo-sub">' + esc(o.desc || '') + ' · ' + n + (n === 1 ? ' pessoa' : ' pessoas') + '</span></li>';
   }
   function listaHtml(sec, q) {
@@ -100,7 +118,7 @@
   function qualCols(p) {
     const Q = D.cfg.qualidades || {};
     const L = p.tipo === 'interlocutor' ? (Q.interlocutores || []) : (Q.quadros_consultores || []);
-    const reveal = repEstado(repKey('p', p.id)) === 'feito';
+    const reveal = !!S.done[repKey('p', p.id)];
     const cols = [];
     L.forEach((q) => { (cols[q.coluna] = cols[q.coluna] || []).push(q); });
     return '<div class="mo-cols mo-cols-' + cols.length + '" id="moQual">' + cols.map((c) => '<div class="mo-col">' + c.map((q) =>
@@ -109,9 +127,13 @@
   function relatorioHtml(k) {
     const e = repEstado(k); const n = espera();
     const prazo = n === 1 ? '1 mês' : n + ' meses';
-    if (e === 'feito') return '<div class="mo-rep ok" id="moRep">Relatório recebido. Já vês tudo.</div>';
     if (e === 'curso') return '<div class="mo-rep" id="moRep">Relatório pedido. Chega daqui a <span class="mo-est">≈</span> ' + prazo + ' de jogo.</div>';
-    return '<div class="mo-acoes" id="moAcoes"><div class="mo-glabel">Ações</div><button type="button" class="mo-btn" id="moPedir" data-mo-rep="' + esc(k) + '">Pedir relatório</button><span class="mo-sub">Gratuito. Chega daqui a ' + prazo + ' de jogo e mostra todas as qualidades.</span></div>';
+    const feito = e === 'feito' ? '<div class="mo-rep ok" id="moRep">Relatório recebido. Já vês tudo.</div>' : '';
+    const ate = travaAte(k);
+    let nota = 'Gratuito. Chega daqui a ' + prazo + ' de jogo e mostra todas as qualidades.'; let dis = false;
+    if (ate != null) { dis = true; nota = 'Novo relatório disponível em ' + mesLabel(ate) + '.'; }
+    else if (cheio()) { dis = true; nota = 'Já tens ' + lim().max_em_curso + ' relatórios em curso. Espera que um termine.'; }
+    return feito + '<div class="mo-acoes" id="moAcoes"><div class="mo-glabel">Ações</div><button type="button" class="mo-btn" id="moPedir" data-mo-rep="' + esc(k) + '"' + (dis ? ' disabled' : '') + '>Pedir relatório</button><span class="mo-sub" id="moRepNota">' + esc(nota) + '</span></div>';
   }
   function historial(p) {
     const h = p.historial || [];
@@ -121,15 +143,15 @@
   function pessoaHtml(id) {
     const p = D.pessoas.find((x) => x.id === id); if (!p) return navBar('Pesquisa') + '<p>' + MISS + '</p>';
     const sec = TIPO_SEC[p.tipo];
-    return navBar(SECOES[0][1].find((s) => s[0] === sec)[1]) + '<section class="mo-ficha" id="moFicha" data-tipo="' + p.tipo + '">' + cabecalho(p.nome, p.trabalha_em) +
+    return navBar(SECOES[0][1].find((s) => s[0] === sec)[1]) + '<section class="mo-ficha" id="moFicha" data-tipo="' + p.tipo + '">' + cabecalho(p.nome, onde(p)) +
       '<p class="mo-sub">' + esc(p.cargo || '') + (p.regiao ? ' · ' + esc(p.regiao) : '') + '</p>' +
-      '<div class="mo-card"><div class="mo-glabel">Trabalha em</div><div id="moTrabalha">' + (orgLink(p.trabalha_em) || 'Livre') + '</div></div>' +
+      '<div class="mo-card"><div class="mo-glabel">Trabalha em</div><div id="moTrabalha">' + (orgLink(onde(p)) || 'Livre') + '</div></div>' +
       qualCols(p) + (COM_RELATORIO[sec] ? relatorioHtml(repKey('p', p.id)) : '') + historial(p) + '</section>';
   }
   function orgHtml(ref) {
     const o = D.byRef[ref]; if (!o) return navBar('Pesquisa') + '<p>' + MISS + '</p>';
-    const k = repKey('o', ref); const reveal = repEstado(k) === 'feito';
-    const staff = D.pessoas.filter((p) => p.trabalha_em === ref);
+    const k = repKey('o', ref); const reveal = !!S.done[k];
+    const staff = D.pessoas.filter((p) => onde(p) === ref);
     let attrs = '';
     if (o.atributos) attrs = '<div class="mo-cols mo-cols-1" id="moAttr"><div class="mo-col">' + o.atributos.map((a) => '<div class="mo-qrow"><span>' + esc(a.nome) + '</span>' + (a.visivel || reveal ? (a.v == null ? MISS : '<b>' + esc(a.v) + '</b><span class="mo-sub">/5</span>') : qvHtml(null, true)) + '</div>').join('') + '</div></div>';
     else if (o.escondidos) attrs = '<div class="mo-cols mo-cols-1" id="moAttr"><div class="mo-col">' + o.escondidos.map((t, i) => '<div class="mo-qrow"><span>' + (reveal ? esc(t) : 'Característica ' + (i + 1)) + '</span>' + (reveal ? '<b>✓</b>' : qvHtml(null, true)) + '</div>').join('') + '</div></div>';
@@ -186,7 +208,7 @@
       if (t.dataset.moSec) { ev.preventDefault(); const st = cur(); if (st.v === 'home') { st.sec = t.dataset.moSec; render(); } else go({ v: 'home', sec: t.dataset.moSec }); return; }
       if (t.dataset.moPessoa) { ev.preventDefault(); return go({ v: 'pessoa', id: t.dataset.moPessoa }); }
       if (t.dataset.moOrg) { ev.preventDefault(); return go({ v: 'org', ref: t.dataset.moOrg }); }
-      if (t.dataset.moRep) { const k = t.dataset.moRep; if (!repEstado(k)) { S.reps[k] = espera(); if (S.reps[k] <= 0) { delete S.reps[k]; S.done[k] = true; } try { if (typeof window.__wiScheduleSave === 'function') window.__wiScheduleSave('motor-relatorio'); } catch (_) {} } render(); }
+      if (t.dataset.moRep) { const k = t.dataset.moRep; if (repEstado(k) !== 'curso' && travaAte(k) == null && !cheio()) { S.last[k] = { at: nowMes(), onde: ondeAtual(k) }; S.reps[k] = espera(); if (S.reps[k] <= 0) { delete S.reps[k]; S.done[k] = true; } try { if (typeof window.__wiScheduleSave === 'function') window.__wiScheduleSave('motor-relatorio'); } catch (_) {} } render(); }
     });
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) close(); });
     window.addEventListener('resize', () => { if (isOpen()) place(); });
@@ -196,7 +218,10 @@
   window.WIMotor = {
     open, close, isOpen, tick, load,
     exportState: () => JSON.parse(JSON.stringify(S)),
-    importState: (s) => { S = { reps: (s && s.reps && typeof s.reps === 'object') ? Object.assign({}, s.reps) : {}, done: (s && s.done && typeof s.done === 'object') ? Object.assign({}, s.done) : {} }; },
+    importState: (s) => { const o = (x) => (s && s[x] && typeof s[x] === 'object') ? Object.assign({}, s[x]) : {}; S = { reps: o('reps'), done: o('done'), last: o('last'), onde: o('onde') }; },
+    reset: () => { S = emptyState(); nav.stack = []; if (isOpen()) close(); },
+    // Para as notícias de transferências (fase seguinte): muda o «Trabalha em» de uma pessoa.
+    setTrabalhaEm: (id, ref) => { S.onde[id] = ref; if (isOpen()) render(); },
     openPessoa: (id) => { open(); load().then(() => go({ v: 'pessoa', id })); },
     openOrg: (ref) => { open(); load().then(() => go({ v: 'org', ref })); }
   };
