@@ -4787,7 +4787,7 @@
   /* Lupa = mesmo botão da roda dentada (.header-settings-btn), colada à esquerda dela (8px). */
   .header-search-btn { margin-right: -16px; }
   @media (max-width: 900px) { .header-search-btn { margin-right: -10px; } }
-  body.footer-mock #btnSearch {
+  body.footer-mock #btnMotor {
     display: inline-flex !important;
     order: 21;
     margin-left: 8px;
@@ -5408,8 +5408,8 @@
   body.at-arranque .mobile-tabbar-hint { display: none !important; }
   body.at-menu.footer-mock #btnSettings,
   body.at-arranque.footer-mock #btnSettings,
-  body.at-menu.footer-mock #btnSearch,
-  body.at-arranque.footer-mock #btnSearch,
+  body.at-menu.footer-mock #btnMotor,
+  body.at-arranque.footer-mock #btnMotor,
   body.at-menu.footer-mock #btnNextQ,
   body.at-arranque.footer-mock #btnNextQ,
   body.at-menu.footer-mock #btnTutorial,
@@ -5861,7 +5861,7 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
     <span class="obj-dot" id="objDot" hidden></span>
   </button>
-  <button type="button" class="header-settings-btn header-search-btn" id="btnSearch" title="Pesquisar" aria-label="Pesquisar" aria-haspopup="dialog" aria-expanded="false" aria-controls="entPanel">
+  <button type="button" class="header-settings-btn header-search-btn" id="btnMotor" title="Pesquisa" aria-label="Pesquisa" aria-haspopup="dialog" aria-expanded="false" aria-controls="motorPanel">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.8-3.8"/></svg>
   </button>
   <button type="button" class="header-settings-btn" id="btnSettings" title="Definições" aria-label="Definições">
@@ -6501,6 +6501,9 @@
   </div>
 </div>
 
+<section class="motor-panel" id="motorPanel" role="dialog" aria-label="Pesquisa" hidden><div class="mo-body"></div></section>
+<link rel="stylesheet" href="motor.css">
+<script src="motor.js"></script>
 <!-- ═══ MOBILE FOOTER (must sit BEFORE the main <script>: init() runs synchronously and wires these buttons) ═══ -->
 <div class="mobile-tabbar-hint" id="mobileTabbarHint" hidden>Navegação móvel</div>
 <nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navegação" hidden>
@@ -8967,6 +8970,7 @@
         try { if (typeof ensureOpenDeadlines === 'function') ensureOpenDeadlines(); } catch (_) {}
         const inboxBefore = (mailState.items || []).length;
         mailLoop.month = monthBefore + 1;
+        try { if (window.WIMotor) window.WIMotor.tick(1); } catch (_) {}
         mailLoop._slipLetterThisPlay = false;
         monthSpending = true;
         // Running obra costs and the ACT fine land as the month starts, before a deadline is met.
@@ -9035,6 +9039,7 @@
         scheduleSave('next-month-mail');
       } else {
         state.quarter += 1;
+        try { if (window.WIMotor) window.WIMotor.tick(3); } catch (_) {}
         if (state.quarter > 4) {
           state.quarter = 1;
           state.year += 1;
@@ -18640,6 +18645,7 @@
         phase0Seen: phase0WelcomeSeen,
         slotName: activeSlotName()
       },
+      motor: window.WIMotor ? window.WIMotor.exportState() : null,
       tutorial: (window.__tut && window.__tut.exportState) ? window.__tut.exportState() : (window.__tutSaved || null)
     };
   }
@@ -18659,6 +18665,7 @@
     }
   }
 
+  window.__wiScheduleSave = (r) => scheduleSave(r);
   function scheduleSave(reason) {
     if (_saveOverrideActive) return;
     if (_saveTimer) clearTimeout(_saveTimer);
@@ -18687,6 +18694,7 @@
 
   function hydrateFromSave(blob) {
     if (!blob || blob.v !== 1 || !blob.state) return false;
+    try { if (window.WIMotor) window.WIMotor.importState(blob.motor); } catch (_) {}
     try {
       if (blob.tutorial) {
         window.__tutSaved = blob.tutorial;
