@@ -1,0 +1,1761 @@
+{
+ "_nota": "Motor de pesquisa, fase 1. Todas as pessoas são fictícias (nomes inventados). Valores das qualidades e dos atributos: EXEMPLO / HIPÓTESE, por aprovar pelo GM e pela Economy. As empresas reais vêm de content/data/empresas-arranque.json (promotores) e content/events/entities.draft.json (entidades públicas, rede, bancos); não se repetem aqui. Só ficam aqui as organizações fictícias que não existem nesses ficheiros (fornecedores, projetistas, consultoras, clientes PPA). trabalha_em: livre | jogador | empresa:<id empresas-arranque> | entidade:<id entities.draft> | org:<id deste ficheiro>.",
+ "relatorio": {
+  "custo_eur": 0,
+  "espera_meses": 1,
+  "revela": "tudo",
+  "exato": true,
+  "_fonte": "Decisão do Pedro (25/10): gratuito, um só tipo, sem erro. Espera de 1 mês: HIPÓTESE (Economy)."
+ },
+ "limites_relatorio": {
+  "_estado": "HIPÓTESE (Economy, motor-pesquisa-economia.md §3). Aplicado desde 25/10 com o «ok» do Pedro; os valores continuam por confirmar.",
+  "max_em_curso": 3,
+  "repetir_mesmo_alvo_meses": 12,
+  "trava_levanta_se_alvo_muda": true,
+  "_nota_trava": "A trava de 12 meses levanta mais cedo se o alvo mudar (por exemplo, a pessoa muda de empresa ou o «Trabalha em» muda)."
+ },
+ "qualidades": {
+  "_estado": "EXEMPLO / HIPÓTESE",
+  "escala": [
+   1,
+   20
+  ],
+  "quadros_consultores": [
+   {
+    "id": "q01",
+    "nome": "Licenciamento",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "q02",
+    "nome": "Rede elétrica",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "q03",
+    "nome": "Ambiente e licenças ambientais",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "q04",
+    "nome": "Terrenos",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "q05",
+    "nome": "Finanças de projeto",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "q06",
+    "nome": "Construção",
+    "coluna": 0,
+    "visivel": false
+   },
+   {
+    "id": "q07",
+    "nome": "Contratos",
+    "coluna": 0,
+    "visivel": false
+   },
+   {
+    "id": "q08",
+    "nome": "Leis e tribunais",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "q09",
+    "nome": "Profundidade de análise",
+    "coluna": 0,
+    "visivel": false
+   },
+   {
+    "id": "q10",
+    "nome": "Negociação",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "q11",
+    "nome": "Relação com entidades",
+    "coluna": 1,
+    "visivel": false
+   },
+   {
+    "id": "q12",
+    "nome": "Relação com a comunidade",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "q13",
+    "nome": "Rede de contactos",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "q14",
+    "nome": "Comunicação",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "q15",
+    "nome": "Reputação no setor",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "q16",
+    "nome": "Liderança",
+    "coluna": 1,
+    "visivel": false
+   },
+   {
+    "id": "q17",
+    "nome": "Decisão",
+    "coluna": 2,
+    "visivel": true
+   },
+   {
+    "id": "q18",
+    "nome": "Organização",
+    "coluna": 2,
+    "visivel": true
+   },
+   {
+    "id": "q19",
+    "nome": "Trabalho sob pressão",
+    "coluna": 2,
+    "visivel": false
+   },
+   {
+    "id": "q20",
+    "nome": "Criatividade",
+    "coluna": 2,
+    "visivel": true
+   },
+   {
+    "id": "q21",
+    "nome": "Rigor",
+    "coluna": 2,
+    "visivel": true
+   },
+   {
+    "id": "q22",
+    "nome": "Ambição",
+    "coluna": 2,
+    "visivel": false
+   },
+   {
+    "id": "q23",
+    "nome": "Lealdade",
+    "coluna": 2,
+    "visivel": false
+   },
+   {
+    "id": "q24",
+    "nome": "Integridade",
+    "coluna": 2,
+    "visivel": false
+   },
+   {
+    "id": "q25",
+    "nome": "Paciência",
+    "coluna": 2,
+    "visivel": false
+   },
+   {
+    "id": "q26",
+    "nome": "Memória",
+    "coluna": 2,
+    "visivel": false
+   },
+   {
+    "id": "q27",
+    "nome": "Abertura à mudança",
+    "coluna": 2,
+    "visivel": true
+   },
+   {
+    "id": "q28",
+    "nome": "Resistência",
+    "coluna": 2,
+    "visivel": true
+   }
+  ],
+  "interlocutores": [
+   {
+    "id": "f01",
+    "nome": "Conhecimento técnico",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "f02",
+    "nome": "Rigor",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "f03",
+    "nome": "Decisão",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "f04",
+    "nome": "Paciência",
+    "coluna": 0,
+    "visivel": true
+   },
+   {
+    "id": "f05",
+    "nome": "Memória",
+    "coluna": 0,
+    "visivel": false
+   },
+   {
+    "id": "f06",
+    "nome": "Integridade",
+    "coluna": 1,
+    "visivel": false
+   },
+   {
+    "id": "f07",
+    "nome": "Abertura à mudança",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "f08",
+    "nome": "Rede de contactos",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "f09",
+    "nome": "Carga de trabalho",
+    "coluna": 1,
+    "visivel": true
+   },
+   {
+    "id": "f10",
+    "nome": "Comunicação",
+    "coluna": 1,
+    "visivel": false
+   }
+  ]
+ },
+ "atributos_organizacoes": {
+  "_estado": "EXEMPLO / HIPÓTESE",
+  "escala": [
+   1,
+   5
+  ],
+  "grupos": {
+   "fornecedores": [
+    {
+     "nome": "Preço",
+     "visivel": true
+    },
+    {
+     "nome": "Prazo de entrega",
+     "visivel": true
+    },
+    {
+     "nome": "Fiabilidade técnica",
+     "visivel": false
+    },
+    {
+     "nome": "Cumprimento de prazos",
+     "visivel": false
+    },
+    {
+     "nome": "Garantia e assistência",
+     "visivel": false
+    },
+    {
+     "nome": "Rastreabilidade da cadeia",
+     "visivel": false
+    }
+   ],
+   "empreiteiros": [
+    {
+     "nome": "Preço",
+     "visivel": true
+    },
+    {
+     "nome": "Experiência",
+     "visivel": true
+    },
+    {
+     "nome": "Cumprimento de prazos",
+     "visivel": false
+    },
+    {
+     "nome": "Qualidade do projeto",
+     "visivel": false
+    },
+    {
+     "nome": "Segurança e ambiente",
+     "visivel": false
+    },
+    {
+     "nome": "Relação com a comunidade",
+     "visivel": false
+    }
+   ],
+   "ppa": [
+    {
+     "nome": "Preço oferecido",
+     "visivel": true
+    },
+    {
+     "nome": "Volume",
+     "visivel": true
+    },
+    {
+     "nome": "Duração aceite",
+     "visivel": true
+    },
+    {
+     "nome": "Solidez financeira",
+     "visivel": false
+    },
+    {
+     "nome": "Flexibilidade do perfil",
+     "visivel": false
+    },
+    {
+     "nome": "Peso para o banco",
+     "visivel": false
+    }
+   ],
+   "consultores": [
+    {
+     "nome": "Preço",
+     "visivel": true
+    },
+    {
+     "nome": "Especialidade",
+     "visivel": true
+    },
+    {
+     "nome": "Taxa de sucesso",
+     "visivel": false
+    },
+    {
+     "nome": "Rapidez",
+     "visivel": false
+    },
+    {
+     "nome": "Profundidade de análise",
+     "visivel": false
+    },
+    {
+     "nome": "Rede de contactos",
+     "visivel": false
+    }
+   ]
+  }
+ },
+ "organizacoes": [
+  {
+   "id": "fornecedores-1",
+   "tipo": "fornecedor",
+   "nome": "Solenza Módulos",
+   "descricao": "Fabricante grande de módulos",
+   "grupo_atributos": "fornecedores",
+   "valores": [
+    4,
+    4,
+    4,
+    3,
+    3,
+    2
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "fornecedores-2",
+   "tipo": "fornecedor",
+   "nome": "Transformadores Vouga",
+   "descricao": "Fábrica pequena de transformadores",
+   "grupo_atributos": "fornecedores",
+   "valores": [
+    3,
+    2,
+    5,
+    5,
+    4,
+    5
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "fornecedores-3",
+   "tipo": "fornecedor",
+   "nome": "Ventor Eólica",
+   "descricao": "Fabricante de aerogeradores",
+   "grupo_atributos": "fornecedores",
+   "valores": [
+    3,
+    3,
+    3,
+    2,
+    4,
+    4
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "empreiteiros-1",
+   "tipo": "fornecedor",
+   "nome": "Construtora Alvedro EPC",
+   "descricao": "EPC grande, muitos parques",
+   "grupo_atributos": "empreiteiros",
+   "valores": [
+    2,
+    5,
+    3,
+    4,
+    4,
+    2
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "empreiteiros-2",
+   "tipo": "fornecedor",
+   "nome": "Gabinete Traço Fino",
+   "descricao": "Projetista · gabinete de projeto com 6 engenheiros",
+   "grupo_atributos": "empreiteiros",
+   "valores": [
+    4,
+    2,
+    4,
+    5,
+    3,
+    4
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "empreiteiros-3",
+   "tipo": "fornecedor",
+   "nome": "Obras Ladeira BOP",
+   "descricao": "Empreiteiro de BOP regional",
+   "grupo_atributos": "empreiteiros",
+   "valores": [
+    4,
+    3,
+    2,
+    2,
+    2,
+    3
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "ppa-1",
+   "tipo": "cliente_ppa",
+   "nome": "Grupo Ferrosul",
+   "descricao": "Indústria pesada, muito consumo",
+   "grupo_atributos": "ppa",
+   "valores": [
+    4,
+    5,
+    4,
+    2,
+    2,
+    2
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "ppa-2",
+   "tipo": "cliente_ppa",
+   "nome": "Cooperativa Leiteira do Mondego",
+   "descricao": "Cooperativa agrícola média",
+   "grupo_atributos": "ppa",
+   "valores": [
+    2,
+    2,
+    3,
+    5,
+    4,
+    4
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "ppa-3",
+   "tipo": "cliente_ppa",
+   "nome": "Datanorte Centros de Dados",
+   "descricao": "Centros de dados, quer energia verde",
+   "grupo_atributos": "ppa",
+   "valores": [
+    5,
+    4,
+    5,
+    4,
+    3,
+    5
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "consultores-1",
+   "tipo": "fornecedor",
+   "nome": "Ribeirinho & Associados",
+   "descricao": "Sociedade de advogados grande, energia",
+   "grupo_atributos": "consultores",
+   "valores": [
+    1,
+    5,
+    4,
+    3,
+    3,
+    5
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "consultores-3",
+   "tipo": "fornecedor",
+   "nome": "EcoParecer Consultores",
+   "descricao": "Consultora ambiental média",
+   "grupo_atributos": "consultores",
+   "valores": [
+    3,
+    4,
+    2,
+    3,
+    2,
+    3
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "fornecedores-x1",
+   "tipo": "fornecedor",
+   "nome": "Inversa Tec",
+   "descricao": "Inversores",
+   "grupo_atributos": "fornecedores",
+   "valores": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "fornecedores-x2",
+   "tipo": "fornecedor",
+   "nome": "Lítio Sul",
+   "descricao": "Baterias",
+   "grupo_atributos": "fornecedores",
+   "valores": [
+    4,
+    3,
+    2,
+    2,
+    2,
+    1
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "empreiteiros-x1",
+   "tipo": "fornecedor",
+   "nome": "Montagens Mondego",
+   "descricao": "Montagem elétrica",
+   "grupo_atributos": "empreiteiros",
+   "valores": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "empreiteiros-x4",
+   "tipo": "fornecedor",
+   "nome": "Obras Charneca",
+   "descricao": "Empreiteiro local",
+   "grupo_atributos": "empreiteiros",
+   "valores": [
+    5,
+    2,
+    2,
+    2,
+    2,
+    5
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "ppa-x1",
+   "tipo": "cliente_ppa",
+   "nome": "Cerâmicas da Serra",
+   "descricao": "Indústria",
+   "grupo_atributos": "ppa",
+   "valores": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "ppa-x3",
+   "tipo": "cliente_ppa",
+   "nome": "Comercializadora Faial",
+   "descricao": "Trader de energia",
+   "grupo_atributos": "ppa",
+   "valores": [
+    2,
+    3,
+    1,
+    3,
+    4,
+    2
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "consultores-x1",
+   "tipo": "fornecedor",
+   "nome": "Ambiente & Território",
+   "descricao": "Consultora ambiental",
+   "grupo_atributos": "consultores",
+   "valores": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "ficticia": true,
+   "exemplo": true
+  },
+  {
+   "id": "consultores-x2",
+   "tipo": "fornecedor",
+   "nome": "Estudos do Barlavento",
+   "descricao": "Estudos de rede",
+   "grupo_atributos": "consultores",
+   "valores": [
+    4,
+    3,
+    4,
+    2,
+    4,
+    2
+   ],
+   "ficticia": true,
+   "exemplo": true
+  }
+ ],
+ "pessoas": [
+  {
+   "id": "pessoas-1",
+   "tipo": "quadro",
+   "nome": "Teresa Valadares",
+   "cargo": "Diretora de licenciamento, 25 anos de setor",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "entidade:dgeg",
+     "de": 2001,
+     "ate": 2009
+    },
+    {
+     "onde": "empresa:edp",
+     "de": 2009,
+     "ate": 2025
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 9,
+    "q02": 7,
+    "q03": 7,
+    "q04": 7,
+    "q05": 7,
+    "q06": 7,
+    "q07": 9,
+    "q08": 7,
+    "q09": 7,
+    "q10": 7,
+    "q11": 7,
+    "q12": 7,
+    "q13": 7,
+    "q14": 7,
+    "q15": 7,
+    "q16": 7,
+    "q17": 7,
+    "q18": 7,
+    "q19": 7,
+    "q20": 8,
+    "q21": 8,
+    "q22": 8,
+    "q23": 8,
+    "q24": 8,
+    "q25": 8,
+    "q26": 8,
+    "q27": 8,
+    "q28": 8
+   },
+   "exemplo": true,
+   "area": "Licenciamento",
+   "equipa_escondida": "grande"
+  },
+  {
+   "id": "pessoas-l1",
+   "tipo": "quadro",
+   "nome": "Leonilde Barroca",
+   "cargo": "Diretora de licenciamento, 14 anos, 9 TRC com marcos cumpridos",
+   "trabalha_em": "empresa:finerge",
+   "historial": [
+    {
+     "onde": "empresa:finerge",
+     "de": 2011,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 18,
+    "q02": 13,
+    "q03": 14,
+    "q04": 10,
+    "q05": 8,
+    "q06": 7,
+    "q07": 12,
+    "q08": 11,
+    "q09": 15,
+    "q10": 13,
+    "q11": 17,
+    "q12": 12,
+    "q13": 17,
+    "q14": 14,
+    "q15": 17,
+    "q16": 15,
+    "q17": 13,
+    "q18": 17,
+    "q19": 14,
+    "q20": 11,
+    "q21": 16,
+    "q22": 9,
+    "q23": 16,
+    "q24": 18,
+    "q25": 14,
+    "q26": 10,
+    "q27": 12,
+    "q28": 15
+   },
+   "exemplo": true,
+   "area": "Licenciamento",
+   "equipa_escondida": "grande"
+  },
+  {
+   "id": "pessoas-j1",
+   "tipo": "quadro",
+   "nome": "Sérgio Amarante",
+   "cargo": "Diretor de licenciamento da tua empresa",
+   "trabalha_em": "jogador",
+   "historial": [
+    {
+     "onde": "entidade:ccdr-centro",
+     "de": 2010,
+     "ate": 2019
+    },
+    {
+     "onde": "jogador",
+     "de": 2019,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 10,
+    "q02": 10,
+    "q03": 10,
+    "q04": 10,
+    "q05": 10,
+    "q06": 10,
+    "q07": 10,
+    "q08": 10,
+    "q09": 10,
+    "q10": 11,
+    "q11": 11,
+    "q12": 11,
+    "q13": 11,
+    "q14": 11,
+    "q15": 11,
+    "q16": 11,
+    "q17": 11,
+    "q18": 11,
+    "q19": 11,
+    "q20": 11,
+    "q21": 11,
+    "q22": 11,
+    "q23": 11,
+    "q24": 11,
+    "q25": 11,
+    "q26": 11,
+    "q27": 11,
+    "q28": 11
+   },
+   "exemplo": true,
+   "area": "Licenciamento",
+   "equipa_escondida": "media"
+  },
+  {
+   "id": "pessoas-2",
+   "tipo": "quadro",
+   "nome": "Nuno Carriço",
+   "cargo": "Diretor técnico, vem de obras de estradas",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "org:empreiteiros-1",
+     "de": 2010,
+     "ate": 2022
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "q01": 4,
+    "q02": 4,
+    "q03": 7,
+    "q04": 4,
+    "q05": 4,
+    "q06": 4,
+    "q07": 4,
+    "q08": 4,
+    "q09": 4,
+    "q10": 5,
+    "q11": 5,
+    "q12": 5,
+    "q13": 5,
+    "q14": 5,
+    "q15": 5,
+    "q16": 5,
+    "q17": 5,
+    "q18": 5,
+    "q19": 5,
+    "q20": 5,
+    "q21": 5,
+    "q22": 5,
+    "q23": 5,
+    "q24": 5,
+    "q25": 5,
+    "q26": 5,
+    "q27": 5,
+    "q28": 5
+   },
+   "exemplo": true,
+   "area": "Técnica",
+   "equipa_escondida": "pequena"
+  },
+  {
+   "id": "pessoas-x1",
+   "tipo": "quadro",
+   "nome": "Rui Tavolim",
+   "cargo": "Diretor de terrenos e negociação",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "empresa:voltalia",
+     "de": 2016,
+     "ate": 2024
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "q01": 14,
+    "q02": 14,
+    "q03": 14,
+    "q04": 14,
+    "q05": 14,
+    "q06": 14,
+    "q07": 14,
+    "q08": 14,
+    "q09": 14,
+    "q10": 15,
+    "q11": 15,
+    "q12": 15,
+    "q13": 15,
+    "q14": 15,
+    "q15": 15,
+    "q16": 15,
+    "q17": 15,
+    "q18": 15,
+    "q19": 15,
+    "q20": 15,
+    "q21": 15,
+    "q22": 15,
+    "q23": 15,
+    "q24": 15,
+    "q25": 15,
+    "q26": 15,
+    "q27": 15,
+    "q28": 15
+   },
+   "exemplo": true,
+   "area": "Negociação",
+   "equipa_escondida": "media"
+  },
+  {
+   "id": "pessoas-x2",
+   "tipo": "quadro",
+   "nome": "Marta Quintanilha",
+   "cargo": "Diretora de financiamento (project finance)",
+   "trabalha_em": "empresa:galp",
+   "historial": [
+    {
+     "onde": "entidade:banco-cgd",
+     "de": 2012,
+     "ate": 2019
+    },
+    {
+     "onde": "empresa:galp",
+     "de": 2019,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 11,
+    "q02": 11,
+    "q03": 11,
+    "q04": 11,
+    "q05": 11,
+    "q06": 11,
+    "q07": 11,
+    "q08": 11,
+    "q09": 12,
+    "q10": 12,
+    "q11": 12,
+    "q12": 12,
+    "q13": 12,
+    "q14": 12,
+    "q15": 12,
+    "q16": 12,
+    "q17": 12,
+    "q18": 12,
+    "q19": 12,
+    "q20": 12,
+    "q21": 12,
+    "q22": 12,
+    "q23": 12,
+    "q24": 12,
+    "q25": 12,
+    "q26": 12,
+    "q27": 12,
+    "q28": 12
+   },
+   "exemplo": true,
+   "area": "Financiamento",
+   "equipa_escondida": "media"
+  },
+  {
+   "id": "pessoas-x3",
+   "tipo": "quadro",
+   "nome": "Duarte Belmonte",
+   "cargo": "Diretor de obra",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "org:empreiteiros-x1",
+     "de": 2014,
+     "ate": 2025
+    }
+   ],
+   "regiao": "Norte",
+   "qualidades": {
+    "q01": 9,
+    "q02": 9,
+    "q03": 9,
+    "q04": 9,
+    "q05": 9,
+    "q06": 9,
+    "q07": 9,
+    "q08": 9,
+    "q09": 9,
+    "q10": 9,
+    "q11": 9,
+    "q12": 9,
+    "q13": 9,
+    "q14": 9,
+    "q15": 9,
+    "q16": 9,
+    "q17": 9,
+    "q18": 9,
+    "q19": 9,
+    "q20": 9,
+    "q21": 9,
+    "q22": 10,
+    "q23": 10,
+    "q24": 10,
+    "q25": 10,
+    "q26": 10,
+    "q27": 10,
+    "q28": 10
+   },
+   "exemplo": true,
+   "area": "Técnica",
+   "equipa_escondida": "media"
+  },
+  {
+   "id": "pessoas-x4",
+   "tipo": "quadro",
+   "nome": "Lívia Sarzedas",
+   "cargo": "Diretora institucional, carreira em Espanha",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "Empresa de energia em Madrid",
+     "de": 2008,
+     "ate": 2024
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 6,
+    "q02": 6,
+    "q03": 6,
+    "q04": 6,
+    "q05": 6,
+    "q06": 6,
+    "q07": 6,
+    "q08": 6,
+    "q09": 6,
+    "q10": 6,
+    "q11": 6,
+    "q12": 6,
+    "q13": 6,
+    "q14": 6,
+    "q15": 6,
+    "q16": 6,
+    "q17": 6,
+    "q18": 6,
+    "q19": 6,
+    "q20": 7,
+    "q21": 7,
+    "q22": 7,
+    "q23": 7,
+    "q24": 7,
+    "q25": 7,
+    "q26": 7,
+    "q27": 7,
+    "q28": 7
+   },
+   "exemplo": true,
+   "area": "Institucional",
+   "equipa_escondida": "grande"
+  },
+  {
+   "id": "pessoas-x5",
+   "tipo": "quadro",
+   "nome": "Abel Cotovio",
+   "cargo": "Diretor de desenvolvimento com fama de rápido",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "empresa:hyperion",
+     "de": 2020,
+     "ate": 2023
+    }
+   ],
+   "regiao": "Centro",
+   "qualidades": {
+    "q01": 16,
+    "q02": 16,
+    "q03": 16,
+    "q04": 16,
+    "q05": 16,
+    "q06": 16,
+    "q07": 16,
+    "q08": 16,
+    "q09": 16,
+    "q10": 4,
+    "q11": 4,
+    "q12": 4,
+    "q13": 4,
+    "q14": 4,
+    "q15": 4,
+    "q16": 4,
+    "q17": 4,
+    "q18": 4,
+    "q19": 4,
+    "q20": 4,
+    "q21": 4,
+    "q22": 4,
+    "q23": 4,
+    "q24": 4,
+    "q25": 4,
+    "q26": 4,
+    "q27": 4,
+    "q28": 4
+   },
+   "exemplo": true,
+   "area": "Negociação",
+   "equipa_escondida": "pequena"
+  },
+  {
+   "id": "pessoas-x6",
+   "tipo": "quadro",
+   "nome": "Joana Ferraria",
+   "cargo": "Diretora de operação, vem da indústria",
+   "trabalha_em": "empresa:finerge",
+   "historial": [
+    {
+     "onde": "empresa:finerge",
+     "de": 2018,
+     "ate": null
+    }
+   ],
+   "regiao": "Norte",
+   "qualidades": {
+    "q01": 14,
+    "q02": 14,
+    "q03": 14,
+    "q04": 14,
+    "q05": 14,
+    "q06": 14,
+    "q07": 14,
+    "q08": 14,
+    "q09": 14,
+    "q10": 14,
+    "q11": 14,
+    "q12": 14,
+    "q13": 14,
+    "q14": 14,
+    "q15": 14,
+    "q16": 14,
+    "q17": 14,
+    "q18": 14,
+    "q19": 14,
+    "q20": 14,
+    "q21": 14,
+    "q22": 14,
+    "q23": 14,
+    "q24": 14,
+    "q25": 14,
+    "q26": 14,
+    "q27": 14,
+    "q28": 14
+   },
+   "exemplo": true,
+   "area": "Técnica",
+   "equipa_escondida": "grande"
+  },
+  {
+   "id": "consultores-2",
+   "tipo": "consultor",
+   "nome": "Carla Pombeiro, advogada",
+   "cargo": "Advogada sozinha, terrenos e registos",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "org:consultores-1",
+     "de": 2009,
+     "ate": 2016
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "q01": 5,
+    "q02": 5,
+    "q03": 5,
+    "q04": 5,
+    "q05": 5,
+    "q06": 5,
+    "q07": 5,
+    "q08": 5,
+    "q09": 5,
+    "q10": 5,
+    "q11": 5,
+    "q12": 5,
+    "q13": 5,
+    "q14": 5,
+    "q15": 6,
+    "q16": 6,
+    "q17": 6,
+    "q18": 6,
+    "q19": 6,
+    "q20": 6,
+    "q21": 6,
+    "q22": 6,
+    "q23": 6,
+    "q24": 6,
+    "q25": 6,
+    "q26": 6,
+    "q27": 6,
+    "q28": 6
+   },
+   "exemplo": true
+  },
+  {
+   "id": "consultores-p1",
+   "tipo": "consultor",
+   "nome": "Inês Bragadas",
+   "cargo": "Ex-técnica de câmara municipal, agora consultora",
+   "trabalha_em": "org:consultores-3",
+   "historial": [
+    {
+     "onde": "entidade:camara-estremoz",
+     "de": 2008,
+     "ate": 2020
+    },
+    {
+     "onde": "org:consultores-3",
+     "de": 2020,
+     "ate": null
+    }
+   ],
+   "regiao": "Centro",
+   "qualidades": {
+    "q01": 15,
+    "q02": 15,
+    "q03": 15,
+    "q04": 15,
+    "q05": 15,
+    "q06": 15,
+    "q07": 15,
+    "q08": 15,
+    "q09": 15,
+    "q10": 15,
+    "q11": 15,
+    "q12": 15,
+    "q13": 15,
+    "q14": 15,
+    "q15": 15,
+    "q16": 15,
+    "q17": 15,
+    "q18": 15,
+    "q19": 15,
+    "q20": 15,
+    "q21": 15,
+    "q22": 15,
+    "q23": 15,
+    "q24": 15,
+    "q25": 15,
+    "q26": 15,
+    "q27": 15,
+    "q28": 15
+   },
+   "exemplo": true
+  },
+  {
+   "id": "consultores-p2",
+   "tipo": "consultor",
+   "nome": "Paulo Vidigal, advogado",
+   "cargo": "Advogado de licenciamento",
+   "trabalha_em": "org:consultores-1",
+   "historial": [
+    {
+     "onde": "entidade:apa",
+     "de": 2006,
+     "ate": 2012
+    },
+    {
+     "onde": "org:consultores-1",
+     "de": 2012,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 12,
+    "q02": 12,
+    "q03": 12,
+    "q04": 12,
+    "q05": 12,
+    "q06": 12,
+    "q07": 12,
+    "q08": 12,
+    "q09": 12,
+    "q10": 12,
+    "q11": 12,
+    "q12": 12,
+    "q13": 12,
+    "q14": 12,
+    "q15": 12,
+    "q16": 12,
+    "q17": 12,
+    "q18": 12,
+    "q19": 12,
+    "q20": 13,
+    "q21": 13,
+    "q22": 13,
+    "q23": 13,
+    "q24": 13,
+    "q25": 13,
+    "q26": 13,
+    "q27": 13,
+    "q28": 13
+   },
+   "exemplo": true
+  },
+  {
+   "id": "consultores-t1",
+   "tipo": "consultor",
+   "nome": "Teodoro Calvinho",
+   "cargo": "Consultor de ambiente e licenciamento, gabinete próprio (2 pessoas)",
+   "trabalha_em": "livre",
+   "historial": [
+    {
+     "onde": "Estudos de impacte ambiental para solar no Alentejo",
+     "de": 2012,
+     "ate": null
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "q01": 9,
+    "q02": 8,
+    "q03": 10,
+    "q04": 11,
+    "q05": 5,
+    "q06": 4,
+    "q07": 9,
+    "q08": 9,
+    "q09": 18,
+    "q10": 9,
+    "q11": 15,
+    "q12": 13,
+    "q13": 7,
+    "q14": 8,
+    "q15": 6,
+    "q16": 6,
+    "q17": 12,
+    "q18": 11,
+    "q19": 14,
+    "q20": 15,
+    "q21": 12,
+    "q22": 7,
+    "q23": 12,
+    "q24": 17,
+    "q25": 13,
+    "q26": 11,
+    "q27": 14,
+    "q28": 13
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-g1",
+   "tipo": "interlocutor",
+   "nome": "Graça Lobeira",
+   "cargo": "Diretora de serviços",
+   "trabalha_em": "entidade:dgeg",
+   "historial": [
+    {
+     "onde": "entidade:ccdr-alentejo",
+     "de": 1998,
+     "ate": 2006
+    },
+    {
+     "onde": "entidade:dgeg",
+     "de": 2006,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 19,
+    "f02": 18,
+    "f03": 9,
+    "f04": 8,
+    "f05": 17,
+    "f06": 19,
+    "f07": 7,
+    "f08": 16,
+    "f09": 15,
+    "f10": 12
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-1",
+   "tipo": "interlocutor",
+   "nome": "Joaquim Seixal",
+   "cargo": "Diretor-geral",
+   "trabalha_em": "entidade:dgeg",
+   "historial": [
+    {
+     "onde": "entidade:ren",
+     "de": 2004,
+     "ate": 2015
+    },
+    {
+     "onde": "entidade:dgeg",
+     "de": 2015,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 13,
+    "f02": 13,
+    "f03": 13,
+    "f04": 13,
+    "f05": 13,
+    "f06": 13,
+    "f07": 13,
+    "f08": 13,
+    "f09": 13,
+    "f10": 14
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-2",
+   "tipo": "interlocutor",
+   "nome": "Leonel Fragoso",
+   "cargo": "Jurista, contratos e concursos",
+   "trabalha_em": "entidade:dgeg",
+   "historial": [
+    {
+     "onde": "entidade:dgeg",
+     "de": 2011,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 10,
+    "f02": 10,
+    "f03": 10,
+    "f04": 10,
+    "f05": 10,
+    "f06": 11,
+    "f07": 11,
+    "f08": 11,
+    "f09": 11,
+    "f10": 11
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-3",
+   "tipo": "interlocutor",
+   "nome": "Matilde Rebordões",
+   "cargo": "Presidente do conselho diretivo",
+   "trabalha_em": "entidade:icnf",
+   "historial": [
+    {
+     "onde": "entidade:apa",
+     "de": 2003,
+     "ate": 2018
+    },
+    {
+     "onde": "entidade:icnf",
+     "de": 2018,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 8,
+    "f02": 8,
+    "f03": 8,
+    "f04": 8,
+    "f05": 8,
+    "f06": 8,
+    "f07": 8,
+    "f08": 8,
+    "f09": 8,
+    "f10": 8
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-4",
+   "tipo": "interlocutor",
+   "nome": "Sofia Arnoia",
+   "cargo": "Presidente",
+   "trabalha_em": "entidade:ccdr-alentejo",
+   "historial": [
+    {
+     "onde": "entidade:apa",
+     "de": 2009,
+     "ate": 2021
+    },
+    {
+     "onde": "entidade:ccdr-alentejo",
+     "de": 2021,
+     "ate": null
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "f01": 5,
+    "f02": 5,
+    "f03": 5,
+    "f04": 5,
+    "f05": 5,
+    "f06": 5,
+    "f07": 5,
+    "f08": 5,
+    "f09": 5,
+    "f10": 5
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-5",
+   "tipo": "interlocutor",
+   "nome": "Graça Murteira",
+   "cargo": "Presidente da câmara",
+   "trabalha_em": "entidade:camara-ourique",
+   "historial": [
+    {
+     "onde": "entidade:camara-ourique",
+     "de": 2013,
+     "ate": null
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "f01": 15,
+    "f02": 15,
+    "f03": 15,
+    "f04": 15,
+    "f05": 15,
+    "f06": 15,
+    "f07": 15,
+    "f08": 15,
+    "f09": 15,
+    "f10": 16
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-6",
+   "tipo": "interlocutor",
+   "nome": "Tomé Alcobio",
+   "cargo": "Vereador do urbanismo",
+   "trabalha_em": "entidade:camara-ferreira-do-alentejo",
+   "historial": [
+    {
+     "onde": "entidade:ccdr-alentejo",
+     "de": 2010,
+     "ate": 2017
+    },
+    {
+     "onde": "entidade:camara-ferreira-do-alentejo",
+     "de": 2017,
+     "ate": null
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "f01": 13,
+    "f02": 13,
+    "f03": 13,
+    "f04": 13,
+    "f05": 13,
+    "f06": 13,
+    "f07": 13,
+    "f08": 13,
+    "f09": 13,
+    "f10": 13
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-7",
+   "tipo": "interlocutor",
+   "nome": "Vasco Pinhanços",
+   "cargo": "Administrador, planeamento da rede",
+   "trabalha_em": "entidade:ren",
+   "historial": [
+    {
+     "onde": "entidade:ren",
+     "de": 1999,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 10,
+    "f02": 10,
+    "f03": 10,
+    "f04": 10,
+    "f05": 10,
+    "f06": 10,
+    "f07": 10,
+    "f08": 10,
+    "f09": 10,
+    "f10": 10
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-8",
+   "tipo": "interlocutor",
+   "nome": "Adelaide Corgas",
+   "cargo": "Diretora de ligações à rede",
+   "trabalha_em": "entidade:e-redes",
+   "historial": [
+    {
+     "onde": "entidade:e-redes",
+     "de": 2007,
+     "ate": null
+    }
+   ],
+   "regiao": "Norte",
+   "qualidades": {
+    "f01": 7,
+    "f02": 7,
+    "f03": 7,
+    "f04": 7,
+    "f05": 7,
+    "f06": 7,
+    "f07": 7,
+    "f08": 7,
+    "f09": 7,
+    "f10": 8
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-9",
+   "tipo": "interlocutor",
+   "nome": "Irene Calvelo",
+   "cargo": "Administradora, crédito a energia",
+   "trabalha_em": "entidade:banco-cgd",
+   "historial": [
+    {
+     "onde": "org:bancos-2",
+     "de": 2005,
+     "ate": 2014
+    },
+    {
+     "onde": "entidade:banco-cgd",
+     "de": 2014,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 4,
+    "f02": 4,
+    "f03": 4,
+    "f04": 4,
+    "f05": 4,
+    "f06": 4,
+    "f07": 5,
+    "f08": 5,
+    "f09": 5,
+    "f10": 5
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-10",
+   "tipo": "interlocutor",
+   "nome": "Rita Sampaio Lobo",
+   "cargo": "CEO de outra empresa",
+   "trabalha_em": "empresa:iberwind",
+   "historial": [
+    {
+     "onde": "org:empreiteiros-1",
+     "de": 2006,
+     "ate": 2016
+    },
+    {
+     "onde": "empresa:iberwind",
+     "de": 2016,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 7,
+    "f02": 7,
+    "f03": 7,
+    "f04": 7,
+    "f05": 7,
+    "f06": 7,
+    "f07": 7,
+    "f08": 7,
+    "f09": 7,
+    "f10": 7
+   },
+   "exemplo": true
+  },
+  {
+   "id": "figuras-11",
+   "tipo": "interlocutor",
+   "nome": "Henrique Valdoeiro",
+   "cargo": "CEO de outra empresa",
+   "trabalha_em": "empresa:voltalia",
+   "historial": [
+    {
+     "onde": "empresa:edp",
+     "de": 2002,
+     "ate": 2017
+    },
+    {
+     "onde": "empresa:voltalia",
+     "de": 2017,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "f01": 4,
+    "f02": 4,
+    "f03": 4,
+    "f04": 4,
+    "f05": 4,
+    "f06": 4,
+    "f07": 4,
+    "f08": 4,
+    "f09": 4,
+    "f10": 4
+   },
+   "exemplo": true
+  }
+ ]
+}
