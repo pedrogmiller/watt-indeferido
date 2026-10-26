@@ -5306,6 +5306,22 @@
     vertical-align: middle; white-space: nowrap;
   }
   .obj-hip { color: #92400e; background: #fef3c7; }
+  /* Home: O meu plantel + Os meus ativos (dados: content/data/home-plantel-ativos.json) */
+  .home-pa[hidden] { display: none !important; }
+  .home-pa { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 14px; }
+  .home-pa > * { min-width: 0; }
+  @media (max-width: 760px) { .home-pa { grid-template-columns: 1fr; } }
+  .home-pa-card { background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-card); }
+  .home-pa-card h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: #64748b; }
+  .home-pa-card table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .home-pa-card td { padding: 8px 4px; border-top: 1px solid #f1f5f9; vertical-align: top; }
+  .home-pa-card tr:first-child td { border-top: 0; }
+  .home-pa-card td.n { text-align: right; white-space: nowrap; }
+  .home-pa-card a, .home-pa-link { color: #007AFF; font-weight: 600; text-decoration: none; background: none; border: 0; padding: 0; font: inherit; font-weight: 600; cursor: pointer; text-align: left; }
+  .home-pa-mu { color: #64748b; font-size: 12px; }
+  .home-pa-miss { color: #94a3b8; }
+  .home-pa-tot { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e2e8f0; font-size: 14px; flex-wrap: wrap; }
+  .home-pa-marco { font-size: 13px; }
   .obj-ex { color: #6b21a8; background: #f3e8ff; }
   .obj-vis { display: flex; flex-direction: column; gap: 0; }
   .obj-vis > * { min-width: 0; width: 100%; }
@@ -5912,6 +5928,11 @@
         <button type="button" class="btn-panel-ghost" id="btnMinimizeAll" title="Minimizar todas as centrais">Minimizar todas</button>
         <button type="button" class="btn-panel-ghost" id="btnRestoreAll" title="Abrir todas as centrais">Abrir todas</button>
       </div>
+    </div>
+    <div class="home-pa" id="homePa" hidden>
+      <section class="home-pa-card" id="homePlantel" aria-label="O meu plantel"><h3>O meu plantel</h3><table id="homePlantelT"></table>
+        <div class="home-pa-tot"><span>Disponível: <b id="homeDisponivel">—</b></span><span>Custo fixo atual: <b id="homeCustoFixo">—</b></span></div></section>
+      <section class="home-pa-card" id="homeAtivos" aria-label="Os meus ativos"><h3>Os meus ativos</h3><table id="homeAtivosT"></table></section>
     </div>
     <div class="obj-budget" id="objBudget" hidden>
       <button type="button" class="obj-bc" id="objBudgetCash" data-obj-open="financas">
@@ -7116,6 +7137,85 @@
     if (typeof syncPortfolioEmptyCta === 'function') syncPortfolioEmptyCta();
   }
 
+  /* ── Home: O meu plantel + Os meus ativos ──
+   * Dados: content/data/home-plantel-ativos.json (Economy + GM, HIPÓTESE). Nada de valores no código.
+   * Datas: mês n após o TRC = mês n do Correio (mês 0 = mês em que o jogador ganha o TRC), escrito por objMonthLong. */
+  const HOME_PA_URL = 'content/data/home-plantel-ativos.json';
+  let homePa = null; let homePaLoad = null;
+  const HOME_PA_HIP = '<span class="obj-hip">HIPÓTESE</span>';
+  const HOME_PA_MISS = '<span class="home-pa-miss">—</span>';
+  function loadHomePa() {
+    if (homePaLoad) return homePaLoad;
+    homePaLoad = fetch(HOME_PA_URL, { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(HOME_PA_URL + ' ' + r.status); return r.json(); })
+      .then((d) => { homePa = d; try { renderHomePa(); } catch (_) {} return d; })
+      .catch((err) => { try { console.warn('[home] dados', err); } catch (_) {} return null; });
+    return homePaLoad;
+  }
+  function homePaKeur(n) { return Math.round(n).toLocaleString('pt-PT') + '\u00a0k€/ano'; }
+  function homePaMeur(keur) { return (keur / 1000).toFixed(2).replace('.', ',') + '\u00a0M€/ano'; }
+  function homePaCap(t) { t = String(t || ''); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function homePaPrazoMes(key) { const m = homePa && homePa.prazos_contrato && homePa.prazos_contrato.meses_apos_trc; return (key && m && m[key] != null) ? m[key] : null; }
+  /** Passo atual do projeto: fase do jogo + (na fase aia) pedido de LP entregue. */
+  function homePaPasso() {
+    const passos = (homePa && homePa.marcos && homePa.marcos.passos) || [];
+    const phase = (mailLoop && mailLoop.active && state.auctionWon) ? (mailLoop.projectPhase || 'trc_won') : 'trc_won';
+    const tags = (mailLoop && mailLoop.tags) || {};
+    let rota = null;
+    if (phase === 'aia') { try { rota = onAiaRoute() ? 'aia' : 'sem_aia'; } catch (_) { rota = 'aia'; } }
+    const cand = passos.filter((p) => p.fase === phase && (!p.quando_rota || p.quando_rota === rota));
+    return cand.find((p) => p.quando_tag && (tags[p.quando_tag] | 0) > 0) || cand.find((p) => !p.quando_tag) || null;
+  }
+  function homePaMarcoTxt(p) {
+    if (!p) return HOME_PA_MISS;
+    if (!p.tarefa) return escapeHtml(p.texto || '');
+    let m = homePaPrazoMes(p.prazo);
+    if (m == null && p.prazo_motor) { const dl = mailLoop && mailLoop.deadlines && mailLoop.deadlines[p.prazo_motor]; if (dl && dl.atMonth != null && (!dl.state || dl.state === 'open' || dl.state === 'extended')) m = dl.atMonth; }
+    return 'Próximo marco: ' + escapeHtml(p.tarefa.charAt(0).toLowerCase() + p.tarefa.slice(1)) + (m != null ? ', até ' + escapeHtml(objMonthLong(m)) : '') + '.';
+  }
+  function homePaPlayerName(q) {
+    const pp = playerProfile || {};
+    const nj = [pp.nomeProprio, pp.apelido].map((x) => String(x || '').trim()).filter(Boolean).join(' ');
+    return (nj || q.nome) + ' (tu)';
+  }
+  function renderHomePa() {
+    const box = document.getElementById('homePa');
+    if (!box) return;
+    if (!homePa) { box.hidden = true; loadHomePa(); return; }
+    box.hidden = false;
+    const pl = homePa.plantel || {};
+    const qs = pl.quadros || [];
+    document.getElementById('homePlantelT').innerHTML = qs.map((q) =>
+      '<tr><td><button type="button" class="home-pa-link" data-home-pessoa="' + escapeHtml(q.e_o_jogador ? '' : (q.pessoa_id || '')) + '"' + (q.e_o_jogador ? ' data-home-jogador="1"' : '') + '>' + escapeHtml(q.e_o_jogador ? homePaPlayerName(q) : q.nome) + '</button><div class="home-pa-mu">' + escapeHtml(q.cargo || '') + '</div></td>' +
+      '<td class="n">' + (q.salario_keur_ano != null ? homePaKeur(q.salario_keur_ano) + HOME_PA_HIP : HOME_PA_MISS) + '</td></tr>').join('') +
+      (pl.por_contratar || []).map((v) => '<tr class="home-pa-vaga"><td><span class="home-pa-mu">Por contratar</span><div class="home-pa-mu">' + escapeHtml(v) + '</div></td><td class="n">' + HOME_PA_MISS + '</td></tr>').join('');
+    const folha = qs.reduce((a, q) => a + (Number(q.salario_keur_ano) || 0), 0);
+    document.getElementById('homeDisponivel').innerHTML = pl.teto_keur_ano != null ? homePaKeur(pl.teto_keur_ano - folha) + HOME_PA_HIP : HOME_PA_MISS;
+    document.getElementById('homeCustoFixo').innerHTML = pl.fator_custo_fixo != null ? homePaMeur(folha * pl.fator_custo_fixo) + HOME_PA_HIP : HOME_PA_MISS;
+    const owned = nodes.filter((n) => isAwardedTrc(n.id));
+    const passo = homePaPasso();
+    const faseLbl = passo ? phaseLabelPt(passo.fase_rotulo || passo.fase) : '';
+    document.getElementById('homeAtivosT').innerHTML = owned.length
+      ? owned.map((n) => '<tr><td><button type="button" class="home-pa-link" data-home-ativo="' + escapeHtml(n.id) + '">' + escapeHtml(n.name) + '</button><div class="home-pa-mu">' + escapeHtml(faseLbl) + ' · ' + escapeHtml(assetMwLabel(n)) + '</div></td><td class="home-pa-marco" id="homeMarco-' + escapeHtml(n.id) + '">' + homePaMarcoTxt(passo) + '</td></tr>').join('')
+      : '<tr><td class="home-pa-mu">Ainda não tens ativos. O primeiro ganha-se no leilão.</td></tr>';
+  }
+  /** Sala do ativo: lista «Prazos do contrato» (cada linha começa por maiúscula). */
+  function homePaPrazosHtml() {
+    if (!homePa) return '';
+    const passos = (homePa.marcos && homePa.marcos.passos) || [];
+    const rows = passos.filter((p) => p.tarefa && homePaPrazoMes(p.prazo) != null)
+      .map((p) => '<tr><td>' + escapeHtml(homePaCap(p.tarefa)) + '</td><td class="n">' + escapeHtml(objMonthLong(homePaPrazoMes(p.prazo))) + '</td></tr>');
+    if (!rows.length) return '';
+    return '<section class="asset-zone home-pa-card" id="assetPrazosContrato" aria-label="Prazos do contrato"><div class="asset-zone-kicker">Prazos do contrato ' + HOME_PA_HIP + '</div><table>' + rows.join('') + '</table></section>';
+  }
+  document.addEventListener('click', (ev) => {
+    const t = ev.target && ev.target.closest ? ev.target.closest('[data-home-pessoa],[data-home-ativo]') : null;
+    if (!t) return;
+    if (t.hasAttribute('data-home-ativo')) { openAssetRoom(t.getAttribute('data-home-ativo')); return; }
+    if (!window.WIMotor) return;
+    if (t.hasAttribute('data-home-jogador')) window.WIMotor.openOrg('jogador');
+    else if (t.getAttribute('data-home-pessoa')) window.WIMotor.openPessoa(t.getAttribute('data-home-pessoa'));
+  });
+
   function renderNodes() {
     const grid = document.getElementById('assetGrid');
     const activeId = state.activeNodeId || null;
@@ -7200,6 +7300,7 @@
     bindTooltips(grid);
     renderEmptyState(expanded.length);
     renderDock();
+    try { renderHomePa(); } catch (err) { console.warn('[home]', err); }
   }
 
   /* ── Pipeline ── */
@@ -8187,7 +8288,7 @@
         <div class="asset-zone-kicker">Correio deste projeto</div>
         <p class="asset-mail-stub">As propostas de compra e as respostas chegam ao Correio. Abre-o pelo ícone do envelope.</p>
       </section>
-    `;
+    ` + homePaPrazosHtml();
 
     const nums = document.getElementById('verNumerosProject');
     if (nums) {
@@ -21139,6 +21240,7 @@
         faixa: () => !!LEILAO_FAIXA, bomPreco: () => BOM_PRECO, openMandate0: () => openMandate0(), overequip: (id, added, ac) => { const n = nodes.find((x) => x.id === (id || 'ourique')); return n ? Object.assign(overequipComputed(n, added), { planned: plannedEnvRoute(n, added || 0).path, capBlocks: ac != null ? overequipCapBlocks(n, ac) : null }) : null; }, icnfBinding: () => icnfBinding(), equityFit: (id) => projectEquityFit(id || 'ourique'), ruleOdds: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? draftRuleOdds(r) : null; }, ruleOk: (id) => { const p = window.__wattEventPack; const r = p && draftRulesFor(p).find((x) => x.id === id); return r ? { cond: draftRuleConditionsOk(r), gate: draftRuleGateOk(r), route: draftRuleRouteOk(r), earliest: draftRuleEarliestMonth(r), elig: draftRuleEligible(r, mailLoop.month | 0), waits: draftRuleWaitsForPending(r, mailLoop.month | 0) } : null; }, winAt: (id, bid) => { let lot = null; try { AUCTION_WAVES.forEach((w) => { if (!lot) lot = w.find((l) => l.id === id) || null; }); } catch (_) {} if (!lot) return null; return { win: wouldWinAuction(Number(bid), lot), floor: lot.npcFloor, best: rivalBest(lot) }; }, econAt: (id, bid) => { const l = AUCTION_LOTS.find((x) => x.id === id); return l ? { van: auctionEconomics(bid, l).van, tone: auctionEconomics(bid, l).tone, win: wouldWinAuction(bid, l), best: rivalBest(l) } : null; }, lotEcon: (id) => lotEcon(id), equityShort: (id, bid) => equityShortInfo(AUCTION_LOTS.find((l) => l.id === id) || { id: id }, bid),
         saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable(),
         canSpend: (n) => canSpend(n),
+        renderHome: () => renderHomePa(),
         startMenu: () => showStartMenu(),
         playerNpv: (v) => playerNpv(v),
         npvIrr: () => stakesNpvIrr(),
