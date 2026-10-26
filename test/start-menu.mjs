@@ -950,7 +950,7 @@ async function openingToAuction(browser, width, height, tag, win) {
       const el = els.find((n) => n.textContent.includes('71 subestações'));
       return el ? el.textContent : '';
     });
-    if (renFact !== 'A REN gere 71 subestações e quase 10\u00a0000 km de linhas de alta tensão em Portugal continental.') {
+    if (renFact !== 'A REN gere 71 subestações e quase 10\u00a0000 km de linhas de alta tensão em Portugal continental, repartidas pelos níveis de 150\u00a0kV, 220\u00a0kV e 400\u00a0kV.') {
       throw new Error('pais ren fact: ' + JSON.stringify(renFact));
     }
     if (/9 subestações com leilão|começa em/.test(pais)) throw new Error('old pais auction line');
