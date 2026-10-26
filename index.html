@@ -5322,6 +5322,7 @@
   .home-pa-miss { color: #94a3b8; }
   .home-pa-tot { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid #e2e8f0; font-size: 14px; flex-wrap: wrap; }
   .home-pa-marco { font-size: 13px; }
+  .home-pa-tot-top { margin: 0 0 8px; padding: 0 0 8px; border-top: 0; border-bottom: 1px solid #e2e8f0; }
   .obj-ex { color: #6b21a8; background: #f3e8ff; }
   .obj-vis { display: flex; flex-direction: column; gap: 0; }
   .obj-vis > * { min-width: 0; width: 100%; }
@@ -5930,8 +5931,8 @@
       </div>
     </div>
     <div class="home-pa" id="homePa" hidden>
-      <section class="home-pa-card" id="homePlantel" aria-label="O meu plantel"><h3>O meu plantel</h3><table id="homePlantelT"></table>
-        <div class="home-pa-tot"><span>Disponível: <b id="homeDisponivel">—</b></span><span>Custo fixo atual: <b id="homeCustoFixo">—</b></span></div></section>
+      <section class="home-pa-card" id="homePlantel" aria-label="O meu plantel"><h3>O meu plantel</h3>
+        <div class="home-pa-tot home-pa-tot-top"><span>Disponível: <b id="homeDisponivel">—</b></span><span>Custo fixo atual: <b id="homeCustoFixo">—</b></span></div><table id="homePlantelT"></table></section>
       <section class="home-pa-card" id="homeAtivos" aria-label="Os meus ativos"><h3>Os meus ativos</h3><table id="homeAtivosT"></table></section>
     </div>
     <div class="obj-budget" id="objBudget" hidden>
@@ -7165,8 +7166,20 @@
     const cand = passos.filter((p) => p.fase === phase && (!p.quando_rota || p.quando_rota === rota));
     return cand.find((p) => p.quando_tag && (tags[p.quando_tag] | 0) > 0) || cand.find((p) => !p.quando_tag) || null;
   }
+  /** Primeiro prazo do motor ainda aberto (existe em mailLoop.deadlines e não foi cumprido nem fechado). */
+  function homePaEngineDl(ids) {
+    const dls = (mailLoop && mailLoop.deadlines) || {};
+    const fired = (mailLoop && mailLoop.firedDeadlines) || {};
+    for (const k of (ids || [])) {
+      const d = dls[k];
+      if (d && d.atMonth != null && !fired[k]) return { id: k, label: DEADLINE_LABEL_PT[k] || d.label || 'Prazo', atMonth: d.atMonth };
+    }
+    return null;
+  }
   function homePaMarcoTxt(p) {
     if (!p) return HOME_PA_MISS;
+    const open = (mailLoop && mailLoop.active && state.auctionWon) ? homePaEngineDl(p.prazos_motor) : null;
+    if (open) return 'Próximo prazo: <strong>' + escapeHtml(open.label) + ' · ' + escapeHtml(deadlineWhenPt(open.atMonth, mailLoop.month | 0)) + '</strong>';
     if (!p.tarefa) return escapeHtml(p.texto || '');
     let m = homePaPrazoMes(p.prazo);
     if (m == null && p.prazo_motor) { const dl = mailLoop && mailLoop.deadlines && mailLoop.deadlines[p.prazo_motor]; if (dl && dl.atMonth != null && (!dl.state || dl.state === 'open' || dl.state === 'extended')) m = dl.atMonth; }

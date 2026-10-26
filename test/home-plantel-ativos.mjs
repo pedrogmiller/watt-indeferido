@@ -46,6 +46,18 @@ async function run(browser, width, height) {
   page.on('pageerror', (e) => errors.push(tag + ' pageerror: ' + e.message));
   page.on('console', (m) => { if (m.type() === 'error') errors.push(tag + ' console: ' + m.text()); });
   await intoGame(page);
+  if (width === 390) {
+    await page.waitForTimeout(600);
+    const cov = await page.evaluate(() => ['homeDisponivel', 'homeCustoFixo'].map((id) => {
+      const e = document.getElementById(id); const r = e.getBoundingClientRect();
+      const inView = r.top >= 0 && r.bottom <= innerHeight;
+      const pts = [[r.left + 2, r.top + r.height / 2], [(r.left + r.right) / 2, r.top + r.height / 2], [r.right - 2, r.top + r.height / 2]];
+      const bad = pts.map(([x, y]) => document.elementFromPoint(x, y)).filter((t) => !t || !e.contains(t)).map((t) => t ? (t.id || t.className) : 'fora');
+      return { id, inView, bad };
+    }));
+    for (const c of cov) ok(c.inView && !c.bad.length, tag + ' ' + c.id + ' visível e sem «Continuar» por cima na abertura ' + JSON.stringify(c.bad));
+    await page.screenshot({ path: path.join(OUT, 'viewport-390-abertura.png') });
+  }
   const pl = (await page.locator('#homePlantel').innerText()).replace(/\s+/g, ' ');
   ok(/O MEU PLANTEL|O meu plantel/i.test(pl) && /OS MEUS ATIVOS|Os meus ativos/i.test(await page.locator('#homeAtivos').innerText()), tag + ' blocos plantel e ativos');
   for (const q of data.plantel.quadros) ok(pl.includes(q.e_o_jogador ? q.nome + ' (tu)' : q.nome) && pl.includes(q.cargo), tag + ' plantel tem ' + q.nome);
@@ -62,7 +74,19 @@ async function run(browser, width, height) {
   const realName = await page.evaluate(() => window.__wattQA.nodes.find((n) => n.id === 'ourique').name);
   ok(at.includes(realName) && (await page.locator('#homeAtivosT [data-home-ativo]').count()) === 1, tag + ' ativo real: ' + realName);
   const m0 = 'Próximo marco: garantir os terrenos e provar à DGEG, até ' + mesTxt(data.prazos_contrato.meses_apos_trc.pecas_terrenos) + '.';
-  ok(at.includes('TRC ganho') && at.includes(m0), tag + ' marco TRC ganho com data a partir do TRC');
+  // Prazo do motor aberto (land_option): mesmo rótulo e data que o cartão de Ourique
+  const eng = await page.evaluate(() => { const ml = window.__wattQA.mail; const d = ml.deadlines && ml.deadlines.land_option; return d ? { at: d.atMonth, clock: ml.month | 0, fired: !!(ml.firedDeadlines || {}).land_option } : null; });
+  ok(eng && !eng.fired, tag + ' land_option aberto no motor');
+  const card = (await page.locator('.node-card .hud-next-crit').first().innerText()).replace(/\s+/g, ' ').trim();
+  ok(at.includes('TRC ganho') && at.includes(card) && /^Próximo prazo: Prazo do terreno · /.test(card), tag + ' prazo aberto igual ao cartão: ' + card);
+  ok(!at.includes(m0), tag + ' com prazo aberto não mostra a data do GM');
+  // Cumprido: volta ao texto do GM com TRC+9
+  await page.evaluate(() => { const ml = window.__wattQA.mail; ml.firedDeadlines = Object.assign({}, ml.firedDeadlines, { land_option: true }); window.__wattQA.renderHome(); });
+  const at2 = (await page.locator('#homeAtivosT').innerText()).replace(/\s+/g, ' ');
+  ok(at2.includes(m0) && !/Prazo do terreno/.test(at2), tag + ' cumprido: volta a «' + m0 + '»');
+  // Fechado (já não existe no motor): também volta ao texto do GM
+  await page.evaluate(() => { const ml = window.__wattQA.mail; delete ml.deadlines.land_option; delete ml.firedDeadlines.land_option; window.__wattQA.renderHome(); });
+  ok((await page.locator('#homeAtivosT').innerText()).replace(/\s+/g, ' ').includes(m0), tag + ' fechado: texto do GM com TRC+9');
   if (width === 390 || width === 1440) await page.screenshot({ path: path.join(OUT, 'home-' + tag + '.png'), fullPage: true });
   // Fases: PIP e AIA sem data; LP e obras na mesma fase
   const marco = async (phase, tags) => {

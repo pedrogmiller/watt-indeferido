@@ -54,14 +54,17 @@
   }
  },
  "marcos": {
-  "_estado": "Texto do GM (26/10). Sem prazo: PIP, pedido de avaliação ambiental e AIA completa. A LP e a licença de obras são dois passos da fase «Licença de produção». Na rota sem AIA, o prazo do pedido de LP vem do motor de prazos do jogo (lp_request).",
+  "_estado": "Texto do GM (26/10). Sem prazo: PIP, pedido de avaliação ambiental e AIA completa. A LP e a licença de obras são dois passos da fase «Licença de produção». Na rota sem AIA, o prazo do pedido de LP vem do motor de prazos do jogo (lp_request). Se um prazo do motor listado em prazos_motor estiver aberto, a home mostra esse prazo (rótulo e data do motor, como o cartão do ativo); quando é cumprido ou fecha, volta ao texto do GM.",
   "passos": [
    {
     "id": "terrenos",
     "fase": "trc_won",
     "tarefa": "Garantir os terrenos e provar à DGEG",
     "prazo": "pecas_terrenos",
-    "ajuda": "Já tens lugar na rede. Fecha os contratos dos terrenos e envia a prova à DGEG."
+    "ajuda": "Já tens lugar na rede. Fecha os contratos dos terrenos e envia a prova à DGEG.",
+    "prazos_motor": [
+     "land_option"
+    ]
    },
    {
     "id": "pip",
