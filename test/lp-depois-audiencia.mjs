@@ -18,12 +18,20 @@ let pass = 0; const fails = []; const errors = [];
 function ok(c, l) { if (c) { pass++; console.log('OK  ', l); } else { fails.push(l); console.log('FAIL', l); } }
 const LP_SK = ['mail-dgeg-lp-concedida-01', 'mail-dgeg-lp-condicionada-01'];
 
+// Em jogo real um prazo fecha quando sai um dos seus meet_on_effects; a semente só põe as tags, por isso fecha-os aqui.
+const DL = JSON.parse(fs.readFileSync(new URL('../content/events/deadlines.draft.json', import.meta.url)));
+function firedFor(tags) {
+  const f = { land_option: true };
+  if (tags.lp_request_submitted) f.lp_request = true;
+  (function walk(o) { if (Array.isArray(o)) o.forEach(walk); else if (o && typeof o === 'object') { if (o.id && Array.isArray(o.meet_on_effects) && o.meet_on_effects.some((e) => tags[e])) f[o.id] = true; Object.values(o).forEach(walk); } })(DL);
+  return f;
+}
 function save(tags) {
   const tm = {}; Object.keys(tags).forEach((k) => { tm[k] = k === 'lp_request_submitted' ? 8 : 4; });
   return { v: 1, savedAt: '2026-10-26T10:00:00Z',
     state: { quarter: 3, year: 2027, caixa: 3.2, divida: 0, nav: 4, auctionWon: true, activeNodeId: 'ourique', minimized: [] },
     auctionState: { wonId: 'ourique', wonLots: ['ourique'], wave: 0 },
-    mailLoop: { active: true, seId: 'ourique', month: 8, projectPhase: 'aia', tags, tagMonth: tm, firedDeadlines: { land_option: true } },
+    mailLoop: { active: true, seId: 'ourique', month: 8, projectPhase: 'aia', tags, tagMonth: tm, firedDeadlines: firedFor(tags) },
     mailState: { items: [], view: 'list', activeId: null, open: false },
     mandateState: { tier: 'boutique', acknowledged: true, letterRead: true, skip: false },
     flags: { onboardingDone: true } };
@@ -35,6 +43,7 @@ async function play(browser, { name, tags, width, random, prefer, shots }) {
   page.on('pageerror', (e) => errors.push(tag + ' pageerror: ' + e.message));
   page.on('console', (m) => { if (m.type() === 'error') errors.push(tag + ' console: ' + m.text()); });
   if (random != null) await page.addInitScript((r) => { Math.random = () => r; }, random);
+  await page.addInitScript(() => { window.__falhados = []; new MutationObserver(() => { const t = document.body && document.body.innerText || ''; const m = t.match(/Prazo falhado[^\n]*/g); if (m) m.forEach((x) => { if (!window.__falhados.includes(x)) window.__falhados.push(x); }); }).observe(document, { childList: true, subtree: true, characterData: true }); });
   await page.goto(BASE, { waitUntil: 'domcontentloaded' });
   await page.evaluate((s) => { localStorage.clear(); localStorage.setItem('watt-indeferido-onboarding-done', '1'); localStorage.setItem('watt.save.v1', s); }, JSON.stringify(save(tags)));
   await page.reload({ waitUntil: 'networkidle' });
@@ -90,6 +99,9 @@ async function play(browser, { name, tags, width, random, prefer, shots }) {
   }
   res.final = res.final || await st();
   console.log(tag, JSON.stringify({ lpMonth: res.lpMonth, note: res.lpNote, hearing: res.hearing, reply: res.reply, phase: res.final.ph, m: res.final.m, esperas: res.esperas }));
+  // Só os prazos que a semente dá por cumpridos; o «Acordo com a REN» (mês 9) é jogo real e fica de fora.
+  const falhados = (await page.evaluate(() => window.__falhados || [])).filter((x) => !/Acordo com a REN/.test(x));
+  ok(falhados.length === 0, tag + ' sem aviso «Prazo falhado» dos prazos da semente' + (falhados.length ? ': ' + falhados.join(' | ') : ''));
   const body = await page.locator('body').innerText();
   ok(!/\brival/i.test(body), tag + ' sem «rival»');
   ok(!res.esperas.some((e) => /À espera: À espera|Licença de produção Licença de produção/.test(e)), tag + ' sem prefixo duplicado');
@@ -102,7 +114,7 @@ const browser = await chromium.launch({ headless: true, executablePath: process.
 const base = { land_option_open: 1, dd_started: 1, lp_request_submitted: 1 };
 try {
   for (const width of [1440, 390]) {
-    const aia = await play(browser, { name: 'com-aia', width, shots: true, tags: { ...base, apa_track_start: 1, aia_sujeito: 1, env_path_aia_obrigatoria: 1, dia_emitida: 1 } });
+    const aia = await play(browser, { name: 'com-aia', width, shots: true, tags: { ...base, pip_request_submitted: 1, pip_aprovado: 1, apa_track_start: 1, aia_sujeito: 1, env_path_aia_obrigatoria: 1, dia_emitida: 1 } });
     ok(aia.lpMonth != null && aia.lpMonth >= 11 && aia.lpMonth <= 15, width + ' com AIA: LP chega em M' + aia.lpMonth + ' (≈ M13)');
     ok(aia.lpNote === false, width + ' com AIA: a LP chega como carta');
     ok(aia.final.ph === 'licenca_producao', width + ' com AIA: fase Licença de produção');
