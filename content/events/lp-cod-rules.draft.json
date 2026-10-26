@@ -1241,7 +1241,7 @@
       "rearm_after_months_by_effect": {
         "lp_hearing_reply": 3
       },
-      "_rearm_nota_2026_10_26": "Depois da resposta à audiência prévia (lp_hearing_reply) a DGEG volta a decidir 3 a 6 meses depois (3 + atrasos delay_lp_*). HIPÓTESE, Pedro 26/10."
+      "_rearm_nota_2026_10_26": "Depois da resposta à audiência prévia (lp_hearing_reply) a DGEG volta a decidir 3 a 6 meses depois (3 + atrasos delay_lp_*). Confirmado pelo GM: DL 15/2022, art. 28.º (26/10)."
     },
     {
       "id": "r-lp-concedida",
@@ -1294,7 +1294,7 @@
       "rearm_after_months_by_effect": {
         "lp_hearing_reply": 3
       },
-      "_rearm_nota_2026_10_26": "Depois da resposta à audiência prévia (lp_hearing_reply) a DGEG volta a decidir 3 a 6 meses depois (3 + atrasos delay_lp_*). HIPÓTESE, Pedro 26/10.",
+      "_rearm_nota_2026_10_26": "Depois da resposta à audiência prévia (lp_hearing_reply) a DGEG volta a decidir 3 a 6 meses depois (3 + atrasos delay_lp_*). Confirmado pelo GM: DL 15/2022, art. 28.º (26/10).",
       "note": "lp_elements_missing só é ultrapassado com lp_hearing_reply (então sai condicionada ou concedida via re-arm)."
     },
     {
@@ -4302,11 +4302,11 @@
     }
   ],
   "lp_espera_pt": {
-    "_nota": "Linha «À espera» na sala do projeto e no cartão do ativo, enquanto o pedido de LP está entregue e a LP não chegou. Ordem: a primeira que se aplica. Texto simples; GM pode rever (26/10).",
-    "audiencia": "À espera: a tua resposta à audiência prévia",
-    "dia": "À espera: DIA",
+    "_nota": "Linha «À espera» na sala do projeto e no cartão do ativo, enquanto o pedido de LP está entregue e a LP não chegou. Ordem: a primeira que se aplica. Textos finais do GM (26/10).",
+    "audiencia": "Falta a tua resposta à DGEG (audiência prévia)",
+    "dia": "À espera: decisão da APA sobre o impacte ambiental",
     "ambiental": "À espera: decisão ambiental",
-    "ren": "À espera: resposta à REN",
+    "ren": "À espera: parecer da REN sobre a ligação à rede",
     "dgeg": "À espera: decisão da DGEG"
   },
   "phase_bump_proposed": {

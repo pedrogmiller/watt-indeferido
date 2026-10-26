@@ -5801,6 +5801,7 @@
     #arranque .ar-cta .ar-btn-p { flex: 0 0 auto; min-width: 220px; }
   }
 
+  .lp-espera-link{background:none;border:0;padding:0;font:inherit;color:#007AFF;text-decoration:underline;cursor:pointer;text-align:left}
 </style>
 <link rel="stylesheet" href="tut.css" />
 </head>
@@ -14255,8 +14256,18 @@
     if (hearingOpen) key = 'audiencia';
     else if (!(() => { try { const v = ruleComputed('env_gate_ok'); if (v !== undefined) return !!v; } catch (_) {} return on('env_gate_ok'); })()) key = onAiaRoute() ? 'dia' : 'ambiental';
     else if (!on('grid_conditions_accepted') && !on('grid_phasing_request')) key = 'ren';
-    return L[key] || '';
+    const txt = escapeHtml(L[key] || '');
+    if (key === 'audiencia' && txt) return '<button type="button" class="lp-espera-link" data-lp-open-hearing>' + txt + '</button>';
+    return txt;
   }
+  document.addEventListener('click', (ev) => {
+    const b = ev.target && ev.target.closest && ev.target.closest('[data-lp-open-hearing]');
+    if (!b) return;
+    const m = (mailState.items || []).find((x) => mailSkeletonOf(x) === 'mail-dgeg-lp-audiencia-01' && !x.econChoiceId);
+    if (!m) return;
+    ev.preventDefault(); ev.stopPropagation(); try { if (assetRoomState.open) closeAssetRoom(); } catch (_) {}
+    openInbox(); openLetter(m.id);
+  }, true);
   function draftRuleConditionsOk(r) {
     const t = mailLoop.tags || {};
     const on = (k) => {

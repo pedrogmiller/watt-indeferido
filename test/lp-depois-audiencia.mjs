@@ -23,7 +23,7 @@ function save(tags) {
   return { v: 1, savedAt: '2026-10-26T10:00:00Z',
     state: { quarter: 3, year: 2027, caixa: 3.2, divida: 0, nav: 4, auctionWon: true, activeNodeId: 'ourique', minimized: [] },
     auctionState: { wonId: 'ourique', wonLots: ['ourique'], wave: 0 },
-    mailLoop: { active: true, seId: 'ourique', month: 8, projectPhase: 'aia', tags, tagMonth: tm },
+    mailLoop: { active: true, seId: 'ourique', month: 8, projectPhase: 'aia', tags, tagMonth: tm, firedDeadlines: { land_option: true } },
     mailState: { items: [], view: 'list', activeId: null, open: false },
     mandateState: { tier: 'boutique', acknowledged: true, letterRead: true, skip: false },
     flags: { onboardingDone: true } };
@@ -44,8 +44,8 @@ async function play(browser, { name, tags, width, random, prefer, shots }) {
   await page.waitForTimeout(800);
   const st = () => page.evaluate(() => ({ m: window.__tutApi.month(), ph: window.__tutApi.phase(), tags: window.__wattQA.mail.tags || {},
     items: window.__tutApi.mailItems().map((x) => ({ id: x.id, sk: x.skeletonId, c: x.econChoiceId, note: x.delivery === 'note' || !!x.note })) }));
-  const espera = async () => { await page.evaluate(() => window.__tutApi.openSala('ourique')); await page.waitForTimeout(400); const t = await page.locator('#assetLpEspera').count() ? (await page.locator('#assetLpEspera').innerText()).replace(/\s+/g, ' ') : ''; await page.evaluate(() => window.__tutApi.closeSala()); await page.waitForTimeout(200); return t; };
-  const res = { lpMonth: null, lpNote: null, hearing: null, reply: null, esperas: [], final: null };
+  const espera = async () => { await page.evaluate(() => window.__tutApi.openSala('ourique')); await page.waitForTimeout(400); const t = await page.locator('#assetLpEspera').count() ? (await page.locator('#assetLpEspera').innerText()).replace(/\s+/g, ' ') : ''; res.prazos.push((await page.locator('.asset-meta-cell').allInnerTexts()).join(' ').replace(/\s+/g, ' ')); await page.evaluate(() => window.__tutApi.closeSala()); await page.waitForTimeout(200); return t; };
+  const res = { lpMonth: null, lpNote: null, hearing: null, reply: null, esperas: [], prazos: [], hearingLine: null, hearingOpens: null, final: null };
   let shotEspera = false;
   for (let i = 0; i < 26; i++) {
     for (let k = 0; k < 8; k++) {
@@ -60,6 +60,14 @@ async function play(browser, { name, tags, width, random, prefer, shots }) {
       const n = await btns.count(); if (!n) break;
       const ids = await btns.evaluateAll((bs) => bs.map((b) => b.getAttribute('data-mail-choice')));
       const pref = (prefer || []).concat(['accept_grid', 'send_full', 'reply', 'accept_conditions', 'accept', 'ack', 'go_lp', 'submit_full']).find((x) => ids.includes(x));
+      if ((L.sk || L.id).startsWith('mail-dgeg-lp-audiencia-01') && res.hearingLine == null) {
+        await page.evaluate(() => { window.__tutApi.closeInbox(); window.__tutApi.openSala('ourique'); }); await page.waitForTimeout(400);
+        res.hearingLine = (await page.locator('#assetLpEspera').innerText().catch(() => '')).replace(/\s+/g, ' ');
+        if (shots) { await page.locator('#assetLpEspera').scrollIntoViewIfNeeded(); await page.screenshot({ path: path.join(OUT, 'a-espera-sala-audiencia-' + width + '.png') }); }
+        await page.locator('#assetLpEspera [data-lp-open-hearing]').click({ timeout: 3000 }).catch((e) => console.log('click err', e.message.split('\n')[0])); await page.waitForTimeout(500);
+        const ho = await page.evaluate(() => ({ i: window.__tutApi.inboxOpen(), s: window.__tutApi.salaOpen(), c: !!document.querySelector('[data-mail-choice]'), n: document.querySelectorAll('[data-lp-open-hearing]').length })); console.log('hearing-open', JSON.stringify(ho)); res.hearingOpens = ho.i && !ho.s && ho.c;
+        await page.evaluate((id) => window.__tutApi.openLetter(id), L.id); await page.waitForTimeout(350);
+      }
       if ((L.sk || L.id).startsWith('mail-dgeg-lp-audiencia-01')) { res.hearing = s0.m; res.reply = pref || ids[0]; }
       await btns.nth(pref ? ids.indexOf(pref) : 0).click({ force: true }); await page.waitForTimeout(450);
       const s1 = await st(); if (s1.items.find((x) => x.id === L.id && !x.c)) break;
@@ -84,6 +92,8 @@ async function play(browser, { name, tags, width, random, prefer, shots }) {
   console.log(tag, JSON.stringify({ lpMonth: res.lpMonth, note: res.lpNote, hearing: res.hearing, reply: res.reply, phase: res.final.ph, m: res.final.m, esperas: res.esperas }));
   const body = await page.locator('body').innerText();
   ok(!/\brival/i.test(body), tag + ' sem «rival»');
+  ok(!res.esperas.some((e) => /À espera: À espera|Licença de produção Licença de produção/.test(e)), tag + ' sem prefixo duplicado');
+  ok(!res.prazos.some((e) => /Prazo do terreno · mês 1 · já passou/.test(e)), tag + ' sem prazo do terreno passado');
   await page.close();
   return res;
 }
@@ -96,11 +106,13 @@ try {
     ok(aia.lpMonth != null && aia.lpMonth >= 11 && aia.lpMonth <= 15, width + ' com AIA: LP chega em M' + aia.lpMonth + ' (≈ M13)');
     ok(aia.lpNote === false, width + ' com AIA: a LP chega como carta');
     ok(aia.final.ph === 'licenca_producao', width + ' com AIA: fase Licença de produção');
-    ok(aia.esperas.length > 0 && aia.esperas.every((e) => /À espera: (resposta à REN|decisão da DGEG|DIA)/.test(e)), width + ' com AIA: «À espera» ' + aia.esperas.join(' | '));
+    ok(aia.esperas.length > 0 && aia.esperas.every((e) => /À espera: (parecer da REN sobre a ligação à rede|decisão da DGEG|decisão da APA sobre o impacte ambiental)/.test(e)), width + ' com AIA: «À espera» ' + aia.esperas.join(' | '));
     const sem = await play(browser, { name: 'sem-aia', width, random: 0.5, shots: width === 1440, tags: { ...base, nao_sujeicao: 1, pip_request_submitted: 1, pip_aprovado: 1, env_gate_ok: 1 } });
     ok(sem.lpMonth != null && sem.lpMonth >= 11 && sem.lpMonth <= 14, width + ' sem AIA: LP chega em M' + sem.lpMonth + ' (≈ M12)');
     ok(sem.lpNote === false && sem.final.ph === 'licenca_producao', width + ' sem AIA: carta e fase Licença de produção');
     const fraco = await play(browser, { name: 'fraco', width, random: 0.1, shots: true, tags: { ...base, nao_sujeicao: 1, pip_request_submitted: 1, pip_aprovado: 1, env_gate_ok: 1, lp_dossier_thin: 1, lp_elements_missing: 1 } });
+    ok(fraco.hearingLine === 'Licença de produção Falta a tua resposta à DGEG (audiência prévia)', width + ' fraco: linha da audiência «' + fraco.hearingLine + '»');
+    ok(fraco.hearingOpens === true, width + ' fraco: a linha abre a carta da audiência');
     ok(fraco.hearing != null && fraco.reply === 'reply', width + ' fraco: audiência em M' + fraco.hearing + ', resposta «' + fraco.reply + '»');
     ok(fraco.lpMonth != null && fraco.lpMonth - fraco.hearing >= 3 && fraco.lpMonth - fraco.hearing <= 6, width + ' fraco: LP chega ' + (fraco.lpMonth - fraco.hearing) + ' meses depois da resposta');
     ok(fraco.final.ph === 'licenca_producao', width + ' fraco: fase Licença de produção');
