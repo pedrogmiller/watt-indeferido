@@ -1023,6 +1023,9 @@ async function openingToAuction(browser, width, height, tag, win) {
     const ficha = await page.locator('#arranque').innerText();
     if (!/Country manager: Ana Ferreira \(tu\)/.test(ficha)) throw new Error('ficha identity');
     if (/2027 · Q1/.test(ficha)) throw new Error('ficha still says 2027 · Q1');
+    const custoFixo = (await page.locator('#arranqueCustoFixo').innerText()).replace(/\s+/g, ' ').trim();
+    if (custoFixo !== 'Custo fixo atual: 0,4 M€/ano. Sobe com cada Quadro que contratares.') throw new Error('custo fixo line: ' + custoFixo);
+    if (/Evolução do custo fixo|0,77/.test(ficha)) throw new Error('old custo fixo table still shown');
     if (await page.locator('#arranque .ar-lead').count()) throw new Error('ficha still has a lead');
     if (/Confirma os dados antes de começar/.test(ficha)) throw new Error('old ficha lead');
     if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Assumir o controlo') throw new Error('ficha button');

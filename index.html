@@ -19827,9 +19827,7 @@
         '<tr><td>Dívida</td><td class="n">' + arranqueM(state.divida) + '</td></tr>' +
         '<tr><td>Caixa</td><td class="n">' + arranqueM(state.caixa) + '</td></tr>' +
         '<tr><td>Custo fixo</td><td class="n">Cerca de 0,4 M€ por ano</td></tr></tbody></table>' +
-        '<table class="ar-tb"><thead><tr><th>Evolução do custo fixo</th><th class="n">M€ por ano</th></tr></thead><tbody>' +
-        '<tr><td>Antes do 1.º ponto de ligação</td><td class="n">0,4</td></tr><tr><td>Com o 1.º ponto de ligação</td><td class="n">0,5</td></tr>' +
-        '<tr><td>Na construção</td><td class="n">0,6</td></tr><tr><td>Com a 1.ª central a vender</td><td class="n">0,77</td></tr></tbody></table>';
+        '<p class="ar-mu" id="arranqueCustoFixo">Custo fixo atual: ' + arranqueM(j.financas ? j.financas.custo_fixo : null) + '/ano. Sobe com cada Quadro que contratares.</p>';
     }
     const c = d && d.empresas.find((x) => x.id === arranqueFichaId);
     if (!c) return '<p class="ar-wait">A carregar empresa…</p>';
