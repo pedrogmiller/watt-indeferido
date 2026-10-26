@@ -19772,11 +19772,11 @@
     if (!pl || !pl.length) return arranqueSec('Plantel') + '<p class="ar-ln"><span class="ar-sd">—</span></p>';
     const by = {};
     pl.forEach((p) => { if (p) by[p[1]] = p; });
-    return arranqueSec('Plantel ' + ARRANQUE_EX()) + '<table class="ar-tb"><thead><tr><th>Nome</th><th>Área</th><th class="n">Nota</th><th class="n">Pessoas</th></tr></thead><tbody>' +
+    return arranqueSec('Plantel ' + ARRANQUE_EX()) + '<table class="ar-tb"><thead><tr><th>Nome</th><th>Área</th><th class="n">Pessoas</th></tr></thead><tbody>' +
       ARRANQUE_AREAS.map((a) => {
         const p = by[a];
-        return p && p[0] ? '<tr><td>' + escapeHtml(p[0]) + '</td><td>' + a + '</td><td class="n">' + p[2] + '</td><td class="n">' + p[3] + '</td></tr>'
-          : '<tr class="ar-vg"><td>—</td><td>' + a + '</td><td class="n">—</td><td class="n">—</td></tr>';
+        return p && p[0] ? '<tr><td>' + escapeHtml(p[0]) + '</td><td>' + a + '</td><td class="n">' + p[3] + '</td></tr>'
+          : '<tr class="ar-vg"><td>—</td><td>' + a + '</td><td class="n">—</td></tr>';
       }).join('') + '</tbody></table>';
   }
   function arranqueParqueRow(p) {
@@ -19826,8 +19826,7 @@
         '<tr><td>Receitas por ano</td><td class="n">' + arranqueM(0) + '</td></tr>' +
         '<tr><td>Dívida</td><td class="n">' + arranqueM(state.divida) + '</td></tr>' +
         '<tr><td>Caixa</td><td class="n">' + arranqueM(state.caixa) + '</td></tr>' +
-        '<tr><td>Custo fixo</td><td class="n">Cerca de 0,4 M€ por ano</td></tr></tbody></table>' +
-        '<p class="ar-mu" id="arranqueCustoFixo">Custo fixo atual: ' + arranqueM(j.financas ? j.financas.custo_fixo : null) + '/ano. Sobe com cada Quadro que contratares.</p>';
+        '<tr id="arranqueCustoFixo"><td>Custo fixo<br><small class="ar-mu">Sobe com cada Quadro que contratares.</small></td><td class="n">' + arranqueM(j.financas ? j.financas.custo_fixo : null) + (j.financas && j.financas.custo_fixo != null ? '/ano' : '') + '</td></tr></tbody></table>';
     }
     const c = d && d.empresas.find((x) => x.id === arranqueFichaId);
     if (!c) return '<p class="ar-wait">A carregar empresa…</p>';
