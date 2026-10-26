@@ -1235,8 +1235,13 @@
         "lp_escalate": "PEDIR_ECONOMY"
       },
       "rearm_on_effects": [
-        "lp_indeferido"
-      ]
+        "lp_indeferido",
+        "lp_hearing_reply"
+      ],
+      "rearm_after_months_by_effect": {
+        "lp_hearing_reply": 3
+      },
+      "_rearm_nota_2026_10_26": "Depois da resposta à audiência prévia (lp_hearing_reply) a DGEG volta a decidir 3 a 6 meses depois (3 + atrasos delay_lp_*). Confirmado pelo GM: DL 15/2022, art. 28.º (26/10)."
     },
     {
       "id": "r-lp-concedida",
@@ -1261,6 +1266,11 @@
         "lp_indeferido",
         "lp_elements_missing"
       ],
+      "blocks_unless_any_effects": {
+        "lp_elements_missing": [
+          "lp_hearing_reply"
+        ]
+      },
       "after_effect": {
         "tag": "lp_request_submitted",
         "months": 4,
@@ -1278,10 +1288,14 @@
         "lp_escalate": "PEDIR_ECONOMY"
       },
       "rearm_on_effects": [
-        "lp_indeferido"
+        "lp_indeferido",
+        "lp_hearing_reply"
       ],
-      "note": "lp_elements_missing só é ultrapassado com lp_hearing_reply (então sai condicionada ou concedida via re-arm).",
-      "delivery": "note"
+      "rearm_after_months_by_effect": {
+        "lp_hearing_reply": 3
+      },
+      "_rearm_nota_2026_10_26": "Depois da resposta à audiência prévia (lp_hearing_reply) a DGEG volta a decidir 3 a 6 meses depois (3 + atrasos delay_lp_*). Confirmado pelo GM: DL 15/2022, art. 28.º (26/10).",
+      "note": "lp_elements_missing só é ultrapassado com lp_hearing_reply (então sai condicionada ou concedida via re-arm)."
     },
     {
       "id": "r-lp-atraso",
@@ -4287,6 +4301,14 @@
       "note": "Ourique only (requires nao_sujeicao). when_phase includes aia and licenca_producao because pip_aprovado immediately raises the console phase to aia, and the LP can land before the two-month wait ends. Blocks stop the letter at FID and at construction."
     }
   ],
+  "lp_espera_pt": {
+    "_nota": "Linha «À espera» na sala do projeto e no cartão do ativo, enquanto o pedido de LP está entregue e a LP não chegou. Ordem: a primeira que se aplica. Textos finais do GM (26/10).",
+    "audiencia": "Falta a tua resposta à DGEG (audiência prévia)",
+    "dia": "À espera: decisão da APA sobre o impacte ambiental",
+    "ambiental": "À espera: decisão ambiental",
+    "ren": "À espera: parecer da REN sobre a ligação à rede",
+    "dgeg": "À espera: decisão da DGEG"
+  },
   "phase_bump_proposed": {
     "lp_granted": {
       "to": "licenca_producao",

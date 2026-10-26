@@ -5801,6 +5801,7 @@
     #arranque .ar-cta .ar-btn-p { flex: 0 0 auto; min-width: 220px; }
   }
 
+  .lp-espera-link{background:none;border:0;padding:0;font:inherit;color:#007AFF;text-decoration:underline;cursor:pointer;text-align:left}
 </style>
 <link rel="stylesheet" href="tut.css" />
 </head>
@@ -7262,6 +7263,7 @@
             <div class="hud-phase-row">
               <span class="hud-phase-pill"><span class="hud-phase-dot" aria-hidden="true"></span>${phaseLbl}</span>
               <span class="hud-next-crit" data-tut="deadlines">Próximo prazo: <strong>${nextCrit}</strong></span>
+              ${lpEsperaPt() ? `<span class="hud-lp-espera">${lpEsperaPt()}</span>` : ''}
               ${codHtml}
               ${eqHtml}
               ${contHtml}
@@ -8254,6 +8256,7 @@
           <div class="asset-meta-cell"><div class="k">Preço de venda da energia</div><div class="v num">${offtake}</div></div>
           <div class="asset-meta-cell"><div class="k">Fase do projeto</div><div class="v">${pd.phase}</div></div>
           <div class="asset-meta-cell"><div class="k">Próximo prazo</div><div class="v">${pd.deadline}</div></div>
+          ${lpEsperaPt() ? `<div class="asset-meta-cell" id="assetLpEspera"><div class="k">Licença de produção</div><div class="v">${lpEsperaPt()}</div></div>` : ''}
         </div>
         ${renderSellModeChips(node)}
       </section>
@@ -14239,6 +14242,32 @@
     return e - (Number(ae.months) || 0) + Number(m[2]);
   }
   /** Conditions only (phase, tags, gate, route, land): no timing, no waits. */
+  /** «À espera: …» while the LP request is in and the LP has not arrived. Texts: rules_draft.lp_espera_pt. */
+  function lpEsperaPt() {
+    if (typeof mailLoop === 'undefined' || !mailLoop || !mailLoop.active) return '';
+    const t = mailLoop.tags || {};
+    const on = (k) => (t[k] | 0) > 0;
+    if (!on('lp_request_submitted') || on('lp_granted') || on('lp_indeferido')) return '';
+    const pack = window.__wattEventPack;
+    const L = (pack && pack.rules_draft && pack.rules_draft.lp_espera_pt) || null;
+    if (!L) return '';
+    const hearingOpen = (mailState.items || []).some((m) => mailSkeletonOf(m) === 'mail-dgeg-lp-audiencia-01' && !m.econChoiceId);
+    let key = 'dgeg';
+    if (hearingOpen) key = 'audiencia';
+    else if (!(() => { try { const v = ruleComputed('env_gate_ok'); if (v !== undefined) return !!v; } catch (_) {} return on('env_gate_ok'); })()) key = onAiaRoute() ? 'dia' : 'ambiental';
+    else if (!on('grid_conditions_accepted') && !on('grid_phasing_request')) key = 'ren';
+    const txt = escapeHtml(L[key] || '');
+    if (key === 'audiencia' && txt) return '<button type="button" class="lp-espera-link" data-lp-open-hearing>' + txt + '</button>';
+    return txt;
+  }
+  document.addEventListener('click', (ev) => {
+    const b = ev.target && ev.target.closest && ev.target.closest('[data-lp-open-hearing]');
+    if (!b) return;
+    const m = (mailState.items || []).find((x) => mailSkeletonOf(x) === 'mail-dgeg-lp-audiencia-01' && !x.econChoiceId);
+    if (!m) return;
+    ev.preventDefault(); ev.stopPropagation(); try { if (assetRoomState.open) closeAssetRoom(); } catch (_) {}
+    openInbox(); openLetter(m.id);
+  }, true);
   function draftRuleConditionsOk(r) {
     const t = mailLoop.tags || {};
     const on = (k) => {
@@ -14258,7 +14287,9 @@
     if (r.when_phase && r.when_phase.length && r.when_phase.indexOf(mailLoop.projectPhase || 'trc_won') === -1) return false;
     if ((r.requires_all_effects || []).length && !r.requires_all_effects.every(on)) return false;
     if ((r.requires_any_effects || []).length && !r.requires_any_effects.some(on)) return false;
-    if ((r.blocks_if_any_effects || []).some(on)) return false;
+    // blocks_unless_any_effects {tag: [tags]}: that block is lifted once any listed tag is on (e.g. lp_hearing_reply).
+    const unless = r.blocks_unless_any_effects || {};
+    if ((r.blocks_if_any_effects || []).some((k) => on(k) && !((unless[k] || []).some(on)))) return false;
     // requires_computed {tag: bool} and requires_equity_full (equity_fit_ok ∧ equity_capex_commit)
     const rc = r.requires_computed || {};
     for (const k of Object.keys(rc)) { if (!!ruleComputed(k) !== !!rc[k]) return false; }
