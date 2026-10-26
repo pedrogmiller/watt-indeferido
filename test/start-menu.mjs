@@ -1023,6 +1023,12 @@ async function openingToAuction(browser, width, height, tag, win) {
     const ficha = await page.locator('#arranque').innerText();
     if (!/Country manager: Ana Ferreira \(tu\)/.test(ficha)) throw new Error('ficha identity');
     if (/2027 · Q1/.test(ficha)) throw new Error('ficha still says 2027 · Q1');
+    const custoFixo = (await page.locator('#arranqueFinCard #arranqueCustoFixo').innerText()).replace(/\s+/g, ' ').trim();
+    if (custoFixo !== 'Custo fixo Sobe com cada Quadro que contratares. 0,4 M€/ano') throw new Error('custo fixo row: ' + custoFixo);
+    if ((await page.locator('#arranqueFinCard tr', { hasText: 'Custo fixo' }).count()) !== 1) throw new Error('more than one custo fixo row');
+    if (/Evolução do custo fixo|0,77|Cerca de 0,4|Custo fixo atual/.test(ficha)) throw new Error('old custo fixo copy still shown');
+    const plHead = (await page.locator('#arranque table.ar-tb thead').first().innerText()).replace(/\s+/g, ' ').trim();
+    if (/nota/i.test(plHead)) throw new Error('plantel still has Nota: ' + plHead);
     if (await page.locator('#arranque .ar-lead').count()) throw new Error('ficha still has a lead');
     if (/Confirma os dados antes de começar/.test(ficha)) throw new Error('old ficha lead');
     if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Assumir o controlo') throw new Error('ficha button');

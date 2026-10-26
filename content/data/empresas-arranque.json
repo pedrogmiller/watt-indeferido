@@ -1,6 +1,9 @@
 {
  "_nota": "Ecrãs Empresas/Empresa do arranque. Fontes: licenca/empresas-dados-verificados.md, licenca/empresas-estimativas-scout.md, licenca/gm-nomes-trivia.md (23-10-2026). q: fonte | est (estimativa, mostra ≈) | sem_dados (mostra —). financas, plantel e country manager: EXEMPLO.",
  "jogador": {
+  "financas": {
+   "custo_fixo": 0.4
+  },
   "cm_q": "jogador",
   "curiosidades": [
    {
