@@ -797,8 +797,8 @@
    "id": "pessoas-j1",
    "tipo": "quadro",
    "nome": "Sérgio Amarante",
-   "cargo": "Diretor de licenciamento da tua empresa",
-   "trabalha_em": "jogador",
+   "cargo": "Diretor de licenciamento, vem da CCDR Centro",
+   "trabalha_em": "livre",
    "historial": [
     {
      "onde": "entidade:ccdr-centro",
@@ -806,9 +806,9 @@
      "ate": 2019
     },
     {
-     "onde": "jogador",
+     "onde": "org:consultores-x1",
      "de": 2019,
-     "ate": null
+     "ate": 2025
     }
    ],
    "regiao": "Lisboa",
@@ -909,38 +909,39 @@
    ],
    "regiao": "Alentejo",
    "qualidades": {
-    "q01": 14,
-    "q02": 14,
-    "q03": 14,
-    "q04": 14,
-    "q05": 14,
-    "q06": 14,
-    "q07": 14,
-    "q08": 14,
-    "q09": 14,
-    "q10": 15,
-    "q11": 15,
-    "q12": 15,
-    "q13": 15,
-    "q14": 15,
+    "q01": 13,
+    "q02": 11,
+    "q03": 13,
+    "q04": 18,
+    "q05": 10,
+    "q06": 11,
+    "q07": 16,
+    "q08": 13,
+    "q09": 11,
+    "q10": 19,
+    "q11": 14,
+    "q12": 17,
+    "q13": 17,
+    "q14": 16,
     "q15": 15,
-    "q16": 15,
-    "q17": 15,
-    "q18": 15,
-    "q19": 15,
-    "q20": 15,
-    "q21": 15,
-    "q22": 15,
-    "q23": 15,
-    "q24": 15,
-    "q25": 15,
-    "q26": 15,
-    "q27": 15,
+    "q16": 13,
+    "q17": 13,
+    "q18": 13,
+    "q19": 13,
+    "q20": 13,
+    "q21": 11,
+    "q22": 12,
+    "q23": 12,
+    "q24": 12,
+    "q25": 12,
+    "q26": 11,
+    "q27": 14,
     "q28": 15
    },
    "exemplo": true,
    "area": "Negociação",
-   "equipa_escondida": "media"
+   "equipa_escondida": "media",
+   "contratavel_apos": "trc_ourique_ganho"
   },
   {
    "id": "pessoas-x2",
@@ -1756,6 +1757,165 @@
     "f10": 4
    },
    "exemplo": true
+  },
+  {
+   "id": "pessoas-p1",
+   "tipo": "quadro",
+   "nome": "Rui Matos",
+   "cargo": "Diretor de licenciamento",
+   "trabalha_em": "jogador",
+   "historial": [
+    {
+     "onde": "org:consultores-x1",
+     "de": 2013,
+     "ate": 2021
+    },
+    {
+     "onde": "jogador",
+     "de": 2021,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 14,
+    "q02": 11,
+    "q03": 13,
+    "q04": 10,
+    "q05": 8,
+    "q06": 8,
+    "q07": 10,
+    "q08": 12,
+    "q09": 10,
+    "q10": 8,
+    "q11": 12,
+    "q12": 9,
+    "q13": 10,
+    "q14": 10,
+    "q15": 10,
+    "q16": 8,
+    "q17": 10,
+    "q18": 13,
+    "q19": 9,
+    "q20": 7,
+    "q21": 14,
+    "q22": 9,
+    "q23": 11,
+    "q24": 12,
+    "q25": 12,
+    "q26": 12,
+    "q27": 9,
+    "q28": 10
+   },
+   "exemplo": true,
+   "area": "Licenciamento",
+   "equipa_escondida": "media"
+  },
+  {
+   "id": "pessoas-p2",
+   "tipo": "quadro",
+   "nome": "Inês Carvalho",
+   "cargo": "Diretora de terrenos e negociação",
+   "trabalha_em": "jogador",
+   "historial": [
+    {
+     "onde": "org:empreiteiros-x1",
+     "de": 2015,
+     "ate": 2020
+    },
+    {
+     "onde": "jogador",
+     "de": 2020,
+     "ate": null
+    }
+   ],
+   "regiao": "Alentejo",
+   "qualidades": {
+    "q01": 9,
+    "q02": 8,
+    "q03": 9,
+    "q04": 14,
+    "q05": 7,
+    "q06": 10,
+    "q07": 11,
+    "q08": 9,
+    "q09": 8,
+    "q10": 13,
+    "q11": 10,
+    "q12": 14,
+    "q13": 12,
+    "q14": 13,
+    "q15": 10,
+    "q16": 10,
+    "q17": 10,
+    "q18": 9,
+    "q19": 10,
+    "q20": 11,
+    "q21": 8,
+    "q22": 11,
+    "q23": 10,
+    "q24": 10,
+    "q25": 8,
+    "q26": 10,
+    "q27": 12,
+    "q28": 11
+   },
+   "exemplo": true,
+   "area": "Negociação",
+   "equipa_escondida": "media"
+  },
+  {
+   "id": "pessoas-p3",
+   "tipo": "quadro",
+   "nome": "Tiago Nunes",
+   "cargo": "Diretor financeiro",
+   "trabalha_em": "jogador",
+   "historial": [
+    {
+     "onde": "entidade:banco-cgd",
+     "de": 2014,
+     "ate": 2022
+    },
+    {
+     "onde": "jogador",
+     "de": 2022,
+     "ate": null
+    }
+   ],
+   "regiao": "Lisboa",
+   "qualidades": {
+    "q01": 9,
+    "q02": 10,
+    "q03": 8,
+    "q04": 7,
+    "q05": 14,
+    "q06": 8,
+    "q07": 13,
+    "q08": 10,
+    "q09": 13,
+    "q10": 11,
+    "q11": 10,
+    "q12": 7,
+    "q13": 11,
+    "q14": 8,
+    "q15": 10,
+    "q16": 10,
+    "q17": 12,
+    "q18": 11,
+    "q19": 12,
+    "q20": 8,
+    "q21": 12,
+    "q22": 12,
+    "q23": 9,
+    "q24": 10,
+    "q25": 9,
+    "q26": 10,
+    "q27": 10,
+    "q28": 10
+   },
+   "exemplo": true,
+   "area": "Financiamento",
+   "equipa_escondida": "media"
   }
  ]
 }
