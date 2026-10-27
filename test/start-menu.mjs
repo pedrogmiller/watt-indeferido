@@ -1168,6 +1168,11 @@ async function oldSaveSkipsOpening(browser, width, height, tag) {
     if (!loaded.won) throw new Error('old save did not resume: ' + JSON.stringify(loaded));
     if (loaded.player && (loaded.player.nomeProprio || loaded.player.nomeEmpresa)) throw new Error('old save grew a player: ' + JSON.stringify(loaded.player));
     if (loaded.phase !== 'land') throw new Error('phase changed: ' + loaded.phase);
+    await page.waitForSelector('#objBudget:not([hidden])');
+    const barText = await page.locator('#objBudget').innerText();
+    if (/Chega|Não chega/i.test(barText)) throw new Error('verdict in the bottom bar: ' + barText);
+    if (!/Folga de capital próprio para a obra/i.test(barText)) throw new Error('equity label missing in the bottom bar: ' + barText);
+    if (await page.locator('#objBudget .obj-ok, #objBudget .obj-no').count()) throw new Error('green/red verdict colour in the bottom bar');
     if (loaded.letters.length) throw new Error('old save grew a letter: ' + loaded.letters.join(', '));
     await shot(page, 'old-save-' + tag);
     const oldBody = 'CARTA ANTIGA QUE FICA.';
