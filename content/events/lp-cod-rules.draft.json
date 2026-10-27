@@ -1329,9 +1329,10 @@
         "source": "HIPÓTESE"
       },
       "rearm_on_effects": [
-        "term_sheet_defer"
+        "term_sheet_expired"
       ],
-      "rearm_after_months": 2
+      "rearm_after_months": 1,
+      "_rearm_nota_2026_10_27": "Sem rearm_on_effects: term_sheet_defer. Re-arma só em term_sheet_expired (o banco reemite passado 1 mês, Economia §9.1). O «Adiar a resposta ao banco» é agora um delay: a carta fica aberta e não volta a aparecer (GM 27/10)."
     },
     {
       "id": "r-epc",
@@ -4301,6 +4302,13 @@
       "note": "Ourique only (requires nao_sujeicao). when_phase includes aia and licenca_producao because pip_aprovado immediately raises the console phase to aia, and the LP can land before the two-month wait ends. Blocks stop the letter at FID and at construction."
     }
   ],
+  "validade_propostas": {
+    "_estado": "HIPÓTESE (Economia, mercados-pesquisa-economia.md §9, 27/10). Lido por {econ.*} nas cartas e pelos campos defer_* das 3 propostas comerciais.",
+    "validade_proposta_meses": 2,
+    "validade_term_sheet_meses": 2,
+    "validade_proposta_epc_meses": 1,
+    "buyer_expira_p_walk": 0.5
+  },
   "lp_espera_pt": {
     "_nota": "Linha «À espera» na sala do projeto e no cartão do ativo, enquanto o pedido de LP está entregue e a LP não chegou. Ordem: a primeira que se aplica. Textos finais do GM (26/10).",
     "audiencia": "Falta a tua resposta à DGEG (audiência prévia)",
