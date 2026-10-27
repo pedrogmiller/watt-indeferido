@@ -72,8 +72,9 @@ async function run(browser, width, height) {
   // Sem coluna de salário por pessoa; coluna «Onde trabalha» com o ativo (Ourique)
   const plRows = (await page.locator('#homePlantelT tr:not(.home-pa-th):not(.home-pa-vaga)').allInnerTexts()).map((t) => t.replace(/\s+/g, ' '));
   ok(plRows.length === data.plantel.quadros.length && plRows.every((r) => !/k€/.test(r)), tag + ' plantel sem salário por pessoa');
-  ok(/Onde trabalha/.test(await page.locator('#homePlantelT .home-pa-th').innerText()), tag + ' coluna «Onde trabalha»');
-  const ourName = await page.evaluate(() => window.__wattQA.nodes.find((n) => n.id === 'ourique').name);
+  ok(/Quem/.test(await page.locator('#homePlantelT .home-pa-th th').first().innerText()) && /Onde trabalha/.test(await page.locator('#homePlantelT .home-pa-th').innerText()), tag + ' cabeçalhos «Quem» e «Onde trabalha»');
+  const ourName = (await page.evaluate(() => window.__wattQA.nodes.find((n) => n.id === 'ourique').name)).replace(/^SE\s+/, '');
+  ok(ourName === 'Ourique' && plRows.every((r) => !/SE Ourique/.test(r)), tag + ' «Onde trabalha» sem «SE »');
   ok(plRows.every((r) => r.includes(ourName)), tag + ' todos trabalham em ' + ourName);
   ok((await page.locator('#homePlantel').innerText()).includes('Disponível'), tag + ' mantém folha (custo fixo) e Disponível');
   // Ativos: estado real (Ourique, TRC ganho)
