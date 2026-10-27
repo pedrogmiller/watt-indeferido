@@ -69,6 +69,13 @@ async function run(browser, width, height) {
   const vagas = (await page.locator('#homePlantelT .home-pa-vaga').allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim());
   ok(vagas.length === 2 && /Por contratar Técnica/.test(vagas[0]) && /Por contratar Institucional/.test(vagas[1]), tag + ' vagas Técnica e Institucional');
   ok(/HIPÓTESE/.test(pl), tag + ' valores marcados HIPÓTESE');
+  // Sem coluna de salário por pessoa; coluna «Onde trabalha» com o ativo (Ourique)
+  const plRows = (await page.locator('#homePlantelT tr:not(.home-pa-th):not(.home-pa-vaga)').allInnerTexts()).map((t) => t.replace(/\s+/g, ' '));
+  ok(plRows.length === data.plantel.quadros.length && plRows.every((r) => !/k€/.test(r)), tag + ' plantel sem salário por pessoa');
+  ok(/Onde trabalha/.test(await page.locator('#homePlantelT .home-pa-th').innerText()), tag + ' coluna «Onde trabalha»');
+  const ourName = await page.evaluate(() => window.__wattQA.nodes.find((n) => n.id === 'ourique').name);
+  ok(plRows.every((r) => r.includes(ourName)), tag + ' todos trabalham em ' + ourName);
+  ok((await page.locator('#homePlantel').innerText()).includes('Disponível'), tag + ' mantém folha (custo fixo) e Disponível');
   // Ativos: estado real (Ourique, TRC ganho)
   const at = (await page.locator('#homeAtivosT').innerText()).replace(/\s+/g, ' ');
   const realName = await page.evaluate(() => window.__wattQA.nodes.find((n) => n.id === 'ourique').name);
@@ -112,7 +119,13 @@ async function run(browser, width, height) {
   await page.locator('#homePlantelT [data-home-pessoa="pessoas-p1"]').click();
   await page.waitForSelector('#motorPanel:not([hidden]) #moFicha');
   ok((await page.locator('#moTitulo').innerText()).trim() === 'Rui Matos (Sol do Sado)', tag + ' Rui Matos abre a ficha no motor');
+  ok(await page.locator('#moQual .mo-q').count() === 0, tag + ' plantel: todas as qualidades visíveis');
+  ok(await page.locator('#moFicha #moPedir').count() === 0, tag + ' plantel: sem «Pedir relatório»');
+  const p1 = data.plantel.quadros.find((q) => q.pessoa_id === 'pessoas-p1');
+  ok((await page.locator('#moSalario').innerText()).replace(/\s+/g, ' ').includes(p1.salario_keur_ano.toLocaleString('pt-PT') + ' k€/ano'), tag + ' salário na ficha (' + p1.salario_keur_ano + ' k€/ano, do JSON)');
   await page.screenshot({ path: path.join(OUT, 'ficha-plantel-' + tag + '.png') });
+  await page.locator('#moSalario').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(OUT, 'ficha-plantel-salario-' + tag + '.png') });
   await page.locator('#moInicio').click();
   await page.locator('#homePlantelT [data-home-jogador]').click();
   await page.waitForSelector('#moOrg');

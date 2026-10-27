@@ -7198,10 +7198,13 @@
     box.hidden = false;
     const pl = homePa.plantel || {};
     const qs = pl.quadros || [];
-    document.getElementById('homePlantelT').innerHTML = qs.map((q) =>
+    // «Onde trabalha»: por agora todos no ativo do TRC ganho (Ourique); sem ativo, «Sem ativo».
+    const ativo1 = nodes.find((n) => isAwardedTrc(n.id));
+    const ondeTrab = ativo1 ? escapeHtml(ativo1.name) : '<span class="home-pa-mu">Sem ativo</span>';
+    document.getElementById('homePlantelT').innerHTML = '<tr class="home-pa-th"><th></th><th class="home-pa-onde">Onde trabalha</th></tr>' + qs.map((q) =>
       '<tr><td><button type="button" class="home-pa-link" data-home-pessoa="' + escapeHtml(q.e_o_jogador ? '' : (q.pessoa_id || '')) + '"' + (q.e_o_jogador ? ' data-home-jogador="1"' : '') + '>' + escapeHtml(q.e_o_jogador ? homePaPlayerName(q) : q.nome) + '</button><div class="home-pa-mu">' + escapeHtml(q.cargo || '') + '</div></td>' +
-      '<td class="n">' + (q.salario_keur_ano != null ? homePaKeur(q.salario_keur_ano) + HOME_PA_HIP : HOME_PA_MISS) + '</td></tr>').join('') +
-      (pl.por_contratar || []).map((v) => '<tr class="home-pa-vaga"><td><span class="home-pa-mu">Por contratar</span><div class="home-pa-mu">' + escapeHtml(v) + '</div></td><td class="n">' + HOME_PA_MISS + '</td></tr>').join('');
+      '<td class="home-pa-onde">' + ondeTrab + '</td></tr>').join('') +
+      (pl.por_contratar || []).map((v) => '<tr class="home-pa-vaga"><td><span class="home-pa-mu">Por contratar</span><div class="home-pa-mu">' + escapeHtml(v) + '</div></td><td class="home-pa-onde">' + HOME_PA_MISS + '</td></tr>').join('');
     const folha = qs.reduce((a, q) => a + (Number(q.salario_keur_ano) || 0), 0);
     document.getElementById('homeDisponivel').innerHTML = pl.teto_keur_ano != null ? homePaKeur(pl.teto_keur_ano - folha) + HOME_PA_HIP : HOME_PA_MISS;
     document.getElementById('homeCustoFixo').innerHTML = pl.fator_custo_fixo != null ? homePaMeur(folha * pl.fator_custo_fixo) + HOME_PA_HIP : HOME_PA_MISS;

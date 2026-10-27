@@ -4,7 +4,7 @@
  * Sem números no código: espera do relatório e lista de qualidades vêm de pessoas.json. */
 (function () {
   'use strict';
-  const URLS = { pessoas: 'content/data/pessoas.json', empresas: 'content/data/empresas-arranque.json', entidades: 'content/events/entities.draft.json' };
+  const URLS = { pessoas: 'content/data/pessoas.json', empresas: 'content/data/empresas-arranque.json', entidades: 'content/events/entities.draft.json', plantel: 'content/data/home-plantel-ativos.json' };
   const SECOES = [
     ['PESSOAS', [['quadros', 'Quadros'], ['consultores', 'Consultores'], ['interlocutores', 'Interlocutores']]],
     ['ORGANIZAÇÕES', [['promotores', 'Promotores'], ['publicas', 'Entidades públicas'], ['rede', 'Rede'], ['bancos', 'Bancos'], ['fornecedores', 'Fornecedores'], ['ppa', 'Clientes PPA']]]
@@ -30,7 +30,7 @@
     if (D) return Promise.resolve(D);
     if (loading) return loading;
     const get = (u) => fetch(u, { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
-    loading = Promise.all([get(URLS.pessoas), get(URLS.empresas), get(URLS.entidades)]).then(([p, emp, ent]) => {
+    loading = Promise.all([get(URLS.pessoas), get(URLS.empresas), get(URLS.entidades), get(URLS.plantel).catch(() => null)]).then(([p, emp, ent, hpa]) => {
       const orgs = [];
       orgs.push({ ref: 'jogador', nome: nomeEmpresaJogador(), sec: 'promotores', desc: 'A tua empresa', jogador: true });
       (emp.empresas || []).forEach((e) => orgs.push({ ref: 'empresa:' + e.id, nome: e.nome, sec: 'promotores', desc: e.tipo === 'utility' ? 'Grupo de energia' : e.tipo === 'fundo' ? 'Fundo' : 'Promotor' }));
@@ -44,7 +44,8 @@
         const sec = ORG_SEC[o.tipo]; if (!sec) return;
         orgs.push({ ref: 'org:' + o.id, nome: o.nome, sec, desc: o.descricao, atributos: (grupos[o.grupo_atributos] || []).map((a, i) => ({ nome: a.nome, visivel: !!a.visivel, v: (o.valores || [])[i] })) });
       });
-      D = { cfg: p, orgs, pessoas: p.pessoas || [], byRef: {} };
+      D = { cfg: p, orgs, pessoas: p.pessoas || [], byRef: {}, salario: {} };
+      ((hpa && hpa.plantel && hpa.plantel.quadros) || []).forEach((q) => { if (q.pessoa_id && q.salario_keur_ano != null) D.salario[q.pessoa_id] = q.salario_keur_ano; });
       orgs.forEach((o) => { D.byRef[o.ref] = o; });
       return D;
     });
@@ -94,6 +95,13 @@
       list.map(([id, l]) => '<button type="button" class="mo-tab' + (id === cur ? ' on' : '') + '" data-mo-sec="' + id + '">' + l + '</button>').join('') + '</div></div>').join('');
   }
   function onde(p) { return S.onde[p.id] != null ? S.onde[p.id] : p.trabalha_em; }
+  // Quem trabalha na empresa do jogador vê-se por inteiro e fica revelado (S.done, vai no save) mesmo depois de sair.
+  function noPlantel(p) { return onde(p) === 'jogador'; }
+  function marcarPlantel() { if (!D) return; D.pessoas.forEach((p) => { if (noPlantel(p)) S.done[repKey('p', p.id)] = true; }); }
+  function salarioHtml(p) {
+    if (!noPlantel(p) || !D.salario || D.salario[p.id] == null) return '';
+    return '<div class="mo-card" id="moSalario"><div class="mo-glabel">Salário</div><div><b>' + esc(Math.round(D.salario[p.id]).toLocaleString('pt-PT')) + '\u00a0k€/ano</b> <span class="obj-hip">HIPÓTESE</span></div></div>';
+  }
   function pessoaRow(p) {
     const l = orgLink(onde(p));
     return '<li class="mo-row"><a href="#" class="mo-link mo-nome" data-mo-pessoa="' + esc(p.id) + '">' + esc(p.nome) + '</a><span class="mo-sub">' + esc(p.cargo || '') + ' · ' + (l || 'Livre') + '</span></li>';
@@ -118,7 +126,7 @@
   function qualCols(p) {
     const Q = D.cfg.qualidades || {};
     const L = p.tipo === 'interlocutor' ? (Q.interlocutores || []) : (Q.quadros_consultores || []);
-    const reveal = !!S.done[repKey('p', p.id)];
+    const reveal = noPlantel(p) || !!S.done[repKey('p', p.id)];
     const cols = [];
     L.forEach((q) => { (cols[q.coluna] = cols[q.coluna] || []).push(q); });
     return '<div class="mo-cols mo-cols-' + cols.length + '" id="moQual">' + cols.map((c) => '<div class="mo-col">' + c.map((q) =>
@@ -146,7 +154,7 @@
     return navBar(SECOES[0][1].find((s) => s[0] === sec)[1]) + '<section class="mo-ficha" id="moFicha" data-tipo="' + p.tipo + '">' + cabecalho(p.nome, onde(p)) +
       '<p class="mo-sub">' + esc(p.cargo || '') + (p.regiao ? ' · ' + esc(p.regiao) : '') + '</p>' +
       '<div class="mo-card"><div class="mo-glabel">Trabalha em</div><div id="moTrabalha">' + (orgLink(onde(p)) || 'Livre') + '</div></div>' +
-      qualCols(p) + (COM_RELATORIO[sec] ? relatorioHtml(repKey('p', p.id)) : '') + historial(p) + '</section>';
+      qualCols(p) + salarioHtml(p) + (COM_RELATORIO[sec] && !noPlantel(p) ? relatorioHtml(repKey('p', p.id)) : '') + historial(p) + '</section>';
   }
   function orgHtml(ref) {
     const o = D.byRef[ref]; if (!o) return navBar('Pesquisa') + '<p>' + MISS + '</p>';
@@ -172,6 +180,7 @@
   }
   function render() {
     const p = panel(); if (!p || !D) return;
+    marcarPlantel();
     const st = cur();
     const body = p.querySelector('.mo-body');
     body.innerHTML = st.v === 'pessoa' ? pessoaHtml(st.id) : st.v === 'org' ? orgHtml(st.ref) : homeHtml(st);
@@ -214,14 +223,15 @@
     window.addEventListener('resize', () => { if (isOpen()) place(); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire); else wire();
+  load().then(marcarPlantel).catch(() => {});
 
   window.WIMotor = {
     open, close, isOpen, tick, load,
-    exportState: () => JSON.parse(JSON.stringify(S)),
+    exportState: () => { marcarPlantel(); return JSON.parse(JSON.stringify(S)); },
     importState: (s) => { const o = (x) => (s && s[x] && typeof s[x] === 'object') ? Object.assign({}, s[x]) : {}; S = { reps: o('reps'), done: o('done'), last: o('last'), onde: o('onde') }; },
     reset: () => { S = emptyState(); nav.stack = []; if (isOpen()) close(); },
     // Para as notícias de transferências (fase seguinte): muda o «Trabalha em» de uma pessoa.
-    setTrabalhaEm: (id, ref) => { S.onde[id] = ref; if (isOpen()) render(); },
+    setTrabalhaEm: (id, ref) => { const p = D && D.pessoas.find((x) => x.id === id); if (p && noPlantel(p)) S.done[repKey('p', id)] = true; S.onde[id] = ref; marcarPlantel(); if (isOpen()) render(); },
     openPessoa: (id) => { open(); load().then(() => go({ v: 'pessoa', id })); },
     openOrg: (ref) => { open(); load().then(() => go({ v: 'org', ref })); }
   };
