@@ -733,16 +733,6 @@
      "se_q": "fonte",
      "kv": 400,
      "nota": "Acordo direto · ligação de 200 MVA"
-    },
-    {
-     "nome": "Eólica em desenvolvimento",
-     "tec": "eolica",
-     "mw": {
-      "v": null,
-      "q": "por_confirmar"
-     },
-     "un": "MW",
-     "estado": "pi"
     }
    ],
    "curiosidades": [
