@@ -1,0 +1,132 @@
+{
+ "_nota": "Home «O meu plantel» e «Os meus ativos». Fontes: /workspace/licenca/arranque-home-2026-10-26.json (Economy: salários, teto, fator do custo fixo, prazos do contrato) e /workspace/licenca/home-plantel-marcos-gm.md (GM: frases dos marcos). Valores HIPÓTESE. Pessoas fictícias (fichas em pessoas.json). Os meses contam a partir do mês em que o jogador ganha o TRC (mês 0 do Correio).",
+ "plantel": {
+  "_estado": "HIPÓTESE (Economy, 26/10)",
+  "quadros": [
+   {
+    "slot": "country_manager",
+    "nome": "Ana Ferreira",
+    "cargo": "Country manager",
+    "salario_keur_ano": 120,
+    "pessoa_id": null,
+    "e_o_jogador": true
+   },
+   {
+    "slot": "project_finance",
+    "nome": "Tiago Nunes",
+    "cargo": "Diretor financeiro",
+    "salario_keur_ano": 90,
+    "pessoa_id": "pessoas-p3",
+    "e_o_jogador": false
+   },
+   {
+    "slot": "prospector_1",
+    "nome": "Inês Carvalho",
+    "cargo": "Diretora de terrenos e negociação",
+    "salario_keur_ano": 60,
+    "pessoa_id": "pessoas-p2",
+    "e_o_jogador": false
+   },
+   {
+    "slot": "prospector_2",
+    "nome": "Rui Matos",
+    "cargo": "Diretor de licenciamento",
+    "salario_keur_ano": 60,
+    "pessoa_id": "pessoas-p1",
+    "e_o_jogador": false
+   }
+  ],
+  "por_contratar": [
+   "Técnica",
+   "Institucional"
+  ],
+  "teto_keur_ano": 396,
+  "fator_custo_fixo": 1.2,
+  "_formulas": "Disponível = teto − folha; custo fixo = folha × fator_custo_fixo (calculados no jogo). O teto cresce com pontos, obras e ativos (fórmula da Economy, ainda não aplicada)."
+ },
+ "prazos_contrato": {
+  "_estado": "HIPÓTESE (Economy, sequência de Ourique sem atrasos; Peças 2020)",
+  "meses_apos_trc": {
+   "pecas_terrenos": 9,
+   "pecas_lp": 24,
+   "pecas_obras": 33,
+   "le_deadline": 48
+  }
+ },
+ "marcos": {
+  "_estado": "Texto do GM (26/10). Sem prazo: PIP, pedido de avaliação ambiental e AIA completa. A LP e a licença de obras são dois passos da fase «Licença de produção». Na rota sem AIA, o prazo do pedido de LP vem do motor de prazos do jogo (lp_request). Se um prazo do motor listado em prazos_motor estiver aberto, a home mostra esse prazo (rótulo e data do motor, como o cartão do ativo); quando é cumprido ou fecha, volta ao texto do GM.",
+  "passos": [
+   {
+    "id": "terrenos",
+    "fase": "trc_won",
+    "tarefa": "Garantir os terrenos e provar à DGEG",
+    "prazo": "pecas_terrenos",
+    "ajuda": "Já tens lugar na rede. Fecha os contratos dos terrenos e envia a prova à DGEG.",
+    "prazos_motor": [
+     "land_option"
+    ]
+   },
+   {
+    "id": "pip",
+    "fase": "land",
+    "tarefa": "Pedir à câmara a informação prévia (PIP)",
+    "prazo": null,
+    "ajuda": "A câmara diz se aceita o projeto naquele terreno. Sem isso não avanças."
+   },
+   {
+    "id": "pedido_ambiental",
+    "fase": "pip",
+    "tarefa": "Entregar o pedido de avaliação ambiental",
+    "prazo": null,
+    "ajuda": "A câmara já respondeu. Agora a autoridade ambiental tem de analisar o projeto."
+   },
+   {
+    "id": "decisao_ambiental",
+    "fase": "aia",
+    "tarefa": "Obter a decisão ambiental",
+    "prazo": null,
+    "ajuda": "O projeto está com a autoridade ambiental. Responde depressa ao que te pedirem.",
+    "quando_rota": "aia"
+   },
+   {
+    "id": "pedido_lp",
+    "fase": "aia",
+    "quando_rota": "sem_aia",
+    "tarefa": "Pedir a Licença de Produção à DGEG",
+    "prazo_motor": "lp_request",
+    "ajuda": "Entrega o pedido completo. Se faltar algum documento, a DGEG só o pede uma vez."
+   },
+   {
+    "id": "lp",
+    "fase": "aia",
+    "fase_rotulo": "licenca_producao",
+    "quando_tag": "lp_request_submitted",
+    "tarefa": "Obter a Licença de Produção",
+    "prazo": "pecas_lp",
+    "ajuda": "A DGEG está a analisar o pedido. Sem esta licença não podes construir."
+   },
+   {
+    "id": "obras",
+    "fase": "licenca_producao",
+    "tarefa": "Obter a licença de obras e começar a construir",
+    "prazo": "pecas_obras",
+    "ajuda": "Já tens a licença. Fecha o financiamento e a decisão de investir com os investidores e pede a licença de obras à câmara."
+   },
+   {
+    "id": "le",
+    "fase": "obra",
+    "tarefa": "Obter a Licença de Exploração e começar a produzir",
+    "prazo": "le_deadline",
+    "ajuda": "Acaba a obra e a ligação à rede. Com a Licença de Exploração, o ativo pode vender energia."
+   },
+   {
+    "id": "operacao",
+    "fase": "cod",
+    "tarefa": null,
+    "texto": "Próximo marco: nenhum. Tudo em dia.",
+    "prazo": null,
+    "ajuda": "O ativo já produz energia. Acompanha a produção e as cartas da equipa."
+   }
+  ]
+ }
+}
