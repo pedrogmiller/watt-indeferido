@@ -1,0 +1,1519 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IPP Manager</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+[hidden] { display: none !important; }
+/* Layout: consola de gestão clássica (CM 01/02): barra de topo com data e caixa, menu de secções à esquerda,
+   painel central de listas ordenáveis e fichas. Um só visual escuro, escolhido de propósito. */
+:root {
+  --bg: #0e1a2b;        /* fundo da consola */
+  --panel: #142538;     /* painéis */
+  --panel2: #1a2f48;    /* cabeçalhos de tabela, hover */
+  --line: #284565;      /* filetes */
+  --fg: #dde7f2;        /* texto */
+  --dim: #8ea5c0;       /* texto secundário */
+  --accent: #f2b33d;    /* âmbar solar: ação principal, destaques */
+  --link: #84c7ff;      /* ligações e linhas clicáveis */
+  --good: #63d391;
+  --bad: #ff8070;
+  --warn: #f2b33d;
+  --f-disp: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  --f-body: 'IBM Plex Sans Condensed', 'Arial Narrow', Arial, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.45 var(--f-body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--panel); }
+button, input, select { font: inherit; color: inherit; }
+a { color: var(--link); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.num, td.n, th.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.dim { color: var(--dim); }
+.good { color: var(--good); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+h1, h2, h3 { font-family: var(--f-disp); font-weight: 600; letter-spacing: .02em; margin: 0; text-wrap: balance; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.15rem; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); font-weight: 600; }
+
+/* App */
+#app { height: 100%; display: grid; grid-template-rows: auto 1fr; }
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; background: var(--panel); border-bottom: 2px solid var(--accent);
+  padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.brand { font-family: var(--f-disp); font-weight: 700; font-size: 1.35rem; letter-spacing: .04em; color: var(--accent); text-transform: uppercase; }
+.brand small { color: var(--dim); font-weight: 500; font-size: .85rem; margin-left: 6px; letter-spacing: .03em; }
+.hud { display: flex; flex-wrap: wrap; gap: 4px 16px; flex: 1; min-width: 0; }
+.hud div { display: flex; flex-direction: column; line-height: 1.15; }
+.hud b { font-family: var(--f-mono); font-weight: 500; font-size: .95rem; }
+.hud span { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--dim); }
+.go { display: flex; gap: 6px; }
+.btn { background: var(--panel2); border: 1px solid var(--line); border-radius: 3px; padding: 5px 11px; cursor: pointer; }
+.btn:hover:not(:disabled) { border-color: var(--link); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.pri { background: var(--accent); color: #1b1404; border-color: var(--accent); font-weight: 600; }
+.btn.pri:hover:not(:disabled) { filter: brightness(1.08); border-color: var(--accent); }
+.btn.mini { padding: 2px 8px; font-size: .85rem; }
+.btn.danger { border-color: #7a3a33; }
+.main { display: grid; grid-template-columns: 210px 1fr; min-height: 0; }
+nav { background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto; padding-block: 8px; }
+nav .grp { font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; color: var(--dim); padding: 10px 16px 3px; }
+nav button { display: flex; justify-content: space-between; width: 100%; text-align: left; background: none; border: 0; padding: 6px 16px; cursor: pointer; border-left: 3px solid transparent; }
+nav button:hover { background: var(--panel2); }
+nav button.on { background: var(--panel2); border-left-color: var(--accent); color: #fff; }
+nav .badge { font-family: var(--f-mono); font-size: .75rem; background: var(--accent); color: #1b1404; border-radius: 8px; padding: 0 6px; }
+#view { overflow-y: auto; min-width: 0; padding-block: 16px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.vh { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.vh p { margin: 2px 0 0; color: var(--dim); max-width: 75ch; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); align-items: start; }
+.box { background: var(--panel); border: 1px solid var(--line); border-radius: 3px; padding: 12px 14px; min-width: 0; }
+.box > h3 { margin-bottom: 8px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; }
+.kv dt { color: var(--dim); }
+.kv dd { margin: 0; text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.bar { height: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 2px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.bar.c i { background: var(--link); }
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 3px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th { background: var(--panel2); color: var(--dim); font-weight: 500; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; text-align: left; padding: 6px 8px; white-space: nowrap; cursor: pointer; user-select: none; position: sticky; top: 0; }
+th.ns { cursor: default; }
+td { padding: 5px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+tr.click { cursor: pointer; }
+tr.click:hover td { background: var(--panel2); }
+tr.click td:first-child { color: var(--link); }
+tr.off td { color: var(--dim); }
+.tag { display: inline-block; font-size: .72rem; padding: 0 5px; border-radius: 2px; border: 1px solid var(--line); color: var(--dim); margin-right: 3px; white-space: nowrap; }
+.tag.r { border-color: #7a3a33; color: var(--bad); }
+.tag.g { border-color: #2f6b4b; color: var(--good); }
+.tag.a { border-color: #6d5420; color: var(--accent); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; align-items: center; }
+select, input[type=text], input[type=number] { background: var(--bg); border: 1px solid var(--line); border-radius: 3px; padding: 4px 6px; }
+input[type=number] { width: 6.5em; }
+.attr { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+.av { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.av.hi { color: var(--good); } .av.lo { color: var(--bad); }
+.back { margin-bottom: 10px; }
+.note { font-size: .82rem; color: var(--dim); }
+.msg { margin-top: 8px; padding: 6px 10px; border-left: 3px solid var(--accent); background: var(--panel2); }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.tabs button { background: none; border: 1px solid var(--line); border-radius: 3px; padding: 4px 10px; cursor: pointer; color: var(--dim); }
+.tabs button.on { color: var(--fg); border-color: var(--accent); }
+
+/* Caixa de entrada */
+.inbox { display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: 14px; align-items: start; }
+.mlist { max-height: calc(100vh - 190px); overflow-y: auto; }
+.mitem { display: block; width: 100%; text-align: left; background: none; border: 0; border-top: 1px solid var(--line); padding: 7px 10px; cursor: pointer; }
+.mitem:hover, .mitem.on { background: var(--panel2); }
+.mitem .s { display: block; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mitem.unread .s { font-weight: 600; color: #fff; }
+.mitem .m { display: flex; justify-content: space-between; gap: 8px; font-size: .78rem; color: var(--dim); }
+.mitem .dot { color: var(--accent); }
+.mail h2 { font-size: 1.35rem; margin: 2px 0 6px; }
+.mail .from { color: var(--dim); font-size: .85rem; margin-bottom: 10px; }
+.mail .body p { margin: 0 0 8px; max-width: 72ch; }
+.mail .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+/* Ecrãs de arranque e fim */
+.overlay { position: fixed; inset: 0; background: var(--bg); overflow-y: auto; z-index: 20;
+  padding-block: max(24px, env(safe-area-inset-top, 0px)) 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.overlay .inner { max-width: 860px; margin: 0 auto; display: grid; gap: 16px; }
+.title { font-family: var(--f-disp); font-weight: 700; font-size: clamp(2.4rem, 7vw, 4.2rem); line-height: .95; letter-spacing: .01em; text-transform: uppercase; color: var(--accent); }
+.title small { display: block; font-size: .32em; color: var(--dim); letter-spacing: .12em; margin-top: 8px; }
+.form { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.form label { display: grid; gap: 3px; font-size: .8rem; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; }
+.form label input, .form label select { text-transform: none; letter-spacing: 0; color: var(--fg); font-size: .95rem; padding: 6px 8px; }
+.opt { display: grid; gap: 6px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.opt label { border: 1px solid var(--line); border-radius: 3px; padding: 8px 10px; cursor: pointer; background: var(--panel); text-transform: none; letter-spacing: 0; color: var(--fg); font-size: .9rem; display: block; }
+.opt label:has(input:checked) { border-color: var(--accent); }
+.opt b { display: block; font-family: var(--f-disp); font-size: 1.1rem; font-weight: 600; }
+.opt input { margin-right: 6px; }
+.toast { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px)); background: var(--panel2); border: 1px solid var(--accent); padding: 8px 12px; border-radius: 3px; z-index: 30; max-width: min(420px, calc(100vw - 32px)); }
+.spark { width: 100%; height: 60px; display: block; }
+
+@media (max-width: 760px) {
+  .main { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  nav { display: flex; overflow-x: auto; overflow-y: hidden; border-right: 0; border-bottom: 1px solid var(--line); padding: 0; }
+  nav .grp { display: none; }
+  nav button { width: auto; white-space: nowrap; border-left: 0; border-bottom: 3px solid transparent; gap: 6px; padding: 8px 12px; }
+  nav button.on { border-bottom-color: var(--accent); }
+  .inbox { grid-template-columns: 1fr; }
+  .top .hud { order: 3; flex-basis: 100%; gap: 4px 14px; }
+  .go { margin-left: auto; }
+  .mlist { max-height: 40vh; }
+  #app { height: auto; min-height: 100%; }
+  .main { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+</head>
+<body>
+<div id="app" hidden>
+  <header class="top">
+    <div class="brand">IPP Manager<small id="hEmp"></small></div>
+    <div class="hud" id="hud"></div>
+    <div class="go">
+      <button class="btn" id="btnAte" data-act="ateNovidade" title="Avança mês a mês até chegar um email que pede decisão (máx. 6 meses)">Até haver novidades</button>
+      <button class="btn pri" id="btnGo" data-act="continuar">Continuar ▸</button>
+    </div>
+  </header>
+  <div class="main">
+    <nav id="nav"></nav>
+    <section id="view" aria-live="polite"></section>
+  </div>
+</div>
+<div id="start" class="overlay"></div>
+<div id="fim" class="overlay" hidden></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+'use strict';
+/* ============================================================
+   IPP Manager · protótipo v0.1
+   Valores económicos e prazos: HIPÓTESE (por calibrar). Empresas rivais e pessoas: fictícias.
+   ============================================================ */
+const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const ANO0 = 2027;
+const SAVE_KEY = 'ippm.save.v1', HOF_KEY = 'ippm.hof.v1';
+
+const TIERS = {
+  boutique: { nome: 'Boutique', orc: 3.0, desc: 'Casa-mãe pequena. Orçamento curto, pouca margem para erros.' },
+  medio: { nome: 'Meia-tabela', orc: 4.5, desc: 'Fundo de dimensão média. Dá para arriscar um pouco.' },
+  infra: { nome: 'Fundo de infraestrutura', orc: 7.0, desc: 'Orçamento folgado, Comité impaciente.' }
+};
+const TIPOS = {
+  vender: { nome: 'Desenvolver e vender', desc: 'Ganha-se a levar projetos a RtB e a vendê-los com lucro.' },
+  operar: { nome: 'Construir e operar', desc: 'Ganha-se a construir e a ter MW a produzir. A casa-mãe põe o capital.' }
+};
+const ATR = [['ter','Terrenos'],['lic','Licenciamento'],['rede','Rede elétrica'],['amb','Ambiente'],['fin','Finanças'],['neg','Negociação']];
+const ATRN = Object.fromEntries(ATR);
+const FUNCOES = { ter: 'Landman (terrenos)', lic: 'Gestor de licenciamento', rede: 'Engenheiro de rede', amb: 'Especialista ambiental', fin: 'Analista financeiro', neg: 'Negociador' };
+
+// id, nome, região, kV, MW livres, irradiância kWh/kWp, câmara, sensibilidade ambiental 0..1
+const SE_DEF = [
+  ['ourique','Ourique','Baixo Alentejo',400,120,1880,'hostil',0.5],
+  ['ferreira','Ferreira do Alentejo','Baixo Alentejo',150,60,1860,'favoravel',0.3],
+  ['evora','Évora','Alentejo Central',400,90,1840,'neutra',0.45],
+  ['estremoz','Estremoz','Alentejo Central',400,70,1800,'neutra',0.35],
+  ['falagueira','Falagueira','Alto Alentejo',400,140,1760,'favoravel',0.3],
+  ['pego','Pego','Médio Tejo',400,100,1720,'neutra',0.25],
+  ['tavira','Tavira','Algarve',150,40,1920,'hostil',0.6],
+  ['portimao','Portimão','Algarve',150,50,1900,'neutra',0.55],
+  ['alqueva','Alqueva','Baixo Alentejo',400,80,1870,'favoravel',0.65],
+  ['sines','Sines','Alentejo Litoral',400,60,1820,'neutra',0.5],
+  ['pontesor','Ponte de Sor','Alto Alentejo',150,90,1770,'favoravel',0.2],
+  ['fundao','Fundão','Beira Interior',220,70,1650,'neutra',0.3],
+  ['cbranco','Castelo Branco','Beira Interior',220,80,1680,'favoravel',0.35],
+  ['riomaior','Rio Maior','Oeste',400,50,1650,'neutra',0.3]
+];
+const CAMARA = { hostil: 'Hostil', neutra: 'Neutra', favoravel: 'Favorável' };
+
+// id, nome, estilo, descrição, caixa inicial (M€), entrada mensal (M€), qualidade da equipa
+const RIVAIS_DEF = [
+  ['solenor','Solenor Ibérica','agressivo','Promotor espanhol com pressa de crescer em Portugal. Paga bem e arrisca.',3.5,0.30,12],
+  ['valeverde','Vale Verde Energia','cauteloso','IPP português de família. Só avança com terra e rede garantidas.',2.5,0.18,13],
+  ['atlantica','Atlântica Renováveis','oportunista','Compra o que os outros deixam cair. Vende depressa.',2.0,0.18,10],
+  ['helios','Helios Capital','fundo','Fundo de infraestrutura. Compra projetos RtB e opera-os.',9,0.45,11],
+  ['lusowatt','Lusowatt','agressivo','Startup de Lisboa, muito alavancada.',1.2,0.12,9],
+  ['tejo','Grupo Tejo Energia','utility','Utility histórica. Lenta, mas com um balanço enorme.',10,0.55,14]
+];
+const ESTILO = {
+  agressivo: { nome: 'Agressivo', novo: 0.13, vende: 0.35, lance: 1.3 },
+  cauteloso: { nome: 'Cauteloso', novo: 0.05, vende: 0.08, lance: 0.8 },
+  oportunista: { nome: 'Oportunista', novo: 0.05, vende: 0.5, lance: 0.9 },
+  fundo: { nome: 'Fundo comprador', novo: 0.02, vende: 0, lance: 1.0 },
+  utility: { nome: 'Utility', novo: 0.07, vende: 0, lance: 1.15 }
+};
+const DEVS = ['Sunterra Lda','Monte Solar Unipessoal','Eira Energia','Planície Power','Brisa do Sul Projetos','Lumen Desenvolvimento'];
+
+// Fases do projeto. meses e custo (M€) são HIPÓTESE.
+const FASES = [
+  { id: 'estudos', nome: 'Estudos e PIP', curto: 'Estudos', meses: 4, custo: 0.12, p: 0.92, sk: 'lic' },
+  { id: 'ambiente', nome: 'Avaliação ambiental', curto: 'Ambiente', meses: 10, custo: 0.35, p: 0.72, sk: 'amb' },
+  { id: 'licenca', nome: 'Licença de produção e municipal', curto: 'Licenças', meses: 6, custo: 0.20, p: 0.85, sk: 'lic' },
+  { id: 'rtb', nome: 'Pronto a construir (RtB)', curto: 'RtB' },
+  { id: 'construcao', nome: 'Em construção', curto: 'Construção', meses: 12 },
+  { id: 'operacao', nome: 'Em operação', curto: 'Operação' }
+];
+const CAUCAO_MW = 0.005;   // M€/MW (5 k€/MW), HIPÓTESE
+const PRAZO_TRC = 42;      // meses do TRC até RtB, HIPÓTESE
+const CAPEX_MWP = 0.48;    // M€/MWp, HIPÓTESE
+
+const NOMES = ['Ana','Beatriz','Carla','Daniela','Filipa','Helena','Inês','Joana','Leonor','Mariana','Marta','Patrícia','Rita','Sofia','Teresa','Vera','Catarina','Raquel','Lívia','Graça','André','Bruno','Diogo','Duarte','Filipe','Gonçalo','Hugo','João','Luís','Miguel','Nuno','Paulo','Ricardo','Rui','Tiago','Vasco','Henrique','Sérgio','Abel','Teodoro','Tomé','Leonel'];
+const APELIDOS = ['Valadares','Barroca','Amarante','Carriço','Tavolim','Quintanilha','Belmonte','Sarzedas','Cotovio','Ferraria','Pombeiro','Bragadas','Vidigal','Calvinho','Alcaide','Courelas','Galvão','Lagoa','Monsaraz','Nogueira','Pacheco','Raposo','Serrano','Tojal','Valente','Zambujal','Canhoto','Pinheiro','Matias','Godinho','Prates','Murteira','Fragoso','Arnoia','Seixal','Corgas'];
+const LUGARES = ['do Freixo','da Azinheira','dos Gaviões','do Monte Novo','da Lameira','das Cegonhas','do Pinheiro Manso','da Courela Velha','do Barranco','das Figueiras','da Serra Pelada','do Vale da Rosa','dos Alfaiates','da Amendoeira','do Carrascal','da Defesa','do Rossio','das Mós','do Zambujeiro','da Fonte Santa','dos Machados','da Carapinha','do Sobral','da Atalaia','das Pereiras','do Montinho'];
+
+/* ---------- utilitários ---------- */
+let G = null;
+const UI = { view: 'painel', ficha: null, sel: null, sort: {}, f: {}, tab: {}, msg: null, confirm: null };
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function hashSeed(s) { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h | 0; }
+function rnd() { G.rng = (G.rng + 0x6D2B79F5) | 0; let t = G.rng; t = Math.imul(t ^ (t >>> 15), 1 | t); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+const ri = (a, b) => a + Math.floor(rnd() * (b - a + 1));
+const pick = (a) => a[Math.floor(rnd() * a.length)];
+const chance = (p) => rnd() < p;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const mesLabel = (m) => MESES[((m % 12) + 12) % 12] + ' ' + (ANO0 + Math.floor(m / 12));
+const anoDe = (m) => ANO0 + Math.floor(m / 12);
+const nf = (v, d = 2) => Number(v).toLocaleString('pt-PT', { minimumFractionDigits: d, maximumFractionDigits: d });
+const M = (v) => nf(v, 2) + ' M€';
+const K = (v) => nf(v * 1000, 0) + ' k€';
+const pct = (p) => Math.round(p * 100) + ' %';
+const sub = (id) => G.subs.find((s) => s.id === id);
+const rival = (id) => G.rivais.find((r) => r.id === id);
+const pessoa = (id) => G.pessoas.find((p) => p.id === id);
+const terreno = (id) => G.terrenos.find((t) => t.id === id);
+const trc = (id) => G.trcs.find((t) => t.id === id);
+const projeto = (id) => G.projetos.find((p) => p.id === id);
+const nid = (p) => p + (G.nid++);
+const anoMandato = () => Math.floor((G.mes - G.mandato.inicio) / 12);
+
+/* ---------- livro de caixa ---------- */
+function conta(cat, v) { const a = anoDe(G.mes); G.contas[a] = G.contas[a] || {}; G.contas[a][cat] = (G.contas[a][cat] || 0) + v; }
+function despesa(v, cat) { G.caixa -= v; G.gastoAno += v; conta(cat, -v); }
+function receita(v, cat) { G.caixa += v; conta(cat, v); }
+function prender(v, cat) { G.caixa -= v; conta('Cauções prestadas', -v); }
+function soltar(v) { G.caixa += v; conta('Cauções devolvidas', v); }
+
+/* ---------- mensagens ---------- */
+function email(o) {
+  G.inbox.unshift(Object.assign({ id: nid('E'), mes: G.mes, lido: false, tipo: 'info', acoes: null, feito: null }, o));
+  if (G.inbox.length > 250) G.inbox.length = 250;
+}
+function noticia(txt, tipo, r) { G.noticias.unshift({ mes: G.mes, txt, tipo: tipo || 'setor', r: r || null }); if (G.noticias.length > 400) G.noticias.length = 400; G.novasNoticias++; }
+function mudaConf(d, porque) { G.confianca = clamp(G.confianca + d, 0, 100); if (porque) G.confLog.unshift({ mes: G.mes, d, porque }); }
+
+/* ---------- equipa ---------- */
+const minhaEquipa = () => G.pessoas.filter((p) => p.onde === 'jogador');
+function forte(k) {
+  const v = minhaEquipa().map((p) => p.a[k]).sort((a, b) => b - a);
+  if (!v.length) return 5;
+  return clamp(Math.max(5, v[0] + 0.15 * v.slice(1).reduce((s, x) => s + x, 0)), 1, 20);
+}
+const temFuncao = (k, min) => minhaEquipa().some((p) => p.a[k] >= (min || 9));
+const salariosMes = () => minhaEquipa().reduce((s, p) => s + p.salario, 0) / 12 / 1000;
+
+function novaPessoa(onde, funcao, fixo) {
+  const f = funcao || pick(Object.keys(FUNCOES));
+  const a = {}; ATR.forEach(([k]) => { a[k] = ri(2, 10); });
+  a[f] = ri(8, 18);
+  const sec = pick(ATR.map((x) => x[0]).filter((k) => k !== f)); a[sec] = Math.max(a[sec], ri(6, 13));
+  let nome; do { nome = pick(NOMES) + ' ' + pick(APELIDOS); } while (G.pessoas.some((p) => p.nome === nome));
+  const p = { id: nid('P'), nome, idade: ri(26, 58), funcao: f, a, ambicao: ri(3, 19), lealdade: ri(3, 19), potencial: 0, onde, rel: false, vis: {}, desde: G.mes, bloqueio: 0 };
+  if (fixo) Object.assign(p, fixo);
+  p.potencial = Math.min(20, p.a[p.funcao] + (p.idade < 36 ? ri(1, 5) : ri(0, 1)));
+  p.salario = Math.round(40 + p.a[p.funcao] * 4.2 + p.a[sec] * 1.2 + (p.idade > 45 ? 10 : 0) + ri(-6, 10));
+  ATR.forEach(([k]) => { const v = p.a[k]; p.vis[k] = [Math.max(1, v - ri(1, 5)), Math.min(20, v + ri(1, 5))]; });
+  return p;
+}
+function attrTxt(p, k) {
+  if (p.rel) return String(p.a[k]);
+  const [lo, hi] = p.vis[k];
+  return lo === hi ? String(lo) : lo + '–' + hi;
+}
+function attrCls(p, k) { const v = p.rel ? p.a[k] : (p.vis[k][0] + p.vis[k][1]) / 2; return v >= 15 ? 'hi' : v <= 6 ? 'lo' : ''; }
+function ondeTxt(p) { if (p.onde === 'livre') return 'Livre'; if (p.onde === 'jogador') return G.empresa; const r = rival(p.onde.slice(6)); return r ? r.nome : '—'; }
+
+/* ---------- terrenos ---------- */
+function novoTerreno(s, origem) {
+  const ha = ri(45, 260);
+  const t = {
+    id: nid('T'), se: s.id, nome: pick(['Herdade','Monte','Quinta','Courela']) + ' ' + pick(LUGARES), ha, mwp: Math.round(ha / 1.5),
+    dist: Math.round((rnd() * 13 + 0.6) * 10) / 10, irr: s.irr + ri(-40, 35),
+    ran: chance(0.25), ren: chance(0.15), natura: chance(s.amb * 0.45),
+    renda: Math.round(((origem === 'anuncio' ? 1.15 : 1) * (700 + s.calor * 8 + ri(-100, 220))) / 10) * 10,
+    estado: 'mercado', origem, desde: G.mes, abordado: false,
+    h: { titulos: chance(0.15), arqueo: chance(0.12), montado: chance(s.amb * 0.35), dono: rnd() },
+    dd: null, uso: null
+  };
+  t.opcao = Math.round(t.ha * t.renda * 0.5 / 1e3) / 1e3; // M€
+  return t;
+}
+const PROB_ESC = { titulos: 'Títulos de propriedade por regularizar', arqueo: 'Vestígios arqueológicos', montado: 'Montado de sobro/azinho maior do que o anunciado' };
+
+/* ---------- mundo ---------- */
+function novoJogo(o) {
+  G = {
+    v: 1, seed: o.seed, rng: hashSeed(o.seed), mes: 0, nid: 1, manager: o.manager, empresa: o.empresa, tier: o.tier, tipo: o.tipo,
+    caixa: 0, confianca: 60, confLog: [], capitalRecebido: 0, gastoAno: 0, orcamentoAno: 0, contas: {}, divida: null, negMeses: 0,
+    mandato: { n: 1, inicio: 0, fim: 60, meta: 400, rtb: 0 }, mwRtbTotal: 0, vendas: [], objetivos: [], avaliacoes: [],
+    subs: [], terrenos: [], trcs: [], pessoas: [], projetos: [], rivais: [], mercadoLig: [], tarefas: [], leilao: null,
+    inbox: [], noticias: [], novasNoticias: 0, hist: [], mercado: { preco: 55, rtb: 0.11 }, mods: { licDur: 1, licAte: -1 }, fim: null, carreira: [], nomesProj: {}
+  };
+  SE_DEF.forEach(([id, nome, regiao, kv, livre, irr, camara, amb]) => {
+    G.subs.push({ id, nome, regiao, kv, livre, fila: 0, calor: ri(5, 30), irr, camara, amb,
+      reforco: chance(0.45) ? { mes: ri(10, 54), mw: pick([100, 150, 200, 250]), sabido: false, publico: false, feito: false } : null });
+  });
+  G.subs.forEach((s) => { for (let i = ri(1, 3); i > 0; i--) G.terrenos.push(novoTerreno(s, 'anuncio')); });
+  RIVAIS_DEF.forEach(([id, nome, estilo, desc, caixa, entrada, q]) => G.rivais.push({ id, nome, estilo, desc, caixa, entrada, q, projetos: [], mwRtb: 0, mwOp: 0, mwVend: 0, mwDev: 0, atraso: 0 }));
+  // equipa inicial (os mesmos nomes do plantel da consola)
+  const ini = [
+    ['Rui Matos', 'lic', { lic: 12, fin: 7, neg: 8, amb: 9, rede: 5, ter: 6 }, 44],
+    ['Inês Carvalho', 'neg', { neg: 11, ter: 9, lic: 6, fin: 8, rede: 4, amb: 5 }, 37],
+    ['Tiago Nunes', 'fin', { fin: 10, neg: 7, lic: 5, rede: 6, amb: 4, ter: 5 }, 31]
+  ];
+  if (o.tier === 'infra') ini.push(['Matilde Corgas', 'amb', { amb: 13, lic: 9, ter: 6, rede: 5, fin: 5, neg: 6 }, 40]);
+  ini.forEach(([nome, f, a, idade]) => { const p = novaPessoa('jogador', f, { nome, funcao: f, a, idade }); p.rel = true; G.pessoas.push(p); });
+  for (let i = 0; i < 26; i++) G.pessoas.push(novaPessoa('livre'));
+  G.rivais.forEach((r) => { for (let i = 0; i < 2; i++) G.pessoas.push(novaPessoa('rival:' + r.id)); });
+  // carteira inicial dos rivais
+  G.rivais.forEach((r) => { const n = r.estilo === 'fundo' ? 1 : ri(1, 3); for (let i = 0; i < n; i++) { const s = pick(G.subs.filter((x) => x.livre >= 40)); if (s) rivalNovo(r, s, Math.min(s.livre, pick([50, 75, 100])), ri(0, 3), true); } });
+  for (let i = 0; i < 2; i++) novaListagemCompra();
+  novaListagemProjeto();
+  arranqueAno(true);
+  email({ de: 'Comité de Investimento', assunto: 'Bem-vindo a Portugal: o seu mandato', tipo: 'comite', imp: true, corpo:
+    `<p>Caro(a) ${esc(G.manager)},</p><p>O Comité confia-lhe a entrada da <b>${esc(G.empresa)}</b> em Portugal. O mandato é simples de dizer e difícil de cumprir: <b>${G.mandato.meta} MW prontos a construir (RtB) até ${mesLabel(G.mandato.fim - 1)}</b>.</p>
+     <p>Tipo de mandato: <b>${TIPOS[G.tipo].nome}</b>. ${TIPOS[G.tipo].desc}</p>
+     <p>Para este ano aprovámos um orçamento de <b>${M(G.orcamentoAno)}</b>. Os objetivos do ano estão no ecrã Comité. Revemos a nossa confiança em si todos os janeiros.</p>
+     <p>Começa sem terrenos e sem rede. Há quatro portas de entrada: o leilão da DGEG (anunciado em março), o pedido de reserva de capacidade, o acordo com o operador e a compra a quem já tem. Escolha.</p><p>Boa sorte.</p>` });
+  email({ de: 'Rui Matos · Licenciamento', assunto: 'A equipa que temos e a que nos falta', tipo: 'equipa', corpo:
+    `<p>Somos três: eu no licenciamento, a Inês na negociação e o Tiago nas finanças.</p><p>Faltam-nos um <b>landman</b> (sem ele não chegamos aos terrenos que não estão anunciados), um <b>engenheiro de rede</b> (para saber onde a REN vai reforçar) e alguém forte em <b>ambiente</b>, que é onde os projetos morrem. Sugiro olhar para o mercado de pessoas antes de gastar em terrenos.</p>` });
+  hist();
+}
+
+function rivalNovo(r, s, mw, fi, inicial, semRede) {
+  if (!s || mw <= 0) return null;
+  if (!semRede) s.livre = Math.max(0, s.livre - mw);
+  const t = G.terrenos.filter((x) => x.se === s.id && x.estado === 'mercado').sort((a, b) => b.irr - a.irr)[0];
+  if (t) { t.estado = 'rival:' + r.id; t.uso = r.id; }
+  s.calor = Math.min(100, s.calor + 7);
+  const p = { id: nid('R'), se: s.id, mw, fi: fi || 0, rest: FASES[fi || 0].meses || 0, terreno: t ? t.id : null, tent: 0, nome: nomeProjeto(s) };
+  r.projetos.push(p);
+  if (p.fi === 3) { r.mwRtb += mw; r.mwDev += mw; p.rtbMes = G.mes; }
+  if (!inicial) r.caixa -= 0.25;
+  return p;
+}
+function nomeProjeto(s) { G.nomesProj[s.id] = (G.nomesProj[s.id] || 0) + 1; const n = G.nomesProj[s.id]; return 'Solar ' + s.nome + (n > 1 ? ' ' + ['','I','II','III','IV','V','VI','VII','VIII','IX','X'][n] : ''); }
+
+function arranqueAno(primeiro) {
+  const t = TIERS[G.tier];
+  const orc = Math.round(t.orc * (0.6 + G.confianca / 100 * 0.8) * 10) / 10;
+  G.orcamentoAno = orc; G.gastoAno = 0;
+  receita(orc, 'Orçamento da casa-mãe'); G.capitalRecebido += orc;
+  G.objetivos = gerarObjetivos();
+  if (!primeiro) email({ de: 'Comité de Investimento', assunto: `Orçamento e objetivos para ${anoDe(G.mes)}`, tipo: 'comite', imp: true, corpo:
+    `<p>Aprovámos um orçamento de desenvolvimento de <b>${M(orc)}</b> para ${anoDe(G.mes)}, já transferido.</p><p>Objetivos do ano:</p><ul>${G.objetivos.map((o) => `<li>${esc(o.txt)}</li>`).join('')}</ul>` });
+}
+function gerarObjetivos() {
+  const y = anoMandato(), m = G.mandato.meta, out = [];
+  const r10 = (v) => Math.max(10, Math.round(v / 10) * 10);
+  if (y === 0) { out.push({ tipo: 'trc', alvo: r10(m * 0.25), txt: `Garantir pelo menos ${r10(m * 0.25)} MW de capacidade de rede` }); out.push({ tipo: 'terra', alvo: r10(m * 0.3), txt: `Ter opções de terreno com pelo menos ${r10(m * 0.3)} MWp` }); }
+  if (y === 1) { out.push({ tipo: 'trc', alvo: r10(m * 0.6), txt: `Ter pelo menos ${r10(m * 0.6)} MW de capacidade de rede` }); out.push({ tipo: 'amb', alvo: r10(m * 0.3), txt: `Ter pelo menos ${r10(m * 0.3)} MW em avaliação ambiental ou mais à frente` }); }
+  if (y === 2) out.push({ tipo: 'rtb', alvo: r10(m * 0.2), txt: `Chegar a ${r10(m * 0.2)} MW em RtB neste mandato` });
+  if (y === 3) { out.push({ tipo: 'rtb', alvo: r10(m * 0.55), txt: `Chegar a ${r10(m * 0.55)} MW em RtB neste mandato` }); out.push(G.tipo === 'vender' ? { tipo: 'venda', alvo: 1, txt: 'Vender pelo menos um projeto' } : { tipo: 'obra', alvo: 1, txt: 'Ter pelo menos um projeto em construção ou operação' }); }
+  if (y >= 4) out.push({ tipo: 'rtb', alvo: m, txt: `Cumprir o mandato: ${m} MW em RtB` });
+  out.push({ tipo: 'orc', alvo: Math.round(G.orcamentoAno * 1.1 * 10) / 10, txt: `Não gastar mais de ${M(Math.round(G.orcamentoAno * 1.1 * 10) / 10)} em desenvolvimento` });
+  return out;
+}
+function mwTrc() { return G.trcs.filter((t) => t.estado === 'ativo').reduce((s, t) => s + t.mw, 0); }
+function mwpTerra() { return G.terrenos.filter((t) => t.estado === 'jogador').reduce((s, t) => s + t.mwp, 0); }
+const projAtivos = () => G.projetos.filter((p) => p.estado === 'ativo');
+function avaliarObj(o) {
+  switch (o.tipo) {
+    case 'trc': return [mwTrc(), mwTrc() >= o.alvo];
+    case 'terra': return [mwpTerra(), mwpTerra() >= o.alvo];
+    case 'amb': { const v = projAtivos().filter((p) => p.fi >= 1).reduce((s, p) => s + p.mwac, 0) + G.projetos.filter((p) => p.estado === 'vendido').reduce((s, p) => s + p.mwac, 0); return [v, v >= o.alvo]; }
+    case 'rtb': return [G.mandato.rtb, G.mandato.rtb >= o.alvo];
+    case 'venda': { const v = G.vendas.filter((x) => x.mes >= G.mandato.inicio).length; return [v, v >= o.alvo]; }
+    case 'obra': { const v = G.projetos.filter((p) => p.estado === 'ativo' && p.fi >= 4).length; return [v, v >= o.alvo]; }
+    case 'orc': return [G.gastoAno, G.gastoAno <= o.alvo];
+  }
+  return [0, false];
+}
+function revisaoAnual() {
+  // corre no início de janeiro: avalia o ano que acabou
+  const linhas = []; let d = 0;
+  G.objetivos.forEach((o) => { const [v, ok] = avaliarObj(o); d += ok ? (o.tipo === 'orc' ? 4 : 8) : -12; linhas.push({ txt: o.txt, v, ok }); });
+  const ano = anoDe(G.mes - 1);
+  mudaConf(d, `Revisão anual de ${ano}`);
+  G.avaliacoes.push({ ano, linhas, conf: G.confianca, d });
+  email({ de: 'Comité de Investimento', assunto: `Revisão anual de ${ano}: confiança ${d >= 0 ? 'sobe' : 'desce'} para ${G.confianca}`, tipo: 'comite', imp: true, corpo:
+    `<p>Avaliámos o seu ano.</p><ul>${linhas.map((l) => `<li>${l.ok ? '✔' : '✘'} ${esc(l.txt)} <span class="dim">(${typeof l.v === 'number' ? nf(l.v, l.v % 1 ? 2 : 0) : l.v})</span></li>`).join('')}</ul>
+     <p>A nossa confiança passa a <b>${G.confianca}/100</b>.${G.confianca < 25 ? ' Estamos a perder a paciência.' : ''}</p>` });
+}
+
+/* ---------- mercados: listagens ---------- */
+function novaListagemCompra(vendedor, mw, se, prazoRest, barato) {
+  const s = se ? sub(se) : pick(G.subs);
+  const l = { id: nid('L'), tipo: 'compra', vendedor: vendedor || pick(DEVS), se: s.id, mw: mw || pick([30, 40, 50, 60, 80, 100, 120]),
+    precoMW: Math.round((barato ? ri(8, 20) : ri(22, 55))) / 1000, prazoRest: prazoRest || ri(16, 38), expira: G.mes + ri(3, 6), nego: 0 };
+  G.mercadoLig.push(l); return l;
+}
+function novaListagemProjeto(vendedor, se, mw, fi) {
+  const s = se ? sub(se) : pick(G.subs);
+  const f = fi == null ? ri(1, 2) : fi;
+  const mwac = mw || pick([50, 60, 80, 100, 120, 150]);
+  const valor = mwac * [0.02, 0.035, 0.06][f] * s.irr / 1800;
+  const l = { id: nid('L'), tipo: 'projeto', vendedor: vendedor || pick(DEVS), se: s.id, mw: mwac, fi: f, preco: Math.round(valor * (1.25 + rnd() * 0.3) * 100) / 100,
+    prazoRest: ri(18, 34), risco: chance(0.4) ? pick(['arqueo', 'montado', 'titulos']) : null, dd: null, expira: G.mes + ri(4, 7), nego: 0,
+    ha: Math.round(mwac * 1.25 * 1.5), irr: s.irr + ri(-30, 30), renda: Math.round((750 + s.calor * 8) / 10) * 10 };
+  G.mercadoLig.push(l); return l;
+}
+
+/* ---------- valor ---------- */
+function irrProj(p) { return p.irr || 1800; }
+function rendaPen(p) { return p.terrenos.map(terreno).filter(Boolean).reduce((s, t) => s + t.ha * t.renda, 0) * 8 / 1e6; }
+function valorProjeto(p) {
+  if (p.estado !== 'ativo') return 0;
+  const f = FASES[p.fi].id;
+  const base = { estudos: 0.018, ambiente: 0.03, licenca: 0.055, rtb: G.mercado.rtb, construcao: G.mercado.rtb, operacao: G.mercado.rtb }[f];
+  const eq = p.fi === 4 ? (p.eq || 0) : p.fi === 5 ? (p.eq || 0) * 1.3 : 0;
+  return Math.max(0, p.mwac * base * irrProj(p) / 1800 - rendaPen(p) * (p.fi >= 3 ? 1 : 0.4)) + eq;
+}
+function cauçõesPresas() {
+  let v = G.trcs.filter((t) => t.estado === 'ativo' && !t.devolvida).reduce((s, t) => s + t.caucao, 0);
+  v += G.tarefas.filter((t) => t.tipo === 'pedido').reduce((s, t) => s + t.caucao, 0);
+  if (G.leilao && G.leilao.estado === 'aberto') v += G.leilao.lotes.reduce((s, l) => s + (l.meu ? l.mw * CAUCAO_MW : 0), 0);
+  return v;
+}
+function valorCarteira() {
+  let v = projAtivos().reduce((s, p) => s + valorProjeto(p), 0);
+  v += G.trcs.filter((t) => t.estado === 'ativo' && !t.projeto).reduce((s, t) => s + t.mw * 0.012, 0);
+  v += G.terrenos.filter((t) => t.estado === 'jogador' && !t.uso).reduce((s, t) => s + t.opcao, 0);
+  return v;
+}
+function valorCriado() { return G.caixa + valorCarteira() + cauçõesPresas() - G.capitalRecebido - (G.divida ? G.divida.saldo : 0); }
+
+/* ---------- probabilidades de fase ---------- */
+function probFase(p, fi) {
+  const F = FASES[fi]; const s = sub(p.se);
+  let pr = F.p + (forte(F.sk) - 10) * 0.02 + (p.mod[F.id] || 0);
+  const ts = p.terrenos.map(terreno).filter(Boolean);
+  const probl = (k) => ts.some((t) => t.h[k]);
+  const sabe = (k) => ts.some((t) => t.h[k] && t.dd && t.dd.achados.includes(k));
+  const pen = (k, v) => (probl(k) ? (sabe(k) ? v / 2 : v) : 0);
+  if (F.id === 'estudos') pr -= pen('titulos', 0.16);
+  if (F.id === 'ambiente') { pr -= s.amb * 0.2; if (ts.some((t) => t.natura)) pr -= 0.12; if (ts.some((t) => t.ren)) pr -= 0.06; pr -= pen('arqueo', 0.1) + pen('montado', 0.12); }
+  if (F.id === 'licenca') { pr += s.camara === 'hostil' ? -0.12 : s.camara === 'favoravel' ? 0.06 : 0; if (ts.some((t) => t.ran)) pr -= 0.05; }
+  if (p.risco && !p.riscoMitigado && F.id === 'ambiente') pr -= 0.15;
+  return clamp(pr, 0.1, 0.97);
+}
+// probabilidade "vista" pelo jogador: sem DD, os problemas escondidos não entram na conta
+function probVista(p, fi) {
+  const F = FASES[fi]; const s = sub(p.se);
+  let pr = F.p + (forte(F.sk) - 10) * 0.02 + (p.mod[F.id] || 0);
+  const ts = p.terrenos.map(terreno).filter(Boolean);
+  const achou = (k) => ts.some((t) => t.dd && t.dd.achados.includes(k));
+  if (F.id === 'estudos' && achou('titulos')) pr -= 0.08;
+  if (F.id === 'ambiente') { pr -= s.amb * 0.2; if (ts.some((t) => t.natura)) pr -= 0.12; if (ts.some((t) => t.ren)) pr -= 0.06; if (achou('arqueo')) pr -= 0.05; if (achou('montado')) pr -= 0.06; }
+  if (F.id === 'licenca') { pr += s.camara === 'hostil' ? -0.12 : s.camara === 'favoravel' ? 0.06 : 0; if (ts.some((t) => t.ran)) pr -= 0.05; }
+  if (p.riscoConhecido && !p.riscoMitigado && F.id === 'ambiente') pr -= 0.15;
+  return clamp(pr, 0.1, 0.97);
+}
+function duracao(fi) { const F = FASES[fi]; let d = F.meses * (1.25 - forte(F.sk) * 0.025); if (F.sk === 'lic' && G.mes <= G.mods.licAte) d *= G.mods.licDur; return Math.max(2, Math.round(d)); }
+function custoFase(p, fi) { return FASES[fi].custo * (p.mwac / 100 * 0.5 + 0.5) * (p.desconto || 1); }
+
+/* ============================================================
+   O MÊS: o mundo mexe-se
+   ============================================================ */
+function avancar() {
+  if (!G || G.fim) return;
+  // custos fixos do mês que acaba
+  despesa(salariosMes(), 'Salários');
+  if (G.divida) { despesa(G.divida.prestacao, 'Juros e amortização'); G.divida.saldo = Math.max(0, G.divida.saldo - G.divida.prestacao * 0.8); if (--G.divida.meses <= 0) G.divida = null; }
+  G.mes++;
+  const m = G.mes % 12;
+  if (m === 0) revisaoAnual();
+  if (G.confianca <= 0) return fimCarreira('despedido', 'O Comité perdeu a confiança em si.');
+  if (G.mes >= G.mandato.fim) return fimMandato();
+  if (m === 0) arranqueAno(false);
+  mercadoTick();
+  tarefasTick();
+  projetosTick();
+  trcsTick();
+  rivaisTick();
+  subsTick();
+  listagensTick();
+  pessoasTick();
+  leilaoTick(m);
+  eventos();
+  caixaTick();
+  if (G.confianca <= 0 && !G.fim) fimCarreira('despedido', 'O Comité perdeu a confiança em si.');
+  hist();
+}
+function hist() { G.hist.push({ mes: G.mes, caixa: G.caixa, conf: G.confianca, rtb: G.mandato.rtb, valor: valorCriado() }); }
+
+function mercadoTick() {
+  G.mercado.preco = clamp(G.mercado.preco + (rnd() - 0.5) * 4, 32, 80);
+  G.mercado.rtb = clamp(G.mercado.rtb + (rnd() - 0.48) * 0.006, 0.07, 0.16);
+  if (G.mes % 6 === 3) noticia(`Preço capturado pelo solar no mercado ibérico: ${nf(G.mercado.preco, 0)} €/MWh. Projetos RtB transacionam a ~${nf(G.mercado.rtb * 1000, 0)} k€/MW.`, 'mercado');
+}
+
+function tarefasTick() {
+  const prontas = G.tarefas.filter((t) => t.fim <= G.mes);
+  G.tarefas = G.tarefas.filter((t) => t.fim > G.mes);
+  prontas.forEach((t) => {
+    if (t.tipo === 'relatorio') {
+      const p = pessoa(t.alvo); if (!p) return; p.rel = true;
+      email({ de: 'Equipa de recrutamento', assunto: `Relatório: ${p.nome}`, tipo: 'equipa', corpo: `<p>O relatório sobre <b>${esc(p.nome)}</b> está pronto. Todos os atributos estão agora visíveis na ficha.</p><p>${p.ambicao >= 14 ? 'É muito ambicioso: vai querer crescer depressa.' : p.lealdade >= 14 ? 'É muito leal a quem o contrata.' : 'Perfil equilibrado.'}</p>`, link: { tipo: 'pessoa', id: p.id } });
+    }
+    if (t.tipo === 'dd') {
+      const tr = terreno(t.alvo); if (!tr) return;
+      const sk = forte('ter'); const achados = [];
+      Object.keys(PROB_ESC).forEach((k) => { if (tr.h[k] && chance(0.55 + sk * 0.022)) achados.push(k); });
+      tr.dd = { mes: G.mes, achados, dono: tr.h.dono };
+      email({ de: 'Due diligence', assunto: `Due diligence: ${tr.nome} (${sub(tr.se).nome})`, tipo: 'terreno', link: { tipo: 'terreno', id: tr.id }, corpo:
+        achados.length ? `<p>Encontrámos problemas:</p><ul>${achados.map((k) => `<li>${PROB_ESC[k]}</li>`).join('')}</ul><p>Sabendo deles, podemos preparar o licenciamento para os mitigar.</p>` : `<p>Não encontrámos problemas de títulos, arqueologia ou montado.${sk < 10 ? ' Nota: sem um landman forte, a análise é menos fiável.' : ''}</p>` });
+    }
+    if (t.tipo === 'ddproj') {
+      const l = G.mercadoLig.find((x) => x.id === t.alvo); if (!l) return;
+      l.dd = { risco: l.risco && chance(0.6 + forte('ter') * 0.02) ? l.risco : null };
+      email({ de: 'Due diligence', assunto: `Due diligence: projeto ${sub(l.se).nome} (${l.vendedor})`, tipo: 'terreno', corpo: l.dd.risco ? `<p>O projeto tem um problema escondido: <b>${PROB_ESC[l.dd.risco]}</b>. Isto baixa a probabilidade de aprovação ambiental em ~15 pontos.</p>` : '<p>Não encontrámos riscos escondidos.</p>' });
+    }
+    if (t.tipo === 'prospetar') {
+      const s = sub(t.se); const n = ri(2, 4); const novos = [];
+      for (let i = 0; i < n; i++) { const tr = novoTerreno(s, 'cadastro'); G.terrenos.push(tr); novos.push(tr); }
+      email({ de: t.quem + ' · Terrenos', assunto: `Prospeção em ${s.nome}: ${n} parcelas de cadastro`, tipo: 'terreno', corpo: `<p>Percorri o cadastro à volta da SE de ${s.nome}. Há ${n} parcelas que não estão à venda mas que podemos tentar:</p><ul>${novos.map((x) => `<li>${esc(x.nome)}: ${x.ha} ha, ${x.mwp} MWp, a ${nf(x.dist, 1)} km</li>`).join('')}</ul><p>Estão no mercado de terrenos com origem «Cadastro». É preciso abordar o proprietário antes de optar.</p>` });
+    }
+    if (t.tipo === 'abordar') {
+      const tr = terreno(t.alvo); if (!tr) return; tr.abordado = true;
+      const p = clamp(tr.h.dono * 0.65 + forte('ter') * 0.02 + forte('neg') * 0.01, 0.05, 0.95);
+      if (chance(p)) { tr.aceita = true; email({ de: 'Terrenos', assunto: `${tr.nome}: o proprietário aceita negociar`, tipo: 'terreno', link: { tipo: 'terreno', id: tr.id }, corpo: `<p>O proprietário aceita uma opção de direito de superfície a ${nf(tr.renda, 0)} €/ha/ano. Pode optar a parcela na ficha.</p>` }); }
+      else { tr.estado = 'recusado'; email({ de: 'Terrenos', assunto: `${tr.nome}: o proprietário recusou`, tipo: 'terreno', corpo: '<p>A família não quer painéis na herdade. Não vale a pena insistir este ano.</p>' }); }
+    }
+    if (t.tipo === 'pedido') {
+      const s = sub(t.se); s.fila = Math.max(0, s.fila - t.mw);
+      const p = clamp(0.3 + (s.livre >= t.mw ? 0.4 : s.livre / t.mw * 0.3) + (forte('rede') - 10) * 0.025, 0.05, 0.92);
+      if (s.livre >= t.mw * 0.5 && chance(p)) {
+        const mw = Math.min(t.mw, s.livre); s.livre -= mw;
+        const tt = novoTrc(s.id, mw, 'Pedido geral', t.caucao * mw / t.mw); if (mw < t.mw) soltar(t.caucao * (1 - mw / t.mw));
+        email({ de: 'DGEG', assunto: `Reserva de capacidade atribuída: ${mw} MW em ${s.nome}`, tipo: 'rede', imp: true, link: { tipo: 'trc', id: tt.id }, corpo: `<p>Foi atribuído um título de reserva de capacidade de <b>${mw} MW</b> na SE de ${s.nome}. Prazo para chegar a RtB: <b>${mesLabel(tt.prazo)}</b>.</p>` });
+      } else { soltar(t.caucao); email({ de: 'DGEG', assunto: `Pedido de capacidade em ${s.nome} indeferido`, tipo: 'rede', corpo: `<p>Não há capacidade disponível suficiente na SE de ${s.nome}. A caução de ${K(t.caucao)} foi devolvida.</p>` }); }
+    }
+    if (t.tipo === 'acordo') {
+      const s = sub(t.se);
+      const p = clamp(0.55 + (forte('rede') - 10) * 0.025 + (s.reforco && !s.reforco.feito ? 0.15 : 0), 0.1, 0.92);
+      if (chance(p)) { const tt = novoTrc(s.id, t.mw, 'Acordo com operador', 0); tt.devolvida = true; email({ de: 'REN', assunto: `Acordo assinado: ${t.mw} MW em ${s.nome}`, tipo: 'rede', imp: true, link: { tipo: 'trc', id: tt.id }, corpo: `<p>O acordo para reforço da rede foi aprovado. Tem ${t.mw} MW em ${s.nome}, com prazo até ${mesLabel(tt.prazo)}.</p>` }); }
+      else { receita(t.pago * 0.7, 'Reembolso de acordo'); email({ de: 'REN', assunto: `Acordo em ${s.nome} não aprovado`, tipo: 'rede', corpo: `<p>A DGEG não aprovou o acordo. Recuperamos ${M(t.pago * 0.7)} dos ${M(t.pago)} pagos.</p>` }); }
+    }
+    if (t.tipo === 'prorrogacao') {
+      const tt = trc(t.alvo); if (!tt || tt.estado !== 'ativo') return;
+      if (chance(clamp(0.35 + (forte('lic') - 10) * 0.035, 0.1, 0.8))) { tt.prazo += 12; email({ de: 'DGEG', assunto: `Prorrogação concedida: TRC de ${sub(tt.se).nome}`, tipo: 'rede', corpo: `<p>O prazo passa para ${mesLabel(tt.prazo)}.</p>` }); }
+      else email({ de: 'DGEG', assunto: `Prorrogação recusada: TRC de ${sub(tt.se).nome}`, tipo: 'rede', imp: true, corpo: `<p>O prazo mantém-se em ${mesLabel(tt.prazo)}.</p>` });
+    }
+    if (t.tipo === 'venda') {
+      const p = projeto(t.alvo); if (!p || p.estado !== 'ativo') return;
+      gerarOfertas(p, ri(1, 3));
+    }
+  });
+}
+function novoTrc(se, mw, origem, caucao, sem) {
+  const t = { id: nid('C'), se, mw, origem, caucao: caucao || 0, obtido: G.mes, prazo: G.mes + PRAZO_TRC, estado: 'ativo', projeto: null, prorrogado: false, devolvida: false };
+  G.trcs.push(t); return t;
+}
+
+function projetosTick() {
+  G.projetos.forEach((p) => {
+    if (p.estado !== 'ativo' || p.bloqueado) return;
+    if (p.fi <= 2) {
+      if (!p.pago) {
+        if (p.pausado) return;
+        const c = custoFase(p, p.fi);
+        if (G.caixa < c) { if (!p.semCaixa) { p.semCaixa = true; email({ de: 'Tiago Nunes · Finanças', assunto: `${p.nome} parado: falta caixa`, tipo: 'projeto', imp: true, link: { tipo: 'projeto', id: p.id }, corpo: `<p>A fase «${FASES[p.fi].nome}» custa ${M(c)} e não temos caixa. O projeto fica parado até haver dinheiro.</p>` }); } return; }
+        despesa(c, 'Desenvolvimento de projetos'); p.custo += c; p.pago = true; p.semCaixa = false; p.desconto = 1; p.rest = duracao(p.fi);
+        p.log.push(`${mesLabel(G.mes)}: início de «${FASES[p.fi].nome}» (${M(c)})`);
+        return;
+      }
+      p.rest--;
+      if (p.rest <= 0) resolverFase(p);
+    } else if (p.fi === 4) {
+      p.rest--;
+      if (p.rest > 0 && chance(0.03)) { p.rest += 2; email({ de: 'Obra', assunto: `${p.nome}: atraso de 2 meses`, tipo: 'projeto', corpo: `<p>${pick(['Chuva intensa parou a terraplanagem.', 'O transformador chegou com defeito.', 'Furto de cabo no estaleiro.'])} A entrada em operação passa para ${mesLabel(G.mes + p.rest)}.</p>` }); }
+      if (p.rest <= 0) { p.fi = 5; p.log.push(`${mesLabel(G.mes)}: entrada em operação`); mudaConf(4, `${p.nome} em operação`); noticia(`${p.nome} (${G.empresa}) entra em operação com ${p.mwp} MWp.`, 'jogador'); email({ de: 'Obra', assunto: `${p.nome} em operação`, tipo: 'projeto', imp: true, corpo: `<p>Primeira injeção na rede. ${p.mwp} MWp a produzir.</p>` }); }
+    } else if (p.fi === 5) {
+      receita(p.mwp * irrProj(p) * G.mercado.preco * 0.3 / 12 / 1e6, 'Receitas de operação');
+    }
+  });
+}
+function resolverFase(p) {
+  const F = FASES[p.fi]; const pr = probFase(p, p.fi);
+  if (chance(pr)) {
+    p.log.push(`${mesLabel(G.mes)}: «${F.nome}» aprovada`);
+    p.fi++; p.pago = false; p.tentFase = 0;
+    if (p.fi === 3) atingirRtb(p);
+    else if (F.id === 'ambiente') { email({ de: 'APA', assunto: `${p.nome}: avaliação ambiental favorável`, tipo: 'projeto', link: { tipo: 'projeto', id: p.id }, corpo: '<p>A decisão ambiental é favorável (condicionada). Segue para licenciamento.</p>' }); mudaConf(2, `${p.nome}: ambiente aprovado`); }
+  } else {
+    p.bloqueado = true; p.tentFase = (p.tentFase || 0) + 1;
+    p.log.push(`${mesLabel(G.mes)}: «${F.nome}» chumbada`);
+    mudaConf(-3, `${p.nome}: ${F.curto.toLowerCase()} chumbado`);
+    const pode = p.tentFase < 3;
+    email({ de: F.id === 'ambiente' ? 'APA' : F.id === 'licenca' ? 'Câmara e DGEG' : 'Equipa de licenciamento', assunto: `${p.nome}: ${F.nome.toLowerCase()} recusada`, tipo: 'decisao', imp: true, link: { tipo: 'projeto', id: p.id },
+      corpo: `<p>A fase «${F.nome}» do ${esc(p.nome)} foi recusada.${F.id === 'ambiente' ? ' Os pareceres apontam impactes sobre habitats e paisagem.' : F.id === 'licenca' ? ' A Câmara levantou objeções ao uso do solo.' : ' Os estudos mostraram problemas que é preciso resolver.'}</p>
+      <p>${pode ? `Podemos reformular e voltar a submeter (custa metade da fase, ${M(custoFase(p, p.fi) / 2)}) ou abandonar o projeto e libertar o TRC e os terrenos para outra combinação.` : 'Já reformulámos duas vezes. Só resta abandonar.'}</p>`,
+      acoes: (pode ? [{ r: 'Reformular e voltar a submeter', fn: 'reformular', a: { p: p.id } }] : []).concat([{ r: 'Abandonar o projeto', fn: 'abandonar', a: { p: p.id } }]) });
+  }
+}
+function atingirRtb(p) {
+  p.rtbMes = G.mes; G.mandato.rtb += p.mwac; G.mwRtbTotal += p.mwac;
+  const t = trc(p.trc); if (t && !t.devolvida) { soltar(t.caucao); t.devolvida = true; t.cumprido = true; }
+  mudaConf(5, `${p.nome} chegou a RtB`);
+  noticia(`${G.empresa} leva ${p.nome} (${p.mwac} MW) a pronto a construir.`, 'jogador');
+  email({ de: 'Rui Matos · Licenciamento', assunto: `${p.nome} está pronto a construir (RtB)`, tipo: 'projeto', imp: true, link: { tipo: 'projeto', id: p.id },
+    corpo: `<p>Temos todas as licenças. ${p.mwac} MW contam para o mandato (${G.mandato.rtb}/${G.mandato.meta} MW). A caução do TRC foi devolvida.</p><p>${G.tipo === 'vender' ? 'Podemos pô-lo à venda na ficha do projeto. Os compradores vão aparecer.' : 'Podemos avançar para construção na ficha do projeto, ou vendê-lo se a oferta for boa.'}</p>` });
+  if (chance(0.5)) gerarOfertas(p, 1);
+}
+function gerarOfertas(p, n) {
+  const compradores = shuffle(G.rivais.filter((r) => r.caixa > 1 || r.estilo === 'fundo' || r.estilo === 'utility'));
+  for (let i = 0; i < n && i < compradores.length; i++) {
+    const r = compradores[i];
+    const base = valorProjeto(p);
+    const v = Math.round(base * (0.82 + rnd() * 0.3 + (forte('neg') - 10) * 0.012) * 100) / 100;
+    email({ de: r.nome, assunto: `Oferta pelo ${p.nome}: ${M(v)}`, tipo: 'decisao', imp: true, link: { tipo: 'projeto', id: p.id },
+      corpo: `<p>A ${esc(r.nome)} oferece <b>${M(v)}</b> pelo ${esc(p.nome)} (${p.mwac} MW, ${FASES[p.fi].curto}), ou seja ${nf(v / p.mwac * 1000, 0)} k€/MW. A oferta é válida até ao fim do mês.</p><p class="dim">Valor de mercado estimado pela equipa: ${M(valorProjeto(p))}.</p>`,
+      acoes: [{ r: `Aceitar ${M(v)}`, fn: 'vender', a: { p: p.id, v, r: r.id } }, { r: 'Recusar', fn: 'recusar', a: {} }], expira: G.mes + 1 });
+  }
+}
+function trcsTick() {
+  G.trcs.forEach((t) => {
+    if (t.estado !== 'ativo' || t.cumprido) return;
+    const p = t.projeto && projeto(t.projeto);
+    if (p && p.fi >= 3) { t.cumprido = true; return; }
+    const falta = t.prazo - G.mes;
+    if (falta === 6) email({ de: 'DGEG', assunto: `Aviso: TRC de ${sub(t.se).nome} caduca em 6 meses`, tipo: 'rede', imp: true, link: { tipo: 'trc', id: t.id }, corpo: `<p>O título de ${t.mw} MW em ${sub(t.se).nome} caduca em ${mesLabel(t.prazo)} se o projeto não estiver pronto a construir. Pode pedir uma prorrogação (uma vez).</p>` });
+    if (falta <= 0) {
+      t.estado = 'caducado'; sub(t.se).livre += t.mw; G.perdas = (G.perdas || 0) + t.caucao;
+      if (p) { p.estado = 'caducado'; p.terrenos.forEach((id) => { const tr = terreno(id); if (tr) tr.uso = null; }); }
+      mudaConf(-8, `TRC de ${sub(t.se).nome} caducou`);
+      noticia(`Caducou o TRC de ${t.mw} MW da ${G.empresa} em ${sub(t.se).nome}. A capacidade volta à rede.`, 'jogador');
+      email({ de: 'DGEG', assunto: `TRC de ${sub(t.se).nome} caducado`, tipo: 'rede', imp: true, corpo: `<p>O título caducou. A caução de ${K(t.caucao)} foi executada e ${t.mw} MW voltam a estar livres na SE.</p>` });
+    }
+  });
+}
+
+/* ---------- rivais ---------- */
+function rivaisTick() {
+  G.rivais.forEach((r) => {
+    r.caixa += r.entrada;
+    const E = ESTILO[r.estilo];
+    // novos projetos
+    if (r.caixa > 0.6 && chance(E.novo)) {
+      const cand = G.subs.filter((s) => s.livre >= 40 || (s.reforco && s.reforco.publico && !s.reforco.feito));
+      const s = cand.length ? cand.sort((a, b) => (b.irr + (b.livre > 80 ? 60 : 0)) - (a.irr + (a.livre > 80 ? 60 : 0)))[Math.min(cand.length - 1, ri(0, 3))] : null;
+      if (s && s.livre >= 40) { const mw = Math.min(s.livre, pick([50, 75, 100, 120, 150])); const p = rivalNovo(r, s, mw, 0); noticia(`${r.nome} pede reserva de ${mw} MW em ${s.nome}${p.terreno ? ' e opta terrenos junto à subestação' : ''}.`, 'rival', r.id); }
+    }
+    // oportunistas compram no mercado secundário
+    if ((r.estilo === 'oportunista' || r.estilo === 'agressivo') && r.caixa > 1.5 && chance(0.06)) {
+      const l = G.mercadoLig.find((x) => x.tipo === 'compra' && x.vendedor !== r.nome);
+      if (l) { G.mercadoLig = G.mercadoLig.filter((x) => x !== l); r.caixa -= l.mw * l.precoMW; rivalNovo(r, sub(l.se), l.mw, 0, false, true); noticia(`${r.nome} compra ${l.mw} MW de capacidade em ${sub(l.se).nome} a ${l.vendedor}.`, 'rival', r.id); }
+    }
+    // avançar projetos
+    r.projetos.slice().forEach((p) => {
+      if (p.fi <= 2) {
+        if (r.atraso > 0) { p.rest++; }
+        p.rest--;
+        if (p.rest > 0) return;
+        const s = sub(p.se); const F = FASES[p.fi];
+        let pr = F.p + (r.q - 10) * 0.02 - (F.id === 'ambiente' ? s.amb * 0.2 : 0) + (F.id === 'licenca' ? (s.camara === 'hostil' ? -0.12 : s.camara === 'favoravel' ? 0.06 : 0) : 0);
+        if (chance(pr)) {
+          p.fi++; p.rest = FASES[p.fi].meses || 0; p.tent = 0;
+          if (p.fi === 2) noticia(`APA dá parecer ambiental favorável ao ${p.nome} da ${r.nome} (${p.mw} MW).`, 'rival', r.id);
+          if (p.fi === 3) { r.mwRtb += p.mw; if (!p.comprado) r.mwDev += p.mw; p.rtbMes = G.mes; noticia(`${r.nome} leva ${p.nome} (${p.mw} MW) a RtB.`, 'rival', r.id); }
+        } else if (p.tent < 1 && r.caixa > 0.3) { p.tent++; p.rest = 5; r.caixa -= 0.1; noticia(`${F.nome} do ${p.nome} (${r.nome}) recusada. A empresa vai reformular.`, 'rival', r.id); }
+        else {
+          r.projetos = r.projetos.filter((x) => x !== p); s.livre += p.mw;
+          const t = p.terreno && terreno(p.terreno); if (t) { t.estado = 'mercado'; t.origem = 'anuncio'; t.desde = G.mes; t.uso = null; }
+          noticia(`${r.nome} abandona o ${p.nome}. ${p.mw} MW voltam a estar livres em ${s.nome}${t ? ' e o terreno regressa ao mercado' : ''}.`, 'rival', r.id);
+          if (temFuncao('rede', 11) && chance(0.6)) email({ de: melhor('rede').nome + ' · Rede', assunto: `Oportunidade: ${p.mw} MW livres em ${s.nome}`, tipo: 'rede', corpo: `<p>A ${esc(r.nome)} desistiu do projeto em ${s.nome}. A capacidade está livre. Se fizermos já um pedido, temos boas hipóteses.</p>`, link: { tipo: 'se', id: s.id } });
+        }
+      } else if (p.fi === 3) {
+        const meses = G.mes - (p.rtbMes || G.mes);
+        if (E.vende && meses >= 3 && chance(E.vende * 0.2)) {
+          const comp = G.rivais.filter((x) => x !== r && (x.estilo === 'fundo' || x.estilo === 'utility') && x.caixa > 3);
+          const c = comp.length ? pick(comp) : null;
+          if (c) { const v = Math.round(p.mw * G.mercado.rtb * (0.9 + rnd() * 0.2) * 10) / 10; r.caixa += v; c.caixa -= v * 0.3; r.mwVend += p.mw; r.mwRtb -= p.mw; c.mwRtb += p.mw; r.projetos = r.projetos.filter((x) => x !== p); p.rtbMes = G.mes; p.comprado = true; c.projetos.push(p); noticia(`${r.nome} vende ${p.nome} (${p.mw} MW) à ${c.nome} por ${M(v)}.`, 'rival', r.id); }
+        } else if (!E.vende && meses >= 2 && r.caixa > 1 && chance(0.15)) { p.fi = 4; p.rest = 12; r.mwRtb -= p.mw; r.caixa -= 0.5; noticia(`${r.nome} arranca a construção do ${p.nome}.`, 'rival', r.id); }
+      } else if (p.fi === 4) { if (--p.rest <= 0) { p.fi = 5; r.mwOp += p.mw; noticia(`${p.nome} da ${r.nome} entra em operação (${p.mw} MW).`, 'rival', r.id); } }
+      else if (p.fi === 5) r.caixa += p.mw * 0.0025;
+    });
+    if (r.atraso > 0) r.atraso--;
+    // aflição de tesouraria: vende capacidade barata
+    if (r.caixa < 0 && !r.aflito) {
+      r.aflito = true;
+      const p = r.projetos.find((x) => x.fi <= 2);
+      if (p) {
+        r.projetos = r.projetos.filter((x) => x !== p);
+        if (p.fi >= 1) novaListagemProjeto(r.nome, p.se, p.mw, Math.min(2, p.fi)); else novaListagemCompra(r.nome, p.mw, p.se, ri(10, 18), true);
+        r.caixa += 0.8;
+        noticia(`${r.nome} com problemas de tesouraria: põe à venda ${p.mw} MW em ${sub(p.se).nome}.`, 'rival', r.id);
+        email({ de: 'Inês Carvalho · Negociação', assunto: `Rumor: a ${r.nome} precisa de dinheiro`, tipo: 'rede', corpo: `<p>A ${esc(r.nome)} pôs à venda ${p.mw} MW em ${sub(p.se).nome}, abaixo do preço normal. Está no mercado de ligações. Atenção ao prazo que resta ao título.</p>` });
+      }
+    }
+    if (r.caixa > 1.5) r.aflito = false;
+    // caçar pessoas ao jogador
+    if ((r.estilo === 'agressivo' || r.estilo === 'utility') && chance(0.02)) {
+      const alvo = minhaEquipa().filter((p) => p.a[p.funcao] >= 12 && p.bloqueio <= G.mes).sort((a, b) => b.a[b.funcao] - a.a[a.funcao])[0];
+      if (alvo) {
+        alvo.bloqueio = G.mes + 8;
+        const aum = Math.round(alvo.salario * 0.25);
+        email({ de: alvo.nome, assunto: `Recebi uma proposta da ${r.nome}`, tipo: 'decisao', imp: true, link: { tipo: 'pessoa', id: alvo.id },
+          corpo: `<p>Quero ser transparente: a ${esc(r.nome)} ofereceu-me mais ${aum} k€/ano. Gosto de cá estar, mas preciso que me digam se contam comigo.</p>`,
+          acoes: [{ r: `Aumentar ${aum} k€/ano`, fn: 'manter', a: { p: alvo.id, aum } }, { r: 'Deixar sair', fn: 'deixarSair', a: { p: alvo.id, r: r.id } }] });
+      }
+    }
+  });
+}
+function melhor(k) { return minhaEquipa().sort((a, b) => b.a[k] - a.a[k])[0] || { nome: 'Equipa' }; }
+
+function subsTick() {
+  G.subs.forEach((s) => {
+    s.calor = Math.max(5, s.calor - 0.6);
+    const rf = s.reforco; if (!rf || rf.feito) return;
+    const falta = rf.mes - G.mes;
+    if (!rf.sabido && falta > 6 && temFuncao('rede', 11) && falta <= (forte('rede') - 8) * 2.2 && chance(0.25)) {
+      rf.sabido = true;
+      const quem = melhor('rede');
+      email({ de: quem.nome + ' · Rede', assunto: `Confidencial: ${s.nome} vai ser reforçada`, tipo: 'rede', imp: true, link: { tipo: 'se', id: s.id },
+        corpo: `<p>Pelos meus contactos na REN: a subestação de ${s.nome} vai ser reforçada por volta de <b>${mesLabel(rf.mes)}</b>, com mais <b>~${rf.mw} MW</b>.</p><p>Ainda ninguém sabe. Se optarmos terrenos lá agora, apanhamos rendas baixas. E um acordo com o operador nesta SE tem mais hipóteses.</p>` });
+    }
+    if (!rf.publico && falta <= 6) { rf.publico = true; rf.sabido = true; noticia(`REN anuncia reforço da subestação de ${s.nome} (+${rf.mw} MW) para ${mesLabel(rf.mes)}.`, 'rede'); s.calor = Math.min(100, s.calor + 15); }
+    if (falta <= 0) { rf.feito = true; s.livre += rf.mw; noticia(`Reforço de ${s.nome} concluído: mais ${rf.mw} MW disponíveis.`, 'rede'); }
+  });
+  if (chance(0.03)) { const s = pick(G.subs.filter((x) => !x.reforco || x.reforco.feito)); if (s) s.reforco = { mes: G.mes + ri(14, 40), mw: pick([100, 150, 200]), sabido: false, publico: false, feito: false }; }
+}
+function listagensTick() {
+  // terrenos: novos anúncios e anúncios velhos que saem
+  if (chance(0.7)) { const s = pick(G.subs); G.terrenos.push(novoTerreno(s, 'anuncio')); }
+  if (chance(0.3)) { const s = pick(G.subs); G.terrenos.push(novoTerreno(s, 'anuncio')); }
+  G.terrenos.forEach((t) => { if (t.estado === 'mercado' && t.origem === 'anuncio' && G.mes - t.desde > 12 && chance(0.12)) t.estado = 'retirado'; });
+  // rivais optam terrenos soltos (banco de terras)
+  if (chance(0.25)) { const r = pick(G.rivais.filter((x) => x.caixa > 0.5)); const t = r && pick(G.terrenos.filter((x) => x.estado === 'mercado' && x.origem === 'anuncio')); if (t) { t.estado = 'rival:' + r.id; t.uso = r.id; sub(t.se).calor += 4; if (chance(0.4)) noticia(`${r.nome} opta a ${t.nome} (${t.ha} ha) perto de ${sub(t.se).nome}.`, 'rival', r.id); } }
+  // ligações
+  G.mercadoLig = G.mercadoLig.filter((l) => l.expira > G.mes);
+  if (chance(0.12)) novaListagemCompra();
+  if (chance(0.05)) novaListagemProjeto();
+}
+function pessoasTick() {
+  if (chance(0.25)) G.pessoas.push(novaPessoa('livre'));
+  G.pessoas.forEach((p) => {
+    if (p.onde === 'jogador' && !p.rel) {
+      ATR.forEach(([k]) => { const v = p.vis[k]; if (v[0] < v[1] && chance(0.35)) { if (v[0] < p.a[k]) v[0]++; else if (v[1] > p.a[k]) v[1]--; } });
+      if (ATR.every(([k]) => p.vis[k][0] === p.vis[k][1])) p.rel = true;
+    }
+    if (p.onde === 'livre' && chance(0.015)) { const r = pick(G.rivais); p.onde = 'rival:' + r.id; r.q = Math.min(18, r.q + 0.3); if (p.a[p.funcao] >= 14) noticia(`${p.nome} (${FUNCOES[p.funcao]}) assina pela ${r.nome}.`, 'rival', r.id); }
+  });
+  if (G.mes % 12 === 6) G.pessoas.forEach((p) => { if (p.a[p.funcao] < p.potencial && chance(0.5)) { p.a[p.funcao]++; if (p.vis[p.funcao][1] < p.a[p.funcao]) p.vis[p.funcao][1] = p.a[p.funcao]; } });
+}
+function leilaoTick(m) {
+  if (m === 2) {
+    const subs = shuffle(G.subs).slice(0, ri(3, 4));
+    G.leilao = { ano: anoDe(G.mes), estado: 'aberto', fecha: G.mes + 3, resolve: G.mes + 4, lotes: subs.map((s) => ({ id: nid('Q'), se: s.id, mw: pick([50, 75, 100, 120, 150]), meu: 0, venc: null, valor: 0 })) };
+    email({ de: 'DGEG', assunto: `Leilão de capacidade ${G.leilao.ano}: ${G.leilao.lotes.length} lotes`, tipo: 'rede', imp: true, link: { tipo: 'view', id: 'ligacoes' },
+      corpo: `<p>Está aberto o procedimento de atribuição de reserva de capacidade por leilão. Lances até ao fim de <b>${mesLabel(G.leilao.fecha)}</b>; resultados em ${mesLabel(G.leilao.resolve)}.</p><ul>${G.leilao.lotes.map((l) => `<li>${sub(l.se).nome}: ${l.mw} MW</li>`).join('')}</ul><p>Cada lance exige caução de ${nf(CAUCAO_MW * 1000, 0)} k€/MW. Ganha a maior contrapartida em k€/MW.</p>` });
+    noticia(`DGEG abre leilão de capacidade com ${G.leilao.lotes.reduce((s, l) => s + l.mw, 0)} MW em ${G.leilao.lotes.length} lotes.`, 'rede');
+  }
+  if (G.leilao && G.leilao.estado === 'aberto' && G.mes >= G.leilao.resolve) {
+    const L = G.leilao; L.estado = 'fechado'; const linhas = [];
+    L.lotes.forEach((l) => {
+      const lances = [];
+      G.rivais.forEach((r) => { const E = ESTILO[r.estilo]; if (r.caixa > 0.8 && chance(0.45)) lances.push({ quem: r.id, v: Math.round((3 + rnd() * 13) * E.lance * 2) / 2 }); });
+      if (l.meu) lances.push({ quem: 'jogador', v: l.meu });
+      lances.sort((a, b) => b.v - a.v);
+      const w = lances[0];
+      if (!w) { linhas.push(`${sub(l.se).nome}: deserto`); return; }
+      l.venc = w.quem; l.valor = w.v;
+      if (w.quem === 'jogador') {
+        const custo = w.v * l.mw / 1000;
+        despesa(custo, 'Leilões de capacidade');
+        const t = novoTrc(l.se, l.mw, 'Leilão DGEG ' + L.ano, l.mw * CAUCAO_MW);
+        linhas.push(`<b>${sub(l.se).nome}: ganhou ${G.empresa}</b> com ${nf(w.v, 1)} k€/MW (paga ${M(custo)})`);
+        noticia(`${G.empresa} ganha o lote de ${sub(l.se).nome} (${l.mw} MW) no leilão da DGEG.`, 'jogador');
+      } else {
+        const r = rival(w.quem); r.caixa -= w.v * l.mw / 1000; const s = sub(l.se); s.livre += l.mw; rivalNovo(r, s, l.mw, 0);
+        linhas.push(`${s.nome}: ${r.nome} com ${nf(w.v, 1)} k€/MW${l.meu ? ` (o seu lance: ${nf(l.meu, 1)})` : ''}`);
+        if (l.meu) soltar(l.mw * CAUCAO_MW);
+        noticia(`${r.nome} ganha o lote de ${s.nome} (${l.mw} MW) no leilão da DGEG a ${nf(w.v, 1)} k€/MW.`, 'rival', r.id);
+      }
+    });
+    email({ de: 'DGEG', assunto: `Resultados do leilão de ${L.ano}`, tipo: 'rede', imp: L.lotes.some((l) => l.meu), corpo: `<ul>${linhas.map((x) => `<li>${x}</li>`).join('')}</ul>` });
+  }
+}
+function eventos() {
+  // eventos com decisão
+  const ativos = projAtivos().filter((p) => p.fi >= 1 && p.fi <= 2 && !p.bloqueado && !p.evComunidade);
+  if (ativos.length && chance(0.05)) {
+    const p = pick(ativos); p.evComunidade = true;
+    email({ de: `Junta de Freguesia (${sub(p.se).nome})`, assunto: `Moradores contestam o ${p.nome}`, tipo: 'decisao', imp: true, link: { tipo: 'projeto', id: p.id },
+      corpo: `<p>Um movimento de moradores está a recolher assinaturas contra o ${esc(p.nome)}. Dizem que «a planície vai virar um mar de vidro». A Câmara está atenta.</p>`,
+      acoes: [{ r: 'Sessão pública e fundo comunitário (60 k€)', fn: 'comunidade', a: { p: p.id, s: 1 } }, { r: 'Ignorar', fn: 'comunidade', a: { p: p.id, s: 0 } }] });
+  }
+  const meus = G.terrenos.filter((t) => t.estado === 'jogador' && !t.evRenda);
+  if (meus.length && chance(0.03)) {
+    const t = pick(meus); t.evRenda = true;
+    email({ de: `Proprietário da ${t.nome}`, assunto: 'Pedido de revisão da renda', tipo: 'decisao', link: { tipo: 'terreno', id: t.id },
+      corpo: `<p>Vi que os vizinhos estão a receber mais. Quero rever a renda de ${nf(t.renda, 0)} para ${nf(Math.round(t.renda * 1.15), 0)} €/ha/ano, senão vou falar com um advogado.</p>`,
+      acoes: [{ r: 'Aceitar (+15 %)', fn: 'renda', a: { t: t.id, s: 1 } }, { r: 'Recusar', fn: 'renda', a: { t: t.id, s: 0 } }] });
+  }
+  if (G.caixa < 0.6 && !G.divida && !G.ofertaBanco && G.confianca >= 30 && chance(0.25)) {
+    G.ofertaBanco = G.mes;
+    email({ de: 'Banco do Sul', assunto: 'Linha de crédito para desenvolvimento', tipo: 'decisao', corpo: '<p>Podemos disponibilizar <b>1,5 M€</b> a pagar em 36 prestações de 50 k€. O Comité não precisa de aprovar, mas vai ver no balanço.</p>',
+      acoes: [{ r: 'Aceitar 1,5 M€', fn: 'credito', a: {} }, { r: 'Recusar', fn: 'recusar', a: {} }] });
+  }
+  // notícias do setor que mexem no mundo
+  if (chance(0.025) && G.mods.licAte < G.mes) { G.mods.licDur = 0.8; G.mods.licAte = G.mes + 24; noticia('Governo publica diploma que simplifica o licenciamento de renováveis: prazos 20 % mais curtos nos próximos dois anos.', 'setor'); }
+  if (chance(0.02)) { G.mercado.preco = clamp(G.mercado.preco - 8, 32, 80); noticia('Canibalização: preços solares a meio do dia afundam em Espanha e Portugal. Compradores de projetos ficam mais cautelosos.', 'mercado'); G.mercado.rtb = clamp(G.mercado.rtb - 0.01, 0.07, 0.16); }
+  if (chance(0.02)) { G.mercado.rtb = clamp(G.mercado.rtb + 0.012, 0.07, 0.16); noticia('Fundos internacionais regressam à Península Ibérica: preços de projetos RtB sobem.', 'mercado'); }
+  if (chance(0.03)) { const s = pick(G.subs); const c = pick(['hostil', 'neutra', 'favoravel']); if (c !== s.camara) { s.camara = c; noticia(`Eleições intercalares: a nova vereação de ${s.nome} é ${c === 'hostil' ? 'contra' : c === 'favoravel' ? 'a favor de' : 'neutra quanto a'} novas centrais solares.`, 'setor'); } }
+}
+function caixaTick() {
+  if (G.caixa < 0) {
+    G.negMeses++; mudaConf(-3, 'Caixa negativa');
+    if (G.negMeses === 1) email({ de: 'Tiago Nunes · Finanças', assunto: 'Estamos com caixa negativa', tipo: 'comite', imp: true, corpo: '<p>Estamos a descoberto. O Comité vai notar todos os meses. Se durar seis meses, perdemos o lugar. Venda um projeto, despeça alguém ou corte custos.</p>' });
+    if (G.negMeses >= 6) return fimCarreira('despedido', 'Seis meses seguidos com a caixa negativa.');
+  } else G.negMeses = 0;
+}
+
+/* ---------- fim de mandato e carreira ---------- */
+function fimMandato() {
+  const m = G.mandato; const r = m.rtb / m.meta;
+  const resumo = { n: m.n, meta: m.meta, rtb: m.rtb, valor: valorCriado(), conf: G.confianca, ate: mesLabel(G.mes - 1) };
+  G.carreira.push(resumo);
+  let veredito;
+  if (r >= 1) { veredito = 'cumprido'; mudaConf(15, 'Mandato cumprido'); }
+  else if (r >= 0.65 && G.confianca >= 35) { veredito = 'reservas'; G.confianca = Math.max(35, G.confianca - 10); }
+  else veredito = 'falhado';
+  G.fim = { tipo: 'mandato', veredito, resumo };
+  guardar(); render();
+}
+function fimCarreira(tipo, porque) { G.fim = { tipo, porque, resumo: { n: G.mandato.n, meta: G.mandato.meta, rtb: G.mandato.rtb, valor: valorCriado(), conf: G.confianca, ate: mesLabel(G.mes) } }; registarHof(tipo === 'despedido' ? 'Despedido' : 'Terminou'); guardar(); render(); }
+function novoMandato() {
+  const m = G.mandato;
+  G.mandato = { n: m.n + 1, inicio: G.mes, fim: G.mes + 60, meta: Math.round(m.meta * 1.5 / 50) * 50, rtb: 0 };
+  G.fim = null;
+  G.objetivos = gerarObjetivos();
+  email({ de: 'Comité de Investimento', assunto: `Mandato ${G.mandato.n}: ${G.mandato.meta} MW até ${mesLabel(G.mandato.fim - 1)}`, tipo: 'comite', imp: true, corpo: `<p>Renovamos a sua confiança. O novo mandato pede <b>${G.mandato.meta} MW em RtB</b> em cinco anos. A carteira, a equipa e o que construiu continuam consigo; só contam os MW que chegarem a RtB a partir de agora.</p>` });
+  arranqueAno(true); hist(); guardar(); render();
+}
+function registarHof(desfecho) {
+  try {
+    const h = JSON.parse(localStorage.getItem(HOF_KEY) || '[]');
+    h.push({ quando: new Date().toISOString().slice(0, 10), manager: G.manager, empresa: G.empresa, tier: TIERS[G.tier].nome, tipo: TIPOS[G.tipo].nome, seed: G.seed, mandatos: G.carreira.length || 1,
+      rtb: G.mwRtbTotal, valor: Math.round(valorCriado() * 100) / 100, desfecho, ate: mesLabel(G.mes) });
+    h.sort((a, b) => b.valor - a.valor); localStorage.setItem(HOF_KEY, JSON.stringify(h.slice(0, 30)));
+  } catch (_) { /* sem armazenamento */ }
+}
+
+/* ============================================================
+   AÇÕES do jogador
+   ============================================================ */
+function toast(t) { const el = $('#toast'); el.innerHTML = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { el.hidden = true; }, 3800); }
+function precoNeg(v) { return v * (1 - clamp((forte('neg') - 8) * 0.012, 0, 0.12)); }
+
+const ACT = {
+  continuar() { avancar(); UI.msg = null; guardar(); render(); },
+  ateNovidade() {
+    const antes = G.inbox.length; let n = 0;
+    while (n < 6 && !G.fim) { avancar(); n++; if (G.inbox.slice(0, G.inbox.length - antes).some((e) => e.tipo === 'decisao' || e.imp)) break; }
+    guardar(); render(); toast(`Avançou ${n} ${n === 1 ? 'mês' : 'meses'}.`);
+  },
+  nav(d) { UI.view = d.v; UI.ficha = null; UI.msg = null; if (d.v === 'noticias') G.novasNoticias = 0; render(); $('#view').scrollTop = 0; },
+  ficha(d) { UI.ficha = { tipo: d.t, id: d.id }; UI.msg = null; render(); $('#view').scrollTop = 0; },
+  voltar() { UI.ficha = null; UI.msg = null; render(); },
+  sort(d) { const s = UI.sort[d.tb] || {}; UI.sort[d.tb] = { k: d.k, dir: s.k === d.k ? -s.dir : (d.num ? -1 : 1) }; render(); },
+  tab(d) { UI.tab[d.g] = d.v; render(); },
+  filtro(d, el) { UI.f[d.k] = el.value; render(); },
+  abrirMail(d) { const e = G.inbox.find((x) => x.id === d.id); if (e) e.lido = true; UI.sel = d.id; render(); },
+  todosLidos() { G.inbox.forEach((e) => { e.lido = true; }); render(); },
+  acaoMail(d) {
+    const e = G.inbox.find((x) => x.id === d.id); if (!e || e.feito) return;
+    if (e.expira != null && G.mes > e.expira) { e.feito = 'Expirou'; render(); return; }
+    const a = e.acoes[+d.i]; const r = MAILFN[a.fn](a.a, e);
+    if (r === false) return;
+    e.feito = a.r; guardar(); render(); if (typeof r === 'string') toast(r);
+  },
+  // terrenos
+  dd(d) { const t = terreno(d.id); const c = 0.03; if (G.caixa < c) return toast('Sem caixa.'); despesa(c, 'Due diligence'); G.tarefas.push({ tipo: 'dd', alvo: t.id, fim: G.mes + 1 }); t.ddPedida = true; guardar(); render(); toast('Due diligence encomendada. Relatório no próximo mês.'); },
+  optar(d) {
+    const t = terreno(d.id); const c = precoNeg(t.opcao);
+    if (G.caixa < c) return toast('Sem caixa para a opção.');
+    despesa(c, 'Opções de terreno'); t.estado = 'jogador'; t.optado = G.mes; t.opcao = c;
+    const s = sub(t.se); s.calor = Math.min(100, s.calor + 6);
+    G.terrenos.filter((x) => x.se === s.id && x.estado === 'mercado').forEach((x) => { x.renda = Math.round(x.renda * 1.04 / 10) * 10; x.opcao = Math.round(x.ha * x.renda * 0.5 / 1e3) / 1e3; });
+    guardar(); render(); toast(`Opção assinada: ${esc(t.nome)} (${M(c)}).`);
+  },
+  abordar(d) { const t = terreno(d.id); G.tarefas.push({ tipo: 'abordar', alvo: t.id, fim: G.mes + 1 }); t.abordando = true; guardar(); render(); toast('O landman vai falar com o proprietário. Resposta no próximo mês.'); },
+  libertar(d) { const t = terreno(d.id); if (t.uso) return; t.estado = 'libertado'; guardar(); render(); toast('Opção libertada.'); },
+  prospetar(d) {
+    const se = UI.f.tse; if (!se || se === 'todas') return toast('Escolha primeiro uma subestação no filtro.');
+    if (!temFuncao('ter', 9)) return toast('Precisa de um landman (Terrenos ≥ 9) na equipa.');
+    if (G.tarefas.some((t) => t.tipo === 'prospetar' && t.se === se)) return toast('Já há uma prospeção em curso nessa SE.');
+    if (G.caixa < 0.02) return toast('Sem caixa.');
+    despesa(0.02, 'Prospeção de terrenos'); G.tarefas.push({ tipo: 'prospetar', se, fim: G.mes + 1, quem: melhor('ter').nome }); guardar(); render(); toast('Prospeção de cadastro em curso.');
+  },
+  // ligações
+  lance(d) {
+    const L = G.leilao; const l = L.lotes.find((x) => x.id === d.id); const v = parseFloat(($('#lance-' + l.id) || {}).value);
+    if (!(v > 0)) return toast('Indique um valor em k€/MW.');
+    if (!l.meu) { const c = l.mw * CAUCAO_MW; if (G.caixa < c) return toast('Sem caixa para a caução.'); prender(c); }
+    l.meu = Math.round(v * 10) / 10; guardar(); render(); toast(`Lance de ${nf(l.meu, 1)} k€/MW registado em ${sub(l.se).nome}.`);
+  },
+  retirarLance(d) { const l = G.leilao.lotes.find((x) => x.id === d.id); if (l.meu) { soltar(l.mw * CAUCAO_MW); l.meu = 0; } guardar(); render(); },
+  pedido(d) {
+    const s = sub(d.se); const mw = parseInt(($('#mw-' + s.id) || {}).value, 10);
+    if (!(mw >= 10)) return toast('Mínimo 10 MW.');
+    const c = mw * CAUCAO_MW; if (G.caixa < c) return toast('Sem caixa para a caução.');
+    prender(c); s.fila += mw; G.tarefas.push({ tipo: 'pedido', se: s.id, mw, caucao: c, fim: G.mes + 6 }); guardar(); render(); toast(`Pedido de ${mw} MW em ${s.nome} entregue. Decisão em ${mesLabel(G.mes + 6)}.`);
+  },
+  acordo(d) {
+    const s = sub(d.se); const mw = parseInt(($('#mw-' + s.id) || {}).value, 10);
+    if (!(mw >= 10)) return toast('Mínimo 10 MW.');
+    const c = mw * custoAcordo(s); if (G.caixa < c) return toast(`O reforço custa ${M(c)}. Sem caixa.`);
+    despesa(c, 'Acordos com operador'); G.tarefas.push({ tipo: 'acordo', se: s.id, mw, pago: c, fim: G.mes + 9 }); guardar(); render(); toast(`Proposta de acordo entregue. Decisão em ${mesLabel(G.mes + 9)}.`);
+  },
+  comprarLig(d) {
+    const l = G.mercadoLig.find((x) => x.id === d.id); if (!l) return;
+    const c = precoNeg(l.tipo === 'compra' ? l.mw * l.precoMW : l.preco);
+    if (G.caixa < c) return toast('Sem caixa.');
+    despesa(c, l.tipo === 'compra' ? 'Compra de capacidade' : 'Compra de projetos');
+    G.mercadoLig = G.mercadoLig.filter((x) => x !== l);
+    const t = novoTrc(l.se, l.mw, 'Comprado a ' + l.vendedor, 0); t.prazo = G.mes + l.prazoRest; t.devolvida = true;
+    if (l.tipo === 'projeto') {
+      const s = sub(l.se);
+      const tr = { id: nid('T'), se: s.id, nome: 'Terrenos do projeto (' + l.vendedor + ')', ha: l.ha, mwp: Math.round(l.ha / 1.5), dist: Math.round((rnd() * 6 + 1) * 10) / 10, irr: l.irr, ran: false, ren: false, natura: false, renda: l.renda, estado: 'jogador', origem: 'projeto', desde: G.mes, h: { titulos: false, arqueo: false, montado: false, dono: 0.5 }, dd: null, uso: null, opcao: 0 };
+      G.terrenos.push(tr);
+      const p = criarProjeto(t, [tr], true); p.fi = l.fi; p.pago = true; p.rest = duracao(l.fi); p.risco = l.risco; p.riscoConhecido = !!(l.dd && l.dd.risco);
+      p.log.push(`${mesLabel(G.mes)}: comprado a ${l.vendedor} em «${FASES[l.fi].nome}»`);
+      toast(`Comprou o projeto ${p.nome} por ${M(c)}.`);
+    } else toast(`Comprou ${l.mw} MW em ${sub(l.se).nome} por ${M(c)}.`);
+    if (l.vendedor && G.rivais.some((r) => r.nome === l.vendedor)) { const r = G.rivais.find((x) => x.nome === l.vendedor); r.caixa += c; noticia(`${r.nome} vende ${l.mw} MW em ${sub(l.se).nome} à ${G.empresa}.`, 'rival', r.id); }
+    guardar(); render();
+  },
+  ddProj(d) { const l = G.mercadoLig.find((x) => x.id === d.id); if (G.caixa < 0.04) return toast('Sem caixa.'); despesa(0.04, 'Due diligence'); l.ddPedida = true; l.expira = Math.max(l.expira, G.mes + 2); G.tarefas.push({ tipo: 'ddproj', alvo: l.id, fim: G.mes + 1 }); guardar(); render(); toast('Due diligence ao projeto encomendada.'); },
+  // pessoas
+  relatorio(d) {
+    const emCurso = G.tarefas.filter((t) => t.tipo === 'relatorio').length;
+    if (emCurso >= 3) return toast('Já há 3 relatórios em curso.');
+    G.tarefas.push({ tipo: 'relatorio', alvo: d.id, fim: G.mes + 1 }); pessoa(d.id).relPedido = true; guardar(); render(); toast('Relatório pedido. Chega no próximo mês.');
+  },
+  contratar(d) {
+    const p = pessoa(d.id);
+    if (minhaEquipa().length >= 12) return toast('A equipa já tem 12 pessoas.');
+    if (p.recusou && p.recusou > G.mes) return toast(`${esc(p.nome)} não quer falar connosco até ${mesLabel(p.recusou)}.`);
+    const deRival = p.onde.startsWith('rival:');
+    const comp = deRival ? p.salario * 0.5 / 1000 : 0;
+    if (G.caixa < comp + p.salario / 12 / 1000) return toast('Sem caixa.');
+    const pr = deRival ? clamp(0.3 + p.ambicao * 0.025 - p.lealdade * 0.02 + G.confianca / 400, 0.05, 0.9) : clamp(0.55 + G.confianca / 250 + (p.a[p.funcao] < 13 ? 0.15 : 0), 0.1, 0.95);
+    if (!chance(pr)) { p.recusou = G.mes + 6; guardar(); render(); return toast(`${esc(p.nome)} recusou a proposta${deRival ? ' e fica onde está' : ''}.`); }
+    if (deRival) {
+      const r = rival(p.onde.slice(6)); despesa(comp, 'Indemnizações e contratações'); p.salario = Math.round(p.salario * 1.2);
+      r.atraso = 2; r.q = Math.max(6, r.q - 1);
+      noticia(`${G.empresa} contrata ${p.nome} à ${r.nome}. Os projetos da ${r.nome} vão atrasar.`, 'jogador');
+    }
+    p.onde = 'jogador'; p.desde = G.mes; guardar(); render(); toast(`${esc(p.nome)} assinou. Salário ${p.salario} k€/ano.`);
+  },
+  despedir(d) { const p = pessoa(d.id); const c = p.salario * 0.25 / 1000; despesa(c, 'Indemnizações e contratações'); p.onde = 'livre'; p.recusou = G.mes + 24; guardar(); UI.ficha = null; render(); toast(`${esc(p.nome)} saiu. Indemnização ${K(c)}.`); },
+  // projetos
+  montar() {
+    const tid = UI.f.mTrc; const t = trc(tid); if (!t) return toast('Escolha um TRC.');
+    const ts = [...document.querySelectorAll('input[name=mTer]:checked')].map((x) => terreno(x.value));
+    if (!ts.length) return toast('Escolha pelo menos um terreno.');
+    const p = criarProjeto(t, ts);
+    UI.ficha = { tipo: 'projeto', id: p.id }; guardar(); render(); toast(`Projeto ${p.nome} criado. A primeira fase arranca no próximo mês.`);
+  },
+  pausar(d) { const p = projeto(d.id); p.pausado = !p.pausado; guardar(); render(); },
+  porVenda(d) { const p = projeto(d.id); if (G.tarefas.some((t) => t.tipo === 'venda' && t.alvo === p.id)) return; G.tarefas.push({ tipo: 'venda', alvo: p.id, fim: G.mes + 1 }); p.aVenda = true; guardar(); render(); toast('Projeto posto à venda. As ofertas chegam no próximo mês.'); },
+  construir(d) {
+    const p = projeto(d.id); const capex = p.mwp * CAPEX_MWP; const eq = capex * 0.25;
+    if (G.tipo === 'operar' && G.confianca >= 50) { G.capitalRecebido += eq; conta('Capital da casa-mãe (obra)', eq); conta('Capitais próprios na obra', -eq); }
+    else { if (G.caixa < eq) return toast(`Precisa de ${M(eq)} de capitais próprios (25 % do capex). ${G.tipo === 'operar' ? 'O Comité só financia com confiança ≥ 50.' : ''}`); despesa(eq, 'Capitais próprios na obra'); }
+    p.fi = 4; p.rest = 12; p.capex = capex; p.eq = eq; p.log.push(`${mesLabel(G.mes)}: início da construção (capex ${M(capex)})`);
+    noticia(`${G.empresa} arranca a construção do ${p.nome} (${p.mwp} MWp).`, 'jogador'); guardar(); render(); toast('Construção arrancou. 12 meses até operar.');
+  },
+  prorrogar(d) { const t = trc(d.id); if (t.prorrogado) return; t.prorrogado = true; G.tarefas.push({ tipo: 'prorrogacao', alvo: t.id, fim: G.mes + 2 }); guardar(); render(); toast('Pedido de prorrogação entregue.'); },
+  abandonarProj(d) { MAILFN.abandonar({ p: d.id }); guardar(); render(); },
+  // carreira
+  novoMandato() { novoMandato(); },
+  sairCarreira() { if (!G.fim || G.fim.tipo === 'mandato') registarHof(G.fim && G.fim.veredito === 'cumprido' ? 'Mandato cumprido' : G.fim && G.fim.veredito === 'falhado' ? 'Não renovado' : 'Saiu'); limparSave(); G = null; mostrarInicio(); },
+  confirmarNova() { UI.confirm = 'nova'; render(); },
+  cancelar() { UI.confirm = null; render(); },
+  abandonarCarreira() { UI.confirm = null; registarHof('Abandonou'); limparSave(); G = null; mostrarInicio(); },
+  comecar() {
+    const v = (id) => ($('#' + id) || {}).value;
+    const tier = (document.querySelector('input[name=tier]:checked') || {}).value || 'boutique';
+    const tipo = (document.querySelector('input[name=tipo]:checked') || {}).value || 'vender';
+    novoJogo({ manager: (v('sManager') || '').trim() || 'Country manager', empresa: (v('sEmpresa') || '').trim() || 'Watt Indeferido', tier, tipo, seed: (v('sSeed') || '').trim() || String(Date.now() % 100000) });
+    UI.view = 'inbox'; UI.sel = G.inbox[G.inbox.length - 1].id; G.inbox[G.inbox.length - 1].lido = true; UI.ficha = null; UI.f = {}; UI.tab = {};
+    $('#start').hidden = true; $('#app').hidden = false; guardar(); render();
+  },
+  continuarSave() { if (carregar()) { $('#start').hidden = true; $('#app').hidden = false; render(); } },
+  novaSemente() { const el = $('#sSeed'); if (el) el.value = String(Math.floor(Math.random() * 99999)); }
+};
+function custoAcordo(s) { return 0.035 + (s.livre < 40 ? 0.025 : 0) + (s.kv < 220 ? 0.01 : 0); }
+function criarProjeto(t, ts, comprado) {
+  const s = sub(t.se); const mwpT = ts.reduce((a, x) => a + x.mwp, 0);
+  const p = { id: nid('J'), nome: nomeProjeto(s), se: s.id, trc: t.id, terrenos: ts.map((x) => x.id), mwac: t.mw, mwp: Math.round(Math.min(mwpT, t.mw * 1.3)),
+    irr: Math.round(ts.reduce((a, x) => a + x.irr * x.mwp, 0) / Math.max(1, mwpT)), linha: Math.max(...ts.map((x) => x.dist)),
+    fi: 0, pago: false, rest: 0, estado: 'ativo', custo: 0, log: [`${mesLabel(G.mes)}: projeto montado (${t.mw} MWac, ${Math.round(Math.min(mwpT, t.mw * 1.3))} MWp)`], mod: {}, criado: G.mes, comprado: !!comprado };
+  t.projeto = p.id; ts.forEach((x) => { x.uso = p.id; });
+  G.projetos.push(p); return p;
+}
+
+const MAILFN = {
+  recusar() { return 'Recusado.'; },
+  reformular(a) { const p = projeto(a.p); p.bloqueado = false; p.pago = false; p.desconto = 0.5; p.log.push(`${mesLabel(G.mes)}: reformulação`); return 'O projeto volta a ser submetido no próximo mês.'; },
+  abandonar(a) {
+    const p = projeto(a.p); if (!p || p.estado !== 'ativo') return;
+    p.estado = 'abandonado'; p.bloqueado = false; p.log.push(`${mesLabel(G.mes)}: abandonado`);
+    const t = trc(p.trc); if (t) t.projeto = null;
+    p.terrenos.forEach((id) => { const tr = terreno(id); if (tr) tr.uso = null; });
+    mudaConf(-2, `${p.nome} abandonado`);
+    return 'Projeto abandonado. O TRC e os terrenos estão livres na mesa de montagem.';
+  },
+  vender(a) {
+    const p = projeto(a.p); if (!p || p.estado !== 'ativo') return 'O projeto já não está disponível.';
+    const r = rival(a.r);
+    receita(a.v, 'Venda de projetos'); p.estado = 'vendido'; p.vendidoPor = a.v; p.log.push(`${mesLabel(G.mes)}: vendido à ${r.nome} por ${M(a.v)}`);
+    const t = trc(p.trc); if (t) { t.estado = 'vendido'; if (!t.devolvida) { soltar(t.caucao); t.devolvida = true; } }
+    p.terrenos.forEach((id) => { const tr = terreno(id); if (tr) tr.estado = 'vendido'; });
+    G.vendas.push({ mes: G.mes, p: p.id, nome: p.nome, mw: p.mwac, v: a.v, r: r.nome, custo: p.custo });
+    r.caixa -= a.v * 0.3; r.mwRtb += p.fi >= 3 ? p.mwac : 0; r.projetos.push({ id: nid('R'), se: p.se, mw: p.mwac, fi: Math.min(p.fi, 5), rest: p.fi === 4 ? p.rest : (FASES[p.fi].meses || 0), rtbMes: G.mes, nome: p.nome, tent: 0, comprado: true });
+    mudaConf(3, `Venda do ${p.nome}`);
+    noticia(`${G.empresa} vende ${p.nome} (${p.mwac} MW) à ${r.nome} por ${M(a.v)}.`, 'jogador');
+    return `Vendido por ${M(a.v)}.`;
+  },
+  manter(a) { const p = pessoa(a.p); p.salario += a.aum; return `${p.nome} fica. Novo salário ${p.salario} k€/ano.`; },
+  deixarSair(a) { const p = pessoa(a.p); const r = rival(a.r); p.onde = 'rival:' + r.id; r.q = Math.min(18, r.q + 0.5); noticia(`${p.nome} troca a ${G.empresa} pela ${r.nome}.`, 'rival', r.id); return `${p.nome} saiu para a ${r.nome}.`; },
+  comunidade(a) { const p = projeto(a.p); if (!p) return; const F = FASES[p.fi].id; if (a.s) { if (G.caixa < 0.06) { toast('Sem caixa.'); return false; } despesa(0.06, 'Comunidades'); p.mod[F] = (p.mod[F] || 0) + 0.06; p.mod.licenca = (p.mod.licenca || 0) + 0.04; return 'Sessão marcada. A contestação acalma.'; } p.mod[F] = (p.mod[F] || 0) - 0.07; p.mod.licenca = (p.mod.licenca || 0) - 0.05; return 'A contestação continua a crescer.'; },
+  renda(a) { const t = terreno(a.t); if (a.s) { t.renda = Math.round(t.renda * 1.15); return 'Renda revista.'; } if (chance(0.35)) { const p = t.uso && projeto(t.uso); if (p && p.estado === 'ativo' && p.fi <= 2) { p.rest += 3; email({ de: 'Advogados', assunto: `${t.nome}: proprietário em tribunal`, tipo: 'projeto', corpo: `<p>O proprietário avançou com uma ação. O ${esc(p.nome)} atrasa 3 meses.</p>` }); } } return 'Pedido recusado.'; },
+  credito() { receita(1.5, 'Crédito bancário'); G.divida = { saldo: 1.5, prestacao: 0.05, meses: 36 }; return 'Crédito de 1,5 M€ na conta.'; }
+};
+
+/* ============================================================
+   GUARDAR
+   ============================================================ */
+function guardar() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(G)); } catch (_) { /* sem armazenamento */ } }
+function carregar() { try { const s = localStorage.getItem(SAVE_KEY); if (!s) return false; G = JSON.parse(s); return true; } catch (_) { return false; } }
+function limparSave() { try { localStorage.removeItem(SAVE_KEY); } catch (_) { /* nada */ } }
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function th(tb, k, t, num) { const s = UI.sort[tb] || {}; const ar = s.k === k ? (s.dir > 0 ? ' ▲' : ' ▼') : ''; return `<th class="${num ? 'n' : ''}" data-act="sort" data-tb="${tb}" data-k="${k}" ${num ? 'data-num="1"' : ''}>${t}${ar}</th>`; }
+function ordenar(tb, rows, def) {
+  const s = UI.sort[tb] || def; if (!s) return rows;
+  return rows.slice().sort((a, b) => { const x = a[s.k], y = b[s.k]; return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), 'pt')) * s.dir; });
+}
+function pctBar(v, cls) { return `<div class="bar ${cls || ''}"><i style="width:${clamp(v, 0, 1) * 100}%"></i></div>`; }
+function confCls(v) { return v >= 60 ? 'good' : v >= 30 ? 'warn' : 'bad'; }
+function probCls(p) { return p >= 0.75 ? 'good' : p >= 0.55 ? 'warn' : 'bad'; }
+function lnk(tipo, id, txt) { return `<a href="#" data-act="ficha" data-t="${tipo}" data-id="${id}">${esc(txt)}</a>`; }
+function spark(vals, h) {
+  if (vals.length < 2) return '<p class="note">O gráfico aparece ao fim de dois meses.</p>';
+  const W = 300, H = h || 60, mn = Math.min(0, ...vals), mx = Math.max(...vals, mn + 1);
+  const pts = vals.map((v, i) => [i / (vals.length - 1) * W, H - 4 - (v - mn) / (mx - mn) * (H - 8)]);
+  const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const z = H - 4 - (0 - mn) / (mx - mn) * (H - 8); const last = pts[pts.length - 1];
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"><line x1="0" x2="${W}" y1="${z}" y2="${z}" stroke="var(--line)" stroke-width="1"/><path d="${d} L ${W} ${H} L 0 ${H} Z" fill="var(--accent)" fill-opacity=".12"/><path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.6" vector-effect="non-scaling-stroke"/><circle cx="${last[0]}" cy="${last[1]}" r="3" fill="var(--accent)"/></svg>`;
+}
+
+function render() {
+  if (!G) return;
+  if (G.fim) { $('#fim').hidden = false; $('#fim').innerHTML = viewFim(); } else $('#fim').hidden = true;
+  $('#hEmp').textContent = G.empresa;
+  const meta = G.mandato.meta, mesesRest = G.mandato.fim - G.mes;
+  $('#hud').innerHTML = `
+    <div><span>Data</span><b>${mesLabel(G.mes)}</b></div>
+    <div><span>Caixa</span><b class="${G.caixa < 0 ? 'bad' : ''}">${M(G.caixa)}</b></div>
+    <div><span>Confiança</span><b class="${confCls(G.confianca)}">${G.confianca}/100</b></div>
+    <div><span>Mandato ${G.mandato.n}</span><b>${G.mandato.rtb}/${meta} MW RtB</b></div>
+    <div><span>Faltam</span><b>${mesesRest} meses</b></div>`;
+  const nLer = G.inbox.filter((e) => !e.lido).length;
+  const nDec = G.inbox.filter((e) => e.acoes && !e.feito && !(e.expira != null && G.mes > e.expira)).length;
+  const items = [
+    ['', [['inbox', 'Caixa de entrada', nLer], ['painel', 'Painel'], ['comite', 'Comité e mandato'], ['noticias', 'Notícias', G.novasNoticias]]],
+    ['A minha empresa', [['carteira', 'Carteira e projetos'], ['equipa', 'Equipa'], ['financas', 'Finanças']]],
+    ['Mercados', [['terrenos', 'Terrenos'], ['ligacoes', 'Ligações à rede'], ['pessoas', 'Pessoas']]],
+    ['O mundo', [['rede', 'Subestações'], ['rivais', 'Concorrência']]],
+    ['', [['carreira', 'Carreira']]]
+  ];
+  $('#nav').innerHTML = items.map(([g, xs]) => (g ? `<div class="grp">${g}</div>` : '') + xs.map(([v, t, b]) => `<button class="${UI.view === v ? 'on' : ''}" data-act="nav" data-v="${v}"><span>${t}</span>${b ? `<span class="badge">${b > 99 ? '99+' : b}</span>` : ''}</button>`).join('')).join('');
+  $('#btnAte').title = nDec ? `${nDec} decisões por tomar na caixa de entrada` : 'Avança mês a mês até chegar um email que pede decisão (máx. 6 meses)';
+  let html = '';
+  if (UI.ficha) html = `<div class="back"><button class="btn mini" data-act="voltar">◂ Voltar</button></div>` + (FICHAS[UI.ficha.tipo] ? FICHAS[UI.ficha.tipo](UI.ficha.id) : '');
+  else html = (VIEWS[UI.view] || VIEWS.painel)();
+  $('#view').innerHTML = html + (UI.msg ? `<div class="msg">${UI.msg}</div>` : '');
+}
+
+const VIEWS = {};
+const FICHAS = {};
+
+VIEWS.painel = () => {
+  const m = G.mandato; const anos = Math.floor((G.mes - m.inicio) / 12) + 1;
+  const prazos = [];
+  G.trcs.filter((t) => t.estado === 'ativo' && !t.cumprido).forEach((t) => prazos.push([t.prazo, `TRC ${sub(t.se).nome} (${t.mw} MW) caduca`, t.prazo - G.mes <= 9]));
+  G.tarefas.forEach((t) => { const n = { relatorio: 'Relatório de pessoa', dd: 'Due diligence', ddproj: 'Due diligence a projeto', prospetar: 'Prospeção em ' + (t.se && sub(t.se).nome), abordar: 'Resposta de proprietário', pedido: `Decisão do pedido em ${t.se && sub(t.se).nome}`, acordo: `Decisão do acordo em ${t.se && sub(t.se).nome}`, prorrogacao: 'Decisão de prorrogação', venda: 'Ofertas de compra' }[t.tipo]; prazos.push([t.fim, n, false]); });
+  if (G.leilao && G.leilao.estado === 'aberto') prazos.push([G.leilao.fecha, `Fecho de lances do leilão ${G.leilao.ano}`, true]);
+  projAtivos().filter((p) => p.fi <= 2 && p.pago).forEach((p) => prazos.push([G.mes + p.rest, `${p.nome}: decisão de «${FASES[p.fi].curto}»`, false]));
+  prazos.sort((a, b) => a[0] - b[0]);
+  const top = classificacao().slice(0, 6);
+  return `<div class="vh"><div><h2>Painel</h2><p>${esc(G.manager)} · Country manager da ${esc(G.empresa)} · ${TIERS[G.tier].nome} · ${TIPOS[G.tipo].nome} · ano ${anos} de 5 do mandato ${m.n}</p></div></div>
+  <div class="grid">
+    <div class="box"><h3>Mandato</h3>
+      <div class="row" style="justify-content:space-between"><b class="num" style="font-size:1.6rem">${m.rtb} <span class="dim" style="font-size:1rem">/ ${m.meta} MW RtB</span></b><span class="dim">até ${mesLabel(m.fim - 1)}</span></div>
+      ${pctBar(m.rtb / m.meta)}
+      <dl class="kv" style="margin-top:10px">
+        <dt>Capacidade de rede (TRC)</dt><dd>${mwTrc()} MW</dd>
+        <dt>Terrenos optados</dt><dd>${mwpTerra()} MWp</dd>
+        <dt>Em desenvolvimento</dt><dd>${projAtivos().filter((p) => p.fi <= 2).reduce((s, p) => s + p.mwac, 0)} MW</dd>
+        <dt>Em obra / operação</dt><dd>${projAtivos().filter((p) => p.fi >= 4).reduce((s, p) => s + p.mwac, 0)} MW</dd>
+        <dt>Valor criado</dt><dd class="${valorCriado() >= 0 ? 'good' : 'bad'}">${M(valorCriado())}</dd>
+      </dl></div>
+    <div class="box"><h3>Comité · ${anoDe(G.mes)}</h3>
+      <div class="row" style="justify-content:space-between"><span>Confiança</span><b class="num ${confCls(G.confianca)}">${G.confianca}/100</b></div>${pctBar(G.confianca / 100, 'c')}
+      <ul style="padding-left:18px;margin:10px 0 0">${G.objetivos.map((o) => { const [v, ok] = avaliarObj(o); return `<li class="${ok ? 'good' : ''}">${esc(o.txt)} <span class="dim num">(${typeof v === 'number' ? nf(v, v % 1 ? 2 : 0) : v})</span></li>`; }).join('')}</ul></div>
+    <div class="box"><h3>Próximos prazos</h3>${prazos.length ? `<table><tbody>${prazos.slice(0, 8).map(([mm, t, u]) => `<tr><td class="num ${u ? 'warn' : 'dim'}">${mesLabel(mm)}</td><td>${esc(t)}</td></tr>`).join('')}</tbody></table>` : '<p class="note">Nada em curso. Vá aos mercados.</p>'}</div>
+    <div class="box"><h3>Classificação (MW levados a RtB)</h3><table><tbody>${top.map((r, i) => `<tr class="${r.jog ? '' : ''}"><td class="num dim">${i + 1}.</td><td>${r.jog ? `<b class="warn">${esc(r.nome)}</b>` : lnk('rival', r.id, r.nome)}</td><td class="num">${r.mw} MW</td></tr>`).join('')}</tbody></table></div>
+    <div class="box"><h3>Últimas notícias</h3>${G.noticias.slice(0, 6).map((n) => `<p style="margin:0 0 6px"><span class="dim num">${mesLabel(n.mes)}</span> ${esc(n.txt)}</p>`).join('') || '<p class="note">Ainda sem notícias.</p>'}</div>
+    <div class="box"><h3>Caixa (M€)</h3>${spark(G.hist.map((h) => h.caixa))}<p class="note">Orçamento ${anoDe(G.mes)}: ${M(G.orcamentoAno)} · gasto: ${M(G.gastoAno)}</p></div>
+  </div>`;
+};
+function classificacao() {
+  const rows = G.rivais.map((r) => ({ id: r.id, nome: r.nome, mw: r.mwDev, op: r.mwOp, pipe: r.projetos.filter((p) => p.fi <= 2).reduce((s, p) => s + p.mw, 0), estilo: ESTILO[r.estilo].nome }));
+  rows.push({ id: 'jogador', jog: true, nome: G.empresa, mw: G.mwRtbTotal, op: projAtivos().filter((p) => p.fi === 5).reduce((s, p) => s + p.mwac, 0), pipe: projAtivos().filter((p) => p.fi <= 2).reduce((s, p) => s + p.mwac, 0), estilo: '—' });
+  return rows.sort((a, b) => b.mw - a.mw || b.pipe - a.pipe);
+}
+
+VIEWS.inbox = () => {
+  const f = UI.tab.inbox || 'todas';
+  const filt = { todas: () => true, decisao: (e) => e.acoes && !e.feito, comite: (e) => e.tipo === 'comite', equipa: (e) => ['equipa', 'terreno', 'rede', 'projeto'].includes(e.tipo) };
+  const list = G.inbox.filter(filt[f]);
+  const e = G.inbox.find((x) => x.id === UI.sel) || null;
+  const tabs = [['todas', 'Todas'], ['decisao', 'Decisões'], ['comite', 'Comité'], ['equipa', 'Equipa e processos']];
+  let corpo = '<p class="note">Escolha um email.</p>';
+  if (e) {
+    const exp = e.expira != null && G.mes > e.expira && !e.feito;
+    corpo = `<div class="mail"><div class="from">${esc(e.de)} · ${mesLabel(e.mes)}</div><h2>${esc(e.assunto)}</h2><div class="body">${e.corpo}</div>
+      ${e.link ? `<p>${e.link.tipo === 'view' ? `<a href="#" data-act="nav" data-v="${e.link.id}">Abrir ecrã ▸</a>` : `<a href="#" data-act="ficha" data-t="${e.link.tipo}" data-id="${e.link.id}">Abrir ficha ▸</a>`}</p>` : ''}
+      ${e.acoes ? (e.feito ? `<p class="msg">Decisão: ${esc(e.feito)}</p>` : exp ? '<p class="msg">Esta proposta expirou.</p>' : `<div class="acts">${e.acoes.map((a, i) => `<button class="btn ${i === 0 ? 'pri' : ''}" data-act="acaoMail" data-id="${e.id}" data-i="${i}">${esc(a.r)}</button>`).join('')}</div>`) : ''}</div>`;
+  }
+  return `<div class="vh"><div><h2>Caixa de entrada</h2><p>O que acontece à sua volta chega aqui. Os emails com botões pedem uma decisão.</p></div><button class="btn mini" data-act="todosLidos">Marcar todos como lidos</button></div>
+  <div class="tabs">${tabs.map(([k, t]) => `<button class="${f === k ? 'on' : ''}" data-act="tab" data-g="inbox" data-v="${k}">${t}</button>`).join('')}</div>
+  <div class="inbox"><div class="box mlist" style="padding:0">${list.map((x) => `<button class="mitem ${x.lido ? '' : 'unread'} ${x.id === UI.sel ? 'on' : ''}" data-act="abrirMail" data-id="${x.id}"><span class="m"><span>${esc(x.de)}</span><span>${x.acoes && !x.feito && !(x.expira != null && G.mes > x.expira) ? '<span class="dot">● decisão</span> ' : ''}${mesLabel(x.mes)}</span></span><span class="s">${esc(x.assunto)}</span></button>`).join('') || '<p class="note" style="padding:10px">Vazio.</p>'}</div>
+  <div class="box">${corpo}</div></div>`;
+};
+
+VIEWS.comite = () => {
+  const m = G.mandato;
+  return `<div class="vh"><div><h2>Comité de Investimento</h2><p>O Comité define o mandato, aprova o orçamento todos os janeiros e revê a confiança em si. Confiança a zero é despedimento.</p></div></div>
+  <div class="grid">
+    <div class="box"><h3>Mandato ${m.n}</h3><dl class="kv"><dt>Meta</dt><dd>${m.meta} MW em RtB</dd><dt>Prazo</dt><dd>${mesLabel(m.fim - 1)}</dd><dt>Tipo</dt><dd>${TIPOS[G.tipo].nome}</dd><dt>Casa-mãe</dt><dd>${TIERS[G.tier].nome}</dd><dt>Feito</dt><dd>${m.rtb} MW (${pct(m.rtb / m.meta)})</dd></dl>
+      <p class="note">Contam os MW que chegam a RtB neste mandato, mesmo que depois sejam vendidos ou construídos. No fim dos cinco anos: 100 % renova o mandato com meta maior; 65 % ou mais com confiança ≥ 35 renova com reservas; abaixo disso, a carreira acaba.</p></div>
+    <div class="box"><h3>Objetivos de ${anoDe(G.mes)}</h3><table><tbody>${G.objetivos.map((o) => { const [v, ok] = avaliarObj(o); return `<tr><td>${ok ? '<span class="good">✔</span>' : '<span class="dim">…</span>'}</td><td>${esc(o.txt)}</td><td class="num">${typeof v === 'number' ? nf(v, v % 1 ? 2 : 0) : v}</td></tr>`; }).join('')}</tbody></table><p class="note">Cada objetivo cumprido em dezembro vale +8 de confiança (+4 o do orçamento); cada falhado, −12.</p></div>
+    <div class="box"><h3>Confiança</h3><div class="row" style="justify-content:space-between"><b class="num ${confCls(G.confianca)}" style="font-size:1.5rem">${G.confianca}/100</b></div>${spark(G.hist.map((h) => h.conf))}
+      <table><tbody>${G.confLog.slice(0, 8).map((c) => `<tr><td class="num dim">${mesLabel(c.mes)}</td><td>${esc(c.porque)}</td><td class="num ${c.d >= 0 ? 'good' : 'bad'}">${c.d > 0 ? '+' : ''}${c.d}</td></tr>`).join('')}</tbody></table></div>
+    <div class="box"><h3>Avaliações anteriores</h3>${G.avaliacoes.length ? G.avaliacoes.slice().reverse().map((a) => `<p style="margin:0 0 8px"><b>${a.ano}</b> <span class="${a.d >= 0 ? 'good' : 'bad'} num">${a.d > 0 ? '+' : ''}${a.d}</span><br>${a.linhas.map((l) => `${l.ok ? '✔' : '✘'} ${esc(l.txt)}`).join('<br>')}</p>`).join('') : '<p class="note">A primeira revisão é em janeiro.</p>'}</div>
+  </div>`;
+};
+
+VIEWS.noticias = () => {
+  const f = UI.tab.not || 'todas';
+  const list = G.noticias.filter((n) => f === 'todas' || n.tipo === f);
+  const tabs = [['todas', 'Todas'], ['rival', 'Concorrência'], ['rede', 'Rede'], ['mercado', 'Mercado'], ['setor', 'Setor'], ['jogador', 'A minha empresa']];
+  return `<div class="vh"><div><h2>Notícias do setor</h2><p>O mundo continua quando carrega em Continuar: os rivais compram, licenciam, falham e vendem.</p></div></div>
+  <div class="tabs">${tabs.map(([k, t]) => `<button class="${f === k ? 'on' : ''}" data-act="tab" data-g="not" data-v="${k}">${t}</button>`).join('')}</div>
+  <div class="tw"><table><tbody>${list.slice(0, 150).map((n) => `<tr><td class="num dim">${mesLabel(n.mes)}</td><td>${n.r ? lnk('rival', n.r, rival(n.r).nome) + ' · ' : ''}${esc(n.txt)}</td></tr>`).join('') || '<tr><td>Sem notícias.</td></tr>'}</tbody></table></div>`;
+};
+
+VIEWS.carteira = () => {
+  const ps = G.projetos.map((p) => ({ ...p, faseN: p.estado === 'ativo' ? FASES[p.fi].curto : p.estado, seN: sub(p.se).nome, val: valorProjeto(p), prox: p.estado === 'ativo' && p.fi <= 2 ? probVista(p, p.fi) : -1 }));
+  const livresT = G.trcs.filter((t) => t.estado === 'ativo' && !t.projeto);
+  const sel = UI.f.mTrc && trc(UI.f.mTrc) && !trc(UI.f.mTrc).projeto ? trc(UI.f.mTrc) : null;
+  const terLivres = G.terrenos.filter((t) => t.estado === 'jogador' && !t.uso && (!sel || t.se === sel.se));
+  const ativos = ordenar('proj', ps.filter((p) => p.estado === 'ativo'), { k: 'fi', dir: -1 });
+  const outros = ps.filter((p) => p.estado !== 'ativo');
+  return `<div class="vh"><div><h2>Carteira e projetos</h2><p>Um projeto junta um TRC e terrenos da mesma subestação. As fases arrancam sozinhas quando há caixa; pode pausar um projeto na ficha.</p></div></div>
+  <h3 style="margin:6px 0">Projetos</h3>
+  <div class="tw"><table><thead><tr>${th('proj', 'nome', 'Projeto')}${th('proj', 'seN', 'SE')}${th('proj', 'mwac', 'MWac', 1)}${th('proj', 'mwp', 'MWp', 1)}${th('proj', 'fi', 'Fase')}<th class="n ns">Meses</th>${th('proj', 'prox', 'Prob. fase', 1)}${th('proj', 'val', 'Valor', 1)}</tr></thead><tbody>
+  ${ativos.map((p) => `<tr class="click" data-act="ficha" data-t="projeto" data-id="${p.id}"><td>${esc(p.nome)}${p.pausado ? ' <span class="tag">pausado</span>' : ''}${p.bloqueado ? ' <span class="tag r">decisão</span>' : ''}${p.semCaixa ? ' <span class="tag r">sem caixa</span>' : ''}</td><td>${p.seN}</td><td class="n">${p.mwac}</td><td class="n">${p.mwp}</td><td>${p.faseN}</td><td class="n">${p.fi <= 2 && p.pago ? p.rest : p.fi === 4 ? p.rest : '—'}</td><td class="n ${p.prox >= 0 ? probCls(p.prox) : ''}">${p.prox >= 0 ? pct(p.prox) : '—'}</td><td class="n">${M(p.val)}</td></tr>`).join('') || '<tr><td colspan="8" class="dim">Ainda sem projetos. Junte um TRC e terrenos na mesa de montagem.</td></tr>'}
+  ${outros.map((p) => `<tr class="click off" data-act="ficha" data-t="projeto" data-id="${p.id}"><td>${esc(p.nome)}</td><td>${p.seN}</td><td class="n">${p.mwac}</td><td class="n">${p.mwp}</td><td>${p.estado === 'vendido' ? 'Vendido (' + M(p.vendidoPor) + ')' : p.estado === 'caducado' ? 'TRC caducado' : 'Abandonado'}</td><td></td><td></td><td></td></tr>`).join('')}
+  </tbody></table></div>
+
+  <div class="grid" style="margin-top:14px">
+  <div class="box"><h3>Mesa de montagem</h3>
+    ${livresT.length ? `<div class="filters"><label for="mTrc" class="dim">TRC</label><select id="mTrc" data-act="filtro" data-k="mTrc"><option value="">Escolha…</option>${livresT.map((t) => `<option value="${t.id}" ${sel && sel.id === t.id ? 'selected' : ''}>${sub(t.se).nome} · ${t.mw} MW · até ${mesLabel(t.prazo)}</option>`).join('')}</select></div>
+    ${sel ? (terLivres.length ? `<p class="dim" style="margin:0 0 6px">Terrenos optados em ${sub(sel.se).nome}:</p>${terLivres.map((t) => `<label style="display:block"><input type="checkbox" name="mTer" value="${t.id}" checked> ${esc(t.nome)} · ${t.mwp} MWp · ${nf(t.dist, 1)} km</label>`).join('')}${previewMontagem(sel, terLivres)}<div class="row" style="margin-top:8px"><button class="btn pri" data-act="montar">Criar projeto</button></div>` : `<p class="note">Não tem terrenos optados em ${sub(sel.se).nome}. Vá ao mercado de terrenos e filtre por esta SE.</p>`) : ''}`
+    : '<p class="note">Sem TRCs livres. Precisa de capacidade de rede: leilão, pedido, acordo ou compra, no mercado de ligações.</p>'}
+  </div>
+  <div class="box"><h3>Capacidade de rede (TRC)</h3><table><thead><tr><th class="ns">SE</th><th class="n ns">MW</th><th class="ns">Prazo RtB</th><th class="ns">Uso</th></tr></thead><tbody>
+    ${G.trcs.filter((t) => t.estado === 'ativo').map((t) => `<tr class="click" data-act="ficha" data-t="trc" data-id="${t.id}"><td>${sub(t.se).nome}</td><td class="n">${t.mw}</td><td class="num ${!t.cumprido && t.prazo - G.mes <= 9 ? 'bad' : ''}">${t.cumprido ? 'cumprido' : mesLabel(t.prazo)}</td><td>${t.projeto ? esc(projeto(t.projeto).nome) : '<span class="tag a">livre</span>'}</td></tr>`).join('') || '<tr><td colspan="4" class="dim">Nenhum.</td></tr>'}</tbody></table></div>
+  <div class="box"><h3>Terrenos optados</h3><table><thead><tr><th class="ns">Terreno</th><th class="ns">SE</th><th class="n ns">MWp</th><th class="ns">Uso</th></tr></thead><tbody>
+    ${G.terrenos.filter((t) => t.estado === 'jogador').map((t) => `<tr class="click" data-act="ficha" data-t="terreno" data-id="${t.id}"><td>${esc(t.nome)}</td><td>${sub(t.se).nome}</td><td class="n">${t.mwp}</td><td>${t.uso ? esc(projeto(t.uso).nome) : '<span class="tag a">livre</span>'}</td></tr>`).join('') || '<tr><td colspan="4" class="dim">Nenhum.</td></tr>'}</tbody></table></div>
+  </div>`;
+};
+function previewMontagem(t, ts) {
+  const mwp = Math.min(ts.reduce((s, x) => s + x.mwp, 0), Math.round(t.mw * 1.3));
+  const dcac = mwp / t.mw; const km = Math.max(...ts.map((x) => x.dist));
+  const meses = [0, 1, 2].reduce((s, i) => s + duracao(i), 0) + 1;
+  const fake = { se: t.se, terrenos: ts.map((x) => x.id), mod: {}, mwac: t.mw };
+  const pAll = [0, 1, 2].reduce((s, i) => s * probVista(fake, i), 1);
+  const custo = [0, 1, 2].reduce((s, i) => s + custoFase(fake, i), 0);
+  const chega = G.mes + meses;
+  return `<dl class="kv" style="margin-top:8px"><dt>Potência</dt><dd>${t.mw} MWac · ${mwp} MWp</dd><dt>Rácio DC/AC</dt><dd class="${dcac < 1.05 ? 'bad' : dcac > 1.2 ? 'good' : ''}">${nf(dcac, 2)}</dd><dt>Linha até à SE</dt><dd>${nf(km, 1)} km</dd><dt>Custo até RtB (sem falhas)</dt><dd>${M(custo)}</dd><dt>Prob. de chegar a RtB à primeira</dt><dd class="${probCls(pAll + 0.2)}">${pct(pAll)}</dd><dt>RtB previsto</dt><dd class="${chega > t.prazo ? 'bad' : ''}">${mesLabel(chega)} ${chega > t.prazo ? '(depois do prazo!)' : ''}</dd></dl>`;
+}
+
+VIEWS.equipa = () => {
+  const eq = minhaEquipa();
+  return `<div class="vh"><div><h2>Equipa</h2><p>Atributos de 1 a 20. Os intervalos estreitam com o tempo de casa. A força em cada área é a melhor pessoa mais 15 % das restantes; sem ninguém, vale 5 (consultores externos).</p></div><div class="dim">Salários: <b class="num">${nf(salariosMes() * 12 * 1000, 0)} k€/ano</b></div></div>
+  <div class="box" style="margin-bottom:14px"><h3>Força da equipa</h3><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 18px">${ATR.map(([k, n]) => `<div><div class="row" style="justify-content:space-between"><span>${n}</span><b class="num">${nf(forte(k), 1)}</b></div>${pctBar(forte(k) / 20)}</div>`).join('')}</div></div>
+  <div class="tw"><table><thead><tr><th class="ns">Nome</th><th class="ns">Função</th>${ATR.map(([k, n]) => `<th class="n ns">${n.slice(0, 4)}.</th>`).join('')}<th class="n ns">Salário</th><th class="n ns">Idade</th></tr></thead><tbody>
+  ${eq.map((p) => `<tr class="click" data-act="ficha" data-t="pessoa" data-id="${p.id}"><td>${esc(p.nome)}</td><td>${FUNCOES[p.funcao]}</td>${ATR.map(([k]) => `<td class="n av ${attrCls(p, k)}">${attrTxt(p, k)}</td>`).join('')}<td class="n">${p.salario} k€</td><td class="n">${p.idade}</td></tr>`).join('')}</tbody></table></div>`;
+};
+
+VIEWS.financas = () => {
+  const a = anoDe(G.mes); const c = G.contas[a] || {};
+  const anos = Object.keys(G.contas).sort().reverse();
+  const vendas = G.vendas;
+  return `<div class="vh"><div><h2>Finanças</h2><p>Valor criado = caixa + valor da carteira + cauções presas − capital recebido da casa-mãe − dívida. É a pontuação da carreira.</p></div></div>
+  <div class="grid">
+    <div class="box"><h3>Posição</h3><dl class="kv"><dt>Caixa</dt><dd>${M(G.caixa)}</dd><dt>Valor da carteira</dt><dd>${M(valorCarteira())}</dd><dt>Cauções presas</dt><dd>${M(cauçõesPresas())}</dd><dt>Capital recebido</dt><dd>−${M(G.capitalRecebido)}</dd><dt>Dívida</dt><dd>${G.divida ? '−' + M(G.divida.saldo) : '—'}</dd><dt><b>Valor criado</b></dt><dd><b class="${valorCriado() >= 0 ? 'good' : 'bad'}">${M(valorCriado())}</b></dd></dl>${spark(G.hist.map((h) => h.valor))}</div>
+    <div class="box"><h3>Orçamento ${a}</h3><dl class="kv"><dt>Aprovado</dt><dd>${M(G.orcamentoAno)}</dd><dt>Gasto em desenvolvimento</dt><dd class="${G.gastoAno > G.orcamentoAno * 1.1 ? 'bad' : ''}">${M(G.gastoAno)}</dd><dt>Salários/mês</dt><dd>${K(salariosMes())}</dd><dt>Preço capturado</dt><dd>${nf(G.mercado.preco, 0)} €/MWh</dd><dt>Projetos RtB</dt><dd>${nf(G.mercado.rtb * 1000, 0)} k€/MW</dd></dl>${pctBar(G.gastoAno / Math.max(0.1, G.orcamentoAno * 1.1))}</div>
+    <div class="box"><h3>Movimentos ${a}</h3><table><tbody>${Object.entries(c).filter(([, v]) => Math.abs(v) > 0.0005).sort((x, y) => x[1] - y[1]).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num ${v >= 0 ? 'good' : ''}">${M(v)}</td></tr>`).join('') || '<tr><td class="dim">Sem movimentos.</td></tr>'}</tbody></table>
+      ${anos.length > 1 ? `<p class="note">Anos anteriores: ${anos.slice(1).map((y) => `${y}: ${M(Object.values(G.contas[y]).reduce((s, v) => s + v, 0))}`).join(' · ')}</p>` : ''}</div>
+    <div class="box"><h3>Vendas</h3>${vendas.length ? `<table><tbody>${vendas.map((v) => `<tr><td class="num dim">${mesLabel(v.mes)}</td><td>${esc(v.nome)} → ${esc(v.r)}</td><td class="num">${M(v.v)}</td></tr>`).join('')}</tbody></table>` : '<p class="note">Ainda nenhuma.</p>'}</div>
+  </div>`;
+};
+
+VIEWS.terrenos = () => {
+  const fse = UI.f.tse || 'todas', forig = UI.f.torig || 'todas', fest = UI.f.test || 'mercado';
+  let rows = G.terrenos.filter((t) => (fse === 'todas' || t.se === fse) && (forig === 'todas' || t.origem === forig) && (fest === 'todos' ? !['retirado', 'libertado', 'vendido'].includes(t.estado) : fest === 'mercado' ? t.estado === 'mercado' : t.estado.startsWith('rival:')));
+  rows = rows.map((t) => ({ ...t, seN: sub(t.se).nome, risco: (t.ran ? 1 : 0) + (t.ren ? 1 : 0) + (t.natura ? 2 : 0) }));
+  rows = ordenar('ter', rows, { k: 'irr', dir: -1 });
+  const s = fse !== 'todas' ? sub(fse) : null;
+  return `<div class="vh"><div><h2>Mercado de terrenos</h2><p>Opções de direito de superfície. Os anúncios são ~15 % mais caros; as parcelas de cadastro só aparecem com prospeção e o dono pode recusar. Cada opção aquece a zona e sobe as rendas.</p></div></div>
+  <div class="filters">
+    <select id="fTse" data-act="filtro" data-k="tse" aria-label="Subestação"><option value="todas">Todas as subestações</option>${G.subs.map((x) => `<option value="${x.id}" ${fse === x.id ? 'selected' : ''}>${x.nome}</option>`).join('')}</select>
+    <select id="fTorig" data-act="filtro" data-k="torig" aria-label="Origem"><option value="todas">Anúncios e cadastro</option><option value="anuncio" ${forig === 'anuncio' ? 'selected' : ''}>Só anúncios</option><option value="cadastro" ${forig === 'cadastro' ? 'selected' : ''}>Só cadastro</option></select>
+    <select id="fTest" data-act="filtro" data-k="test" aria-label="Estado"><option value="mercado">Disponíveis</option><option value="rival" ${fest === 'rival' ? 'selected' : ''}>Optados por rivais</option><option value="todos" ${fest === 'todos' ? 'selected' : ''}>Todos</option></select>
+    ${s ? `<button class="btn" data-act="prospetar" ${temFuncao('ter', 9) ? '' : 'disabled'} title="${temFuncao('ter', 9) ? 'Custa 20 k€, demora 1 mês' : 'Precisa de um landman (Terrenos ≥ 9)'}">Prospetar cadastro em ${s.nome} (20 k€)</button>` : '<span class="note">Escolha uma SE para prospetar o cadastro.</span>'}
+  </div>
+  ${s ? `<p class="note" style="margin-top:-4px">${s.nome}: ${s.livre} MW livres · calor ${Math.round(s.calor)} · Câmara ${CAMARA[s.camara].toLowerCase()} · ${s.reforco && s.reforco.sabido && !s.reforco.feito ? `<span class="warn">reforço previsto ${mesLabel(s.reforco.mes)}</span>` : 'sem reforço conhecido'}</p>` : ''}
+  <div class="tw"><table><thead><tr>${th('ter', 'nome', 'Parcela')}${th('ter', 'seN', 'SE')}${th('ter', 'ha', 'ha', 1)}${th('ter', 'mwp', 'MWp', 1)}${th('ter', 'irr', 'kWh/kWp', 1)}${th('ter', 'dist', 'km', 1)}${th('ter', 'risco', 'Condicionantes', 1)}${th('ter', 'renda', '€/ha/ano', 1)}${th('ter', 'opcao', 'Opção', 1)}${th('ter', 'origem', 'Origem')}</tr></thead><tbody>
+  ${rows.map((t) => `<tr class="click ${t.estado !== 'mercado' ? 'off' : ''}" data-act="ficha" data-t="terreno" data-id="${t.id}"><td>${esc(t.nome)}</td><td>${t.seN}</td><td class="n">${t.ha}</td><td class="n">${t.mwp}</td><td class="n">${t.irr}</td><td class="n">${nf(t.dist, 1)}</td><td>${tagsTerreno(t)}</td><td class="n">${nf(t.renda, 0)}</td><td class="n">${K(t.opcao)}</td><td>${t.estado.startsWith('rival:') ? `<span class="tag r">${esc(rival(t.estado.slice(6)).nome)}</span>` : t.origem === 'cadastro' ? '<span class="tag a">Cadastro</span>' : 'Anúncio'}</td></tr>`).join('') || '<tr><td colspan="10" class="dim">Nada com estes filtros.</td></tr>'}
+  </tbody></table></div>`;
+};
+function tagsTerreno(t) { return [t.ran && '<span class="tag">RAN</span>', t.ren && '<span class="tag">REN</span>', t.natura && '<span class="tag r">Natura</span>'].filter(Boolean).join('') || '<span class="dim">—</span>'; }
+
+VIEWS.ligacoes = () => {
+  const tab = UI.tab.lig || (G.leilao && G.leilao.estado === 'aberto' ? 'leilao' : 'se');
+  const tabs = [['leilao', 'Leilão DGEG'], ['se', 'Pedido ou acordo por SE'], ['sec', `Mercado secundário (${G.mercadoLig.length})`]];
+  let body = '';
+  if (tab === 'leilao') {
+    const L = G.leilao;
+    if (!L) body = `<p class="note">O leilão anual é anunciado em março. Próximo: ${mesLabel(G.mes % 12 < 2 ? G.mes - (G.mes % 12) + 2 : G.mes - (G.mes % 12) + 14)}.</p>`;
+    else {
+      const aberto = L.estado === 'aberto' && G.mes <= L.fecha;
+      body = `<p>${aberto ? `Leilão ${L.ano}: lances até ao fim de <b>${mesLabel(L.fecha)}</b>, resultados em ${mesLabel(L.resolve)}. Caução de ${nf(CAUCAO_MW * 1000, 0)} k€/MW por lance, devolvida se perder. Ganha a maior contrapartida.` : L.estado === 'aberto' ? `Lances fechados. Resultados em ${mesLabel(L.resolve)}.` : `Leilão ${L.ano} encerrado. O próximo abre em março.`}</p>
+      <div class="tw"><table><thead><tr><th class="ns">Lote</th><th class="n ns">MW</th><th class="n ns">Livres na SE</th><th class="ns">Câmara</th><th class="n ns">kWh/kWp</th><th class="ns">${L.estado === 'fechado' ? 'Vencedor' : 'O seu lance (k€/MW)'}</th></tr></thead><tbody>
+      ${L.lotes.map((l) => { const s = sub(l.se); return `<tr><td>${lnk('se', s.id, s.nome)}</td><td class="n">${l.mw}</td><td class="n">${s.livre}</td><td>${CAMARA[s.camara]}</td><td class="n">${s.irr}</td><td>${L.estado === 'fechado' ? (l.venc === 'jogador' ? `<b class="good">${esc(G.empresa)}</b> · ${nf(l.valor, 1)}` : l.venc ? `${esc(rival(l.venc).nome)} · ${nf(l.valor, 1)}` : 'Deserto') : aberto ? `<div class="row"><input type="number" id="lance-${l.id}" min="0.5" step="0.5" value="${l.meu || ''}" placeholder="ex. 9" aria-label="Lance em k€/MW"><button class="btn mini pri" data-act="lance" data-id="${l.id}">${l.meu ? 'Alterar' : 'Licitar'}</button>${l.meu ? `<button class="btn mini" data-act="retirarLance" data-id="${l.id}">Retirar</button>` : ''}</div>` : (l.meu ? nf(l.meu, 1) : '—')}</td></tr>`; }).join('')}
+      </tbody></table></div><p class="note">Pagaria a contrapartida × MW se ganhar: ${L.lotes.filter((l) => l.meu).map((l) => `${sub(l.se).nome} ${M(l.meu * l.mw / 1000)}`).join(' · ') || 'sem lances'}. Os rivais costumam licitar entre 3 e 20 k€/MW.</p>`;
+    }
+  }
+  if (tab === 'se') {
+    const rows = ordenar('lse', G.subs.map((s) => ({ ...s, ca: custoAcordo(s) })), { k: 'livre', dir: -1 });
+    body = `<p class="note">Pedido geral: caução de ${nf(CAUCAO_MW * 1000, 0)} k€/MW, decisão em 6 meses, só passa se houver MW livres quando a DGEG decidir (a fila conta). Acordo com o operador: paga o reforço à cabeça, decisão em 9 meses, funciona mesmo sem capacidade livre; se falhar, recupera 70 %. A força da equipa em rede melhora as duas.</p>
+    <div class="tw"><table><thead><tr>${th('lse', 'nome', 'Subestação')}${th('lse', 'kv', 'kV', 1)}${th('lse', 'livre', 'MW livres', 1)}${th('lse', 'fila', 'Fila', 1)}${th('lse', 'calor', 'Calor', 1)}${th('lse', 'ca', 'Acordo k€/MW', 1)}<th class="ns">MW</th><th class="ns">Ação</th></tr></thead><tbody>
+    ${rows.map((s) => `<tr><td>${lnk('se', s.id, s.nome)}${s.reforco && s.reforco.sabido && !s.reforco.feito ? ' <span class="tag a">reforço</span>' : ''}</td><td class="n">${s.kv}</td><td class="n ${s.livre < 30 ? 'bad' : ''}">${s.livre}</td><td class="n">${s.fila}</td><td class="n">${Math.round(s.calor)}</td><td class="n">${nf(s.ca * 1000, 0)}</td><td><input type="number" id="mw-${s.id}" min="10" step="10" value="${Math.max(10, Math.min(100, Math.floor(s.livre / 10) * 10 || 50))}" aria-label="MW a pedir em ${esc(s.nome)}"></td><td class="row"><button class="btn mini" data-act="pedido" data-se="${s.id}" ${s.livre < 10 ? 'disabled' : ''}>Pedido</button><button class="btn mini" data-act="acordo" data-se="${s.id}">Acordo</button></td></tr>`).join('')}
+    </tbody></table></div>`;
+  }
+  if (tab === 'sec') {
+    body = `<p class="note">Capacidade e projetos a meio vendidos por developers e rivais. O preço já inclui o desconto da sua negociação (${pct(clamp((forte('neg') - 8) * 0.012, 0, 0.12))}). Atenção ao prazo que resta ao título.</p>
+    <div class="tw"><table><thead><tr><th class="ns">Vendedor</th><th class="ns">O quê</th><th class="ns">SE</th><th class="n ns">MW</th><th class="n ns">Preço</th><th class="n ns">k€/MW</th><th class="ns">Prazo do TRC</th><th class="ns">Riscos</th><th class="ns">Ação</th></tr></thead><tbody>
+    ${G.mercadoLig.map((l) => { const c = precoNeg(l.tipo === 'compra' ? l.mw * l.precoMW : l.preco); return `<tr><td>${esc(l.vendedor)}</td><td>${l.tipo === 'compra' ? 'Só TRC' : 'Projeto em ' + FASES[l.fi].curto.toLowerCase()}</td><td>${lnk('se', l.se, sub(l.se).nome)}</td><td class="n">${l.mw}</td><td class="n">${M(c)}</td><td class="n">${nf(c / l.mw * 1000, 0)}</td><td class="num ${l.prazoRest < 20 ? 'bad' : ''}">${l.prazoRest} meses</td><td>${l.tipo === 'projeto' ? (l.dd ? (l.dd.risco ? `<span class="tag r">${PROB_ESC[l.dd.risco]}</span>` : '<span class="tag g">DD limpa</span>') : l.ddPedida ? 'DD em curso' : `<button class="btn mini" data-act="ddProj" data-id="${l.id}">DD (40 k€)</button>`) : '—'}</td><td><button class="btn mini pri" data-act="comprarLig" data-id="${l.id}" ${G.caixa < c ? 'disabled' : ''}>Comprar</button></td></tr>`; }).join('') || '<tr><td colspan="9" class="dim">Nada à venda neste momento.</td></tr>'}
+    </tbody></table></div>`;
+  }
+  return `<div class="vh"><div><h2>Mercado de ligações à rede</h2><p>Sem capacidade de injeção não há projeto. Quatro vias: leilão, pedido geral, acordo com o operador e compra a quem já tem.</p></div></div>
+  <div class="tabs">${tabs.map(([k, t]) => `<button class="${tab === k ? 'on' : ''}" data-act="tab" data-g="lig" data-v="${k}">${t}</button>`).join('')}</div>${body}`;
+};
+
+VIEWS.pessoas = () => {
+  const ff = UI.f.pf || 'todas', fo = UI.f.po || 'livre';
+  let rows = G.pessoas.filter((p) => p.onde !== 'jogador' && (ff === 'todas' || p.funcao === ff) && (fo === 'todos' || (fo === 'livre' ? p.onde === 'livre' : p.onde.startsWith('rival:'))));
+  rows = rows.map((p) => ({ ...p, fN: FUNCOES[p.funcao], pr: p.rel ? p.a[p.funcao] : (p.vis[p.funcao][0] + p.vis[p.funcao][1]) / 2, ondeN: ondeTxt(p) }));
+  rows = ordenar('pes', rows, { k: 'pr', dir: -1 });
+  const emCurso = G.tarefas.filter((t) => t.tipo === 'relatorio').length;
+  return `<div class="vh"><div><h2>Mercado de pessoas</h2><p>Quadros fictícios. Os atributos aparecem em intervalos até pedir um relatório (grátis, 1 mês, máx. 3 em curso; ${emCurso} agora). Contratar a um rival custa meio salário de compensação e atrasa os projetos dele.</p></div></div>
+  <div class="filters"><select id="fPf" data-act="filtro" data-k="pf" aria-label="Função"><option value="todas">Todas as funções</option>${Object.entries(FUNCOES).map(([k, n]) => `<option value="${k}" ${ff === k ? 'selected' : ''}>${n}</option>`).join('')}</select>
+  <select id="fPo" data-act="filtro" data-k="po" aria-label="Onde"><option value="livre">Livres</option><option value="rival" ${fo === 'rival' ? 'selected' : ''}>Nos rivais</option><option value="todos" ${fo === 'todos' ? 'selected' : ''}>Todos</option></select></div>
+  <div class="tw"><table><thead><tr>${th('pes', 'nome', 'Nome')}${th('pes', 'fN', 'Função')}${th('pes', 'pr', 'Função (1–20)', 1)}${ATR.map(([k, n]) => `<th class="n ns">${n.slice(0, 4)}.</th>`).join('')}${th('pes', 'idade', 'Idade', 1)}${th('pes', 'salario', 'Salário', 1)}${th('pes', 'ondeN', 'Onde')}</tr></thead><tbody>
+  ${rows.map((p) => `<tr class="click" data-act="ficha" data-t="pessoa" data-id="${p.id}"><td>${esc(p.nome)}${p.rel ? ' <span class="tag g">relatório</span>' : ''}</td><td>${p.fN}</td><td class="n av ${attrCls(p, p.funcao)}">${attrTxt(p, p.funcao)}</td>${ATR.map(([k]) => `<td class="n av ${attrCls(p, k)}">${attrTxt(p, k)}</td>`).join('')}<td class="n">${p.idade}</td><td class="n">${p.salario} k€</td><td>${esc(p.ondeN)}</td></tr>`).join('') || '<tr><td colspan="12" class="dim">Ninguém com estes filtros.</td></tr>'}
+  </tbody></table></div>`;
+};
+
+VIEWS.rede = () => {
+  const rows = ordenar('sub', G.subs.map((s) => ({ ...s, nT: G.terrenos.filter((t) => t.se === s.id && t.estado === 'mercado').length, nR: G.rivais.reduce((a, r) => a + r.projetos.filter((p) => p.se === s.id).length, 0) })), { k: 'livre', dir: -1 });
+  return `<div class="vh"><div><h2>Subestações</h2><p>Capacidade livre, fila de pedidos e calor (procura de terrenos). Os reforços planeados pela REN só se veem com um bom engenheiro de rede, ou quando a REN os anuncia.</p></div></div>
+  <div class="tw"><table><thead><tr>${th('sub', 'nome', 'Subestação')}${th('sub', 'regiao', 'Região')}${th('sub', 'kv', 'kV', 1)}${th('sub', 'livre', 'MW livres', 1)}${th('sub', 'fila', 'Fila', 1)}${th('sub', 'calor', 'Calor', 1)}${th('sub', 'irr', 'kWh/kWp', 1)}${th('sub', 'camara', 'Câmara')}${th('sub', 'amb', 'Sens. ambiental', 1)}${th('sub', 'nT', 'Terrenos', 1)}${th('sub', 'nR', 'Projetos rivais', 1)}<th class="ns">Reforço</th></tr></thead><tbody>
+  ${rows.map((s) => `<tr class="click" data-act="ficha" data-t="se" data-id="${s.id}"><td>${s.nome}</td><td>${s.regiao}</td><td class="n">${s.kv}</td><td class="n ${s.livre < 30 ? 'bad' : ''}">${s.livre}</td><td class="n">${s.fila}</td><td class="n">${Math.round(s.calor)}</td><td class="n">${s.irr}</td><td>${CAMARA[s.camara]}</td><td class="n">${s.amb >= 0.5 ? '<span class="bad">alta</span>' : s.amb >= 0.35 ? 'média' : 'baixa'}</td><td class="n">${s.nT}</td><td class="n">${s.nR}</td><td>${s.reforco && s.reforco.sabido && !s.reforco.feito ? `<span class="warn">+${s.reforco.mw} MW · ${mesLabel(s.reforco.mes)}</span>${s.reforco.publico ? '' : ' <span class="tag a">só nós sabemos</span>'}` : '<span class="dim">—</span>'}</td></tr>`).join('')}
+  </tbody></table></div>`;
+};
+
+VIEWS.rivais = () => {
+  const cl = classificacao();
+  return `<div class="vh"><div><h2>Concorrência</h2><p>A tabela classificativa do setor: MW que cada empresa desenvolveu até RtB (projetos comprados não contam). Clique num rival para ver a carteira e a equipa.</p></div></div>
+  <div class="tw"><table><thead><tr><th class="n ns">#</th><th class="ns">Empresa</th><th class="ns">Estilo</th><th class="n ns">MW levados a RtB</th><th class="n ns">Em operação</th><th class="n ns">Em desenvolvimento</th><th class="n ns">Projetos</th></tr></thead><tbody>
+  ${cl.map((r, i) => `<tr class="${r.jog ? '' : 'click'}" ${r.jog ? '' : `data-act="ficha" data-t="rival" data-id="${r.id}"`}><td class="n dim">${i + 1}</td><td>${r.jog ? `<b class="warn">${esc(r.nome)}</b>` : esc(r.nome)}</td><td>${r.estilo}</td><td class="n">${r.mw}</td><td class="n">${r.op}</td><td class="n">${r.pipe}</td><td class="n">${r.jog ? projAtivos().length : rival(r.id).projetos.length}</td></tr>`).join('')}
+  </tbody></table></div>`;
+};
+
+VIEWS.carreira = () => {
+  let hof = []; try { hof = JSON.parse(localStorage.getItem(HOF_KEY) || '[]'); } catch (_) { /* nada */ }
+  return `<div class="vh"><div><h2>Carreira</h2><p>Semente do mundo: <b class="num">${esc(G.seed)}</b>. Com a mesma semente e as mesmas decisões, o mundo repete-se. O jogo guarda sozinho neste navegador.</p></div></div>
+  <div class="grid">
+    <div class="box"><h3>Esta carreira</h3><dl class="kv"><dt>Manager</dt><dd>${esc(G.manager)}</dd><dt>Empresa</dt><dd>${esc(G.empresa)}</dd><dt>Mandato atual</dt><dd>${G.mandato.n}</dd><dt>MW levados a RtB (total)</dt><dd>${G.mwRtbTotal}</dd><dt>Valor criado</dt><dd>${M(valorCriado())}</dd></dl>
+      ${G.carreira.length ? `<table style="margin-top:8px"><tbody>${G.carreira.map((c) => `<tr><td>Mandato ${c.n}</td><td class="num">${c.rtb}/${c.meta} MW</td><td class="num">${M(c.valor)}</td></tr>`).join('')}</tbody></table>` : ''}
+      <div class="row" style="margin-top:12px">${UI.confirm === 'nova' ? `<span>Abandonar esta carreira?</span><button class="btn danger" data-act="abandonarCarreira">Sim, abandonar</button><button class="btn" data-act="cancelar">Não</button>` : '<button class="btn" data-act="confirmarNova">Começar nova carreira</button>'}</div></div>
+    <div class="box"><h3>Galeria de managers</h3>${hof.length ? `<div class="tw"><table><thead><tr><th class="ns">Manager</th><th class="ns">Empresa</th><th class="n ns">MW</th><th class="n ns">Valor</th><th class="ns">Desfecho</th></tr></thead><tbody>${hof.map((h) => `<tr><td>${esc(h.manager)}</td><td>${esc(h.empresa)}<br><span class="note">${esc(h.tier)} · semente ${esc(h.seed)}</span></td><td class="n">${h.rtb}</td><td class="n">${M(h.valor)}</td><td>${esc(h.desfecho)}<br><span class="note">${esc(h.ate)}</span></td></tr>`).join('')}</tbody></table></div>` : '<p class="note">Ainda nenhuma carreira terminada neste navegador.</p>'}</div>
+  </div>`;
+};
+
+/* ---------- fichas ---------- */
+FICHAS.terreno = (id) => {
+  const t = terreno(id); if (!t) return '<p>Terreno não encontrado.</p>';
+  const s = sub(t.se);
+  const ddEmCurso = G.tarefas.some((x) => x.tipo === 'dd' && x.alvo === t.id);
+  const abordEmCurso = G.tarefas.some((x) => x.tipo === 'abordar' && x.alvo === t.id);
+  const c = precoNeg(t.opcao);
+  let acoes = '';
+  if (t.estado === 'mercado') {
+    if (t.origem === 'cadastro' && !t.aceita) acoes += abordEmCurso ? '<span class="dim">O landman está a falar com o proprietário.</span>' : `<button class="btn pri" data-act="abordar" data-id="${t.id}" ${temFuncao('ter', 9) ? '' : 'disabled'}>Abordar proprietário</button>${temFuncao('ter', 9) ? '' : ' <span class="note">Precisa de um landman.</span>'}`;
+    else acoes += `<button class="btn pri" data-act="optar" data-id="${t.id}" ${G.caixa < c ? 'disabled' : ''}>Optar por ${K(c)}</button>`;
+    acoes += t.dd ? '' : ddEmCurso ? ' <span class="dim">Due diligence em curso.</span>' : ` <button class="btn" data-act="dd" data-id="${t.id}">Due diligence (30 k€)</button>`;
+  } else if (t.estado === 'jogador') {
+    acoes += t.uso ? `Em uso no ${lnk('projeto', t.uso, projeto(t.uso).nome)}` : `<button class="btn danger" data-act="libertar" data-id="${t.id}">Libertar opção</button>`;
+    if (!t.dd && !ddEmCurso) acoes += ` <button class="btn" data-act="dd" data-id="${t.id}">Due diligence (30 k€)</button>`;
+  } else if (t.estado.startsWith('rival:')) acoes = `<span class="dim">Optado pela ${esc(rival(t.estado.slice(6)).nome)}.</span>`;
+  else acoes = `<span class="dim">Indisponível (${t.estado}).</span>`;
+  const esc_ = (k) => (t.dd ? (t.dd.achados.includes(k) ? '<span class="bad">Sim</span>' : '<span class="good">Não encontrado</span>') : '<span class="dim">?</span>');
+  return `<div class="vh"><div><h2>${esc(t.nome)}</h2><p>${t.origem === 'cadastro' ? 'Parcela de cadastro' : t.origem === 'projeto' ? 'Terreno de projeto comprado' : 'Anúncio'} · ${lnk('se', s.id, 'SE ' + s.nome)} · ${s.regiao}</p></div></div>
+  <div class="grid"><div class="box"><h3>Visível</h3><dl class="kv"><dt>Área</dt><dd>${t.ha} ha</dd><dt>Potência possível</dt><dd>${t.mwp} MWp</dd><dt>Irradiância</dt><dd>${t.irr} kWh/kWp</dd><dt>Distância à SE</dt><dd>${nf(t.dist, 1)} km</dd><dt>Renda</dt><dd>${nf(t.renda, 0)} €/ha/ano</dd><dt>Custo da opção</dt><dd>${K(t.opcao)}</dd><dt>Condicionantes</dt><dd>${tagsTerreno(t)}</dd></dl></div>
+  <div class="box"><h3>Escondido</h3><dl class="kv"><dt>${PROB_ESC.titulos}</dt><dd>${esc_('titulos')}</dd><dt>${PROB_ESC.arqueo}</dt><dd>${esc_('arqueo')}</dd><dt>${PROB_ESC.montado}</dt><dd>${esc_('montado')}</dd><dt>Disposição do proprietário</dt><dd>${t.dd ? (t.dd.dono > 0.6 ? 'Boa' : t.dd.dono > 0.35 ? 'Neutra' : 'Difícil') : '<span class="dim">?</span>'}</dd></dl><p class="note">A due diligence revela o que está escondido (com um landman forte, com mais certeza). Problemas conhecidos pesam metade no licenciamento.</p></div></div>
+  <div class="row" style="margin-top:14px">${acoes}</div>`;
+};
+FICHAS.pessoa = (id) => {
+  const p = pessoa(id); if (!p) return '';
+  const minha = p.onde === 'jogador';
+  const relEmCurso = G.tarefas.some((x) => x.tipo === 'relatorio' && x.alvo === p.id);
+  const deRival = p.onde.startsWith('rival:');
+  return `<div class="vh"><div><h2>${esc(p.nome)}</h2><p>${FUNCOES[p.funcao]} · ${p.idade} anos · ${esc(ondeTxt(p))} · ${p.salario} k€/ano</p></div></div>
+  <div class="grid"><div class="box"><h3>Atributos</h3><div class="attr">${ATR.map(([k, n]) => `<span>${n}</span><span class="av ${attrCls(p, k)}">${attrTxt(p, k)}</span>`).join('')}</div></div>
+  <div class="box"><h3>Personalidade</h3><div class="attr"><span>Ambição</span><span class="av">${p.rel ? p.ambicao : '?'}</span><span>Lealdade</span><span class="av">${p.rel ? p.lealdade : '?'}</span><span>Potencial</span><span class="av">${p.rel ? p.potencial : '?'}</span></div><p class="note">Ambição alta: aceita sair de um rival, mas também aceita sair de si. Lealdade alta: o contrário.</p></div>
+  <div class="box"><h3>Efeito no jogo</h3><p class="note">${{ ter: 'Abre terrenos de cadastro, convence proprietários e torna a due diligence mais fiável.', lic: 'Encurta e aprova estudos, PIP e licenças. Ajuda nas prorrogações.', rede: 'Descobre reforços da REN antes de serem públicos e melhora pedidos e acordos.', amb: 'Aumenta a probabilidade e reduz a duração da avaliação ambiental.', fin: 'Reservado para a próxima versão (financiamento de projeto).', neg: 'Desconto em terrenos e capacidade comprada; melhores ofertas pelos seus projetos.' }[p.funcao]}</p></div></div>
+  <div class="row" style="margin-top:14px">${minha ? `<button class="btn danger" data-act="despedir" data-id="${p.id}">Despedir (indemnização ${K(p.salario * 0.25 / 1000)})</button>` : `${p.rel ? '' : relEmCurso ? '<span class="dim">Relatório em curso.</span>' : `<button class="btn" data-act="relatorio" data-id="${p.id}">Pedir relatório</button>`} <button class="btn pri" data-act="contratar" data-id="${p.id}">${deRival ? `Contratar à ${esc(rival(p.onde.slice(6)).nome)} (compensação ${K(p.salario * 0.5 / 1000)}, salário ${Math.round(p.salario * 1.2)} k€)` : `Contratar (${p.salario} k€/ano)`}</button>`}</div>`;
+};
+FICHAS.projeto = (id) => {
+  const p = projeto(id); if (!p) return '';
+  const s = sub(p.se); const t = trc(p.trc);
+  const linhas = FASES.map((F, i) => {
+    let st = '', pr = '';
+    if (p.estado !== 'ativo') st = i < p.fi ? '✔' : '';
+    else if (i < p.fi) st = '<span class="good">✔ feito</span>';
+    else if (i === p.fi) st = i <= 2 ? (p.bloqueado ? '<span class="bad">recusada · decisão na caixa de entrada</span>' : p.pago ? `<span class="warn">em curso · faltam ${p.rest} meses</span>` : p.pausado ? 'pausado' : p.semCaixa ? '<span class="bad">à espera de caixa</span>' : 'arranca no próximo mês') : i === 4 ? `<span class="warn">faltam ${p.rest} meses</span>` : '<span class="good">●</span>';
+    if (i <= 2 && p.estado === 'ativo' && i >= p.fi) pr = `<span class="${probCls(probVista(p, i))}">${pct(probVista(p, i))}</span> · ${duracao(i)} m · ${M(custoFase(p, i))}`;
+    return `<tr><td>${F.nome}</td><td>${st}</td><td class="num">${pr}</td></tr>`;
+  }).join('');
+  let acoes = '';
+  if (p.estado === 'ativo') {
+    if (p.fi <= 2 && !p.bloqueado) acoes += `<button class="btn" data-act="pausar" data-id="${p.id}">${p.pausado ? 'Retomar' : 'Pausar'} (antes da próxima fase)</button>`;
+    if (p.fi <= 3) acoes += p.aVenda && G.tarefas.some((x) => x.tipo === 'venda' && x.alvo === p.id) ? ' <span class="dim">À venda: ofertas no próximo mês.</span>' : ` <button class="btn" data-act="porVenda" data-id="${p.id}">Pôr à venda</button>`;
+    if (p.fi === 3) acoes += ` <button class="btn pri" data-act="construir" data-id="${p.id}">Construir (capex ${M(p.mwp * CAPEX_MWP)}; ${G.tipo === 'operar' && G.confianca >= 50 ? 'capital da casa-mãe' : '25 % da caixa: ' + M(p.mwp * CAPEX_MWP * 0.25)})</button>`;
+    if (t && !t.cumprido && !t.prorrogado && t.prazo - G.mes <= 12) acoes += ` <button class="btn" data-act="prorrogar" data-id="${t.id}">Pedir prorrogação do TRC</button>`;
+    if (p.fi <= 3 && !p.bloqueado) acoes += ` <button class="btn danger" data-act="abandonarProj" data-id="${p.id}">Abandonar</button>`;
+  }
+  return `<div class="vh"><div><h2>${esc(p.nome)}</h2><p>${lnk('se', s.id, 'SE ' + s.nome)} · ${p.mwac} MWac / ${p.mwp} MWp · ${p.estado === 'ativo' ? FASES[p.fi].nome : p.estado}</p></div></div>
+  <div class="grid"><div class="box"><h3>Fases</h3><table><thead><tr><th class="ns">Fase</th><th class="ns">Estado</th><th class="n ns">Prob. · duração · custo</th></tr></thead><tbody>${linhas}</tbody></table><p class="note">Probabilidades como a equipa as vê hoje. Problemas escondidos nos terrenos não entram até fazer due diligence.</p></div>
+  <div class="box"><h3>Ficha</h3><dl class="kv"><dt>TRC</dt><dd>${t ? `${t.mw} MW · ${t.cumprido ? 'cumprido' : 'prazo ' + mesLabel(t.prazo)}` : '—'}</dd><dt>Terrenos</dt><dd>${p.terrenos.map((x) => lnk('terreno', x, terreno(x).nome)).join('<br>')}</dd><dt>Irradiância média</dt><dd>${irrProj(p)} kWh/kWp</dd><dt>Linha</dt><dd>${nf(p.linha || 0, 1)} km</dd><dt>Gasto até agora</dt><dd>${M(p.custo)}</dd><dt>Valor estimado</dt><dd>${M(valorProjeto(p))}</dd>${p.fi === 5 ? `<dt>Receita líquida/mês</dt><dd>${K(p.mwp * irrProj(p) * G.mercado.preco * 0.3 / 12 / 1e6)}</dd>` : ''}</dl></div>
+  <div class="box"><h3>Histórico</h3>${p.log.slice().reverse().map((l) => `<p style="margin:0 0 4px">${esc(l)}</p>`).join('')}</div></div>
+  <div class="row" style="margin-top:14px">${acoes}</div>`;
+};
+FICHAS.trc = (id) => {
+  const t = trc(id); if (!t) return ''; const s = sub(t.se);
+  return `<div class="vh"><div><h2>TRC ${s.nome} · ${t.mw} MW</h2><p>${esc(t.origem)} · obtido em ${mesLabel(t.obtido)}</p></div></div>
+  <div class="box"><dl class="kv"><dt>Prazo para RtB</dt><dd>${t.cumprido ? 'cumprido' : mesLabel(t.prazo) + ` (${t.prazo - G.mes} meses)`}</dd><dt>Caução</dt><dd>${t.devolvida ? 'devolvida / sem caução' : K(t.caucao)}</dd><dt>Projeto</dt><dd>${t.projeto ? lnk('projeto', t.projeto, projeto(t.projeto).nome) : 'livre: use a mesa de montagem'}</dd></dl>
+  <div class="row" style="margin-top:10px">${!t.cumprido && !t.prorrogado && t.estado === 'ativo' ? `<button class="btn" data-act="prorrogar" data-id="${t.id}">Pedir prorrogação (+12 meses, uma vez)</button>` : ''} ${!t.projeto ? `<button class="btn" data-act="nav" data-v="carteira">Ir à mesa de montagem</button>` : ''}</div></div>`;
+};
+FICHAS.se = (id) => {
+  const s = sub(id);
+  const proj = G.rivais.flatMap((r) => r.projetos.filter((p) => p.se === id).map((p) => ({ ...p, r })));
+  const meus = G.projetos.filter((p) => p.se === id && p.estado === 'ativo');
+  return `<div class="vh"><div><h2>SE ${s.nome}</h2><p>${s.regiao} · ${s.kv} kV · Câmara ${CAMARA[s.camara].toLowerCase()}</p></div></div>
+  <div class="grid"><div class="box"><h3>Rede</h3><dl class="kv"><dt>MW livres</dt><dd>${s.livre}</dd><dt>Fila de pedidos</dt><dd>${s.fila} MW</dd><dt>Calor da zona</dt><dd>${Math.round(s.calor)}/100</dd><dt>Irradiância de referência</dt><dd>${s.irr} kWh/kWp</dd><dt>Sensibilidade ambiental</dt><dd>${s.amb >= 0.5 ? 'alta' : s.amb >= 0.35 ? 'média' : 'baixa'}</dd><dt>Reforço</dt><dd>${s.reforco && s.reforco.sabido && !s.reforco.feito ? `+${s.reforco.mw} MW em ${mesLabel(s.reforco.mes)}` : 'nenhum conhecido'}</dd></dl>
+    <div class="row" style="margin-top:10px"><button class="btn" data-act="nav" data-v="ligacoes">Pedir capacidade</button><button class="btn" data-act="verTerrenos" data-se="${s.id}">Ver terrenos</button></div></div>
+  <div class="box"><h3>Projetos nesta SE</h3><table><tbody>${meus.map((p) => `<tr><td>${lnk('projeto', p.id, p.nome)}</td><td class="warn">${esc(G.empresa)}</td><td class="num">${p.mwac} MW</td><td>${FASES[p.fi].curto}</td></tr>`).join('')}${proj.map((p) => `<tr><td>${esc(p.nome)}</td><td>${lnk('rival', p.r.id, p.r.nome)}</td><td class="num">${p.mw} MW</td><td>${FASES[p.fi].curto}</td></tr>`).join('') || (meus.length ? '' : '<tr><td class="dim">Nenhum.</td></tr>')}</tbody></table></div></div>`;
+};
+ACT.verTerrenos = (d) => { UI.view = 'terrenos'; UI.f.tse = d.se; UI.f.test = 'mercado'; UI.ficha = null; render(); };
+FICHAS.rival = (id) => {
+  const r = rival(id); const eq = G.pessoas.filter((p) => p.onde === 'rival:' + id);
+  const nots = G.noticias.filter((n) => n.r === id).slice(0, 10);
+  return `<div class="vh"><div><h2>${esc(r.nome)}</h2><p>${ESTILO[r.estilo].nome} · ${esc(r.desc)}</p></div></div>
+  <div class="grid"><div class="box"><h3>Números</h3><dl class="kv"><dt>MW em RtB</dt><dd>${r.mwRtb}</dd><dt>MW em operação</dt><dd>${r.mwOp}</dd><dt>MW vendidos</dt><dd>${r.mwVend}</dd><dt>Tesouraria</dt><dd>${r.caixa < 0.5 ? '<span class="bad">apertada</span>' : r.caixa < 3 ? 'normal' : '<span class="good">folgada</span>'}</dd><dt>Qualidade da equipa</dt><dd>${r.q >= 13 ? 'alta' : r.q >= 10 ? 'média' : 'baixa'}</dd></dl></div>
+  <div class="box"><h3>Carteira</h3><table><tbody>${r.projetos.map((p) => `<tr><td>${esc(p.nome)}</td><td>${lnk('se', p.se, sub(p.se).nome)}</td><td class="num">${p.mw} MW</td><td>${FASES[p.fi].curto}</td></tr>`).join('') || '<tr><td class="dim">Vazia.</td></tr>'}</tbody></table></div>
+  <div class="box"><h3>Quadros conhecidos</h3><table><tbody>${eq.map((p) => `<tr><td>${lnk('pessoa', p.id, p.nome)}</td><td>${FUNCOES[p.funcao]}</td><td class="num">${attrTxt(p, p.funcao)}</td></tr>`).join('') || '<tr><td class="dim">Nenhum.</td></tr>'}</tbody></table></div>
+  <div class="box"><h3>Últimos movimentos</h3>${nots.map((n) => `<p style="margin:0 0 4px"><span class="dim num">${mesLabel(n.mes)}</span> ${esc(n.txt)}</p>`).join('') || '<p class="note">Nada recente.</p>'}</div></div>`;
+};
+
+function viewFim() {
+  const f = G.fim; const r = f.resumo;
+  if (f.tipo === 'mandato') {
+    const tit = { cumprido: 'Mandato cumprido', reservas: 'Renovado com reservas', falhado: 'Mandato falhado' }[f.veredito];
+    const txt = { cumprido: `O Comité está satisfeito: ${r.rtb} MW em RtB para uma meta de ${r.meta}. Oferece-lhe um novo mandato de cinco anos com uma meta maior.`, reservas: `Ficou a ${r.meta - r.rtb} MW da meta. O Comité renova, mas a confiança desce para ${G.confianca}.`, falhado: `Ficou com ${r.rtb} de ${r.meta} MW. O Comité decide não renovar.` }[f.veredito];
+    return `<div class="inner"><div class="title">${tit}<small>Mandato ${r.n} · ${r.ate}</small></div><p style="max-width:65ch">${txt}</p>
+      <div class="box"><dl class="kv"><dt>MW em RtB</dt><dd>${r.rtb} / ${r.meta}</dd><dt>Valor criado</dt><dd>${M(r.valor)}</dd><dt>Confiança</dt><dd>${G.confianca}/100</dd><dt>Vendas</dt><dd>${G.vendas.length}</dd></dl></div>
+      <div class="row">${f.veredito !== 'falhado' ? '<button class="btn pri" data-act="novoMandato">Aceitar novo mandato</button><button class="btn" data-act="sairCarreira">Sair e começar outra carreira</button>' : '<button class="btn pri" data-act="sairCarreira">Começar outra carreira</button>'}</div></div>`;
+  }
+  return `<div class="inner"><div class="title">Despedido<small>${r.ate}</small></div><p>${esc(f.porque)}</p><div class="box"><dl class="kv"><dt>MW em RtB neste mandato</dt><dd>${r.rtb} / ${r.meta}</dd><dt>Valor criado</dt><dd>${M(r.valor)}</dd></dl></div><div class="row"><button class="btn pri" data-act="sairCarreira">Começar outra carreira</button></div></div>`;
+}
+
+/* ---------- arranque ---------- */
+function mostrarInicio() {
+  $('#app').hidden = true; $('#fim').hidden = true; const st = $('#start'); st.hidden = false;
+  let tem = false; try { tem = !!localStorage.getItem(SAVE_KEY); } catch (_) { /* nada */ }
+  let hof = []; try { hof = JSON.parse(localStorage.getItem(HOF_KEY) || '[]'); } catch (_) { /* nada */ }
+  st.innerHTML = `<div class="inner">
+    <div class="title">IPP Manager<small>Country manager · Portugal · mandato de 400 MW em cinco anos</small></div>
+    <p style="max-width:68ch;margin:0">Uma casa-mãe estrangeira quer entrar no solar português. Você chega sem terrenos, sem rede e com três pessoas. Tem cinco anos para levar 400 MW a pronto a construir. Os rivais não esperam por si.</p>
+    ${tem ? '<div class="row"><button class="btn pri" data-act="continuarSave">Continuar a carreira guardada</button><span class="note">ou comece uma nova abaixo</span></div>' : ''}
+    <div class="box"><h3>Nova carreira</h3>
+      <div class="form" style="margin-top:8px">
+        <label for="sManager">O seu nome<input type="text" id="sManager" value="Pedro" autocomplete="off"></label>
+        <label for="sEmpresa">Nome da empresa<input type="text" id="sEmpresa" value="Watt Indeferido" autocomplete="off"></label>
+        <label for="sSeed">Semente do mundo<span class="row" style="flex-wrap:nowrap"><input type="text" id="sSeed" value="${Math.floor(Math.random() * 99999)}" autocomplete="off" style="flex:1;min-width:0"><button class="btn mini" data-act="novaSemente" type="button">Outra</button></span></label>
+      </div>
+      <p class="dim" style="margin:14px 0 6px">Casa-mãe</p>
+      <div class="opt">${Object.entries(TIERS).map(([k, t], i) => `<label><input type="radio" name="tier" value="${k}" ${i === 0 ? 'checked' : ''}><b>${t.nome}</b>${t.desc} Orçamento base ${M(t.orc)}/ano.</label>`).join('')}</div>
+      <p class="dim" style="margin:14px 0 6px">Tipo de mandato</p>
+      <div class="opt">${Object.entries(TIPOS).map(([k, t], i) => `<label><input type="radio" name="tipo" value="${k}" ${i === 0 ? 'checked' : ''}><b>${t.nome}</b>${t.desc}</label>`).join('')}</div>
+      <div class="row" style="margin-top:14px"><button class="btn pri" data-act="comecar">Começar carreira</button><span class="note">O jogo guarda sozinho neste navegador.</span></div>
+    </div>
+    <div class="box"><h3>Como se joga</h3><p style="margin:0;max-width:72ch">Cada clique em <b>Continuar</b> é um mês. Junte <b>capacidade de rede</b> (TRC) e <b>terrenos</b> da mesma subestação na mesa de montagem para criar um projeto. O projeto passa por estudos, avaliação ambiental e licenças até ficar <b>pronto a construir (RtB)</b>. A equipa que contrata muda as probabilidades. O Comité revê a sua confiança todos os janeiros.</p></div>
+    ${hof.length ? `<div class="box"><h3>Galeria de managers</h3><table><tbody>${hof.slice(0, 8).map((h) => `<tr><td>${esc(h.manager)} · ${esc(h.empresa)}</td><td class="num">${h.rtb} MW</td><td class="num">${M(h.valor)}</td><td>${esc(h.desfecho)}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    <p class="note">Protótipo v0.1. Empresas rivais e pessoas são fictícias. Prazos e valores económicos são hipóteses por calibrar.</p>
+  </div>`;
+}
+
+document.addEventListener('click', (ev) => {
+  const el = ev.target.closest('[data-act]'); if (!el || el.tagName === 'SELECT') return;
+  if (el.tagName === 'A') ev.preventDefault();
+  const fn = ACT[el.dataset.act]; if (fn) fn(el.dataset, el);
+});
+document.addEventListener('change', (ev) => { const el = ev.target; if (el.dataset && el.dataset.act === 'filtro') ACT.filtro(el.dataset, el); });
+document.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && ev.target.id && ev.target.id.startsWith('lance-')) { ACT.lance({ id: ev.target.id.slice(6) }); } });
+
+function boot(data) {
+  if (data && data.G) { G = data.G; Object.assign(UI, data.UI || {}); $('#start').hidden = true; $('#app').hidden = false; render(); return; }
+  if (carregar()) { $('#start').hidden = true; $('#app').hidden = false; render(); } else mostrarInicio();
+}
+window.claude?.hot?.snapshot?.(() => ({ G, UI: { view: UI.view, ficha: UI.ficha, sel: UI.sel, f: UI.f, tab: UI.tab, sort: UI.sort } }));
+window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
+</script>
+
+</body>
+</html>
