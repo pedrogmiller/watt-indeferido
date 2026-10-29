@@ -124,7 +124,7 @@ input[type=number] { width: 6.5em; }
 /* Ecrãs de arranque e fim */
 .overlay { position: fixed; inset: 0; background: var(--bg); overflow-y: auto; z-index: 20;
   padding-block: max(24px, env(safe-area-inset-top, 0px)) 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.overlay .inner { max-width: 860px; margin: 0 auto; display: grid; gap: 16px; }
+.overlay .inner { max-width: 1140px; margin: 0 auto; display: grid; gap: 16px; }
 .title { font-family: var(--f-disp); font-weight: 700; font-size: clamp(2.4rem, 7vw, 4.2rem); line-height: .95; letter-spacing: .01em; text-transform: uppercase; color: var(--accent); }
 .title small { display: block; font-size: .32em; color: var(--dim); letter-spacing: .12em; margin-top: 8px; }
 .form { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
@@ -136,6 +136,8 @@ input[type=number] { width: 6.5em; }
 .opt b { display: block; font-family: var(--f-disp); font-size: 1.1rem; font-weight: 600; }
 .opt input { margin-right: 6px; }
 .toast { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px)); background: var(--panel2); border: 1px solid var(--accent); padding: 8px 12px; border-radius: 3px; z-index: 30; max-width: min(420px, calc(100vw - 32px)); }
+.emp td:nth-child(2) { min-width: 260px; }
+.emp td:nth-child(8) { min-width: 150px; }
 .spark { width: 100%; height: 60px; display: block; }
 
 @media (max-width: 760px) {
@@ -184,11 +186,6 @@ const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov'
 const ANO0 = 2027;
 const SAVE_KEY = 'ippm.save.v1', HOF_KEY = 'ippm.hof.v1';
 
-const TIERS = {
-  boutique: { nome: 'Boutique', orc: 3.0, desc: 'Casa-mãe pequena. Orçamento curto, pouca margem para erros.' },
-  medio: { nome: 'Meia-tabela', orc: 4.5, desc: 'Fundo de dimensão média. Dá para arriscar um pouco.' },
-  infra: { nome: 'Fundo de infraestrutura', orc: 7.0, desc: 'Orçamento folgado, Comité impaciente.' }
-};
 const TIPOS = {
   vender: { nome: 'Desenvolver e vender', desc: 'Ganha-se a levar projetos a RtB e a vendê-los com lucro.' },
   operar: { nome: 'Construir e operar', desc: 'Ganha-se a construir e a ter MW a produzir. A casa-mãe põe o capital.' }
@@ -216,15 +213,48 @@ const SE_DEF = [
 ];
 const CAMARA = { hostil: 'Hostil', neutra: 'Neutra', favoravel: 'Favorável' };
 
-// id, nome, estilo, descrição, caixa inicial (M€), entrada mensal (M€), qualidade da equipa
-const RIVAIS_DEF = [
-  ['solenor','Solenor Ibérica','agressivo','Promotor espanhol com pressa de crescer em Portugal. Paga bem e arrisca.',3.5,0.30,12],
-  ['valeverde','Vale Verde Energia','cauteloso','IPP português de família. Só avança com terra e rede garantidas.',2.5,0.18,13],
-  ['atlantica','Atlântica Renováveis','oportunista','Compra o que os outros deixam cair. Vende depressa.',2.0,0.18,10],
-  ['helios','Helios Capital','fundo','Fundo de infraestrutura. Compra projetos RtB e opera-os.',9,0.45,11],
-  ['lusowatt','Lusowatt','agressivo','Startup de Lisboa, muito alavancada.',1.2,0.12,9],
-  ['tejo','Grupo Tejo Energia','utility','Utility histórica. Lenta, mas com um balanço enorme.',10,0.55,14]
+// Empresas do campeonato. Nomes reais usados como personagens de ficção: tudo o que lhes acontece no jogo é inventado.
+// solar = MW solares em Portugal (content/data/empresas-arranque.json). Orçamento, metas, reputação e carteira inicial: HIPÓTESE.
+// inicial: carteira com que o jogador começa se escolher a empresa (proj = projeto na fase fi; trc = só capacidade de rede).
+// rival: [caixa M€, entrada mensal M€, qualidade da equipa] quando é a IA a jogar com ela.
+const EMPRESAS = [
+  { id: 'edp', nome: 'EDP', tipo: 'utility', estilo: 'utility', rep: 5, orc: 8, mandato: 'operar', meta: 600, conf: 50, dif: 3, solar: 600,
+    desc: 'O maior grupo do país. Dinheiro e nome não faltam; o Comité não aceita menos do que liderar.',
+    extras: [['amb', 14], ['rede', 13], ['ter', 12]], inicial: [{ t: 'proj', se: 'alqueva', mw: 120, fi: 2 }, { t: 'trc', se: 'evora', mw: 100 }], rival: [10, 0.55, 14] },
+  { id: 'galp', nome: 'Galp', tipo: 'utility', estilo: 'utility', rep: 4, orc: 6.5, mandato: 'operar', meta: 500, conf: 55, dif: 3, solar: 144,
+    desc: 'Petrolífera em transição. Quer crescer depressa no solar ao lado do que já opera no Algarve.',
+    extras: [['rede', 12], ['ter', 11]], inicial: [{ t: 'proj', se: 'tavira', mw: 100, fi: 1 }], rival: [9, 0.5, 13] },
+  { id: 'iberdrola', nome: 'Iberdrola', tipo: 'utility', estilo: 'utility', rep: 4, orc: 6, mandato: 'operar', meta: 500, conf: 55, dif: 3, solar: 186,
+    desc: 'Grupo espanhol com músculo. Tem rede garantida, falta-lhe terra e licenças.',
+    extras: [['amb', 12], ['lic', 11]], inicial: [{ t: 'trc', se: 'falagueira', mw: 150 }], rival: [9, 0.5, 13] },
+  { id: 'finerge', nome: 'Finerge', tipo: 'ipp', estilo: 'cauteloso', rep: 3, orc: 4.5, mandato: 'operar', meta: 400, conf: 60, dif: 3, solar: 0,
+    desc: 'Líder na eólica, quase sem solar. O mandato é diversificar sem perder o rigor.',
+    extras: [['rede', 13]], inicial: [{ t: 'trc', se: 'fundao', mw: 80 }], rival: [4, 0.3, 13] },
+  { id: 'akuo', nome: 'Akuo', tipo: 'ipp', estilo: 'agressivo', rep: 3, orc: 4, mandato: 'operar', meta: 400, conf: 60, dif: 3, solar: 373,
+    desc: 'IPP francês com bom histórico no solar português. Constrói e fica com os parques.',
+    extras: [['ter', 11]], inicial: [{ t: 'proj', se: 'ourique', mw: 90, fi: 0 }], rival: [3.5, 0.3, 12] },
+  { id: 'voltalia', nome: 'Voltalia', tipo: 'ipp', estilo: 'cauteloso', rep: 3, orc: 3.5, mandato: 'vender', meta: 400, conf: 60, dif: 3, solar: 78,
+    desc: 'Desenvolve, constrói para terceiros e vende. Orçamento médio, Comité razoável.',
+    extras: [['amb', 11]], inicial: [], rival: [3, 0.22, 12] },
+  { id: 'greenvolt', nome: 'Greenvolt', tipo: 'ipp', estilo: 'agressivo', rep: 3, orc: 4, mandato: 'vender', meta: 400, conf: 60, dif: 3, solar: 48,
+    desc: 'Cresceu depressa a desenvolver e vender. Tem capacidade em Ponte de Sor.',
+    extras: [['neg', 12]], inicial: [{ t: 'trc', se: 'pontesor', mw: 60 }], rival: [3.5, 0.3, 12] },
+  { id: 'lightsource-bp', nome: 'Lightsource bp', tipo: 'promotor', estilo: 'agressivo', rep: 3, orc: 4.5, mandato: 'vender', meta: 400, conf: 60, dif: 3, solar: 0,
+    desc: 'Promotor global com uma petrolífera por trás. Começa do zero em Portugal, mas com dinheiro.',
+    extras: [['ter', 12]], inicial: [], rival: [4, 0.3, 12] },
+  { id: 'prosolia', nome: 'Prosolia Energy', tipo: 'ipp', estilo: 'oportunista', rep: 2, orc: 3, mandato: 'vender', meta: 350, conf: 65, dif: 4, solar: 77,
+    desc: 'IPP ibérico de dimensão média. Pouca margem, mas um Comité paciente.',
+    extras: [], inicial: [{ t: 'trc', se: 'portimao', mw: 40 }], rival: [2, 0.18, 10] },
+  { id: 'aura-power', nome: 'Aura Power', tipo: 'promotor', estilo: 'oportunista', rep: 2, orc: 2.8, mandato: 'vender', meta: 300, conf: 65, dif: 4, solar: 0,
+    desc: 'Promotor britânico pequeno. Sem nada em Portugal e com pouco dinheiro.',
+    extras: [], inicial: [], rival: [1.8, 0.15, 10] },
+  { id: 'movhera', nome: 'Movhera', tipo: 'fundo', estilo: 'fundo', rep: 3, solar: 0, jogavel: false, desc: 'Fundo que compra ativos prontos.', rival: [9, 0.45, 11] }
 ];
+const NOVA = { id: 'novo', nome: '', tipo: 'novo', estilo: 'agressivo', rep: 1, orc: 3, mandato: 'vender', meta: 400, conf: 60, dif: 5, solar: 0,
+  desc: 'Uma casa-mãe estrangeira sem nome em Portugal. Sem terra, sem rede, três pessoas. O modo mais difícil.', extras: [], inicial: [] };
+const TIPO_EMP = { utility: 'Utility', ipp: 'IPP', promotor: 'Promotor', fundo: 'Fundo', novo: 'Nova entrada' };
+const AVISO = 'As empresas reais aparecem como personagens de ficção. Projetos, decisões, pessoas, resultados e problemas que lhes acontecem no jogo são inventados e não descrevem a atividade real destas empresas.';
+const estrelas = (n) => '★'.repeat(n) + '<span class="dim">' + '★'.repeat(5 - n) + '</span>';
 const ESTILO = {
   agressivo: { nome: 'Agressivo', novo: 0.13, vende: 0.35, lance: 1.3 },
   cauteloso: { nome: 'Cauteloso', novo: 0.05, vende: 0.08, lance: 0.8 },
@@ -344,9 +374,9 @@ const PROB_ESC = { titulos: 'Títulos de propriedade por regularizar', arqueo: '
 /* ---------- mundo ---------- */
 function novoJogo(o) {
   G = {
-    v: 1, seed: o.seed, rng: hashSeed(o.seed), mes: 0, nid: 1, manager: o.manager, empresa: o.empresa, tier: o.tier, tipo: o.tipo,
-    caixa: 0, confianca: 60, confLog: [], capitalRecebido: 0, gastoAno: 0, orcamentoAno: 0, contas: {}, divida: null, negMeses: 0,
-    mandato: { n: 1, inicio: 0, fim: 60, meta: 400, rtb: 0 }, mwRtbTotal: 0, vendas: [], objetivos: [], avaliacoes: [],
+    v: 1, seed: o.seed, rng: hashSeed(o.seed), mes: 0, nid: 1, manager: o.manager, empresa: o.perfil.nome, perfil: o.perfil, tipo: o.perfil.mandato,
+    caixa: 0, confianca: o.perfil.conf, confLog: [], capitalRecebido: 0, gastoAno: 0, orcamentoAno: 0, contas: {}, divida: null, negMeses: 0,
+    mandato: { n: 1, inicio: 0, fim: 60, meta: o.perfil.meta, rtb: 0 }, mwRtbTotal: 0, vendas: [], objetivos: [], avaliacoes: [],
     subs: [], terrenos: [], trcs: [], pessoas: [], projetos: [], rivais: [], mercadoLig: [], tarefas: [], leilao: null,
     inbox: [], noticias: [], novasNoticias: 0, hist: [], mercado: { preco: 55, rtb: 0.11 }, mods: { licDur: 1, licAte: -1 }, fim: null, carreira: [], nomesProj: {}
   };
@@ -355,15 +385,16 @@ function novoJogo(o) {
       reforco: chance(0.45) ? { mes: ri(10, 54), mw: pick([100, 150, 200, 250]), sabido: false, publico: false, feito: false } : null });
   });
   G.subs.forEach((s) => { for (let i = ri(1, 3); i > 0; i--) G.terrenos.push(novoTerreno(s, 'anuncio')); });
-  RIVAIS_DEF.forEach(([id, nome, estilo, desc, caixa, entrada, q]) => G.rivais.push({ id, nome, estilo, desc, caixa, entrada, q, projetos: [], mwRtb: 0, mwOp: 0, mwVend: 0, mwDev: 0, atraso: 0 }));
+  EMPRESAS.filter((e) => e.id !== o.perfil.id).forEach((e) => G.rivais.push({ id: e.id, nome: e.nome, estilo: e.estilo, desc: e.desc, caixa: e.rival[0], entrada: e.rival[1], q: e.rival[2], projetos: [], mwRtb: 0, mwOp: 0, mwVend: 0, mwDev: 0, atraso: 0 }));
   // equipa inicial (os mesmos nomes do plantel da consola)
   const ini = [
     ['Rui Matos', 'lic', { lic: 12, fin: 7, neg: 8, amb: 9, rede: 5, ter: 6 }, 44],
     ['Inês Carvalho', 'neg', { neg: 11, ter: 9, lic: 6, fin: 8, rede: 4, amb: 5 }, 37],
     ['Tiago Nunes', 'fin', { fin: 10, neg: 7, lic: 5, rede: 6, amb: 4, ter: 5 }, 31]
   ];
-  if (o.tier === 'infra') ini.push(['Matilde Corgas', 'amb', { amb: 13, lic: 9, ter: 6, rede: 5, fin: 5, neg: 6 }, 40]);
   ini.forEach(([nome, f, a, idade]) => { const p = novaPessoa('jogador', f, { nome, funcao: f, a, idade }); p.rel = true; G.pessoas.push(p); });
+  o.perfil.extras.forEach(([f, v]) => { const p = novaPessoa('jogador', f); p.a[f] = v; p.vis[f] = [v, v]; p.rel = true; p.salario = Math.round(40 + v * 4.5 + ri(0, 10)); G.pessoas.push(p); });
+  carteiraInicial(o.perfil);
   for (let i = 0; i < 26; i++) G.pessoas.push(novaPessoa('livre'));
   G.rivais.forEach((r) => { for (let i = 0; i < 2; i++) G.pessoas.push(novaPessoa('rival:' + r.id)); });
   // carteira inicial dos rivais
@@ -371,16 +402,30 @@ function novoJogo(o) {
   for (let i = 0; i < 2; i++) novaListagemCompra();
   novaListagemProjeto();
   arranqueAno(true);
-  email({ de: 'Comité de Investimento', assunto: 'Bem-vindo a Portugal: o seu mandato', tipo: 'comite', imp: true, corpo:
-    `<p>Caro(a) ${esc(G.manager)},</p><p>O Comité confia-lhe a entrada da <b>${esc(G.empresa)}</b> em Portugal. O mandato é simples de dizer e difícil de cumprir: <b>${G.mandato.meta} MW prontos a construir (RtB) até ${mesLabel(G.mandato.fim - 1)}</b>.</p>
+  const novo = o.perfil.id === 'novo';
+  email({ de: 'Comité de Investimento', assunto: novo ? 'Bem-vindo a Portugal: o seu mandato' : `O seu mandato na ${G.empresa}`, tipo: 'comite', imp: true, corpo:
+    `<p>Caro(a) ${esc(G.manager)},</p><p>${novo ? `O Comité confia-lhe a entrada da <b>${esc(G.empresa)}</b> em Portugal.` : `O Comité confia-lhe a unidade de desenvolvimento solar da <b>${esc(G.empresa)}</b> em Portugal.`} O mandato é simples de dizer e difícil de cumprir: <b>${G.mandato.meta} MW prontos a construir (RtB) até ${mesLabel(G.mandato.fim - 1)}</b>.</p>
      <p>Tipo de mandato: <b>${TIPOS[G.tipo].nome}</b>. ${TIPOS[G.tipo].desc}</p>
      <p>Para este ano aprovámos um orçamento de <b>${M(G.orcamentoAno)}</b>. Os objetivos do ano estão no ecrã Comité. Revemos a nossa confiança em si todos os janeiros.</p>
-     <p>Começa sem terrenos e sem rede. Há quatro portas de entrada: o leilão da DGEG (anunciado em março), o pedido de reserva de capacidade, o acordo com o operador e a compra a quem já tem. Escolha.</p><p>Boa sorte.</p>` });
+     <p>${G.trcs.length ? `Herda ${G.trcs.length === 1 ? 'um título' : G.trcs.length + ' títulos'} de capacidade${G.projetos.length ? ' e ' + (G.projetos.length === 1 ? 'um projeto' : G.projetos.length + ' projetos') + ' em curso' : ''}; estão na Carteira. Para crescer há` : 'Começa sem terrenos e sem rede. Há'} quatro portas de entrada: o leilão da DGEG (anunciado em março), o pedido de reserva de capacidade, o acordo com o operador e a compra a quem já tem. Escolha.</p><p>Boa sorte.</p>` });
   email({ de: 'Rui Matos · Licenciamento', assunto: 'A equipa que temos e a que nos falta', tipo: 'equipa', corpo:
-    `<p>Somos três: eu no licenciamento, a Inês na negociação e o Tiago nas finanças.</p><p>Faltam-nos um <b>landman</b> (sem ele não chegamos aos terrenos que não estão anunciados), um <b>engenheiro de rede</b> (para saber onde a REN vai reforçar) e alguém forte em <b>ambiente</b>, que é onde os projetos morrem. Sugiro olhar para o mercado de pessoas antes de gastar em terrenos.</p>` });
+    `<p>Somos ${minhaEquipa().length}: ${minhaEquipa().map((p) => `${esc(p.nome)} (${FUNCOES[p.funcao].toLowerCase()})`).join(', ')}.</p><p>${['ter', 'rede', 'amb'].every((k) => temFuncao(k, 11)) ? 'A equipa está bem servida nas áreas que decidem projetos. Olhe para a carteira que herdámos antes de ir aos mercados.</p><p class="dim">Para referência, o que costuma faltar a quem começa:' : 'Faltam-nos'} um <b>landman</b> (sem ele não chegamos aos terrenos que não estão anunciados), um <b>engenheiro de rede</b> (para saber onde a REN vai reforçar) e alguém forte em <b>ambiente</b>, que é onde os projetos morrem. Sugiro olhar para o mercado de pessoas antes de gastar em terrenos.</p>` });
   hist();
 }
 
+function carteiraInicial(perfil) {
+  perfil.inicial.forEach((c) => {
+    const s = sub(c.se); s.livre = Math.max(0, s.livre - c.mw);
+    const t = novoTrc(s.id, c.mw, 'Carteira inicial', 0); t.devolvida = true; t.prazo = PRAZO_TRC - (c.t === 'proj' ? c.fi * 6 : ri(0, 6));
+    if (c.t !== 'proj') return;
+    const mwp = Math.round(c.mw * 1.25); const ha = Math.round(mwp * 1.5);
+    const tr = { id: nid('T'), se: s.id, nome: pick(['Herdade', 'Monte']) + ' ' + pick(LUGARES), ha, mwp, dist: Math.round((rnd() * 6 + 1) * 10) / 10, irr: s.irr + ri(-20, 20),
+      ran: false, ren: false, natura: false, renda: Math.round((650 + s.calor * 6) / 10) * 10, estado: 'jogador', origem: 'carteira', desde: 0, h: { titulos: false, arqueo: chance(0.15), montado: false, dono: 0.6 }, dd: null, uso: null, opcao: 0 };
+    G.terrenos.push(tr);
+    const p = criarProjeto(t, [tr], true); p.log = [`${mesLabel(0)}: herdado na fase «${FASES[c.fi].nome}»`];
+    p.fi = c.fi; if (c.fi > 0) { p.pago = true; p.rest = Math.max(2, duracao(c.fi) - ri(0, 3)); }
+  });
+}
 function rivalNovo(r, s, mw, fi, inicial, semRede) {
   if (!s || mw <= 0) return null;
   if (!semRede) s.livre = Math.max(0, s.livre - mw);
@@ -396,8 +441,7 @@ function rivalNovo(r, s, mw, fi, inicial, semRede) {
 function nomeProjeto(s) { G.nomesProj[s.id] = (G.nomesProj[s.id] || 0) + 1; const n = G.nomesProj[s.id]; return 'Solar ' + s.nome + (n > 1 ? ' ' + ['','I','II','III','IV','V','VI','VII','VIII','IX','X'][n] : ''); }
 
 function arranqueAno(primeiro) {
-  const t = TIERS[G.tier];
-  const orc = Math.round(t.orc * (0.6 + G.confianca / 100 * 0.8) * 10) / 10;
+  const orc = Math.round(G.perfil.orc * (0.6 + G.confianca / 100 * 0.8) * 10) / 10;
   G.orcamentoAno = orc; G.gastoAno = 0;
   receita(orc, 'Orçamento da casa-mãe'); G.capitalRecebido += orc;
   G.objetivos = gerarObjetivos();
@@ -577,7 +621,7 @@ function tarefasTick() {
     }
     if (t.tipo === 'abordar') {
       const tr = terreno(t.alvo); if (!tr) return; tr.abordado = true;
-      const p = clamp(tr.h.dono * 0.65 + forte('ter') * 0.02 + forte('neg') * 0.01, 0.05, 0.95);
+      const p = clamp(tr.h.dono * 0.65 + forte('ter') * 0.02 + forte('neg') * 0.01 + (G.perfil.rep - 3) * 0.04, 0.05, 0.95);
       if (chance(p)) { tr.aceita = true; email({ de: 'Terrenos', assunto: `${tr.nome}: o proprietário aceita negociar`, tipo: 'terreno', link: { tipo: 'terreno', id: tr.id }, corpo: `<p>O proprietário aceita uma opção de direito de superfície a ${nf(tr.renda, 0)} €/ha/ano. Pode optar a parcela na ficha.</p>` }); }
       else { tr.estado = 'recusado'; email({ de: 'Terrenos', assunto: `${tr.nome}: o proprietário recusou`, tipo: 'terreno', corpo: '<p>A família não quer painéis na herdade. Não vale a pena insistir este ano.</p>' }); }
     }
@@ -667,7 +711,7 @@ function gerarOfertas(p, n) {
   for (let i = 0; i < n && i < compradores.length; i++) {
     const r = compradores[i];
     const base = valorProjeto(p);
-    const v = Math.round(base * (0.82 + rnd() * 0.3 + (forte('neg') - 10) * 0.012) * 100) / 100;
+    const v = Math.round(base * (0.82 + rnd() * 0.3 + (forte('neg') - 10) * 0.012 + (G.perfil.rep - 3) * 0.015) * 100) / 100;
     email({ de: r.nome, assunto: `Oferta pelo ${p.nome}: ${M(v)}`, tipo: 'decisao', imp: true, link: { tipo: 'projeto', id: p.id },
       corpo: `<p>A ${esc(r.nome)} oferece <b>${M(v)}</b> pelo ${esc(p.nome)} (${p.mwac} MW, ${FASES[p.fi].curto}), ou seja ${nf(v / p.mwac * 1000, 0)} k€/MW. A oferta é válida até ao fim do mês.</p><p class="dim">Valor de mercado estimado pela equipa: ${M(valorProjeto(p))}.</p>`,
       acoes: [{ r: `Aceitar ${M(v)}`, fn: 'vender', a: { p: p.id, v, r: r.id } }, { r: 'Recusar', fn: 'recusar', a: {} }], expira: G.mes + 1 });
@@ -696,7 +740,7 @@ function rivaisTick() {
     r.caixa += r.entrada;
     const E = ESTILO[r.estilo];
     // novos projetos
-    if (r.caixa > 0.6 && chance(E.novo)) {
+    if (r.caixa > 0.6 && chance(E.novo * 6 / G.rivais.length)) {
       const cand = G.subs.filter((s) => s.livre >= 40 || (s.reforco && s.reforco.publico && !s.reforco.feito));
       const s = cand.length ? cand.sort((a, b) => (b.irr + (b.livre > 80 ? 60 : 0)) - (a.irr + (a.livre > 80 ? 60 : 0)))[Math.min(cand.length - 1, ri(0, 3))] : null;
       if (s && s.livre >= 40) { const mw = Math.min(s.livre, pick([50, 75, 100, 120, 150])); const p = rivalNovo(r, s, mw, 0); noticia(`${r.nome} pede reserva de ${mw} MW em ${s.nome}${p.terreno ? ' e opta terrenos junto à subestação' : ''}.`, 'rival', r.id); }
@@ -896,7 +940,7 @@ function novoMandato() {
 function registarHof(desfecho) {
   try {
     const h = JSON.parse(localStorage.getItem(HOF_KEY) || '[]');
-    h.push({ quando: new Date().toISOString().slice(0, 10), manager: G.manager, empresa: G.empresa, tier: TIERS[G.tier].nome, tipo: TIPOS[G.tipo].nome, seed: G.seed, mandatos: G.carreira.length || 1,
+    h.push({ quando: new Date().toISOString().slice(0, 10), manager: G.manager, empresa: G.empresa, tier: G.perfil.id === 'novo' ? 'Nova entrada' : G.perfil.nome, tipo: TIPOS[G.tipo].nome, seed: G.seed, mandatos: G.carreira.length || 1,
       rtb: G.mwRtbTotal, valor: Math.round(valorCriado() * 100) / 100, desfecho, ate: mesLabel(G.mes) });
     h.sort((a, b) => b.valor - a.valor); localStorage.setItem(HOF_KEY, JSON.stringify(h.slice(0, 30)));
   } catch (_) { /* sem armazenamento */ }
@@ -1001,7 +1045,8 @@ const ACT = {
     const deRival = p.onde.startsWith('rival:');
     const comp = deRival ? p.salario * 0.5 / 1000 : 0;
     if (G.caixa < comp + p.salario / 12 / 1000) return toast('Sem caixa.');
-    const pr = deRival ? clamp(0.3 + p.ambicao * 0.025 - p.lealdade * 0.02 + G.confianca / 400, 0.05, 0.9) : clamp(0.55 + G.confianca / 250 + (p.a[p.funcao] < 13 ? 0.15 : 0), 0.1, 0.95);
+    const rep = (G.perfil.rep - 3);
+    const pr = deRival ? clamp(0.3 + p.ambicao * 0.025 - p.lealdade * 0.02 + G.confianca / 400 + rep * 0.04, 0.05, 0.9) : clamp(0.55 + G.confianca / 250 + (p.a[p.funcao] < 13 ? 0.15 : 0) + rep * 0.06, 0.1, 0.95);
     if (!chance(pr)) { p.recusou = G.mes + 6; guardar(); render(); return toast(`${esc(p.nome)} recusou a proposta${deRival ? ' e fica onde está' : ''}.`); }
     if (deRival) {
       const r = rival(p.onde.slice(6)); despesa(comp, 'Indemnizações e contratações'); p.salario = Math.round(p.salario * 1.2);
@@ -1038,13 +1083,15 @@ const ACT = {
   abandonarCarreira() { UI.confirm = null; registarHof('Abandonou'); limparSave(); G = null; mostrarInicio(); },
   comecar() {
     const v = (id) => ($('#' + id) || {}).value;
-    const tier = (document.querySelector('input[name=tier]:checked') || {}).value || 'boutique';
-    const tipo = (document.querySelector('input[name=tipo]:checked') || {}).value || 'vender';
-    novoJogo({ manager: (v('sManager') || '').trim() || 'Country manager', empresa: (v('sEmpresa') || '').trim() || 'Watt Indeferido', tier, tipo, seed: (v('sSeed') || '').trim() || String(Date.now() % 100000) });
+    const id = (document.querySelector('input[name=emp]:checked') || {}).value || 'novo';
+    const perfil = JSON.parse(JSON.stringify(id === 'novo' ? NOVA : EMPRESAS.find((e) => e.id === id)));
+    if (id === 'novo') perfil.nome = (v('sEmpresa') || '').trim() || 'Watt Indeferido';
+    novoJogo({ manager: (v('sManager') || '').trim() || 'Country manager', perfil, seed: (v('sSeed') || '').trim() || String(Date.now() % 100000) });
     UI.view = 'inbox'; UI.sel = G.inbox[G.inbox.length - 1].id; G.inbox[G.inbox.length - 1].lido = true; UI.ficha = null; UI.f = {}; UI.tab = {};
     $('#start').hidden = true; $('#app').hidden = false; guardar(); render();
   },
   continuarSave() { if (carregar()) { $('#start').hidden = true; $('#app').hidden = false; render(); } },
+  escolherEmp(d) { const el = $('#emp-' + d.id); if (el) el.checked = true; },
   novaSemente() { const el = $('#sSeed'); if (el) el.value = String(Math.floor(Math.random() * 99999)); }
 };
 function custoAcordo(s) { return 0.035 + (s.livre < 40 ? 0.025 : 0) + (s.kv < 220 ? 0.01 : 0); }
@@ -1091,7 +1138,13 @@ const MAILFN = {
    GUARDAR
    ============================================================ */
 function guardar() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(G)); } catch (_) { /* sem armazenamento */ } }
-function carregar() { try { const s = localStorage.getItem(SAVE_KEY); if (!s) return false; G = JSON.parse(s); return true; } catch (_) { return false; } }
+function carregar() {
+  try {
+    const s = localStorage.getItem(SAVE_KEY); if (!s) return false; G = JSON.parse(s);
+    if (!G.perfil) G.perfil = Object.assign({}, NOVA, { nome: G.empresa, orc: { boutique: 3, medio: 4.5, infra: 7 }[G.tier] || 3, mandato: G.tipo });
+    return true;
+  } catch (_) { return false; }
+}
 function limparSave() { try { localStorage.removeItem(SAVE_KEY); } catch (_) { /* nada */ } }
 
 /* ============================================================
@@ -1155,7 +1208,7 @@ VIEWS.painel = () => {
   projAtivos().filter((p) => p.fi <= 2 && p.pago).forEach((p) => prazos.push([G.mes + p.rest, `${p.nome}: decisão de «${FASES[p.fi].curto}»`, false]));
   prazos.sort((a, b) => a[0] - b[0]);
   const top = classificacao().slice(0, 6);
-  return `<div class="vh"><div><h2>Painel</h2><p>${esc(G.manager)} · Country manager da ${esc(G.empresa)} · ${TIERS[G.tier].nome} · ${TIPOS[G.tipo].nome} · ano ${anos} de 5 do mandato ${m.n}</p></div></div>
+  return `<div class="vh"><div><h2>Painel</h2><p>${esc(G.manager)} · Country manager da ${esc(G.empresa)} · reputação ${estrelas(G.perfil.rep)} · ${TIPOS[G.tipo].nome} · ano ${anos} de 5 do mandato ${m.n}</p></div></div>
   <div class="grid">
     <div class="box"><h3>Mandato</h3>
       <div class="row" style="justify-content:space-between"><b class="num" style="font-size:1.6rem">${m.rtb} <span class="dim" style="font-size:1rem">/ ${m.meta} MW RtB</span></b><span class="dim">até ${mesLabel(m.fim - 1)}</span></div>
@@ -1205,7 +1258,7 @@ VIEWS.comite = () => {
   const m = G.mandato;
   return `<div class="vh"><div><h2>Comité de Investimento</h2><p>O Comité define o mandato, aprova o orçamento todos os janeiros e revê a confiança em si. Confiança a zero é despedimento.</p></div></div>
   <div class="grid">
-    <div class="box"><h3>Mandato ${m.n}</h3><dl class="kv"><dt>Meta</dt><dd>${m.meta} MW em RtB</dd><dt>Prazo</dt><dd>${mesLabel(m.fim - 1)}</dd><dt>Tipo</dt><dd>${TIPOS[G.tipo].nome}</dd><dt>Casa-mãe</dt><dd>${TIERS[G.tier].nome}</dd><dt>Feito</dt><dd>${m.rtb} MW (${pct(m.rtb / m.meta)})</dd></dl>
+    <div class="box"><h3>Mandato ${m.n}</h3><dl class="kv"><dt>Meta</dt><dd>${m.meta} MW em RtB</dd><dt>Prazo</dt><dd>${mesLabel(m.fim - 1)}</dd><dt>Tipo</dt><dd>${TIPOS[G.tipo].nome}</dd><dt>Reputação</dt><dd>${estrelas(G.perfil.rep)}</dd><dt>Feito</dt><dd>${m.rtb} MW (${pct(m.rtb / m.meta)})</dd></dl>
       <p class="note">Contam os MW que chegam a RtB neste mandato, mesmo que depois sejam vendidos ou construídos. No fim dos cinco anos: 100 % renova o mandato com meta maior; 65 % ou mais com confiança ≥ 35 renova com reservas; abaixo disso, a carreira acaba.</p></div>
     <div class="box"><h3>Objetivos de ${anoDe(G.mes)}</h3><table><tbody>${G.objetivos.map((o) => { const [v, ok] = avaliarObj(o); return `<tr><td>${ok ? '<span class="good">✔</span>' : '<span class="dim">…</span>'}</td><td>${esc(o.txt)}</td><td class="num">${typeof v === 'number' ? nf(v, v % 1 ? 2 : 0) : v}</td></tr>`; }).join('')}</tbody></table><p class="note">Cada objetivo cumprido em dezembro vale +8 de confiança (+4 o do orçamento); cada falhado, −12.</p></div>
     <div class="box"><h3>Confiança</h3><div class="row" style="justify-content:space-between"><b class="num ${confCls(G.confianca)}" style="font-size:1.5rem">${G.confianca}/100</b></div>${spark(G.hist.map((h) => h.conf))}
@@ -1366,7 +1419,7 @@ VIEWS.rivais = () => {
 
 VIEWS.carreira = () => {
   let hof = []; try { hof = JSON.parse(localStorage.getItem(HOF_KEY) || '[]'); } catch (_) { /* nada */ }
-  return `<div class="vh"><div><h2>Carreira</h2><p>Semente do mundo: <b class="num">${esc(G.seed)}</b>. Com a mesma semente e as mesmas decisões, o mundo repete-se. O jogo guarda sozinho neste navegador.</p></div></div>
+  return `<div class="vh"><div><h2>Carreira</h2><p>Semente do mundo: <b class="num">${esc(G.seed)}</b>. Com a mesma semente e as mesmas decisões, o mundo repete-se. O jogo guarda sozinho neste navegador.</p><p class="note">${AVISO}</p></div></div>
   <div class="grid">
     <div class="box"><h3>Esta carreira</h3><dl class="kv"><dt>Manager</dt><dd>${esc(G.manager)}</dd><dt>Empresa</dt><dd>${esc(G.empresa)}</dd><dt>Mandato atual</dt><dd>${G.mandato.n}</dd><dt>MW levados a RtB (total)</dt><dd>${G.mwRtbTotal}</dd><dt>Valor criado</dt><dd>${M(valorCriado())}</dd></dl>
       ${G.carreira.length ? `<table style="margin-top:8px"><tbody>${G.carreira.map((c) => `<tr><td>Mandato ${c.n}</td><td class="num">${c.rtb}/${c.meta} MW</td><td class="num">${M(c.valor)}</td></tr>`).join('')}</tbody></table>` : ''}
@@ -1478,24 +1531,24 @@ function mostrarInicio() {
   let tem = false; try { tem = !!localStorage.getItem(SAVE_KEY); } catch (_) { /* nada */ }
   let hof = []; try { hof = JSON.parse(localStorage.getItem(HOF_KEY) || '[]'); } catch (_) { /* nada */ }
   st.innerHTML = `<div class="inner">
-    <div class="title">IPP Manager<small>Country manager · Portugal · mandato de 400 MW em cinco anos</small></div>
-    <p style="max-width:68ch;margin:0">Uma casa-mãe estrangeira quer entrar no solar português. Você chega sem terrenos, sem rede e com três pessoas. Tem cinco anos para levar 400 MW a pronto a construir. Os rivais não esperam por si.</p>
+    <div class="title">IPP Manager<small>Country manager · solar em Portugal · mandatos de cinco anos</small></div>
+    <p style="max-width:68ch;margin:0">Escolha a empresa que quer dirigir em Portugal. A empresa traz o orçamento, a reputação, a equipa, a carteira e o que o Comité espera de si. Os rivais não esperam.</p>
     ${tem ? '<div class="row"><button class="btn pri" data-act="continuarSave">Continuar a carreira guardada</button><span class="note">ou comece uma nova abaixo</span></div>' : ''}
-    <div class="box"><h3>Nova carreira</h3>
+    <div class="box"><h3>Escolha a empresa</h3>
+      <div class="tw" style="margin-top:8px"><table class="emp"><thead><tr><th class="ns"></th><th class="ns">Empresa</th><th class="ns">Tipo</th><th class="ns">Reputação</th><th class="n ns">Solar em PT hoje</th><th class="n ns">Orçamento/ano</th><th class="ns">Mandato</th><th class="ns">Começa com</th><th class="ns">Dificuldade</th></tr></thead><tbody>
+      ${EMPRESAS.filter((e) => e.jogavel !== false).concat([NOVA]).map((e, i) => `<tr class="click" data-act="escolherEmp" data-id="${e.id}"><td><input type="radio" name="emp" id="emp-${e.id}" value="${e.id}" ${i === 0 ? 'checked' : ''} aria-label="${esc(e.nome || 'Entrar em Portugal')}"></td><td><b>${e.id === 'novo' ? 'Entrar em Portugal' : esc(e.nome)}</b><br><span class="note">${esc(e.desc)}</span></td><td>${TIPO_EMP[e.tipo]}</td><td class="warn" style="white-space:nowrap">${estrelas(e.rep)}</td><td class="n">${e.solar ? e.solar + ' MW' : '—'}</td><td class="n">${M(e.orc)}</td><td style="white-space:nowrap">${e.meta} MW RtB<br><span class="note">${TIPOS[e.mandato].nome}</span></td><td>${e.inicial.length ? e.inicial.map((c) => `${c.mw} MW em ${SE_DEF.find((x) => x[0] === c.se)[1]}${c.t === 'proj' ? ' (' + FASES[c.fi].curto.toLowerCase() + ')' : ' (TRC)'}`).join('<br>') : '<span class="dim">nada</span>'}${e.extras.length ? `<br><span class="note">+${e.extras.length} quadro${e.extras.length > 1 ? 's' : ''} forte${e.extras.length > 1 ? 's' : ''}</span>` : ''}</td><td class="warn" style="white-space:nowrap">${estrelas(e.dif)}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p class="note">${AVISO} MW solares em Portugal: dados públicos compilados no repositório; o resto (orçamentos, metas, reputação, carteira inicial) é hipótese de jogo.</p>
       <div class="form" style="margin-top:8px">
         <label for="sManager">O seu nome<input type="text" id="sManager" value="Pedro" autocomplete="off"></label>
-        <label for="sEmpresa">Nome da empresa<input type="text" id="sEmpresa" value="Watt Indeferido" autocomplete="off"></label>
+        <label for="sEmpresa">Nome da empresa (só em «Entrar em Portugal»)<input type="text" id="sEmpresa" value="Watt Indeferido" autocomplete="off"></label>
         <label for="sSeed">Semente do mundo<span class="row" style="flex-wrap:nowrap"><input type="text" id="sSeed" value="${Math.floor(Math.random() * 99999)}" autocomplete="off" style="flex:1;min-width:0"><button class="btn mini" data-act="novaSemente" type="button">Outra</button></span></label>
       </div>
-      <p class="dim" style="margin:14px 0 6px">Casa-mãe</p>
-      <div class="opt">${Object.entries(TIERS).map(([k, t], i) => `<label><input type="radio" name="tier" value="${k}" ${i === 0 ? 'checked' : ''}><b>${t.nome}</b>${t.desc} Orçamento base ${M(t.orc)}/ano.</label>`).join('')}</div>
-      <p class="dim" style="margin:14px 0 6px">Tipo de mandato</p>
-      <div class="opt">${Object.entries(TIPOS).map(([k, t], i) => `<label><input type="radio" name="tipo" value="${k}" ${i === 0 ? 'checked' : ''}><b>${t.nome}</b>${t.desc}</label>`).join('')}</div>
       <div class="row" style="margin-top:14px"><button class="btn pri" data-act="comecar">Começar carreira</button><span class="note">O jogo guarda sozinho neste navegador.</span></div>
     </div>
     <div class="box"><h3>Como se joga</h3><p style="margin:0;max-width:72ch">Cada clique em <b>Continuar</b> é um mês. Junte <b>capacidade de rede</b> (TRC) e <b>terrenos</b> da mesma subestação na mesa de montagem para criar um projeto. O projeto passa por estudos, avaliação ambiental e licenças até ficar <b>pronto a construir (RtB)</b>. A equipa que contrata muda as probabilidades. O Comité revê a sua confiança todos os janeiros.</p></div>
     ${hof.length ? `<div class="box"><h3>Galeria de managers</h3><table><tbody>${hof.slice(0, 8).map((h) => `<tr><td>${esc(h.manager)} · ${esc(h.empresa)}</td><td class="num">${h.rtb} MW</td><td class="num">${M(h.valor)}</td><td>${esc(h.desfecho)}</td></tr>`).join('')}</tbody></table></div>` : ''}
-    <p class="note">Protótipo v0.1. Empresas rivais e pessoas são fictícias. Prazos e valores económicos são hipóteses por calibrar.</p>
+    <p class="note">Protótipo v0.2. As pessoas são fictícias. Prazos e valores económicos são hipóteses por calibrar.</p>
   </div>`;
 }
 
@@ -1508,7 +1561,7 @@ document.addEventListener('change', (ev) => { const el = ev.target; if (el.datas
 document.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && ev.target.id && ev.target.id.startsWith('lance-')) { ACT.lance({ id: ev.target.id.slice(6) }); } });
 
 function boot(data) {
-  if (data && data.G) { G = data.G; Object.assign(UI, data.UI || {}); $('#start').hidden = true; $('#app').hidden = false; render(); return; }
+  if (data && data.G) { G = data.G; if (!G.perfil) G.perfil = Object.assign({}, NOVA, { nome: G.empresa, mandato: G.tipo }); Object.assign(UI, data.UI || {}); $('#start').hidden = true; $('#app').hidden = false; render(); return; }
   if (carregar()) { $('#start').hidden = true; $('#app').hidden = false; render(); } else mostrarInicio();
 }
 window.claude?.hot?.snapshot?.(() => ({ G, UI: { view: UI.view, ficha: UI.ficha, sel: UI.sel, f: UI.f, tab: UI.tab, sort: UI.sort } }));
