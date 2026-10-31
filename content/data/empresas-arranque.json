@@ -723,26 +723,13 @@
     {
      "nome": "Porcos",
      "tec": "solar",
-     "mw": {
-      "v": null,
-      "q": "por_confirmar"
-     },
-     "un": "MW",
+     "mw": 200,
+     "un": "MVA",
      "estado": "pi",
      "se": "Ferreira do Alentejo",
      "se_q": "fonte",
      "kv": 400,
-     "nota": "Acordo direto · ligação de 200 MVA"
-    },
-    {
-     "nome": "Eólica em desenvolvimento",
-     "tec": "eolica",
-     "mw": {
-      "v": null,
-      "q": "por_confirmar"
-     },
-     "un": "MW",
-     "estado": "pi"
+     "nota": "Acordo direto · 200 MVA de ligação"
     }
    ],
    "curiosidades": [
