@@ -358,6 +358,39 @@ async function startNewGame(page, shotName) {
   if (await page.locator('#auctionRoom.open').count()) throw new Error('auction opened from the confirmation');
 }
 
+/** Escolher clube: assumir uma empresa real (Galp) no passo Empresas e começar o jogo com ela. */
+async function takeOverRealCompany(browser, w, h, tag) {
+  const context = await browser.newContext({ viewport: { width: w, height: h } });
+  const page = await context.newPage();
+  track(page, 'clube-' + tag);
+  await page.goto(BASE);
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.locator('[data-menu="novo"]').click();
+  await page.waitForSelector('#arranque[data-step="jogador"] #arrNome');
+  await page.locator('#arrNome').fill('Ana');
+  await page.locator('#arrApelido').fill('Ferreira');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="pais"]');
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]', { timeout: 15000 });
+  await page.locator('[data-rival="galp"]').click();
+  await page.waitForSelector('#arranque[data-step="ficha"] #arranqueNext');
+  await shot(page, 'clube-ficha-galp-' + tag);
+  await page.locator('#arranqueNext').click();
+  await page.waitForSelector('#arranqueConfirm.open #arranqueConfirmYes');
+  const q = (await page.locator('#arranqueConfirmTitle').innerText()).trim();
+  if (q !== 'Assumir o controlo de Galp?') throw new Error('galp confirm ' + q);
+  await page.locator('#arranqueConfirmYes').click();
+  await page.waitForSelector('#inboxDrawer.open', { timeout: 15000 });
+  const p = await page.evaluate(() => ({ player: window.__wattQA && window.__wattQA.player, id: localStorage.getItem('wi.arranque.empresaId'), real: localStorage.getItem('wi.arranque.empresaReal') }));
+  const pl = p.player || {};
+  if (pl.empresaId !== 'galp' || pl.nomeEmpresa !== 'Galp') throw new Error('player profile ' + JSON.stringify(pl));
+  if (p.id !== 'galp' || p.real !== 'Galp') throw new Error('motor keys ' + JSON.stringify(p));
+  await shot(page, 'clube-inbox-galp-' + tag);
+  await context.close();
+}
+
 /** Cartas do gás (WATT_GAS=1): força as 3 cartas, verifica efeito e intervalo, fotografa. Também procura «rival» visível. */
 const gasReport = {};
 async function visibleRival(page) {
@@ -969,14 +1002,17 @@ async function openingToAuction(browser, width, height, tag, win) {
     if (await page.locator('[data-rival]').count() !== 18) throw new Error('rival count');
     const body = await page.locator('#arranque').innerText();
     if (/HIPÓTESE|\[GM\]/.test(body)) throw new Error('marker on empresa');
-    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Empresas') throw new Error('empresa title');
+    if ((await page.locator('#arranque h1').innerText()).trim() !== 'Escolhe a empresa') throw new Error('empresa title');
+    if (!/personagens de ficção/.test(body)) throw new Error('real-company fiction note missing');
     if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Seguinte') throw new Error('empresa button');
     if (/Começas com uma empresa nova/.test(body)) throw new Error('old empresa lead');
     if (!/Valores fictícios baseados em dados públicos\./.test(body)) throw new Error('fiction note missing');
     await page.locator('[data-rival="galp"]').click();
     await page.waitForSelector('#arranque[data-step="ficha"] #arranqueBack');
     const galp = await page.locator('#arranque').innerText();
-    if (!/Henrique Lousada/.test(galp) || !/1846/.test(galp) || await page.locator('#arranqueNext').count()) throw new Error('galp ficha ' + galp.slice(0, 300));
+    if (!/Henrique Lousada/.test(galp) || !/1846/.test(galp)) throw new Error('galp ficha ' + galp.slice(0, 300));
+    if ((await page.locator('#arranqueNext').innerText()).trim() !== 'Assumir o controlo') throw new Error('galp ficha cannot be taken over');
+    if (!/tudo o que lhe acontecer a partir daqui é ficção/.test(galp)) throw new Error('galp ficha fiction note');
     await page.locator('#arranqueBack').click();
     await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
     await shot(page, 'abertura-empresa-' + tag);
@@ -1225,7 +1261,9 @@ try {
   await openingToAuction(browser, 390, 844, '390', true);
   await oldSaveSkipsOpening(browser, 1440, 900, '1440');
   await oldSaveSkipsOpening(browser, 390, 844, '390');
-  console.log('PASS opening flow and old save');
+  await takeOverRealCompany(browser, 1440, 900, '1440');
+  await takeOverRealCompany(browser, 390, 844, '390');
+  console.log('PASS opening flow, old save and real-company takeover');
   }
   if (only === 'opening') {
     report.ok = errors.length === 0;
