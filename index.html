@@ -5939,14 +5939,8 @@
     </div>
     <div class="obj-budget" id="objBudget" hidden>
       <button type="button" class="obj-bc" id="objBudgetCash" data-obj-open="financas">
-        <div class="k">Caixa para desenvolver</div>
+        <div class="k">Desenvolvimento</div>
         <div class="v" id="objBudgetCashVal">—</div>
-        <div class="s" id="objBudgetCashOk">—</div>
-      </button>
-      <button type="button" class="obj-bc" id="objBudgetEq" data-obj-open="financas">
-        <div class="k">Capital próprio para a obra</div>
-        <div class="v" id="objBudgetEqVal">—</div>
-        <div class="s" id="objBudgetEqOk">—</div>
       </button>
     </div>
     <div class="home-trc-prompt" id="homeTrcPrompt" role="status" hidden>
@@ -17182,15 +17176,7 @@
     const bar = document.getElementById('objBudget');
     if (bar) bar.hidden = !show;
     const cashEl = document.getElementById('objBudgetCashVal');
-    const cashOk = document.getElementById('objBudgetCashOk');
-    const eqEl = document.getElementById('objBudgetEqVal');
-    const eqOk = document.getElementById('objBudgetEqOk');
-    const cashReach = objReached(snap.cash, snap.spend);
-    const eqReach = snap.eq.folga >= -1e-9;
     if (cashEl) cashEl.textContent = objMeur(snap.cash);
-    if (cashOk) { cashOk.textContent = cashReach ? 'Chega' : 'Não chega'; cashOk.className = 's ' + (cashReach ? 'obj-ok' : 'obj-no'); }
-    if (eqEl) eqEl.textContent = 'folga ' + objMeur(snap.eq.folga);
-    if (eqOk) { eqOk.textContent = eqReach ? 'Chega' : 'Não chega'; eqOk.className = 's ' + (eqReach ? 'obj-ok' : 'obj-no'); }
     const dot = document.getElementById('objDot');
     if (dot) {
       const items = (typeof mailState !== 'undefined' && mailState.items) || [];
