@@ -13,6 +13,8 @@
   },
   "priority": "high",
   "from_type": "CAMARA",
+  "deadline_blocks_play": true,
+  "deadline_role": "due",
   "choices": [
     {
       "id": "accept_underground",
@@ -33,7 +35,8 @@
             "line_undergrounded_km_long"
           ]
         }
-      }
+      },
+      "consequence_pt": "Aceitas enterrar a linha: a obra fica mais cara e tens de refazer o plano técnico, mas a Câmara deixa de se opor."
     },
     {
       "id": "negotiate_route",
@@ -42,7 +45,8 @@
       "effects": [
         "line_reroute_negotiated",
         "delay_land_+1"
-      ]
+      ],
+      "consequence_pt": "Propões outro traçado: o terreno atrasa um mês e a Câmara pode voltar a pedir."
     },
     {
       "id": "refuse",
@@ -52,7 +56,8 @@
         "line_underground_refused",
         "risk_camara_+2",
         "pip_refusal_risk_+1"
-      ]
+      ],
+      "consequence_pt": "Manténs a linha aérea: a Câmara fica contra e o PIP corre mais risco de ser recusado."
     }
   ],
   "heavy": true,

@@ -18,6 +18,15 @@
   },
   "priority": "high",
   "from_type": "COMPRADOR",
+  "deadline_blocks_play": true,
+  "deadline_role": "due",
+  "defer_resurface_months": "{econ.validade_proposta_meses}",
+  "defer_max": 2,
+  "defer_default_choice": "expire_draw",
+  "defer_default_draw": {
+    "walk_away": "{econ.buyer_expira_p_walk}",
+    "skin:oferta-revista": "1-{econ.buyer_expira_p_walk}"
+  },
   "choices": [
     {
       "id": "accept_full_exit_pre_lp",
@@ -187,11 +196,13 @@
     },
     {
       "id": "hold",
-      "label": "Manter a proposta em aberto",
+      "label": "Pedir tempo para pensar",
       "effects": [
         "sale_pipeline_open",
-        "buyer_patience_-1"
-      ]
+        "buyer_patience_-1",
+        "offer_validity_tick"
+      ],
+      "consequence_pt": "O comprador espera até {econ.validade_proposta_meses} meses. Depois pode baixar a oferta ou desistir."
     },
     {
       "id": "walk_away",

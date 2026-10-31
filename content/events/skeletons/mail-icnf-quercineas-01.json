@@ -21,7 +21,9 @@
     "month_offset": 1
   },
   "priority": "high",
-  "from_type": "CAMARA",
+  "from_type": "ICNF",
+  "deadline_blocks_play": true,
+  "deadline_role": "due",
   "heavy": true,
   "choices": [
     {

@@ -409,5 +409,8 @@
   "bess_operating": "A bateria está a funcionar",
   "bess_valor_up": "A bateria vale mais esta noite",
   "bess_venda_ja": "Vendeste a energia da bateria já",
-  "bess_venda_noite": "Guardaste a energia da bateria para a noite"
+  "bess_venda_noite": "Guardaste a energia da bateria para a noite",
+  "term_sheet_expired": "As condições do banco caducaram",
+  "epc_proposal_hold": "Pediste aos empreiteiros que segurassem as propostas",
+  "offer_validity_tick": "A proposta do comprador está a caducar"
 }

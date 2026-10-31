@@ -21,6 +21,8 @@
   },
   "priority": "high",
   "from_type": "APA",
+  "deadline_blocks_play": true,
+  "deadline_role": "due",
   "heavy": true,
   "choices": [
     {
