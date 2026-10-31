@@ -109,7 +109,11 @@
           "relevant": true,
           "requires_any_effects": [
             "risk_camara_+1"
-          ]
+          ],
+          "blocks_if_any_effects": [
+            "risk_camara_-1"
+          ],
+          "_note_2026_10_31": "Só se ignorou mail-camara-01: a skin hostil já dá risk_camara_+1 ao chegar, por isso quem marcou reunião (risk_camara_-1) não recebe «Não vieste à reunião»."
         },
         {
           "skeleton": "mail-investidores-review-01",
@@ -288,7 +292,11 @@
         "relevant": true,
         "requires_any_effects": [
           "risk_camara_+1"
-        ]
+        ],
+        "blocks_if_any_effects": [
+          "risk_camara_-1"
+        ],
+        "_note_2026_10_31": "Só se ignorou mail-camara-01: a skin hostil já dá risk_camara_+1 ao chegar, por isso quem marcou reunião (risk_camara_-1) não recebe «Não vieste à reunião»."
       },
       {
         "skeleton": "mail-investidores-review-01",
