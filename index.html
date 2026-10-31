@@ -5938,12 +5938,8 @@
     </div>
     <div class="obj-budget" id="objBudget" hidden>
       <button type="button" class="obj-bc" id="objBudgetCash" data-obj-open="financas">
-        <div class="k">Caixa para desenvolver</div>
+        <div class="k">Desenvolvimento</div>
         <div class="v" id="objBudgetCashVal">—</div>
-      </button>
-      <button type="button" class="obj-bc" id="objBudgetEq" data-obj-open="financas">
-        <div class="k">Folga de capital próprio para a obra</div>
-        <div class="v" id="objBudgetEqVal">—</div>
       </button>
     </div>
     <div class="home-trc-prompt" id="homeTrcPrompt" role="status" hidden>
@@ -17179,9 +17175,7 @@
     const bar = document.getElementById('objBudget');
     if (bar) bar.hidden = !show;
     const cashEl = document.getElementById('objBudgetCashVal');
-    const eqEl = document.getElementById('objBudgetEqVal');
     if (cashEl) cashEl.textContent = objMeur(snap.cash);
-    if (eqEl) eqEl.textContent = objMeur(snap.eq.folga);
     const dot = document.getElementById('objDot');
     if (dot) {
       const items = (typeof mailState !== 'undefined' && mailState.items) || [];

@@ -1171,7 +1171,12 @@ async function oldSaveSkipsOpening(browser, width, height, tag) {
     await page.waitForSelector('#objBudget:not([hidden])');
     const barText = await page.locator('#objBudget').innerText();
     if (/Chega|Não chega/i.test(barText)) throw new Error('verdict in the bottom bar: ' + barText);
-    if (!/Folga de capital próprio para a obra/i.test(barText)) throw new Error('equity label missing in the bottom bar: ' + barText);
+    if (/Folga|capital próprio/i.test(barText)) throw new Error('equity item still in the bottom bar: ' + barText);
+    if (!/Desenvolvimento/i.test(barText)) throw new Error('Desenvolvimento label missing in the bottom bar: ' + barText);
+    const devCash = await page.evaluate(() => Number(window.__wattQA.state.caixa) || 0);
+    const barNum = parseFloat((barText.match(/(-?[\d.,]+)\s*M€/) || [])[1].replace(/\./g, '').replace(',', '.'));
+    if (!(Math.abs(barNum - devCash) < 0.051)) throw new Error('bar value not from data: ' + barText + ' vs caixa ' + devCash);
+    if (await page.locator('#objBudget .obj-bc').count() !== 1) throw new Error('bottom bar should have one item');
     if (await page.locator('#objBudget .obj-ok, #objBudget .obj-no').count()) throw new Error('green/red verdict colour in the bottom bar');
     if (loaded.letters.length) throw new Error('old save grew a letter: ' + loaded.letters.join(', '));
     await shot(page, 'old-save-' + tag);
