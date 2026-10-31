@@ -641,12 +641,8 @@
      "q": "fonte"
     },
     "eolica": {
-     "v": null,
-     "q": "sem_dados"
-    },
-    "hidrica": {
-     "v": null,
-     "q": "sem_dados"
+     "v": 0,
+     "q": "fonte"
     },
     "bess": {
      "v": 0,
@@ -662,16 +658,78 @@
      "estado": "op",
      "se": "Estremoz",
      "se_q": "fonte",
-     "kv": 400
+     "kv": 400,
+     "trc_cod": true,
+     "nota": "Leilão de 2019, lote L3 · ligação de 150 MVA"
     },
     {
-     "nome": "Amar/Margalha",
+     "nome": "SantasBat",
+     "tec": "bess",
+     "mw": 80,
+     "mwh": 220,
+     "un": "MW",
+     "estado": "pi",
+     "se": "Estremoz",
+     "se_q": "fonte",
+     "kv": 400,
+     "nota": "Entra em operação em 2027"
+    },
+    {
+     "nome": "Margalha",
      "tec": "solar",
      "mw": 147,
      "un": "MW",
      "estado": "op",
+     "se": "Pego",
+     "se_q": "fonte",
+     "kv": 400,
+     "trc_cod": false,
+     "nota": "Leilão de 2019, lote L16 · ligação de 120 MVA · em testes em 2026, vende a preço de mercado"
+    },
+    {
+     "nome": "Amarzena",
+     "tec": "bess",
+     "mw": 20,
+     "mwh": 80,
+     "un": "MW",
+     "estado": "pi",
+     "se": "Pego",
+     "se_q": "fonte",
+     "kv": 400,
+     "nota": "Liga na Margalha · entra em operação em 2028"
+    },
+    {
+     "nome": "Polvorão",
+     "tec": "solar",
+     "mw": 145.7,
+     "un": "MW",
+     "estado": "pi",
      "se": "Falagueira",
-     "se_q": "est"
+     "se_q": "fonte",
+     "kv": 400,
+     "nota": "Leilão de 2019, lote L15 · ligação de 100 MVA · parado por ordem judicial"
+    },
+    {
+     "nome": "PolvBat",
+     "tec": "bess",
+     "mw": 80,
+     "un": "MW",
+     "estado": "pi",
+     "se": "Falagueira",
+     "se_q": "fonte",
+     "kv": 400,
+     "nota": "Liga no Polvorão · parado por ordem judicial"
+    },
+    {
+     "nome": "Porcos",
+     "tec": "solar",
+     "mw": 200,
+     "un": "MVA",
+     "estado": "pi",
+     "se": "Ferreira do Alentejo",
+     "se_q": "fonte",
+     "kv": 400,
+     "nota": "Acordo direto · 200 MVA de ligação"
     }
    ],
    "curiosidades": [
@@ -1039,9 +1097,18 @@
      "se_q": "est"
     },
     {
-     "nome": "Baixo Sabor e Feiticeiro",
+     "nome": "Baixo Sabor",
      "tec": "hidrica",
-     "mw": 182,
+     "mw": 144,
+     "un": "MW",
+     "estado": "op",
+     "se": "Lagoaça",
+     "se_q": "est"
+    },
+    {
+     "nome": "Feiticeiro",
+     "tec": "hidrica",
+     "mw": 38,
      "un": "MW",
      "estado": "op",
      "se": "Lagoaça",
@@ -1288,12 +1355,12 @@
    "cm": "Ricardo Fontes",
    "mw": {
     "solar": {
-     "v": null,
-     "q": "sem_dados"
+     "v": 48,
+     "q": "fonte"
     },
     "bess": {
-     "v": null,
-     "q": "sem_dados"
+     "v": 0,
+     "q": "fonte"
     },
     "biomassa": {
      "v": 90.5,
@@ -1301,6 +1368,18 @@
     }
    },
    "parques": [
+    {
+     "nome": "Solar de Tábua",
+     "tec": "solar",
+     "mw": 48,
+     "un": "MW",
+     "estado": "op",
+     "se": "Tábua",
+     "se_q": "fonte",
+     "kv": 60,
+     "trc_cod": true,
+     "nota": "48 MWp · a produzir desde 22-08-2023"
+    },
     {
      "nome": "Figueira da Foz II",
      "tec": "biomassa",
@@ -1330,6 +1409,15 @@
      "mw": 13,
      "un": "MW",
      "estado": "op"
+    },
+    {
+     "nome": "BESS Cabeço Santo",
+     "tec": "bess",
+     "mw": 11.4,
+     "mwh": 45,
+     "un": "MW",
+     "estado": "pi",
+     "nota": "Em construção · entra em operação no 2.º trimestre de 2026"
     }
    ],
    "curiosidades": [
@@ -1343,6 +1431,11 @@
     "divida": 36.2,
     "receitas": 7.2,
     "custo_fixo": 1.4
+   },
+   "pipeline_total": {
+    "v": 235,
+    "un": "MW",
+    "t": "eólica e solar, sem nomes"
    }
   }
  ],

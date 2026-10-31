@@ -991,12 +991,16 @@ async function openingToAuction(browser, width, height, tag, win) {
       return list.length;
     };
     await checkIcons('empresas');
-    for (const id of ['galp', 'prosolia', 'aura-power', 'edp', 'endesa', 'iberdrola', 'greenvolt']) {
+    for (const id of ['galp', 'prosolia', 'aura-power', 'edp', 'endesa', 'iberdrola', 'greenvolt', 'akuo', 'movhera']) {
       if (!(await page.locator('[data-rival="' + id + '"] svg').count())) throw new Error(id + ' no icon');
       await page.locator('[data-rival="' + id + '"]').click();
       await page.waitForSelector('#arranque[data-step="ficha"] #arranqueBack');
       { const vp = page.viewportSize(); const h = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)); await page.setViewportSize({ width: vp.width, height: Math.max(vp.height, h) }); await page.screenshot({ path: path.join(OUT, 'ficha-' + id + '-' + tag + '.png') }); await page.setViewportSize(vp); }
       await checkIcons('ficha ' + id);
+      { const fx = await page.locator('#arranque').innerText(); if (/rival/i.test(fx)) throw new Error(id + ' ficha rival');
+        const need = { akuo: [/SE Pego/, /SE Falagueira/, /Ferreira do Alentejo/, /SantasBat/, /220\s*MWh/, /200\s*MVA/, /ordem judicial/, /373/], greenvolt: [/Solar de Tábua/, /SE Tábua · 60 kV/, /Cabeço Santo/, /45\s*MWh/, /235/, /138,5/], movhera: [/Baixo Sabor/, /Feiticeiro/, /1\s*691/] }[id] || [];
+        for (const re of need) if (!re.test(fx)) throw new Error(id + ' ficha missing ' + re);
+        if (id === 'akuo' && /Amar\/Margalha/.test(fx)) throw new Error('akuo old Margalha'); }
       await page.locator('#arranqueBack').click();
       await page.waitForSelector('#arranque[data-step="empresa"] [data-rival="galp"]');
     }
