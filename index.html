@@ -18994,9 +18994,14 @@
         nomeProprio: String(blob.player.nomeProprio || ''),
         apelido: String(blob.player.apelido || ''),
         nomeEmpresa: String(blob.player.nomeEmpresa || ''),
+        empresaId: String(blob.player.empresaId || 'jogador'),
         nacionalidade: String(blob.player.nacionalidade || 'Portuguesa'),
         pais: String(blob.player.pais || 'portugal')
       };
+      try {
+        localStorage.setItem('wi.arranque.empresaId', playerProfile.empresaId);
+        if (playerProfile.empresaId !== 'jogador') localStorage.setItem('wi.arranque.empresaReal', playerProfile.nomeEmpresa); else localStorage.removeItem('wi.arranque.empresaReal');
+      } catch (_) {}
     }
     // After a win, never leave Home looking like «Sem central»: expand ≥1 awarded TRC
     if (state.auctionWon) {
@@ -19623,6 +19628,7 @@
       nomeProprio: String(playerProfile.nomeProprio || ''),
       apelido: String(playerProfile.apelido || ''),
       nomeEmpresa: String(playerProfile.nomeEmpresa || ''),
+      empresaId: String(playerProfile.empresaId || 'jogador'),
       nacionalidade: String(playerProfile.nacionalidade || 'Portuguesa'),
       pais: String(playerProfile.pais || 'portugal')
     };
@@ -19799,7 +19805,7 @@
       '<div><label for="arrNome">Nome próprio</label><input id="arrNome" value="' + escapeHtml(d.nomeProprio) + '" placeholder="Ex.: Ana" autocomplete="given-name"></div>' +
       '<div><label for="arrApelido">Apelido</label><input id="arrApelido" value="' + escapeHtml(d.apelido) + '" placeholder="Ex.: Ferreira" autocomplete="family-name"></div>' +
       '</div>' +
-      '<label for="arrEmpresa">Nome da empresa</label><input id="arrEmpresa" value="' + escapeHtml(d.nomeEmpresa) + '" placeholder="Ex.: Sol do Sul, Lda." maxlength="40" aria-describedby="arrEmpresaHint"' + invalid + '>' +
+      '<label for="arrEmpresa">Nome da empresa, se começares uma nova</label><input id="arrEmpresa" value="' + escapeHtml(d.nomeEmpresa) + '" placeholder="Ex.: Sol do Sul, Lda." maxlength="40" aria-describedby="arrEmpresaHint"' + invalid + '>' +
       '<p class="ar-hint' + err + '" id="arrEmpresaHint"' + (arranqueNameError ? ' role="alert"' : '') + '>Não podes usar o nome de uma empresa real.</p>' +
       '<label for="arrNac">Nacionalidade</label><select id="arrNac">' + opts + '</select></div>' +
       arranqueCta('Seguinte');
@@ -19892,7 +19898,7 @@
   function arranqueTipoPt(c) { return ARRANQUE_TIPO_PT[c.tipo] || '—'; }
   function arranqueScreenEmpresa() {
     const nome = arranqueEmpresaNome();
-    let rows = '<button type="button" class="ar-er on" data-player="1" data-ar="ficha" data-id="jogador"><span class="ar-ef">🇵🇹</span><span class="ar-en">' + escapeHtml(nome) + ' · tu</span><span class="ar-ic"></span><span class="ar-em">0\u00a0MW</span></button>';
+    let rows = '<button type="button" class="ar-er on" data-player="1" data-ar="ficha" data-id="jogador"><span class="ar-ef">🇵🇹</span><span class="ar-en">' + escapeHtml(nome) + ' · empresa nova</span><span class="ar-ic"></span><span class="ar-em">0\u00a0MW</span></button>';
     if (!arranqueEmp) {
       rows += '<p class="ar-wait">' + (arranqueEmpLoad ? 'A carregar empresas…' : 'Não foi possível carregar a lista de empresas.') + '</p>';
     } else {
@@ -19902,9 +19908,9 @@
           '<span class="ar-em">' + arranqueVal(arranqueMwOp(c), 'MW') + '</span></button>';
       }).join('');
     }
-    return '<h1>Empresas</h1>' +
+    return '<h1>Escolhe a empresa</h1><p class="ar-lead">Assume uma empresa da liga ou começa uma nova, do zero. Abre a ficha para ver o plantel, os ativos e as finanças antes de decidir.</p>' +
       '<div class="ar-et"><div class="ar-eh"><span></span><span>Nome</span><span>Tec</span><span>MW</span></div>' + rows + '</div>' +
-      '<p class="ar-ln">Valores fictícios baseados em dados públicos.</p>' +
+      '<p class="ar-ln">Valores fictícios baseados em dados públicos. As empresas reais são personagens de ficção: o que lhes acontece no jogo é inventado.</p>' +
       arranqueCta('Seguinte');
   }
   function arranqueSec(t) { return '<h2 class="ar-sec">' + t + '</h2>'; }
@@ -19996,11 +20002,17 @@
   }
   function arranqueScreenFicha() {
     if (arranqueFichaId !== 'jogador') {
-      return arranqueFichaBody() + '<div class="ar-cta"><div class="ar-cta-in"><button type="button" class="ar-btn-g" id="arranqueBack" data-ar="back">Voltar</button></div></div>';
+      return arranqueFichaBody() + '<p class="ar-ln">Se assumires esta empresa, tudo o que lhe acontecer a partir daqui é ficção.</p>' + arranqueCta('Assumir o controlo');
     }
     return arranqueFichaBody() + arranqueCta('Assumir o controlo');
   }
+  function arranqueEmpresaReal() {
+    if (arranqueFichaId === 'jogador' || !arranqueEmp) return null;
+    return arranqueEmp.empresas.find((x) => x.id === arranqueFichaId) || null;
+  }
   function arranqueConfirmQuestion() {
+    const real = arranqueEmpresaReal();
+    if (real) return 'Assumir o controlo de ' + real.nome + '?';
     const typed = String(arranqueDraft.nomeEmpresa || '').trim();
     if (!typed) return 'Assumir o controlo da tua empresa?';
     return 'Assumir o controlo de ' + typed + '?';
@@ -20096,7 +20108,7 @@
       arranqueOpenFicha('jogador');
       return;
     }
-    if (arranqueStep === 'ficha' && arranqueFichaId === 'jogador') openArranqueConfirm();
+    if (arranqueStep === 'ficha') openArranqueConfirm();
   }
   function arranqueBack() {
     if (arranqueStep === 'jogador') { arranqueBackToMenu(); return; }
@@ -20107,13 +20119,20 @@
   function finishArranque() {
     try { if (window.WIMotor) window.WIMotor.reset(); } catch (_) {}
     const d = arranqueDraft;
+    const real = arranqueEmpresaReal();
     playerProfile = {
       nomeProprio: String(d.nomeProprio || '').trim(),
       apelido: String(d.apelido || '').trim(),
-      nomeEmpresa: String(d.nomeEmpresa || '').trim(),
+      nomeEmpresa: real ? real.nome : String(d.nomeEmpresa || '').trim(),
+      empresaId: real ? real.id : 'jogador',
       nacionalidade: d.nacionalidade || 'Portuguesa',
       pais: 'portugal'
     };
+    // O motor de pesquisa lê a empresa do jogador daqui (motor.js).
+    try {
+      localStorage.setItem('wi.arranque.empresaId', playerProfile.empresaId);
+      if (real) localStorage.setItem('wi.arranque.empresaReal', real.nome); else localStorage.removeItem('wi.arranque.empresaReal');
+    } catch (_) {}
     beginNewSlot(defaultGameName(new Date()));
   }
   function onArranqueInput(ev) {

@@ -24,7 +24,9 @@
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
   function curto(n) { return String(n || '').split(' — ')[0]; }
-  function nomeEmpresaJogador() { try { const t = (localStorage.getItem('wi.arranque.nomeEmpresa') || '').trim(); if (t) return t; } catch (_) {} return 'A tua empresa'; }
+  function nomeEmpresaJogador() { try { const r = (localStorage.getItem('wi.arranque.empresaReal') || '').trim(); if (r) return r; const t = (localStorage.getItem('wi.arranque.nomeEmpresa') || '').trim(); if (t) return t; } catch (_) {} return 'A tua empresa'; }
+  // Se o jogador assumiu uma empresa real, ela sai da lista de promotores (já aparece como a empresa do jogador).
+  function empresaIdJogador() { try { return localStorage.getItem('wi.arranque.empresaId') || 'jogador'; } catch (_) { return 'jogador'; } }
 
   function load() {
     if (D) return Promise.resolve(D);
@@ -33,7 +35,8 @@
     loading = Promise.all([get(URLS.pessoas), get(URLS.empresas), get(URLS.entidades)]).then(([p, emp, ent]) => {
       const orgs = [];
       orgs.push({ ref: 'jogador', nome: nomeEmpresaJogador(), sec: 'promotores', desc: 'A tua empresa', jogador: true });
-      (emp.empresas || []).forEach((e) => orgs.push({ ref: 'empresa:' + e.id, nome: e.nome, sec: 'promotores', desc: e.tipo === 'utility' ? 'Grupo de energia' : e.tipo === 'fundo' ? 'Fundo' : 'Promotor' }));
+      const minha = empresaIdJogador();
+      (emp.empresas || []).filter((e) => e.id !== minha).forEach((e) => orgs.push({ ref: 'empresa:' + e.id, nome: e.nome, sec: 'promotores', desc: e.tipo === 'utility' ? 'Grupo de energia' : e.tipo === 'fundo' ? 'Fundo' : 'Promotor' }));
       const labels = ent.traits_labels_pt || {};
       (ent.instances || []).forEach((e) => {
         const sec = ENT_SEC[e.type]; if (!sec) return; // concorrentes já estão nos promotores
@@ -46,6 +49,7 @@
       });
       D = { cfg: p, orgs, pessoas: p.pessoas || [], byRef: {} };
       orgs.forEach((o) => { D.byRef[o.ref] = o; });
+      const eu = empresaIdJogador(); if (eu !== 'jogador') D.byRef['empresa:' + eu] = D.byRef.jogador; // quem trabalha na empresa assumida trabalha para o jogador
       return D;
     });
     return loading;
