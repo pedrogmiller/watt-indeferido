@@ -189,6 +189,15 @@ async function run(browser, width, height) {
   ok(sw, tag + ' sem scroll horizontal');
   await page.keyboard.press('Escape');
   ok(await page.locator('#motorPanel[hidden]').count() === 1, tag + ' Esc fecha');
+  // Plantel (Trabalha em = jogador): tudo visível, sem relatório; continua revelado depois de sair
+  await page.evaluate(() => window.WIMotor.openPessoa('pessoas-p2')); await page.waitForSelector('#moFicha');
+  ok(await page.locator('#moQual .mo-q').count() === 0 && await page.locator('#moFicha #moPedir').count() === 0, tag + ' plantel: qualidades visíveis e sem «Pedir relatório»');
+  ok(/k€\/ano/.test(await page.locator('#moSalario').innerText()), tag + ' plantel: salário na ficha');
+  await page.evaluate(() => window.WIMotor.setTrabalhaEm('pessoas-p2', 'livre'));
+  ok(await page.locator('#moQual .mo-q').count() === 0 && await page.locator('#moSalario').count() === 0, tag + ' saiu: continua revelado, sem salário');
+  ok(!!(await page.evaluate(() => window.WIMotor.exportState())).done['p:pessoas-p2'], tag + ' saiu: revelado fica no save');
+  await page.evaluate(() => window.WIMotor.setTrabalhaEm('pessoas-p2', 'jogador'));
+  await page.keyboard.press('Escape');
   // Novo jogo na mesma sessão limpa o motor
   ok(Object.keys((await page.evaluate(() => window.WIMotor.exportState())).reps).length > 0, tag + ' há relatórios antes do novo jogo');
   await page.keyboard.press('Escape');
@@ -206,7 +215,7 @@ async function run(browser, width, height) {
   await page.locator('#arranqueConfirmYes').click();
   await page.waitForSelector('#inboxDrawer.open', { timeout: 15000 });
   const st2 = await page.evaluate(() => window.WIMotor.exportState());
-  ok(!Object.keys(st2.reps).length && !Object.keys(st2.done).length && !Object.keys(st2.last).length && !Object.keys(st2.onde).length, tag + ' novo jogo limpa relatórios e trava');
+  ok(!Object.keys(st2.reps).length && Object.keys(st2.done).every((k) => ['p:pessoas-p1', 'p:pessoas-p2', 'p:pessoas-p3'].includes(k)) && !Object.keys(st2.last).length && !Object.keys(st2.onde).length, tag + ' novo jogo limpa relatórios e trava');
   await page.keyboard.press('Escape');
   await page.evaluate(() => window.WIMotor.open());
   await page.waitForSelector('#motorPanel:not([hidden]) #moLista');
