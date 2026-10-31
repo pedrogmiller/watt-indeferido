@@ -7792,6 +7792,9 @@
     const hidden = (letter && letter.hide_choices) || [];
     return choices.filter((c) => {
       if (hidden.indexOf(c.id) !== -1) return false;
+      // hide_choices_when_tag (esqueleto): {tag: [ids]} — ex.: banco sem «Adiar» depois de term_sheet_expired (Pedro 31/10)
+      const hw = letter && letter.hide_choices_when_tag;
+      if (hw && typeof hw === 'object' && Object.keys(hw).some((t) => mailTagOn(t) && (hw[t] || []).indexOf(c.id) !== -1)) return false;
       // Approve FID only when equity fits. While it is short, the partner and loan choices (equity_fit_short) show instead.
       if (c.requires_state && c.requires_state.indexOf('equity_fit_ok') !== -1 && !mailTagOn('equity_fit_ok')) return false;
       if (!(c.requires_state && c.requires_state.length)) return choiceWhenPasses(c.when, node, letter);
@@ -13354,6 +13357,7 @@
       on_deliver_effects: ((skin.on_deliver_effects || skeleton.on_deliver_effects || [])).slice(),
       // Adiar com prazo (GM 27/10): skin sobrepõe-se ao esqueleto
       hide_choices: (skin.hide_choices || skeleton.hide_choices || []).slice(),
+      hide_choices_when_tag: skin.hide_choices_when_tag || skeleton.hide_choices_when_tag || null,
       defer_resurface_months: skin.defer_resurface_months != null ? skin.defer_resurface_months : (skeleton.defer_resurface_months != null ? skeleton.defer_resurface_months : null),
       defer_max: skin.defer_max != null ? skin.defer_max : (skeleton.defer_max != null ? skeleton.defer_max : null),
       defer_default_choice: skin.defer_default_choice || skeleton.defer_default_choice || null,

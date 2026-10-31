@@ -23,6 +23,11 @@
   "hide_choices": [
     "term_sheet_expired"
   ],
+  "hide_choices_when_tag": {
+    "term_sheet_expired": [
+      "delay"
+    ]
+  },
   "choices": [
     {
       "id": "sign",

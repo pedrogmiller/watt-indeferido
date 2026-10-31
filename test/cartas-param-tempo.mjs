@@ -108,6 +108,17 @@ try {
     ok(L.c === 'term_sheet_expired' && ts > 0 && await blocks(page, id) === false, width + ' banco: depois do 2.º adiamento sai term_sheet_expired');
     const rule = await q(page, () => { const r = window.__wattEventPack.rules_draft.rules.find((x) => x.id === 'r-banco' || x.skeleton === 'mail-banco-term-sheet-01'); return r ? (r.rearm_on_effects || []) : null; });
     ok(rule && !rule.includes('term_sheet_defer'), width + ' banco: regra sem rearm term_sheet_defer');
+    // 2b) Depois de caducar, a nova proposta do banco já não tem «Adiar»
+    await q(page, () => { window.__wattQA.mailState.items = window.__wattQA.mailState.items.filter((m) => !/banco-term-sheet/.test(m.id)); });
+    const id2 = await deliver(page, 'mail-banco-term-sheet-01', 'ourique');
+    const vis2b = await visibleChoices(page, id2);
+    ok(id2 && !vis2b.includes('delay') && vis2b.includes('sign') && await blocks(page, id2) === true, width + ' banco: depois de term_sheet_expired sem «Adiar» (' + vis2b.join('|') + ')');
+    await page.screenshot({ path: path.join(OUT, 'banco-caducado-sem-adiar-' + width + '.png') });
+    await q(page, () => window.__tutApi.closeInbox());
+    // 2c) Proteção: carta que bloqueia mas sem nenhuma escolha possível não para o tempo
+    const prot = await q(page, (i) => { const L = window.__wattQA.mailState.items.find((m) => m.id === i); const keep = L.choices; L.choices = keep.map((c) => Object.assign({}, c, { requires_state: ['__qa_estado_que_nao_existe'] })); const r = window.__wattQA.blocksPlay(i); L.choices = keep; return { r, back: window.__wattQA.blocksPlay(i) }; }, id2);
+    ok(prot.r === false && prot.back === true, width + ' proteção: carta todas as escolhas trancadas não para o tempo');
+    await q(page, () => { window.__wattQA.mailState.items = []; });
 
     // 3) EPC: adiar 1× → retender
     id = await deliver(page, 'mail-epc-propostas-01', 'ourique');
