@@ -17,6 +17,8 @@
   },
   "priority": "high",
   "from_type": "REDE",
+  "deadline_blocks_play": true,
+  "deadline_role": "due",
   "choices": [
     {
       "id": "accept_grid",

@@ -15,6 +15,19 @@
   },
   "priority": "high",
   "from_type": "BANCO",
+  "deadline_blocks_play": true,
+  "deadline_role": "due",
+  "defer_resurface_months": "{econ.validade_term_sheet_meses}",
+  "defer_max": 2,
+  "defer_default_choice": "term_sheet_expired",
+  "hide_choices": [
+    "term_sheet_expired"
+  ],
+  "hide_choices_when_tag": {
+    "term_sheet_expired": [
+      "delay"
+    ]
+  },
   "choices": [
     {
       "id": "sign",
@@ -37,15 +50,24 @@
       "consequence_pt": "Pedes um empréstimo maior: precisas de menos capital próprio se o banco aceitar, mas a decisão de construir atrasa."
     },
     {
-      "id": "defer",
-      "label": "Adiar financiamento",
+      "id": "delay",
+      "label": "Adiar a resposta ao banco",
       "effects": [
         "term_sheet_defer",
         "delay_fid_+1",
         "investor_patience_-1",
         "reputation_-1"
       ],
-      "consequence_pt": "Adias o banco: a decisão de construir atrasa e a tua reputação desce."
+      "consequence_pt": "O banco segura as condições por {econ.validade_term_sheet_meses} meses. Depois pode pedir mais garantias ou subir o juro."
+    },
+    {
+      "id": "term_sheet_expired",
+      "label": "As condições do banco caducaram",
+      "effects": [
+        "term_sheet_expired",
+        "delay_fid_+1"
+      ],
+      "_nota": "Escondida (hide_choices). Só sai por defer_default_choice depois do último adiamento. O banco volta com nova proposta (regra r-banco, rearm_on_effects term_sheet_expired). Condições piores da Economia §9.1 ainda não estão em effects-economy.json."
     }
   ],
   "heavy": false,

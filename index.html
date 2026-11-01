@@ -7787,7 +7787,12 @@
     const node = (typeof nodes !== 'undefined' && mailLoop && mailLoop.seId)
       ? nodes.find((n) => n.id === mailLoop.seId)
       : null;
+    const hidden = (letter && letter.hide_choices) || [];
     return choices.filter((c) => {
+      if (hidden.indexOf(c.id) !== -1) return false;
+      // hide_choices_when_tag (esqueleto): {tag: [ids]} — ex.: banco sem «Adiar» depois de term_sheet_expired (Pedro 31/10)
+      const hw = letter && letter.hide_choices_when_tag;
+      if (hw && typeof hw === 'object' && Object.keys(hw).some((t) => mailTagOn(t) && (hw[t] || []).indexOf(c.id) !== -1)) return false;
       // Approve FID only when equity fits. While it is short, the partner and loan choices (equity_fit_short) show instead.
       if (c.requires_state && c.requires_state.indexOf('equity_fit_ok') !== -1 && !mailTagOn('equity_fit_ok')) return false;
       if (!(c.requires_state && c.requires_state.length)) return choiceWhenPasses(c.when, node, letter);
@@ -9092,6 +9097,7 @@
         try { chargeObraMonth(); } catch (err) { console.warn('[WattEcon] obra month', err); }
         try { resolvePendingFines(); } catch (err) { console.warn('[WattEcon] fine', err); }
         try { resolvePendingTermSheet(); } catch (err) { console.warn('[WattEcon] term sheet', err); }
+        try { resurfaceDeferredLetters(); } catch (err) { console.warn('[WattMail] adiar', err); }
         if (mailLoop.month > scheduleMax) cappedAtEnd = true;
         if (typeof deliverMonthCandidates === 'function') {
           mailDelivered += (await deliverMonthCandidates(mailLoop.month, { silentToast: true })) || 0;
@@ -13218,6 +13224,7 @@
     let out = String(str).replace(/\{\{(\w+)\}\}/g, function (_, key) {
       return ctx[key] != null ? String(ctx[key]) : '';
     });
+    if (out.indexOf('{econ.') !== -1) out = out.replace(/\{econ\.(\w+)\}/g, (m, k) => { const v = validadeEcon(k); return v != null ? String(v).replace('.', ',') : m; });
     if (out.indexOf('{') !== -1) {
       let ph = null;
       out = out.replace(/\{((?:ask|cash)_[sml])\}/g, function (m, key) {
@@ -13345,7 +13352,14 @@
       deadline_blocks_play: (typeof skin.deadline_blocks_play === 'boolean') ? skin.deadline_blocks_play : skeleton.deadline_blocks_play,
       params: JSON.parse(JSON.stringify(mergedParams)),
       delivery: (skeleton.id === 'mail-dgeg-le-cod-01' || skeleton.id === 'mail-marco-01') ? null : (skin.delivery || skeleton.delivery || null),
-      on_deliver_effects: ((skin.on_deliver_effects || skeleton.on_deliver_effects || [])).slice()
+      on_deliver_effects: ((skin.on_deliver_effects || skeleton.on_deliver_effects || [])).slice(),
+      // Adiar com prazo (GM 27/10): skin sobrepõe-se ao esqueleto
+      hide_choices: (skin.hide_choices || skeleton.hide_choices || []).slice(),
+      hide_choices_when_tag: skin.hide_choices_when_tag || skeleton.hide_choices_when_tag || null,
+      defer_resurface_months: skin.defer_resurface_months != null ? skin.defer_resurface_months : (skeleton.defer_resurface_months != null ? skeleton.defer_resurface_months : null),
+      defer_max: skin.defer_max != null ? skin.defer_max : (skeleton.defer_max != null ? skeleton.defer_max : null),
+      defer_default_choice: skin.defer_default_choice || skeleton.defer_default_choice || null,
+      defer_default_draw: skin.defer_default_draw || skeleton.defer_default_draw || null
     };
   }
 
@@ -14615,9 +14629,17 @@
     if (letter.deferredChoiceId) return true;
     return false;
   }
+  /** Uma carta em que nenhuma escolha está disponível agora (trancada ou sem caixa) não pode prender o tempo. */
+  function letterHasAvailableChoice(letter) {
+    let cs = [];
+    try { cs = filterLetterChoices(letter); } catch (_) { cs = letter.choices || []; }
+    if (!cs.length) return true;
+    return cs.some((c) => { try { return !choiceLocked(c) && !choiceSpendMessage(letter, c); } catch (_) { return true; } });
+  }
   function letterBlocksPlay(letter) {
     if (letterSettledForPlay(letter)) return false;
     if (letter && letter.delivery === 'note') return false;
+    if (letter && Array.isArray(letter.choices) && letter.choices.length && !letterHasAvailableChoice(letter)) return false;
     const meta = letterDeadlineMeta(letter);
     if (!meta.deadline_letter && meta.deadline_blocks_play !== true) return false;
     const role = meta.deadline_role;
@@ -16299,6 +16321,63 @@
   }
   function econRng() {
     return Math.random();
+  }
+  /* ── Adiar com prazo (GM cartas-param-tempo-gm.md §3–4, Pedro 27/10) ──
+   * Valores: rules_draft.validade_propostas (Economia §9, HIPÓTESE). Só as 3 propostas comerciais têm estes campos.
+   * Ao adiar: conta +1 e marca o mês em que a carta volta. Nesse mês: se já chegou a defer_max, aplica
+   * defer_default_choice (ou o sorteio defer_default_draw); senão a carta volta a bloquear. */
+  function validadeEcon(k) {
+    const v = window.__wattEventPack && window.__wattEventPack.rules_draft && window.__wattEventPack.rules_draft.validade_propostas;
+    return (v && v[k] != null) ? v[k] : null;
+  }
+  function deferNum(x) {
+    if (typeof x === 'number') return x;
+    const str = String(x == null ? '' : x).replace(/\{econ\.(\w+)\}/g, (m, k) => String(validadeEcon(k)));
+    const mm = /^\s*1\s*-\s*([\d.]+)\s*$/.exec(str);
+    if (mm) return 1 - Number(mm[1]);
+    const n = Number(str);
+    return isFinite(n) ? n : null;
+  }
+  function noteLetterDeferred(letter) {
+    if (!letter || letter.defer_resurface_months == null) return;
+    const n = deferNum(letter.defer_resurface_months);
+    letter.deferCount = (letter.deferCount | 0) + 1;
+    letter.deferUntil = (mailLoop.month | 0) + Math.max(1, n | 0);
+  }
+  function answerLetterAs(letter, choiceId) {
+    const body = document.getElementById('inboxBody');
+    if (!body || !letter) return;
+    const b = document.createElement('button');
+    b.hidden = true; b.setAttribute('data-mail-choice', choiceId); b.setAttribute('data-mail-letter', letter.id);
+    body.appendChild(b);
+    try { b.click(); } finally { b.remove(); }
+  }
+  function resurfaceDeferredLetters() {
+    const now = mailLoop.month | 0;
+    (mailState.items || []).slice().forEach((L) => {
+      if (!L || L.econChoiceId || !L.deferredChoiceId || L.deferUntil == null || (L.deferUntil | 0) > now) return;
+      L.deferUntil = null;
+      L.deferredChoiceId = null; // volta a bloquear e a pedir resposta
+      L.read = false;
+      const max = deferNum(L.defer_max);
+      if (max == null || (L.deferCount | 0) < max) { try { showToast('Voltou uma proposta que adiaste: ' + (L.subject || '') + '.'); } catch (_) {} return; }
+      let pick = L.defer_default_choice;
+      if (L.defer_default_draw && typeof L.defer_default_draw === 'object') {
+        // Sorteio pela seed/forcing do jogo: ?buyer_expira=walk_away|skin:oferta-revista ou __wattEconForce.buyer_expira
+        const keys = Object.keys(L.defer_default_draw);
+        const f = forcedRoll('buyer_expira');
+        if (f && keys.indexOf(f) !== -1) pick = f;
+        else { const r = econRng(); let acc = 0; pick = keys[keys.length - 1]; for (const k of keys) { acc += deferNum(L.defer_default_draw[k]) || 0; if (r < acc) { pick = k; break; } } }
+      }
+      if (!pick) return;
+      if (String(pick).indexOf('skin:') === 0) {
+        const skinId = String(pick).slice(5);
+        L.econChoiceId = 'expirou'; L.econChoiceLabel = 'A proposta caducou';
+        try { const L2 = deliverStakeLetter(mailSkeletonOf(L), skinId, { allowRepeat: true, params: Object.assign({}, L.params || {}, { offer_band: 'thin' }) }); if (L2 && L.sender) L2.sender = L.sender; } catch (err) { console.warn('[WattMail] oferta revista', err); }
+        return;
+      }
+      answerLetterAs(L, pick);
+    });
   }
   function forcedRoll(kind) {
     try {
@@ -18441,7 +18520,7 @@
             return;
           }
           if (letter && !repeat) {
-            if (deferring) letter.deferredChoiceId = normalizeChoiceId(choiceId, letter);
+            if (deferring) { letter.deferredChoiceId = normalizeChoiceId(choiceId, letter); noteLetterDeferred(letter); }
             else { letter.econChoiceId = normalizeChoiceId(choiceId, letter); letter.econChoiceLabel = choice ? fillMailTemplate(choice.label) : ''; }
           }
           if (res && repeat) res.repeat = true;
@@ -21277,6 +21356,9 @@
         saleGate: (m) => saleModeGate(m), confirmAction: (n, a) => confirmAction(n, a), landGateBlocks: (id) => landGateBlocks(id), icnfAvailable: () => salaIcnfConsultAvailable(),
         canSpend: (n) => canSpend(n),
         renderHome: () => renderHomePa(),
+        deliverLetter: (sk, skin) => { window.__qaLetterN = (window.__qaLetterN | 0) + 1; const L = deliverStakeLetter(sk, skin, { allowRepeat: true, id: sk + ':' + skin + ':qa' + window.__qaLetterN }); return L ? L.id : null; },
+        blocksPlay: (id) => { const L = (mailState.items || []).find((m) => m.id === id); return L ? letterBlocksPlay(L) : null; },
+        resurface: () => resurfaceDeferredLetters(),
         startMenu: () => showStartMenu(),
         playerNpv: (v) => playerNpv(v),
         npvIrr: () => stakesNpvIrr(),

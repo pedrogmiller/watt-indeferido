@@ -1,0 +1,24 @@
+{
+  "skeleton_id": "mail-buyer-offer-01",
+  "skin_id": "oferta-revista",
+  "when": {
+    "sale_mode": "so_por_adiamento",
+    "_nota": "Nunca escolhida pelo sorteio de skins; só chega por defer_default_draw."
+  },
+  "from_name": "Comprador",
+  "subject": "O comprador faz uma nova oferta, mais baixa",
+  "body": "A proposta anterior caducou. O comprador continua interessado, mas a nova oferta é mais baixa. Explica que o mercado mudou e que o tempo de espera lhe custou. Esta proposta vale {econ.validade_proposta_meses} meses e não volta a ser prorrogada.",
+  "_nota_gm": "Texto do GM (cartas-param-tempo-gm.md §4b). Sem o preço {econ.preco_oferta_revista}: o jogo ainda não mostra preço de venda (PEDIR P24); a oferta fica na banda baixa (offer_band thin).",
+  "params": {
+    "offer_band": "thin",
+    "sets_on_accept": [
+      "offer_band_thin"
+    ]
+  },
+  "hide_choices": [
+    "hold"
+  ],
+  "defer_max": 0,
+  "deadline_blocks_play": true,
+  "deadline_role": "due"
+}
