@@ -5377,7 +5377,6 @@
   .obj-fl.tot { border-top: 1px solid #e2e8f0; margin-top: 4px; padding-top: 6px; font-weight: 800; }
   .obj-bar { height: 8px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin: 8px 0 2px; position: relative; }
   .obj-bar i { display: block; height: 100%; }
-  .obj-verd { font-weight: 800; font-size: 13px; margin-top: 6px; }
   .obj-lobj { border-top: 1px solid #f1f5f9; padding: 8px 0; display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
   .obj-lobj .obj-imp { flex: none; align-self: flex-start; }
   .mail-detail-body .obj-lobj p, .mail-detail-body p { margin: 8px 0; }
@@ -6411,7 +6410,7 @@
   <div class="mandate-card">
     <div class="mandate-kicker">Antes do leilão</div>
     <h2 id="mandateBriefingTitle">O teu orçamento</h2>
-    <p class="mandate-club" id="mandateBriefingClub">Começas com 2,0 M€ em caixa. Os investidores prometem até 6,5 M€ para desenvolveres um projeto e 45,0 M€ de capital próprio para o construíres. Chega para um lote.</p>
+    <p class="mandate-club" id="mandateBriefingClub">Começas com 2,0 M€ em caixa. Os investidores prometem até 6,5 M€ para desenvolveres um projeto e 45,0 M€ de capital próprio para o construíres.</p>
     <div class="mandate-auction-strip" style="margin:0 0 14px" aria-hidden="true">
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingCar">Para desenvolver: 6,5 M€</span>
       <span class="mandate-chip mandate-chip-band" id="mandateBriefingEquity">Para construir: 45,0 M€</span>
@@ -10709,7 +10708,7 @@
   const MANDATE_TIERS = {
     boutique: {
       id: 'boutique', label: 'Orçamento pequeno', tierLabel: 'Orçamento pequeno',
-      clubLine: 'Começas com ' + fmtMoneyAbs(ECON_TIER.boutique.seed) + ' em caixa. Os investidores prometem até ' + fmtMoneyAbs(ECON_TIER.boutique.carMandate) + ' para desenvolveres um projeto e ' + fmtMoneyAbs(ECON_TIER.boutique.equity) + ' de capital próprio para o construíres. Chega para um lote.',
+      clubLine: 'Começas com ' + fmtMoneyAbs(ECON_TIER.boutique.seed) + ' em caixa. Os investidores prometem até ' + fmtMoneyAbs(ECON_TIER.boutique.carMandate) + ' para desenvolveres um projeto e ' + fmtMoneyAbs(ECON_TIER.boutique.equity) + ' de capital próprio para o construíres.',
       car_band_max: 'S',
       equity_band_max: 'S',
       max_trcs: 1,
@@ -10720,7 +10719,7 @@
     },
     mid: {
       id: 'mid', label: 'Orçamento médio', tierLabel: 'Orçamento médio',
-      clubLine: 'Os investidores prometem até ' + fmtMoneyAbs(ECON_TIER.mid.carMandate) + ' para desenvolver e ' + fmtMoneyAbs(ECON_TIER.mid.equity) + ' de capital próprio para construir. Chega para até 2 lotes.',
+      clubLine: 'Os investidores prometem até ' + fmtMoneyAbs(ECON_TIER.mid.carMandate) + ' para desenvolver e ' + fmtMoneyAbs(ECON_TIER.mid.equity) + ' de capital próprio para construir.',
       car_band_max: 'M',
       equity_band_max: 'M',
       max_trcs: 2,
@@ -10731,7 +10730,7 @@
     },
     infra: {
       id: 'infra', label: 'Orçamento grande', tierLabel: 'Orçamento grande',
-      clubLine: 'Os investidores prometem até ' + fmtMoneyAbs(ECON_TIER.infra.carMandate) + ' para desenvolver e ' + fmtMoneyAbs(ECON_TIER.infra.equity) + ' de capital próprio para construir. Chega para até 4 lotes.',
+      clubLine: 'Os investidores prometem até ' + fmtMoneyAbs(ECON_TIER.infra.carMandate) + ' para desenvolver e ' + fmtMoneyAbs(ECON_TIER.infra.equity) + ' de capital próprio para construir.',
       car_band_max: 'L',
       equity_band_max: 'L',
       max_trcs: 4,
@@ -17139,13 +17138,8 @@
     const h = Math.max(0, Number(have) || 0);
     const n = Math.max(0, Number(need) || 0);
     const mx = Math.max(h, n, 0.001);
-    return '<div class="obj-bar"><i style="width:' + (h / mx * 100) + '%;background:' + (h + 1e-9 >= n ? '#16a34a' : '#f59e0b') + '"></i>' +
+    return '<div class="obj-bar"><i style="width:' + (h / mx * 100) + '%;background:' + '#64748b' + '"></i>' +
       '<span style="position:absolute;top:0;bottom:0;left:calc(' + (n / mx * 100) + '% - 1px);width:2px;background:#0f172a"></span></div>';
-  }
-  function objVerd(gap) {
-    const g = Number(gap) || 0;
-    return '<div class="obj-verd ' + (g >= -1e-9 ? 'obj-ok' : 'obj-no') + '">' +
-      (g >= -1e-9 ? ('Chega · sobra ' + objMeur(g)) : ('Não chega · faltam ' + objMeur(-g))) + '</div>';
   }
   function objRows(snap) {
     const cashBit = objMeur(snap.cash);
@@ -17200,21 +17194,20 @@
   function objFinancasHtml() {
     const snap = objSnapshot();
     const eq = snap.eq;
-    const gapCash = snap.cash - snap.spend;
     const npvCls = (snap.npvNow != null && snap.npvNow < 0) ? ' obj-no' : '';
     const npvTxt = snap.npvNow == null ? '—' : objMeur(snap.npvNow);
     const auctionTxt = snap.npvAuction == null ? '—' : objMeur(snap.npvAuction);
     return '<div class="obj-fin">' +
       '<div class="obj-card"><div class="obj-k">Caixa para desenvolver</div><div class="obj-fv">' + objMeur(snap.cash) + '</div><div class="obj-note">Para terreno, licenças e estudos até à decisão final de investimento.</div></div>' +
       '<div class="obj-card"><div class="obj-k">Ainda por gastar até à decisão final</div><div class="obj-fv">' + (snap.month ? '' : '≈ ') + objMeur(snap.spend) + OBJ_HIP + '</div>' +
-      objBar(snap.cash, snap.spend) + objVerd(gapCash) + '</div>' +
+      objBar(snap.cash, snap.spend) + '</div>' +
       '<div class="obj-card"><div class="obj-k">Capital próprio para a obra</div>' +
       '<div class="obj-fl"><span>Necessidade na decisão final</span><span>' + objMeur(eq.need) + OBJ_HIP + '</span></div>' +
       '<div class="obj-fl"><span>− Sócio (25%)</span><span>' + objMeur(eq.partner) + OBJ_HIP + '</span></div>' +
       '<div class="obj-fl"><span>= Tua parte (75%)</span><span>' + objMeur(eq.mine) + OBJ_HIP + '</span></div>' +
       '<div class="obj-fl"><span>Investidores</span><span>' + objMeur(eq.purse) + '</span></div>' +
-      '<div class="obj-fl tot"><span>Folga</span><span class="' + (eq.folga >= 0 ? 'obj-ok' : 'obj-no') + '">' + objMeur(eq.folga, true) + '</span></div>' +
-      objBar(eq.purse, eq.mine) + objVerd(eq.folga) +
+      '<div class="obj-fl tot"><span>Folga</span><span>' + objMeur(eq.folga, true) + '</span></div>' +
+      objBar(eq.purse, eq.mine) +
       '<div class="obj-note">' + (eq.hybrid ? 'Com híbrido.' : 'Só solar.') + ' O sócio atrasa a decisão final cerca de 4 meses e fica com 25% do NPV.</div></div>' +
       '<div class="obj-card"><div class="obj-k">NPV agora (a tua parte)</div><div class="obj-fv' + npvCls + '">' + npvTxt + (snap.npvNow == null ? '' : OBJ_HIP) + '</div>' +
       '<div class="obj-note">no leilão: ' + auctionTxt + ' · 75% se tiveres sócio</div>' +
